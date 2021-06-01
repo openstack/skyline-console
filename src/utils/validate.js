@@ -1,0 +1,595 @@
+// Copyright 2021 99cloud
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+import { isString, isNil } from 'lodash';
+import { Address4, Address6 } from 'ip-address';
+import cidrRegex from 'cidr-regex';
+
+const { v4, v6 } = cidrRegex;
+
+// const ip = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)[.](25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)[.](25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)[.](25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+// const ipv6 = /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/;
+// const cidr = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)[.](25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)[.](25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)[.](25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)[\/](([0-9])|([1-2][0-9])|(3[1-2]))$/; // eslint-disable-line
+// const ipCidr =   /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)[.](25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)[.](25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)[.](25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)([\/](([0-9])|([1-2][0-9])|(3[1-2])))?$/; // eslint-disable-line
+// const ipv6Cidr = /^((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:)))(%.+)?s*(\/([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))?$/;
+
+const cidr = cidrRegex({ exact: true });
+const ipCidr = v4({ exact: true });
+const ipv6Cidr = v6({ exact: true });
+const nameRegex =
+  /^[a-zA-Z\u4e00-\u9fa5][\u4e00-\u9fa5\w"'\[\]^.:()_-]{0,127}$/; // eslint-disable-line
+const macRegex = /^[A-F0-9]{2}(:[A-F0-9]{2}){5}$/;
+const portRangeRegex =
+  /^([1-9]|[1-5]?[0-9]{2,4}|6[1-4][0-9]{3}|65[1-4][0-9]{2}|655[1-2][0-9]|6553[1-5])(:([1-9]|[1-5]?[0-9]{2,4}|6[1-4][0-9]{3}|65[1-4][0-9]{2}|655[1-2][0-9]|6553[1-5]))?$/;
+const ipWithMask =
+  /^(?:(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\/([1-9]|[1-2]\d|3[0-2])$/;
+const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\\[\]`~!@#$%^&*()_\-+=?:"{}|,.\\/;'])[A-Za-z\d\\[\]`~!@#$%^&*()_\-+=?:"{}|,.\\/;']{8,16}$/;
+const instancePasswordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\\[\]`~!@#$%^&*()_\-+=?:"{}|,.\\/;']{8,16}$/;
+const phoneNumberRegex = /^1[3456789]\d{9}$/;
+const phoneRegexp = /^(\+\d{1,3}-)(\d{7,11})?$/;
+const emailRegex =
+  /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
+const nameRegexWithoutChinese = /^[a-zA-Z][\w"'\[\]^.:()_-]{0,127}$/; // eslint-disable-line
+const fileNameRegex = /^[A-Za-z]+[A-Za-z\d-]{2,62}$/;
+const stackNameRegex = /^[A-Za-z]+[A-Za-z\d._-]{1,254}$/;
+const keypairNameRegex = /^[a-zA-Z][\w_-]{0,127}$/;
+const crontabNameRegex =
+  /^[a-zA-Z\u4e00-\u9fa5][\u4e00-\u9fa5\w"'\[\]^.:()_-]{0,63}$/; // eslint-disable-line
+const imageNameRegex =
+  /^[a-zA-Z\u4e00-\u9fa5][\u4e00-\u9fa5\w"'\[\]^.()_-]{0,127}$/; // eslint-disable-line
+const instanceNameRegex =
+  /^[a-zA-Z\u4e00-\u9fa5][\u4e00-\u9fa5\w"'.()_-]{0,127}$/;
+const ipv6CidrOnly =
+  /^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9-]*[A-Za-z0-9])$|^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*\/(1[01][0-9]|12[0-8]|[0-9]{1,2})$/;
+
+export const regex = {
+  cidr,
+  ipCidr,
+  ipv6Cidr,
+  nameRegex,
+  macRegex,
+  portRangeRegex,
+  ipWithMask,
+  passwordRegex,
+  instancePasswordRegex,
+  phoneNumberRegex,
+  phoneRegexp,
+  emailRegex,
+  nameRegexWithoutChinese,
+  fileNameRegex,
+  keypairNameRegex,
+  imageNameRegex,
+  instanceNameRegex,
+  ipv6CidrOnly,
+};
+
+export const isPhoneNumber = (value) =>
+  phoneNumberRegex.test(value) || phoneRegexp.test(value);
+
+export const isEmailNumber = (value) => emailRegex.test(value);
+
+export const isMacAddress = (value) => macRegex.test(value);
+
+function zfill(num, len) {
+  return (Array(len).join('0') + num).slice(-len);
+}
+
+const isIpWithMask = (value) => ipWithMask.test(value);
+
+const ipFull = (ipadd) =>
+  ipadd
+    .split('.')
+    .map((item) => zfill(item, 3))
+    .join('.');
+
+const isIPv4 = (value) => value && Address4.isValid(value);
+
+const isIpv6 = (value) => value && Address6.isValid(value);
+
+const isCidr = (value) => cidr.test(value);
+
+const isIpCidr = (value) => ipCidr.test(value);
+
+const isIPv6Cidr = (value) => ipv6Cidr.test(value);
+
+const isIPv6CidrOnly = (value) => ipv6CidrOnly.test(value);
+
+// eslint-disable-next-line no-shadow
+const isIpInRange = (ip, start, end) => {
+  const ipToInt = (IP) =>
+    parseInt(
+      IP.replace(/\d+\.?/gi, (a) => {
+        a = parseInt(a, 10);
+        return (a > 15 ? '' : '0') + a.toString(16);
+      }),
+      16
+    );
+
+  const between = (x, min, max) => x >= min && x <= max;
+
+  return between(ipToInt(ip), ipToInt(start), ipToInt(end));
+};
+
+const isIpInRangeIPv4 = (ipStr, start, end) => {
+  const startInt = new Address4(start).bigInteger();
+  const endInt = new Address4(end).bigInteger();
+  const ipInt = new Address4(ipStr).bigInteger();
+  return ipInt >= startInt && ipInt <= endInt;
+};
+
+const isIpInRangeIPv6 = (ipStr, start, end) => {
+  const startInt = new Address6(start).bigInteger();
+  const endInt = new Address6(end).bigInteger();
+  const ipInt = new Address6(ipStr).bigInteger();
+  return ipInt >= startInt && ipInt <= endInt;
+};
+
+const isIpInRangeAll = (ipStr, start, end) => {
+  if (isIPv4(ipStr) && isIPv4(start) && isIPv4(end)) {
+    return isIpInRangeIPv4(ipStr, start, end);
+  }
+  if (isIpv6(ipStr) && isIpv6(start) && isIpv6(end)) {
+    return isIpInRangeIPv6(ipStr, start, end);
+  }
+  return false;
+};
+
+const compareIpv6 = (ip1, ip2) => {
+  const ip1s = ip1.split(':');
+  const ip2s = ip2.split(':');
+  // 循环比较对应的项
+  for (let i = 0; i < ip1s.length; i++) {
+    if (ip1s[i] === '') {
+      if (ip2s[i] === '') {
+        // 对应的项都位空，往下比较
+        // eslint-disable-next-line no-continue
+        continue;
+      } else {
+        return -1;
+      }
+    } else if (ip2s[i] === '') {
+      return 1;
+    } else {
+      // 确定对应的项不位空，讲字符串转换位整数进行比较
+      const value1 = parseInt(ip1s[i], 16);
+      const value2 = parseInt(ip2s[i], 16);
+      if (value1 > value2) {
+        return 1;
+      }
+      if (value1 < value2) {
+        return -1;
+      }
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+  }
+  // 循环结束，表示两个串表示的地址相同
+  return 0;
+};
+
+const ipv4Validator = (item, value) => {
+  const { required } = item;
+  if (!isNil(value) && value !== '') {
+    if (isIPv4(value)) {
+      return Promise.resolve(true);
+    }
+    return Promise.reject(new Error(t('Invalid: Please input a valid ipv4')));
+  }
+  if (required && (isNil(value) || value === '')) {
+    return Promise.reject();
+  }
+  return Promise.resolve(true);
+};
+
+const ipv6Validator = (item, value) => {
+  const { required } = item;
+  if (!isNil(value) && value !== '') {
+    if (isIpv6(value)) {
+      return Promise.resolve(true);
+    }
+    return Promise.reject(new Error(t('Invalid: Please input a valid ipv4')));
+  }
+  if (required && (isNil(value) || value === '')) {
+    return Promise.reject();
+  }
+  return Promise.resolve(true);
+};
+
+export const ipValidate = {
+  isIpWithMask,
+  ipFull,
+  isIPv4,
+  isIpv6,
+  isCidr,
+  isIpCidr,
+  isIPv6Cidr,
+  isIPv6CidrOnly,
+  isIpInRange,
+  isIpInRangeIPv4,
+  isIpInRangeIPv6,
+  isIpInRangeAll,
+  compareIpv6,
+  ipv4Validator,
+  ipv6Validator,
+};
+
+const isName = (value) => {
+  if (value && isString(value)) {
+    return nameRegex.test(value) && value.length <= 128;
+  }
+  return false;
+};
+
+const isFilename = (value) => {
+  if (value && isString(value)) {
+    return fileNameRegex.test(value);
+  }
+  return false;
+};
+
+const isNameWithoutChinese = (value) => {
+  if (value && isString(value)) {
+    return nameRegexWithoutChinese.test(value) && value.length <= 128;
+  }
+  return false;
+};
+
+const isKeypairName = (value) => {
+  if (value && isString(value)) {
+    return keypairNameRegex.test(value) && value.length <= 128;
+  }
+  return false;
+};
+
+const isStackName = (value) => {
+  if (value && isString(value)) {
+    return stackNameRegex.test(value);
+  }
+  return false;
+};
+
+const isCrontabName = (value) => {
+  if (value && isString(value)) {
+    return crontabNameRegex.test(value);
+  }
+  return false;
+};
+
+const isImageName = (value) => {
+  if (value && isString(value)) {
+    return imageNameRegex.test(value);
+  }
+  return false;
+};
+
+const isInstanceName = (value) => {
+  if (value && isString(value)) {
+    return instanceNameRegex.test(value);
+  }
+  return false;
+};
+
+const nameMessage = t(
+  'The name should start with upper letter, lower letter or chinese, and be a string of 1 to 128, characters can only contain "0-9, a-z, A-Z, "-\'_()[].:^".'
+);
+
+const nameMessageWithoutChinese = t(
+  'The name should start with upper letter or lower letter, and be a string of 1 to 128, characters can only contain "0-9, a-z, A-Z, "-\'_()[].:^".'
+);
+
+const filenameMessage = t(
+  'The name should start with upper letter, lower letter, and be a string of 3 to 63, characters can only contain "0-9, a-z, A-Z, -".'
+);
+
+const keypairNameMessage = t(
+  'The name should start with upper letter, lower letter, and be a string of 1 to 128, characters can only contain "0-9, a-z, A-Z, -, _".'
+);
+
+const stackNameMessage = t(
+  'The name should start with upper letter, lower letter, and be a string of 2 to 255, characters can only contain "0-9, a-z, A-Z, -, ., _".'
+);
+
+const crontabNameMessage = t(
+  'The name should start with upper letter, lower letter or chinese, and be a string of 1 to 64, characters can only contain "0-9, a-z, A-Z, "-\'_()[].^".'
+);
+
+const imageNameMessage = t(
+  'The name should start with upper letter, lower letter or chinese, and be a string of 1 to 128, characters can only contain "0-9, a-z, A-Z, "-\'_()[].^".'
+);
+
+const instanceNameMessage = t(
+  'The name should start with upper letter, lower letter or chinese, and be a string of 1 to 128, characters can only contain "0-9, a-z, A-Z, "-\'_().".'
+);
+
+export const nameMessageInfo = {
+  nameMessage,
+  nameMessageWithoutChinese,
+  filenameMessage,
+  keypairNameMessage,
+  stackNameMessage,
+  crontabNameMessage,
+  imageNameMessage,
+  instanceNameMessage,
+};
+
+export const portMessage = t('Enter an integer value between 1 and 65535.');
+
+export const rangeMessage = t(
+  'The starting number must be less than the ending number'
+);
+
+export const portRangeMessage = t(
+  'Input source port or port range(example: 80 or 80:160)'
+);
+
+export const macAddressMessage = t(
+  'Invalid Mac Address. Please Use ":" as separator.'
+);
+
+export const phoneNumberValidate = (rule, value) => {
+  if (!rule.required && !value) {
+    return Promise.resolve(true);
+  }
+  if (isPhoneNumber(value)) {
+    return Promise.resolve(true);
+  }
+  return Promise.reject(new Error(`${t('Please enter a valid Phone Number')}`));
+};
+
+export const emailValidate = (rule, value) => {
+  if (!rule.required && !value) {
+    return Promise.resolve(true);
+  }
+  if (isEmailNumber(value)) {
+    return Promise.resolve(true);
+  }
+  return Promise.reject(
+    new Error(`${t('Please enter a valid Email Address!')}`)
+  );
+};
+
+const nameValidate = (rule, value) => {
+  if (!rule.required && value === undefined) {
+    return Promise.resolve(true);
+  }
+  if (isName(value)) {
+    return Promise.resolve(true);
+  }
+  return Promise.reject(new Error(`${t('Invalid: ')}${nameMessage}`));
+};
+
+const nameValidateWithoutChinese = (rule, value) => {
+  if (!rule.required && value === undefined) {
+    return Promise.resolve(true);
+  }
+  if (isNameWithoutChinese(value)) {
+    return Promise.resolve(true);
+  }
+  return Promise.reject(
+    new Error(`${t('Invalid: ')}${nameMessageWithoutChinese}`)
+  );
+};
+
+const fileNameValidate = (rule, value) => {
+  if (!rule.required && value === undefined) {
+    return Promise.resolve(true);
+  }
+  if (isFilename(value)) {
+    return Promise.resolve(true);
+  }
+  return Promise.reject(new Error(`${t('Invalid: ')}${filenameMessage}`));
+};
+
+const keypairNameValidate = (rule, value) => {
+  if (!rule.required && value === undefined) {
+    return Promise.resolve(true);
+  }
+  if (isKeypairName(value)) {
+    return Promise.resolve(true);
+  }
+  return Promise.reject(new Error(`${t('Invalid: ')}${keypairNameMessage}`));
+};
+
+const stackNameValidate = (rule, value) => {
+  if (!rule.required && value === undefined) {
+    return Promise.resolve(true);
+  }
+  if (isStackName(value)) {
+    return Promise.resolve(true);
+  }
+  return Promise.reject(new Error(`${t('Invalid: ')}${stackNameMessage}`));
+};
+
+const crontabNameValidate = (rule, value) => {
+  console.log(rule, value, isCrontabName(value));
+  if (!rule.required && value === undefined) {
+    return Promise.resolve(true);
+  }
+  if (isCrontabName(value)) {
+    return Promise.resolve(true);
+  }
+  return Promise.reject(new Error(`${t('Invalid: ')}${crontabNameMessage}`));
+};
+
+const imageNameValidate = (rule, value) => {
+  if (!rule.required && value === undefined) {
+    return Promise.resolve(true);
+  }
+  if (isImageName(value)) {
+    return Promise.resolve(true);
+  }
+  return Promise.reject(new Error(`${t('Invalid: ')}${imageNameMessage}`));
+};
+
+const instanceNameValidate = (rule, value) => {
+  if (!rule.required && value === undefined) {
+    return Promise.resolve(true);
+  }
+  if (isInstanceName(value)) {
+    return Promise.resolve(true);
+  }
+  return Promise.reject(new Error(`${t('Invalid: ')}${instanceNameMessage}`));
+};
+
+export const nameTypeValidate = {
+  nameValidate,
+  nameValidateWithoutChinese,
+  fileNameValidate,
+  keypairNameValidate,
+  stackNameValidate,
+  crontabNameValidate,
+  imageNameValidate,
+  instanceNameValidate,
+};
+
+export const cidrAllValidate = (rule, value) => {
+  if (isIpCidr(value) || isIPv6Cidr(value)) {
+    return Promise.resolve(true);
+  }
+  return Promise.reject(
+    getErrorMessage(
+      t('CIDR Format Error(e.g. 192.168.0.0/24, 2001:DB8::/48)'),
+      true
+    )
+  );
+};
+
+export const macAddressValidate = (rule, value) => {
+  if (isMacAddress(value.toUpperCase())) {
+    return Promise.resolve(true);
+  }
+  return Promise.reject(new Error(`${t('Invalid: ')}${macAddressMessage}`));
+};
+
+export const portRangeValidate = (rule, value) => {
+  if (!value && !rule.required) {
+    return Promise.resolve();
+  }
+  if (portRangeRegex.test(value)) {
+    const ports = value.split(':');
+    if (Number(ports[0]) > Number(ports[1])) {
+      return Promise.reject(new Error(`${t('Invalid: ')}${rangeMessage}`));
+    }
+    return Promise.resolve();
+  }
+  return Promise.reject(new Error(`${t('Invalid: ')}${portMessage}`));
+};
+
+export const getPasswordOtherRule =
+  (name, type, withoutPrefix, message) =>
+  ({ getFieldValue }) => ({
+    validator(rule, value) {
+      let state = {};
+      const hasPrefix = !withoutPrefix;
+      if (name === 'password') {
+        state = {
+          oldPassword: getFieldValue('oldPassword'),
+          password: value || getFieldValue('password'),
+          confirmPassword: getFieldValue('confirmPassword'),
+          hasPrefix,
+          message,
+        };
+      } else {
+        state = {
+          confirmPassword: value || getFieldValue('confirmPassword'),
+          password: getFieldValue('password'),
+          oldPassword: getFieldValue('oldPassword'),
+          hasPrefix,
+          message,
+        };
+      }
+      if (type === 'user') {
+        state.oldPassword = getFieldValue('oldPassword');
+      } else if (type === 'instance') {
+        state.passwordType = 'instancePassword';
+      }
+
+      return passwordValidate(rule, value, state);
+    },
+  });
+
+export const getErrorMessage = (message, hasPrefix) =>
+  hasPrefix ? t('Invalid: ') + message : message;
+
+export const passwordValidate = (rule, value, state) => {
+  // eslint-disable-next-line no-unused-vars
+  const {
+    password,
+    passwordType = 'other',
+    oldPassword,
+    hasPrefix = true,
+    message,
+  } = state;
+  const { field } = rule;
+  if (field === 'password') {
+    const p1Regex =
+      passwordType === 'instancePassword'
+        ? instancePasswordRegex
+        : passwordRegex;
+    const errorMsg =
+      passwordType === 'instancePassword'
+        ? getErrorMessage(
+            t(
+              '8 to 16 characters, at least one uppercase letter, one lowercase letter, one number.'
+            ),
+            hasPrefix
+          )
+        : getErrorMessage(
+            t(
+              '8 to 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character.'
+            ),
+            hasPrefix
+          );
+    if (!p1Regex.test(value)) {
+      return Promise.reject(message || errorMsg);
+    }
+    // if (confirmPassword && value !== confirmPassword) {
+    //   return Promise.reject(t('Invalid: Password must be the same with confirm password.'));
+    // }
+    if (oldPassword && password === oldPassword) {
+      return Promise.reject(
+        getErrorMessage(
+          t('The new password cannot be identical to the current password.'),
+          hasPrefix
+        )
+      );
+    }
+  }
+  if (field === 'confirmPassword') {
+    if (password && value !== password) {
+      return Promise.reject(
+        message ||
+          getErrorMessage(
+            t('Password must be the same with confirm password.'),
+            hasPrefix
+          )
+      );
+    }
+  }
+  return Promise.resolve();
+};
+
+export const jsonValidator = (item, value) => {
+  if (value !== undefined && value !== '') {
+    try {
+      JSON.parse(value);
+      return Promise.resolve(true);
+    } catch (e) {
+      return Promise.reject(new Error(t('Illegal JSON scheme')));
+    }
+  }
+  return Promise.resolve(true);
+};

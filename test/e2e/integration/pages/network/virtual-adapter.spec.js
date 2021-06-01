@@ -1,0 +1,184 @@
+// Copyright 2021 99cloud
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+import { virtualAdapterListUrl } from '../../../support/constants';
+
+describe('The Virtual Adapter Page', () => {
+  const listUrl = virtualAdapterListUrl;
+  const uuid = Cypress._.random(0, 1e6);
+  const name = `e2e-virtual-adapter-${uuid}`;
+  const newname = `${name}-1`;
+  const securityGroupName = `e2e-sg-for-virtual-adapter-${uuid}`;
+  const policyName = `e2e-policy-for-virtual-adapter-${uuid}`;
+  const networkName = `e2e-network-for-virtual-adapter-${uuid}`;
+  const instanceName = `e2e-instance-for-virtual-adapter-${uuid}`;
+  const routerName = `e2e-router-for-virtual-adapter-${uuid}`;
+
+  beforeEach(() => {
+    cy.login(listUrl);
+  });
+
+  it('successfully prepair resource by admin', () => {
+    cy.loginAdmin().wait(5000).createNetworkPolicy({ name: policyName });
+  });
+
+  it('successfully prepair resource', () => {
+    cy.createFip();
+    cy.createSecurityGrouop({ name: securityGroupName });
+    cy.createNetwork({ name: networkName });
+    cy.createRouter({ name: routerName, network: networkName });
+    cy.createInstance({ name: instanceName, networkName });
+  });
+
+  it('successfully create', () => {
+    cy.clickHeaderButton(1)
+      .formInput('name', name)
+      .formText('description', name)
+      .formTableSelectBySearch('network_id', networkName, 5000)
+      .wait(5000)
+      .formButtonClick('fixed_ips')
+      .wait(2000)
+      .formSelect('fixed_ips')
+      .formTableSelectBySearch('security_groups', 'default')
+      .clickModalActionSubmitButton();
+  });
+
+  it('successfully detail', () => {
+    cy.tableSearchText(name)
+      .goToDetail()
+      .checkDetailName(name)
+      .clickDetailTab('Fixed IPs', 'ips')
+      .clickDetailTab('Security Groups', 'groups')
+      .clickDetailTab('Allowed Address Pair', 'allowed_address_pair')
+      .clickDetailTab('BaseDetail', 'BaseDetail');
+    cy.goBackToList(listUrl);
+  });
+
+  it('successfully create allowed address pair', () => {
+    cy.tableSearchText(name)
+      .goToDetail()
+      .clickDetailTab('Allowed Address Pair')
+      .clickHeaderButton(1)
+      .formSelect('ip_version')
+      .formInput('ip_address', '10.10.10.1/24')
+      .formSelect('mac_address')
+      .clickModalActionSubmitButton()
+      .wait(10000);
+  });
+
+  it('successfully delete allowed address pair', () => {
+    cy.tableSearchText(name)
+      .goToDetail()
+      .clickDetailTab('Allowed Address Pair')
+      .clickConfirmActionInFirst();
+  });
+
+  it('successfully associate floating IP', () => {
+    cy.tableSearchText(name)
+      .clickActionInMore('Associate Floating IP')
+      .wait(5000)
+      .formTableSelect('fixed_ip')
+      .wait(5000)
+      .formTableSelect('fip')
+      .clickModalActionSubmitButton();
+  });
+
+  it('successfully disassociate floating IP', () => {
+    cy.tableSearchText(name)
+      .clickActionInMore('Disassociate Floating IP')
+      .wait(5000)
+      .formTableSelect('floating_ip')
+      .clickModalActionSubmitButton();
+  });
+
+  it('successfully associate instance', () => {
+    cy.tableSearchText(name)
+      .clickActionInMore('Attach Instance')
+      .wait(5000)
+      .formTableSelectBySearch('instance', instanceName)
+      .clickModalActionSubmitButton();
+  });
+
+  it('successfully detach instance', () => {
+    cy.tableSearchText(name).clickConfirmActionInMore('Detach');
+  });
+
+  it('successfully modify qos', () => {
+    cy.tableSearchText(name)
+      .clickActionInMore('Modify QoS')
+      .wait(5000)
+      .formSwitch('enableQosPolicy')
+      .formTabClick('qos_policy_id', 1)
+      .wait(2000)
+      .formTableSelectBySearch('qos_policy_id', policyName)
+      .clickModalActionSubmitButton();
+  });
+
+  it('successfully manage security group', () => {
+    cy.tableSearchText(name)
+      .clickActionInMore('Manage Security Group')
+      .wait(5000)
+      .formTableSelectBySearch('securityGroup', securityGroupName)
+      .clickModalActionSubmitButton();
+  });
+
+  it('successfully detach security group', () => {
+    cy.tableSearchText(name)
+      .goToDetail()
+      .clickDetailTab('Security Groups')
+      .wait(5000)
+      .collapseItemClick(securityGroupName)
+      .collapseItemClickButton('Detach')
+      .clickConfirmActionSubmitButton();
+  });
+
+  it('successfully allocate ip', () => {
+    cy.tableSearchText(name)
+      .goToDetail()
+      .clickDetailTab('Fixed IPs')
+      .clickHeaderButton(1)
+      .formButtonClick('fixed_ips')
+      .formSelect('fixed_ips')
+      .clickModalActionSubmitButton();
+  });
+
+  it('successfully release ip', () => {
+    cy.tableSearchText(name)
+      .goToDetail()
+      .clickDetailTab('Fixed IPs')
+      .clickConfirmActionInFirst();
+  });
+
+  it('successfully edit', () => {
+    cy.tableSearchText(name)
+      .clickFirstActionButton()
+      .formInput('name', newname)
+      .formText('description', 'description')
+      .clickModalActionSubmitButton();
+  });
+
+  it('successfully delete', () => {
+    cy.tableSearchText(newname).clickConfirmActionInMore('Delete');
+  });
+
+  it('successfully delete related resources', () => {
+    cy.forceDeleteInstance(instanceName);
+    cy.deleteRouter(routerName, networkName);
+    cy.deleteAll('securityGroup', securityGroupName);
+    cy.deleteAll('network', networkName);
+    cy.deleteAll('fip');
+    cy.loginAdmin().wait(5000);
+    cy.deleteAll('networkQosPolicy', policyName);
+  });
+});

@@ -1,0 +1,69 @@
+@import "~styles/variables";
+
+.sl-select-table {
+}
+.search-wrapper {
+  margin-bottom: 16px;
+  :global {
+    .ant-menu-root.ant-menu-vertical {
+      box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.2) !important;
+    }
+  }
+}
+
+.image-tabs {
+  height: 52px;
+  margin-bottom: 8px;
+  display: flex;
+  img {
+    width: 20px;
+    height: 20px;
+    display: block;
+    margin: 0 auto;
+  }
+  :global {
+    .ant-radio-button-wrapper {
+      border: none;
+      color: @color-text-body;
+      width: 70px;
+      height: 50px;
+      overflow: hidden;
+      text-align: center;
+    }
+    .ant-radio-button-wrapper:not(:first-child)::before {
+      width: 0;
+    }
+    .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+      color: @primary-color;
+      font-weight: bold;
+    }
+    .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):focus-within {
+      box-shadow: none;
+    }
+  }
+}
+.image-tab {
+  flex: 1 auto;
+}
+.image-tab-label {
+  font-size: 10px;
+}
+.normal-tabs {
+  margin-bottom: 8px;
+}
+.pagination-footer {
+  :global {
+    .ant-select {
+      width: unset;
+      min-width: 80px;
+    }
+  }
+}
+.sl-select-table-backend {
+  :global {
+    .ant-table-footer {
+      padding: 8px 16px;
+      background: #fff;
+    }
+  }
+}

@@ -1,0 +1,192 @@
+@import "~styles/variables";
+
+.menu {
+  :global(.anticon) {
+    margin-right: 8px;
+  }
+
+  :global(.ant-dropdown-menu-item) {
+    min-width: 245px;
+  }
+
+  .no-hover {
+    overflow: hidden;
+
+    &:hover {
+      background-color: #fff;
+    }
+  }
+
+  .name-item {
+    padding: 0 12px;
+    line-height: 40px;
+
+    .user-label {
+      font-weight: "bold";
+      margin-right: 8px;
+    }
+
+    span {
+      line-height: 40px;
+    }
+  }
+
+  .menu-item {
+    line-height: 30px;
+  }
+}
+
+.no-padding-top {
+  padding-top: 0;
+}
+
+.logout {
+  float: right;
+  line-height: 40px;
+}
+
+.right {
+  position: absolute;
+  top: 0;
+  right: 31px;
+  line-height: @header-height;
+
+  .action {
+    display: inline-block;
+  }
+
+  .right_message {
+
+    .message_avatar {
+      background-color: #fff;
+      color: rgba(0, 0, 0, 0.65);
+      margin-top: -4px;
+    }
+
+    :global {
+      .ant-badge-dot {
+        transform: translate(-55%, 10%);
+      }
+      .ant-avatar-square {
+        border-radius: 3px !important;
+      }
+    }
+  }
+}
+
+.project-menu {
+  :global(.ant-dropdown-menu) {
+    width: 170px;
+  }
+
+  :global {
+
+    .ant-dropdown-menu-item:hover,
+    .ant-dropdown-menu-submenu-title:hover {
+      cursor: pointer;
+    }
+
+    .ant-dropdown-menu-item-disabled,
+    .ant-dropdown-menu-submenu-title-disabled {
+      cursor: pointer;
+    }
+  }
+
+  .title {
+    cursor: auto;
+
+    &:hover {
+      background-color: #fff;
+    }
+  }
+}
+
+.project {
+  float: left;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: @header-height;
+
+  :global {
+    .ant-divider {
+      background-color: #d2d2d2;
+      margin-left: 24px;
+      margin-right: 24px;
+    }
+    .ant-btn-link {
+      position: absolute;
+      min-width: 280px;
+      min-height: 40px;
+    }
+  }
+}
+
+.header {
+  padding-left: 36px;
+  overflow: hidden;
+  background-color: #fff;
+  height: 100%;
+  color: @title-color;
+  position: relative;
+}
+
+.avatar {
+  box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.09);
+  border: none;
+  width: 30px;
+  height: 30px;
+  color: #bfbfbf;
+}
+
+.domain {
+  font-size: 14px;
+}
+
+.links {
+  margin-right: 20px;
+  display: inline-block;
+
+  :global {
+    .ant-divider {
+      background-color: #d2d2d2;
+      margin-left: 24px;
+      margin-right: 24px;
+    }
+  }
+
+  .link {
+    color: @title-color;
+
+    &:hover {
+      color: @primary-color;
+    }
+  }
+
+  .active {
+    color: @primary-color;
+  }
+}
+
+.password-btn {
+  max-width: 100px;
+
+  span {
+    max-width: 80px;
+  }
+}
+
+.single-link {
+  color: @primary-color;
+  margin-right: 5px;
+}
+
+.token {
+  pre {
+    padding: .4em .6em;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    background: hsla(0, 0%, 58.8%, .1);
+    border: 1px solid hsla(0, 0%, 39.2%, .2);
+    border-radius: 3px;
+  }
+}

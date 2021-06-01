@@ -1,0 +1,146 @@
+@import '~styles/variables';
+
+@min-space: 8px;
+@mid-space: 16px;
+@lg-space: 24px;
+@topo-line: 1px solid #D2D2D2;
+@resource-box-bg: #fbfdff;
+@resource-box-border: 1px solid #cfe1ff;
+
+.topology-content {
+  overflow: auto;
+
+  .vm-interface:first-child {
+    border-left: @topo-line;
+    .interface-line {
+      border-left: none;
+    }
+  }
+
+  .vm-interface {
+    display: inline-block;
+    margin-left: 35px;
+    padding-bottom: 20px;
+
+    .interface-line {
+      width: 8px;
+      height: 60px;
+      border-left: @topo-line;
+      border-bottom: @topo-line;
+      display: inline-block;
+    }
+    .interface-item {
+      display: inline-block;
+    }
+  }
+
+
+
+  .vm {
+    padding: @mid-space;
+    background-color: @resource-box-bg;
+    border-radius: 4px;
+    border: @resource-box-border;
+
+    .vm-icon {
+      display: inline;
+      padding-right: @lg-space;
+      font-size: 25px;
+    }
+
+    .vm-status {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 6px;
+      margin-right: 13px;
+      margin-left: 5px;
+    }
+
+    .vm-info {
+      display: inline;
+
+      .info-item {
+        padding-bottom: @min-space;
+        .info-item-icon {
+          display: inline;
+          height: 16px;
+          padding-right: @min-space;
+        }
+      }
+
+      :last-child {
+        padding-bottom: 0;
+      }
+    }
+  }
+
+  .vm-volume {
+    display: flex;
+
+    .volume-inline {
+      width: 36px;
+      border-right: @topo-line;
+      margin-bottom: 12px;
+    }
+
+    .volume-content {
+      flex: 1;
+
+      .attached-volume {
+        padding: @min-space 0;
+        display: flex;
+
+        .attached-volume-line {
+          border-bottom: @topo-line;
+          width: 60px;
+          height: 52px;
+        }
+
+        .attached-volume-content {
+          flex: 1;
+          display: flex;
+          padding: @mid-space;
+          background-color: @resource-box-bg;
+          border-radius: 4px;
+          border: @resource-box-border;
+
+          .volume-icon {
+            padding-right: @lg-space;
+            font-size: 25px;
+          }
+
+          .volume-info {
+            flex: 1;
+            .volume-info-item {
+              padding-bottom: @min-space;
+
+              .info-key {
+                margin-right: @min-space;
+              }
+            }
+            :last-child {
+              padding-bottom: 0;
+            }
+          }
+        }
+      }
+
+      .attach-action-line {
+        display: inline-block;
+        border-bottom: @topo-line;
+        width: 60px;
+        height: @lg-space;
+        margin-right: 10px
+      }
+    }
+  }
+}
+.attach-btn {
+  max-width: 100px;
+  span {
+    max-width: 80px;
+  }
+}
+
+

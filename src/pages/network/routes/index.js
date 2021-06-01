@@ -1,0 +1,195 @@
+// Copyright 2021 99cloud
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+import BaseLayout from 'layouts/Base';
+import E404 from 'pages/base/containers/404';
+import Network from '../containers/Network';
+import AdminNetwork from '../containers/Network/AdminNetwork';
+import NetworkDetail from '../containers/Network/Detail';
+import Router from '../containers/Router';
+import FloatingIp from '../containers/FloatingIp';
+import FloatingIpDetail from '../containers/FloatingIp/Detail';
+import Topology from '../containers/Topology';
+import RouterDetail from '../containers/Router/Detail';
+import PortDetail from '../containers/Router/Port/Detail';
+import VirtualAdapter from '../containers/VirtualAdapter';
+import VirtualAdapterDetail from '../containers/VirtualAdapter/Detail';
+import QoSPolicy from '../containers/QoSPolicy';
+import AdminQoSPolicy from '../containers/QoSPolicy/AdminQoSPolicy';
+import QoSPolicyDetail from '../containers/QoSPolicy/Detail';
+import LoadBalancers from '../containers/LoadBalancers/LoadBalancerInstance';
+import StepCreateLoadBalancer from '../containers/LoadBalancers/LoadBalancerInstance/actions/StepCreate';
+import LoadBalancerDetail from '../containers/LoadBalancers/LoadBalancerInstance/Detail';
+import ListenerDetail from '../containers/LoadBalancers/Listener/Detail';
+import VPN from '../containers/VPN';
+import VPNTunnelDetail from '../containers/VPN/VPNTunnel/Detail';
+import SecurityGroups from '../containers/SecurityGroup';
+import SecurityGroupDetail from '../containers/SecurityGroup/Detail';
+
+const PATH = '/network';
+export default [
+  {
+    path: PATH,
+    component: BaseLayout,
+    routes: [
+      { path: `${PATH}/networks`, component: Network, exact: true },
+      { path: `${PATH}/networks-admin`, component: AdminNetwork, exact: true },
+      {
+        path: `${PATH}/networks/detail/:id`,
+        component: NetworkDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/networks-admin/detail/:id`,
+        component: NetworkDetail,
+        exact: true,
+      },
+      { path: `${PATH}/router`, component: Router, exact: true },
+      { path: `${PATH}/router-admin`, component: Router, exact: true },
+      {
+        path: `${PATH}/router/detail/:id`,
+        component: RouterDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/router-admin/detail/:id`,
+        component: RouterDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/router/:routerId/port/:id`,
+        component: PortDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/router-admin/:routerId/port/:id`,
+        component: PortDetail,
+        exact: true,
+      },
+      { path: `${PATH}/floatingip`, component: FloatingIp, exact: true },
+      { path: `${PATH}/floatingip-admin`, component: FloatingIp, exact: true },
+      {
+        path: `${PATH}/floatingip/detail/:id`,
+        component: FloatingIpDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/floatingip-admin/detail/:id`,
+        component: FloatingIpDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/virtual_adapter`,
+        component: VirtualAdapter,
+        exact: true,
+      },
+      {
+        path: `${PATH}/virtual_adapter_admin`,
+        component: VirtualAdapter,
+        exact: true,
+      },
+      {
+        path: `${PATH}/virtual_adapter/detail/:id`,
+        component: VirtualAdapterDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/virtual_adapter_admin/detail/:id`,
+        component: VirtualAdapterDetail,
+        exact: true,
+      },
+      { path: `${PATH}/qos-policy`, component: QoSPolicy, exact: true },
+      {
+        path: `${PATH}/qos-policy-admin`,
+        component: AdminQoSPolicy,
+        exact: true,
+      },
+      {
+        path: `${PATH}/qos-policy/detail/:id`,
+        component: QoSPolicyDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/qos-policy-admin/detail/:id`,
+        component: QoSPolicyDetail,
+        exact: true,
+      },
+      { path: `${PATH}/topo`, component: Topology, exact: true },
+      { path: `${PATH}/load-balancers`, component: LoadBalancers, exact: true },
+      {
+        path: `${PATH}/load-balancers-admin`,
+        component: LoadBalancers,
+        exact: true,
+      },
+      {
+        path: `${PATH}/load-balancers/create`,
+        component: StepCreateLoadBalancer,
+        exact: true,
+      },
+      {
+        path: `${PATH}/load-balancers/detail/:id`,
+        component: LoadBalancerDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/load-balancers-admin/detail/:id`,
+        component: LoadBalancerDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/load-balancers/:loadBalancerId/listener/:id`,
+        component: ListenerDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/load-balancers-admin/:loadBalancerId/listener/:id`,
+        component: ListenerDetail,
+        exact: true,
+      },
+      { path: `${PATH}/vpn`, component: VPN, exact: true },
+      {
+        path: `${PATH}/vpn-tunnel/detail/:id`,
+        component: VPNTunnelDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/vpn-tunnel-admin/detail/:id`,
+        component: VPNTunnelDetail,
+        exact: true,
+      },
+      { path: `${PATH}/vpn-admin`, component: VPN, exact: true },
+      {
+        path: `${PATH}/security-group`,
+        component: SecurityGroups,
+        exact: true,
+      },
+      {
+        path: `${PATH}/security-group-admin`,
+        component: SecurityGroups,
+        exact: true,
+      },
+      {
+        path: `${PATH}/security-group/detail/:id`,
+        component: SecurityGroupDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/security-group-admin/detail/:id`,
+        component: SecurityGroupDetail,
+        exact: true,
+      },
+      { path: '*', component: E404 },
+    ],
+  },
+];

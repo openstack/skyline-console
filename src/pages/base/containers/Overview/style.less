@@ -1,0 +1,213 @@
+@import '~antd/lib/style/themes/default.less';
+
+.container {
+  height: 100%;
+  padding: 44px;
+  overflow: auto;
+
+  .main_icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .actionButton {
+    line-height: 88px;
+    background: #ffffff;
+    box-shadow: 0px 0px 4px 1px rgba(175, 175, 175, 0.5);
+    border-radius: 9px;
+    opacity: 0.9;
+
+    font-size: 18px;
+    color: #a3a3a3;
+  }
+
+  :global {
+    .ant-card {
+      box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.09);
+    }
+  }
+
+  .left {
+    height: 100%;
+
+    .top {
+      .title {
+        display: table-cell;
+        vertical-align: bottom;
+
+        .text {
+          font-size: 21px;
+          color: #252525;
+        }
+
+        .action {
+          font-size: 16px;
+          color: #000000;
+          margin-left: 40px;
+        }
+      }
+    }
+
+    .bottom {
+      //margin: 16px 0;
+
+      :global {
+        .ant-card {
+          box-shadow: unset;
+        }
+      }
+
+      .title {
+        .text {
+          font-size: 16px;
+          color: #252525;
+        }
+
+        .badge {
+          margin-left: 22px;
+
+          :global {
+            .ant-badge-status-dot {
+              width: 10px;
+              height: 10px;
+            }
+
+            .ant-badge-status-text {
+              font-size: 14px;
+            }
+          }
+        }
+      }
+
+      .action {
+        font-size: 12px;
+        color: #0068ff;
+        float: right;
+        margin-top: 6px;
+        cursor: pointer;
+      }
+
+      .content {
+        .card {
+          padding: 8px;
+
+          :global {
+            .ant-card-head {
+              border-bottom: none;
+
+              .ant-card-head-title {
+                font-size: 16px;
+                font-weight: 500;
+                color: #565656;
+                padding-bottom: 0;
+              }
+            }
+          }
+
+          .progress_title {
+            font-size: 14px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+      }
+    }
+  }
+
+  .right {
+    height: 100%;
+
+    .top {
+      .meta {
+        padding-bottom: 16px;
+        margin-bottom: 16px;
+        border-bottom: 1px dashed #e8e8e8;
+      }
+
+      :global {
+        .ant-descriptions-item-label {
+          width: 130px;
+        }
+      }
+
+      .role_button {
+        float: right;
+      }
+
+      .money {
+        color: #0068ff;
+        line-height: 42px;
+        font-size: 30px;
+      }
+    }
+
+    .middle {
+      margin-top: 1.33rem;
+      background-color: #ffffff;
+
+      .row {
+        text-align: center;
+
+        .alert_value {
+          font-size: 56px;
+        }
+
+        .alert_key {
+          color: #252525;
+          font-size: 16px;
+        }
+
+        span {
+          display: block;
+        }
+      }
+    }
+
+    .bottom {
+      margin-top: 1.33rem;
+      background-color: #ffffff;
+
+      .timeline {
+        .time {
+          font-size: 14px;
+          color: #0068ff;
+          margin-bottom: 6px;
+        }
+
+        .bulletin {
+          font-size: 14px;
+          color: #252525;
+        }
+      }
+    }
+  }
+
+  :global {
+    .ant-card-head {
+      font-size: 16px;
+    }
+  }
+}
+
+.outer {
+  width: 100%;
+  height: 10rem;
+  position: relative;
+  overflow: hidden;
+  font-size: 12px;
+
+  .inner {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+
+  .inner::-webkit-scrollbar {
+    display: none;
+  }
+}

@@ -1,0 +1,10 @@
+[tool.poetry]
+name = "skyline-console"
+version = "0.1.0"
+description = ""
+authors = ["OpenStack <openstack-discuss@lists.openstack.org>"]
+include = ["skyline_console/static/**/*"]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

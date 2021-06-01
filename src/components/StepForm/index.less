@@ -1,0 +1,65 @@
+@import "~styles/variables";
+
+.wrapper {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border-top: 1px solid #f0f0f0;
+
+  :global {
+    .ant-spin-nested-loading {
+      height: 100%;
+    }
+    .ant-spin-container {
+      height: 100%;
+    }
+  }
+}
+.step {
+  height: 80px;
+  padding-right: 56px;
+  padding-left: 56px;
+  padding-top: 24px;
+  margin-bottom: 16px;
+  background: #fff;
+}
+.form {
+  padding-top: @body-padding;
+  background-color: #fff;
+  height: 100%;
+  min-height: calc(100vh - 280px);
+  overflow-y: auto;
+  :global {
+    .sl-form {
+      height: calc(100vh - 219px);
+      padding-bottom: 48px;
+    }
+  }
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background-color: #fff;
+  box-shadow: 0px 2px 30px 0px rgba(0, 0, 0, 0.09);
+  z-index: 2;
+}
+.btns {
+  float: right;
+  margin-right: 32px;
+  margin-top: 8px;
+  :global{
+    button {
+      margin-left: 8px;
+    }
+  }
+}
+.footer-left {
+  height: 48px;
+  float: left;
+  margin-left: 16px;
+  padding-top: 8px;
+  color: rgb(72, 72, 72);
+}

@@ -1,0 +1,46 @@
+covarage: true
+baseUrl: http://localhost:8081
+env:
+  switchToAdminProject: false
+  username: e2e
+  password: passw0rdY_
+  usernameAdmin: e2e-admin
+  passwordAdmin: passw0rdY_
+  userIsRegisted: true
+testFiles:
+  - pages/login.spec.js
+  - pages/error.spec.js
+  - pages/identity/role.spec.js
+  - pages/identity/domain.spec.js
+  - pages/identity/user.spec.js
+  - pages/identity/project.spec.js
+  - pages/identity/user-group.spec.js
+  - pages/storage/qos.spec.js
+  - pages/storage/volume-type.spec.js
+  - pages/storage/volume.spec.js
+  - pages/storage/backup.spec.js
+  - pages/storage/snapshot.spec.js
+  - pages/storage/storage.spec.js
+  - pages/network/router.spec.js
+  - pages/network/network.spec.js
+  - pages/network/virtual-adapter.spec.js
+  - pages/network/qos-policy.spec.js
+  - pages/network/floatingip.spec.js
+  - pages/network/security-group.spec.js
+  - pages/network/vpn.spec.js
+  - pages/network/lb.spec.js
+  - pages/network/topology.spec.js
+  - pages/compute/image.spec.js # need to put an image file in fixtures
+  - pages/compute/flavor.spec.js
+  - pages/compute/server-group.spec.js
+  - pages/compute/keypair.spec.js
+  - pages/compute/instance.spec.js
+  - pages/compute/ironic.spec.js
+  - pages/compute/aggregate.spec.js
+  - pages/compute/hypervisor.spec.js
+  - pages/compute/baremetal.spec.js
+  # - pages/management/recycle-bin.spec.js
+  - pages/configuration/metadata.spec.js
+  - pages/configuration/system.spec.js
+  - pages/heat/stack.spec.js
+

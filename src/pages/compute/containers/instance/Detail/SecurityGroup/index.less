@@ -1,0 +1,41 @@
+@import '~styles/variables';
+
+.wrapper {
+  min-height: calc(100vh - 108px);
+  padding: 0 @body-padding;
+}
+.collapse {
+  // background: #FFFFFF;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.panel {
+  background: #FFFFFF;
+  font-size: larger;
+  padding-bottom: 12px;
+  padding-top: 12px;
+  margin-bottom: 24px;
+}
+.header-divider {
+  margin: 0 5px 0 5px;
+  background-color: @color-text-caption;
+  width: 2px;
+}
+.image {
+  width: 70px;
+  padding: 10px;
+}
+.radio-button {
+  :global {
+    .ant-radio-button-wrapper {  
+      width: 250px;
+      height: 100px;
+      margin-right: 40px;
+      margin-bottom: 20px;
+      padding: 15px;
+    }
+  }
+}
+.security-group-text {
+  font-size: 12px;
+}

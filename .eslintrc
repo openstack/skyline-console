@@ -1,0 +1,77 @@
+{
+  "extends": ["airbnb", "plugin:prettier/recommended"],
+  "parser": "babel-eslint",
+  "plugins": ["cypress"],
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true,
+      "legacyDecorators": true
+    }
+  },
+  "env": {
+    "es6": true,
+    "commonjs": true,
+    "browser": true,
+    "jest": true,
+    "cypress/globals": true
+  },
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["@", "./src"],
+          ["src", "./src"],
+          ["image", "./src/asset/image"],
+          ["components", "./src/components"],
+          ["utils", "./src/utils"],
+          ["stores", "./src/stores"],
+          ["pages", "./src/pages"],
+          ["containers", "./src/containers"],
+          ["layouts", "./src/layouts"],
+          ["client", "./src/client"],
+          ["resources", "./src/resources"],
+          ["core", "./src/core"]
+        ],
+        "extensions": [".js", ".jsx"]
+      }
+    }
+  },
+  "rules": {
+    "camelcase": "warn",
+    "react/prop-types": "warn",
+    "class-methods-use-this": "off",
+    "react/prefer-stateless-function": "warn",
+    "no-plusplus": "warn",
+    "no-param-reassign": "warn",
+    "react/jsx-props-no-spreading": "warn",
+    "react/static-property-placement": "warn",
+    "prefer-destructuring": "warn",
+    "no-use-before-define": "warn",
+    "react/forbid-prop-types": "warn",
+    "react/no-array-index-key": "warn",
+    "react/require-default-props": "warn",
+    "consistent-return": "warn",
+    "no-underscore-dangle": "warn",
+    "no-unused-expressions": "warn",
+    "import/no-cycle": "warn",
+    "no-empty": [
+      2,
+      {
+        "allowEmptyCatch": true
+      }
+    ],
+    "react/destructuring-assignment": "warn",
+    "jsx-a11y/click-events-have-key-events": "warn",
+    "jsx-a11y/no-static-element-interactions": "warn",
+    "import/no-extraneous-dependencies": "warn",
+    "import/prefer-default-export": "warn",
+    "no-nested-ternary": "warn",
+  },
+  "globals": {
+    "t": true,
+    "globals": true,
+    "request": true
+  }
+}

@@ -1,0 +1,97 @@
+// Copyright 2021 99cloud
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+import { observer, inject } from 'mobx-react';
+import Base from 'containers/List';
+import { ListenerStore } from 'stores/octavia/listener';
+import { actionConfigs, adminActions } from './Actions';
+
+@inject('rootStore')
+@observer
+export default class Listeners extends Base {
+  init() {
+    this.store = new ListenerStore();
+  }
+
+  updateFetchParamsByPage = (params) => {
+    const { id, ...rest } = params;
+    return {
+      loadbalancer_id: id,
+      ...rest,
+    };
+  };
+
+  get policy() {
+    return 'os_load-balancer_api:listener:get_all';
+  }
+
+  get name() {
+    return t('listeners');
+  }
+
+  get id() {
+    return this.params.id;
+  }
+
+  get isFilterByBackend() {
+    return true;
+  }
+
+  get actionConfigs() {
+    if (this.isAdminPage) {
+      return adminActions;
+    }
+    return actionConfigs;
+  }
+
+  getColumns = () => [
+    {
+      title: t('ID/Name'),
+      dataIndex: 'name',
+      isName: true,
+      linkPrefix: `/network/${this.getUrl('load-balancers')}/${
+        this.id
+      }/listener/`,
+      idKey: 'id',
+    },
+    {
+      title: t('Status'),
+      dataIndex: 'provisioning_status',
+      isHideable: true,
+    },
+    {
+      title: t('Protocol'),
+      dataIndex: 'protocol',
+      isHideable: true,
+    },
+    {
+      title: t('Port'),
+      dataIndex: 'protocol_port',
+      isHideable: true,
+    },
+    {
+      title: t('Max connect'),
+      dataIndex: 'connection_limit',
+    },
+  ];
+
+  get searchFilters() {
+    return [
+      {
+        label: t('Name'),
+        name: 'name',
+      },
+    ];
+  }
+}

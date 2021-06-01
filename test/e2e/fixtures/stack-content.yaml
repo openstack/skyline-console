@@ -1,0 +1,24 @@
+heat_template_version: 2018-08-31
+
+parameters:
+  volume_name_spec:
+    type: json
+    description: Volume name spec
+  volume_size:
+    type: number
+    description: Volume size
+  volume_read_only:
+    type: boolean
+    description: Volume read only flag
+
+resources:
+  test_volume:
+    type: OS::Cinder::Volume
+    properties:
+      name: {get_param: [volume_name_spec, name]}
+      size: {get_param: volume_size}
+      read_only: {get_param: volume_read_only}
+
+outputs:
+  volume_id:
+    value: {get_resource: test_volume}

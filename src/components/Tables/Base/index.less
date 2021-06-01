@@ -1,0 +1,124 @@
+@import "~styles/variables";
+
+.table {
+  border-radius: @border-radius;
+  box-shadow: @base-shadow;
+  overflow: hidden;
+  background-color: #fff;
+
+  :global {
+    .ant-table-container {
+      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
+      // .ant-table-body {
+      //   min-height: 500px;
+      // }
+    }
+  }
+}
+
+.button {
+  min-width: 96px;
+  margin-left: 10px;
+}
+
+.selectTitle {
+  padding: 2px;
+}
+
+.cancelSelect {
+  color: #fff;
+}
+
+.create {
+  min-width: 96px;
+  margin-left: 12px;
+}
+
+.disableSearch {
+  pointer-events: none !important;
+  input {
+    pointer-events: none !important;
+  }
+  user-select: none;
+  opacity: 0.6;
+}
+
+.keyword {
+  width: 100%;
+  padding: 2px 0;
+  margin-right: 12px;
+}
+
+.emptyText {
+  & > div {
+    @include TypographyTitleH5();
+  }
+
+  & > p {
+    margin-top: 4px;
+    @include TypographyParagraph(@dark-color01);
+  }
+
+  @at-root {
+    .emptyTipIcon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50% 0 50% 50%;
+      background: @light-color02;
+      display: inline-block;
+      line-height: 50px;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.action {
+  color: @blue-color03;
+  padding: 0 4px;
+  cursor: pointer;
+  font-weight: @font-bold;
+}
+
+.columnMenu {
+  width: 160px;
+  box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.2);
+  border-radius: @border-radius;
+  overflow: hidden;
+  :global {
+    .ant-menu-vertical > .ant-menu-item {
+      line-height: 30px;
+      height: 30px;
+    }
+  }
+}
+
+.custom-button {
+  margin-left: 0px;
+}
+
+.table-header {
+  // padding-top: @body-padding;
+  display: flex;
+  justify-content: space-between;
+}
+.table-header-btns {
+  margin-bottom: @body-padding;
+  position: relative;
+  display: inline-block;
+  :global {
+    button {
+      margin-right: 10px;
+    }
+    .ant-btn[disabled] {
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+    }
+  }
+}
+.search-row {
+  float: right;
+  min-width: 350px;
+}
+.search-input {
+  width: 288px;
+  height: 32px;
+}

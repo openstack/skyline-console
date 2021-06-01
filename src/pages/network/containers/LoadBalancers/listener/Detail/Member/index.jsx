@@ -1,0 +1,102 @@
+// Copyright 2021 99cloud
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+import React from 'react';
+import { observer, inject } from 'mobx-react';
+import Base from 'containers/List';
+import globalPoolMemberStore from 'stores/octavia/pool-member';
+import { actionConfigs, adminActions } from './Actions';
+// import { toJS } from 'mobx';
+
+@inject('rootStore')
+@observer
+export default class Members extends Base {
+  init() {
+    this.store = globalPoolMemberStore;
+  }
+
+  fetchData = async () => {
+    const { default_pool_id } = this.props.detail;
+    if (default_pool_id) {
+      this.fetchListWithTry(async () => {
+        await this.store.fetchList({ pool_id: default_pool_id });
+        this.list.silent = false;
+      });
+    } else {
+      this.list.data = [];
+      this.list.isLoading = false;
+    }
+  };
+
+  get policy() {
+    return 'os_load-balancer_api:member:get_all';
+  }
+
+  get name() {
+    return t('Members');
+  }
+
+  get id() {
+    return this.params.id;
+  }
+
+  get actionConfigs() {
+    if (this.isAdminPage) {
+      return adminActions;
+    }
+    return actionConfigs;
+  }
+
+  getColumns = () => [
+    {
+      title: t('ID/Name'),
+      dataIndex: 'name',
+      stringify: (name, record) => name || record.id,
+      render: (name, item) => (
+        <>
+          {item.id}
+          <div>{name && `(${name})`}</div>
+        </>
+      ),
+    },
+    {
+      title: t('Status'),
+      dataIndex: 'provisioning_status',
+      isHideable: true,
+    },
+    {
+      title: t('Ip Address'),
+      dataIndex: 'address',
+      isHideable: true,
+    },
+    {
+      title: t('Port'),
+      dataIndex: 'protocol_port',
+      isHideable: true,
+    },
+    {
+      title: t('Weight'),
+      dataIndex: 'weight',
+    },
+  ];
+
+  get searchFilters() {
+    return [
+      {
+        label: t('Name'),
+        name: 'name',
+      },
+    ];
+  }
+}

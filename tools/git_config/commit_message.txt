@@ -1,0 +1,20 @@
+<type>: {Commit title}
+
+{Commit description}
+
+{Commit footer}
+
+# --- Commit End ---
+# Type can be
+#   feat        (new feature)
+#   fix         (bug fix)
+#   refactor    (refactoring production code)
+#   style       (formatting, missing semi colons, etc; no code change)
+#   docs        (changes to documentation)
+#   test        (adding or refactoring tests; no production code change)
+#   chore       (updating grunt tasks etc; no production code change)
+# ------------------
+# Remember to
+#    The title first letter should be capitalized.
+#    Do not end the subject line with a period.
+# ------------------
