@@ -79,13 +79,13 @@ export class FlavorStore extends Base {
 
   get mapperBeforeFetchProject() {
     return (data) => {
-      const { extra_specs = {}, ...rest } = data;
+      const { extra_specs: { key, ...extraRest } = {}, ...rest } = data;
       const gpuInfo = this.getGpuInfo(data);
       return {
         ...rest,
-        ...extra_specs,
-        architecture: extra_specs[':architecture'] || 'custom',
-        category: extra_specs[':category'],
+        ...extraRest,
+        architecture: extraRest[':architecture'] || 'custom',
+        category: extraRest[':category'],
         ...gpuInfo,
         is_public: rest['os-flavor-access:is_public'],
         originData: data,
