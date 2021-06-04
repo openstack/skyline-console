@@ -12,8 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import BaseLayout from 'layouts/Base';
-
+import BaseLayout from '@/layouts/Basic';
 import E404 from 'pages/base/containers/404';
 // import InstanceDetail from 'pages/compute/containers/Instance/Detail';
 // import RecycleBin from '../containers/RecycleBin';

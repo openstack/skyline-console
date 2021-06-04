@@ -7,19 +7,23 @@
 .header {
   top: 0;
   left: 0;
-  z-index: 200;
-  background-color: @layout-header-color;
   color: @white;
-  box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.09);
   height: @header-height;
   padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 230px;
+}
+
+.header-collapsed{
+  &:extend(.header);
+  padding-left: 88px;
 }
 
 .logo {
   height: 32px;
-  // background: rgba(255, 255, 255, 0.2);
   margin: @size-medium 38px;
-  // text-align: center;
 }
 
 .logo-collapse {
@@ -27,7 +31,6 @@
 }
 
 .logo-image {
-  // width: 100%;
   height: 29px;
 }
 
@@ -271,9 +274,9 @@
 
 .base-layout-right {
   position: absolute;
-  top: 0;
+  top: 40px;
   left: 230px;
-  height: 100vh;
+  height: calc(100vh - 40px);
   right: 0;
 }
 

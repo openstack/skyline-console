@@ -224,7 +224,6 @@ class LayoutMenu extends Component {
 
     return (
       <div
-        // className={classnames(styles['base-layout-sider'], styles['base-layout-sider-collapsed'], styles['base-layout-sider-hover'])}
         className={classnames(
           styles['base-layout-sider'],
           collapsed ? styles['base-layout-sider-collapsed'] : '',

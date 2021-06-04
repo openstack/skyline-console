@@ -43,7 +43,7 @@ export default class Password extends Component {
   componentDidMount() {
     const { rootStore: { routing } = {} } = this.props;
     if (!this.passwordData || isEmpty(this.passwordData)) {
-      routing.push('/user/login');
+      routing.push('/auth/login');
     }
   }
 
@@ -85,7 +85,7 @@ export default class Password extends Component {
           t('Password changed successfully, please log in again.')
         );
         rootStore.setPasswordInfo(null);
-        rootStore.routing.push('/user/login');
+        rootStore.routing.push('/auth/login');
       },
       (err) => {
         const {
@@ -184,7 +184,7 @@ export default class Password extends Component {
             <Button type="primary" htmlType="submit" loading={loading}>
               {t('Confirm')}
             </Button>
-            <Link style={{ marginLeft: 50 }} to="/user/login">
+            <Link style={{ marginLeft: 50 }} to="/auth/login">
               {t('Back to login page')}
             </Link>
           </>

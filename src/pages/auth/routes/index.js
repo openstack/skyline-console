@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import UserLayout from 'layouts/User';
+import AuthLayout from '@/layouts/Auth';
 import Login from '../containers/Login';
 import ChangePassword from '../containers/ChangePassword';
 
-const PATH = '/user';
+const PATH = '/auth';
 export default [
   {
     path: PATH,
-    component: UserLayout,
+    component: AuthLayout,
     routes: [
       { path: `${PATH}/login`, component: Login, exact: true },
       {

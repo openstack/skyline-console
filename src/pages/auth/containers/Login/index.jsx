@@ -218,7 +218,7 @@ export default class Login extends Component {
             userId,
           };
           this.rootStore.setPasswordInfo(data);
-          this.rootStore.routing.push('/user/changepassword');
+          this.rootStore.routing.push('/auth/changepassword');
         } else {
           this.setState({
             error: true,

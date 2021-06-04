@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Layout, Breadcrumb } from 'antd';
 import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import classnames from 'classnames';
 import renderRoutes from 'utils/RouterConfig';
-import GlobalHeader from 'components/Layout/GlobalHeader';
 import NotFound from 'components/Cards/NotFound';
+import PageLoading from 'components/PageLoading';
 import styles from './index.less';
 
-const { Header, Content } = Layout;
+const { Content } = Layout;
 
 @inject('rootStore')
 @observer
@@ -48,7 +48,7 @@ class Right extends Component {
   }
 
   checkHasTab = () => {
-    const { currentRoutes } = this.props;
+    const { currentRoutes = [] } = this.props;
     if (currentRoutes.length === 0) {
       return false;
     }
@@ -56,9 +56,7 @@ class Right extends Component {
     return hasTab || false;
   };
 
-  renderHeader = () => <GlobalHeader {...this.props} />;
-
-  renderBreadcrumb = (currentRoutes) => {
+  renderBreadcrumb = (currentRoutes = []) => {
     if (!currentRoutes || currentRoutes.length === 0) {
       return null;
     }
@@ -113,12 +111,15 @@ class Right extends Component {
       );
     }
     try {
-      const { currentRoutes } = this.props;
-      if (currentRoutes.length === 0) {
-        return (
-          <NotFound title={t('datas')} link={this.getUrl('/base/overview')} />
-        );
-      }
+      // const { currentRoutes = [] } = this.props;
+      // if (currentRoutes.length === 0) {
+      //   return (
+      //     <NotFound
+      //       title={t('datas')}
+      //       link={this.getUrl('/base/overview')}
+      //     />
+      //   );
+      // }
       const children = (
         <div className={`${styles.main} ${mainBreadcrubClass} ${mainTabClass}`}>
           {renderRoutes(this.routes, extraProps)}
@@ -158,7 +159,6 @@ class Right extends Component {
     const children = user
       ? this.renderChildren(mainBreadcrubClass, mainTabClass, extraProps)
       : null;
-
     return (
       <Layout
         className={classnames(
@@ -166,10 +166,11 @@ class Right extends Component {
           collapsed ? styles['base-layout-right-collapsed'] : ''
         )}
       >
-        <Header className={styles.header}>{this.renderHeader()}</Header>
         <Content className={styles.content}>
           {breadcrumb}
-          {children}
+          <Suspense fallback={<PageLoading className="sl-page-loading" />}>
+            {children}
+          </Suspense>
         </Content>
       </Layout>
     );

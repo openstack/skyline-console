@@ -16,32 +16,12 @@ import BlankLayout from '@/layouts/Blank';
 import E404 from 'pages/base/containers/404';
 import { lazy } from 'react';
 
-const Base = lazy(() =>
-  import(/* webpackChunkName: "base" */ '@/pages/base/App')
+const Auth = lazy(() =>
+  import(/* webpackChunkName: "auth" */ '@/pages/auth/App')
 );
-const Compute = lazy(() =>
-  import(/* webpackChunkName: "compute" */ '@/pages/compute/App')
-);
-const User = lazy(() =>
-  import(/* webpackChunkName: "user" */ '@/pages/user/App')
-);
-const Storage = lazy(() =>
-  import(/* webpackChunkName: "storage" */ '@/pages/storage/App')
-);
-const Network = lazy(() =>
-  import(/* webpackChunkName: "network" */ '@/pages/network/App')
-);
-const Identity = lazy(() =>
-  import(/* webpackChunkName: "identity" */ '@/pages/identity/App')
-);
-const Configs = lazy(() =>
-  import(/* webpackChunkName: "configuration" */ '@/pages/configuration/App')
-);
-// const Management = lazy(() =>
-//   import(/* webpackChunkName: "Management" */ '@/pages/management/App')
-// );
-const Heat = lazy(() =>
-  import(/* webpackChunkName: "heat" */ '@/pages/heat/App')
+
+const Basic = lazy(() =>
+  import(/* webpackChunkName: "basic" */ '@/pages/basic/App')
 );
 
 export default [
@@ -50,48 +30,19 @@ export default [
     routes: [
       {
         path: '/',
-        // redirect: { from: '/', to: '/base/403', exact: true }
         redirect: { from: '/', to: '/base/overview', exact: true },
       },
       {
         path: '/login',
-        redirect: { from: '/login', to: '/user/login', exact: true },
+        redirect: { from: '/login', to: '/auth/login', exact: true },
       },
       {
-        path: '/user',
-        component: User,
+        path: '/auth',
+        component: Auth,
       },
       {
-        path: '/compute',
-        component: Compute,
-      },
-      {
-        path: '/storage',
-        component: Storage,
-      },
-      {
-        path: '/network',
-        component: Network,
-      },
-      {
-        path: '/identity',
-        component: Identity,
-      },
-      {
-        path: '/configuration-admin',
-        component: Configs,
-      },
-      // {
-      //   path: '/management',
-      //   component: Management,
-      // },
-      {
-        path: '/heat',
-        component: Heat,
-      },
-      {
-        path: '/base',
-        component: Base,
+        path: '/',
+        component: Basic,
       },
       {
         path: '*',

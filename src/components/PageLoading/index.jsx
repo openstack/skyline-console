@@ -20,7 +20,6 @@ const PageLoading = (props) => {
   return (
     <div
       style={{
-        paddingTop: 100,
         textAlign: 'center',
       }}
       className={className}

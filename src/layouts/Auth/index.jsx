@@ -27,7 +27,7 @@ import styles from './index.less';
 
 @inject('rootStore')
 @observer
-class UserLayout extends Component {
+class AuthLayout extends Component {
   constructor(props) {
     super(props);
 
@@ -75,4 +75,4 @@ class UserLayout extends Component {
   }
 }
 
-export default UserLayout;
+export default AuthLayout;

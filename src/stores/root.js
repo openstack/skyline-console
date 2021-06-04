@@ -228,9 +228,9 @@ class RootStore {
   @action
   gotoLoginPage(currentPath, refresh) {
     if (currentPath) {
-      this.routing.push(`/user/login?referer=${currentPath}`);
+      this.routing.push(`/auth/login?referer=${currentPath}`);
     } else {
-      this.routing.push('/user/login');
+      this.routing.push('/auth/login');
     }
     if (refresh) {
       window.location.reload();

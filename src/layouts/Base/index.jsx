@@ -19,11 +19,15 @@ import i18n from 'core/i18n';
 import { isAdminPage } from 'utils/index';
 import { BellOutlined } from '@ant-design/icons';
 import checkItemPolicy from 'resources/policy';
+import { Layout } from 'antd';
+import GlobalHeader from 'components/Layout/GlobalHeader';
 import renderAdminMenu from '../admin-menu';
 import renderMenu from '../menu';
 import RightContext from './Right';
 import LayoutMenu from './Menu';
 import styles from './index.less';
+
+const { Header } = Layout;
 
 @inject('rootStore')
 @observer
@@ -77,6 +81,10 @@ class BaseLayout extends Component {
   get menuAll() {
     // include hide menu
     return this.getMenuByLicense(this.originMenu);
+  }
+
+  getUrl(path, adminStr) {
+    return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
   }
 
   filterMenuByHidden = (menu = []) => {
@@ -203,13 +211,23 @@ class BaseLayout extends Component {
     );
   }
 
+  renderHeader = () => (
+    <GlobalHeader {...this.props} isAdminPage={this.isAdminPage} />
+  );
+
   render() {
+    const { collapsed } = this.state;
     const { pathname } = this.props.location;
     const currentRoutes = this.getCurrentMenu(pathname);
-
     return (
       <div className={styles['base-layout']}>
         {this.renderNotice()}
+        <Header
+          className={collapsed ? styles['header-collapsed'] : styles.header}
+        >
+          {/* {this.renderLogo()} */}
+          {this.renderHeader()}
+        </Header>
         <LayoutMenu
           pathname={pathname}
           isAdminPage={this.isAdminPage}

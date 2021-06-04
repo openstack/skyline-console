@@ -12,20 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import BaseLayout from '@/layouts/Basic';
-import E404 from '../containers/404';
-import Overview from '../containers/Overview';
-import AdminOverview from '../containers/AdminOverview';
+import renderRoutes from 'utils/RouterConfig';
 
-const PATH = '/base';
-export default [
-  {
-    path: PATH,
-    component: BaseLayout,
-    routes: [
-      { path: `${PATH}/overview`, component: Overview, exact: true },
-      { path: `${PATH}/overview-admin`, component: AdminOverview, exact: true },
-      { path: '*', component: E404 },
-    ],
-  },
-];
+import routes from './routes';
+
+const App = () => renderRoutes(routes);
+
+export default App;
