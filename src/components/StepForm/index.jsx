@@ -35,6 +35,7 @@ export default class BaseStepForm extends React.Component {
       data: {},
     };
 
+    this.values = {};
     this.setFormRefs();
     this.init();
   }

@@ -20,8 +20,9 @@ import { StepAction } from 'containers/Action';
 import globalServerStore from 'stores/nova/instance';
 import globalProjectStore from 'stores/keystone/project';
 import classnames from 'classnames';
-import { isEmpty, isFinite } from 'lodash';
+import { isEmpty, isFinite, isString } from 'lodash';
 import { getUserData } from 'resources/instance';
+import Notify from 'components/Notify';
 import styles from './index.less';
 import ConfirmStep from './ConfirmStep';
 import SystemStep from './SystemStep';
@@ -350,6 +351,29 @@ class StepCreate extends StepAction {
       };
     }
     return this.store.create(body);
+  };
+
+  onOk = () => {
+    const { data } = this.state;
+    this.values = data;
+    this.onSubmit(data).then(
+      () => {
+        this.routing.push(this.listUrl);
+        Notify.success(this.successText);
+      },
+      (err) => {
+        const { data: { forbidden: { message = '' } = {} } = {} } = err;
+        if (
+          message &&
+          isString(message) &&
+          message.includes('Quota exceeded')
+        ) {
+          Notify.error(t('Quota exceeded'));
+        } else {
+          Notify.errorWithDetail(this.errorText, err);
+        }
+      }
+    );
   };
 }
 
