@@ -51,7 +51,7 @@ export default [
       {
         path: '/',
         // redirect: { from: '/', to: '/base/403', exact: true }
-        redirect: { from: '/', to: '/user/login', exact: true },
+        redirect: { from: '/', to: '/base/overview', exact: true },
       },
       {
         path: '/login',
