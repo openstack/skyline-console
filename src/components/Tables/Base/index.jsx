@@ -41,6 +41,8 @@ import {
   getValueRenderFunc,
 } from 'utils/table';
 import { getNoValue } from 'utils/index';
+import { getLocalStorageItem, setLocalStorageItem } from 'utils/local-storage';
+import { inject } from 'mobx-react';
 import CustomColumns from './CustomColumns';
 import ItemActionButtons from './ItemActionButtons';
 import PrimaryActionButtons from './PrimaryActionButtons';
@@ -48,6 +50,7 @@ import BatchActionButtons from './BatchActionButtons';
 import Download from './Download';
 import styles from './index.less';
 
+@inject('rootStore')
 export default class BaseTable extends React.Component {
   static propTypes = {
     data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
@@ -117,7 +120,8 @@ export default class BaseTable extends React.Component {
     super(props);
 
     this.state = {
-      hideRow: [],
+      hideRow:
+        getLocalStorageItem(`${this.useId}-${this.props.resourceName}`) || [],
       // eslint-disable-next-line react/no-unused-state
       filters: [],
       timeFilter: {},
@@ -148,6 +152,12 @@ export default class BaseTable extends React.Component {
             key: filter.value,
           })),
       }));
+  }
+
+  get useId() {
+    const { user = {} } = toJS(this.props.rootStore) || {};
+    const { user: { id } = {} } = user || {};
+    return id;
   }
 
   get itemActions() {
@@ -222,11 +232,19 @@ export default class BaseTable extends React.Component {
   };
 
   handleRowHide = (columns) => {
-    this.setState({
-      hideRow: this.hideableColValues.filter(
-        (value) => !columns.includes(value)
-      ),
-    });
+    this.setState(
+      {
+        hideRow: this.hideableColValues.filter(
+          (value) => !columns.includes(value)
+        ),
+      },
+      () => {
+        setLocalStorageItem(
+          `${this.useId}-${this.props.resourceName}`,
+          this.state.hideRow
+        );
+      }
+    );
   };
 
   handleCancelSelect = () => {
