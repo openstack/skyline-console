@@ -3,7 +3,6 @@
 .DS_Store
 yarn-error.log
 package-lock.json
-docs/
 .vscode
 test/e2e/videos
 test/e2e/screenshots
