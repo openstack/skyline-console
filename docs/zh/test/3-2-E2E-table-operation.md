@@ -10,7 +10,7 @@
   - 等待列表加载完成
   - 列表在加载过程中，会有`loading`状态展示，等待该状态结束
 
-  ![wait-table-loading](/docs/zh/test/images/e2e/table/wait-table-loading.png)
+  ![wait-table-loading](images/e2e/table/wait-table-loading.png)
 
 - `checkTableFirstRow`
   - 验证表格第一行是否包含指定内容，一般用于创建后验证创建资源是否存在
@@ -28,7 +28,7 @@
     });
     ```
 
-    ![check-first-row](/docs/zh/test/images/e2e/table/check-first-row.png)
+    ![check-first-row](images/e2e/table/check-first-row.png)
 
 - `tableSearchText`
   - 在表格上方的搜索栏中输入内容，并等待搜索完成
@@ -50,7 +50,7 @@
     });
     ```
 
-    ![search](/docs/zh/test/images/e2e/table/search.png)
+    ![search](images/e2e/table/search.png)
 
 - `tableSimpleSearchText`
   - 在表格上方的搜索栏中输入内容，并等待搜索完成
@@ -65,7 +65,7 @@
     });
     ```
 
-    ![simple-search](/docs/zh/test/images/e2e/table/simple-search.png)
+    ![simple-search](images/e2e/table/simple-search.png)
 
 - `tableSearchSelect`
   - 使用表格上方的搜索栏中的选择项进行搜索，并等待搜索完成
@@ -92,11 +92,11 @@
     });
     ```
 
-    ![search-select-1](/docs/zh/test/images/e2e/table/search-select-1.png)
+    ![search-select-1](images/e2e/table/search-select-1.png)
 
-    ![search-select-2](/docs/zh/test/images/e2e/table/search-select-2.png)
+    ![search-select-2](images/e2e/table/search-select-2.png)
 
-    ![search-select-3](/docs/zh/test/images/e2e/table/search-select-3.png)
+    ![search-select-3](images/e2e/table/search-select-3.png)
 
 - `tableSearchSelectText`
   - 使用表格上方的搜索栏进行搜索，并等待搜索完成
@@ -132,11 +132,11 @@
     });
     ```
 
-    ![search-text-1](/docs/zh/test/images/e2e/table/search-text-1.png)
+    ![search-text-1](images/e2e/table/search-text-1.png)
 
-    ![search-text-2](/docs/zh/test/images/e2e/table/search-text-2.png)
+    ![search-text-2](images/e2e/table/search-text-2.png)
 
-    ![search-text-3](/docs/zh/test/images/e2e/table/search-text-3.png)
+    ![search-text-3](images/e2e/table/search-text-3.png)
 
 - `checkEmptyTable`
   - 验证表格为空表格
@@ -175,9 +175,9 @@
     });
     ```
 
-    ![detail-1](/docs/zh/test/images/e2e/table/detail-1.png)
+    ![detail-1](images/e2e/table/detail-1.png)
 
-    ![detail-2](/docs/zh/test/images/e2e/table/detail-2.png)
+    ![detail-2](images/e2e/table/detail-2.png)
 
 - `checkColumnValue`
   - 验证第一行指定列的内容是否符合预期
@@ -202,7 +202,7 @@
     });
     ```
 
-    ![check-value](/docs/zh/test/images/e2e/table/check-value.png)
+    ![check-value](images/e2e/table/check-value.png)
 
 - `selectFirst`
   - 选中表格中第一行，以便做后续的批量操作
@@ -227,7 +227,7 @@
     });
     ```
 
-    ![select-first](/docs/zh/test/images/e2e/table/select-first.png)
+    ![select-first](images/e2e/table/select-first.png)
 
 - `selectAll`
   - 选中表格中所有条目，以便做后续的批量操作
@@ -258,14 +258,14 @@
     });
       ```
 
-    ![wait-1](/docs/zh/test/images/e2e/table/wait-1.png)
+    ![wait-1](images/e2e/table/wait-1.png)
 
-    ![wait-2](/docs/zh/test/images/e2e/table/wait-2.png)
+    ![wait-2](images/e2e/table/wait-2.png)
 
 ## 对按钮的操作
 
 主要包含
-  - 位于表单上放的主按钮操作（一般创建操作）、批量操作
+  - 位于表单上方的主按钮操作（一般创建操作）、批量操作
   - 位于表单每一行的行操作
 ### 表单上方按钮的操作
 
@@ -286,7 +286,7 @@
     });
     ```
 
-    ![header-btn-index](/docs/zh/test/images/e2e/table/header-btn-index.png)
+    ![header-btn-index](images/e2e/table/header-btn-index.png)
 
 - `clickHeaderButtonByTitle`
   - 通过名称点击表格上方的按钮，一般用于批量操作按钮的点击
@@ -308,7 +308,7 @@
     });
     ```
 
-    ![header-btn-title](/docs/zh/test/images/e2e/table/header-btn-title.png)
+    ![header-btn-title](images/e2e/table/header-btn-title.png)
 
 - `clickHeaderConfirmButtonByTitle`
   - 该函数会完成
@@ -327,8 +327,7 @@
     });
     ```
 
-    ![header-confirm-title](/docs/zh/test/images/e2e/table/header-confirm-title.png)
-
+    ![header-confirm-title](images/e2e/table/header-confirm-title.png)
 ### 表单第一行的行操作
 
 - `clickFirstActionButton`
@@ -345,7 +344,7 @@
     });
     ```
 
-    ![click-first](/docs/zh/test/images/e2e/table/click-first.png)
+    ![click-first](images/e2e/table/click-first.png)
 
 - `clickActionButtonByTitle`
   - 根据标题点击第一行中的操作
@@ -370,9 +369,9 @@
     });
     ```
 
-    ![action-by-title](/docs/zh/test/images/e2e/table/action-by-title.png)
+    ![action-by-title](images/e2e/table/action-by-title.png)
 
-    ![action-by-title-2](/docs/zh/test/images/e2e/table/action-by-title-2.png)
+    ![action-by-title-2](images/e2e/table/action-by-title-2.png)
 
 - `clickActionInMore`
   - 根据标题点击第一行中`更多`中的操作
@@ -387,7 +386,7 @@
     });
     ```
 
-    ![action-in-more](/docs/zh/test/images/e2e/table/action-in-more.png)
+    ![action-in-more](images/e2e/table/action-in-more.png)
 
 - `clickActionInMoreSub`
   - 根据标题点击第一行操作的子菜单下的操作
@@ -405,7 +404,7 @@
     });
     ```
 
-    ![action-in-sub](/docs/zh/test/images/e2e/table/action-in-sub.png)
+    ![action-in-sub](images/e2e/table/action-in-sub.png)
 
 - `checkActionDisabledInFirstRow`
   - 验证指定名称的资源的指定操作不可用
@@ -424,14 +423,14 @@
     });
     ```
 
-    ![disable-more-action](/docs/zh/test/images/e2e/table/disable-more-action.png)
+    ![disable-more-action](images/e2e/table/disable-more-action.png)
 
 - `clickFirstActionDisabled`
   - 验证表格中第一行的操作中的第一个操作不可用
   - 资源处于某些状态后，某些操作是需要被禁用的，行操作列表中的第一个操作，如果不可操作，则处于`禁用`状态，而`更多`中的操作，如果不可用，则不展示
   - 以云主机组`test/e2e/integration/pages/compute/server-group.spec.js`为例
     1. 在云主机组下创建云主机
-    2. 验证含有云主机的云主机不可删除
+    2. 验证含有云主机的云主机组不可删除
     3. 删除云主机后，云主机组删除成功
 
     ```javascript
@@ -446,7 +445,7 @@
     });
     ```
 
-    ![disable-first](/docs/zh/test/images/e2e/table/disable-first.png)
+    ![disable-first](images/e2e/table/disable-first.png)
 
 - `clickConfirmActionInFirst`
   - 完成表格中第一行的第一个操作按钮对应的操作
@@ -455,7 +454,7 @@
   - 参数`waitTime`，关闭操作成功提示后的等待时间
   - 以云主机组`test/e2e/integration/pages/compute/server-group.spec.js`为例
     1. 在云主机组下创建云主机
-    2. 验证含有云主机的云主机不可删除
+    2. 验证含有云主机的云主机组不可删除
     3. 删除云主机后，云主机组删除成功
 
     ```javascript
@@ -470,9 +469,9 @@
     });
     ```
 
-    ![first-confirm](/docs/zh/test/images/e2e/table/first-confirm.png)
+    ![first-confirm](images/e2e/table/first-confirm.png)
 
-    ![first-confirm-2](/docs/zh/test/images/e2e/table/first-confirm-2.png)
+    ![first-confirm-2](images/e2e/table/first-confirm-2.png)
 
 - `clickConfirmActionButton`
   - 完成表格中第一行的列出的操作按钮中对应的操作
@@ -490,7 +489,7 @@
     });
     ```
 
-    ![confirm-action](/docs/zh/test/images/e2e/table/confirm-action.png)
+    ![confirm-action](images/e2e/table/confirm-action.png)
 
 - `clickConfirmActionInMore`
   - 完成表格中第一行的`更多`中对应的操作
@@ -513,9 +512,9 @@
     });
     ```
 
-    ![confirm-more-1](/docs/zh/test/images/e2e/table/confirm-more-1.png)
+    ![confirm-more-1](images/e2e/table/confirm-more-1.png)
 
-    ![confirm-more-2](/docs/zh/test/images/e2e/table/confirm-more-2.png)
+    ![confirm-more-2](images/e2e/table/confirm-more-2.png)
 
 - `clickConfirmActionInMoreSub`
   - 完成表格中第一行的`更多`中指定子菜单下对应的操作
@@ -542,7 +541,6 @@
     });
     ```
 
-    ![confirm-in-sub](/docs/zh/test/images/e2e/table/confirm-in-sub.png)
-
+    ![confirm-in-sub](images/e2e/table/confirm-in-sub.png)
 
 对表格操作的各种操作，主要用到了上方介绍的函数，函数的具体编写，请查看`test/e2e/support/table-commands.js`

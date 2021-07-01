@@ -76,7 +76,7 @@
 yarn run test:e2e
 ```
 
-![控制台](/docs/zh/test/images/e2e/console.png)
+![控制台](images/e2e/console.png)
 
 ## GUI 运行 E2E
 
@@ -86,15 +86,15 @@ yarn run test:e2e:open
 
 Cypress 提供了 GUI
 
-![gui](/docs/zh/test/images/e2e/gui-list.png)
+![gui](images/e2e/gui-list.png)
 
-![work](/docs/zh/test/images/e2e/gui-work.png)
+![work](images/e2e/gui-work.png)
 
 ## E2E 测试结果
 
 测试运行结束后，访问`test/e2e/report/merge-report.html`即可查看
 
-![结果](/docs/zh/test/images/e2e/result.png)
+![结果](images/e2e/result.png)
 
 ## E2E 代码覆盖率测试结果
 
@@ -139,4 +139,4 @@ yarn run test:unit
 
 直接在命令行控制台中即可查看运行结果
 
-![单元测试结果](/docs/zh/test/images/unit/result.png)
+![单元测试结果](images/unit/result.png)
