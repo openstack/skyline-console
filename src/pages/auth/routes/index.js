@@ -24,7 +24,7 @@ export default [
     routes: [
       { path: `${PATH}/login`, component: Login, exact: true },
       {
-        path: `${PATH}/changepassword`,
+        path: `${PATH}/change-password`,
         component: ChangePassword,
         exact: true,
       },
