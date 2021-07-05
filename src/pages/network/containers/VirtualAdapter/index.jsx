@@ -163,7 +163,7 @@ export default class VirtualAdapter extends Base {
             <>
               {item.device_owner}
               {item.device_owner && <br />}
-              {item.device_id}
+              {item.device_id || '-'}
             </>
           );
         },
@@ -198,6 +198,14 @@ export default class VirtualAdapter extends Base {
         title: t('Mac Address'),
         dataIndex: 'mac_address',
         isHideable: true,
+      },
+      {
+        title: t('Floating IP Address'),
+        dataIndex: 'associatedDetail',
+        isHideable: true,
+        render: (value) =>
+          value && value.length ? value[0].floating_ip_address : '-',
+        sorter: false,
       },
       // {
       //   title: t('Associated Resources'),
