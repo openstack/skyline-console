@@ -7,7 +7,7 @@
 
   ![控制台](/docs/zh/develop/images/menu/console-menu.png)
 
-- 配置管理平台的左右菜单项
+- 配置管理平台的左侧菜单项
 
   ![管理平台](/docs/zh/develop/images/menu/admin-menu.png)
 

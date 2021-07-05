@@ -209,7 +209,7 @@
 
 - `nameForStateUpdate`
   - 表单项内容变动时，更新到`this.state`中的表单键值对
-  - 这些存储到`this.store`中的键值对往往会影响表单项的展示，需要配合`get formItems`中的代码使用
+  - 这些存储到`this.state`中的键值对往往会影响表单项的展示，需要配合`get formItems`中的代码使用
     - 如展开、隐藏更多配置项
     - 如某些表单项必填性的变动
   - 默认对`radio`, `more`类型的表单项的变动保存到`this.state`中
@@ -252,7 +252,7 @@
   - 请求结果的提示语中，是否要包含实例名称
   - 默认值为`true`
   - 有些资源，不存在名称，则可设置该值为`false`
-  - 以裸机节点创建端口``为例
+  - 以创建 `SNAT` `src/pages/network/containers/Router/Snat/actions/Create.jsx` 为例
 
     ```javascript
     get messageHasItemName() {
@@ -309,8 +309,9 @@
     ```
 
 - `getModalSize`
-  - 配置表单左侧标题的布局
+  - 标识弹出框的宽度
   - 值为`small`、`middle`、`large`
+
 - `labelCol`
   - 配置表单左侧标签的布局
   - 默认值为

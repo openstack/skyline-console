@@ -1,22 +1,22 @@
-简体中文 | [English](/docs/en/develop/3-10-FormItem-introduction.md)
+English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
 
-# 用途
+# Usage
 
-- 表单中每个表单项的配置
-- 一般只需要配置`type`等少量参数即可使用
-- `Form`组件会基于每个`formItem`的配置对输入的数值进行相应的验证
-- `Form`验证不通过将无法点击`确认`或`下一步`按钮
+- Configuration of each form item in the form
+- Generally only need to configure a little amount of parameters such as `type`
+- `Form` component will verify the input value base on `formItem` configuration
+- When verify faild, `Form` will not allowed to click `confirm` or `next`
 
-# 如何使用
+# How to use
 
-- 每个表单项包含通用型配置
-  - `name`，表单项的`key`值，必须项，且唯一，表单项的值在验证通过后保存在`form.values[name]`中
-  - `label`，表单项左侧的标签
-  - `required`, 可选项，默认值为`false`，值为`true`时为必填项
-  - `hidden`, 当前表单项是否可隐藏，默认值为`false`
-  - `onChange`，当前表单项变更时触发的函数
-  - `extra`，表单想下方的说明文字
-    - 以创建网络`src/pages/network/containers/Network/actions/CreateNetwork.jsx`为例
+- Each form item contains universal configuration
+  - `name`, `key` of form item, required and unique. The value of the form is saved in `form.values[name]` after verification.
+  - `label`, the label on the left of form item.
+  - `required`, optional, the default is `false`, when `true` means the form item value must be input.
+  - `hidden`, whether to hidden the form item, default is `false`.
+  - `onChange`, set the handler to handle after the form item value change.
+  - `extra`, the information under form item.
+    - Take create network as an example `src/pages/network/containers/Network/actions/CreateNetwork.jsx` :
 
       ```javascript
       {
@@ -31,8 +31,8 @@
 
       ![extra](/docs/zh/develop/images/form/form-extra.png)
 
-  - `tip`，表单项左侧标签旁边的问号悬停时显示的内容
-    - 以创建云主机`src/pages/compute/containers/Instance/actions/StepCreate/BaseStep/index.jsx`为例
+  - `tip`, the `?` icon at the right side of label, hover to see `tip`.
+    - Take create instance as an example `src/pages/compute/containers/Instance/actions/StepCreate/BaseStep/index.jsx` :
 
       ```javascript
       {
@@ -51,9 +51,9 @@
 
       ![tip](/docs/zh/develop/images/form/form-tip.png)
 
-  - `validator`，验证表单的数值是否符合要求
-    - 返回`Promise`
-    - 以裸机节点创建端口`src/pages/compute/containers/BareMetalNode/Detail/Port/actions/Create.jsx`为例
+  - `validator`, validate whether the value of form item matchs requirements
+    - Return `Promise`
+    - Take create port as an example `src/pages/compute/containers/BareMetalNode/Detail/Port/actions/Create.jsx` :
 
       ```javascript
       export const macAddressValidate = (rule, value) => {
@@ -71,9 +71,9 @@
       }
       ```
 
-  - `component`，直接使用`component`中的组件，而不是使用`type`配置的组件
-    - 以云主机修改配置`src/pages/compute/containers/Instance/actions/Resize.jsx`为例
-      - 直接展示云主机类型选择组件
+  - `component`, directly use component to render instead of component configured in `type`
+    - Take resize instance as an example `src/pages/compute/containers/Instance/actions/Resize.jsx` :
+      - Direct display `FlavorSelectTable` component
 
       ```javascript
       {
@@ -94,8 +94,8 @@
       }
       ```
 
-  - `labelCol`，调整表单项标题的布局，默认使用`Form`下定义的标签布局
-    - 以项目管理配额`src/pages/identity/containers/Project/actions/QuotaManager.jsx`为例
+  - `labelCol`, adjust the layout of the form title, default use of the label layout defined under `form`
+    - Take manage quota as an example `src/pages/identity/containers/Project/actions/QuotaManager.jsx` :
 
       ```javascript
       {
@@ -110,9 +110,9 @@
 
       ![labelCol](/docs/zh/develop/images/form/label-col.png)
 
-  - `wrapperCol`，调整表单项右侧的布局，默认使用`Form`下定义的布局
-    - 以云主机修改配置`src/pages/compute/containers/Instance/actions/Resize.jsx`为例
-      - 直接展示云主机类型选择组件
+  - `wrapperCol`, adjust the layout of the right side of the form, default use of the layout defined under
+    - Take resize instance as an example `src/pages/compute/containers/Instance/actions/Resize.jsx` :
+      - Direct display `FlavorSelectTable` component
 
       ```javascript
       {
@@ -135,8 +135,8 @@
 
       ![wrapperCol](/docs/zh/develop/images/form/wrapper-col.png)
 
-  - `style`，定义表单项的样式
-    - 以创建虚拟网卡`src/pages/network/containers/VirtualAdapter/actions/Create.jsx`为例
+  - `style`, define the style of the form
+    - Take create port as an example `src/pages/network/containers/VirtualAdapter/actions/Create.jsx`
 
       ```javascript
       {
@@ -156,9 +156,9 @@
       }
       ```
 
-  - `dependencies`，依赖项，数组，依赖项的数值变动后，会触发当前表单项的验证
-    - 以云主机更新密码`src/pages/compute/containers/Instance/actions/ChangePassword.jsx`为例
-      - 确认密码的验证，要依赖于密码的输入
+  - `dependencies`, dependencies, array. after the value in the dependency changed, the verification of the current form is triggered.
+    - Take change password of instance as an example `src/pages/compute/containers/Instance/actions/ChangePassword.jsx` :
+      - `Confirm Password` verification, depending on the password input
 
       ```javascript
       {
@@ -171,12 +171,12 @@
       },
       ```
 
-  - `otherRule`，额外的验证规则
+  - `otherRule`, Additional verification rules
 
-- 每个表单根据自己的`type`有独属于自身的配置项，目前支持的`type`有
+- Based on its own `type`, each form has an independent configuration item, currently supported `type` are:
   - `label`
-    - 展示内容使用
-    - `iconType`属性，可以显示资源对应的 icon
+    - Used for show content
+    - `iconType` attribute, can show the resource corresponding icon
 
       ```javascript
       const iconTypeMap = {
@@ -199,7 +199,7 @@
       };
       ```
 
-      - 以云主机挂载云硬盘`src/pages/compute/containers/Instance/actions/AttachVolume.jsx`为例
+      - Take attach volumn as an example `src/pages/compute/containers/Instance/actions/AttachVolume.jsx` :
 
         ```javascript
         {
@@ -212,9 +212,9 @@
 
         ![label](/docs/zh/develop/images/form/form-label.png)
 
-    - `content`属性，默认是基于`name`属性展示内容，如果具有`content`属性，则依照`content`展示内容
-      - `content`可以是字符串，也可以是 ReactNode
-      - 以虚拟网卡修改 QoS`src/pages/network/containers/VirtualAdapter/actions/ModifyQoS.jsx`为例
+    - `content` attribute, default is base on `name` to show, if has `content`, will show things in `content`
+      - `content` can be string / ReactNode
+      - Take modify qos as an example `src/pages/network/containers/VirtualAdapter/actions/ModifyQoS.jsx` :
 
         ```javascript
         {
@@ -227,9 +227,9 @@
         ```
 
   - `input`
-    - 输入框
-    - 以编辑镜像`src/pages/compute/containers/Image/actions/Edit.jsx`为例
-      - 输入系统版本
+    - input
+    - Take edit image as an example `src/pages/compute/containers/Image/actions/Edit.jsx` :
+      - input system version
 
       ```javascript
       {
@@ -243,11 +243,11 @@
       ![input](/docs/zh/develop/images/form/input.png)
 
   - `select`
-    - 选择
-    - `options`，必须项，`option`数组，每个`option`需要具有如下属性
-      - `value`，值
-      - `label`，展示的文本
-    - 以创建云主机选择可用域`src/pages/compute/containers/Instance/actions/StepCreate/BaseStep/index.jsx`为例
+    - selector
+    - `options`, required, `option` array, each `option` has following attributes:
+      - `value`, value
+      - `label`, text to show
+    - Take select az when create instance as an example `src/pages/compute/containers/Instance/actions/StepCreate/BaseStep/index.jsx` :
 
       ```javascript
       get availableZones() {
@@ -275,12 +275,13 @@
 
       ![select](/docs/zh/develop/images/form/select.png)
 
-    - `isWrappedValue`，表示表单项的值中是否要包含`option`信息
-      - 默认值为`false`，值为选中的`option`中的`value`
-      - 如果设为`true`，值为选中的`option`
+    - `isWrappedValue`, indicates whether to include `option` information in the form item value
+      - Default `false`, value is the value of selected `option`
+      - If true, value is the `option`
+
   - `divider`
-    - 横线分隔符
-    - 以创建云主机`src/pages/compute/containers/Instance/actions/StepCreate/BaseStep/index.jsx`为例
+    - Horizontal separator
+    - Take create instance as an example `src/pages/compute/containers/Instance/actions/StepCreate/BaseStep/index.jsx`
 
       ```javascript
       {
@@ -291,11 +292,11 @@
       ![divider](/docs/zh/develop/images/form/form-divider.png)
 
   - `radio`
-    - 单选
-    - `options`，必须项，`option`数组，每个`option`需要具有如下属性
-      - `value`，值
-      - `label`，展示的文本
-    - 以创建云主机选择登陆凭证类型`src/pages/compute/containers/Instance/actions/StepCreate/SystemStep/index.jsx`为例
+    - radio
+    - `options`, required, `option` array, each `option` has following attributes:
+      - `value`, value
+      - `label`, text to show
+    - Take choose login type when create instance as an example `src/pages/compute/containers/Instance/actions/StepCreate/SystemStep/index.jsx` :
 
       ```javascript
       get loginTypes() {
@@ -323,38 +324,39 @@
 
       ![radio](/docs/zh/develop/images/form/radio.png)
 
-    - `isWrappedValue`，表示表单项的值中是否要包含`option`信息
-      - 默认值为`false`，值为选中的`option`中的`value`
-      - 如果设为`true`，值为选中的`option`
+    - `isWrappedValue`, indicates whether to include `option` information in the form item value
+      - Default `false`, value is the value of selected `option`
+      - If true, value is the `option`
+
   - `select-table`
-    - 带有选择操作的表格
-    - `isMulti`，是否是多选，默认为`false`
-    - `datas`，数据源，使用前端分页时使用
-    - `columns`，表格列的配置，配置方式同`BaseList`
-    - `filterParams`，搜索项的配置
-    - `pageSize`，每页条目数量，默认为 5
-    - `disabledFunc`，判定哪些条目不可选
-    - `selectedLabel`，表格底部的标签，默认为`已选`
-    - `header`，表格上方的内容
-    - `backendPageStore`，使用后端分页时，数据对应的`store`
-    - `backendPageFunc`，使用后端分页时，获取数据的方法，默认为`fetchListByPage`
-    - `backendPageDataKey`，使用后端分页时，数据在`store`中的位置，默认为`list`
-    - `extraParams`，使用后端分页时，发起请求时的额外参数
-    - `isSortByBack`，是否使用后端排序，默认为`false`
-    - `defaultSortKey`，使用后端排序时，默认的排序键
-    - `defaultSortOrder`，使用后端排序时，默认的排序方向
-    - `initValue`，初始值
-    - `rowKey`，数据的唯一标识，默认为`id`
-    - `onRow`，点击条目时的操作，默认点击条目就会选中该条目
-    - `tabs`，tab 型的表格
-    - `defaultTabValue`，tab 型表格时，默认的 tab
-    - `onTabChange`，tab 型表格时，tab 切换时，调用的函数
-    - 以创建云主机选择安全组`src/pages/compute/containers/Instance/actions/StepCreate/NetworkStep/index.jsx`为例
-      - 这个表格的右侧标题有 tip 提示
-      - 使用后端分页的方式展示数据，并具有额外的参数
-      - 是多选
-      - 这个表格的上方有额外的展示内容
-      - 需要复写`onRow`属性，以免点击表格中的`查看规则`按钮时产生操作冲突
+    - Table with selected actions
+    - `isMulti`, whether is multi, default is `false`
+    - `datas`, data source, using when front end paging
+    - `columns`, table columns configuration, the same as `BaseList`
+    - `filterParams`, search configuration
+    - `pageSize`, items number per page, default `5`
+    - `disabledFunc`, to configure which item can not be selected
+    - `selectedLabel`, the label at the bottom of the table, default is `selected`
+    - `header`, the content above the table
+    - `backendPageStore`, when backend paging, the data corresponding `store`
+    - `backendPageFunc`, when backend paging, the function to fetch data, default is `store.fetchListByPage`.
+    - `backendPageDataKey`, when backend paging, the key of data in `store`, default is `list`.
+    - `extraParams`, when backend paging, the extra params when sending request.
+    - `isSortByBack`, whether sort by backend, default is `false`.
+    - `defaultSortKey`, when using backend paging, default sort key.
+    - `defaultSortOrder`, when using backend paging, default sort order.
+    - `initValue`, initial value.
+    - `rowKey`, the `id` of each column.
+    - `onRow`, the handler to handle row click, deafult will select row when click.
+    - `tabs`, tab-type table
+    - `defaultTabValue`, when is tab-type tab, default `tab`
+    - `onTabChange`, when is tab-type tab, handler to handle tab change
+    - Take choose security group when create instance as an example `src/pages/compute/containers/Instance/actions/StepCreate/NetworkStep/index.jsx` :
+      - The table has a tip on the left of label.
+      - Use backend paging & has extra params
+      - Is multi
+      - Has extra content on the top of table
+      - Need to override `onRow` to avoid click `see rules` button then selected
 
       ```javascript
       {
@@ -390,11 +392,11 @@
 
       ![select-table](/docs/zh/develop/images/form/select-table.png)
 
-    - 以创建云硬盘选择镜像`src/pages/storage/containers/Volume/actions/Create/index.jsx`为例
-      - 这是带有 Tab 标签的表格，默认展示第一个 tab，tab 切换时会更新数据源
-      - 数据使用前端分页的方式获取，直接配置`datas`即可
-      - 是单选
-      - 配置了已选标签为`已选 镜像`
+    - Take create volumn as an example `src/pages/storage/containers/Volume/actions/Create/index.jsx` :
+      - This is a table with tab, default to show the first tab, when switching tab, data source will change
+      - Data is acquired by the front end paging, just directly configure the `datas`
+      - Not multi selected
+      - Configure selected label to `Image`
 
       ```javascript
       {
@@ -422,11 +424,11 @@
       ![select-table-tabs](/docs/zh/develop/images/form/select-table-tabs.png)
 
   - `input-number`
-    - 数字输入框
-    - `min`，最小值
-    - `max`，最大值
-    - 以创建网络设置 MTU`src/pages/network/containers/Network/actions/CreateNetwork.jsx`为例
-      - 设置了最小、最大值
+    - Number input
+    - `min`, min number
+    - `max`, max number
+    - Take set MTU when create network as an example `src/pages/network/containers/Network/actions/CreateNetwork.jsx` :
+      - set min & max
 
       ```javascript
       {
@@ -442,11 +444,11 @@
       ![input-number](/docs/zh/develop/images/form/input-number.png)
 
   - `input-int`
-    - 整数输入框
-    - `min`，最小值
-    - `max`，最大值
-    - 以创建镜像设置最小系统盘`src/pages/compute/containers/Image/actions/Create.jsx`为例
-      - 设置了最小、最大值
+    - Integer input
+    - `min`, min
+    - `max`, max
+    - Take set min disk when create image as an example `src/pages/compute/containers/Image/actions/Create.jsx` :
+      - set min & max
 
       ```javascript
       {
@@ -461,10 +463,10 @@
       ![input-int](/docs/zh/develop/images/form/input-int.png)
 
   - `instance-volume`
-    - 云主机硬盘配置组件
-    - `options`，云硬盘类型的选项
-    - `minSize`，云硬盘大小输入框的最小值
-    - 以创建云主机配置系统盘`src/pages/compute/containers/Instance/actions/StepCreate/BaseStep/index.jsx`为例
+    - Insatnce volume configuration component
+    - `options`, volumn types options
+    - `minSize`, volumn size input min
+    - Take configure system disk when create instance as an example `src/pages/compute/containers/Instance/actions/StepCreate/BaseStep/index.jsx` :
 
       ```javascript
       {
@@ -484,9 +486,9 @@
       ![instance-volume](/docs/zh/develop/images/form/instance-volume.png)
 
   - `input-password`
-    - 密码输入框
-    - 以创建云主机输入密码`src/pages/compute/containers/Instance/actions/StepCreate/SystemStep/index.jsx`为例
-      - 输入密码，确认密码，并要验证密码格式，以及两次输入数据的一致性
+    - password input
+    - Take set password when create instance as an example `src/pages/compute/containers/Instance/actions/StepCreate/SystemStep/index.jsx`
+      - input password, confirm password, and verify password, ensure the consistency of the two input data
 
       ```javascript
       {
@@ -510,14 +512,14 @@
       ![input-password](/docs/zh/develop/images/form/input-password.png)
 
   - `input-name`
-    - 带有格式验证的名称输入框
-    - `placeholder`，输入框的提示语
-    - `isFile`，以文件格式验证名称
-    - `isKeypair`，以密钥支持的格式验证名称
-    - `isStack`，以堆栈支持的格式验证名称
-    - `isImage`，以镜像支持的格式验证名称
-    - `isInstance`，以云主机支持的格式验证名称
-    - 以创建云主机输入名称`src/pages/compute/containers/Instance/actions/StepCreate/SystemStep/index.jsx`为例
+    - Name input box with format verification
+    - `placeholder`, placeholder for input
+    - `isFile`, verify name in file format
+    - `isKeypair`, verify name with key-pair support
+    - `isStack`, verify name with stack supported
+    - `isImage`, verify name with image suppport
+    - `isInstance`, verify name with instance suppport
+    - Take set name when create instance as an example `src/pages/compute/containers/Instance/actions/StepCreate/SystemStep/index.jsx` :
 
       ```javascript
       {
@@ -533,8 +535,8 @@
       ![input-name](/docs/zh/develop/images/form/input-name.png)
 
   - `port-range`
-    - 带有验证的 port 输入框
-    - 以安全组创建规则设置源端口/端口范围`src/pages/network/containers/SecurityGroup/Detail/Rule/actions/Create.jsx`为例
+    - Port input with Verification
+    - Take set source port when create security group rule as an example `src/pages/network/containers/SecurityGroup/Detail/Rule/actions/Create.jsx` :
 
       ```javascript
       {
@@ -549,8 +551,8 @@
       ![port-range](/docs/zh/develop/images/form/port-range.png)
 
   - `more`
-    - 隐藏/展示更多配置项按钮
-    - 以创建云主机系统配置`src/pages/compute/containers/Instance/actions/StepCreate/SystemStep/index.jsx`为例
+    - Hide / show more configuration items
+    - Take create instance as an example `src/pages/compute/containers/Instance/actions/StepCreate/SystemStep/index.jsx` :
 
       ```javascript
       {
@@ -563,8 +565,8 @@
       ![more](/docs/zh/develop/images/form/more.png)
 
   - `textarea`
-    - 多行文本输入框
-    - 以编辑云硬盘设置描述`src/pages/storage/containers/Volume/actions/Edit.jsx`为例
+    - textarea
+    - Take set description when edit volumn as an example `src/pages/storage/containers/Volume/actions/Edit.jsx` :
 
       ```javascript
       {
@@ -577,8 +579,8 @@
       ![textarea](/docs/zh/develop/images/form/textarea.png)
 
   - `upload`
-    - 上传文件输入框
-    - 以创建镜像上传镜像文件`src/pages/compute/containers/Image/actions/Create.jsx`为例
+    - file upload
+    - Take upload image as an example `src/pages/compute/containers/Image/actions/Create.jsx` :
 
       ```javascript
       {
@@ -592,15 +594,15 @@
       ![upload](/docs/zh/develop/images/form/upload.png)
 
   - `add-select`
-    - 可以添加、删除条目的表单项
-    - `minCount`，最小数量
-    - `maxCount`，最多数量
-    - `itemComponent`，增加的每个条目使用的组件
-    - `defaultItemValue`，新增条目的默认值
-    - `addText`，添加条目按钮右侧的文字
-    - `addTextTips`，如果`maxCount`存在，随着条目数量的变更，显示的文字
-    - 以创建云主机设置数据盘`src/pages/compute/containers/Instance/actions/StepCreate/BaseStep/index.jsx`为例
-      - 可以设置任意个数的数据盘
+    - Can added, delete an entry form item
+    - `minCount`, min entry count
+    - `maxCount`, max entry count
+    - `itemComponent`, click this component to add each entry
+    - `defaultItemValue`, the default value of new entry
+    - `addText`, the text on the right side of add item button component
+    - `addTextTips`, if has `maxCount`, the text will update with count
+    - Take set data disk when create instance as an example `src/pages/compute/containers/Instance/actions/StepCreate/BaseStep/index.jsx` :
+      - can set unlimit number of data disk
 
       ```javascript
       {
@@ -623,9 +625,9 @@
       ![add-select](/docs/zh/develop/images/form/add-select.png)
 
   - `ip-input`
-    - 带有验证功能的 IP 输入框
-    - `version`，ip 类型，默认是`4`，还可设置为`6`
-    - 以云主机挂载网卡手动指定 IP`src/pages/compute/containers/Instance/actions/AttachInterface.jsx`为例
+    - IP input with verification
+    - `version`, ip version, default is `4`, also can be `6`
+    - Take attach interface to instance set ip as an example `src/pages/compute/containers/Instance/actions/AttachInterface.jsx`
 
       ```javascript
       {
@@ -644,8 +646,8 @@
       ![ip-input](/docs/zh/develop/images/form/ip-input.png)
 
   - `member-allocator`
-    - 负载均衡器中使用的成员选择表单
-    - 以负载均衡器配置成员`src/pages/network/containers/LoadBalancers/StepCreateComponents/MemberStep/index.jsx`为例
+    - Member allocator used in load balancer
+    - Take set member in lb as an example `src/pages/network/containers/LoadBalancers/StepCreateComponents/MemberStep/index.jsx` :
 
       ```javascript
       {
@@ -659,14 +661,14 @@
       ![member-allocator](/docs/zh/develop/images/form/member-allocator.png)
 
   - `descriptions`
-    - 展示多种信息的表单项
-    - `title`，右侧内容的标题
-    - `onClick`，右侧内容标题旁的跳转按钮
-    - `items`，每个信息展示项的配置，数组
-      - `label`，信息展示项左侧的标题文字
-      - `value`，信息展示项右侧的值
-      - `span`，信息展示右侧占用的布局尺寸
-    - 以创建云主机确认`src/pages/compute/containers/Instance/actions/StepCreate/ConfirmStep/index.jsx`为例
+    - A form item to show types of information
+    - `title`, title of right content
+    - `onClick`, the jump button behind title
+    - `items`, configuration of each information to display, array.
+      - `label`, information display on the left side of the item
+      - `value`, information display on the right side of the item
+      - `span`, layout of label and value
+    - Take create instance confirm as an example `src/pages/compute/containers/Instance/actions/StepCreate/ConfirmStep/index.jsx` :
 
       ```javascript
       {
@@ -713,11 +715,11 @@
       ![descriptions](/docs/zh/develop/images/form/descriptions.png)
 
   - `slider-input`
-    - 滑动与输入联动的表单项
-    - `min`，最小值
-    - `max`，最大值
-    - `description`，滑动条下的描述语
-    - 以创建云硬盘设置容量`src/pages/storage/containers/Volume/actions/Create/index.jsx`为例
+    - Input + Slider linkage form item
+    - `min`, min value
+    - `max`, max value
+    - `description`, description under slider
+    - Take set size when create volumn as an example `src/pages/storage/containers/Volume/actions/Create/index.jsx` :
 
       ```javascript
       {
@@ -736,8 +738,8 @@
       ![slider-input](/docs/zh/develop/images/form/slider-input.png)
 
   - `title`
-    - 展示标题
-    - 以创建堆栈配置参数`src/pages/heat/containers/Stack/actions/Create/Parameter.jsx`为例
+    - Show title
+    - Take set params when create stack as an example `src/pages/heat/containers/Stack/actions/Create/Parameter.jsx` :
 
       ```javascript
       {
@@ -749,8 +751,8 @@
       ![title](/docs/zh/develop/images/form/title.png)
 
   - `switch`
-    - 开关
-    - 以创建虚拟网卡设置安全组`src/pages/network/containers/VirtualAdapter/actions/Create.jsx`为例
+    - switch form item
+    - Take set port security when create port as an example `src/pages/network/containers/VirtualAdapter/actions/Create.jsx` :
 
       ```javascript
       {
@@ -772,8 +774,8 @@
 
   - `check`
     - checkbox
-    - `content`，输入框右侧的文字
-    - 以云主机修改配置是否强制关机`src/pages/compute/containers/Instance/actions/Resize.jsx`为例
+    - `content`, words on the right side of the box
+    - Take whether to force shutodown instancen when resizing instance as an example `src/pages/compute/containers/Instance/actions/Resize.jsx` :
 
       ```javascript
       {
@@ -788,16 +790,16 @@
       ![check](/docs/zh/develop/images/form/check.png)
 
   - `transfer`
-    - 穿梭框
-    - `leftTableColumns`，左侧表格的列配置
-    - `rightTableColumns`，右侧表格的列配置
-    - `dataSource`，可供选择的数据源
-    - `showSearch`，是否显示搜索输入框
-    - `oriTargetKeys`，初始化的选中值
-    - `disabled`，是否禁用左侧数据的选中，默认为`false`
-    - 以用户编辑系统角色`src/pages/identity/containers/User/actions/SystemRole.jsx`为例
-      - 左侧是项目名称列表
-      - 右侧是项目名称、对项目配置的角色信息列表
+    - transfer form item
+    - `leftTableColumns`, list configuration of left table
+    - `rightTableColumns`, List configuration of right table
+    - `dataSource`, data source for choose
+    - `showSearch`, whether to show search input
+    - `oriTargetKeys`, default selected
+    - `disabled`, whether to disable selecte datas in left table, default is `false`
+    - Take edit system role as an example `src/pages/identity/containers/User/actions/SystemRole.jsx` :
+      - Left is the project name list
+      - Right is the project name and role list of project
 
       ```javascript
       {
@@ -818,12 +820,12 @@
       ![transfer](/docs/zh/develop/images/form/transfer.png)
 
   - `check-group`
-    - checkbox 组
-    - `options`，配置每个`checkbox`的信息
-      - `label`，每个`checkbox`对应的文字
-      - `value`，`checkbox`对应的键
-    - 以编辑元数据`src/pages/configuration/containers/Metadata/actions/Edit.jsx`为例
-      - 配置 公有、受保护的 属性
+    - checkbox group
+    - `options`, each checkbox's configuration
+      - `label`, label for checkbox
+      - `value`, value for checkbox
+    - Take edit metadata as an example `src/pages/configuration/containers/Metadata/actions/Edit.jsx` :
+      - Configure whether is `public` or `protected`
 
       ```javascript
       {
@@ -840,9 +842,9 @@
       ![check-group](/docs/zh/develop/images/form/check-group.png)
 
   - `textarea-from-file`
-    - 带有读取文件功能的多行文本输入框
-    - 选择文件后，会将文件的内容读取到文本输入框中
-    - 以创建密钥输入公钥信息`src/pages/compute/containers/Keypair/actions/Create.jsx`为例
+    - Textarea with read file feature
+    - After selected file, will read the contents of the file into the textarea
+    - Take set public-key information when create key-pare as an example `src/pages/compute/containers/Keypair/actions/Create.jsx` :
 
       ```javascript
       {
@@ -857,11 +859,11 @@
       ![textarea-from-file](/docs/zh/develop/images/form/textarea-from-file.png)
 
   - `ip-distributer`
-    - IP 输入框
-    - `subnets`，选择子网后配置 IP 信息
-    - 可以自动分配 IP，也可手动指定 IP
-    - 可以添加多个 IP
-    - 以创建虚拟网卡设置 IP`src/pages/network/containers/VirtualAdapter/actions/Create.jsx`为例
+    - IP distributer
+    - `subnets`, subnets can be selected
+    - can auto allocate ip, or manual input IP
+    - can add multi ip
+    - Take create port as an example `src/pages/network/containers/VirtualAdapter/actions/Create.jsx` :
 
       ```javascript
       {
@@ -877,9 +879,9 @@
       ![ip-distributer](/docs/zh/develop/images/form/ip-distributer.png)
 
   - `mac-address`
-    - mac 地址输入框
-    - 支持自动分配，也可手动指定
-    - 以编辑虚拟网卡设置 MAC 地址`src/pages/network/containers/VirtualAdapter/actions/Edit.jsx`为例
+    - Mac address input
+    - Support auto allocate, manual input
+    - Take set mac address when edit port as an example `src/pages/network/containers/VirtualAdapter/actions/Edit.jsx`:
 
       ```javascript
       {
@@ -894,9 +896,9 @@
       ![mac-address](/docs/zh/develop/images/form/mac-address.png)
 
   - `network-select-table`
-    - 选择网络的表单项
-    - 分 Tab 展示当前项目网络、共享网络，如果用户具有管理员角色，还可展示全部网络
-    - 以创建虚拟网卡设置网络`src/pages/network/containers/VirtualAdapter/actions/Create.jsx`为例
+    - network selector
+    - Display current project network, shared networ, admin network(if is admin) in tabs.
+    - Take set network when create port as an example `src/pages/network/containers/VirtualAdapter/actions/Create.jsx` :
 
       ```javascript
       {
@@ -911,10 +913,10 @@
       ![network-select-table](/docs/zh/develop/images/form/network-select-table.png)
 
   - `volume-select-table`
-    - 选择硬盘的表单项
-    - 分 Tab 展示可用的、共享的云硬盘
-    - `disabledFunc`，配置什么样的云硬盘不可选
-    - 以云主机挂载硬盘选择硬盘`src/pages/compute/containers/Instance/actions/AttachVolume.jsx`为例
+    - volume selector
+    - Display volumes that can be used or is shared in tabs.
+    - `disabledFunc`, which volume can not be selected
+    - Take attach volumn as an example `src/pages/compute/containers/Instance/actions/AttachVolume.jsx` :
 
       ```javascript
       {
@@ -938,10 +940,10 @@
       ![volume-select-table](/docs/zh/develop/images/form/volume-select-table.png)
 
   - `tab-select-table`
-    - 带有 Tab 的表格型选择表单项
-    - `isMulti`，配置是否为多选
-    - 以申请浮动 IP 选择 Qos`src/pages/network/containers/FloatingIp/actions/Allocate.jsx`为例
-      - 分当前项目、共享的 QoS，如果用户具有管理员权限，也具有所有 QoS 标签项
+    - select table with tabs
+    - `isMulti`, whether is multi select
+    - Take choose qos when allocate fip as an example `src/pages/network/containers/FloatingIp/actions/Allocate.jsx` :
+      - There is current project qos & shared qos & all qos(if is admin)
 
       ```javascript
       {
@@ -958,8 +960,8 @@
       ![tab-select-table](/docs/zh/develop/images/form/tab-select-table.png)
 
   - `metadata-transfer`
-    - 编辑元数据的表单项
-    - 以镜像编辑元数据`src/pages/compute/containers/Image/actions/ManageMetadata.jsx`为例
+    - metadata transfer form item
+    - Take edit image metadata as an example `src/pages/compute/containers/Image/actions/ManageMetadata.jsx` :
 
       ```javascript
       {
@@ -980,7 +982,7 @@
 
   - `aceEditor`
     - aceEditor
-    - 以创建虚拟网卡编辑 Profile`src/pages/network/containers/VirtualAdapter/actions/Create.jsx`为例
+    - Take edit profile when create port as an example `src/pages/network/containers/VirtualAdapter/actions/Create.jsx` :
 
       ```javascript
       {
@@ -1015,8 +1017,8 @@
       ![aceEditor](/docs/zh/develop/images/form/ace-editor.png)
 
   - `input-json`
-    - 带有 json 格式验证的输入框
-    - 以创建堆栈编辑参数为例`src/resources/stack.js`为例
+    - input value in type of json
+    - Take edit params when create stack as an example `src/resources/stack.js` :
 
       ```javascript
       export const getFormItemType = (type) => {

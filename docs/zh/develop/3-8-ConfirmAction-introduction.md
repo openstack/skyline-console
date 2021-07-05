@@ -16,9 +16,9 @@
 
 - `src/containers/Action/ConfirmAction/index.jsx`
 
-# ModalAction 属性与函数定义介绍
+# ConfirmAction 属性与函数定义介绍
 
-- 弹窗型表单都继承于 ModalAction 组件
+- 确认型表单都继承于 ModalAction 组件
 - 代码位置：`pages/xxxx/containers/XXXX/actions/xxx.jsx`
 - 某些操作，只需要再次确认，无需用户输入更多内容即可，此时可使用该类型的组件，如：关闭云主机
 - 只需要复写部分函数即可完成页面的开发
@@ -174,6 +174,7 @@
   - 请求结果的提示语中，是否要包含实例名称
   - 默认值为`true`
   - 有些资源，不存在名称，则可设置该值为`false`
+
 - `performErrorMsg`
   - 批量操作时，如果某个资源不符合条件，会在发送请求前展示提示语
   - 默认值为`无法xxx， 实例名称：xxxx。`
@@ -220,6 +221,7 @@
 - `getName`
   - 不建议复写该函数
   - 建议复写`getNameOne`
+
 - `confirmContext`
   - 确认弹窗中的提示语
   - 默认为`确认{ action }（实例名称：{name}）？`

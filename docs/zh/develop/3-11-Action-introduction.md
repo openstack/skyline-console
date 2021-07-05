@@ -64,13 +64,12 @@
 ## 批量操作按钮配置`batchActions`
 
 - 返回组件的列表
-- 如果没有主按钮，可以设置为`null`或`[]`
+- 如果没有批量按钮，可以设置为`null`或`[]`
 - 如果不可操作（比如权限不够），将自动隐藏
 
 ## 行操作按钮配置`rowActions`
 
 - 返回一个对象，内含`firstAction`, `moreActions`对应的组件
-- 批量操作按钮如果被禁用（比如）
 - 可以返回一个空对象`{}`
 - `firstAction`，行操作对应的第一个按钮
   - 如果不可操作，按钮灰掉
@@ -101,7 +100,8 @@
       export default actionConfigs;
       ```
 
-- `moreActions`，`更多`按钮下对应的操作组件
+- `moreActions`
+  - `更多`按钮下对应的操作组件
   - 操作的数组
   - 其内的操作如果不可用，将直接隐藏该操作按钮
   - 支持两种格式的配置，对应了不同的展示方案
@@ -109,7 +109,7 @@
 
       ![云硬盘操作](/docs/zh/develop/images/form/volume-action.png)
 
-    - 每个元数是个含有`title`、`actions`属性的对象
+    - 每个元素是个含有`title`、`actions`属性的对象
 
       ![云主机操作](/docs/zh/develop/images/form/instance-action.png)
 
