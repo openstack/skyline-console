@@ -122,6 +122,7 @@ export const instanceStatus = {
   ...transitionStatus,
   ...stableStatus,
   ...taskStatus,
+  ...powerStatus,
 };
 
 export const isBuilding = (instance) => instance.status === 'build';

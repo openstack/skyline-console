@@ -32,11 +32,11 @@ export default class RestoreAction extends ModalAction {
   }
 
   static get modalSize() {
-    return 'middle';
+    return 'large';
   }
 
   getModalSize() {
-    return 'middle';
+    return 'large';
   }
 
   get defaultValue() {
@@ -58,7 +58,7 @@ export default class RestoreAction extends ModalAction {
       },
       {
         name: 'snapshot',
-        label: t('Choose Snapshot'),
+        label: t('Select Snapshot'),
         type: 'select-table',
         backendPageStore: this.snapshotStore,
         extraParams: { volume_id: id },
@@ -110,7 +110,7 @@ export default class RestoreAction extends ModalAction {
   static policy = 'volume:create';
 
   static allowed = (item) => {
-    return Promise.resolve(['available', 'in-use'].includes(item.status));
+    return Promise.resolve(item.status === 'available');
   };
 
   onSubmit = (values) => {

@@ -154,7 +154,7 @@ export class VolumeStore extends Base {
 
   @action
   revert(id, data) {
-    return this.operation(id, data, 'revert_any');
+    return this.operation(id, data, 'revert');
   }
 
   @action
