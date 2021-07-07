@@ -32,7 +32,7 @@
 
 - 可配置列表表头
 
-  ![列表页自动刷新](/docs/zh/develop/images/list/hide.png)
+  ![列表页表头隐藏/展示](/docs/zh/develop/images/list/hide.png)
 
 - 各资源列表页通过复写函数即可完成
 
