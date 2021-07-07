@@ -1,45 +1,45 @@
-简体中文 | [English](/docs/en/test/3-1-E2E-form-operation.md)
+English | [简体中文](/docs/zh/test/3-1-E2E-form-operation.md)
 
-因为前端框架使用的一致性，我们在编写表单操作的相关用例，选取元素并进行操作时，往往会发现有很强的规律性，所以我们对大多数表单操作都编写了相应的 Cypress 函数，极大的减少了编写测试用例的难度，以下会对主要使用的表单操作函数做出详细的说明。
+Because of the consistency of the front-end framework, when we write related use cases for form operations, select elements and operate, we often find that there is a strong regularity, so we have written corresponding Cypress functions for most of the form operations. It greatly reduces the difficulty of writing test cases. The following will give a detailed description of the main form operation functions.
 
-> 注意：编写的函数均以能完整完成对一个表单项的操作为原则
+> Note: The functions written are based on the principle that the operation of a form item can be completed completely
 
-## 点击按钮的操作
+## Click the button operation
 
 - `closeNotice`
-  - 关闭操作后右上角的操作成功的提示信息
+  - Close the prompt message of successful operation in the upper right corner
 
   ![notice](images/e2e/form/notice.png)
 
 - `waitFormLoading`
-  - 等待表单请求完成
-  - 表单填写并验证通过后，点击确认按钮，会向服务端发起相应请求，这时表单项的确认按钮会处于`Loading`的状态
-  - 使用该函数，而不是`cy.wait(seconds)`，能更有效的保证同步请求已经处理完全，从而保证后续用例的先决条件
+  - Wait for the form request to complete
+  - After the form is filled in and verified, click the confirm  button to initiate a corresponding request to the server. At this time, the confirm  button of the form item will be in the state of `Loading`
+  - Using this function, instead of `cy.wait(seconds)`, can more effectively ensure that the synchronization request has been processed completely, thereby ensuring the prerequisites for subsequent use cases
 
   ![wait-form-loading](images/e2e/form/wait-form-loading.png)
 
 - `clickFormActionSubmitButton`
-  - 点击确认型表单的确认按钮，并等待请求完成
+  - Click the confirm button of the confirm  form and wait for the request to complete
 
   ![click-form-submit](images/e2e/form/click-form-submit.png)
 
 - `clickModalActionSubmitButton`
-  - 点击弹窗型表单的确认按钮，并等待请求完成
+  - Click the confirma button in the pop-up form and wait for the request to complete
 
   ![click-modal-submit](images/e2e/form/click-modal-submit.png)
 
 - `clickModalActionCancelButton`
-  - 点击弹窗型表单的取消按钮
+  - Click the cancel button of the pop-up form
 - `clickConfirmActionSubmitButton`
-  - 点击确认型表单的确认按钮，等待请求完成，并关闭请求成功的提示信息
-  - 参数`waitTime`，关闭提示信息后的等待时间
+  - Click the confirmation button of the confirmation form, wait for the request to complete, and close the prompt message that the request is successful
+  - Parameter `waitTime`, the waiting time after closing the prompt message
 
   ![click-confirm-submit](images/e2e/form/click-confirm-submit.png)
 
 - `checkDisableAction`
-  - 某些数据不符合要求时，使用批量操作，会弹出报错，该函数验证该数据的确不合操作要求，并关闭报错提示
-  - 以锁定状态的云主机`test/e2e/integration/pages/compute/instance.spec.js`为例
-    - 锁定后不再支持启动、关闭、重启操作
+  - When some data does not meet the requirements, use the batch operation, an error will pop up. This function verifies that the data does not meet the operation requirements, and closes the error prompt
+  - Take the locked instance `test/e2e/integration/pages/compute/instance.spec.js` as an example
+    - After locking, it no longer supports startup, shutdown, and restart operations
 
     ```javascript
     it('successfully lock', () => {
@@ -60,9 +60,9 @@
     ![disable-action](images/e2e/form/disable-action.png)
 
 - `clickStepActionNextButton`
-  - 点击分步表单的下一步/确认按钮
-  - 以创建云主机用例`test/e2e/integration/pages/compute/instance.spec.js`为例
-    - 共需要点击 3 次下一步，1 次确认按钮
+  - Click the Next/Confirm button of the step-by-step form
+  - Take the create instance use case `test/e2e/integration/pages/compute/instance.spec.js` as an example
+    - A total of 3 clicks on the next step and 1 confirmation button
 
     ```javascript
     it('successfully create', () => {
@@ -101,9 +101,9 @@
     ![click-step-next](images/e2e/form/click-step-next.png)
 
 - `clickStepActionCancelButton`
-  - 点击分步表单的取消按钮
-  - 以镜像创建云主机用例`test/e2e/integration/pages/compute/image.spec.js`为例
-    - 只验证能成功进入到创建云主机页面，然后点击取消按钮完成该用例
+  - Click the cancel button of the step-by-step form
+  - Take image create instance `test/e2e/integration/pages/compute/image.spec.js`as example
+    - Only verify that you can successfully enter the create instancepage, and then click the cancel button to complete the use case
 
     ```javascript
     it('successfully create instance with cancel', () => {
@@ -114,17 +114,17 @@
     });
     ```
 
-## 对表单项的操作
+## Operations on form
 
-通过页面查看元素的结构、样式等，发现，所有的表单项，都具有`id`，而且对应于开发时编写的表单配置`formItem`的`name`属性，也可直接通过查看页面内元素的`id`获取`name`，如下图所示，`form-item-col-`之后的内容便是`name`
+Looking at the structure and style of the elements through the page, I found that all form items have an id, And corresponding to the `name` property of the form configuration `formItem` written during development, the `name` can also be obtained directly by viewing the `id` of the element in the page, as shown in the following figure, after the `form-item-col-` The content is `name`
 
 ![form-name](images/e2e/form/form-name.png)
 
 - `formInput`
-  - 带有`input`输入框的表单项输入内容
-  - 参数`formItemName`，即开发代码中`formItem`的`name`值
-  - 参数`value`，输入的内容
-  - 以编辑云主机用例`test/e2e/integration/pages/compute/instance.spec.js`为例
+  - Input content of form items with `input` input box
+  - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
+  - Parameter `value`，enter value
+  - Take instance use case`test/e2e/integration/pages/compute/instance.spec.js` as an Example
 
     ```javascript
     it('successfully edit', () => {
@@ -139,10 +139,10 @@
     ![input](images/e2e/form/input.png)
 
 - `formJsonInput`
-  - 带有`textarea`输入框的表单项输入`json`格式内容
-  - 参数`formItemName`，即开发代码中`formItem`的`name`值
-  - 参数`content`，输入的对象
-  - 以创建堆栈，编写`json`型的参数`test/e2e/integration/pages/heat/stack.spec.js`为例
+  - The form with the `textarea` input box enters the `json` format content
+  - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
+  - Parameter `content`, the input object
+  - Take create stack and write the parameter `test/e2e/integration/pages/heat/stack.spec.js` of type `json` as an example
 
     ```javascript
     it('successfully create', () => {
@@ -167,10 +167,10 @@
     ![textarea-json](images/e2e/form/textarea-json.png)
 
 - `formCheckboxClick`
-  - 点击表单项中的`checkbox`
-  - 参数`formItemName`，即开发代码中`formItem`的`name`值
-  - 参数`index`，默认为`0`
-  - 以云主机修改配置`test/e2e/integration/pages/compute/instance.spec.js`为例
+  - check `checkbox` in form
+  - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
+  - Parameter `index`, default `0`
+  - Take instance resize `test/e2e/integration/pages/compute/instance.spec.js` as an enample
 
     ```javascript
     it('successfully resize', () => {
@@ -187,9 +187,9 @@
     ![checkbox](images/e2e/form/checkbox.png)
 
 - `formTableSelectAll`
-  - 对表格选择类型的表单项做全选操作
-  - 参数`formItemName`，即开发代码中`formItem`的`name`值
-  - 以云硬盘类型修改访问`test/e2e/integration/pages/storage/volume-type.spec.js`为例
+  - Click Select all checkbox of the selection type form select all item
+  - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
+  - Take cloud hard disk type modification to access `test/e2e/integration/pages/storage/volume-type.spec.js` as an example
 
     ```javascript
     it('successfully manage access to projects', () => {
@@ -204,9 +204,9 @@
     ![select-all](images/e2e/form/select-all.png)
 
 - `formTableNotSelectAll`
-  - 对表格选择类型的表单项做取消全选操作
-  - 参数`formItemName`，即开发代码中`formItem`的`name`值
-  - 以主机集合管理主机时不选择主机`test/e2e/integration/pages/compute/aggregate.spec.js`为例
+  - Click Select all checkbox of the selection type form cancel select all item
+  - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
+  - Take the Host Aggregates management instance without selecting the instance `test/e2e/integration/pages/compute/aggregate.spec.js` as an example
 
     ```javascript
     it('successfully manage host: no host', () => {
@@ -220,10 +220,10 @@
     ![unselect-all](images/e2e/form/unselect-all.png)
 
 - `formTableSelect`
-  - 对表格选择类型的表单项做选择操作
-  - 参数`formItemName`，即开发代码中`formItem`的`name`值
-  - 参数`value`，如果设置`value`，则选择表格中含有该值的条目，如果不设置`value`，则选择表格中的第一个条目
-  - 以云主机挂载网卡选择网络`test/e2e/integration/pages/compute/instance.spec.js`为例
+  - Click checkbox of the selection type form
+  - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
+  - Parameter `value`, if you set `value`, select the entry in the table that contains the value, if you don’t set `value`, select the first entry in the table
+  - Take instance attach interface select network`test/e2e/integration/pages/compute/instance.spec.js`as an example
 
     ```javascript
     it('successfully attach interface', () => {
@@ -238,13 +238,13 @@
     ![select-table](images/e2e/form/select-table.png)
 
 - `formTableSelectBySearch`
-  - 对表格选择类型的表单项，先做搜索操作，然后选择条目中的第一条
-  - 参数`formItemName`，即开发代码中`formItem`的`name`值
-  - 参数`value`，搜索内容，一般是对搜索项中`名称`的搜索
-  - 参数`waitTime`，搜索后等待时间，不设置，等待 2 秒钟
-  - 以云主机挂载云硬盘选择云硬盘`test/e2e/integration/pages/compute/instance.spec.js`为例
+  - For the selection type form, first to search operation, and then select the first item in the table
+  - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
+  - Parameter `value`, search content, generally a search for `name` in the search term
+  - Parameter `waitTime`, wait time after searching, default wait 2 seconds
+  - Take instance attach volume select volume `test/e2e/integration/pages/compute/instance.spec.js` as an example
 
-    - 操作成功后，进入云硬盘列表页查看云硬盘的状态为“已使用”
+    - After the operation is successful, enter the Volume list page to check the status of the volume as "used"
 
     ```javascript
     it('successfully attach volume', () => {
@@ -269,14 +269,14 @@
     ![select-table-search](images/e2e/form/select-table-search.png)
 
 - `formTableSelectBySearchOption`
-  - 对表格选择类型的表单项，先做搜索操作，然后选择条目中的第一条
-  - 搜索是对搜索项的选择，不同于`formTableSelectBySearch`是基于输入
-  - 参数`formItemName`，即开发代码中`formItem`的`name`值
-  - 参数`name`，搜索项的名称
-  - 参数`value`，搜索项对应的值
-  - 参数`waitTime`，搜索后的等待时间，默认为 2 秒
-  - 以创建全量备份`test/e2e/integration/pages/storage/backup.spec.js`为例
-    - 选择状态为使用中的云硬盘
+  - For the selection type form, first to search operation, and then select the first item in the table
+  - Search is the selection of search item, which is different from `formTableSelectBySearch` which is based on input
+  - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
+  - Parameter `name`， Search options name
+  - Parameter `value`Search options value
+  - Parameter `waitTime`，wait time after searching, default wait 2 seconds
+  - Take create full backup `test/e2e/integration/pages/storage/backup.spec.js` as an example
+    - Select Volume that status is in used
 
     ```javascript
     it('successfully create full bakcup', () => {
@@ -299,10 +299,10 @@
     ![select-table-option](images/e2e/form/select-table-option.png)
 
 - `formSelect`
-  - 对选择器类型的表单项的操作
-  - 参数`formItemName`，即开发代码中`formItem`的`name`值
-  - 参数`label`，选中的内容，如果不设置，选中第一个选项，如果设置，选择`label`对应的选项
-  - 以创建云主机组选择策略`test/e2e/integration/pages/compute/server-group.spec.js`为例
+  - Operations on form items of selector type
+  - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
+  - Parameter `label`, the selected content, if not set, select the first option, if set, select the option corresponding to `label`
+  - Take create instance group select policy `test/e2e/integration/pages/compute/server-group.spec.js`as an example
 
     ```javascript
     it('successfully create', () => {
@@ -315,7 +315,7 @@
 
     ![select](images/e2e/form/select.png)
 
-  - 以网络 QoS 策略创建带宽限制规则时设置方向为“入方向”`test/e2e/integration/pages/network/qos-policy.spec.js`为例
+  - Take the network QoS policy to create the bandwidth limit rule and set the direction to "inbound" `test/e2e/integration/pages/network/qos-policy.spec.js` as an example
 
     ```javascript
     it('successfully create bandwidth ingress limit rule', () => {
@@ -329,10 +329,10 @@
     ![select-value](images/e2e/form/select-value.png)
 
 - `formRadioChoose`
-  - 对单选类型的表单项的操作
-  - 参数`formItemName`，即开发代码中`formItem`的`name`值
-  - 参数`itemIndex`，选中第几项，默认为 0，即选择第一项
-  - 以创建密钥选择“导入密钥”`test/e2e/integration/pages/compute/keypair.spec.js`为例
+  - Operations on form items of radio type
+  - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
+  - Parameter `itemIndex`, which item is selected, the default is 0, that is, the first item is selected
+  - Take create a key, select "import key" `test/e2e/integration/pages/compute/keypair.spec.js` as an example
 
     ```javascript
     it('successfully create by file', () => {
@@ -349,10 +349,10 @@
     ![radio](images/e2e/form/radio.png)
 
 - `formAttachFile`
-  - 对上传文件的表单项的操作
-  - 参数`formItemName`，即开发代码中`formItem`的`name`值
-  - 参数`filename`，上传文件的名称，文件需要预先保存在`test/e2e/fixtures`目录下
-  - 以创建密钥选择文件为例`test/e2e/integration/pages/compute/keypair.spec.js`为例
+  - Operations on form items of AttachFile type
+  - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
+  - The parameter `filename`, the name of the uploaded file, the file needs to be saved in the `test/e2e/fixtures` directory in advance
+  - Take the creation of a key selection file as an example `test/e2e/integration/pages/compute/keypair.spec.js` as an example
 
     ```javascript
     it('successfully create by file', () => {
@@ -368,7 +368,7 @@
 
     ![attach-file](images/e2e/form/attach-file.png)
 
-  - 以创建镜像选择文件为例`test/e2e/integration/pages/compute/image.spec.js`为例
+  - Take create image select file `test/e2e/integration/pages/compute/image.spec.js` as an example
 
     ```javascript
     it('successfully create', () => {
@@ -395,9 +395,9 @@
     ![attach-file-image](images/e2e/form/attach-file-image.png)
 
 - `formAddSelectAdd`
-  - 对可增加条目的表单项的操作
-  - 参数`formItemName`，即开发代码中`formItem`的`name`值
-  - 以主机集合管理元数据时，添加新的自定义元数据`test/e2e/integration/pages/compute/aggregate.spec.js`为例
+  - Operations on form item of AddSelect type
+  - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
+  - Take the Host Aggregates management metedata add custom metadata`test/e2e/integration/pages/compute/aggregate.spec.js`as an example
 
     ```javascript
     it('successfully manage metadata', () => {
@@ -414,9 +414,9 @@
     ![add-select](images/e2e/form/add-select.png)
 
 - `formSwitch`
-  - 对开关型的表单项的点击操作
-  - 参数`formItemName`，即开发代码中`formItem`的`name`值
-  - 以创建具有共享属性的网络 QoS 策略`test/e2e/integration/pages/network/qos-policy.spec.js`为例
+  - Operations on form item of swith type
+  - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
+  - Take the example of creating a network QoS policy `test/e2e/integration/pages/network/qos-policy.spec.js` with shared attributes
 
     ```javascript
     it('successfully create', () => {
@@ -432,9 +432,9 @@
     ![switch](images/e2e/form/switch.png)
 
 - `formButtonClick`
-  - 对表单项中的按钮的点击操作
-  - 参数`formItemName`，即开发代码中`formItem`的`name`值
-  - 以项目更改配额时展开/关闭“高级选项”`test/e2e/integration/pages/identity/project.spec.js`为例
+  - Click button on form
+  - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
+  - Take the example of expanding/closing the "advanced option" `test/e2e/integration/pages/identity/project.spec.js` when the project update quota
 
     ```javascript
     it('successfully edit quota', () => {
@@ -453,13 +453,13 @@
     ![more-open](images/e2e/form/more-open.png)
 
 - `formTransfer`
-  - 对穿梭框类型的表单操作
-    1. 对左侧的穿梭框基于搜索展示指定待选条目
-    2. 选中待选条目的第一条
-    3. 点击穿梭框中间的方向按钮，使得选中内容进入到右侧穿梭框中
-  - 参数`formItemName`，即开发代码中`formItem`的`name`值
-  - 参数`value`，搜索内容
-  - 以项目管理用户`test/e2e/integration/pages/identity/project.spec.js`为例
+  - Operation on form item of transfer type
+    1. Specify the items to be selected based on the search display in the transfer on the left
+    2. Select the first item
+    3. Click the direction button in the middle of the transfer to make the selected content enter the transfer on the right
+  - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
+  - Parameter `value`, search content
+  - Take peoject management user `test/e2e/integration/pages/identity/project.spec.js`as an example
 
     ```javascript
     it('successfully manage user', () => {
@@ -475,10 +475,10 @@
     ![transfer-left](images/e2e/form/transfer-left.png)
 
 - `formTransferRight`
-  - 对右侧的穿梭框基于搜索展示指定待选条目
-  - 参数`formItemName`，即开发代码中`formItem`的`name`值
-  - 参数`value`，搜索内容
-  - 以用户组管理用户为例`test/e2e/integration/pages/identity/user-group.spec.js`为例
+  - Specify the items to be selected based on the search display in the transfer on the right对右侧的穿梭框基于搜索展示指定待选条目
+  - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
+  - Parameter `value`, search content
+  - Take the user group management user `test/e2e/integration/pages/identity/user-group.spec.js` as an example
 
     ```javascript
     it('successfully manage user', () => {
@@ -497,10 +497,10 @@
     ![transfer-right](images/e2e/form/transfer-right.png)
 
 - `formTabClick`
-  - 点击带有 Tab 的表单项中的 Tab
-  - 参数`formItemName`，即开发代码中`formItem`的`name`值
-  - 参数`index`，指定的 Tab 的下标
-  - 以编辑浮动 IP，切换到共享策略为例`test/e2e/integration/pages/network/floatingip.spec.js`为例
+  - Click tab in the form item with tab
+  - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
+  - The parameter `index`, the subscript of the specified Tab
+  - Take the example of editing the floating IP and switching to the sharing strategy `test/e2e/integration/pages/network/floatingip.spec.js`
 
     ```javascript
     it('successfully edit', () => {
@@ -517,11 +517,11 @@
     ![tab](images/e2e/form/tab.png)
 
 - `formInputKeyValue`
-  - 对`KeyValue`组件的表单项进行输入操作，一般是配合`formAddSelectAdd`使用，对添加的新的`KeyValue`组件的条目，输入内容
-  - 参数`formItemName`，即开发代码中`formItem`的`name`值
-  - 参数`key`，左侧 input 输入的内容
-  - 参数`value`，右侧 input 输入的内容
-  - 以主机集合管理元数据时，添加新的自定义元数据`test/e2e/integration/pages/compute/aggregate.spec.js`为例
+  - Input operations on the form items of the `KeyValue` component, generally used in conjunction with `formAddSelectAdd`, and enter the content of the item of the added new `KeyValue` component
+  - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
+  - Parameter `key`, the content of input on the left
+  - Parameter `value`, the content of input on the right
+  - Take the Host Aggregates management metedata add custom metadata`test/e2e/integration/pages/compute/aggregate.spec.js`as an example 
 
     ```javascript
     it('successfully manage metadata', () => {
@@ -538,12 +538,12 @@
     ![key-value](images/e2e/form/key-value.png)
 
 - `formTransferLeftCheck`
-  - 对左侧的穿梭框的操作
-    1. 选中左侧穿梭框中的指定节点
-    2. 点击穿梭框中间的方向按钮，使得选中内容进入到右侧穿梭框中
-  - 参数`formItemName`，即开发代码中`formItem`的`name`值
-  - 参数`index`，节点的下标
-  - 以主机集合管理元数据时，添加新的自定义元数据`test/e2e/integration/pages/compute/aggregate.spec.js`为例
+  - Operation of the transfer on the left
+    1. Select the specified item in the transfer on the left
+    2. Click the direction button in the middle of the transfer to make the selected content enter the transfer on the right
+  - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
+  - Parameter `index`, the index of the node
+  - Take the Host Aggregates management metedata add custom metadata`test/e2e/integration/pages/compute/aggregate.spec.js`as an example 
 
     ```javascript
     it('successfully manage metadata', () => {
@@ -560,12 +560,12 @@
     ![transfer-left-click](images/e2e/form/transfer-left-click.png)
 
 - `formTransferRightCheck`
-  - 对右侧的穿梭框的操作
-    1. 选中右侧穿梭框中的节点
-    2. 点击穿梭框中间的方向按钮，使得选中内容进入到左侧穿梭框中
-  - 参数`formItemName`，即开发代码中`formItem`的`name`值
-  - 参数`index`，节点的下标
-  - 以云主机类型，修改元数据`test/e2e/integration/pages/compute/flavor.spec.js`为例
+  - Operation of the transfer on the rigth
+    1. Select the specified item in the transfer on the rigth
+    2. Click the direction button in the middle of the transfer to make the selected content enter the transfer on the left
+  - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
+  - Parameter `index`, the index of the transfer table item
+  - Take instance type modify the metadata `test/e2e/integration/pages/compute/flavor.spec.js` as an example
 
     ```javascript
     it('successfully manage metadata', () => {
@@ -588,4 +588,4 @@
 
     ![transfer-right-check](images/e2e/form/transfer-right-check.png)
 
-对资源操作的各种操作，主要用到了上方介绍的函数，函数的具体编写，请查看`test/e2e/support/form-commands.js`
+For various operations of resource operations, the functions introduced above are mainly used. For the specific compilation of functions, please see`test/e2e/support/form-commands.js`

@@ -17,7 +17,7 @@
     });
     ```
 
-    ![name](/docs/zh/test/images/e2e/detail/name.png)
+    ![name](images/e2e/detail/name.png)
 
 - `goBackToList`
   - 点击详情页的`返回`按钮，进入列表页，并等待列表加载完成
@@ -40,7 +40,7 @@
     });
     ```
 
-    ![list](/docs/zh/test/images/e2e/detail/list.png)
+    ![list](images/e2e/detail/list.png)
 
 - `goBackToList`
   - 点击详情页的`返回`按钮，进入列表页，并等待列表加载完成
@@ -63,7 +63,7 @@
     });
     ```
 
-    ![list](/docs/zh/test/images/e2e/detail/list.png)
+    ![list](images/e2e/detail/list.png)
 
 - `clickDetailTab`
   - 点击详情页下方的指定Tab标签，并等待相关资源列表加载完成
@@ -91,6 +91,6 @@
     });
     ```
 
-    ![tab](/docs/zh/test/images/e2e/detail/tab.png)
+    ![tab](images/e2e/detail/tab.png)
 
 对详情页主要用到了上方介绍的函数，函数的具体编写，请查看`test/e2e/support/detail-commands.js`
