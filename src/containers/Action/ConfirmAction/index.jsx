@@ -180,19 +180,6 @@ export default class ConfirmAction {
     });
   };
 
-  submitErrorMsgBatch = (data) => {
-    if (!this.messageHasItemName) {
-      return t('Unable to {action}.', {
-        action: this.actionNameDisplay || this.title,
-      });
-    }
-    const name = this.getName(data);
-    return t('Unable to batch {action}, instance: {name}.', {
-      action: this.actionNameDisplay || this.title,
-      name,
-    });
-  };
-
   // eslint-disable-next-line no-unused-vars
   onSubmit = (data) => Promise.resolve();
 

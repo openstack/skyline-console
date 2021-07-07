@@ -30,10 +30,6 @@ function getDefaultMsg(action, data) {
     action: actionName.toLowerCase() || title,
     name,
   });
-  const submitErrorMsgBatch = t('Unable to batch {action} {name}.', {
-    action: actionName.toLowerCase() || title,
-    name,
-  });
   const performErrorMsg = t('You are not allowed to { action } {name}.', {
     action: actionName.toLowerCase() || title,
     name,
@@ -50,7 +46,6 @@ function getDefaultMsg(action, data) {
   });
   return {
     submitErrorMsg,
-    submitErrorMsgBatch,
     submitSuccessMsg,
     confirmContext,
     performErrorMsg,
@@ -237,18 +232,6 @@ class ActionButton extends Component {
   };
 
   // eslint-disable-next-line no-unused-vars
-  onShowErrorBatch = (data, error) => {
-    // this.handleModalVisible();
-    const { submitErrorMsgBatch } = this.props.action;
-    const message = submitErrorMsgBatch
-      ? submitErrorMsgBatch(data)
-      : getDefaultMsg(this.props.action, data).submitErrorMsgBatch;
-    const { data: responseData } = error.response || error || {};
-    Notify.errorWithDetail(responseData || error, message);
-    this.onCallback(false, true);
-  };
-
-  // eslint-disable-next-line no-unused-vars
   onShowError = (data, error) => {
     // this.handleModalVisible();
     const { showConfirmErrorBeforeSubmit, confirmErrorMessageBeforeSubmit } =
@@ -340,23 +323,31 @@ class ActionButton extends Component {
       const promises = data.map((it, index) =>
         onSubmit(it, containerProps, isBatch, index, data)
       );
-      const results = Promise.all(promises);
-      // TODO: add catch to do with part error
-      results.then(
-        () => {
+      const results = Promise.allSettled(promises);
+      results.then((res) => {
+        const failedDatas = res
+          .map((it, idx) => {
+            if (it.status === 'rejected') {
+              return {
+                data: data[idx],
+                reason: it.reason,
+              };
+            }
+            return null;
+          })
+          .filter((it) => !!it);
+        if (failedDatas.length === 0) {
           this.onShowSuccess(data);
-          resolve();
-        },
-        (error) => {
-          reject(error);
+          return resolve();
         }
-      );
-    }).catch((error) => {
-      if (data.length === 1) {
-        this.onShowError(data[0], error);
-      } else {
-        this.onShowErrorBatch(data, error);
-      }
+        failedDatas.forEach((it) => {
+          this.onShowError(it.data, it.reason);
+        });
+        if (failedDatas.length === data.length) {
+          return reject();
+        }
+        return resolve();
+      });
     });
 
   onConfirmOK = (data, onSubmit, isBatch, containerProps) => {
