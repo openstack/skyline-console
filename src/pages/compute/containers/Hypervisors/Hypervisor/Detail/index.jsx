@@ -51,7 +51,7 @@ export default class HypervisorDetail extends Base {
         title: t('Configured Memory (GB)'),
         dataIndex: 'memory_mb_percent',
         render: (value, record) =>
-          `${record.memory_mb_used} / ${record.memory_mb}`,
+          `${record.memory_mb_used_gb} / ${record.memory_mb_gb}`,
       },
     ];
   }
