@@ -34,7 +34,7 @@ export default class VPNTunnelDetail extends Base {
   }
 
   get listUrl() {
-    return this.getUrl('/network/vpn?tab=ipsec_connections');
+    return `${this.getUrl('/network/vpn')}?tab=ipsec_connections`;
   }
 
   get actionConfigs() {
