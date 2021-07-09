@@ -37,8 +37,8 @@ Because of the consistency of the front-end framework, when we write related use
   ![click-confirm-submit](images/e2e/form/click-confirm-submit.png)
 
 - `checkDisableAction`
-  - When some data does not meet the requirements, use the batch operation, an error will pop up. This function verifies that the data does not meet the operation requirements, and closes the error prompt
-  - Take the locked instance `test/e2e/integration/pages/compute/instance.spec.js` as an example
+  - If some data does not meet the requirements, an error will pop up when using batch operations. This function verifies that the data does not meet the operation requirements, and closes the error prompt
+  - Take the locked instance as an example: `test/e2e/integration/pages/compute/instance.spec.js`
     - After locking, it no longer supports startup, shutdown, and restart operations
 
     ```javascript
@@ -61,7 +61,7 @@ Because of the consistency of the front-end framework, when we write related use
 
 - `clickStepActionNextButton`
   - Click the Next/Confirm button of the step-by-step form
-  - Take the create instance use case `test/e2e/integration/pages/compute/instance.spec.js` as an example
+  - Take the create instance use case as an example: `test/e2e/integration/pages/compute/instance.spec.js`
     - A total of 3 clicks on the next step and 1 confirmation button
 
     ```javascript
@@ -206,7 +206,7 @@ Looking at the structure and style of the elements through the page, I found tha
 - `formTableNotSelectAll`
   - Click Select all checkbox of the selection type form cancel select all item
   - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
-  - Take the Host Aggregates management instance without selecting the instance `test/e2e/integration/pages/compute/aggregate.spec.js` as an example
+  - Take the Host Aggregates management instance without selecting the instance as an example: `test/e2e/integration/pages/compute/aggregate.spec.js`
 
     ```javascript
     it('successfully manage host: no host', () => {
@@ -315,7 +315,7 @@ Looking at the structure and style of the elements through the page, I found tha
 
     ![select](images/e2e/form/select.png)
 
-  - Take the network QoS policy to create the bandwidth limit rule and set the direction to "inbound" `test/e2e/integration/pages/network/qos-policy.spec.js` as an example
+  - Take the network QoS policy to create the bandwidth limit rule and set the direction to "inbound" as an example: `test/e2e/integration/pages/network/qos-policy.spec.js`
 
     ```javascript
     it('successfully create bandwidth ingress limit rule', () => {
@@ -352,7 +352,7 @@ Looking at the structure and style of the elements through the page, I found tha
   - Operations on form items of AttachFile type
   - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
   - The parameter `filename`, the name of the uploaded file, the file needs to be saved in the `test/e2e/fixtures` directory in advance
-  - Take the creation of a key selection file as an example `test/e2e/integration/pages/compute/keypair.spec.js` as an example
+  - Take the creation of a key selection file as an example as an example: `test/e2e/integration/pages/compute/keypair.spec.js`
 
     ```javascript
     it('successfully create by file', () => {
@@ -397,7 +397,7 @@ Looking at the structure and style of the elements through the page, I found tha
 - `formAddSelectAdd`
   - Operations on form item of AddSelect type
   - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
-  - Take the Host Aggregates management metedata add custom metadata`test/e2e/integration/pages/compute/aggregate.spec.js`as an example
+  - Take the Host Aggregates management metedata add custom metadata as an example: `test/e2e/integration/pages/compute/aggregate.spec.js`
 
     ```javascript
     it('successfully manage metadata', () => {
@@ -478,7 +478,7 @@ Looking at the structure and style of the elements through the page, I found tha
   - Specify the items to be selected based on the search display in the transfer on the right对右侧的穿梭框基于搜索展示指定待选条目
   - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
   - Parameter `value`, search content
-  - Take the user group management user `test/e2e/integration/pages/identity/user-group.spec.js` as an example
+  - Take the user group management user as an example: `test/e2e/integration/pages/identity/user-group.spec.js`
 
     ```javascript
     it('successfully manage user', () => {
@@ -521,7 +521,7 @@ Looking at the structure and style of the elements through the page, I found tha
   - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
   - Parameter `key`, the content of input on the left
   - Parameter `value`, the content of input on the right
-  - Take the Host Aggregates management metedata add custom metadata`test/e2e/integration/pages/compute/aggregate.spec.js`as an example 
+  - Take the Host Aggregates management metedata add custom metadata as an example: `test/e2e/integration/pages/compute/aggregate.spec.js`
 
     ```javascript
     it('successfully manage metadata', () => {
@@ -543,7 +543,7 @@ Looking at the structure and style of the elements through the page, I found tha
     2. Click the direction button in the middle of the transfer to make the selected content enter the transfer on the right
   - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
   - Parameter `index`, the index of the node
-  - Take the Host Aggregates management metedata add custom metadata`test/e2e/integration/pages/compute/aggregate.spec.js`as an example 
+  - Take the Host Aggregates management metedata add custom metadata as an example: `test/e2e/integration/pages/compute/aggregate.spec.js`
 
     ```javascript
     it('successfully manage metadata', () => {

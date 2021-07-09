@@ -11,7 +11,7 @@ test
 │   │   ├── metadata.json   (Test metadata read file)
 │   │   ├── stack-content.yaml  (Files read by the test stack)
 │   │   └── stack-params.yaml   (Files read by the test stack)
-│   ├── integration (Storage unit test)
+│   ├── integration (Store unit test)
 │   │   └── pages   (Adjust the directory according to the webpage menu structure)
 │   │       ├── compute (compute)
 │   │       │   ├── aggregate.spec.js   (aggregate)
@@ -53,7 +53,7 @@ test
 │   │           ├── qos.spec.js (QoS)
 │   │           ├── snapshot.spec.js    (Volume snapshot)
 │   │           ├── storage.spec.js (Storage)
-│   │           ├── volume-type.spec.js (Volume tyoe)
+│   │           ├── volume-type.spec.js (Volume type)
 │   │           └── volume.spec.js  (Volume)
 │   ├── plugins (Cypress plugins)
 │   │   └── index.js    (Configured to read the configuration file, configured to use the code coverage function)
@@ -63,18 +63,18 @@ test
 │   ├── results (Store test result files)
 │   ├── screenshots (Store a snapshot of the test error)
 │   ├── support (When writing a test case, double-wrapped function)
-│   │   ├── commands.js (Storage login, logout and other operation functions)
-│   │   ├── common.js   (Storage base functions)
-│   │   ├── constants.js    (Storage the route of each resource)
-│   │   ├── detail-commands.js  (Storage the functions related to the resource detail page, based on the framework, the operation of the detail page is consistent)
+│   │   ├── commands.js (Store login, logout and other operation functions)
+│   │   ├── common.js   (Store base functions)
+│   │   ├── constants.js    (Store the route of each resource)
+│   │   ├── detail-commands.js  (Store the functions related to the resource detail page, based on the framework, the operation of the detail page is consistent)
 │   │   ├── form-commands.js  (Stores form-related functions, based on the framework, consistent with the operation of form items)
 │   │   ├── index.js
-│   │   ├── resource-commands.js    (Storage functions related to resource operations, such as creating cloud hosts, creating routes, deleting resources, etc.)
-│   │   └── table-commands.js   (Storage the functions related to the resource list, based on the framework, have consistency in the operation of the list)
+│   │   ├── resource-commands.js    (Store functions related to resource operations, such as creating instance, creating router, deleting resources, etc.)
+│   │   └── table-commands.js   (Store the functions related to the resource list based on the framework, and it has consistency in the operation of the lis)
 │   └── utils   (Store the read function for the configuration file)
 │       └── index.js
 └── unit    (Unit test)
-    ├── local-storage-mock.js   ( Storeage mock function in local)
+    ├── local-storage-mock.js   ( Storage mock function in local)
     ├── locales (Translation files used when testing internationalization)
     │   ├── en-US.js
     │   └── zh-CN.js
@@ -82,10 +82,10 @@ test
     └── svg-mock.js (Mock of image loading)
 ```
 
-- E2E test code, storaged in the `test/e2e` directory
-  - Other global configurations of E2E storaged in `cypress.json`
-- The basic code of the unit test storaged in the `test/unit` directory
-  - Other global configuration of unit test, storaged in `jest.config.js`
+- E2E test code, stored in the `test/e2e` directory
+  - Other global configurations of E2E are stored in `cypress.json`
+- The basic code of the unit test is stored in the `test/unit` directory
+  - Other global configuration of unit test, stored in `jest.config.js`
   - The test code of the unit test is usually placed in the same directory as the file to be tested, and has a suffix of `test.js` or `spec.js`
-    - case：`src/utils/index.js`与`src/utils/index.test.js`
-    - case：`src/utils/local-storage.js`与`src/utils/local-storage.spec.js`
+    - case：`src/utils/index.js` and `src/utils/index.test.js`
+    - case：`src/utils/local-storage.js` and `src/utils/local-storage.spec.js`

@@ -58,7 +58,7 @@ E2E test environment has been successfully built in Centos and wsl2 of Windows
   - E2E configuration files are stored in `test/e2e/config/config.yaml`, Configured in it:
     - `baseUrl`, test access path
     - `env`, environment variable
-      - `switchToAdminProject`, Do you need to switch to the `admin` project after logging in
+      - `switchToAdminProject`, Switch to the `admin` project after logging in
       - `username`, User name to access the console, a user with console operation permissions is required
       - `password`, Password to access the console
       - `usernameAdmin`, The user name to access the management platform, a user with the operation authority of the management platform is required

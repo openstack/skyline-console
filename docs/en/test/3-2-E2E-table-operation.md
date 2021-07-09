@@ -107,7 +107,7 @@ Mainly include: waiting for the list to load
    - Parameter `name`, the name of the search term
    - Parameter `value`, the content of the input
    - By searching, the resource to be operated is located in the first row of the table for subsequent operations
-   - Take the creation of the stack `test/e2e/integration/pages/heat/stack.spec.js` as an example
+   - Take the creation of the stack  as an example: `test/e2e/integration/pages/heat/stack.spec.js`
      1. After creation, enter the resource list page
      2. Search by name on the list page
      3. Wait for the status of the resource to be available
@@ -161,7 +161,7 @@ Mainly include: waiting for the list to load
 - Visit the detail page of the first row of resources and wait for the detail page to load
    - Parameter `index`, the subscript of the column where the link is located, the default is `1`
    - Parameter `waitTime`, the time to wait after loading the details page
-   - Take the image `test/e2e/integration/pages/compute/image.spec.js` as an example
+   - Take the image as an example: `test/e2e/integration/pages/compute/image.spec.js`
      1. Search
      2. Enter the details page
      3. Verification details name
@@ -183,7 +183,7 @@ Mainly include: waiting for the list to load
   - Verify that the content of the specified column in the first row meets expectations
   - Parameter `columnIndex`, which specifies the index of the column
   - Parameter `value`, the expected value
-  - Take the instance `test/e2e/integration/pages/compute/image.spec.js` as an example
+  - Take the instance as an example: `test/e2e/integration/pages/compute/image.spec.js`
      1. Search
      2. Stop the instance
      3. Verify that the status of the instance is `Stop`
@@ -236,7 +236,7 @@ Mainly include: waiting for the list to load
   - `waitStatusActiveByRefresh`
     - Click the refresh button above the table every 5 seconds until the resource status becomes available
     - After a resource is created or changed, it often takes a certain amount of time to become available before subsequent operations can be performed
-    - Take the creation of the stack `test/e2e/integration/pages/heat/stack.spec.js` as an example
+    - Take the creation of the stack as an example: `test/e2e/integration/pages/heat/stack.spec.js`
 
     ```javascript
     it('successfully create', () => {
@@ -275,7 +275,7 @@ The buttons above the table generally include: refresh, create, batch operation 
    - Parameter `buttonIndex`, the subscript of the button above the table
    - Parameter `waitTime`, the waiting time after clicking, the default is 2 seconds
    - Generally, the subscript of the created button is 1
-   - Take the creat key pair `test/e2e/integration/pages/compute/keypair.spec.js` as an example
+   - Take the creat key pair as an example: `test/e2e/integration/pages/compute/keypair.spec.js`
 
     ```javascript
     it('successfully create', () => {
@@ -292,7 +292,7 @@ The buttons above the table generally include: refresh, create, batch operation 
   - Click the button above the table by name, generally used for batch operation button clicks
     - Parameter `title`, the text on the button above the table
     - Parameter `waitTime`, the waiting time after clicking, the default is 2 seconds
-    - Take the shut off operation of the instance in the close state `test/e2e/integration/pages/compute/instance.spec.js` as an example
+    - Take the shut off operation of the instance in the close state as an example: `test/e2e/integration/pages/compute/instance.spec.js`
       - Click the close button at the top of the form
 
     ```javascript
@@ -316,7 +316,7 @@ The buttons above the table generally include: refresh, create, batch operation 
       2. Click the `Confirm` button
     - Parameter `title`, the text on the button above the table
     - Parameter `waitTime`, the waiting time after clicking, the default is 2 seconds
-    - Take the release of floating IP `test/e2e/integration/pages/network/floatingip.spec.js` as an example
+    - Take the release of floating IP as an example: `test/e2e/integration/pages/network/floatingip.spec.js`
       - Select all floating IPs in the stopped state and release them in batches
 
     ```javascript
@@ -376,7 +376,7 @@ The buttons above the table generally include: refresh, create, batch operation 
 
 - `clickActionInMore`
   - Click the operation in `More` in the first row according to the title
-  - Take the create instance button `test/e2e/integration/pages/compute/image.spec.js` as an example
+  - Take the create instance button as an example: `test/e2e/integration/pages/compute/image.spec.js`
 
     ```javascript
     it('successfully create instance with cancel', () => {
@@ -414,7 +414,7 @@ The buttons above the table generally include: refresh, create, batch operation 
    - Parameter `title`, the name of the operation
    - Parameter `name`, the name of the resource
    - After the resource is in certain states, some operations need to be disabled, the first operation in the row operation list, if it is not operable, it is in the `disabled` state, and the operations in `more`, if not available , Don’t show
-   - Take the router `test/e2e/integration/pages/network/router.spec.js` as an example
+   - Take the router as an example: `test/e2e/integration/pages/network/router.spec.js`
      1. Open the public network gateway when creating the router
      2. Verify that the router cannot be deleted, that is, there is no `Delete` button
 

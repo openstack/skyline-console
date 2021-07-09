@@ -5,7 +5,7 @@ Because of the consistency of the front-end framework, we often find that there 
 - `checkDetailName`
   - Verify that the header of the detail page contains the specified resource name
   - Parameter `name`, resource name
-  - Take viewing key detail `test/e2e/integration/pages/compute/keypair.spec.js` as an example
+  - Take viewing key detail as an example: `test/e2e/integration/pages/compute/keypair.spec.js`
 
     ```javascript
     it('successfully detail', () => {
@@ -23,7 +23,7 @@ Because of the consistency of the front-end framework, we often find that there 
   - Click the `Back` button on the detail page to enter the list page and wait for the list to load
   - Parameter `url`, list url
     - If set, it will verify whether the returned list route meets expectations
-  - Take viewing key detail `test/e2e/integration/pages/compute/keypair.spec.js` as an example
+  - Take viewing key detail as an example: `test/e2e/integration/pages/compute/keypair.spec.js`
     1. Search
     2. Verify that the first row of the form contains the specified name
     3. Enter the detail page
@@ -46,7 +46,7 @@ Because of the consistency of the front-end framework, we often find that there 
   - Click the `Back` button on the detail page to enter the list page and wait for the list to load
   - Parameter `url`, list url
     - If set, it will verify whether the returned list route meets expectations
-  - Take viewing key detail `test/e2e/integration/pages/compute/keypair.spec.js` as an example
+  - Take viewing key detail as an example: `test/e2e/integration/pages/compute/keypair.spec.js`
     1. Search
     2. Verify that the first row of the form contains the specified name
     3. Enter the detail page
@@ -71,7 +71,7 @@ Because of the consistency of the front-end framework, we often find that there 
   - Parameter `urlTab`, the tab attribute in the route
     - If set, it will verify whether the tab attribute in the route is as expected after switching the label
   - Parameter `waitTime`, the waiting time after switching labels
-  - Take viewing network details `test/e2e/integration/pages/network/network.spec.js` as an example
+  - Take viewing network details as an example: `test/e2e/integration/pages/network/network.spec.js`
     1. Search
     2. Verify that the first row of the form contains the specified name
     3. Enter the details page
