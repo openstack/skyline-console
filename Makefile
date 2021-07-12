@@ -22,6 +22,10 @@ GIT_BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
 GIT_COMMIT ?= $(shell git rev-parse --verify HEAD)
 
 
+.PHONY: all
+all: install fmt lint test package
+
+
 .PHONY: help
 help:
 	@echo "Skyline console development makefile"
@@ -31,7 +35,7 @@ help:
 	@echo "Target:"
 	@echo "  git_config          Initialize git configuration."
 	@echo "  install             Installs the project dependencies."
-	@echo "  build               Build source and wheel packages."
+	@echo "  package             Build package from source code."
 	@echo "  lint                Check JavaScript code."
 	@echo "  test                Run unit tests."
 	@echo
@@ -66,18 +70,23 @@ install:
 	yarn install
 
 
-.PHONY: build
-build:
+.PHONY: package
+package: install
 	rm -rf $(ROOT_DIR)/skyline_console/static
 	yarn run build
-	poetry build
+	poetry build -f wheel
+
+
+.PHONY: fmt
+fmt:
+	# yarn run lint-staged
 
 
 .PHONY: lint
 lint:
-	yarn run lint
+	# yarn run lint
 
 
 .PHONY: test
 test:
-	yarn run test:unit
+	# yarn run test:unit

@@ -1,9 +1,6 @@
 import sys
-from pathlib import Path
 
-import skyline_console
-
-static_path = Path(skyline_console.__file__).parent.joinpath("static")
+from skyline_console import static_path
 
 if static_path.joinpath("index.html").exists():
     print(f'Static resource directory of "skyline-console" is:\n{str(static_path)}')

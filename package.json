@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "author": "OpenStack <openstack-discuss@lists.openstack.org>",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "scripts": {
     "mock": "webpack-dev-server --open --config config/webpack.dev.js",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --config config/webpack.dev.js --env.API=dev",
