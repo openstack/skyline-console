@@ -159,6 +159,9 @@ export default class NetworkStep extends Base {
   get formItems() {
     const { networkSelectRows = [], subnets, initValue = [] } = this.state;
     const showNetworks = networkSelectRows.length > 0;
+    const showSecurityGroups =
+      networkSelectRows.length &&
+      networkSelectRows.every((it) => it.port_security_enabled);
     return [
       {
         name: 'networkSelect',
@@ -229,7 +232,8 @@ export default class NetworkStep extends Base {
         ),
         backendPageStore: this.securityGroupStore,
         extraParams: { project_id: this.currentProjectId },
-        required: true,
+        hidden: !showSecurityGroups,
+        required: showSecurityGroups,
         isMulti: true,
         header: (
           <div style={{ marginBottom: 8 }}>

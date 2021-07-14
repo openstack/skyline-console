@@ -35,7 +35,7 @@ export default class ManageSecurityGroup extends ModalAction {
 
   static policy = 'update_port:port_security_enabled';
 
-  static allowed = () => Promise.resolve(true);
+  static allowed = (item) => Promise.resolve(item.port_security_enabled);
 
   init() {
     this.securityGroupStore = new SecurityGroupStore();

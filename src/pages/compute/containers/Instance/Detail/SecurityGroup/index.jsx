@@ -194,31 +194,34 @@ export default class SecurityGroup extends React.Component {
 
   render() {
     const { interfaces, isLoading } = this.store.securityGroups;
-    const { filterData, activeInterfaceId } = this.state;
+    const { filterData, activeInterfaceId, activeInterface } = this.state;
+    const { port_security_enabled = false } = activeInterface || {};
+
     return (
       <div className={classnames(styles.wrapper, this.className)}>
-        {interfaces && interfaces.length ? (
-          <Spin spinning={isLoading}>
-            <Radio.Group
-              defaultValue={0}
-              size="large"
-              marginBottom="20"
-              onChange={this.onChange}
-              className={styles['radio-button']}
-            >
-              {toJS(interfaces).map((item, index) =>
-                this.renderRadio(item, index)
-              )}
-            </Radio.Group>
-          </Spin>
-        ) : null}
-        {!this.isAdminPage && (
+        <Spin spinning={isLoading}>
+          <Radio.Group
+            defaultValue={0}
+            size="large"
+            marginBottom="20"
+            onChange={this.onChange}
+            className={styles['radio-button']}
+          >
+            {interfaces
+              ? toJS(interfaces).map((item, index) =>
+                  this.renderRadio(item, index)
+                )
+              : null}
+          </Radio.Group>
+        </Spin>
+        {!this.isAdminPage && port_security_enabled && (
           <div style={{ marginBottom: 20, marginTop: 20 }}>
             <PrimaryActionButtons
               primaryActions={[ManageSecurityGroup]}
               onFinishAction={this.actionCallback}
               containerProps={{
                 port: activeInterfaceId,
+                portItem: activeInterface,
                 filterData,
               }}
             >

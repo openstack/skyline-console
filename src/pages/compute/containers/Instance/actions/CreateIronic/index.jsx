@@ -264,8 +264,10 @@ export default class CreateIronic extends StepAction {
     //   // delete_on_termination: deleteType === 1,
     // };
     let hasIp = false;
+    const { selectedRows: securityGroupSelectedRows = [] } =
+      securityGroup || {};
     const server = {
-      security_groups: securityGroup.selectedRows.map((it) => ({
+      security_groups: securityGroupSelectedRows.map((it) => ({
         name: it.id,
       })),
       name,

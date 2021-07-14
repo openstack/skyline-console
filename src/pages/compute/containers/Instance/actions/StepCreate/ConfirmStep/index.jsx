@@ -89,8 +89,7 @@ export default class ConfirmStep extends Base {
 
   getSecurityGroups() {
     const { context } = this.props;
-    const { securityGroup } = context;
-    const { selectedRows } = securityGroup;
+    const { securityGroup: { selectedRows = [] } = {} } = context;
     const values = selectedRows.map((it) => it.name);
     return values;
     // return values.join(<br />);

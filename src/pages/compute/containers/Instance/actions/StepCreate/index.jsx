@@ -297,8 +297,10 @@ class StepCreate extends StepAction {
       // rootVolume.disk_bus = 'ide';
       // dataVolumes[0].disk_bus = 'virtio';
     }
+    const { selectedRows: securityGroupSelectedRows = [] } =
+      securityGroup || {};
     const server = {
-      security_groups: securityGroup.selectedRows.map((it) => ({
+      security_groups: securityGroupSelectedRows.map((it) => ({
         name: it.id,
       })),
       name,

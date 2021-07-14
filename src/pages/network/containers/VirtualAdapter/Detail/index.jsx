@@ -74,9 +74,9 @@ export default class VirtualAdapterDetail extends Base {
         dataIndex: 'network_id',
       },
       {
-        title: t('Port Security'),
+        title: t('Port Security Enabled'),
         dataIndex: 'port_security_enabled',
-        render: (data) => (data ? t('Open') : t('Close')),
+        valueRender: 'yesNo',
       },
       {
         title: t('Mac Address'),
@@ -98,12 +98,12 @@ export default class VirtualAdapterDetail extends Base {
       },
       {
         title: t('Fixed IPs'),
-        key: 'fixed ips',
+        key: 'fixed_ips',
         component: FixedIPs,
       },
       {
         title: t('Security Groups'),
-        key: 'security groups',
+        key: 'security_groups',
         component: SecurityGroups,
       },
       {
@@ -112,6 +112,10 @@ export default class VirtualAdapterDetail extends Base {
         component: AllowedAddressPair,
       },
     ];
+    const { port_security_enabled } = this.detailData;
+    if (!port_security_enabled) {
+      return tabs.filter((it) => it.key !== 'security_groups');
+    }
     return tabs;
   }
 

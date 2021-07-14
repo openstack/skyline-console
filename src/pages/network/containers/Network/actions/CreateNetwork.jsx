@@ -73,6 +73,7 @@ export default class CreateNetwork extends ModalAction {
       ip_version: 'ipv4',
       disable_gateway: false,
       more: false,
+      port_security_enabled: true,
     };
   }
 
@@ -91,6 +92,7 @@ export default class CreateNetwork extends ModalAction {
       host_routes,
       description,
       mtu,
+      port_security_enabled,
       ...rest
     } = values;
 
@@ -103,6 +105,7 @@ export default class CreateNetwork extends ModalAction {
       description,
       availability_zone_hints: [availableZone],
       mtu,
+      port_security_enabled,
     };
 
     const networkAdminPageData = {
@@ -302,6 +305,12 @@ export default class CreateNetwork extends ModalAction {
         label: t('Shared'),
         type: 'check',
         hidden: !this.isSystemAdmin,
+      },
+      {
+        name: 'port_security_enabled',
+        label: t('Port Security Enabled'),
+        type: 'switch',
+        required: true,
       },
       // {
       //   name: 'admin_state_up',

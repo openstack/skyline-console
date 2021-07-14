@@ -17,6 +17,7 @@ import { ModalAction } from 'containers/Action';
 import globalNetworkStore from 'stores/neutron/network';
 import checkPolicy, { checkPolicyRule } from 'resources/policy';
 import globalRootStore from 'stores/root';
+import { getYesNoList } from 'utils/index';
 
 @inject('rootStore')
 @observer
@@ -49,8 +50,8 @@ export default class Edit extends ModalAction {
 
   onSubmit = (values) => {
     const { item: { id } = {} } = this.props;
-    const { name, description, ...rest } = values;
-    const data = { name, description };
+    const { name, description, port_security_enabled, ...rest } = values;
+    const data = { name, description, port_security_enabled };
     if (this.isSystemAdmin) {
       data.shared = rest.shared;
     }
@@ -85,18 +86,15 @@ export default class Edit extends ModalAction {
       {
         name: 'shared',
         label: t('Shared'),
-        type: 'select',
+        type: 'radio',
         hidden: !this.isSystemAdmin,
-        options: [
-          {
-            label: t('Yes'),
-            value: true,
-          },
-          {
-            label: t('No'),
-            value: false,
-          },
-        ],
+        options: getYesNoList(),
+      },
+      {
+        name: 'port_security_enabled',
+        label: t('Port Security Enabled'),
+        type: 'switch',
+        required: true,
       },
       {
         name: 'router:external',

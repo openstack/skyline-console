@@ -62,6 +62,11 @@ export default class BaseDetail extends Base {
         dataIndex: 'qos_policy_id',
         render: (data) => data || '-',
       },
+      {
+        label: t('Port Security Enabled'),
+        dataIndex: 'port_security_enabled',
+        valueRender: 'yesNo',
+      },
     ];
     return {
       title: t('Base Info'),
