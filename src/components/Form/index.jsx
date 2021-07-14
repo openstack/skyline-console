@@ -265,9 +265,39 @@ export default class BaseForm extends React.Component {
         this.updateSumbitting(false);
         !this.isModal && this.routing.push(this.listUrl);
         this.response = response;
-        this.showNotice && Notify.success(this.successText);
         if (callback && isFunction(callback)) {
           callback(true, false);
+        }
+        if (response instanceof Array) {
+          const instanceNameArr = this.instanceName.split(', ');
+          const failedNames = response
+            .map((it, idx) => {
+              if (it.status === 'rejected') {
+                return {
+                  reason: it.reason,
+                  name: instanceNameArr[idx],
+                };
+              }
+              return null;
+            })
+            .filter((it) => !!it);
+          if (failedNames.length !== 0) {
+            failedNames.forEach((it) => {
+              const { response: { data } = {} } = it.reason;
+              this.showNotice &&
+                Notify.errorWithDetail(
+                  data,
+                  t('Unable to {action}, instance: {name}.', {
+                    action: this.name.toLowerCase(),
+                    name: it.name,
+                  })
+                );
+            });
+          } else {
+            this.showNotice && Notify.success(this.successText);
+          }
+        } else {
+          this.showNotice && Notify.success(this.successText);
         }
       },
       (err = {}) => {

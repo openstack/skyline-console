@@ -568,7 +568,7 @@ export default class Create extends FormAction {
     if (count === 1) {
       return this.volumeStore.create(volume);
     }
-    return Promise.all(
+    return Promise.allSettled(
       new Array(count).fill(count).map((_, index) => {
         const body = {
           ...volume,
