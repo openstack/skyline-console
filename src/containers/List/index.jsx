@@ -693,8 +693,9 @@ export default class BaseList extends React.Component {
     const failed = Object.keys(filtersInState).find((key) => {
       const value = get(data, key);
       const filterValue = filtersInState[key];
-
-      const { filterFunc } = this.searchFilters.find((i) => i.name === key);
+      const { filterFunc } = this.getSearchFilters().find(
+        (i) => i.name === key
+      );
       if (filterFunc) {
         return !filterFunc(value, filterValue);
       }
