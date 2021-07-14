@@ -42,7 +42,9 @@ export default class EditAction extends ModalAction {
         name: 'name',
         label: t('Name'),
         type: 'input-name',
-        placeholder: t('Please input name'),
+        names: this.store.list.data
+          .filter((it) => it.id !== this.item.id)
+          .map((it) => it.name),
         required: true,
       },
       {

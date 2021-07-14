@@ -111,7 +111,7 @@ export default class Create extends ModalAction {
         name: 'name',
         label: t('Name'),
         type: 'input-name',
-        placeholder: t('Please input name'),
+        names: this.store.list.data.map((it) => it.name),
         required: true,
       },
       // TODO: get cinder service list

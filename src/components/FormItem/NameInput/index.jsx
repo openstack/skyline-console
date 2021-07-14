@@ -42,6 +42,7 @@ export default class index extends Component {
   static isFormItem = true;
 
   getRules({
+    names,
     rules,
     withoutChinese,
     isFile,
@@ -51,6 +52,16 @@ export default class index extends Component {
     isImage,
     isInstance,
   }) {
+    const uniqueNameValidate = (rule, value) => {
+      if (names && names.length && names.includes(value)) {
+        const message = t('Name can not be duplicated');
+        return Promise.reject(new Error(`${t('Invalid: ')}${message}`));
+      }
+      return Promise.resolve(true);
+    };
+    const uniqueRule = {
+      validator: uniqueNameValidate,
+    };
     let validator = nameValidate;
     if (isFile) {
       validator = fileNameValidate;
@@ -67,16 +78,13 @@ export default class index extends Component {
     } else if (isCrontab) {
       validator = crontabNameValidate;
     }
-    let newRules = {
+    const newRules = {
       validator,
     };
     if (rules && rules.length > 0) {
-      newRules = {
-        ...newRules,
-        ...rules[0],
-      };
+      return [...rules, newRules, uniqueRule];
     }
-    return [newRules];
+    return [newRules, uniqueRule];
   }
 
   getMessage({
@@ -122,6 +130,7 @@ export default class index extends Component {
       isCrontab,
       isImage,
       isInstance,
+      names,
       ...componentRest
     } = componentProps;
     const placeholder = isFile
@@ -133,6 +142,7 @@ export default class index extends Component {
     };
     const { rules, ...rest } = formItemProps;
     const newRules = this.getRules({
+      names,
       rules,
       withoutChinese,
       isFile,
