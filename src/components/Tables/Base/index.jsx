@@ -543,6 +543,40 @@ export default class BaseTable extends React.Component {
     }
   };
 
+  filterDownloadColumns(columns) {
+    const { rowKey } = this.props;
+    const downloadColumns = columns
+      .filter((it) => !it.hidden)
+      .map((it) => {
+        if (it.title.includes('/')) {
+          const [fTitle, sTitle] = it.title.split('/');
+          let sName = sTitle;
+          if (fTitle.length > 2) {
+            sName = `${fTitle.split('ID')[0]}${sTitle}`;
+          }
+          let fIndex = it.idKey || rowKey;
+          if (
+            it.title.includes(t('Project')) &&
+            it.dataIndex === 'project_name'
+          ) {
+            fIndex = 'project_id';
+          }
+          return [
+            {
+              title: fTitle,
+              dataIndex: fIndex,
+            },
+            {
+              ...it,
+              title: sName,
+            },
+          ];
+        }
+        return it;
+      });
+    return [].concat(...downloadColumns);
+  }
+
   renderBatchActions() {
     const {
       batchActions,
@@ -717,7 +751,7 @@ export default class BaseTable extends React.Component {
       return null;
     }
     const { total } = pagination;
-    const downloadColumns = columns.filter((it) => !it.hidden);
+    const downloadColumns = this.filterDownloadColumns(columns);
     const props = {
       datas,
       columns: downloadColumns,

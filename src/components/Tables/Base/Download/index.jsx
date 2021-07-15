@@ -91,11 +91,13 @@ export default class index extends Component {
     }
     if (isObject(value)) {
       if (React.isValidElement(value)) {
-        return (data[dataIndex] && data[dataIndex].toString()) || '-';
+        return [undefined, '', null].includes(data[dataIndex])
+          ? '-'
+          : data[dataIndex].toString();
       }
       return data[dataIndex];
     }
-    return value;
+    return [undefined, '', null].includes(value) ? '-' : value;
   };
 
   getColumnData = (data, column) => {

@@ -12,14 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
 import { observer, inject } from 'mobx-react';
-import { Link } from 'react-router-dom';
 import Base from 'containers/List';
 import globalBackupStore, { BackupStore } from 'stores/cinder/backup';
 import CreateBackup from 'pages/storage/containers/Volume/actions/CreateBackup';
-import { FolderOutlined, FolderAddOutlined } from '@ant-design/icons';
-import { backupStatus } from 'resources/backup';
 import actionConfigs from './actions';
 
 @inject('rootStore')
@@ -84,47 +80,26 @@ export default class Backup extends Base {
         sortKey: 'project_id',
       },
       {
-        title: t('Size'),
-        dataIndex: 'size',
-        isHideable: true,
-        render: (value) => `${value} GB`,
-      },
-      {
-        title: t('Status'),
-        dataIndex: 'status',
-        render: (value) => backupStatus[value] || value,
+        title: t('Volume ID/Name'),
+        dataIndex: 'volume_name',
+        isName: true,
+        linkFunc: (value, record) =>
+          `/storage/${this.getUrl('volume')}/detail/${
+            record.volume_id
+          }?tab=backup`,
+        idKey: 'volume_id',
+        sortKey: 'volume_id',
       },
       {
         title: t('Backup Mode'),
-        dataIndex: 'is_incremental',
-        isHideable: true,
-        render: (value) => {
-          if (value) {
-            return (
-              <>
-                <FolderAddOutlined />
-                <span style={{ marginLeft: 8 }}>{t('Incremental Backup')}</span>
-              </>
-            );
-          }
-          return (
-            <>
-              <FolderOutlined />
-              <span style={{ marginLeft: 8 }}>{t('Full Backup')}</span>
-            </>
-          );
+        dataIndex: 'backup_node',
+        render: (_, record) => {
+          const {
+            metadata: { auto = false },
+          } = record;
+          return auto ? t('Automatic backup') : t('Manual backup');
         },
-        stringify: (value) =>
-          value ? t('Incremental Backup') : t('Full Backup'),
-      },
-      {
-        title: t('Volume ID'),
-        dataIndex: 'volume_id',
-        render: (value) => (
-          <Link to={`${this.getUrl('/storage/volume')}/detail/${value}`}>
-            {value}
-          </Link>
-        ),
+        sorter: false,
       },
       {
         title: t('Created At'),
@@ -144,10 +119,6 @@ export default class Backup extends Base {
       {
         label: t('Name'),
         name: 'name',
-      },
-      {
-        label: t('Volume ID'),
-        name: 'volume_id',
       },
     ];
   }

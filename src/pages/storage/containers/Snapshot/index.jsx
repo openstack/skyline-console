@@ -124,10 +124,6 @@ export default class Snapshots extends Base {
         }?tab=snapshot`,
       isHideable: true,
       sorter: false,
-      stringify: (value, record) => {
-        const { volume_name } = record;
-        return `${volume_name || value.volume_id}`;
-      },
     },
     {
       title: t('Created At'),
