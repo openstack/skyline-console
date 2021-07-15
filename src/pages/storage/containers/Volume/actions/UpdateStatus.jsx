@@ -42,7 +42,7 @@ export default class UpdateStatus extends ModalAction {
 
   get tips() {
     return t(
-      'Do not reset the normally mounted volume to the "available" or "maintenance" status. The reset state does not remove the volume from the instance. If you need to remove the volume from the instance, please go to the console of the corresponding project and use the "detach" operation.'
+      'Do not reset the normally mounted volume to the "available"、"maintenance" or "error" status. The reset state does not remove the volume from the instance. If you need to remove the volume from the instance, please go to the console of the corresponding project and use the "detach" operation.'
     );
   }
 
@@ -50,6 +50,7 @@ export default class UpdateStatus extends ModalAction {
     const statusList = [
       { value: 'available', label: t('Available') },
       { value: 'maintenance', label: t('Maintained') },
+      { value: 'error', label: t('Error') },
     ];
     return [
       {

@@ -20,7 +20,7 @@ import Confirm from 'components/Confirm';
 import PropTypes from 'prop-types';
 import Notify from 'components/Notify';
 import classnames from 'classnames';
-import { firstUpperCase } from 'utils/index';
+import { firstUpperCase, allSettled } from 'utils';
 import styles from './index.less';
 
 function getDefaultMsg(action, data) {
@@ -323,7 +323,7 @@ class ActionButton extends Component {
       const promises = data.map((it, index) =>
         onSubmit(it, containerProps, isBatch, index, data)
       );
-      const results = Promise.allSettled(promises);
+      const results = allSettled(promises);
       results.then((res) => {
         const failedDatas = res
           .map((it, idx) => {

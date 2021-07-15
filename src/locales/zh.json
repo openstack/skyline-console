@@ -483,7 +483,7 @@
   "Disk Info": "硬盘信息",
   "Disk Tag": "硬盘标签",
   "Disk size is limited by the min disk of flavor, image, etc.": "根磁盘大小受云主机类型、镜像等的最小磁盘限制。",
-  "Do not reset the normally mounted volume to the \"available\" or \"maintenance\" status. The reset state does not remove the volume from the instance. If you need to remove the volume from the instance, please go to the console of the corresponding project and use the \"detach\" operation.": "请勿将正常的挂载中的云硬盘重置为“可用”或“维护”状态。重置状态并不会将云硬盘从云主机上卸载下来。如果您需要将云硬盘从云主机上移除，请进入相应项目的控制台使用“解绑”操作。",
+  "Do not reset the normally mounted volume to the \"available\"、\"maintenance\" or \"error\" status. The reset state does not remove the volume from the instance. If you need to remove the volume from the instance, please go to the console of the corresponding project and use the \"detach\" operation.": "请勿将正常的挂载中的云硬盘重置为“可用”、“维护”或”错误“状态。重置状态并不会将云硬盘从云主机上卸载下来。如果您需要将云硬盘从云主机上移除，请进入相应项目的控制台使用“解绑”操作。",
   "Do not set with a backend": "不设置后端",
   "Docker": "Docker",
   "Domain": "域",

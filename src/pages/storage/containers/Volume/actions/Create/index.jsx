@@ -35,6 +35,7 @@ import {
   canImageCreateInstance,
 } from 'resources/image';
 import { volumeTypeSelectProps } from 'resources/volume-type';
+import { allSettled } from 'utils';
 import styles from './index.less';
 
 @inject('rootStore')
@@ -568,7 +569,7 @@ export default class Create extends FormAction {
     if (count === 1) {
       return this.volumeStore.create(volume);
     }
-    return Promise.allSettled(
+    return allSettled(
       new Array(count).fill(count).map((_, index) => {
         const body = {
           ...volume,

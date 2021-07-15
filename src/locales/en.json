@@ -483,7 +483,7 @@
   "Disk Info": "Disk Info",
   "Disk Tag": "Disk Tag",
   "Disk size is limited by the min disk of flavor, image, etc.": "Disk size is limited by the min disk of flavor, image, etc.",
-  "Do not reset the normally mounted volume to the \"available\" or \"maintenance\" status. The reset state does not remove the volume from the instance. If you need to remove the volume from the instance, please go to the console of the corresponding project and use the \"detach\" operation.": "Do not reset the normally mounted volume to the \"available\" or \"maintenance\" status. The reset state does not remove the volume from the instance. If you need to remove the volume from the instance, please go to the console of the corresponding project and use the \"detach\" operation.",
+  "Do not reset the normally mounted volume to the \"available\"、\"maintenance\" or \"error\" status. The reset state does not remove the volume from the instance. If you need to remove the volume from the instance, please go to the console of the corresponding project and use the \"detach\" operation.": "Do not reset the normally mounted volume to the \"available\"、\"maintenance\" or \"error\" status. The reset state does not remove the volume from the instance. If you need to remove the volume from the instance, please go to the console of the corresponding project and use the \"detach\" operation.",
   "Do not set with a backend": "Do not set with a backend",
   "Docker": "Docker",
   "Domain": "Domain",

@@ -271,3 +271,16 @@ export const unescapeHtml = (message) => {
 };
 
 export const isAdminPage = (url) => url && url.indexOf('admin') >= 0;
+
+export const allSettled = (promises) => {
+  if (!Promise.allSettled) {
+    return Promise.all(
+      promises.map((promise) =>
+        promise
+          .then((value) => ({ status: 'fulfilled', value }))
+          .catch((reason) => ({ status: 'rejected', reason }))
+      )
+    );
+  }
+  return Promise.allSettled(promises);
+};
