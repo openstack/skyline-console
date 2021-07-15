@@ -35,8 +35,20 @@ class Right extends Component {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    const { location: { pathname: oldPath } = {} } = prevProps;
+    const { location: { pathname: newPath } = {} } = this.props;
+    if (oldPath !== newPath) {
+      this.updateErrorState(false);
+    }
+  }
+
   static getDerivedStateFromError() {
     return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.log(error, errorInfo);
   }
 
   get isAdminPage() {
@@ -55,6 +67,12 @@ class Right extends Component {
     const { hasTab } = currentRoutes[currentRoutes.length - 1];
     return hasTab || false;
   };
+
+  updateErrorState(flag) {
+    this.setState({
+      hasError: flag,
+    });
+  }
 
   renderBreadcrumb = (currentRoutes = []) => {
     if (!currentRoutes || currentRoutes.length === 0) {
