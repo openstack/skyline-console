@@ -131,7 +131,7 @@ export default class BaseList extends React.Component {
     return !!detail;
   }
 
-  get alsoRefreshDetail() {
+  get shouldRefreshDetail() {
     return true;
   }
 
@@ -782,7 +782,7 @@ export default class BaseList extends React.Component {
       silent: !force,
     };
     this.handleFetch(params, true);
-    if (this.isInDetailPage && force && this.alsoRefreshDetail) {
+    if (this.isInDetailPage && force && this.shouldRefreshDetail) {
       this.refreshDetailData();
     }
   };

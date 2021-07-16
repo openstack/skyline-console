@@ -77,7 +77,7 @@ export default class Snapshots extends Base {
     return rest;
   };
 
-  alsoRefreshDetail() {
+  shouldRefreshDetail() {
     return false;
   }
 

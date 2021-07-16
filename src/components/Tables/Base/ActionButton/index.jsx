@@ -211,22 +211,22 @@ class ActionButton extends Component {
     });
   };
 
-  onShowSuccess = (data) => {
+  onShowSuccess = (data, afterSubmit) => {
     const { submitSuccessMsg } = this.props.action;
     const message = submitSuccessMsg
       ? submitSuccessMsg(data)
       : getDefaultMsg(this.props.action, data).submitSuccessMsg;
     Notify.success(message);
-    this.onCallback(true, false);
+    this.onCallback(true, false, afterSubmit);
   };
 
   // eslint-disable-next-line no-shadow
-  onCallback = (success, fail) => {
+  onCallback = (success, fail, afterSubmit) => {
     const { onFinishAction, id } = this.props;
     if (onFinishAction) {
       const isDelete = id === 'delete';
       setTimeout(() => {
-        onFinishAction(success, fail, isDelete);
+        onFinishAction(success, fail, isDelete, afterSubmit);
       }, 500);
     }
   };
@@ -254,8 +254,15 @@ class ActionButton extends Component {
   };
 
   onShowConfirm = async () => {
-    const { perform, title, confirmContext, okText, cancelText, onSubmit } =
-      this.props.action;
+    const {
+      perform,
+      title,
+      confirmContext,
+      okText,
+      cancelText,
+      onSubmit,
+      afterSubmit,
+    } = this.props.action;
     const { item, items, isBatch, containerProps, onCancelAction } = this.props;
     const data = isBatch ? items : item;
     const content = confirmContext
@@ -270,7 +277,13 @@ class ActionButton extends Component {
             okText,
             cancelText,
             onOk: () =>
-              this.onConfirmOK(data, onSubmit, isBatch, containerProps),
+              this.onConfirmOK(
+                data,
+                onSubmit,
+                isBatch,
+                containerProps,
+                afterSubmit
+              ),
             onCancel: () => {
               onCancelAction && onCancelAction();
             },
@@ -295,13 +308,13 @@ class ActionButton extends Component {
     }
   };
 
-  onSubmitOne = (data, onSubmit, containerProps) =>
+  onSubmitOne = (data, onSubmit, containerProps, afterSubmit) =>
     new Promise((resolve, reject) => {
       const result = onSubmit(data, containerProps);
       if (result instanceof Promise) {
         result.then(
           () => {
-            this.onShowSuccess(data);
+            this.onShowSuccess(data, afterSubmit);
             resolve();
           },
           (error) => {
@@ -309,7 +322,7 @@ class ActionButton extends Component {
           }
         );
       } else if (result) {
-        this.onShowSuccess(data);
+        this.onShowSuccess(data, afterSubmit);
         resolve();
       } else {
         reject(result);
@@ -318,7 +331,7 @@ class ActionButton extends Component {
       this.onShowError(data, error);
     });
 
-  onSubmitBatch = (data, onSubmit, containerProps, isBatch) =>
+  onSubmitBatch = (data, onSubmit, containerProps, isBatch, afterSubmit) =>
     new Promise((resolve, reject) => {
       const promises = data.map((it, index) =>
         onSubmit(it, containerProps, isBatch, index, data)
@@ -337,7 +350,7 @@ class ActionButton extends Component {
           })
           .filter((it) => !!it);
         if (failedDatas.length === 0) {
-          this.onShowSuccess(data);
+          this.onShowSuccess(data, afterSubmit);
           return resolve();
         }
         failedDatas.forEach((it) => {
@@ -350,11 +363,17 @@ class ActionButton extends Component {
       });
     });
 
-  onConfirmOK = (data, onSubmit, isBatch, containerProps) => {
+  onConfirmOK = (data, onSubmit, isBatch, containerProps, afterSubmit) => {
     if (isBatch) {
-      return this.onSubmitBatch(data, onSubmit, containerProps, isBatch);
+      return this.onSubmitBatch(
+        data,
+        onSubmit,
+        containerProps,
+        isBatch,
+        afterSubmit
+      );
     }
-    return this.onSubmitOne(data, onSubmit, containerProps);
+    return this.onSubmitOne(data, onSubmit, containerProps, afterSubmit);
   };
 
   onClickModalActionOk = () => {
