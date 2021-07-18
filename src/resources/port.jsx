@@ -84,7 +84,7 @@ export function getPortsAndReasons(
 }
 
 export function getPortFormItem(device_owner) {
-  const { portFixedIPs } = this.state;
+  const { portFixedIPs, fixedIpLoading } = this.state;
   return [
     {
       name: 'virtual_adapter',
@@ -151,6 +151,7 @@ export function getPortFormItem(device_owner) {
       rowKey: 'fixed_ip_address',
       required: true,
       datas: portFixedIPs,
+      isLoading: fixedIpLoading,
       isMulti: false,
       filterParams: [
         {

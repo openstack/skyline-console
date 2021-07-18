@@ -141,6 +141,7 @@ class CreateForm extends FormAction {
         required: this.isAdminPage,
         hidden: !this.isAdminPage,
         datas: this.projects,
+        isLoading: this.projectStore.list.isLoading,
         ...projectTableOptions,
       },
       {
@@ -207,6 +208,7 @@ class CreateForm extends FormAction {
         isMulti: true,
         hidden: !isShare,
         datas: this.projects,
+        isLoading: this.projectStore.list.isLoading,
         ...projectTableOptions,
       },
       {

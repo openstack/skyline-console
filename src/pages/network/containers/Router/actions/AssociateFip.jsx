@@ -104,6 +104,7 @@ export default class AssociateFip extends ModalAction {
         type: 'select-table',
         required: true,
         datas: this.fipList,
+        isLoading: this.floatingIpStore.list.isLoading,
         isMulti: false,
         filterParams: [
           {

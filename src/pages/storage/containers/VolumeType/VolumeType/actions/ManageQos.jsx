@@ -79,6 +79,7 @@ export default class ManageQos extends ModalAction {
         type: 'select-table',
         required: false,
         datas: this.QosMap,
+        isLoading: this.store.list.isLoading,
         isMulti: false,
         filterParams: [
           {

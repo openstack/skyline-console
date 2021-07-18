@@ -121,6 +121,9 @@ export default class LiveMigrate extends ModalAction {
         label: t('Target Compute Host'),
         type: 'select-table',
         datas: this.hypervisors,
+        isLoading:
+          this.hypervisorStore.list.isLoading &&
+          globalComputeHostStore.list.isLoading,
         isMulti: false,
         extra: t(
           'If nova-compute on the host is disabled, it will be forbidden to be selected as the target host.'

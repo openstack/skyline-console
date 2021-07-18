@@ -54,12 +54,16 @@ export default class Create extends ModalAction {
     this.state = {
       subnets: [],
       type: 'subnet',
+      subnetLoading: true,
     };
     this.getAllSubnets();
   }
 
   async getAllSubnets() {
     this.allSubnets = await this.subnetStore.pureFetchList();
+    this.setState({
+      subnetLoading: false,
+    });
   }
 
   get defaultValue() {
@@ -87,18 +91,22 @@ export default class Create extends ModalAction {
   };
 
   handleRouterChange = async (value) => {
+    this.setState({
+      subnetLoading: true,
+    });
     const ports = await getPortsWithFixedIPs();
     const allSubnets = getSubnetToRouter(ports, value.selectedRows, false);
     this.setState({
       subnets: this.allSubnets.filter((item) => {
         return allSubnets.findIndex((i) => i.subnet_id === item.id) > -1;
       }),
+      subnetLoading: false,
     });
     this.formRef.current.resetFields(['subnet_id']);
   };
 
   get formItems() {
-    const { subnets, type } = this.state;
+    const { subnets, type, subnetLoading } = this.state;
     const isLocal = type === 'subnet';
 
     return [
@@ -151,6 +159,7 @@ export default class Create extends ModalAction {
         label: t('Subnet'),
         type: 'select-table',
         datas: subnets,
+        isLoading: subnetLoading,
         isMulti: true,
         columns: [
           {

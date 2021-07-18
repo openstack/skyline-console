@@ -142,6 +142,8 @@ export default class ManageSecurityGroup extends ModalAction {
         type: 'select-table',
         required: true,
         datas: this.ports,
+        isLoading:
+          this.portStore.list.isLoading && this.portStoreOrigin.list.isLoading,
         isMulti: false,
         onChange: this.onPortChange,
         filterParams: [

@@ -39,7 +39,7 @@ export default class PortForwarding extends Base {
   updateFetchParams = (params) => {
     const { id, all_projects, ...rest } = params;
     return {
-      fipID: id,
+      fipId: id,
       fipInfo: this.props.detail,
       ...rest,
     };

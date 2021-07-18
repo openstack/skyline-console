@@ -144,6 +144,7 @@ export default class Rebuild extends ModalAction {
         label: t('Operating System'),
         type: 'select-table',
         datas: this.images,
+        isLoading: this.imageStore.list.isLoading,
         required: true,
         isMulti: false,
         filterParams: [

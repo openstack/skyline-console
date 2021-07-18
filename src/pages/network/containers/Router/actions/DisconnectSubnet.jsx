@@ -33,6 +33,7 @@ export default class DisconnectSubnet extends ModalAction {
     this.subnetStore = globalSubnetStore;
     this.portStore = new PortStore();
     this.getSubnetList();
+    this.state.subnetLoading = true;
   }
 
   static policy = 'remove_router_interface';
@@ -83,13 +84,14 @@ export default class DisconnectSubnet extends ModalAction {
     });
     this.setState({
       subnets: subnets.map((it) => toJS(it)),
+      subnetLoading: false,
     });
   }
 
   static allowed = () => Promise.resolve(true);
 
   get formItems() {
-    const { subnets = [] } = this.state;
+    const { subnets = [], subnetLoading } = this.state;
     return [
       {
         name: 'name',
@@ -102,6 +104,7 @@ export default class DisconnectSubnet extends ModalAction {
         label: t('Subnet'),
         type: 'select-table',
         datas: subnets,
+        isLoading: subnetLoading,
         required: true,
         filterParams: [
           {

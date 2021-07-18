@@ -148,6 +148,7 @@ export default class Create extends ModalAction {
         isMulti: true,
         hidden: isPublic,
         datas: this.projects,
+        isLoading: this.projectStore.list.isLoading,
         ...projectTableOptions,
       },
     ];

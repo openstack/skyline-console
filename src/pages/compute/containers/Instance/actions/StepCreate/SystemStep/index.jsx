@@ -216,6 +216,7 @@ export default class SystemStep extends Base {
         label: t('Keypair'),
         type: 'select-table',
         datas: this.keypairs,
+        isLoading: this.keyPairStore.list.isLoading,
         isMulti: false,
         required: !isPassword,
         hidden: isPassword,
@@ -279,6 +280,7 @@ export default class SystemStep extends Base {
         hidden: !this.hasAdminRole || !more || !isManually,
         required: isManually,
         datas: this.hypervisors,
+        isLoading: this.hypervisorStore.list.isLoading,
         extra: t(
           'You can manually specify a physical node to create an instance.'
         ),
@@ -291,6 +293,7 @@ export default class SystemStep extends Base {
         type: 'select-table',
         hidden: !more,
         datas: this.serverGroups,
+        isLoading: this.serverGroupStore.list.isLoading,
         extra: t(
           'Using server groups, you can create cloud hosts on the same/different physical nodes as much as possible to meet the affinity/non-affinity requirements of business applications.'
         ),

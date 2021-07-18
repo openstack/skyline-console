@@ -145,6 +145,10 @@ export default class BaseStep extends Base {
   };
 
   get formItems() {
+    const { image } = this.locationParams;
+    const imageLoading = image
+      ? this.imageStore.isLoading
+      : this.imageStore.list.isLoading;
     return [
       {
         name: 'project',
@@ -187,6 +191,7 @@ export default class BaseStep extends Base {
         label: t('Operating System'),
         type: 'select-table',
         datas: this.images,
+        isLoading: imageLoading,
         isMulti: false,
         filterParams: [
           {

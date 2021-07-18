@@ -116,6 +116,20 @@ export default class Associate extends ModalAction {
   };
 
   handleInstanceSelect = async (data) => {
+    this.setState({
+      instanceLoading: true,
+    });
+    if (data.selectedRows.length === 0) {
+      this.setState({
+        instanceFixedIPs: interfacesWithReasons,
+        instanceLoading: false,
+      });
+      return Promise.resolve().then(() => {
+        this.formRef.current.setFieldsValue({
+          port: null,
+        });
+      });
+    }
     const { id } = data.selectedRows[0];
     // 获取云主机所有的interface
     const instanceInterfaces = await globalServerStore.fetchInterfaceList({
@@ -130,6 +144,7 @@ export default class Associate extends ModalAction {
     );
     this.setState({
       instanceFixedIPs: interfacesWithReasons,
+      instanceLoading: false,
     });
     return Promise.resolve().then(() => {
       this.formRef.current.setFieldsValue({
@@ -139,6 +154,9 @@ export default class Associate extends ModalAction {
   };
 
   handlePortSelect = async (data) => {
+    this.setState({
+      fixedIpLoading: true,
+    });
     const { canReachSubnetIdsWithRouterId } = this.state;
     const interfacesWithReason = await getInterfaceWithReason(
       data.selectedRows
@@ -151,6 +169,7 @@ export default class Associate extends ModalAction {
 
     this.setState({
       portFixedIPs,
+      fixedIpLoading: false,
     });
     return Promise.resolve().then(() => {
       this.formRef.current.setFieldsValue({
@@ -200,7 +219,11 @@ export default class Associate extends ModalAction {
 
   get formItems() {
     // console.log(toJS(this.store.list.data));
-    const { resourceType = 'instance', instanceFixedIPs } = this.state;
+    const {
+      resourceType = 'instance',
+      instanceFixedIPs,
+      instanceLoading,
+    } = this.state;
     const ret = [
       {
         name: 'floatingIp',
@@ -239,6 +262,7 @@ export default class Associate extends ModalAction {
               type: 'select-table',
               required: true,
               datas: instanceFixedIPs,
+              isLoading: instanceLoading,
               isMulti: false,
               filterParams: [
                 {

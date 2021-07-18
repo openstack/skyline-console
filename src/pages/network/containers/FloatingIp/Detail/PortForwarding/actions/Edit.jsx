@@ -59,8 +59,8 @@ export default class Edit extends ModalAction {
   }
 
   async getFipAlreadyUsedPorts() {
-    const detail = await globalPortForwardingStore.getFipAlreadyUsedPorts({
-      fipID: this.item.fip.id,
+    const detail = await globalPortForwardingStore.fetchList({
+      fipId: this.item.fip.id,
     });
     this.setState({
       alreadyUsedPorts: detail || [],
@@ -68,6 +68,9 @@ export default class Edit extends ModalAction {
   }
 
   async getInitialPortFixedIPs() {
+    this.setState({
+      fixedIpLoading: true,
+    });
     const { internal_port_id, internal_ip_address } = this.item;
     const portDetail = await globalPortStore.fetchDetail({
       id: internal_port_id,
@@ -143,6 +146,9 @@ export default class Edit extends ModalAction {
   }
 
   handlePortSelect = async (data) => {
+    this.setState({
+      fixedIpLoading: true,
+    });
     const { canReachSubnetIdsWithRouterId } = this.state;
     const interfacesWithReason = await getInterfaceWithReason(
       data.selectedRows
@@ -156,6 +162,7 @@ export default class Edit extends ModalAction {
     this.setState({
       portFixedIPs,
       fixed_ip_address: undefined,
+      fixedIpLoading: false,
     });
 
     this.formRef.current &&
@@ -181,7 +188,7 @@ export default class Edit extends ModalAction {
     data.internal_port_id = selectedRows[0].id;
     return globalPortForwardingStore.edit(
       {
-        fipID: this.item.fip.id,
+        fipId: this.item.fip.id,
         id: this.item.id,
       },
       data

@@ -38,6 +38,7 @@ export default class AssociateFip extends ModalAction {
       portFixedIPs: [],
       canAssociateFloatingIPs: [],
       canReachSubnetIdsWithRouterId: [],
+      portLoading: true,
     };
   }
 
@@ -69,6 +70,7 @@ export default class AssociateFip extends ModalAction {
     const interfaces = await getInterfaceWithReason(buildInterfaces);
     this.setState({
       interfaces,
+      portLoading: false,
     });
   }
 
@@ -107,7 +109,7 @@ export default class AssociateFip extends ModalAction {
   };
 
   get formItems() {
-    const { fixed_ip, canAssociateFloatingIPs } = this.state;
+    const { canAssociateFloatingIPs, portLoading, fipLoading } = this.state;
     return [
       {
         name: 'lb',
@@ -121,6 +123,7 @@ export default class AssociateFip extends ModalAction {
         type: 'select-table',
         required: true,
         datas: this.ports,
+        isLoading: portLoading,
         disabledFunc: (record) => !record.available,
         onChange: this.handleFixedIPChange,
         isMulti: false,
@@ -151,7 +154,7 @@ export default class AssociateFip extends ModalAction {
         type: 'select-table',
         required: true,
         datas: canAssociateFloatingIPs,
-        hidden: !fixed_ip,
+        isLoading: fipLoading,
         isMulti: false,
         filterParams: [
           {

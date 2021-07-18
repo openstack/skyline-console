@@ -101,6 +101,7 @@ export default class ConnectSubnet extends ModalAction {
   };
 
   get formItems() {
+    const { networkId } = this.state;
     return [
       {
         name: 'name',
@@ -120,6 +121,7 @@ export default class ConnectSubnet extends ModalAction {
         label: t('Subnet'),
         type: 'select-table',
         datas: this.subnets,
+        isLoading: networkId && this.subnetStore.list.isLoading,
         disabledFunc: this.disabledFuncSubnet,
         required: true,
         filterParams: [

@@ -91,6 +91,7 @@ export default class ManageHost extends ModalAction {
         type: 'select-table',
         isMulti: true,
         datas: this.computeHosts,
+        isLoading: globalComputeHostStore.list.isLoading,
         filterParams: [
           {
             label: t('Host'),

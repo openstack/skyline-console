@@ -98,6 +98,7 @@ export default class SystemStep extends Base {
         label: t('Keypair'),
         type: 'select-table',
         datas: this.keypairs,
+        isLoading: this.keyPairStore.list.isLoading,
         isMulti: false,
         required: !isPassword,
         hidden: isPassword,

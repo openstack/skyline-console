@@ -29,6 +29,7 @@ export default class DetachInterface extends ModalAction {
   init() {
     this.store = new ServerStore();
     this.getPorts();
+    this.state.portLoading = true;
   }
 
   get name() {
@@ -60,8 +61,11 @@ export default class DetachInterface extends ModalAction {
     return portsMap;
   }
 
-  getPorts() {
-    this.store.fetchInterfaceList({ id: this.item.id });
+  async getPorts() {
+    await this.store.fetchInterfaceList({ id: this.item.id });
+    this.setState({
+      portLoading: false,
+    });
   }
 
   get defaultValue() {
@@ -82,6 +86,7 @@ export default class DetachInterface extends ModalAction {
     );
 
   get formItems() {
+    const { portLoading } = this.state;
     return [
       {
         name: 'instance',
@@ -95,6 +100,7 @@ export default class DetachInterface extends ModalAction {
         type: 'select-table',
         required: true,
         datas: this.ports,
+        isLoading: portLoading,
         isMulti: true,
         filterParams: [
           {

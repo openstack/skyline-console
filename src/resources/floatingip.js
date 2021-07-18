@@ -258,7 +258,17 @@ export async function getFipsFromRouterId(router) {
 }
 
 export async function handleFixedIPChange(e) {
+  this.setState({
+    fipLoading: true,
+  });
   const { canReachSubnetIdsWithRouterId } = this.state;
+  if (!e.selectedRows.length) {
+    this.setState({
+      fixed_ip: null,
+      canAssociateFloatingIPs: [],
+      fipLoading: false,
+    });
+  }
   const item = e.selectedRows[0];
   const totalFips = [];
   // 考虑单subnet连接多个路由，并且路由开启了不同的公网网关。
@@ -280,5 +290,6 @@ export async function handleFixedIPChange(e) {
   this.setState({
     fixed_ip: item,
     canAssociateFloatingIPs: norepeatFips,
+    fipLoading: false,
   });
 }

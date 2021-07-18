@@ -125,6 +125,10 @@ export default class SelectTable extends React.Component {
     this.sortOrder = props.defaultSortOrder;
   }
 
+  componentDidMount() {
+    this.getData();
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (!isEqual(prevProps.backendPageStore, this.props.backendPageStore)) {
       this.getData();

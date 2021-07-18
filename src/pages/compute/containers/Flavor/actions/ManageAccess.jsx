@@ -94,6 +94,7 @@ export default class ManageAccess extends ModalAction {
         type: 'select-table',
         isMulti: true,
         required: true,
+        isLoading: this.projectStore.list.isLoading,
         datas: this.projects,
         ...projectTableOptions,
       },

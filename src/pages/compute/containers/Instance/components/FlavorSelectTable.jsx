@@ -332,10 +332,13 @@ export default class FlavorSelectTable extends Component {
 
   render() {
     const { value } = this.props;
+    const isLoading =
+      this.settingStore.list.isLoading && this.flavorStore.list.isLoading;
     const props = {
       columns: this.columns,
       datas: this.flavors,
       tableHeader: this.renderTableHeander(),
+      isLoading,
       filterParams: [
         {
           label: t('Name'),

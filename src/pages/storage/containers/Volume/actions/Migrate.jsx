@@ -30,7 +30,7 @@ export default class Migrate extends ModalAction {
     return 'large';
   }
 
-  get modalSize() {
+  getModalSize() {
     return 'large';
   }
 
@@ -89,6 +89,7 @@ export default class Migrate extends ModalAction {
         type: 'select-table',
         required: true,
         datas: this.pools,
+        isLoading: this.poolStore.list.isLoading,
         disabledFunc: this.disableFunc,
         rowKey: 'name',
         columns: poolColumns,

@@ -54,8 +54,8 @@ export default class CreateDNAT extends ModalAction {
   }
 
   async getFipAlreadyUsedPorts() {
-    const detail = await globalPortForwardingStore.getFipAlreadyUsedPorts({
-      fipID: this.item.id,
+    const detail = await globalPortForwardingStore.fetchList({
+      fipId: this.item.id,
     });
     this.setState({
       alreadyUsedPorts: detail || [],
@@ -85,6 +85,9 @@ export default class CreateDNAT extends ModalAction {
   }
 
   handlePortSelect = async (data) => {
+    this.setState({
+      fixedIpLoading: true,
+    });
     const { canReachSubnetIdsWithRouterId } = this.state;
     const interfacesWithReason = await getInterfaceWithReason(
       data.selectedRows
@@ -98,6 +101,7 @@ export default class CreateDNAT extends ModalAction {
     this.setState({
       portFixedIPs,
       fixed_ip_address: undefined,
+      fixedIpLoading: false,
     });
 
     this.formRef.current &&
