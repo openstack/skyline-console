@@ -34,14 +34,7 @@ export class VolumeTypeStore extends Base {
 
   get paramsFuncPage() {
     return (params) => {
-      const {
-        current,
-        showEncryption,
-        showQoS,
-        withPrice,
-        resourceType,
-        ...rest
-      } = params;
+      const { current, showEncryption, showQoS, ...rest } = params;
       return rest;
     };
   }
@@ -65,6 +58,22 @@ export class VolumeTypeStore extends Base {
     const { showEncryption, showQoS } = filters;
     if (items.length === 0) {
       return items;
+    }
+    if (showQoS) {
+      const qosIds = uniq(
+        items.filter((it) => !!it.qos_specs_id).map((it) => it.qos_specs_id)
+      );
+      if (qosIds.length) {
+        const qosReqs = qosIds.map((id) => client.cinder.qosSpecs.show(id));
+        const qosResults = await Promise.all(qosReqs);
+        const qosItems = qosResults.map((it) => it.qos_specs);
+        items.forEach((it) => {
+          if (it.qos_specs_id) {
+            it.qos_specs = qosItems.find((qos) => qos.id === it.qos_specs_id);
+            it.qos_specs_name = (it.qos_specs || {}).name;
+          }
+        });
+      }
     }
     if (showQoS) {
       const qosIds = uniq(

@@ -57,6 +57,7 @@ export default class VolumeType extends Base {
     const newParams = {
       ...params,
       showEncryption: true,
+      showQoS: true,
     };
     if (has(params, 'is_public')) {
       return newParams;
@@ -81,11 +82,10 @@ export default class VolumeType extends Base {
     },
     {
       title: t('Associated QoS Spec'),
-      // TODO: api init qos_specs_name
-      // dataIndex: 'qos_specs_name',
-      dataIndex: 'qos_specs_id',
-      copyable: true,
-      valueRender: 'noValue',
+      dataIndex: 'qos_specs_name',
+      isName: true,
+      linkPrefix: '/storage/volume-type-admin/qos/detail/',
+      idKey: 'qos_specs_id',
     },
     {
       title: t('Encryption'),
