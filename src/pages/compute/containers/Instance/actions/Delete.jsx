@@ -76,13 +76,14 @@ export default class DeleteAction extends ConfirmAction {
   };
 
   performErrorMsg = (failedItems) => {
-    const instance = isArray(failedItems) ? failedItems[0] : failedItems;
-    let errorMsg = t('You are not allowed to delete instance "{ name }".', {
-      name: instance.name,
+    const instances = isArray(failedItems) ? failedItems : [failedItems];
+    const names = this.getName(instances);
+    let errorMsg = t('Instance "{ name }" is locked, can not delete it.', {
+      names,
     });
-    if (!isNotLocked(instance)) {
-      errorMsg = t('Instance "{ name }" is locked, can not delete it.', {
-        name: instance.name,
+    if (names.length > 1) {
+      errorMsg = t('Instances "{ name }" are locked, can not delete them.', {
+        names,
       });
     }
     return errorMsg;

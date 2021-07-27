@@ -126,19 +126,19 @@ export default class SoftDelete extends ConfirmAction {
   };
 
   performErrorMsg = (failedItems) => {
-    const instance = isArray(failedItems) ? failedItems[0] : failedItems;
-    let errorMsg = t('You are not allowed to delete instance "{ name }".', {
-      name: instance.name,
+    const items = isArray(failedItems) ? failedItems : [failedItems];
+    const name = this.getName(items);
+    let errorMsg = t('Instance "{ name }" is locked, can not delete it.', {
+      name,
     });
-    if (!isNotLockedOrAdmin(instance, this.isAdminPage)) {
-      errorMsg = t('Instance "{ name }" is locked, can not delete it.', {
-        name: instance.name,
+    if (items.length > 1) {
+      errorMsg = t('Instances "{ name }" are locked, can not delete them.', {
+        name,
       });
     }
     return errorMsg;
   };
 
-  // eslint-disable-next-line no-unused-vars
   onSubmit = (item) => {
     const { id, isHardDeleted = false, expiredTime } = item || this.item;
     if (isHardDeleted) {
