@@ -21,6 +21,7 @@ import { get, isObject, isArray } from 'lodash';
 import { Parser } from 'json2csv';
 import { toLocalTimeFilter } from 'utils/index';
 import Notify from 'components/Notify';
+import Confirm from 'components/Confirm';
 import styles from './index.less';
 
 export default class index extends Component {
@@ -31,12 +32,14 @@ export default class index extends Component {
     getValueRenderFunc: PropTypes.func.isRequired,
     resourceName: PropTypes.string,
     getData: PropTypes.func,
+    totalMax: PropTypes.number,
   };
 
   static defaultProps = {
     columns: [],
     datas: [],
     total: 0,
+    totalMax: 10000,
     resourceName: '',
     getData: () =>
       Promise.resolve({
@@ -144,8 +147,26 @@ export default class index extends Component {
     });
   }
 
+  confirmExportMax = () => {
+    const { totalMax, total } = this.props;
+    Confirm.warn({
+      title: t('Are you sure to download data?'),
+      content: t(
+        'The total amount of data is { total }, and the interface can support downloading { totalMax } pieces of data. If you need to download all the data, please contact the administrator.',
+        { totalMax, total }
+      ),
+      onCancel: this.onConfirmCancel,
+      onOk: this.beginDownload,
+    });
+  };
+
   downloadAllData = () => {
-    this.beginDownload();
+    const { total, totalMax } = this.props;
+    if (total && total > totalMax) {
+      this.confirmExportMax();
+    } else {
+      this.beginDownload();
+    }
   };
 
   getFileName = (all) => {
@@ -236,15 +257,16 @@ export default class index extends Component {
 
   getDownloadDataForAll = async () => {
     const { current, allData, isDownloading } = this.state;
+    const { totalMax } = this.props;
     // todo: api response counts
-    const counts = this.total || 0;
+    const counts = Math.min(this.total || 0, totalMax);
     if (!isDownloading) {
       return;
     }
     const { getData } = this.props;
     const items = await getData({ page: current, limit: this.pageSize });
     const newDatas = [...allData, ...items];
-    const isFinish = items.length < this.pageSize;
+    const isFinish = items.length < this.pageSize || newDatas.length >= counts;
     if (isFinish) {
       this.setState(
         {
