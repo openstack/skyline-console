@@ -27,6 +27,7 @@ import actionConfigsRecycleBin from 'pages/management/containers/RecycleBin/acti
 import { toJS } from 'mobx';
 import BaseDetail from './BaseDetail';
 import SecurityGroup from './SecurityGroup';
+import ActionLog from './ActionLog';
 import actionConfigs from '../actions';
 
 @inject('rootStore')
@@ -140,6 +141,11 @@ export default class InstanceDetail extends Base {
         title: t('Security Group'),
         key: 'securityGroup',
         component: SecurityGroup,
+      },
+      {
+        title: t('Action Log'),
+        key: 'action',
+        component: ActionLog,
       },
     ];
     if (isIronicInstance(this.detailData)) {

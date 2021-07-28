@@ -12,9 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ImageType from 'components/ImageType';
 import globalRootStore from 'stores/root';
+import { getLocalTimeStr } from 'utils/time';
+import { Table, Popover } from 'antd';
+import globalActionLogStore from 'stores/nova/action-log';
+import { Link } from 'react-router-dom';
 
 import lockSvg from 'src/asset/image/lock.svg';
 import unlockSvg from 'src/asset/image/unlock.svg';
@@ -391,4 +395,179 @@ export const hasOnlineResizeFlavor = (item) => {
     extra_specs: { 'hw:live_resize': liveResize = false },
   } = (item || {}).flavor_info || {};
   return !!liveResize;
+};
+
+export const actionMap = {
+  attach_interface: t('Attach Interface'),
+  detach_interface: t('Detach Interface'),
+  attach_volume: t('Attach Volume'),
+  detach_volume: t('Detach Volume'),
+  create: t('Create'),
+  stop: t('Stop'),
+  reboot: t('Reboot'),
+  suspend: t('Suspend'),
+  resume: t('Resume'),
+  shelve: t('Shelve'),
+  unshelve: t('Unshelve'),
+  start: t('Start'),
+  lock: t('Lock'),
+  unlock: t('Unlock'),
+  pause: t('Pause'),
+  unpause: t('Unpause'),
+  createImage: t('Create Snapshot'),
+  resize: t('Extend Root Volume'),
+  confirmResize: t('Resize'),
+  'live-resize': t('Online Resize'),
+  extend_volume: t('Extend Volume'),
+  changePassword: t('Change Password'),
+  rebuild: t('Rebuild'),
+  migrate: t('Migrate'),
+  'live-migration': t('Live Migrate'),
+  delete: t('Delete'),
+  restore: t('Recover'),
+};
+
+export const actionEvent = {
+  compute_restore_instance: t('Resume Instance'),
+  compute_soft_delete_instance: t('Soft Delete Instance'),
+  compute_post_live_migration_at_destination: t(
+    'Live Migration At Destination'
+  ),
+  compute_pre_live_migration: t('Pre Live Migration'),
+  compute_live_migration: t('Compute Live Migration'),
+  compute_check_can_live_migrate_source: t('Check Can Live Migrate Source'),
+  compute_check_can_live_migrate_destination: t(
+    'Check Can Live Migrate Destination'
+  ),
+  conductor_live_migrate_instance: t('Conductor Live Migrate Instance'),
+  compute_confirm_resize: t('Resized'),
+  compute_finish_resize: t('Finish Resize'),
+  compute_resize_instance: t('Resize Instance'),
+  compute_prep_resize: t('Prep Resize'),
+  cold_migrate: t('Cold Migrate'),
+  conductor_migrate_server: t('Conductor Migrate Server'),
+  compute_rebuild_instance: t('Rebuild Instance'),
+  rebuild_server: t('Rebuild Instance'),
+  compute_set_admin_password: t('Set Admin Password'),
+  compute_extend_volume: t('Extend Volume'),
+  compute_live_resize_instance: t('Compute Live Resize Instance'),
+  conductor_live_resize_instance: t('Conductor Live Resize Instance'),
+  api_snapshot_instance: t('Snapshot Instance'),
+  api_lock: t('Lock'),
+  api_unlock: t('Unlock'),
+  compute_detach_volume: t('Detach Volume'),
+  compute_attach_volume: t('Attach Volume'),
+  compute_detach_interface: t('Detach Interface'),
+  compute_attach_interface: t('Attach Interface'),
+  compute__do_build_and_run_instance: t('Do Build And Run Instance'),
+  compute_suspend_instance: t('Compute Suspend Instance'),
+  compute_start_instance: t('Compute Start Instance'),
+  compute_stop_instance: t('Compute Stop Instance'),
+  compute_resume_instance: t('Compute Resume Instance'),
+  compute_pause_instance: t('Compute Pause Instance'),
+  compute_unpause_instance: t('Compute Unpause Instance'),
+  compute_reboot_instance: t('Compute Reboot Instance'),
+};
+
+function PopUpContent({ id, requestId }) {
+  const [event, setEvent] = useState([]);
+  const [isLoading, setLoaidng] = useState(false);
+
+  useEffect(() => {
+    (async function () {
+      setLoaidng(true);
+      const cb = await globalActionLogStore.fetchDetail({ id, requestId });
+      const { events = [] } = cb;
+      setEvent(events.reverse());
+      setLoaidng(false);
+    })();
+  }, []);
+  const columns = [
+    {
+      title: t('Operation Name'),
+      dataIndex: 'event',
+      key: 'event',
+      render: (value) => actionEvent[value],
+    },
+    {
+      title: t('Start Time'),
+      dataIndex: 'start_time',
+      key: 'start_time',
+      render: (value) => getLocalTimeStr(value),
+    },
+    {
+      title: t('End Time'),
+      dataIndex: 'finish_time',
+      key: 'finish_time',
+      render: (value) => (value ? getLocalTimeStr(value) : '-'),
+    },
+    {
+      title: t('Execution Result'),
+      dataIndex: 'result',
+      key: 'result',
+      render: (value) => (value === 'Success' ? t('Success') : '-'),
+    },
+  ];
+  const table = (
+    <Table
+      columns={columns}
+      dataSource={event}
+      pagination={false}
+      loading={isLoading}
+      size="small"
+      rowKey="event"
+    />
+  );
+  return table;
+}
+
+export const actionColumn = (self) => {
+  return [
+    {
+      title: t('Operation Name'),
+      dataIndex: 'action',
+      render: (value) => actionMap[value],
+    },
+    {
+      title: t('Project ID/Name'),
+      dataIndex: 'project_name',
+      isHideable: true,
+      hidden: !self.isAdminPage,
+    },
+    {
+      title: t('Operation Time'),
+      dataIndex: 'start_time',
+      valueRender: 'toLocalTimeMoment',
+    },
+    {
+      title: t('Request ID'),
+      dataIndex: 'request_id',
+      isHideable: true,
+      render: (value, record) => {
+        const content = (
+          <PopUpContent id={record.instance_uuid} requestId={value} />
+        );
+        return (
+          <>
+            {value && (
+              <Popover content={content} destroyTooltipOnHide trigger="click">
+                <span className="linkClass">{value}</span>
+              </Popover>
+            )}
+          </>
+        );
+      },
+    },
+    {
+      title: t('User ID'),
+      dataIndex: 'user_id',
+      isHideable: true,
+      hidden: !self.isAdminPage,
+      render: (value) => (
+        <Link to={`${self.getUrl('/identity/user')}/detail/${value}`}>
+          {value}
+        </Link>
+      ),
+    },
+  ];
 };

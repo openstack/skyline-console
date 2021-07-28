@@ -1,0 +1,22 @@
+import { observer, inject } from 'mobx-react';
+import Base from 'containers/List';
+import globalActionLogStore from 'stores/nova/action-log';
+import { actionColumn } from 'resources/instance';
+
+@inject('rootStore')
+@observer
+export default class ActionLog extends Base {
+  init() {
+    this.store = globalActionLogStore;
+  }
+
+  get rowKey() {
+    return 'request_id';
+  }
+
+  getColumns = () => actionColumn(this);
+
+  get hideSearch() {
+    return true;
+  }
+}
