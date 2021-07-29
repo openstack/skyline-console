@@ -79,13 +79,13 @@ export default class Migrate extends ModalAction {
       },
       {
         name: 'host',
-        label: t('Current Storage Pool'),
+        label: t('Current Storage Backend'),
         type: 'label',
         iconType: 'instance',
       },
       {
         name: 'pool',
-        label: t('Target Storage Pool'),
+        label: t('Target Storage Backend'),
         type: 'select-table',
         required: true,
         datas: this.pools,

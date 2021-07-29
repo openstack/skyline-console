@@ -198,6 +198,7 @@ export default class Instance extends Base {
         isHideable: true,
         render: lockRender,
         width: 80,
+        stringify: (value) => (value ? t('Locked') : t('Not locked')),
       },
       {
         title: t('Created At'),
