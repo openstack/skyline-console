@@ -16,20 +16,28 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { getValue } from 'utils/yaml';
+import { isString } from 'lodash';
 import styles from './index.less';
 import AceEditor from './AceEditor';
 
+const parseHtml = (value) => {
+  if (isString(value) && value.includes('<html>')) {
+    const reg = /<\/h1>[\r\n]([\s\S]*)<br \/><br \/>/;
+    const results = reg.exec(value);
+    if (results) {
+      return results[1];
+    }
+  }
+  return value;
+};
+
 const getCodeValue = (value, mode) => {
-  if (value instanceof String) {
-    return value;
+  if (isString(value)) {
+    return parseHtml(value);
   }
   Object.keys(value).forEach((key) => {
-    if (typeof value[key] === 'string' && value[key].indexOf('<html>') !== -1) {
-      const reg = /<\/h1>[\r\n]([\s\S]*)<br \/><br \/>/;
-      const results = reg.exec(value[key]);
-      if (results) {
-        value[key] = results[1];
-      }
+    if (isString(value[key])) {
+      value[key] = parseHtml(value[key]);
     }
   });
   if (mode === 'json') {

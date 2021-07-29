@@ -44,8 +44,9 @@ export default class DeleteAction extends ConfirmAction {
       return true;
     }
     return (
-      (this.notDeleted(item) && this.notProtected(item) && isOwner(item)) ||
-      this.isAdminPage
+      this.notDeleted(item) &&
+      this.notProtected(item) &&
+      (isOwner(item) || this.isAdminPage)
     );
   };
 
