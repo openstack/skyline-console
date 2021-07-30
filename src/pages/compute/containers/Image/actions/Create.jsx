@@ -61,6 +61,10 @@ class CreateForm extends FormAction {
     };
   }
 
+  get hasRequestCancelCallback() {
+    return true;
+  }
+
   static policy = ['add_image', 'upload_image'];
 
   static allowed() {
@@ -294,7 +298,8 @@ class CreateForm extends FormAction {
       body.owner = owner.selectedRowKeys[0];
     }
     const mems = visibility === 'shared' ? members.selectedRowKeys : [];
-    return this.store.create(body, file, mems);
+    const config = this.getUploadRequestConf();
+    return this.store.create(body, file, mems, config);
   };
 }
 

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import React, { Component } from 'react';
-import { Upload, Button, message } from 'antd';
+import { Upload, Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { isArray } from 'lodash';
 
@@ -36,19 +36,7 @@ export default class index extends Component {
     };
   }
 
-  onChange = (info) => {
-    if (info.file.status !== 'uploading') {
-      // eslint-disable-next-line no-console
-      console.log(info.file, info.fileList);
-    }
-    if (info.file.status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === 'error') {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  };
-
-  beforeUpload = (file) => {
+  onChange = (file) => {
     this.setState(
       {
         file,
@@ -60,6 +48,24 @@ export default class index extends Component {
         }
       }
     );
+  };
+
+  handleChange = (info) => {
+    const { file, fileList = [] } = info;
+    const { status } = file || {};
+    if (status === 'removed' && fileList.length === 0) {
+      this.onChange(null);
+    }
+    if (!status) {
+      this.onChange(file);
+    }
+    if (info.file.status !== 'uploading') {
+      // eslint-disable-next-line no-console
+      console.log(file, fileList);
+    }
+  };
+
+  beforeUpload = () => {
     return false;
   };
 
@@ -79,7 +85,7 @@ export default class index extends Component {
       headers: {
         authorization: 'authorization-text',
       },
-      onChange: this.onChange,
+      onChange: this.handleChange,
       progress: this.progress,
       beforeUpload: this.beforeUpload,
       fileList,

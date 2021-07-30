@@ -15,7 +15,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Modal, Button, Tooltip } from 'antd';
-import { isArray, isFunction } from 'lodash';
+import { isArray, isFunction, isBoolean } from 'lodash';
 import Confirm from 'components/Confirm';
 import PropTypes from 'prop-types';
 import Notify from 'components/Notify';
@@ -381,7 +381,7 @@ class ActionButton extends Component {
     return this.formRef.current.wrappedInstance.onClickSubmit(
       (success, fail) => {
         this.handleSubmitLoading();
-        this.onClickModalActionCancel();
+        this.onClickModalActionCancel(true);
         this.onCallback(success, fail);
       },
       () => {
@@ -391,7 +391,10 @@ class ActionButton extends Component {
     );
   };
 
-  onClickModalActionCancel = () => {
+  onClickModalActionCancel = (finish) => {
+    if (!isBoolean(finish)) {
+      this.formRef.current.wrappedInstance.onClickCancel();
+    }
     const { onCancelAction } = this.props;
     this.setState(
       {

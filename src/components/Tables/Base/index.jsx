@@ -161,7 +161,7 @@ export default class BaseTable extends React.Component {
   }
 
   get itemActions() {
-    const { itemActions } = this.props;
+    const { itemActions = {} } = this.props;
     return itemActions;
   }
 

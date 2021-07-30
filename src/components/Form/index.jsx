@@ -15,13 +15,13 @@
 import React from 'react';
 import { isFunction, has, isObject, isEmpty } from 'lodash';
 import Notify from 'components/Notify';
-import { Row, Col, Form, Button, Spin } from 'antd';
+import { Row, Col, Form, Button, Spin, Progress } from 'antd';
 import classnames from 'classnames';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { isAdminPage, firstUpperCase, unescapeHtml } from 'utils/index';
-
 import { parse } from 'qs';
 import FormItem from 'components/FormItem';
+import { CancelToken } from 'axios';
 import styles from './index.less';
 
 export default class BaseForm extends React.Component {
@@ -36,6 +36,7 @@ export default class BaseForm extends React.Component {
       // eslint-disable-next-line react/no-unused-state
       formData: {},
       isSubmitting: false,
+      percent: '',
     };
 
     this.values = {};
@@ -45,6 +46,12 @@ export default class BaseForm extends React.Component {
     this.tipRef = React.createRef();
     this.codeError = false;
     this.currentFormValue = {};
+    this.cancel = null;
+    this.cancelToken = this.hasRequestCancelCallback
+      ? new CancelToken((c) => {
+          this.cancel = c;
+        })
+      : null;
     this.init();
   }
 
@@ -231,6 +238,10 @@ export default class BaseForm extends React.Component {
       .map((it) => it.name);
   }
 
+  get hasRequestCancelCallback() {
+    return false;
+  }
+
   updateContext = (allFields) => {
     const { updateContext } = this.props;
     updateContext && updateContext(allFields);
@@ -314,7 +325,12 @@ export default class BaseForm extends React.Component {
     );
   };
 
-  onCancel = () => {};
+  onCancel = () => {
+    if (this.isSubmitting && this.cancel) {
+      this.cancel();
+      Notify.success(t('Cancel upload successfully.'));
+    }
+  };
 
   getChangedFieldsValue = (changedFields, name) => {
     const value = changedFields[name];
@@ -379,7 +395,10 @@ export default class BaseForm extends React.Component {
   };
 
   onClickCancel = () => {
-    this.routing.push(this.listUrl);
+    this.onCancel();
+    if (this.listUrl) {
+      this.routing.push(this.listUrl);
+    }
   };
 
   updateDefaultValue = () => {
@@ -395,6 +414,31 @@ export default class BaseForm extends React.Component {
         [key]: value,
       });
   };
+
+  onUploadProgress = (progressEvent) => {
+    const { loaded, total } = progressEvent;
+    const percent = Math.floor((loaded / total) * 100);
+    this.setState({
+      percent,
+    });
+  };
+
+  getUploadRequestConf = () => {
+    return {
+      onUploadProgress: this.onUploadProgress,
+      canToken: this.cancelToken,
+    };
+  };
+
+  checkContextValue() {
+    const { context } = this.props;
+    const names = this.nameForStateUpdate;
+    if (isEmpty(context)) {
+      return false;
+    }
+    const item = names.find((name) => has(context, name));
+    return !!item;
+  }
 
   updateState() {
     // save linkage data to state
@@ -416,16 +460,6 @@ export default class BaseForm extends React.Component {
     this.setState({
       ...newState,
     });
-  }
-
-  checkContextValue() {
-    const { context } = this.props;
-    const names = this.nameForStateUpdate;
-    if (isEmpty(context)) {
-      return false;
-    }
-    const item = names.find((name) => has(context, name));
-    return !!item;
   }
 
   init() {
@@ -544,6 +578,21 @@ export default class BaseForm extends React.Component {
     );
   }
 
+  renderSubmittingTip() {
+    if (!this.hasRequestCancelCallback) {
+      return;
+    }
+    const { percent } = this.state;
+    return (
+      <div className={styles['submit-tip']}>
+        {t('Upload progress')}
+        <div className={styles['progress-wrapper']}>
+          <Progress percent={percent} size="small" />
+        </div>
+      </div>
+    );
+  }
+
   render() {
     const wrapperPadding =
       this.listUrl || this.isStep || (this.isModal && this.tips)
@@ -564,7 +613,7 @@ export default class BaseForm extends React.Component {
       <div
         className={classnames(styles.wrapper, wrapperPadding, this.className)}
       >
-        <Spin spinning={this.isSubmitting}>
+        <Spin spinning={this.isSubmitting} tip={this.renderSubmittingTip()}>
           {tips}
           <div className={classnames(styles.form, 'sl-form')} style={formStyle}>
             {this.renderForms()}
