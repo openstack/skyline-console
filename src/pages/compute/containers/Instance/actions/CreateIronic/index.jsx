@@ -23,6 +23,7 @@ import classnames from 'classnames';
 import { isEmpty, isFinite } from 'lodash';
 import { getUserData, canCreateIronicByLicense } from 'resources/instance';
 import { ironicOriginEndpoint } from 'client/client/constants';
+import Notify from 'components/Notify';
 import styles from './index.less';
 import ConfirmStep from './ConfirmStep';
 import SystemStep from './SystemStep';
@@ -317,5 +318,29 @@ export default class CreateIronic extends StepAction {
       server,
     };
     return this.store.create(body);
+  };
+
+  onOk = () => {
+    const { data } = this.state;
+    this.values = data;
+    this.onSubmit(data).then(
+      () => {
+        this.routing.push(this.listUrl);
+        Notify.success(this.successText);
+      },
+      (err) => {
+        const { response: { data: responseData } = {} } = err;
+        const { forbidden: { message = '' } = {} } = responseData || {};
+        if (
+          message &&
+          typeof message === 'string' &&
+          message.indexOf('Quota exceeded') !== -1
+        ) {
+          Notify.error(t('Quota exceeded'));
+        } else {
+          Notify.errorWithDetail(responseData, this.errorText);
+        }
+      }
+    );
   };
 }

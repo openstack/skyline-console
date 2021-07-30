@@ -371,7 +371,8 @@ class StepCreate extends StepAction {
         Notify.success(this.successText);
       },
       (err) => {
-        const { data: { forbidden: { message = '' } = {} } = {} } = err;
+        const { response: { data: responseData } = {} } = err;
+        const { forbidden: { message = '' } = {} } = responseData || {};
         if (
           message &&
           isString(message) &&
@@ -379,7 +380,7 @@ class StepCreate extends StepAction {
         ) {
           Notify.error(t('Quota exceeded'));
         } else {
-          Notify.errorWithDetail(err, this.errorText);
+          Notify.errorWithDetail(responseData, this.errorText);
         }
       }
     );
