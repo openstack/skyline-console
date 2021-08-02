@@ -106,9 +106,24 @@ export default class Instance extends Base {
     return 'created_at';
   }
 
+  get batchActions() {
+    const { selectedRowKeys = [], data = [] } = this.store.list;
+    const slectedRows = selectedRowKeys.map((key) => {
+      return data.find((it) => it.id === key);
+    });
+    const allIronic = slectedRows.every((it) => isIronicInstance(it));
+    const noIronic = slectedRows.every((it) => !isIronicInstance(it));
+    if (allIronic) {
+      return actionConfigs.batchActionsForIronic;
+    }
+    if (noIronic) {
+      return actionConfigs.batchActions;
+    }
+    return actionConfigs.batchActionsForOthers;
+  }
+
   getCheckboxProps(record) {
     return {
-      disabled: isIronicInstance(record),
       name: record.name,
     };
   }
@@ -216,16 +231,24 @@ export default class Instance extends Base {
   };
 
   get actionConfigs() {
+    const { batchActions } = this;
     if (this.isAdminPage) {
-      return actionConfigs.adminActions;
+      return {
+        ...actionConfigs.adminActions,
+        batchActions,
+      };
     }
     if (this.isInFlavorDetailPage) {
       return {
         ...actionConfigs.actionConfigs,
         primaryActions: [],
+        batchActions,
       };
     }
-    return actionConfigs.actionConfigs;
+    return {
+      ...actionConfigs.actionConfigs,
+      batchActions,
+    };
   }
 
   get searchFilters() {

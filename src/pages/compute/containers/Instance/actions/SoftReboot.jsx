@@ -62,6 +62,7 @@ export default class SoftRebootAction extends ConfirmAction {
     const lockedItems = items.filter(
       (it) => !isNotLockedOrAdmin(it, this.isAdminPage)
     );
+    const ironicItems = items.filter((it) => isIronicInstance(it));
     const msgs = [];
     if (notActiveItems.length) {
       msgs.push(
@@ -74,6 +75,13 @@ export default class SoftRebootAction extends ConfirmAction {
       msgs.push(
         t('Instance "{ name }" is locked, can not soft reboot it.', {
           name: this.getName(lockedItems),
+        })
+      );
+    }
+    if (ironicItems.length) {
+      msgs.push(
+        t('Instance "{ name }" is ironic, can not soft reboot it.', {
+          name: this.getName(ironicItems),
         })
       );
     }

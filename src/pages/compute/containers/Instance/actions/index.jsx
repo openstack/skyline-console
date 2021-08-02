@@ -95,6 +95,10 @@ const batchActions = [
   Delete,
 ];
 
+const batchActionsForIronic = batchActions.slice(0, -2).concat(DeleteIronic);
+
+const batchActionsForOthers = batchActions.slice(0, -1);
+
 const actionConfigs = {
   rowActions: {
     firstAction: Console,
@@ -164,4 +168,10 @@ const adminActions = {
   primaryActions: [],
 };
 
-export default { actionConfigs, adminActions };
+export default {
+  actionConfigs,
+  adminActions,
+  batchActions,
+  batchActionsForIronic,
+  batchActionsForOthers,
+};
