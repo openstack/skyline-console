@@ -24,6 +24,7 @@ import {
   isEqual,
   isArray,
   has,
+  debounce,
 } from 'lodash';
 import { Menu, Icon, Dropdown, Button, Alert } from 'antd';
 import BaseTable from 'components/Tables/Base';
@@ -50,6 +51,7 @@ export default class BaseList extends React.Component {
       timeFilter: {},
       autoRefresh: true,
       newHints: false,
+      tableHeight: this.getTableHeight(),
     };
 
     this.dataTimerTransition = null;
@@ -67,6 +69,8 @@ export default class BaseList extends React.Component {
     this.warnMessage = '';
     this.inAction = false;
     this.inSelect = false;
+    this.setTableHeight = this.setTableHeight.bind(this);
+    this.debounceSetTableHeight = this.debounceSetTableHeight.call(this);
     this.init();
   }
 
@@ -83,6 +87,7 @@ export default class BaseList extends React.Component {
         this.handleFetch({ ...params, limit, page }, true);
       }
     });
+    window.addEventListener('resize', this.debounceSetTableHeight);
   }
 
   componentDidUpdate(prevProps) {
@@ -108,6 +113,7 @@ export default class BaseList extends React.Component {
     if (this.clearListUnmount) {
       this.store.clearData && this.store.clearData('listUnmount');
     }
+    window.removeEventListener('resize', this.debounceSetTableHeight);
   }
 
   get policy() {
@@ -243,7 +249,7 @@ export default class BaseList extends React.Component {
     return otherHeight;
   }
 
-  get tableHeight() {
+  getTableHeight() {
     const height = window.innerHeight;
     const id = this.params && this.params.id;
     if (id) {
@@ -521,6 +527,16 @@ export default class BaseList extends React.Component {
       return;
     }
     this.getData(params);
+  }
+
+  setTableHeight() {
+    const currentTableHeight = this.getTableHeight();
+    const { tableHeight } = this.state;
+    if (currentTableHeight !== tableHeight) {
+      this.setState({
+        tableHeight: currentTableHeight,
+      });
+    }
   }
 
   fetchListWithTry = async (func) => {
@@ -884,6 +900,10 @@ export default class BaseList extends React.Component {
 
   onCloseSuccessHint = () => {};
 
+  debounceSetTableHeight() {
+    return debounce(this.setTableHeight, 1000);
+  }
+
   // eslint-disable-next-line no-unused-vars
   updateHintsByOthers() {
     if (this.updateHints) {
@@ -965,7 +985,7 @@ export default class BaseList extends React.Component {
       if (this.pageSizeOptions) {
         pagination.pageSizeOptions = this.pageSizeOptions;
       }
-      const { autoRefresh } = this.state;
+      const { autoRefresh, tableHeight } = this.state;
 
       return (
         <BaseTable
@@ -986,7 +1006,7 @@ export default class BaseList extends React.Component {
           silentLoading={silent}
           rowKey={this.rowKey}
           selectedRowKeys={toJS(selectedRowKeys)}
-          scrollY={this.tableHeight}
+          scrollY={tableHeight}
           sortKey={sortKey}
           sortOrder={sortOrder}
           defaultSortKey={this.defaultSortKey}
