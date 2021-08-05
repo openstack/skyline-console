@@ -56,19 +56,23 @@ export const imageUsage = {
   heat: t('Application Template'),
 };
 
+export const imageFormatsConsole = {
+  raw: t('RAW - Raw disk image format'),
+  qcow2: t('QCOW2 - QEMU image format'),
+  iso: t('ISO - Optical disc image format'),
+};
+
+export const imageFormatsAdmin = {
+  aki: t('AKI - Amazon kernel image format'),
+  ari: t('ARI - Amazon ramdisk image format'),
+  ami: t('AMI - Amazon server image format'),
+  vdi: t('VDI - VirtualBox compatible image format'),
+  vhd: t('VHD - VirtualPC compatible image format'),
+  vmdk: t('VMDK - Hyper-V compatible image format'),
+};
 export const imageFormats = {
-  raw: t('Raw'),
-  qcow2: t('QCOW2 - QEMU Emulator'),
-  iso: t('ISO - Optical Disk Image'),
-  ova: t('OVA - Open Virtual Appliance'),
-  vdi: t('VDI - Virtual Disk Image'),
-  vhd: t('VHD - Virtual Hard Disk'),
-  vmdk: t('VMDK - Virtual Machine Disk'),
-  aki: t('AKI - Amazon Kernel Image'),
-  ami: t('AMI - Amazon Machine Image'),
-  ari: t('ARI - Amazon Ramdisk Image'),
-  docker: t('Docker'),
-  ploop: t('PLOOP - Virtuozzo/Parallels Loopback Disk'),
+  ...imageFormatsConsole,
+  ...imageFormatsAdmin,
 };
 
 export const imageProperties = {

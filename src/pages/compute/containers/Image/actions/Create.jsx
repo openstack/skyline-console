@@ -19,6 +19,7 @@ import {
   imageOS,
   imageUsage,
   imageFormats,
+  imageFormatsConsole,
   imageVisibility,
 } from 'resources/image';
 import { cpuPolicyList, cpuThreadPolicyList } from 'resources/flavor';
@@ -91,11 +92,18 @@ class CreateForm extends FormAction {
     };
   }
 
+  get imageFormats() {
+    if (this.isAdminPage) {
+      return imageFormats;
+    }
+    return imageFormatsConsole;
+  }
+
   get formatList() {
     // todo: filter formats by settings
-    return Object.keys(imageFormats).map((key) => ({
+    return Object.keys(this.imageFormats).map((key) => ({
       value: key,
-      label: imageFormats[key],
+      label: this.imageFormats[key],
     }));
   }
 
@@ -127,6 +135,28 @@ class CreateForm extends FormAction {
       });
   }
 
+  checkFileType = (file) => {
+    const types = Object.keys(this.imageFormats);
+    const { name } = file;
+    const suffix = name.substring(name.lastIndexOf('.') + 1);
+    const suffixHasType = types.some((it) => suffix.toLowerCase().includes(it));
+    return suffixHasType;
+  };
+
+  validateFile = (rule, value) => {
+    if (!value) {
+      return Promise.reject(t('Please select a file'));
+    }
+    if (!this.checkFileType(value)) {
+      return Promise.reject(
+        t('Please select a file with the suffix {types}', {
+          types: Object.keys(this.imageFormats).join(','),
+        })
+      );
+    }
+    return Promise.resolve();
+  };
+
   get formItems() {
     const { more, visibility } = this.state;
     const isShare = this.isAdminPage && visibility === 'shared';
@@ -153,6 +183,7 @@ class CreateForm extends FormAction {
         label: t('File'),
         type: 'upload',
         required: true,
+        validator: this.validateFile,
       },
       {
         name: 'disk_format',
