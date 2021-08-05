@@ -19,14 +19,10 @@ import globalProjectStore from 'stores/keystone/project';
 import { Card, Col, Row, List } from 'antd';
 import Progress from 'components/ProjectProgress';
 import classnames from 'classnames';
-import globalVolumeTypeStore from 'stores/cinder/volume-type';
+import { VolumeTypeStore } from 'stores/cinder/volume-type';
 import styles from './index.less';
 
-// const { Panel } = Collapse;
-
-@inject('rootStore')
-@observer
-export default class Quota extends React.Component {
+export class Quota extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -42,7 +38,7 @@ export default class Quota extends React.Component {
     await this.store.fetchProjectQuota({
       project_id,
     });
-    await globalVolumeTypeStore.fetchList();
+    await this.volumeTypeStore.fetchProjectVolumeTypes(project_id);
   };
 
   getItemInfo = (i) => {
@@ -53,6 +49,7 @@ export default class Quota extends React.Component {
 
   init() {
     this.store = globalProjectStore;
+    this.volumeTypeStore = new VolumeTypeStore();
   }
 
   renderVolumeTypes = (listData) => (
@@ -80,7 +77,7 @@ export default class Quota extends React.Component {
   render() {
     const { quota } = this.store;
     const volumeTypes = [];
-    globalVolumeTypeStore.list.data.forEach((item, index) => {
+    this.volumeTypeStore.projectVolumeTypes.forEach((item, index) => {
       volumeTypes.push({
         index,
         value: [
@@ -193,3 +190,5 @@ export default class Quota extends React.Component {
     );
   }
 }
+
+export default inject('rootStore')(observer(Quota));

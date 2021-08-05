@@ -24,9 +24,7 @@ const portTypeItems = portTypes.split(',').map((item) => ({
   value: item,
 }));
 
-@inject('rootStore')
-@observer
-export default class Edit extends ModalAction {
+export class Edit extends ModalAction {
   static id = 'edit-virtual-adapter';
 
   static title = t('Edit');
@@ -112,3 +110,5 @@ export default class Edit extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Edit));

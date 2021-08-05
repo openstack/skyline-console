@@ -40,9 +40,7 @@ const { isIpCidr, isIPv6Cidr, isIpv6 } = ipValidate;
 
 const { nameValidateWithoutChinese } = nameTypeValidate;
 
-@inject('rootStore')
-@observer
-export default class CreateNetwork extends ModalAction {
+export class CreateNetwork extends ModalAction {
   static id = 'create-network';
 
   static title = t('Create Network');
@@ -566,3 +564,5 @@ export default class CreateNetwork extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(CreateNetwork));

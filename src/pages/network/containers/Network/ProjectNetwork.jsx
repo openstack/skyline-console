@@ -19,9 +19,7 @@ import { NetworkStore } from 'stores/neutron/network';
 import { yesNoOptions } from 'utils/constants';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class ProjectNetwork extends Base {
+export class ProjectNetwork extends Base {
   init() {
     this.store = new NetworkStore();
     this.downloadStore = new NetworkStore();
@@ -85,3 +83,5 @@ export default class ProjectNetwork extends Base {
     return filters;
   }
 }
+
+export default inject('rootStore')(observer(ProjectNetwork));

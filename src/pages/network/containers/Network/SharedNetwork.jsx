@@ -19,9 +19,7 @@ import { NetworkStore } from 'stores/neutron/network';
 import { yesNoOptions } from 'utils/constants';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class SharedNetwork extends Base {
+export class SharedNetwork extends Base {
   init() {
     this.store = new NetworkStore();
     this.downloadStore = new NetworkStore();
@@ -88,3 +86,5 @@ export default class SharedNetwork extends Base {
     return filters;
   }
 }
+
+export default inject('rootStore')(observer(SharedNetwork));

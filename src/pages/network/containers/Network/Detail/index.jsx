@@ -22,9 +22,7 @@ import Subnets from './Subnets';
 import Detail from './Detail';
 import actionConfigs from '../actions';
 
-@inject('rootStore')
-@observer
-export default class NetworkDetail extends Base {
+export class NetworkDetail extends Base {
   get name() {
     return t('network');
   }
@@ -157,3 +155,5 @@ export default class NetworkDetail extends Base {
     this.store = new NetworkStore();
   }
 }
+
+export default inject('rootStore')(observer(NetworkDetail));

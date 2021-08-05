@@ -16,7 +16,7 @@ import { inject, observer } from 'mobx-react';
 import globalProjectStore from 'stores/keystone/project';
 import React from 'react';
 import { ModalAction } from 'containers/Action';
-import globalVolumeTypeStore from 'stores/cinder/volume-type';
+import { VolumeTypeStore } from 'stores/cinder/volume-type';
 
 export class QuotaManager extends ModalAction {
   static id = 'quota-management';
@@ -25,6 +25,7 @@ export class QuotaManager extends ModalAction {
 
   init() {
     this.store = globalProjectStore;
+    this.volumeTypeStore = new VolumeTypeStore();
     // this.getQuota();
   }
 
@@ -41,7 +42,7 @@ export class QuotaManager extends ModalAction {
     await this.store.fetchProjectQuota({
       project_id,
     });
-    await globalVolumeTypeStore.fetchList();
+    await this.volumeTypeStore.fetchProjectVolumeTypes(project_id);
   };
 
   get tips() {
@@ -63,9 +64,7 @@ export class QuotaManager extends ModalAction {
 
   get volumeTypesData() {
     const volumeTypes = [];
-    const {
-      list: { data },
-    } = globalVolumeTypeStore;
+    const { projectVolumeTypes: data = [] } = this.volumeTypeStore;
     if (data[0] && this.formRef.current) {
       data.forEach((item) => {
         volumeTypes.push.apply(volumeTypes, [
@@ -365,7 +364,7 @@ export class QuotaManager extends ModalAction {
     const { id: project_id } = this.item;
     const { more, cinder, networks, cinder_types, nova, security, ...others } =
       values;
-    const results = globalProjectStore.updateProjectQuota({
+    const results = this.store.updateProjectQuota({
       project_id,
       data: others,
     });
