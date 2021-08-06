@@ -90,3 +90,8 @@ lint:
 .PHONY: test
 test:
 	# yarn run test:unit
+
+
+.PHONY: clean
+clean:
+    rm -rf .venv node_modules dist

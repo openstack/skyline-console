@@ -1,17 +1,17 @@
-# 使用说明
+# Instructions
 
-简体中文 | [English](./en.md)
+[简体中文](./README-zh_CN.md)| English
 
-## 环境依赖
+## Prerequisites
 
 - `node`: lts/erbium (v12.\*)
 - `yarn`: 1.22.4 +
 
-## 本地环境搭建
+## Local Environment
 
-以 CentOS 为例
+Take CentOS as an example
 
-- 安装 nvm (nodejs 版本管理工具)
+- Install nvm ( version control system for nodejs )
 
   ```shell
   wget -P /root/ --tries=10 --retry-connrefused --waitretry=60 --no-dns-cache --no-cache  https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh
@@ -19,7 +19,7 @@
   . /root/.nvm/nvm.sh
   ```
 
-- 安装 nodejs
+- Install nodejs
 
   ```shell
   NODE_VERSION=erbium
@@ -28,7 +28,7 @@
   nvm use default
   ```
 
-- 验证 nodejs 和 npm 版本
+- Verify nodejs and npm versions
 
   ```shell
   node -v
@@ -37,27 +37,24 @@
   # 6.*.*
   ```
 
-- 安装 yarn
+- Install yarn
 
   ```shell
   npm install -g yarn
   ```
 
-- 安装项目依赖
-
-  在项目根目录下，`package.json`同级。
+- Install the project dependency under the root directory, with `package.json`in the same place.
 
   ```shell
   yarn install
   ```
 
-  等待安装完成即可。
+  After those steps, please just wait until the installation is complete.
 
-## 开发使用方法
+## Usage
 
-在项目根目录下，`package.json`同级。
+Under the root directory, with `package.json` in the same place.
 
-- `yarn run mock`: 使用[rap2](http://rap2.taobao.org/)工具 mock 接口
-- `yarn run dev`: 使用实际接口，需要将`webpack.dev.js`文件第 47 行的 "http://pre.xxx.com"
-  修改为实际地址
-- `yarn run build`: 构建打包，可将生成的 dist 目录的内容交给后端
+- `yarn run mock`: Use the mock interface of [rap2](http://rap2.taobao.org/)
+- `yarn run dev`: To use the actual interface，please change the "http://pre.xxx.com" in line 47 into the real address in file `webpack.dev.js`.
+- `yarn run build`: Build packages and then you can hand over the contents of the generated _dist_ directory to the back end.
