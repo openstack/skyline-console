@@ -10,6 +10,10 @@ export default class ActionLog extends Base {
     this.store = globalActionLogStore;
   }
 
+  get name() {
+    return t('Action Log');
+  }
+
   get rowKey() {
     return 'request_id';
   }
