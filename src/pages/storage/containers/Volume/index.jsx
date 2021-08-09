@@ -34,7 +34,7 @@ import actionConfigs from './actions';
 @observer
 export default class Volume extends Base {
   init() {
-    if (this.isInDetailPage) {
+    if (this.inDetailPage) {
       this.store = new InstanceVolumeStore();
       this.downloadStore = this.store;
     } else {
@@ -61,11 +61,11 @@ export default class Volume extends Base {
       return emptyActionConfig;
     }
     if (this.isAdminPage) {
-      return this.isInDetailPage
+      return this.inDetailPage
         ? actionConfigs.instanceDetailAdminConfig
         : actionConfigs.adminConfig;
     }
-    return this.isInDetailPage
+    return this.inDetailPage
       ? actionConfigs.instanceDetailConfig
       : actionConfigs.actionConfigs;
   }
@@ -75,7 +75,7 @@ export default class Volume extends Base {
   }
 
   get isFilterByBackend() {
-    return !this.isInDetailPage;
+    return !this.inDetailPage;
   }
 
   get isSortByBackend() {
@@ -194,7 +194,7 @@ export default class Volume extends Base {
         stringify: (value) => toLocalTimeFilter(value),
       },
     ];
-    if (this.isInDetailPage) {
+    if (this.inDetailPage) {
       return columns.filter((it) => it.dataIndex !== 'attachments');
     }
     return columns;
@@ -205,7 +205,7 @@ export default class Volume extends Base {
   }
 
   updateFetchParams = (params) => {
-    if (this.isInDetailPage) {
+    if (this.inDetailPage) {
       const { match, detail } = this.props;
       const { id } = match.params;
       const { tenant_id: projectId, name } = detail || {};

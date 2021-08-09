@@ -518,7 +518,7 @@
 
 ## 不需要复写的属性与函数
 
-- `isInDetailPage`
+- `inDetailPage`
   - 标识当前页面是否为详情页下的列表页
 - `location`
   - 页面的路由信息

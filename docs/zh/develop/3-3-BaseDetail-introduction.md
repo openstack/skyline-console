@@ -167,7 +167,7 @@
 
       ```javascript
       updateFetchParamsByPage = (params) => {
-        if (this.isInDetailPage) {
+        if (this.inDetailPage) {
           const { id, ...rest } = params;
           return {
             volume_id: id,

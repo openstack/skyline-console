@@ -15,12 +15,12 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { getRouterColumns, routerFitlers } from 'resources/router';
-import { RouterStore } from 'stores/neutron/router';
+import globalRouterStore, { RouterStore } from 'stores/neutron/router';
 import actionConfigs from './actions';
 
 export class Routes extends Base {
   init() {
-    this.store = new RouterStore();
+    this.store = this.inDetailPage ? new RouterStore() : globalRouterStore;
     this.downloadStore = new RouterStore();
   }
 

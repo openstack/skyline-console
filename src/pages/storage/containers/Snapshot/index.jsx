@@ -22,7 +22,7 @@ import actionConfigs from './actions';
 @observer
 export default class Snapshots extends Base {
   init() {
-    if (this.isInDetailPage) {
+    if (this.inDetailPage) {
       this.store = new SnapshotStore();
       this.downloadStore = this.store;
     } else {
@@ -68,7 +68,7 @@ export default class Snapshots extends Base {
 
   updateFetchParamsByPage = (params) => {
     const { tab, id, ...rest } = params;
-    if (this.isInDetailPage) {
+    if (this.inDetailPage) {
       return {
         ...rest,
         volume_id: id,

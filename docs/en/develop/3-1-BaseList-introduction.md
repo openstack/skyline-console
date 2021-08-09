@@ -518,7 +518,7 @@ English | [Chinese](../../zh/develop/3-1-BaseList-introduction.md)
 
 ## Properties and functions that do not need to be overridden
 
-- `isInDetailPage`
+- `inDetailPage`
   - Identifies whether the current page is a list page under the details page
 - `location`
   - Page routing information

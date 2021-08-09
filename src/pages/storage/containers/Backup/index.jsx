@@ -35,7 +35,7 @@ export default class Backup extends Base {
     if (this.isAdminPage) {
       return actionConfigsAdmin;
     }
-    if (this.isInDetailPage) {
+    if (this.inDetailPage) {
       return {
         ...actionConfigsProject,
         primaryActions: [CreateBackup],
@@ -61,7 +61,7 @@ export default class Backup extends Base {
   }
 
   init() {
-    this.store = globalBackupStore;
+    this.store = this.inDetailPage ? new BackupStore() : globalBackupStore;
     this.downloadStore = new BackupStore();
   }
 
@@ -108,7 +108,7 @@ export default class Backup extends Base {
         valueRender: 'sinceTime',
       },
     ];
-    if (this.isInDetailPage) {
+    if (this.inDetailPage) {
       return columns.filter((it) => it.dataIndex !== 'volume_name');
     }
     return columns;
@@ -124,7 +124,7 @@ export default class Backup extends Base {
   }
 
   updateFetchParamsByPage = (params) => {
-    if (this.isInDetailPage) {
+    if (this.inDetailPage) {
       const { id, ...rest } = params;
       return {
         volume_id: id,

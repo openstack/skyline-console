@@ -31,9 +31,9 @@ import actionConfigs from './actions';
 @observer
 export default class Instance extends Base {
   init() {
-    if (!this.isInDetailPage) {
+    if (!this.inDetailPage) {
       this.store = globalServerStore;
-    } else if (this.isInServerGroupDetailPage) {
+    } else if (this.inServerGroupDetailPage) {
       this.store = new ServerGroupInstanceStore();
     } else {
       this.store = new ServerStore();
@@ -56,8 +56,8 @@ export default class Instance extends Base {
     return t('instances');
   }
 
-  get isInServerGroupDetailPage() {
-    if (!this.isInDetailPage) {
+  get inServerGroupDetailPage() {
+    if (!this.inDetailPage) {
       return false;
     }
     const {
@@ -66,8 +66,8 @@ export default class Instance extends Base {
     return path.indexOf('server-group') >= 0;
   }
 
-  get isInHostDetailPage() {
-    if (!this.isInDetailPage) {
+  get inHostDetailPage() {
+    if (!this.inDetailPage) {
       return false;
     }
     const {
@@ -76,8 +76,8 @@ export default class Instance extends Base {
     return path.indexOf('hypervisors') >= 0;
   }
 
-  get isInFlavorDetailPage() {
-    if (!this.isInDetailPage) {
+  get inFlavorDetailPage() {
+    if (!this.inDetailPage) {
       return false;
     }
     const {
@@ -87,7 +87,7 @@ export default class Instance extends Base {
   }
 
   get isFilterByBackend() {
-    return !this.isInServerGroupDetailPage;
+    return !this.inServerGroupDetailPage;
   }
 
   get isSortByBackend() {
@@ -222,10 +222,10 @@ export default class Instance extends Base {
         valueRender: 'sinceTime',
       },
     ];
-    if (this.isInFlavorDetailPage) {
+    if (this.inFlavorDetailPage) {
       return columns.filter((it) => it.dataIndex !== 'flavor');
     }
-    if (this.isInHostDetailPage) {
+    if (this.inHostDetailPage) {
       return columns.filter((it) => it.dataIndex !== 'host');
     }
     return columns;
@@ -239,7 +239,7 @@ export default class Instance extends Base {
         batchActions,
       };
     }
-    if (this.isInFlavorDetailPage) {
+    if (this.inFlavorDetailPage) {
       return {
         ...actionConfigs.actionConfigs,
         primaryActions: [],
@@ -266,7 +266,7 @@ export default class Instance extends Base {
             },
           ]
         : []),
-      ...(this.isAdminPage && !this.isInHostDetailPage
+      ...(this.isAdminPage && !this.inHostDetailPage
         ? [
             {
               label: t('Host'),
@@ -281,11 +281,11 @@ export default class Instance extends Base {
   updateFetchParamsByPage = (params) => {
     const { id, ...rest } = params;
     const newParams = { ...rest };
-    if (this.isInHostDetailPage) {
+    if (this.inHostDetailPage) {
       const { detail: { service: { host } = {} } = {} } = this.props;
       newParams.host = host;
     }
-    if (this.isInFlavorDetailPage) {
+    if (this.inFlavorDetailPage) {
       const { detail: { id: flavor } = {} } = this.props;
       newParams.flavor_id = flavor;
     }
@@ -297,7 +297,7 @@ export default class Instance extends Base {
     const { members } = detail;
     const { id, ...rest } = params;
     const newParams = { ...rest };
-    if (this.isInServerGroupDetailPage) {
+    if (this.inServerGroupDetailPage) {
       newParams.members = members;
       newParams.isServerGroup = true;
     }

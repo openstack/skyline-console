@@ -91,7 +91,7 @@ export default class BaseList extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.isInDetailPage) {
+    if (this.inDetailPage) {
       const { detail: oldDetail } = prevProps;
       const { detail: newDetail } = this.props;
       if (
@@ -132,7 +132,7 @@ export default class BaseList extends React.Component {
     return '';
   }
 
-  get isInDetailPage() {
+  get inDetailPage() {
     const { detail } = this.props;
     return !!detail;
   }
@@ -798,7 +798,7 @@ export default class BaseList extends React.Component {
       silent: !force,
     };
     this.handleFetch(params, true);
-    if (this.isInDetailPage && force && this.shouldRefreshDetail) {
+    if (this.inDetailPage && force && this.shouldRefreshDetail) {
       this.refreshDetailData();
     }
   };

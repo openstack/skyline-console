@@ -45,7 +45,7 @@ export default class FloatingIps extends Base {
   }
 
   async getData({ silent, ...params } = {}) {
-    if (this.isInDetailPage) {
+    if (this.inDetailPage) {
       silent && (this.list.silent = true);
       const { detail: { addresses = [] } = {} } = this.props;
       const ips = [];
@@ -96,7 +96,7 @@ export default class FloatingIps extends Base {
     if (this.isRecycleBinDetail) {
       return emptyActionConfig;
     }
-    if (this.isInDetailPage) {
+    if (this.inDetailPage) {
       return this.isAdminPage
         ? actionConfigs.instanceDetailAdminConfigs
         : actionConfigs.instanceDetailConfigs;

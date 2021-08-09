@@ -27,7 +27,7 @@ import actionConfigs from './actions';
 @observer
 export default class VirtualAdapter extends Base {
   init() {
-    this.store = this.isInDetailPage
+    this.store = this.inDetailPage
       ? new VirtualAdapterStore()
       : globalVirtualAdapterStore;
     this.downloadStore = new VirtualAdapterStore();
@@ -108,7 +108,7 @@ export default class VirtualAdapter extends Base {
     if (this.isAdminPage) {
       return actionConfigs.adminActions;
     }
-    if (this.isInDetailPage) {
+    if (this.inDetailPage) {
       if (this.isInstanceDetail) {
         return actionConfigs.actionConfigsInDetail;
       }

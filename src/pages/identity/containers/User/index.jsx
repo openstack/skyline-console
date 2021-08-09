@@ -14,16 +14,18 @@
 
 import React from 'react';
 import { observer, inject } from 'mobx-react';
-import { Badge } from 'antd';
+import { Badge, Table, Popover } from 'antd';
 import Base from 'containers/List';
-import globalUserStore from 'stores/keystone/user';
+import globalUserStore, { UserStore } from 'stores/keystone/user';
 import { yesNoOptions, emptyActionConfig } from 'utils/constants';
+import { Link } from 'react-router-dom';
+import { FileTextOutlined } from '@ant-design/icons';
 import actionConfigs from './actions';
 import actionConfigsInDomain from './actionsInDomain';
 
 export class User extends Base {
   init() {
-    this.store = globalUserStore;
+    this.store = this.inDetailPage ? new UserStore() : globalUserStore;
     this.getDomains();
   }
 
@@ -43,11 +45,39 @@ export class User extends Base {
     return t('users');
   }
 
-  getColumns = () => {
+  get inDomainDetail() {
     const {
       match: { path },
     } = this.props;
-    const components = [
+    return this.inDetailPage && path.includes('domain-admin/detail');
+  }
+
+  get inProjectDetail() {
+    const {
+      match: { path },
+    } = this.props;
+    return this.inDetailPage && path.includes('project-admin/detail');
+  }
+
+  get inUserGroupDetail() {
+    const {
+      match: { path },
+    } = this.props;
+    return this.inDetailPage && path.includes('identity/user-group');
+  }
+
+  get inRoleDetail() {
+    const {
+      match: { path },
+    } = this.props;
+    return this.inDetailPage && path.includes('identity/role-admin');
+  }
+
+  getColumns = () => {
+    // const {
+    //   match: { path },
+    // } = this.props;
+    const columns = [
       {
         title: t('User ID/Name'),
         dataIndex: 'name',
@@ -55,13 +85,18 @@ export class User extends Base {
       },
       {
         title: t('Project Scope'),
-        dataIndex: 'projectScope',
+        dataIndex: 'projects',
         isHideable: true,
-        render: (projectScope) => {
-          if (projectScope && projectScope[0]) {
-            return projectScope.map((it) => <div>{it}</div>);
+        render: (value) => {
+          if (value && value.length) {
+            return value.map((it) => {
+              const { id, name } = it;
+              const url = `/identity/project-admin/detail/${id}`;
+              return <Link to={url}>{name}</Link>;
+            });
           }
         },
+        stringify: (value) => value.map((it) => it.name).join('; '),
       },
       {
         title: t('Roles'),
@@ -94,15 +129,75 @@ export class User extends Base {
         },
       },
       {
+        title: t('Project Num'),
+        dataIndex: 'projectItems',
+        render: (_, record) => {
+          const { project_num } = record;
+          if (project_num === 0) {
+            return <Badge color="red" text={project_num} />;
+          }
+          const { projectItems = [] } = record;
+          const projectColumns = [
+            {
+              title: t('Project'),
+              dataIndex: 'name',
+              key: 'id',
+              render: (value, data) => {
+                const url = `/identity/project-admin/detail/${data.id}`;
+                return <Link to={url}>{value}</Link>;
+              },
+            },
+            {
+              title: t('Role'),
+              dataIndex: 'roles',
+              key: 'roles',
+              render: (value) => {
+                if (!value) {
+                  return '-';
+                }
+                return value.map((it) => it.name).join(', ');
+              },
+            },
+          ];
+          const table = (
+            <Table
+              columns={projectColumns}
+              dataSource={projectItems}
+              pagination={false}
+              rowKey="id"
+              size="small"
+            />
+          );
+          return (
+            <>
+              <Badge color="green" text={project_num} />
+              <Popover
+                getPopupContainer={(node) => node.parentNode}
+                placement="right"
+                content={table}
+                destroyTooltipOnHide
+              >
+                <FileTextOutlined />
+              </Popover>
+            </>
+          );
+        },
+        stringify: (value, record) => {
+          const { project_num, projectItems = [] } = record;
+          const projectRoleStr = projectItems
+            .map((it) => {
+              const { name, roles } = it;
+              const roleStr = roles.map((role) => role.name).join(', ');
+              return `${name}: ${roleStr}`;
+            })
+            .join('\n');
+          return `${project_num}\n${projectRoleStr}`;
+        },
+      },
+      {
         title: t('Email'),
         dataIndex: 'email',
         isHideable: true,
-        // render: (name) => {
-        //   if (name) {
-        //     return <Link>{name}</Link>;
-        //   }
-        //   return '-';
-        // },
       },
       {
         title: t('phone'),
@@ -122,35 +217,55 @@ export class User extends Base {
         stringify: (val) => (val ? t('Yes') : t('No')),
       },
     ];
-
-    if (!path.includes('role-admin/detail')) {
-      components.splice(1, 1);
+    if (!this.inDetailPage) {
+      return columns.filter(
+        (it) =>
+          !['project_roles', 'projects', 'project_num'].includes(it.dataIndex)
+      );
     }
-    if (!path.includes('user-admin')) {
-      components.splice(5, 1);
+    if (this.inUserGroupDetail) {
+      return columns.filter(
+        (it) =>
+          !['project_roles', 'projects', 'projectItems'].includes(it.dataIndex)
+      );
     }
-    if (!path.includes('project-admin')) {
-      components.splice(2, 1);
+    if (this.inDomainDetail) {
+      return columns.filter(
+        (it) =>
+          ![
+            'project_roles',
+            'projects',
+            'domain_name',
+            'projectItems',
+          ].includes(it.dataIndex)
+      );
     }
-    return components;
+    if (this.inRoleDetail) {
+      return columns.filter(
+        (it) =>
+          !['project_roles', 'project_num', 'projectItems'].includes(
+            it.dataIndex
+          )
+      );
+    }
+    if (this.inProjectDetail) {
+      return columns.filter(
+        (it) => !['projects', 'projectItems'].includes(it.dataIndex)
+      );
+    }
+    return columns;
   };
 
   get actionConfigs() {
-    const {
-      match: { path },
-    } = this.props;
-    if (
-      path.includes('identity/user') &&
-      !path.includes('identity/user-group')
-    ) {
-      return this.isAdminPage
-        ? actionConfigs.adminConfigs
-        : actionConfigs.actionConfigs;
-    }
-    if (path.includes('domain-admin/detail')) {
+    if (this.inDomainDetail) {
       return this.isAdminPage
         ? actionConfigsInDomain.adminConfigs
         : actionConfigsInDomain.actionConfigs;
+    }
+    if (!this.inDetailPage) {
+      return this.isAdminPage
+        ? actionConfigs.adminConfigs
+        : actionConfigs.actionConfigs;
     }
     return emptyActionConfig;
   }
@@ -175,22 +290,21 @@ export class User extends Base {
 
   async getData({ silent, ...params } = {}) {
     const { match } = this.props;
-    const { path } = match;
     const newParams = { ...params };
     silent && (this.list.silent = true);
-    if (path.includes('domain-admin/detail')) {
+    if (this.inDomainDetail) {
       const { id } = match.params;
       newParams.domainId = id;
       await this.store.fetchListInDomainDetail(newParams);
-    } else if (path.includes('project-admin/detail')) {
+    } else if (this.inProjectDetail) {
       const { id } = match.params;
       newParams.projectId = id;
       await this.store.fetchListInProjectDetail(newParams);
-    } else if (path.includes('user-group-admin/detail')) {
+    } else if (this.inUserGroupDetail) {
       const { id } = match.params;
       newParams.groupId = id;
       await this.store.fetchListInGroupDetail(newParams);
-    } else if (path.includes('role-admin/detail')) {
+    } else if (this.inRoleDetail) {
       const { id } = match.params;
       newParams.roleId = id;
       await this.store.fetchListInRoleDetail(newParams);

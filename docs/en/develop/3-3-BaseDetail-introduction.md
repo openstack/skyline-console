@@ -167,7 +167,7 @@ English | [Chinese](../../zh/develop/3-3-BaseDetail-introduction.md)
 
       ```javascript
       updateFetchParamsByPage = (params) => {
-        if (this.isInDetailPage) {
+        if (this.inDetailPage) {
           const { id, ...rest } = params;
           return {
             volume_id: id,

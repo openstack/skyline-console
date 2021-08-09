@@ -59,10 +59,9 @@ export class CreateIronic extends StepAction {
   static allowed(_, containerProps) {
     const { isAdminPage = false } = containerProps;
     const { match } = containerProps || {};
-    const isInServerGroupDetailPage =
-      match.path.indexOf('/compute/server') >= 0;
+    const inServerGroupDetailPage = match.path.indexOf('/compute/server') >= 0;
     return Promise.resolve(
-      !isInServerGroupDetailPage && !isAdminPage && canCreateIronicByLicense()
+      !inServerGroupDetailPage && !isAdminPage && canCreateIronicByLicense()
     );
   }
 
