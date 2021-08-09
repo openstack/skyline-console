@@ -45,8 +45,9 @@ export default class AddNetwork extends ModalAction {
     return t('add network');
   }
 
-  get messageHasItemName() {
-    return false;
+  get instanceName() {
+    const { network: { selectedRows = [] } = {} } = this.values;
+    return selectedRows.map((it) => it.name).join(', ');
   }
 
   get detail() {
@@ -63,7 +64,7 @@ export default class AddNetwork extends ModalAction {
     if (!agentId) {
       return;
     }
-    await this.store.fetchList({ agentId });
+    await this.store.fetchList({ agentId, all_projects: true });
     this.updateDefaultValue();
   }
 
@@ -77,7 +78,7 @@ export default class AddNetwork extends ModalAction {
 
   disabledFunc = (record) => {
     const { id } = record;
-    return this.dhcpNetworks.indexOf(id) >= 0;
+    return this.dhcpNetworks.includes(id);
   };
 
   get defaultValue() {
@@ -137,6 +138,7 @@ export default class AddNetwork extends ModalAction {
         disabledFunc: this.disabledFunc,
         extraParams: { all_projects: true },
         required: true,
+        isMulti: true,
         filterParams: this.getSearchFilters(),
         columns: this.getColumns(),
         ...networkSortProps,
@@ -145,11 +147,11 @@ export default class AddNetwork extends ModalAction {
   }
 
   onSubmit = (values) => {
-    const { network } = values;
-    const body = {
-      network_id: network.selectedRowKeys[0],
-    };
+    const { network: { selectedRowKeys = [] } = {} } = values;
+    const data = selectedRowKeys.map((it) => ({
+      network_id: it,
+    }));
     const { agentId } = this;
-    return this.store.add({ agentId }, body);
+    return this.store.add({ agentId }, data);
   };
 }

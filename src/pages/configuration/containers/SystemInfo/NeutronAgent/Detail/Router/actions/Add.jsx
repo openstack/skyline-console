@@ -48,8 +48,9 @@ export default class AddRouter extends ModalAction {
     return t('add router');
   }
 
-  get messageHasItemName() {
-    return false;
+  get instanceName() {
+    const { router: { selectedRows = [] } = {} } = this.values;
+    return selectedRows.map((it) => it.name).join(', ');
   }
 
   get detail() {
@@ -66,7 +67,7 @@ export default class AddRouter extends ModalAction {
     if (!agentId) {
       return;
     }
-    await this.store.fetchList({ agentId });
+    await this.store.fetchList({ agentId, all_projects: true });
     this.updateDefaultValue();
   }
 
@@ -123,6 +124,7 @@ export default class AddRouter extends ModalAction {
         disabledFunc: this.disabledFunc,
         extraParams: { all_projects: true },
         required: true,
+        isMulti: true,
         filterParams: this.getFilters(),
         columns: this.getColumns(),
         ...routerSortProps,
@@ -131,11 +133,11 @@ export default class AddRouter extends ModalAction {
   }
 
   onSubmit = (values) => {
-    const { router } = values;
-    const body = {
-      router_id: router.selectedRowKeys[0],
-    };
+    const { router: { selectedRowKeys = [] } = {} } = values;
+    const data = selectedRowKeys.map((it) => ({
+      router_id: it,
+    }));
     const { agentId } = this;
-    return this.store.add({ agentId }, body);
+    return this.store.add({ agentId }, data);
   };
 }

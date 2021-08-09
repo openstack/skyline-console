@@ -280,13 +280,15 @@ export default class BaseForm extends React.Component {
           callback(true, false);
         }
         if (response instanceof Array) {
-          const instanceNameArr = this.instanceName.split(', ');
+          const instanceNameArr = this.instanceName
+            ? this.instanceName.split(', ')
+            : null;
           const failedNames = response
             .map((it, idx) => {
               if (it.status === 'rejected') {
                 return {
                   reason: it.reason,
-                  name: instanceNameArr[idx],
+                  name: instanceNameArr ? instanceNameArr[idx] : '',
                 };
               }
               return null;
