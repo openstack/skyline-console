@@ -33,7 +33,8 @@ export default class Inspect extends ConfirmAction {
 
   getItemId = (data) => data.uuid;
 
-  allowedCheckFunc = (item) => item.provision_state === 'manageable';
+  allowedCheckFunc = (item) =>
+    item.provision_state === 'manageable' && item.driver !== 'ipmi';
 
   confirmContext = (data) => {
     const name = this.getName(data);

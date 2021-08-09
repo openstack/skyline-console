@@ -20,24 +20,32 @@ import { isString } from 'lodash';
 import styles from './index.less';
 import AceEditor from './AceEditor';
 
-const parseHtml = (value) => {
-  if (isString(value) && value.includes('<html>')) {
+const parseValue = (value) => {
+  if (!isString(value)) {
+    return value;
+  }
+  if (value.includes('<html>')) {
     const reg = /<\/h1>[\r\n]([\s\S]*)<br \/><br \/>/;
     const results = reg.exec(value);
     if (results) {
       return results[1];
     }
   }
-  return value;
+  try {
+    const result = JSON.parse(value);
+    return result;
+  } catch (e) {
+    return value;
+  }
 };
 
 const getCodeValue = (value, mode) => {
   if (isString(value)) {
-    return parseHtml(value);
+    return parseValue(value);
   }
   Object.keys(value).forEach((key) => {
     if (isString(value[key])) {
-      value[key] = parseHtml(value[key]);
+      value[key] = parseValue(value[key]);
     }
   });
   if (mode === 'json') {
