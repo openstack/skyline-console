@@ -108,6 +108,7 @@ export const getSelfColumns = (self) => [
     dataIndex: 'icmpTypeCode',
     valueRender: 'noValue',
     isHideable: true,
+    splitColumnForDownload: false,
   },
 ];
 

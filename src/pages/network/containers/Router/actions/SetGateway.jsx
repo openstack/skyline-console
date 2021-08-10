@@ -18,9 +18,7 @@ import { NetworkStore } from 'stores/neutron/network';
 import { ModalAction } from 'containers/Action';
 import { networkStatus, networkSortProps } from 'resources/network';
 
-@inject('rootStore')
-@observer
-export default class SetGateway extends ModalAction {
+export class SetGateway extends ModalAction {
   static id = 'set-gateway';
 
   static title = t('Open External Gateway');
@@ -100,3 +98,5 @@ export default class SetGateway extends ModalAction {
     return this.store.edit({ id }, body);
   };
 }
+
+export default inject('rootStore')(observer(SetGateway));
