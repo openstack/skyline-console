@@ -33,7 +33,7 @@ export default class ManageMetadata extends ModalAction {
   }
 
   get name() {
-    return t('Manage host');
+    return t('Manage Metadata');
   }
 
   static get modalSize() {
