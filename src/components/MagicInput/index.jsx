@@ -39,28 +39,36 @@ const filterParam = PropTypes.shape({
   isTime: PropTypes.bool,
 });
 
-// eslint-disable-next-line no-unused-vars
-const getTags = (props) => {
-  // eslint-disable-next-line no-shadow
-  const { initValue, filterParams } = props;
-  if (!initValue) {
-    return [];
+export const getTags = (initValue, filterParams) => {
+  if (!initValue || isEmpty(initValue)) {
+    return {};
   }
   if (isEmpty(filterParams)) {
-    return [];
+    return {};
   }
   const tags = [];
+  const checkValues = [];
   Object.keys(initValue).forEach((key) => {
     const item = filterParams.find((it) => it.name === key);
     if (item) {
+      const { options = [] } = item;
       const value = initValue[key];
+      if (options.length) {
+        const optionItem = options.find((op) => op.key === value);
+        if (optionItem && optionItem.isQuick) {
+          checkValues.push(`${item.name}--${value}`);
+        }
+      }
       tags.push({
         value,
         filter: item,
       });
     }
   });
-  return tags;
+  return {
+    tags,
+    checkValues,
+  };
 };
 
 class MagicInput extends PureComponent {
@@ -221,37 +229,20 @@ class MagicInput extends PureComponent {
   };
 
   initTags(props) {
-    // eslint-disable-next-line no-shadow
     const { initValue, filterParams } = props;
-    if (!initValue) {
+    const { tags = [], checkValues } = getTags(initValue, filterParams);
+    if (!tags.length) {
       return;
     }
-    if (isEmpty(filterParams)) {
-      return;
-    }
-    const tags = [];
-    const checkValues = [];
-    Object.keys(initValue).forEach((key) => {
-      const item = filterParams.find((it) => it.name === key);
-      if (item) {
-        const { options = [] } = item;
-        const value = initValue[key];
-        if (options.length) {
-          const optionItem = options.find((op) => op.key === value);
-          if (optionItem && optionItem.isQuick) {
-            checkValues.push(`${item.name}--${value}`);
-          }
-        }
-        tags.push({
-          value,
-          filter: item,
-        });
+    this.setState(
+      {
+        tags,
+        checkValues,
+      },
+      () => {
+        this.onTagsChange();
       }
-    });
-    this.setState({
-      tags,
-      checkValues,
-    });
+    );
   }
 
   renderKey() {
