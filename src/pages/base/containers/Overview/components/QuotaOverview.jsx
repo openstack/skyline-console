@@ -27,7 +27,7 @@ const colors = {
   full: { color: '#E8684A', text: t('Full') },
 };
 
-class QuotaOverview extends Component {
+export class QuotaOverview extends Component {
   constructor(props) {
     super(props);
     this.state = {

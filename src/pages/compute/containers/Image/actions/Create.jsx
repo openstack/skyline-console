@@ -27,7 +27,7 @@ import { NoSetValue, getOptionsWithNoset, getOptions } from 'utils/index';
 import { ProjectStore } from 'stores/keystone/project';
 import { projectTableOptions } from 'resources/project';
 
-class CreateForm extends FormAction {
+export class CreateForm extends FormAction {
   init() {
     this.store = globalImageStore;
     this.projectStore = new ProjectStore();

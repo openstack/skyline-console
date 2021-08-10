@@ -18,9 +18,7 @@ import globalSecurityGroupRuleStore from 'stores/neutron/security-rule';
 import { filterParams, getSelfColumns } from 'resources/security-group-rule';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class Rule extends Base {
+export class Rule extends Base {
   init() {
     this.store = globalSecurityGroupRuleStore;
   }
@@ -55,3 +53,5 @@ export default class Rule extends Base {
     this.list.silent = false;
   }
 }
+
+export default inject('rootStore')(observer(Rule));

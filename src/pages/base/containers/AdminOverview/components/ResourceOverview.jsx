@@ -81,7 +81,7 @@ const volumeColors = {
   other: { color: '#F6B23D', text: t('Others') },
 };
 
-class virtualResourceInfo extends Component {
+export class virtualResourceInfo extends Component {
   componentDidMount() {
     this.props.store.getVirtualResource();
   }
