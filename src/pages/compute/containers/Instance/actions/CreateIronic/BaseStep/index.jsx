@@ -72,10 +72,10 @@ export class BaseStep extends Base {
   get images() {
     const { imageTab } = this.state;
     const { image } = this.locationParams;
-    const datas = image
+    const data = image
       ? [toJS(this.imageStore.detail)]
       : this.imageStore.list.data || [];
-    const images = datas.filter((it) => {
+    const images = data.filter((it) => {
       if (!canImageCreateIronicInstance(it)) {
         return false;
       }
@@ -188,7 +188,7 @@ export class BaseStep extends Base {
         name: 'image',
         label: t('Operating System'),
         type: 'select-table',
-        datas: this.images,
+        data: this.images,
         isLoading: imageLoading,
         isMulti: false,
         filterParams: [

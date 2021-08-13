@@ -113,7 +113,7 @@ export default class Manage extends ModalAction {
         name: 'associations',
         label: t('Resource Types'),
         type: 'select-table',
-        datas: this.resourceTypes,
+        data: this.resourceTypes,
         isLoading: this.store.resourceTypeLoading,
         isMulti: true,
         filterParams: [

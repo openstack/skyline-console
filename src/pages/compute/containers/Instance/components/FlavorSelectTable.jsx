@@ -334,7 +334,7 @@ export class FlavorSelectTable extends Component {
       this.settingStore.list.isLoading && this.flavorStore.list.isLoading;
     const props = {
       columns: this.columns,
-      datas: this.flavors,
+      data: this.flavors,
       tableHeader: this.renderTableHeander(),
       isLoading,
       filterParams: [

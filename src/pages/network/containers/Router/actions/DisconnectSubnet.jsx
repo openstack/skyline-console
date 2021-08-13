@@ -103,7 +103,7 @@ export default class DisconnectSubnet extends ModalAction {
         name: 'subnet',
         label: t('Subnet'),
         type: 'select-table',
-        datas: subnets,
+        data: subnets,
         isLoading: subnetLoading,
         required: true,
         filterParams: [

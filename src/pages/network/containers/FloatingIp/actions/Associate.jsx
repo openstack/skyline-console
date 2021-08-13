@@ -259,7 +259,7 @@ export class Associate extends ModalAction {
               label: t('Instance IP'),
               type: 'select-table',
               required: true,
-              datas: instanceFixedIPs,
+              data: instanceFixedIPs,
               isLoading: instanceLoading,
               isMulti: false,
               filterParams: [
@@ -300,8 +300,8 @@ export class Associate extends ModalAction {
               label: t('Load Balancer'),
               type: 'select-table',
               required: true,
-              // datas: this.instances,
-              datas: [],
+              // data: this.instances,
+              data: [],
               isMulti: false,
               filterParams: [
                 {

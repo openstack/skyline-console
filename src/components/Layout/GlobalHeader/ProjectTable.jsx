@@ -119,7 +119,7 @@ export default class ProjectSelect extends ModalAction {
         name: 'project',
         label: t('Owned Project'),
         type: 'select-table',
-        datas: this.projects,
+        data: this.projects,
         isLoading: globalUserStore.userProjects.isLoading,
         disabledFunc: (record) => !record.enabled,
         filterParams: [

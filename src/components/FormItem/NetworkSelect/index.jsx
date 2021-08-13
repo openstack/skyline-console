@@ -214,11 +214,11 @@ export default class NetworkSelect extends React.Component {
   getNetworkOptions = () => {
     const { networks } = this.state;
     const { optionsByIndex, index } = this.props;
-    let datas = [...networks];
+    let data = [...networks];
     if (optionsByIndex && index < networks.length) {
-      datas = [networks[index]];
+      data = [networks[index]];
     }
-    return datas.map((it) => ({
+    return data.map((it) => ({
       label: it.name,
       value: it.id,
     }));

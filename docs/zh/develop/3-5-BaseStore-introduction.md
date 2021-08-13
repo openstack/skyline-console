@@ -99,8 +99,8 @@
           return items;
         }
         const { id } = filters;
-        const datas = id ? items.filter((it) => it.volume_id === id) : items;
-        return datas;
+        const data = id ? items.filter((it) => it.volume_id === id) : items;
+        return data;
       }
       ```
 

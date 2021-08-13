@@ -122,9 +122,9 @@ export function getPortFormItem(device_owner) {
           title: t('Fixed IPs'),
           dataIndex: 'fixed_ips',
           sorter: false,
-          render: (datas) => (
+          render: (data) => (
             <>
-              {datas.map((d, idx) => (
+              {data.map((d, idx) => (
                 <div key={`ip_address_${idx}`}>{d.ip_address}</div>
               ))}
             </>
@@ -150,7 +150,7 @@ export function getPortFormItem(device_owner) {
       type: 'select-table',
       rowKey: 'fixed_ip_address',
       required: true,
-      datas: portFixedIPs,
+      data: portFixedIPs,
       isLoading: fixedIpLoading,
       isMulti: false,
       filterParams: [

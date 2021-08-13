@@ -46,10 +46,10 @@ export class AggregateStore extends Base {
   }
 
   @action
-  manageMetadata({ id, metadatas }) {
+  manageMetadata({ id, metadata }) {
     const body = {
       set_metadata: {
-        metadata: metadatas,
+        metadata,
       },
     };
     return this.submitting(this.client.action(id, body));

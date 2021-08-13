@@ -120,10 +120,10 @@ export class ServerStore extends Base {
     if (members && isServerGroup && members.length === 0) {
       return [];
     }
-    const datas = !this.fetchListByLimit
+    const data = !this.fetchListByLimit
       ? await this.requestListAll(params)
       : await this.requestListAllByLimit(params, 100);
-    return datas;
+    return data;
   }
 
   async listDidFetch(newData, allProjects, filters) {

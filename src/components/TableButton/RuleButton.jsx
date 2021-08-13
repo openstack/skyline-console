@@ -26,14 +26,14 @@ export default class RuleButton extends Component {
   }
 
   render() {
-    const { item: { security_group_rules: datas = [] } = {} } = this.props;
+    const { item: { security_group_rules: data = [] } = {} } = this.props;
     const configs = {
       buttonType: 'link',
       title: t('Security Group Rules'),
       buttonText: t('View Rules'),
       modalSize: 'middle',
       columns: getSelfColumns(this),
-      datas,
+      data,
     };
     return <TableButton {...configs} style={{ paddingLeft: 0 }} />;
   }

@@ -815,16 +815,16 @@ export default class BaseList extends React.Component {
     const { timeFilter = {} } = this.state;
     const { id, tab, ...rest } = filters;
     const newFilters = rest;
-    let datas = [];
+    let items = [];
     if (this.isFilterByBackend) {
-      datas = toJS(data);
+      items = toJS(data);
     } else {
-      datas = (toJS(data) || []).filter((it) =>
+      items = (toJS(data) || []).filter((it) =>
         this.filterData(it, toJS(newFilters), toJS(timeFilter))
       );
-      this.updateList({ total: datas.length });
+      this.updateList({ total: items.length });
     }
-    const hasTransData = datas.some((item) =>
+    const hasTransData = items.some((item) =>
       this.itemInTransitionFunction(item)
     );
     if (hasTransData) {
@@ -832,9 +832,9 @@ export default class BaseList extends React.Component {
     } else {
       this.setRefreshdataTimerAuto();
     }
-    this.updateHintsByDatas(datas);
+    this.updateHintsByData(items);
     this.setTableHeight();
-    return datas;
+    return items;
   };
 
   getFilters = () => {
@@ -999,7 +999,7 @@ export default class BaseList extends React.Component {
   }
 
   // eslint-disable-next-line no-unused-vars
-  updateHintsByDatas(datas) {}
+  updateHintsByData(data) {}
 
   init() {
     this.store = { list: {} };

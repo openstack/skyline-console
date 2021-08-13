@@ -287,14 +287,14 @@ export default class BaseStore {
   async requestListAllByLimit(params, limit) {
     let marker = '';
     let hasNext = true;
-    let datas = [];
+    let data = [];
     while (hasNext) {
       // eslint-disable-next-line no-await-in-loop
       const result = await this.requestListByMarker(params, limit, marker);
-      const data = this.getListDataFromResult(result);
-      datas = [...datas, ...data];
+      const items = this.getListDataFromResult(result);
+      data = [...data, ...items];
       if (data.length >= limit) {
-        marker = this.parseMarker(data, result, datas);
+        marker = this.parseMarker(items, result, data);
         if (!marker) {
           // eslint-disable-next-line no-console
           console.log('parse marker error!');
@@ -304,7 +304,7 @@ export default class BaseStore {
         hasNext = false;
       }
     }
-    return datas;
+    return data;
   }
 
   async requestListAll(params, originParams) {
@@ -313,16 +313,16 @@ export default class BaseStore {
   }
 
   async requestList(params, originParams) {
-    const datas = !this.fetchListByLimit
+    const data = !this.fetchListByLimit
       ? await this.requestListAll(params, originParams)
       : await this.requestListAllByLimit(params, 100);
-    return datas;
+    return data;
   }
 
   // eslint-disable-next-line no-unused-vars
   async requestListByPage(params, page, originParams) {
-    const datas = await this.listFetchByClient(params, originParams);
-    return datas;
+    const data = await this.listFetchByClient(params, originParams);
+    return data;
   }
 
   // eslint-disable-next-line no-unused-vars
@@ -412,15 +412,13 @@ export default class BaseStore {
   }
 
   // eslint-disable-next-line no-unused-vars
-  parseMarker(datas, result, allDatas) {
-    return datas.length === 0
-      ? ''
-      : get(datas[datas.length - 1], this.markerKey);
+  parseMarker(data, result, allData) {
+    return data.length === 0 ? '' : get(data[data.length - 1], this.markerKey);
   }
 
   @action
-  updateMarker(datas, page, result, allDatas) {
-    const marker = this.parseMarker(datas, result, allDatas);
+  updateMarker(data, page, result, allData) {
+    const marker = this.parseMarker(data, result, allData);
     if (page === 1) {
       this.list.markers = [marker];
     } else {
@@ -438,7 +436,7 @@ export default class BaseStore {
     this.listResponseKey ? get(result, this.listResponseKey, []) : result;
 
   // eslint-disable-next-line no-unused-vars
-  async getCountForPage(newParams, all_projects, newDatas) {
+  async getCountForPage(newParams, all_projects, newData) {
     return {};
   }
 

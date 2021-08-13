@@ -340,7 +340,7 @@ class ActionButton extends Component {
       );
       const results = allSettled(promises);
       results.then((res) => {
-        const failedDatas = res
+        const failedData = res
           .map((it, idx) => {
             if (it.status === 'rejected') {
               return {
@@ -351,14 +351,14 @@ class ActionButton extends Component {
             return null;
           })
           .filter((it) => !!it);
-        if (failedDatas.length === 0) {
+        if (failedData.length === 0) {
           this.onShowSuccess(data, afterSubmit);
           return resolve();
         }
-        failedDatas.forEach((it) => {
+        failedData.forEach((it) => {
           this.onShowError(it.data, it.reason);
         });
-        if (failedDatas.length === data.length) {
+        if (failedData.length === data.length) {
           return reject();
         }
         return resolve();

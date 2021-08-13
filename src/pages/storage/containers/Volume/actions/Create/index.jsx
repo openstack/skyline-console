@@ -358,7 +358,7 @@ export class Create extends FormAction {
         name: 'image',
         label: t('Operating System'),
         type: 'select-table',
-        datas: this.images,
+        data: this.images,
         isLoading: this.imageStore.list.isLoading,
         required: this.sourceTypeIsImage,
         isMulti: false,
@@ -432,7 +432,7 @@ export class Create extends FormAction {
           'The volume type needs to set "multiattach" in the metadata to support shared volume attributes.'
         ),
         ...volumeTypeSelectProps,
-        datas: this.volumeTypes,
+        data: this.volumeTypes,
         isLoading: this.volumeTypeStore.list.isLoading,
         required: true,
         extra: this.getVolumeTypeExtra(),

@@ -119,7 +119,7 @@ export default class AssociateFip extends ModalAction {
         label: t('Fixed IP'),
         type: 'select-table',
         required: true,
-        datas: this.ports,
+        data: this.ports,
         isLoading: portLoading,
         disabledFunc: (record) => !record.available,
         onChange: this.handleFixedIPChange,
@@ -150,7 +150,7 @@ export default class AssociateFip extends ModalAction {
         label: t('Floating Ip Address'),
         type: 'select-table',
         required: true,
-        datas: canAssociateFloatingIPs,
+        data: canAssociateFloatingIPs,
         isLoading: fipLoading,
         isMulti: false,
         filterParams: [

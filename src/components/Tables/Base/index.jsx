@@ -781,7 +781,7 @@ export default class BaseTable extends React.Component {
   renderDownload() {
     const {
       pagination,
-      data: datas,
+      data,
       columns,
       resourceName,
       getDownloadData,
@@ -795,7 +795,7 @@ export default class BaseTable extends React.Component {
     const { total } = pagination;
     const downloadColumns = this.filterDownloadColumns(columns);
     const props = {
-      datas,
+      data,
       columns: downloadColumns,
       total,
       getValueRenderFunc,

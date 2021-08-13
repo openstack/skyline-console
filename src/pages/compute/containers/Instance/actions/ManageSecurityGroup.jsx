@@ -141,7 +141,7 @@ export default class ManageSecurityGroup extends ModalAction {
         label: t('Virtual Adapter'),
         type: 'select-table',
         required: true,
-        datas: this.ports,
+        data: this.ports,
         isLoading:
           this.portStore.list.isLoading && this.portStoreOrigin.list.isLoading,
         isMulti: false,

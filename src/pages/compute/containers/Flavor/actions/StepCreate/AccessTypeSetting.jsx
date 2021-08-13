@@ -71,7 +71,7 @@ export default class AccessTypeSetting extends Base {
         isMulti: true,
         hidden: !showChoose,
         required: showChoose,
-        datas: this.projects,
+        data: this.projects,
         isLoading: this.projectStore.list.isLoading,
         ...projectTableOptions,
       },

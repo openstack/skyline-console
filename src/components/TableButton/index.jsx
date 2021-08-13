@@ -22,7 +22,7 @@ export default class TableButton extends Component {
     return {
       title: PropTypes.string.isRequired,
       buttonType: PropTypes.string,
-      datas: PropTypes.array,
+      data: PropTypes.array,
       columns: PropTypes.array,
       modalSize: PropTypes.string,
       className: PropTypes.func,
@@ -33,7 +33,7 @@ export default class TableButton extends Component {
 
   static defaultProps = {
     buttonType: 'link',
-    datas: [],
+    data: [],
     columns: [],
     modalSize: 'middle',
     className: '',
@@ -42,8 +42,8 @@ export default class TableButton extends Component {
   };
 
   renderTable = () => {
-    const { datas, columns } = this.props;
-    return <Table columns={columns} dataSource={datas} />;
+    const { data, columns } = this.props;
+    return <Table columns={columns} dataSource={data} />;
   };
 
   render() {

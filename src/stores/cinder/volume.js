@@ -200,12 +200,12 @@ export class VolumeStore extends Base {
 
   @action
   async fetchVolumeTypes(params) {
-    const datas = await globalVolumeTypeStore.fetchList(params);
-    this.volumeTypes = datas.map((it) => ({
+    const data = await globalVolumeTypeStore.fetchList(params);
+    this.volumeTypes = data.map((it) => ({
       label: it.name,
       value: it.id,
     }));
-    this.originalvolumeTypes = datas || [];
+    this.originalvolumeTypes = data || [];
   }
 }
 

@@ -33,10 +33,10 @@ export default class MetadataTransfer extends Component {
     this.state = this.initState(props);
   }
 
-  get metadatas() {
+  get metadata() {
     const self = this;
-    const { metadatas } = this.props;
-    return (metadatas || []).map((item) => {
+    const { metadata } = this.props;
+    return (metadata || []).map((item) => {
       const {
         detail: { properties = {} } = {},
         namespace,
@@ -104,18 +104,18 @@ export default class MetadataTransfer extends Component {
   }
 
   initState = (props) => {
-    const { value, metadatas = [] } = props;
+    const { value, metadata = [] } = props;
     const targetKeys = [];
     const checkedKeys = [];
     const selectedKeysTable = [];
     const values = {};
     Object.keys(value).forEach((key) => {
-      const metadata = metadatas.find((it) => {
+      const item = metadata.find((it) => {
         const { detail: { properties = {} } = {} } = it;
         return Object.keys(properties).indexOf(key) >= 0;
       });
-      if (metadata) {
-        const { namespace } = metadata;
+      if (item) {
+        const { namespace } = item;
         const newKey = `${namespace}--${key}`;
         targetKeys.push(newKey);
         values[newKey] = value[key];
@@ -224,24 +224,24 @@ export default class MetadataTransfer extends Component {
     return null;
   };
 
-  flatten = (aList = [], datas = []) => {
+  flatten = (aList = [], data = []) => {
     aList.forEach((item) => {
       const { children = [] } = item;
-      datas.push(item);
-      this.flatten(children, datas);
+      data.push(item);
+      this.flatten(children, data);
     });
   };
 
   getTreeData = () => {
-    const datas = [];
-    this.flatten(this.metadatas, datas);
-    return datas;
+    const data = [];
+    this.flatten(this.metadata, data);
+    return data;
   };
 
   getTreeDataWithoutFather = () => {
-    const datas = [];
-    this.flatten(this.metadatas, datas);
-    return datas.filter((it) => it.key.indexOf('--') >= 0);
+    const data = [];
+    this.flatten(this.metadata, data);
+    return data.filter((it) => it.key.indexOf('--') >= 0);
   };
 
   getAllTreeKeys = () => {
@@ -282,7 +282,7 @@ export default class MetadataTransfer extends Component {
         blockNode
         checkable
         checkedKeys={checkedKeys}
-        treeData={this.generateTree(this.metadatas, targetKeys)}
+        treeData={this.generateTree(this.metadata, targetKeys)}
         onCheck={this.onCheckTree(onItemSelect)}
       />
     );
@@ -339,7 +339,7 @@ export default class MetadataTransfer extends Component {
 
   getChildKeys = (namespace) => {
     const keys = [];
-    this.metadatas.forEach((item) => {
+    this.metadata.forEach((item) => {
       (item.children || []).forEach((child) => {
         if (child.namespace === namespace) {
           keys.push(child.key);
@@ -402,7 +402,7 @@ export default class MetadataTransfer extends Component {
     }
     const namespace = tmp[0];
     const realKey = tmp[1];
-    const father = this.metadatas.find((it) => it.key === namespace);
+    const father = this.metadata.find((it) => it.key === namespace);
     if (!father) {
       return;
     }

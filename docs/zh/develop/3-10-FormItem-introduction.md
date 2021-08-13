@@ -329,7 +329,7 @@
   - `select-table`
     - 带有选择操作的表格
     - `isMulti`，是否是多选，默认为`false`
-    - `datas`，数据源，使用前端分页时使用
+    - `data`，数据源，使用前端分页时使用
     - `columns`，表格列的配置，配置方式同`BaseList`
     - `filterParams`，搜索项的配置
     - `pageSize`，每页条目数量，默认为 5
@@ -392,7 +392,7 @@
 
     - 以创建云硬盘选择镜像`src/pages/storage/containers/Volume/actions/Create/index.jsx`为例
       - 这是带有 Tab 标签的表格，默认展示第一个 tab，tab 切换时会更新数据源
-      - 数据使用前端分页的方式获取，直接配置`datas`即可
+      - 数据使用前端分页的方式获取，直接配置`data`即可
       - 是单选
       - 配置了已选标签为`已选 镜像`
 
@@ -401,7 +401,7 @@
         name: 'image',
         label: t('Operating System'),
         type: 'select-table',
-        datas: this.images,
+        data: this.images,
         required: sourceTypesIsImage,
         isMulti: false,
         hidden: !sourceTypesIsImage,
@@ -966,7 +966,7 @@
         name: 'systems',
         label: t('Metadata'),
         type: 'metadata-transfer',
-        metadatas: this.metadatas,
+        metadata: this.metadata,
         validator: (rule, value) => {
           if (this.hasNoValue(value)) {
             return Promise.reject(t('Please input value'));

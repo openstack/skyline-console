@@ -73,8 +73,8 @@ export default class Create extends ModalAction {
   }
 
   get fips() {
-    const datas = toJS(this.fipStore.list.data) || [];
-    return datas.map((it) => ({
+    const data = toJS(this.fipStore.list.data) || [];
+    return data.map((it) => ({
       label: it.ip,
       value: it.ip,
     }));
@@ -82,8 +82,8 @@ export default class Create extends ModalAction {
 
   get subnets() {
     // todo: filter subnets
-    const datas = toJS(this.networkStore.subnets) || [];
-    return datas.map((it) => ({
+    const data = toJS(this.networkStore.subnets) || [];
+    return data.map((it) => ({
       label: `${it.name}<${it.cidr}>`,
       value: JSON.stringify({
         deviceId: it.id,

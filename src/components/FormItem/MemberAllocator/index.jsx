@@ -53,7 +53,7 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
         <SelectTable
           maxSelectedCount={-1}
           isLoading={isLoading}
-          datas={ports}
+          data={ports}
           columns={[
             {
               title: t('ID/Name'),

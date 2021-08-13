@@ -41,7 +41,7 @@ export default class TabSelectTable extends Component {
     onChange && onChange(this.state);
   };
 
-  getMultiSelected = (keys, rows, datas) => {
+  getMultiSelected = (keys, rows, data) => {
     const { selectedRowKeys: keysInState, selectedRows: rowsInState } =
       this.state;
     const addKeys = keys.filter((key) => keysInState.indexOf(key) < 0);
@@ -53,8 +53,8 @@ export default class TabSelectTable extends Component {
       if (!notInKeys) {
         return false;
       }
-      const data = datas.find((it) => it.key === key || it.id === key);
-      return !!data;
+      const item = data.find((it) => it.key === key || it.id === key);
+      return !!item;
     });
     const newKeys = [...keysInState, ...addKeys].filter(
       (key) => removeKeys.indexOf(key) < 0
@@ -67,10 +67,10 @@ export default class TabSelectTable extends Component {
   };
 
   onSelectTableChange = (value) => {
-    const { selectedRowKeys, selectedRows, datas } = value;
+    const { selectedRowKeys, selectedRows, data } = value;
     const { isMulti = false } = this.props;
     const [newKeys, newRows] = isMulti
-      ? this.getMultiSelected(selectedRowKeys, selectedRows, datas)
+      ? this.getMultiSelected(selectedRowKeys, selectedRows, data)
       : [selectedRowKeys, selectedRows];
     const newState = {
       selectedRowKeys: newKeys,

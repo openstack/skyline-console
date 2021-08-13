@@ -141,7 +141,7 @@ export default class BaseDetail extends Base {
 
   get validateCard() {
     const { validate = {} } = this.detailData || {};
-    const datas = Object.keys(validate).map((key) => ({
+    const data = Object.keys(validate).map((key) => ({
       value: this.detailData[`${key}_interface`],
       name: key,
       ...validate[key],
@@ -166,7 +166,7 @@ export default class BaseDetail extends Base {
         width: 300,
       },
     ];
-    const content = <SimpleTable columns={columns} datas={datas} />;
+    const content = <SimpleTable columns={columns} data={data} />;
     const options = [
       {
         label: '',

@@ -30,8 +30,8 @@ export default class NodeInfo extends Base {
   }
 
   get kernelImages() {
-    const datas = this.imageStore.list.data || [];
-    return datas
+    const data = this.imageStore.list.data || [];
+    return data
       .filter((it) => it.disk_format === 'aki')
       .map((it) => ({
         value: it.id,
@@ -40,8 +40,8 @@ export default class NodeInfo extends Base {
   }
 
   get ramdiskImages() {
-    const datas = this.imageStore.list.data || [];
-    return datas
+    const data = this.imageStore.list.data || [];
+    return data
       .filter((it) => it.disk_format === 'ari')
       .map((it) => ({
         value: it.id,

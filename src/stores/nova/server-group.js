@@ -29,8 +29,8 @@ export class ServerGroupStore extends Base {
     offset: marker,
   });
 
-  parseMarker(datas, result, allDatas) {
-    return allDatas.length;
+  parseMarker(data, result, allData) {
+    return allData.length;
   }
 }
 

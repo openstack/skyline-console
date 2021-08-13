@@ -122,7 +122,7 @@ class Right extends Component {
     if (hasError) {
       return (
         <NotFound
-          title={t('datas')}
+          title={t('data')}
           link={this.getUrl('/base/overview')}
           codeError
         />
@@ -133,7 +133,7 @@ class Right extends Component {
       // if (currentRoutes.length === 0) {
       //   return (
       //     <NotFound
-      //       title={t('datas')}
+      //       title={t('data')}
       //       link={this.getUrl('/base/overview')}
       //     />
       //   );
@@ -149,7 +149,7 @@ class Right extends Component {
       console.log(e);
       return (
         <NotFound
-          title={t('datas')}
+          title={t('data')}
           link={this.getUrl('/base/overview')}
           codeError
         />

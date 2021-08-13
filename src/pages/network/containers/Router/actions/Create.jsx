@@ -115,7 +115,7 @@ export class Create extends ModalAction {
         name: 'hints',
         label: t('Availability Zone Hints'),
         type: 'select-table',
-        datas: this.aZones,
+        data: this.aZones,
         isLoading: globalNeutronStore.zoneLoading,
         isMulti: true,
         filterParams: [

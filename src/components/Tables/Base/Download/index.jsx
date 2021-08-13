@@ -27,7 +27,7 @@ import styles from './index.less';
 export default class index extends Component {
   static propTypes = {
     columns: PropTypes.array,
-    datas: PropTypes.array,
+    data: PropTypes.array,
     total: PropTypes.number,
     getValueRenderFunc: PropTypes.func.isRequired,
     resourceName: PropTypes.string,
@@ -37,7 +37,7 @@ export default class index extends Component {
 
   static defaultProps = {
     columns: [],
-    datas: [],
+    data: [],
     total: 0,
     totalMax: 10000,
     resourceName: '',
@@ -123,11 +123,11 @@ export default class index extends Component {
   };
 
   getDownloadData() {
-    const { columns, datas } = this.props;
-    return datas.map((data) => {
+    const { columns, data } = this.props;
+    return data.map((d) => {
       const item = {};
       columns.forEach((it) => {
-        const value = this.getColumnData(data, it);
+        const value = this.getColumnData(d, it);
         item[it.dataIndex] = value;
       });
       return item;
@@ -265,12 +265,12 @@ export default class index extends Component {
     }
     const { getData } = this.props;
     const items = await getData({ page: current, limit: this.pageSize });
-    const newDatas = [...allData, ...items];
-    const isFinish = items.length < this.pageSize || newDatas.length >= counts;
+    const newData = [...allData, ...items];
+    const isFinish = items.length < this.pageSize || newData.length >= counts;
     if (isFinish) {
       this.setState(
         {
-          allData: newDatas,
+          allData: newData,
           percent: 100,
         },
         () => {
@@ -280,7 +280,7 @@ export default class index extends Component {
     } else {
       let percent = 0;
       if (counts) {
-        percent = Math.floor((newDatas.length / counts) * 100);
+        percent = Math.floor((newData.length / counts) * 100);
       } else {
         percent = current * 10;
       }
@@ -289,7 +289,7 @@ export default class index extends Component {
       }
       this.setState(
         {
-          allData: newDatas,
+          allData: newData,
           current: current + 1,
           percent,
         },
@@ -363,8 +363,8 @@ export default class index extends Component {
   }
 
   render() {
-    const { total, datas } = this.props;
-    if (total === datas.length) {
+    const { total, data } = this.props;
+    if (total === data.length) {
       return this.renderDownloadCurrent();
     }
     return this.renderDownloadAll();

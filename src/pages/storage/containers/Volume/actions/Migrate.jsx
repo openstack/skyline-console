@@ -88,7 +88,7 @@ export default class Migrate extends ModalAction {
         label: t('Target Storage Backend'),
         type: 'select-table',
         required: true,
-        datas: this.pools,
+        data: this.pools,
         isLoading: this.poolStore.list.isLoading,
         disabledFunc: this.disableFunc,
         rowKey: 'name',

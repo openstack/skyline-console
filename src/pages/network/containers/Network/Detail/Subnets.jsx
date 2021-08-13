@@ -33,16 +33,16 @@ export default class Subnets extends Base {
     const { data, filters = {}, timeFilter = {} } = this.list;
     const { id, tab, ...rest } = filters;
     const newFilters = rest;
-    let datas = [];
+    let items = [];
     if (this.isFilterByBackend) {
-      datas = toJS(data);
+      items = toJS(data);
     } else {
-      datas = (toJS(data) || []).filter((it) =>
+      items = (toJS(data) || []).filter((it) =>
         this.filterData(it, toJS(newFilters), toJS(timeFilter))
       );
-      this.updateList({ total: datas.length });
+      this.updateList({ total: items.length });
     }
-    const hasTransData = datas.some((item) =>
+    const hasTransData = items.some((item) =>
       this.itemInTransitionFunction(item)
     );
     if (hasTransData) {
@@ -50,7 +50,7 @@ export default class Subnets extends Base {
     } else {
       this.setRefreshdataTimerAuto();
     }
-    const ret = datas.map((item) => {
+    const ret = items.map((item) => {
       const usageDetail = this.subnet_ip_availability.find(
         (i) => i.subnet_id === item.id
       );

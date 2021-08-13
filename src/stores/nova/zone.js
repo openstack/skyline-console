@@ -39,11 +39,11 @@ export class AvailabilityZoneStore extends Base {
   }
 
   async listDidFetch(items) {
-    const datas = [];
+    const data = [];
     items.forEach((item) => {
       const { hosts } = item;
       if (isNull(hosts)) {
-        datas.push(item);
+        data.push(item);
       } else {
         const newHost = {};
         Object.keys(hosts).forEach((key) => {
@@ -53,21 +53,21 @@ export class AvailabilityZoneStore extends Base {
           }
         });
         if (!isEmpty(newHost)) {
-          datas.push({
+          data.push({
             ...item,
             host: newHost,
           });
         }
       }
     });
-    return datas;
+    return data;
   }
 
   @action
   async fetchListWithoutDetail() {
     const result = await this.client.list();
-    const datas = result[this.listResponseKey];
-    this.list.data = datas.map(this.mapper);
+    const data = result[this.listResponseKey];
+    this.list.data = data.map(this.mapper);
   }
 }
 

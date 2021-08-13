@@ -117,7 +117,7 @@ export default class LiveMigrate extends ModalAction {
         name: 'host',
         label: t('Target Compute Host'),
         type: 'select-table',
-        datas: this.hypervisors,
+        data: this.hypervisors,
         isLoading:
           this.hypervisorStore.list.isLoading &&
           globalComputeHostStore.list.isLoading,

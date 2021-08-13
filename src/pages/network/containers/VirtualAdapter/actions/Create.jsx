@@ -265,7 +265,7 @@ export class CreateAction extends ModalAction {
         tips: t(
           'The security group is similar to the firewall function for setting up network access control, or you can go to the console and create a new security group. (Note: The security group you selected will work on all virtual LANS on the instances.)'
         ),
-        datas: this.securityGroups,
+        data: this.securityGroups,
         isLoading: this.securityGroupStore.list.isLoading,
         extraParams: { project_id: this.currentProjectId },
         backendPageStore: this.securityGroupStore,

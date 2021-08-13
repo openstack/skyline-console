@@ -133,8 +133,8 @@ export class RouterStore extends Base {
     if (!isFirewall) {
       return items;
     }
-    const datas = await this.listDidFetchFirewall(items);
-    return datas;
+    const data = await this.listDidFetchFirewall(items);
+    return data;
   }
 
   async listDidFetchFirewall(items) {

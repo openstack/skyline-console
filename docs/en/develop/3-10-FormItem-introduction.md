@@ -331,7 +331,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
   - `select-table`
     - Table with selected actions
     - `isMulti`, whether is multi, default is `false`
-    - `datas`, data source, using when front end paging
+    - `data`, data source, using when front end paging
     - `columns`, table columns configuration, the same as `BaseList`
     - `filterParams`, search configuration
     - `pageSize`, items number per page, default `5`
@@ -394,7 +394,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
 
     - Take create volumn as an example `src/pages/storage/containers/Volume/actions/Create/index.jsx` :
       - This is a table with tab, default to show the first tab, when switching tab, data source will change
-      - Data is acquired by the front end paging, just directly configure the `datas`
+      - Data is acquired by the front end paging, just directly configure the `data`
       - Not multi selected
       - Configure selected label to `Image`
 
@@ -403,7 +403,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
         name: 'image',
         label: t('Operating System'),
         type: 'select-table',
-        datas: this.images,
+        data: this.images,
         required: sourceTypesIsImage,
         isMulti: false,
         hidden: !sourceTypesIsImage,
@@ -796,7 +796,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
     - `dataSource`, data source for choose
     - `showSearch`, whether to show search input
     - `oriTargetKeys`, default selected
-    - `disabled`, whether to disable selecte datas in left table, default is `false`
+    - `disabled`, whether to disable selecte data in left table, default is `false`
     - Take edit system role as an example `src/pages/identity/containers/User/actions/SystemRole.jsx` :
       - Left is the project name list
       - Right is the project name and role list of project
@@ -968,7 +968,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
         name: 'systems',
         label: t('Metadata'),
         type: 'metadata-transfer',
-        metadatas: this.metadatas,
+        metadata: this.metadata,
         validator: (rule, value) => {
           if (this.hasNoValue(value)) {
             return Promise.reject(t('Please input value'));

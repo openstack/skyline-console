@@ -69,7 +69,7 @@ export default class DisAssociateFip extends ModalAction {
         label: t('Floating IP'),
         type: 'select-table',
         required: true,
-        datas: associatedDetail,
+        data: associatedDetail,
         isMulti: false,
         tagKey: 'floating_ip_address',
         filterParams: [

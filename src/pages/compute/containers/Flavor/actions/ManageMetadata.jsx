@@ -29,7 +29,7 @@ export default class ManageMetadata extends ModalAction {
   init() {
     this.store = globalFlavorStore;
     this.metadataStore = new MetadataStore();
-    this.getMetadatas();
+    this.getMetadata();
   }
 
   get name() {
@@ -59,7 +59,7 @@ export default class ManageMetadata extends ModalAction {
 
   static allowed = () => Promise.resolve(true);
 
-  async getMetadatas() {
+  async getMetadata() {
     const resouceType = 'OS::Nova::Flavor';
     await this.metadataStore.fetchList({
       manage: true,
@@ -68,12 +68,12 @@ export default class ManageMetadata extends ModalAction {
     this.updateDefaultValue();
   }
 
-  get metadatas() {
+  get metadata() {
     return this.metadataStore.list.data || [];
   }
 
   checkKeyInSystem = (key) => {
-    const metadata = this.metadatas.find((it) => {
+    const metadata = this.metadata.find((it) => {
       const { detail: { properties = {} } = {} } = it;
       return Object.keys(properties).indexOf(key) >= 0;
     });
@@ -85,10 +85,10 @@ export default class ManageMetadata extends ModalAction {
     return isEmpty(originData) ? extra_specs : originData.extra_specs || {};
   }
 
-  parseExistMetadatas() {
+  parseExistMetadata() {
     const customs = [];
     const systems = {};
-    if (this.metadatas.length > 0) {
+    if (this.metadata.length > 0) {
       const metadata = this.getItemMetadata();
       Object.keys(metadata).forEach((key) => {
         if (this.checkKeyInSystem(key)) {
@@ -109,7 +109,7 @@ export default class ManageMetadata extends ModalAction {
 
   get defaultValue() {
     const { name } = this.item;
-    const { customs, systems } = this.parseExistMetadatas();
+    const { customs, systems } = this.parseExistMetadata();
     const value = {
       name,
       customs,
@@ -160,7 +160,7 @@ export default class ManageMetadata extends ModalAction {
         name: 'systems',
         label: t('Metadata'),
         type: 'metadata-transfer',
-        metadatas: this.metadatas,
+        metadata: this.metadata,
         validator: (rule, value) => {
           if (this.hasNoValue(value)) {
             // eslint-disable-next-line prefer-promise-reject-errors
@@ -174,7 +174,7 @@ export default class ManageMetadata extends ModalAction {
 
   onSubmit = (values) => {
     const { customs: oldCumtoms, systems: oldSystems } =
-      this.parseExistMetadatas();
+      this.parseExistMetadata();
     const { customs, systems } = values;
     const adds = [];
     const removes = [];

@@ -103,7 +103,7 @@ export default class AssociateFip extends ModalAction {
         label: t('Floating IP'),
         type: 'select-table',
         required: true,
-        datas: this.fipList,
+        data: this.fipList,
         isLoading: this.floatingIpStore.list.isLoading,
         isMulti: false,
         filterParams: [

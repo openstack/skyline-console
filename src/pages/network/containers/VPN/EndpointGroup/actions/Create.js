@@ -158,7 +158,7 @@ export default class Create extends ModalAction {
         name: 'subnet_id',
         label: t('Subnet'),
         type: 'select-table',
-        datas: subnets,
+        data: subnets,
         isLoading: subnetLoading,
         isMulti: true,
         columns: [

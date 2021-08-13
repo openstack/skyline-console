@@ -175,7 +175,7 @@ export default class AttachInterface extends ModalAction {
         label: t('Subnet'),
         type: 'select-table',
         required: isManua,
-        datas: this.subnets,
+        data: this.subnets,
         isLoading: this.subnetStore.list.isLoading,
         hidden: !isManua,
         isMulti: false,

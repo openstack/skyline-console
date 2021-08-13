@@ -79,7 +79,7 @@ export class Detach extends ModalAction {
         label: t('Instance'),
         type: 'select-table',
         required: true,
-        datas: (this.item.attachments || []).map((s) => ({
+        data: (this.item.attachments || []).map((s) => ({
           ...s,
           name: s.server_name,
           id: s.server_id,

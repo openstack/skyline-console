@@ -31,7 +31,7 @@ import styles from './index.less';
 
 export default class SimpleTable extends React.Component {
   static propTypes = {
-    datas: PropTypes.array.isRequired,
+    data: PropTypes.array.isRequired,
     filters: PropTypes.object,
     searchFilters: PropTypes.array,
     columns: PropTypes.array.isRequired,
@@ -213,11 +213,11 @@ export default class SimpleTable extends React.Component {
   };
 
   getDataSource = () => {
-    const { datas, filters, filterByBackend } = this.props;
+    const { data, filters, filterByBackend } = this.props;
     if (filterByBackend) {
-      return datas;
+      return data;
     }
-    const tmpDatas = datas.map((it) => {
+    const tmpData = data.map((it) => {
       if (it.key) {
         return it;
       }
@@ -227,9 +227,9 @@ export default class SimpleTable extends React.Component {
       };
     });
     if (!filters || isEmpty(filters)) {
-      return tmpDatas;
+      return tmpData;
     }
-    return tmpDatas.filter((it) => this.filterData(it, filters));
+    return tmpData.filter((it) => this.filterData(it, filters));
   };
 
   onRow = (record, index) => {

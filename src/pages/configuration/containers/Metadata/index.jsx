@@ -31,7 +31,7 @@ export default class Metadata extends Base {
   }
 
   get name() {
-    return t('metadatas');
+    return t('metadata');
   }
 
   get actionConfigs() {

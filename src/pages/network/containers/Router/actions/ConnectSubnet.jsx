@@ -120,7 +120,7 @@ export default class ConnectSubnet extends ModalAction {
         name: 'subnet',
         label: t('Subnet'),
         type: 'select-table',
-        datas: this.subnets,
+        data: this.subnets,
         isLoading: networkId && this.subnetStore.list.isLoading,
         disabledFunc: this.disabledFuncSubnet,
         required: true,

@@ -90,7 +90,7 @@ export class DetachVolume extends ModalAction {
         label: t('Volume'),
         type: 'select-table',
         required: true,
-        datas: this.volumes,
+        data: this.volumes,
         isLoading: this.volumeStore.list.isLoading,
         filterParams: [
           {

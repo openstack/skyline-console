@@ -78,7 +78,7 @@ export default class ManageQos extends ModalAction {
         label: t('QoS'),
         type: 'select-table',
         required: false,
-        datas: this.QosMap,
+        data: this.QosMap,
         isLoading: this.store.list.isLoading,
         isMulti: false,
         filterParams: [
