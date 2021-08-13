@@ -41,7 +41,7 @@ export default class Template extends Component {
   };
 
   renderContent = () => {
-    const { template = {} } = this.store;
+    const { template } = this.store;
     const content = yaml.dump(template);
     const props = {
       value: content,
