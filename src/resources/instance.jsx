@@ -474,16 +474,22 @@ export const actionEvent = {
 
 function PopUpContent({ id, requestId }) {
   const [event, setEvent] = useState([]);
-  const [isLoading, setLoaidng] = useState(false);
+  const [loading, setLoaidng] = useState(false);
 
   useEffect(() => {
+    let timeout = null;
     (async function () {
       setLoaidng(true);
       const cb = await globalActionLogStore.fetchDetail({ id, requestId });
       const { events = [] } = cb;
-      setEvent(events.reverse());
-      setLoaidng(false);
+      timeout = setTimeout(() => {
+        setLoaidng(false);
+        setEvent(events.slice().reverse());
+      }, 200);
     })();
+    return () => {
+      clearTimeout(timeout);
+    };
   }, []);
   const columns = [
     {
@@ -516,7 +522,7 @@ function PopUpContent({ id, requestId }) {
       columns={columns}
       dataSource={event}
       pagination={false}
-      loading={isLoading}
+      loading={loading}
       size="small"
       rowKey="event"
     />

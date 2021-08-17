@@ -269,7 +269,7 @@
   "Compute Services": "计算服务",
   "Compute Start Instance": "启动",
   "Compute Stop Instance": "关闭",
-  "Compute Suspend Instance": "挂起",
+  "Compute Suspend Instance": "云主机挂起",
   "Compute Unpause Instance": "恢复",
   "Compute service:": "计算服务(nova):",
   "Conductor Live Migrate Instance": "执行热迁移实例",
