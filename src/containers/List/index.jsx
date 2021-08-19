@@ -49,6 +49,7 @@ export default class BaseList extends React.Component {
       filters: {},
       timeFilter: {},
       autoRefresh: true,
+      newHints: false,
     };
 
     this.dataTimerTransition = null;
@@ -711,7 +712,7 @@ export default class BaseList extends React.Component {
     } else {
       this.setRefreshdataTimerAuto();
     }
-    this.updateHints(datas);
+    this.updateHintsByDatas(datas);
     return datas;
   };
 
@@ -862,7 +863,17 @@ export default class BaseList extends React.Component {
   onCloseSuccessHint = () => {};
 
   // eslint-disable-next-line no-unused-vars
-  updateHints(datas) {}
+  updateHintsByOthers() {
+    if (this.updateHints) {
+      this.updateHints();
+      this.setState({
+        newHints: true,
+      });
+    }
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  updateHintsByDatas(datas) {}
 
   init() {
     this.store = { list: {} };
@@ -1048,6 +1059,16 @@ export default class BaseList extends React.Component {
   }
 
   renderHint() {
+    const { newHints } = this.state;
+    if (
+      !newHints &&
+      !this.infoMessage &&
+      !this.warnMessage &&
+      !this.successMessage &&
+      !this.errorMessage
+    ) {
+      return null;
+    }
     return (
       <div className={classnames(styles.hints, 'list-hints')}>
         {this.renderInfoHint()}

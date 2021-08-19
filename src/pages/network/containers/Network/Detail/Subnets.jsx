@@ -50,7 +50,6 @@ export default class Subnets extends Base {
     } else {
       this.setRefreshdataTimerAuto();
     }
-    this.updateHints(datas);
     const ret = datas.map((item) => {
       const usageDetail = this.subnet_ip_availability.find(
         (i) => i.subnet_id === item.id
