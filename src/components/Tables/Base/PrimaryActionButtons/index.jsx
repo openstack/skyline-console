@@ -62,15 +62,16 @@ export default class TablePrimaryButtons extends Component {
   }
 
   async getActionsAllowed() {
-    const { containerProps, primaryActionsExtra } = this.props;
+    const { containerProps, primaryActionsExtra, isAdminPage } = this.props;
     const { detail = null } = containerProps;
-    const results = await getAllowedResults(
-      this.actionList,
-      detail,
-      null,
+    const results = await getAllowedResults({
+      actions: this.actionList,
+      data: detail,
       containerProps,
-      primaryActionsExtra
-    );
+      key: null,
+      extra: primaryActionsExtra,
+      isAdminPage,
+    });
     this.setState({
       primaryAllowedResults: results,
     });

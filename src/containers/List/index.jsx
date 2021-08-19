@@ -486,7 +486,7 @@ export default class BaseList extends React.Component {
     if (this.endpointError) {
       return;
     }
-    if (!checkItemPolicy(this.policy, null, this.name)) {
+    if (!checkItemPolicy({ policy: this.policy, actionName: this.name })) {
       const error = {
         message: t("You don't have access to get {name}.", {
           name: this.name.toLowerCase(),
@@ -988,6 +988,7 @@ export default class BaseList extends React.Component {
           hideTotal={this.hideTotal}
           hideDownload={this.hideDownload}
           primaryActionsExtra={this.primaryActionsExtra}
+          isAdminPage={this.isAdminPage}
           {...this.getEnabledTableProps()}
         />
       );

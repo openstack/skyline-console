@@ -12,17 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import checkItemPolicy from 'resources/policy';
+import checkItemPolicy, { systemRoleIsReader } from 'resources/policy';
 
-export async function checkAllowed(
+export async function checkAllowed({
   item,
   policy,
   allowed,
   containerProps,
   actionName,
-  extra
-) {
-  const policyResult = checkItemPolicy(policy, item, actionName, extra);
+  extra,
+  isAdminPage,
+  action,
+}) {
+  const { enableSystemReader } = action || {};
+  const policyResult = checkItemPolicy({
+    policy,
+    item,
+    actionName,
+    isAdminPage,
+    enableSystemReader,
+  });
   if (!policyResult) {
     return false;
   }
@@ -36,32 +45,38 @@ export async function checkAllowed(
   return result;
 }
 
-export async function getAllowedResults(
+export async function getAllowedResults({
   actions,
   data,
   key,
   containerProps,
-  extra
-) {
+  extra,
+  isAdminPage,
+}) {
   const allowedPromises = actions.map(async (it) => {
-    const result = checkAllowed(
-      data,
-      key ? it[key].policy : it.policy,
-      key ? it[key].allowed : it.allowed,
+    const result = checkAllowed({
+      item: data,
+      policy: key ? it[key].policy : it.policy,
+      allowed: key ? it[key].allowed : it.allowed,
       containerProps,
-      key ? it[key].title : it.title,
-      extra
-    );
+      actionName: key ? it[key].title : it.title,
+      extra,
+      isAdminPage,
+      action: it.action,
+    });
     return result;
   });
   const results = await Promise.all(allowedPromises);
   return results;
 }
 
-export function getPolicyResults(actions, extra) {
+export function getPolicyResults({ actions, extra, isAdminPage }) {
   return actions.map((it) => {
-    const { policy, title } = it;
-    const result = checkItemPolicy(policy, null, title, extra);
+    const { policy, title, enableSystemReader } = it;
+    if (isAdminPage && !enableSystemReader && systemRoleIsReader()) {
+      return false;
+    }
+    const result = checkItemPolicy({ policy, actionName: title, extra });
     return result;
   });
 }
@@ -76,10 +91,10 @@ export function getAction(action, item, containerProps) {
   return action;
 }
 
-export function getActionsByPolicy(actions, containerProps) {
+export function getActionsByPolicy({ actions, containerProps, isAdminPage }) {
   const actionList = actions.map((action) =>
     getAction(action, null, containerProps)
   );
-  const policyResults = getPolicyResults(actionList);
+  const policyResults = getPolicyResults({ actions: actionList, isAdminPage });
   return actionList.filter((it, index) => policyResults[index]);
 }

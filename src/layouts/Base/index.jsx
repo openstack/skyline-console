@@ -97,7 +97,7 @@ class BaseLayout extends Component {
     if (licenseKey && !this.checkLicenseKey(licenseKey)) {
       return null;
     }
-    if (policy && !checkItemPolicy(policy)) {
+    if (policy && !checkItemPolicy({ policy })) {
       return null;
     }
     if (children.length === 0) {

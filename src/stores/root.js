@@ -121,7 +121,7 @@ class RootStore {
     this.roles = roles;
     this.baseRoles = base_roles;
     this.baseDomains = base_domains;
-    // const adminRole = roles.find(it => it.name === 'admin');
+    // TODO: fix system/project admin/member/reader for W
     this.hasAdminRole = checkPolicy(onlyAdminCanReadPolicy);
     globals.user.hasAdminRole = this.hasAdminRole;
   }

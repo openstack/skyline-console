@@ -218,7 +218,7 @@ export default class DetailBase extends React.Component {
   getRouteProps = () => ({});
 
   fetchDataWithPolicy = (silent, params) => {
-    if (!checkItemPolicy(this.policy, null, this.name)) {
+    if (!checkItemPolicy({ policy: this.policy, actionName: this.name })) {
       const error = {
         message: t("You don't have access to get {name}.", {
           name: this.name.toLowerCase(),
@@ -396,6 +396,7 @@ export default class DetailBase extends React.Component {
         onFinishAction={this.onFinishAction}
         item={this.getActionData()}
         containerProps={{ isAdminPage: this.isAdminPage }}
+        isAdminPage={this.isAdminPage}
         // firstActionClassName={styles['attach-btn']}
       />
     );

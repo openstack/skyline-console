@@ -110,6 +110,7 @@ export default class BaseTable extends React.Component {
     hideTotal: false,
     hideDownload: false,
     primaryActionsExtra: null,
+    isAdminPage: false,
   };
 
   constructor(props) {
@@ -472,6 +473,7 @@ export default class BaseTable extends React.Component {
       onClickAction,
       onFinishAction,
       onCancelAction,
+      isAdminPage,
     } = this.props;
     const { hideRow } = this.state;
     const currentColumns = columns
@@ -489,6 +491,7 @@ export default class BaseTable extends React.Component {
         width: 150,
         render: (text, record, index) => (
           <ItemActionButtons
+            isAdminPage={isAdminPage}
             actions={this.itemActions}
             onFinishAction={onFinishAction}
             onCancelAction={onCancelAction}
@@ -533,6 +536,7 @@ export default class BaseTable extends React.Component {
       onFinishAction,
       onCancelAction,
       resourceName,
+      isAdminPage,
     } = this.props;
     const selectedItems = data.filter(
       (it) => selectedRowKeys.indexOf(it[rowKey]) >= 0
@@ -540,6 +544,7 @@ export default class BaseTable extends React.Component {
     if (batchActions) {
       return (
         <BatchActionButtons
+          isAdminPage={isAdminPage}
           visibleButtonNumber={3}
           selectedItemKeys={selectedRowKeys}
           selectedItems={selectedItems}
@@ -639,6 +644,7 @@ export default class BaseTable extends React.Component {
 
   renderActions() {
     const {
+      isAdminPage,
       primaryActions,
       containerProps,
       onClickAction,
@@ -649,6 +655,7 @@ export default class BaseTable extends React.Component {
     if (primaryActions) {
       return (
         <PrimaryActionButtons
+          isAdminPage={isAdminPage}
           primaryActions={primaryActions}
           containerProps={containerProps}
           onClickAction={onClickAction}

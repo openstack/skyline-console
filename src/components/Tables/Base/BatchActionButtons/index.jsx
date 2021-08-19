@@ -96,12 +96,17 @@ export default function TableBatchButtons(props) {
     onClickAction,
     onCancelAction,
     resourceName,
+    isAdminPage,
   } = props;
   let moreButton = null;
   let batchButtons = null;
   let showedActions = [];
   let restActions = [];
-  const actionList = getActionsByPolicy(batchActions, containerProps);
+  const actionList = getActionsByPolicy({
+    actions: batchActions,
+    containerProps,
+    isAdminPage,
+  });
   if (visibleButtonNumber < actionList.length) {
     if (visibleButtonNumber < 0) {
       restActions = actionList;

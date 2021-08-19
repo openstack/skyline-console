@@ -36,10 +36,31 @@ const checkPolicyRules = (rules, every, actionName) => {
   return rules.some((rule) => checkPolicyRule(rule, actionName));
 };
 
-const checkItemPolicy = (policy, item, actionName) => {
+export const systemRoleIsReader = () => {
+  const { user: { roles = [] } = {} } = globals || {};
+  const readerRole = 'system_reader';
+  const adminRoles = ['system_admin', 'admin'];
+  const hasReaderRole = roles.some((it) => it.name === readerRole);
+  if (!hasReaderRole) {
+    return false;
+  }
+  const hasAdminRole = roles.some((it) => adminRoles.includes(it.name));
+  return hasReaderRole && !hasAdminRole;
+};
+
+const checkItemPolicy = ({
+  policy,
+  item,
+  actionName,
+  isAdminPage,
+  enableSystemReader,
+}) => {
   if (globals.policies.length === 0) {
     // TODO: change to false
     return true;
+  }
+  if (isAdminPage && !enableSystemReader && systemRoleIsReader()) {
+    return false;
   }
   if (!policy) {
     // eslint-disable-next-line no-console

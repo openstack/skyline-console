@@ -288,7 +288,7 @@ export default class ItemActionButtons extends Component {
   }
 
   async updateResult(item, containerProps) {
-    const { actions } = this.props;
+    const { actions, isAdminPage } = this.props;
     const { actionList, firstAction, moreActions } = getActionList(
       actions,
       item,
@@ -297,12 +297,13 @@ export default class ItemActionButtons extends Component {
     this.actionList = actionList;
     this.firstAction = firstAction;
     this.moreActions = moreActions;
-    const results = await getAllowedResults(
-      this.actionList,
-      item,
-      'action',
-      containerProps
-    );
+    const results = await getAllowedResults({
+      actions: this.actionList,
+      data: item,
+      key: 'action',
+      containerProps,
+      isAdminPage,
+    });
     this.setState({
       results,
     });

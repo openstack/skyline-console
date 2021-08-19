@@ -31,6 +31,8 @@ export default class View extends ModalAction {
 
   static readOnly = true;
 
+  static enableSystemReader = true;
+
   get name() {
     return t('View');
   }
