@@ -23,7 +23,7 @@ import { toJS } from 'mobx';
 import { CaretRightOutlined } from '@ant-design/icons';
 import PrimaryActionButtons from 'components/Tables/Base/PrimaryActionButtons';
 import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
-import { columns } from 'resources/security-group-rule';
+import { getSelfColumns } from 'resources/security-group-rule';
 import { isAdminPage } from 'utils/index';
 import Detach from './actions/Detach';
 import styles from './index.less';
@@ -40,6 +40,10 @@ export default class SecurityGroup extends React.Component {
 
   componentDidMount() {
     this.refreshSecurityGroup();
+  }
+
+  getUrl(path, adminStr) {
+    return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
   }
 
   get portId() {
@@ -109,7 +113,7 @@ export default class SecurityGroup extends React.Component {
           bordered={false}
           rowKey="id"
           {...this.state}
-          columns={columns}
+          columns={getSelfColumns(this)}
           dataSource={
             item.security_group_rules ? toJS(item.security_group_rules) : null
           }

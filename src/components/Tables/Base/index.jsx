@@ -85,6 +85,8 @@ export default class BaseTable extends React.Component {
     hideTotal: PropTypes.bool,
     hideDownload: PropTypes.bool,
     primaryActionsExtra: PropTypes.any,
+    isAdminPage: PropTypes.bool,
+    containerProps: PropTypes.any,
   };
 
   static defaultProps = {

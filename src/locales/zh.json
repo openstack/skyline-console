@@ -77,6 +77,7 @@
   "All Image": "全部镜像",
   "All Network": "所有网络",
   "All Port": "所有端口",
+  "All Proto": "所有协议",
   "All QoS Policy": "所有QoS策略",
   "All TCP": "所有TCP协议",
   "All UDP": "所有UDP协议",

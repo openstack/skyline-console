@@ -32,7 +32,7 @@ import classnames from 'classnames';
 import interfaceImg from '@/asset/image/interface.png';
 import { CaretRightOutlined } from '@ant-design/icons';
 import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
-import { columns } from 'resources/security-group-rule';
+import { getSelfColumns } from 'resources/security-group-rule';
 import { isAdminPage } from 'utils/index';
 import styles from './index.less';
 import Detach from './action/Detach';
@@ -40,7 +40,6 @@ import ManageSecurityGroup from './action/ManageSecurityGroup';
 
 const { Panel } = Collapse;
 const { TabPane } = Tabs;
-const tableColumns = columns.filter((it) => it.dataIndex !== 'direction');
 
 @inject('rootStore')
 @observer
@@ -53,6 +52,9 @@ export default class SecurityGroup extends React.Component {
       filterData: [],
     };
     this.store = globalServerStore;
+    this.tableColumns = getSelfColumns(this).filter(
+      (it) => it.dataIndex !== 'direction'
+    );
   }
 
   componentDidMount = async () => {
@@ -62,6 +64,10 @@ export default class SecurityGroup extends React.Component {
   get isAdminPage() {
     const { pathname } = this.props.location;
     return isAdminPage(pathname);
+  }
+
+  getUrl(path, adminStr) {
+    return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
   }
 
   actionCallback = async (first) => {
@@ -84,7 +90,7 @@ export default class SecurityGroup extends React.Component {
       (it) => item.security_groups.indexOf(it.id) !== -1
     );
     this.setState({
-      activeInterfaceId: item.id,
+      activeInterfaceId: item && item.id,
       activeInterface: item,
       filterData,
     });
@@ -141,7 +147,7 @@ export default class SecurityGroup extends React.Component {
               pagination={false}
               bordered={false}
               {...this.state}
-              columns={tableColumns}
+              columns={this.tableColumns}
               dataSource={egressData}
             />
           </TabPane>
@@ -151,7 +157,7 @@ export default class SecurityGroup extends React.Component {
               pagination={false}
               bordered={false}
               {...this.state}
-              columns={tableColumns}
+              columns={this.tableColumns}
               dataSource={IngressData}
             />
           </TabPane>
@@ -191,21 +197,21 @@ export default class SecurityGroup extends React.Component {
     const { filterData, activeInterfaceId } = this.state;
     return (
       <div className={classnames(styles.wrapper, this.className)}>
-        <Spin spinning={isLoading}>
-          <Radio.Group
-            defaultValue={0}
-            size="large"
-            marginBottom="20"
-            onChange={this.onChange}
-            className={styles['radio-button']}
-          >
-            {interfaces
-              ? toJS(interfaces).map((item, index) =>
-                  this.renderRadio(item, index)
-                )
-              : null}
-          </Radio.Group>
-        </Spin>
+        {interfaces && interfaces.length ? (
+          <Spin spinning={isLoading}>
+            <Radio.Group
+              defaultValue={0}
+              size="large"
+              marginBottom="20"
+              onChange={this.onChange}
+              className={styles['radio-button']}
+            >
+              {toJS(interfaces).map((item, index) =>
+                this.renderRadio(item, index)
+              )}
+            </Radio.Group>
+          </Spin>
+        ) : null}
         {!this.isAdminPage && (
           <div style={{ marginBottom: 20, marginTop: 20 }}>
             <PrimaryActionButtons
@@ -221,20 +227,20 @@ export default class SecurityGroup extends React.Component {
             {/* <Button type="primary" shape="circle" size={5} onClick={this.refresh}>{t('Attach Security Group')}</Button> */}
           </div>
         )}
-        <Spin spinning={isLoading}>
-          <Collapse
-            className={styles.collapse}
-            accordion
-            bordered={false}
-            expandIcon={({ isActive }) => (
-              <CaretRightOutlined rotate={isActive ? 90 : 0} />
-            )}
-          >
-            {filterData
-              ? filterData.map((item, index) => this.renderPanel(item, index))
-              : null}
-          </Collapse>
-        </Spin>
+        {filterData && filterData.length ? (
+          <Spin spinning={isLoading}>
+            <Collapse
+              className={styles.collapse}
+              accordion
+              bordered={false}
+              expandIcon={({ isActive }) => (
+                <CaretRightOutlined rotate={isActive ? 90 : 0} />
+              )}
+            >
+              {filterData.map((item, index) => this.renderPanel(item, index))}
+            </Collapse>
+          </Spin>
+        ) : null}
       </div>
     );
   }

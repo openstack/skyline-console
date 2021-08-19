@@ -15,7 +15,7 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalSecurityGroupRuleStore from 'stores/neutron/security-rule';
-import { columns, filterParams } from 'resources/security-group-rule';
+import { filterParams, getSelfColumns } from 'resources/security-group-rule';
 import actionConfigs from './actions';
 
 @inject('rootStore')
@@ -33,7 +33,7 @@ export default class Rule extends Base {
     return t('security group rules');
   }
 
-  getColumns = () => columns;
+  getColumns = () => getSelfColumns(this);
 
   get actionConfigs() {
     return this.isAdminPage

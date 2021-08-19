@@ -15,6 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { SecurityGroupStore } from 'stores/neutron/security-group';
 import Base from 'containers/TabDetail';
+import { isEqual } from 'lodash';
 import members from './Rule';
 import actionConfigs from '../actions';
 
@@ -70,5 +71,11 @@ export default class SecurityGroupDetail extends Base {
 
   init() {
     this.store = new SecurityGroupStore();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!isEqual(this.props.match.params, prevProps.match.params)) {
+      this.fetchDataWithPolicy();
+    }
   }
 }

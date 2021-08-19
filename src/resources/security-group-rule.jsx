@@ -11,8 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+import React from 'react';
 import { isNumber } from 'lodash';
+import { Link } from 'react-router-dom';
 
 export const ipProtocols = [
   { value: 'ah', label: t('AH') },
@@ -54,7 +55,7 @@ export const protocols = (protocol) => {
   return protocol.toUpperCase();
 };
 
-export const columns = [
+export const getSelfColumns = (self) => [
   {
     title: t('Direction'),
     dataIndex: 'direction',
@@ -79,14 +80,28 @@ export const columns = [
   {
     title: t('Remote IP Prefix'),
     dataIndex: 'remote_ip_prefix',
-    valueRender: 'noValue',
+    render: (value) => value || '0.0.0.0/0',
     isHideable: true,
   },
   {
     title: t('Remote Group Id'),
     dataIndex: 'remote_group_id',
-    valueRender: 'noValue',
     isHideable: true,
+    render: (value) => {
+      return (
+        <div>
+          {value ? (
+            <Link
+              to={`/network/${self.getUrl('security-group')}/detail/${value}`}
+            >
+              {value}
+            </Link>
+          ) : (
+            '-'
+          )}
+        </div>
+      );
+    },
   },
   {
     title: t('ICMP Type/ICMP Code'),
@@ -120,11 +135,6 @@ export const filterParams = [
     ],
   },
 ];
-
-export const tableOptions = {
-  filterParams,
-  columns,
-};
 
 export const mapperRule = (data) => {
   let icmpTypeCode = '';

@@ -78,8 +78,9 @@ export default class Create extends ModalAction {
         name: t('Custom ICMP Rule'),
         ip_protocol: 'icmp',
       },
-      custom_protocol: {
-        name: t('Other Protocol'),
+      all_proto: {
+        name: t('All Proto'),
+        ip_protocol: null,
       },
       all_tcp: {
         name: t('All TCP'),
@@ -97,90 +98,8 @@ export default class Create extends ModalAction {
         name: t('All ICMP'),
         ip_protocol: 'icmp',
       },
-      // settingRules
-      ssh: {
-        name: 'SSH',
-        ip_protocol: 'tcp',
-        from_port: '22',
-        to_port: '22',
-      },
-      smtp: {
-        name: 'SMTP',
-        ip_protocol: 'tcp',
-        from_port: '25',
-        to_port: '25',
-      },
-      dns: {
-        name: 'DNS',
-        ip_protocol: 'tcp',
-        from_port: '53',
-        to_port: '53',
-      },
-      http: {
-        name: 'HTTP',
-        ip_protocol: 'tcp',
-        from_port: '80',
-        to_port: '80',
-      },
-      pop3: {
-        name: 'POP3',
-        ip_protocol: 'tcp',
-        from_port: '110',
-        to_port: '110',
-      },
-      imap: {
-        name: 'IMAP',
-        ip_protocol: 'tcp',
-        from_port: '143',
-        to_port: '143',
-      },
-      ldap: {
-        name: 'LDAP',
-        ip_protocol: 'tcp',
-        from_port: '389',
-        to_port: '389',
-      },
-      https: {
-        name: 'HTTPS',
-        ip_protocol: 'tcp',
-        from_port: '443',
-        to_port: '443',
-      },
-      smtps: {
-        name: 'SMTPS',
-        ip_protocol: 'tcp',
-        from_port: '465',
-        to_port: '465',
-      },
-      imaps: {
-        name: 'IMAPS',
-        ip_protocol: 'tcp',
-        from_port: '993',
-        to_port: '993',
-      },
-      pop3s: {
-        name: 'POP3S',
-        ip_protocol: 'tcp',
-        from_port: '995',
-        to_port: '995',
-      },
-      ms_sql: {
-        name: 'MS SQL',
-        ip_protocol: 'tcp',
-        from_port: '1433',
-        to_port: '1433',
-      },
-      mysql: {
-        name: 'MYSQL',
-        ip_protocol: 'tcp',
-        from_port: '3306',
-        to_port: '3306',
-      },
-      rdp: {
-        name: 'RDP',
-        ip_protocol: 'tcp',
-        from_port: '3389',
-        to_port: '3389',
+      custom_protocol: {
+        name: t('Other Protocol'),
       },
     };
   }
@@ -229,7 +148,6 @@ export default class Create extends ModalAction {
         {
           remote_ip_prefix: '',
           remote_group_id: '',
-          ethertype: '',
         },
         () => {
           this.updateDefaultValue();
@@ -269,6 +187,16 @@ export default class Create extends ModalAction {
         options: [
           { value: 'ingress', label: t('Ingress') },
           { value: 'egress', label: t('Egress') },
+        ],
+      },
+      {
+        name: 'ethertype',
+        label: t('Ether Type'),
+        type: 'select',
+        required: true,
+        options: [
+          { value: 'IPv4', label: t('IPv4') },
+          { value: 'IPv6', label: t('IPv6') },
         ],
       },
       {
@@ -348,17 +276,6 @@ export default class Create extends ModalAction {
         hidden: !showSgAndEther,
         options: this.allGroups,
       },
-      {
-        name: 'ethertype',
-        label: t('Ether Type'),
-        type: 'select',
-        required: showSgAndEther,
-        hidden: !showSgAndEther,
-        options: [
-          { value: 'IPv4', label: t('IPv4') },
-          { value: 'IPv6', label: t('IPv6') },
-        ],
-      },
     ];
   }
 
@@ -383,7 +300,7 @@ export default class Create extends ModalAction {
         ? this.defaultRules[protocol].ip_protocol
         : ipProtocol;
     const modalValue = {
-      security_group_id: id,
+      security_group_id: id || this.item.id,
       port_range_min:
         protocol === 'custom_icmp'
           ? icmpType
@@ -399,6 +316,10 @@ export default class Create extends ModalAction {
       protocol: newProtocol,
       ...rest,
     };
+    if (protocol.includes('all')) {
+      delete modalValue.remote_ip_prefix;
+      delete modalValue.remote_group_id;
+    }
     return this.store.create(modalValue);
   };
 }

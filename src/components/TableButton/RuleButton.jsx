@@ -14,7 +14,7 @@
 
 import React, { Component } from 'react';
 import TableButton from 'components/TableButton';
-import { columns } from 'resources/security-group-rule';
+import { getSelfColumns } from 'resources/security-group-rule';
 
 export default class RuleButton extends Component {
   render() {
@@ -24,7 +24,7 @@ export default class RuleButton extends Component {
       title: t('Security Group Rules'),
       buttonText: t('View Rules'),
       modalSize: 'middle',
-      columns,
+      columns: getSelfColumns(this),
       datas,
     };
     return <TableButton {...configs} style={{ paddingLeft: 0 }} />;

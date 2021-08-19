@@ -168,13 +168,15 @@ export default class BaseDetail extends Base {
         label: t('Name'),
         dataIndex: 'security_groups',
         render: () =>
-          (items || []).map((it) => (
-            <div key={it}>
-              <Link to={`${url}?tab=securityGroup`} key={it}>
-                {it}
-              </Link>
-            </div>
-          )),
+          items && items.length
+            ? items.map((it) => (
+                <div key={it}>
+                  <Link to={`${url}?tab=securityGroup`} key={it}>
+                    {it}
+                  </Link>
+                </div>
+              ))
+            : '-',
       },
     ];
     return {
