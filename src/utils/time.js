@@ -54,6 +54,9 @@ export const checkTimeIn = (inputTime, start, end) => {
 };
 
 export const getSinceTime = (input) => {
+  if (!input) {
+    return '-';
+  }
   return getLocalTime(input).fromNow();
 };
 
