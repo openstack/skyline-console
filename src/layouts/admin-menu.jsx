@@ -559,20 +559,6 @@ const renderMenu = (t) => {
       icon: <SettingOutlined />,
       children: [
         {
-          path: '/configuration-admin/metadata',
-          name: t('Metadata Definitions'),
-          key: '/configuration-admin/metadata',
-          level: 1,
-          children: [
-            {
-              path: /^\/configuration-admin\/metadata\/detail\/.[^/]+$/,
-              name: t('Metadata Detail'),
-              key: 'metadata-detail',
-              level: 2,
-            },
-          ],
-        },
-        {
           path: '/configuration-admin/info',
           name: t('System Info'),
           key: '/configuration-admin/info',
@@ -591,6 +577,20 @@ const renderMenu = (t) => {
           name: t('System Config'),
           key: '/configuration-admin/setting',
           level: 1,
+        },
+        {
+          path: '/configuration-admin/metadata',
+          name: t('Metadata Definitions'),
+          key: '/configuration-admin/metadata',
+          level: 1,
+          children: [
+            {
+              path: /^\/configuration-admin\/metadata\/detail\/.[^/]+$/,
+              name: t('Metadata Detail'),
+              key: 'metadata-detail',
+              level: 2,
+            },
+          ],
         },
       ],
     },

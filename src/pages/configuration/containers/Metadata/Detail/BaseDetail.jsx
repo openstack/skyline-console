@@ -16,6 +16,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { MetadataStore } from 'stores/glance/metadata';
 import Base from 'containers/BaseDetail';
+import styles from './styles.less';
 
 @inject('rootStore')
 @observer
@@ -69,9 +70,9 @@ export default class BaseDetail extends Base {
 
   get jsonCard() {
     const content = (
-      <div>
-        <pre>{JSON.stringify(this.detailData, null, 4)}</pre>
-      </div>
+      <pre className={styles.json_data}>
+        {JSON.stringify(this.detailData, null, 4)}
+      </pre>
     );
     const options = [
       {
