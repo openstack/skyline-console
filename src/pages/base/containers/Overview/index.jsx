@@ -55,9 +55,9 @@ const actions = [
 @observer
 class Overview extends Component {
   renderAction = (item) => (
-    <Row className={styles.actionButton}>
+    <Row className={styles.actionButton} gutter={[8]}>
       <Col span={12} className={styles.main_icon}>
-        <img alt="avatar" src={item.avatar} style={{ height: 50 }} />
+        <img alt="avatar" src={item.avatar} className={styles.actionIcon} />
       </Col>
       <Col span={12} style={{ textAlign: 'center' }}>
         {item.label}
