@@ -19,6 +19,10 @@ import { yamlTip, validateYaml, paramTip } from 'resources/stack';
 @inject('rootStore')
 @observer
 export default class Template extends Base {
+  get isStep() {
+    return true;
+  }
+
   get title() {
     return t('Prepare Template');
   }

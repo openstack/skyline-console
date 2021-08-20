@@ -25,6 +25,10 @@ import {
 @inject('rootStore')
 @observer
 export default class Parameter extends Base {
+  get isStep() {
+    return true;
+  }
+
   get title() {
     return t('Parameter');
   }

@@ -42,6 +42,7 @@ export default class BaseForm extends React.Component {
     this.response = null;
     this.responseError = null;
     this.formRef = React.createRef();
+    this.tipRef = React.createRef();
     this.codeError = false;
     this.currentFormValue = {};
     this.init();
@@ -100,7 +101,7 @@ export default class BaseForm extends React.Component {
   }
 
   get listUrl() {
-    return '/base/tmp';
+    return '';
   }
 
   get isAdminPage() {
@@ -386,7 +387,7 @@ export default class BaseForm extends React.Component {
   renderTips() {
     if (this.tips) {
       return (
-        <div className={styles.tips}>
+        <div className={styles.tips} ref={this.tipRef}>
           <InfoCircleOutlined className={styles['tips-icon']} />
           {this.tips}
         </div>
@@ -496,11 +497,28 @@ export default class BaseForm extends React.Component {
   }
 
   render() {
+    const wrapperPadding =
+      this.listUrl || this.isStep || (this.isModal && this.tips)
+        ? styles['wrapper-page-padding']
+        : '';
+    const tips = this.renderTips();
+    const formStyle = {};
+    if ((this.listUrl || this.isStep) && this.tips && this.tipRef.current) {
+      if (this.isStep) {
+        const tipHeight = this.tipRef.current.clientHeight + 219;
+        formStyle.height = `calc(100vh - ${tipHeight}px)`;
+      } else {
+        const tipHeight = this.tipRef.current.clientHeight + 66;
+        formStyle.height = `calc(100% - ${tipHeight}px)`;
+      }
+    }
     return (
-      <div className={classnames(styles.wrapper, this.className)}>
+      <div
+        className={classnames(styles.wrapper, wrapperPadding, this.className)}
+      >
         <Spin spinning={this.isSubmitting}>
-          {this.renderTips()}
-          <div className={classnames(styles.form, 'sl-form')}>
+          {tips}
+          <div className={classnames(styles.form, 'sl-form')} style={formStyle}>
             {this.renderForms()}
           </div>
           {this.renderFooter()}
