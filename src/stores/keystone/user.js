@@ -337,13 +337,13 @@ export class UserStore extends Base {
   }
 
   @action
-  async edit(id, { email, phone, full_name, description, name }) {
+  async edit(id, { email, phone, real_name, description, name }) {
     const url = `${this.apiVersion}/users/${id}`;
     const reqBody = {
       user: {
         email,
         phone,
-        full_name,
+        real_name,
         description,
         name,
       },

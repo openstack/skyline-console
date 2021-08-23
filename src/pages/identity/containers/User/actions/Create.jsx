@@ -333,8 +333,8 @@ class CreateForm extends FormAction {
         colNum: 2,
       },
       {
-        name: 'full_name',
-        label: t('True Name'),
+        name: 'real_name',
+        label: t('Real Name'),
         type: 'input',
         required: true,
         labelCol,

@@ -197,8 +197,8 @@ export default class CreateForm extends ModalAction {
         type: 'textarea',
       },
       {
-        name: 'full_name',
-        label: t('True Name'),
+        name: 'real_name',
+        label: t('Real Name'),
         type: 'input',
         required: true,
       },
@@ -214,7 +214,7 @@ export default class CreateForm extends ModalAction {
       enabled,
       default_project_id,
       description,
-      full_name,
+      real_name,
     } = values;
     const { id: domain_id } = this.item;
     const data = {
@@ -225,7 +225,7 @@ export default class CreateForm extends ModalAction {
       domain_id,
       enabled,
       description,
-      full_name,
+      real_name,
       default_project_id,
     };
     // eslint-disable-next-line no-console

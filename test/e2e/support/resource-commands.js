@@ -208,7 +208,7 @@ Cypress.Commands.add('createUser', ({ name }) => {
     .formInput('password', password)
     .formInput('confirmPassword', password)
     .formInput('phone', phone)
-    .formInput('full_name', name)
+    .formInput('real_name', name)
     .clickFormActionSubmitButton()
     .tableSearchText(name)
     .waitStatusGreen(7);

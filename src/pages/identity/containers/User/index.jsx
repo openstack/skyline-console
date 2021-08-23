@@ -76,8 +76,8 @@ export default class User extends Base {
         },
       },
       {
-        title: t('True Name'),
-        dataIndex: 'full_name',
+        title: t('Real Name'),
+        dataIndex: 'real_name',
         isHideable: true,
       },
       {
@@ -164,8 +164,8 @@ export default class User extends Base {
         name: 'name',
       },
       {
-        label: t('True Name'),
-        name: 'full_name',
+        label: t('Real Name'),
+        name: 'real_name',
       },
       {
         label: t('Enabled'),

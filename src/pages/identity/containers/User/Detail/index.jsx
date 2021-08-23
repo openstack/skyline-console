@@ -85,8 +85,8 @@ export default class UserDetail extends Base {
         },
       },
       {
-        title: t('True Name'),
-        dataIndex: 'full_name',
+        title: t('Real Name'),
+        dataIndex: 'real_name',
       },
       // {
       //   title: t('User Group Num'),

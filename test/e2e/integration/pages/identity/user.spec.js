@@ -48,7 +48,7 @@ describe('The User Page', () => {
       .formInput('password', tmpPassword)
       .formInput('confirmPassword', tmpPassword)
       .formInput('phone', phone)
-      .formInput('full_name', name)
+      .formInput('real_name', name)
       .formButtonClick('more')
       .wait(2000)
       .formTransfer('select_project', projectName)

@@ -89,7 +89,7 @@ class EditForm extends ModalAction {
       name,
       email,
       phone,
-      full_name,
+      real_name,
       description,
       domain_id,
       default_project_id,
@@ -105,7 +105,7 @@ class EditForm extends ModalAction {
         default_project_id: project ? project.name : '',
         email,
         phone,
-        full_name,
+        real_name,
         description,
       });
     }
@@ -153,8 +153,8 @@ class EditForm extends ModalAction {
         validator: phoneNumberValidate,
       },
       {
-        name: 'full_name',
-        label: t('True Name'),
+        name: 'real_name',
+        label: t('Real Name'),
         type: 'input',
         required: true,
       },
@@ -174,12 +174,12 @@ class EditForm extends ModalAction {
   }
 
   onSubmit = (values) => {
-    const { email, phone, full_name, description, name } = values;
+    const { email, phone, real_name, description, name } = values;
     const { id } = this.item;
     return globalUserStore.edit(id, {
       email,
       phone,
-      full_name,
+      real_name,
       description,
       name,
     });
