@@ -370,7 +370,7 @@ class StepCreate extends StepAction {
         ) {
           Notify.error(t('Quota exceeded'));
         } else {
-          Notify.errorWithDetail(this.errorText, err);
+          Notify.errorWithDetail(err, this.errorText);
         }
       }
     );

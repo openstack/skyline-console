@@ -220,7 +220,7 @@ export default class BaseStepForm extends React.Component {
       (err) => {
         // eslint-disable-next-line no-console
         console.log('reject', err);
-        Notify.errorWithDetail(this.errorText, err);
+        Notify.errorWithDetail(err, this.errorText);
       }
     );
   };

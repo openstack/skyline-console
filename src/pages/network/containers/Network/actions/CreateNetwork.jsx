@@ -144,14 +144,14 @@ export default class CreateNetwork extends ModalAction {
       (err) => {
         const { type, error } = JSON.parse(err);
         if (type === 'create_network') {
-          Notify.errorWithDetail(this.errorText, error);
+          Notify.errorWithDetail(error, this.errorText);
         } else if (type === 'create_subnet') {
           Notify.errorWithDetail(
+            error,
             t('Unable to {action}, instance: {name}.', {
               action: t('Create Subnet'),
               name: values.subnet_name,
-            }),
-            error
+            })
           );
         }
         // eslint-disable-next-line no-console

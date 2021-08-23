@@ -256,7 +256,7 @@ export default class BaseForm extends React.Component {
       (err) => {
         this.updateSumbitting(false);
         this.responseError = err;
-        this.showNotice && Notify.errorWithDetail(this.errorText, err);
+        this.showNotice && Notify.errorWithDetail(err, this.errorText);
         // eslint-disable-next-line no-console
         console.log(err);
         if (callback && isFunction(callback)) {

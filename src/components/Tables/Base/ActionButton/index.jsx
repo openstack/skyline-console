@@ -243,7 +243,7 @@ class ActionButton extends Component {
     const message = submitErrorMsgBatch
       ? submitErrorMsgBatch(data)
       : getDefaultMsg(this.props.action, data).submitErrorMsgBatch;
-    Notify.errorWithDetail(message, error);
+    Notify.errorWithDetail(error, message);
     this.onCallback(false, true);
   };
 
@@ -263,7 +263,7 @@ class ActionButton extends Component {
     const message = submitErrorMsg
       ? submitErrorMsg(data, error)
       : getDefaultMsg(this.props.action, data).submitErrorMsg;
-    Notify.errorWithDetail(message, error);
+    Notify.errorWithDetail(error, message);
     this.onCallback(false, true);
   };
 

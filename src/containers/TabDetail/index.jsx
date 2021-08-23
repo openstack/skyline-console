@@ -223,10 +223,11 @@ export default class DetailBase extends React.Component {
         message: t("You don't have access to get {name}.", {
           name: this.name.toLowerCase(),
         }),
+        status: 401,
       };
       Notify.errorWithDetail(
-        t('Unable to get {name} detail.', { name: this.name.toLowerCase() }),
-        error
+        error,
+        t('Unable to get {name} detail.', { name: this.name.toLowerCase() })
       );
       return;
     }
@@ -260,10 +261,11 @@ export default class DetailBase extends React.Component {
     } else {
       const error = {
         message: e,
+        status: e.code || e.status,
       };
       Notify.errorWithDetail(
-        t('Get {name} detail error.', { name: this.name.toLowerCase() }),
-        error
+        error,
+        t('Get {name} detail error.', { name: this.name.toLowerCase() })
       );
     }
   };

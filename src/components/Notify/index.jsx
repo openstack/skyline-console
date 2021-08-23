@@ -25,6 +25,8 @@ import CodeEditor from 'components/CodeEditor';
 import ModalButton from 'components/ModalButton';
 import globalRootStore from 'stores/root';
 import { unescapeHtml } from 'utils/index';
+import { statusMap } from '@/resources/code';
+import { isEmpty, isString } from 'lodash';
 import styles from './index.less';
 
 const open = (args) => {
@@ -122,29 +124,44 @@ const process = (title, description) => {
   });
 };
 
-const errorWithDetail = (title, err) => {
-  const description = err ? (
-    <ModalButton
-      style={{
-        float: 'right',
-      }}
-      buttonType="link"
-      buttonText={t('Click to show detail')}
-      component={
-        <CodeEditor
-          className={styles.codeEditor}
-          value={err}
-          mode="json"
-          options={{
-            readOnly: true,
-          }}
-        />
+const errorWithDetail = (err, title) => {
+  const { status, message } = err || {};
+  let nTitle = title;
+  let description;
+  if (status && parseInt(status, 10) >= 500) {
+    if (!isEmpty(message) && !statusMap[status]) {
+      if (isString(message)) {
+        nTitle += `${t('message')}${t('.')}`;
+      } else if (message.reason) {
+        nTitle += `${t('message.reason')}${t('.')}`;
       }
-    />
-  ) : (
-    ''
-  );
-  error(title, description);
+      nTitle += `${t('Status Code')}: ${status}`;
+    } else {
+      nTitle += statusMap[status];
+    }
+  } else {
+    // prettier-ignore
+    description = err
+      ? <ModalButton
+        style={{
+          float: 'right',
+        }}
+        buttonType="link"
+        buttonText={t('Click to show detail')}
+        component={
+          <CodeEditor
+            className={styles.codeEditor}
+            value={err}
+            mode="json"
+            options={{
+              readOnly: true,
+            }}
+          />
+        }
+      />
+      : ''
+  }
+  error(nTitle, description);
 };
 
 const Notify = {

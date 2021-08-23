@@ -491,10 +491,11 @@ export default class BaseList extends React.Component {
         message: t("You don't have access to get {name}.", {
           name: this.name.toLowerCase(),
         }),
+        status: 401,
       };
       Notify.errorWithDetail(
-        t('Unable to get {name}.', { name: this.name.toLowerCase() }),
-        error
+        error,
+        t('Unable to get {name}.', { name: this.name.toLowerCase() })
       );
       this.list.isLoading = false;
       this.list.silent = false;
@@ -515,14 +516,15 @@ export default class BaseList extends React.Component {
         const title = `${t('Get {name} error.', {
           name: this.name.toLowerCase(),
         })} ${sysErr}`;
-        Notify.errorWithDetail(title);
+        Notify.errorWithDetail(null, title);
       } else {
         const error = {
           message: data || message || e || '',
+          status: e.status,
         };
         Notify.errorWithDetail(
-          t('Get {name} error.', { name: this.name.toLowerCase() }),
-          error
+          error,
+          t('Get {name} error.', { name: this.name.toLowerCase() })
         );
       }
       this.list.isLoading = false;
