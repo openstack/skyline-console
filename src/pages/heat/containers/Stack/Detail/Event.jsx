@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { StackEventStore } from 'stores/heat/event';
@@ -45,10 +46,20 @@ export default class Event extends Base {
     {
       title: t('Stack Resource'),
       dataIndex: 'logical_resource_id',
+      render: (it) => (
+        <div style={{ wordWrap: 'break-word', wordBreak: 'break-word' }}>
+          {it}
+        </div>
+      ),
     },
     {
       title: t('Resource'),
       dataIndex: 'physical_resource_id',
+      render: (it) => (
+        <div style={{ wordWrap: 'break-word', wordBreak: 'break-word' }}>
+          {it}
+        </div>
+      ),
     },
     {
       title: t('Resource Status'),
