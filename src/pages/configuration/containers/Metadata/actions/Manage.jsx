@@ -94,6 +94,9 @@ export default class Manage extends ModalAction {
         onChange={(e) => {
           this.updatePrefix(e.currentTarget.value, record);
         }}
+        onClick={(e) => {
+          e && e.stopPropagation();
+        }}
       />
     );
   };
