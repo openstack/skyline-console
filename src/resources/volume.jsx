@@ -37,6 +37,7 @@ export const volumeStatus = {
   rollbacking: t('Restoring'),
   retyping: t('Retyping'),
   reserved: t('Reserved'),
+  reverting: t('Reverting'),
 };
 
 export const creationMethod = {

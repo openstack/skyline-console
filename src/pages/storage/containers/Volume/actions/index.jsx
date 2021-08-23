@@ -15,6 +15,7 @@
 import Create from './Create';
 import Edit from './Edit';
 import Delete from './Delete';
+import Restore from './Restore';
 import Attach from './Attach';
 import Detach from './Detach';
 import CreateSnapshot from './CreateSnapshot';
@@ -69,6 +70,9 @@ const actionConfigs = {
       },
       {
         action: Delete,
+      },
+      {
+        action: Restore,
       },
     ],
   },

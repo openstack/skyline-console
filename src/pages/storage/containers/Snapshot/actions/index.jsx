@@ -15,7 +15,6 @@
 import CreateVolume from './CreateVolume';
 import Edit from './Edit';
 import Delete from './Delete';
-// import RestoreActionConfig from './Restore';
 
 const actionConfigs = {
   rowActions: {
