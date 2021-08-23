@@ -65,17 +65,16 @@ export default class User extends Base {
           }
         },
       },
-      // {
-      //   title: t('System Scope'),
-      //   dataIndex: 'systemScope',
-      //   isHideable: true,
-      //   render: (systemScope) => {
-      //     if (systemScope === true) {
-      //       return 'All';
-      //     }
-      //     return '-';
-      //   },
-      // },
+      {
+        title: t('Roles'),
+        dataIndex: 'project_roles',
+        isHideable: true,
+        render: (project_roles) => {
+          if (project_roles && project_roles[0]) {
+            return project_roles.map((it) => <div>{it}</div>);
+          }
+        },
+      },
       {
         title: t('True Name'),
         dataIndex: 'full_name',
@@ -126,11 +125,14 @@ export default class User extends Base {
       },
     ];
 
-    if (path.indexOf('role-admin/detail') === -1) {
+    if (!path.includes('role-admin/detail')) {
       components.splice(1, 1);
     }
-    if (path.indexOf('user-admin') === -1) {
-      components.splice(4, 1);
+    if (!path.includes('user-admin')) {
+      components.splice(5, 1);
+    }
+    if (!path.includes('project-admin')) {
+      components.splice(2, 1);
     }
     return components;
   };
@@ -140,14 +142,14 @@ export default class User extends Base {
       match: { path },
     } = this.props;
     if (
-      path.indexOf('identity/user') >= 0 &&
-      path.indexOf('identity/user-group') === -1
+      path.includes('identity/user') &&
+      !path.includes('identity/user-group')
     ) {
       return this.isAdminPage
         ? actionConfigs.adminConfigs
         : actionConfigs.actionConfigs;
     }
-    if (path.indexOf('domain-admin/detail') >= 0) {
+    if (path.includes('domain-admin/detail')) {
       return this.isAdminPage
         ? actionConfigsInDomain.adminConfigs
         : actionConfigsInDomain.actionConfigs;
@@ -178,19 +180,19 @@ export default class User extends Base {
     const { path } = match;
     const newParams = { ...params };
     silent && (this.list.silent = true);
-    if (path.indexOf('domain-admin/detail') >= 0) {
+    if (path.includes('domain-admin/detail')) {
       const { id } = match.params;
       newParams.domainId = id;
       await this.store.fetchListInDomainDetail(newParams);
-    } else if (path.indexOf('project-admin/detail') >= 0) {
+    } else if (path.includes('project-admin/detail')) {
       const { id } = match.params;
       newParams.projectId = id;
       await this.store.fetchListInProjectDetail(newParams);
-    } else if (path.indexOf('user-group-admin/detail') >= 0) {
+    } else if (path.includes('user-group-admin/detail')) {
       const { id } = match.params;
       newParams.groupId = id;
       await this.store.fetchListInGroupDetail(newParams);
-    } else if (path.indexOf('role-admin/detail') >= 0) {
+    } else if (path.includes('role-admin/detail')) {
       const { id } = match.params;
       newParams.roleId = id;
       await this.store.fetchListInRoleDetail(newParams);

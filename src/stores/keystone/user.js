@@ -76,7 +76,7 @@ export class UserStore extends Base {
         promiseList.push(globalGroupStore.addGroupUsers({ id, user_id }));
       });
       select_project.forEach((id) => {
-        if (newProjects.indexOf(id) === -1) {
+        if (!newProjects.includes(id)) {
           const role_id = defaultRole;
           promiseList.push(
             globalProjectStore.assignUserRole({ id, user_id, role_id })
@@ -152,8 +152,7 @@ export class UserStore extends Base {
     const { roles } = roleResult;
     const systemRoles = roles.filter(
       (it) =>
-        (it.name.indexOf('system_') !== -1 &&
-          it.name.indexOf('_system_') === -1) ||
+        (it.name.includes('system_') && !it.name.includes('_system_')) ||
         it.name === 'admin'
     );
     const systemRoleId = systemRoles.map((it) => it.id);
@@ -203,8 +202,7 @@ export class UserStore extends Base {
     const { roles } = roleResult;
     const systemRoles = roles.filter(
       (it) =>
-        (it.name.indexOf('system_') !== -1 &&
-          it.name.indexOf('_system_') === -1) ||
+        (it.name.includes('system_') && !it.name.includes('_system_')) ||
         it.name === 'admin'
     );
     const systemRoleId = systemRoles.map((it) => it.id);
@@ -232,8 +230,8 @@ export class UserStore extends Base {
   getUsersSystemRole = (projectMapRole, systemRoleId, projectMapSystemRole) => {
     const systemProject = Object.keys(projectMapRole);
     systemProject.forEach((project_id) => {
-      const roles = projectMapRole[project_id].filter(
-        (role_id) => systemRoleId.indexOf(role_id) !== -1
+      const roles = projectMapRole[project_id].filter((role_id) =>
+        systemRoleId.includes(role_id)
       );
       if (roles[0]) {
         projectMapSystemRole[project_id] = roles;
@@ -292,8 +290,7 @@ export class UserStore extends Base {
       `${this.apiVersion}/projects/${project_id}/users/${id}/roles/`
     );
     const systemRole = projectResult.roles.filter(
-      (it) =>
-        it.name.indexOf('system_') !== -1 && it.name.indexOf('_system_') === -1
+      (it) => it.name.includes('system_') && !it.name.includes('_system_')
     );
     this.systemRoles = systemRole;
   }
@@ -410,24 +407,32 @@ export class UserStore extends Base {
     this.list.isLoading = true;
     const { projectId } = filters;
     const params = {};
-    const [roleAssignmentsReault, result] = await Promise.all([
+    const [roleAssignmentsReault, roleResult, result] = await Promise.all([
       request.get(`${this.apiVersion}/role_assignments`),
+      request.get(`${this.apiVersion}/roles`),
       request.get(this.getListUrl(), params),
     ]);
     const projectUserIds = [];
+    const userMapRole = {};
     roleAssignmentsReault.role_assignments.forEach((roleAssignment) => {
       if (roleAssignment.user) {
         const {
           user: { id: user_id },
+          role: { id: role_id },
           scope: { project: { id } = {} } = {},
         } = roleAssignment;
         if (id && id === projectId) {
           projectUserIds.push(user_id);
+          if (userMapRole[user_id]) {
+            userMapRole[user_id].push(role_id);
+          } else {
+            userMapRole[user_id] = [role_id];
+          }
         }
       }
     });
     let data = get(result, this.listResponseKey, []);
-    data = data.filter((it) => projectUserIds.indexOf(it.id) >= 0);
+    data = data.filter((it) => projectUserIds.includes(it.id));
     const items = data.map(this.mapper);
     const newData = await this.listDidFetch(items);
     Promise.all(
@@ -439,6 +444,9 @@ export class UserStore extends Base {
         const { projects } = projectResult[index];
         it.projects = projects;
         it.project_num = projects.length;
+        it.project_roles = userMapRole[it.id].map(
+          (r) => roleResult.roles.filter((role) => role.id === r)[0].name
+        );
         return it;
       });
       this.list.update({
