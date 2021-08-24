@@ -16,6 +16,6 @@ import renderRoutes from 'utils/RouterConfig';
 
 import routes from './routes';
 
-const App = () => renderRoutes(routes);
+const App = (props) => renderRoutes(routes, props);
 
 export default App;

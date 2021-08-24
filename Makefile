@@ -94,4 +94,4 @@ test:
 
 .PHONY: clean
 clean:
-    rm -rf .venv node_modules dist
+	rm -rf .venv node_modules dist
