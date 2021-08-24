@@ -16,10 +16,10 @@ import { inject, observer } from 'mobx-react';
 import globalServerStore from 'stores/nova/instance';
 import { ModalAction } from 'containers/Action';
 import {
-  isActive,
+  isShutOff,
   isNotDeleting,
   isNotLocked,
-  isBuilding,
+  isIronicInstance,
 } from 'resources/instance';
 import { multiTip } from 'resources/volume';
 import { get as _get } from 'lodash';
@@ -75,8 +75,8 @@ export default class AttachIsoVolume extends ModalAction {
       !isAdminPage &&
         isNotDeleting(item) &&
         isNotLocked(item) &&
-        !isActive(item) &&
-        !isBuilding(item)
+        !isIronicInstance(item) &&
+        isShutOff(item)
     );
   };
 

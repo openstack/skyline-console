@@ -18,11 +18,10 @@ import globalServerStore from 'stores/nova/instance';
 import { ModalAction } from 'containers/Action';
 import { volumeStatus, isOsDisk, isAttachIsoVolume } from 'resources/volume';
 import {
-  isActive,
+  isShutOff,
   isNotLocked,
   isNotDeleting,
   isIronicInstance,
-  isBuilding,
 } from 'resources/instance';
 
 @inject('rootStore')
@@ -74,14 +73,16 @@ export default class DetachIsoVolume extends ModalAction {
   // static hasDataVolume = item => item.volumes_attached && item.volumes_attached.length > 1
 
   // static allowed = item => Promise.resolve(isActive(item) && isNotDeleting(item) && isNotLocked(item) && this.hasDataVolume(item))
-  static allowed = (item) =>
-    Promise.resolve(
-      isNotDeleting(item) &&
+  static allowed = (item, containerProps) => {
+    const { isAdminPage } = containerProps;
+    return Promise.resolve(
+      !isAdminPage &&
+        isNotDeleting(item) &&
         isNotLocked(item) &&
         !isIronicInstance(item) &&
-        !isActive(item) &&
-        !isBuilding(item)
+        isShutOff(item)
     );
+  };
 
   get formItems() {
     return [
