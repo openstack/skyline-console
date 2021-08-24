@@ -15,36 +15,24 @@
 import { action, observable, extendObservable } from 'mobx';
 import { RouterStore } from 'mobx-react-router';
 import { parse } from 'qs';
+import client from 'client';
 import { getQueryString } from 'utils/index';
 import { getLocalTime } from 'utils/time';
 import { setLocalStorageItem } from 'utils/local-storage';
-import { skylineBase } from 'utils/constants';
-import { isEmpty, isArray } from 'lodash';
-import checkPolicy, { onlyAdminCanReadPolicy } from 'resources/policy';
+import { isEmpty, values } from 'lodash';
+import checkItemPolicy, { onlyAdminCanReadPolicy } from 'resources/policy';
 // global stores need to be clear data when change auth
-import globalFloatingIpsStore from './neutron/floatingIp';
-import globalImageStore from './glance/image';
-import globalServerStore from './nova/instance';
-import globalKeypairStore from './nova/keypair';
-import globalNetworkStore from './neutron/network';
-import globalPortForwardingStore from './neutron/port-forwarding';
-import globalQoSPolicyStore from './neutron/qos-policy';
-import globalRecycleBinStore from './skyline/recycle-server';
-import globalSecurityGroupStore from './neutron/security-group';
-import globalSecurityGroupRuleStore from './neutron/security-rule';
-import globalServerGroupStore from './nova/server-group';
-import globalSnapshotStore from './cinder/snapshot';
-import globalStaticRouteStore from './neutron/static-route';
-import globalSubnetStore from './neutron/subnet';
-import globalVirtualAdapterStore from './neutron/virtual-adapter';
-import globalVolumeStore from './cinder/volume';
-import globalComputeHostStore from './nova/compute-host';
-import globalHypervisorStore from './nova/hypervisor';
-import globalStackStore from './heat/stack';
+import allGlobalStores from './index';
 
 class RootStore {
   @observable
   user = null;
+
+  @observable
+  projectId = null;
+
+  @observable
+  projectName = null;
 
   @observable
   roles = [];
@@ -62,6 +50,9 @@ class RootStore {
   hasAdminRole = false;
 
   @observable
+  hasAdminPageRole = false;
+
+  @observable
   openKeys = [];
 
   @observable
@@ -77,15 +68,13 @@ class RootStore {
   info = {};
 
   @observable
-  objectStorageAuth = {};
-
-  @observable
   version = '';
 
   @observable
   noticeCount = 0;
 
-  getUrl = (key) => `${skylineBase()}/${key}`;
+  @observable
+  enableBilling = false;
 
   // @observable
   // menu = renderMenu(i18n.t);
@@ -93,8 +82,11 @@ class RootStore {
   constructor() {
     this.routing = new RouterStore();
     this.routing.query = this.query;
-
     global.navigateTo = this.routing.push;
+  }
+
+  get client() {
+    return client.skyline;
   }
 
   register(name, store) {
@@ -111,8 +103,16 @@ class RootStore {
 
   @action
   async login(params) {
-    await request.post(this.getUrl('login'), params);
+    await this.client.login(params);
     return this.getUserProfileAndPolicy();
+  }
+
+  checkAdminRole(roles) {
+    if (checkItemPolicy({ policy: onlyAdminCanReadPolicy })) {
+      return true;
+    }
+    const regex = /^[\w-_]*(system_admin|system_reader)$/;
+    return roles.some((role) => regex.test(role.name));
   }
 
   @action
@@ -122,14 +122,12 @@ class RootStore {
     this.baseRoles = base_roles;
     this.baseDomains = base_domains;
     // TODO: fix system/project admin/member/reader for W
-    this.hasAdminRole = checkPolicy(onlyAdminCanReadPolicy);
-    globals.user.hasAdminRole = this.hasAdminRole;
+    this.hasAdminRole = checkItemPolicy({ policy: onlyAdminCanReadPolicy });
+    this.hasAdminPageRole = this.checkAdminRole(roles);
   }
 
   @action
   updateUser(user, policies) {
-    globals.user = user;
-    globals.policies = policies;
     this.user = user;
     this.policies = policies;
     const {
@@ -138,32 +136,30 @@ class RootStore {
       endpoints = {},
       license = {},
       version = '',
+      project: { id: projectId, name: projectName } = {},
     } = user || {};
+    this.projectId = projectId;
+    this.projectName = projectName;
     this.license = license || {};
     this.version = version;
     this.updateUserRoles(user);
     const exp = getLocalTime(keystone_token_exp).valueOf();
     setLocalStorageItem('keystone_token', keystone_token, 0, exp);
     this.endpoints = endpoints;
+    this.checkBilling();
+  }
+
+  @action
+  checkBilling() {
+    const enableBilling =
+      this.checkLicense('billing') && this.checkEndpoint('billing_system');
+    this.enableBilling = enableBilling;
   }
 
   @action
   async getUserPolices() {
-    const result = await request.get(this.getUrl('policies'));
+    const result = await this.client.policies.list();
     this.policies = result.policies;
-  }
-
-  @action
-  async checkPolicy(rules) {
-    const body = {
-      rules: isArray(rules) ? rules : [rules],
-    };
-    const result = await request.post(
-      this.getUrl(`${skylineBase()}/policies/check`),
-      body
-    );
-    const allowedFalse = result.policies.find((it) => !it.allowed);
-    return !allowedFalse;
   }
 
   checkLicense(key) {
@@ -187,38 +183,21 @@ class RootStore {
   @action
   async getUserProfileAndPolicy() {
     const [profile, policies] = await Promise.all([
-      request.get(this.getUrl('profile')),
-      request.get(this.getUrl('policies')),
+      this.client.profile(),
+      this.client.policies.list(),
     ]);
     this.updateUser(profile, policies.policies || []);
   }
 
   @action
-  async getObjectStorageAuth() {
-    if (!isEmpty(this.objectStorageAuth)) {
-      return this.objectStorageAuth;
-    }
-    const url = this.getUrl('object_store/credentials');
-    const result = await request.post(url);
-    const { aws_access_key, aws_secret_key } = result;
-    const auth = {
-      'Aws-Access-Key': aws_access_key,
-      'Aws-Secret-Key': aws_secret_key,
-    };
-    this.objectStorageAuth = auth;
-    return auth;
-  }
-
-  @action
   async logout() {
-    await request.post(this.getUrl('logout'));
+    await this.client.logout();
     this.clearData();
-    globals.user = null;
-    globals.policies = [];
     this.user = null;
     this.policies = [];
     this.roles = [];
     this.hasAdminRole = false;
+    this.hasAdminPageRole = false;
     this.license = null;
     this.version = '';
     this.noticeCount = 0;
@@ -245,15 +224,7 @@ class RootStore {
   @action
   async switchProject(projectId, domainId) {
     this.user = null;
-    this.objectStorageAuth = {};
-    const url = this.getUrl(
-      `switch_project/${projectId}?project_domain_id=${domainId}`
-    );
-    const body = {
-      project_id: projectId,
-      project_domain_id: domainId,
-    };
-    await request.post(url, body);
+    await this.client.switchProject(projectId, domainId);
     // this.updateUser(result);
     this.clearData();
     return this.getUserProfileAndPolicy();
@@ -266,8 +237,7 @@ class RootStore {
       return;
     }
     const { region } = data;
-    const url = this.getUrl('contrib/keystone_endpoints');
-    const res = await request.get(url);
+    const res = await this.client.contrib.keystoneEndpoints();
     const regionInfo = res.find((it) => it.region_name === region);
     const endpoints = {
       keystone: regionInfo.url,
@@ -291,27 +261,7 @@ class RootStore {
   }
 
   clearData() {
-    const stores = [
-      globalFloatingIpsStore,
-      globalImageStore,
-      globalServerStore,
-      globalKeypairStore,
-      globalNetworkStore,
-      globalPortForwardingStore,
-      globalQoSPolicyStore,
-      globalRecycleBinStore,
-      globalSecurityGroupStore,
-      globalSecurityGroupRuleStore,
-      globalServerGroupStore,
-      globalSnapshotStore,
-      globalStaticRouteStore,
-      globalSubnetStore,
-      globalVirtualAdapterStore,
-      globalVolumeStore,
-      globalComputeHostStore,
-      globalHypervisorStore,
-      globalStackStore,
-    ];
+    const stores = values(allGlobalStores);
     stores.forEach((store) => {
       store.clearData();
     });

@@ -12,42 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { neutronBase } from 'utils/constants';
-import { action } from 'mobx';
+import client from 'client';
 import Base from '../base';
 
 export class VpnIPSecPolicyStore extends Base {
-  get module() {
-    return 'ipsecpolicies';
-  }
-
-  get apiVersion() {
-    return neutronBase();
+  get client() {
+    return client.neutron.ipsecPolicies;
   }
 
   get listResponseKey() {
     return 'ipsecpolicies';
   }
 
-  get responseKey() {
-    return 'ipsecpolicy';
-  }
-
   get listFilterByProject() {
     return true;
-  }
-
-  @action
-  update({ id }, newObject, sleepTime) {
-    return this.submitting(
-      request.put(
-        `${this.getDetailUrl({ id })}`,
-        { [this.responseKey]: { ...newObject } },
-        null,
-        null,
-        sleepTime
-      )
-    );
   }
 }
 

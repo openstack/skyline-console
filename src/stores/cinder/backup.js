@@ -13,27 +13,18 @@
 // limitations under the License.
 
 import { action } from 'mobx';
-import { cinderBase } from 'utils/constants';
+import client from 'client';
 import Base from '../base';
 import { VolumeStore } from './volume';
 
 export class BackupStore extends Base {
-  get module() {
-    if (!globals.user) {
-      return null;
-    }
-    return `${globals.user.project.id}/backups`;
+  get client() {
+    return client.cinder.backups;
   }
 
-  get apiVersion() {
-    return cinderBase();
+  get listWithDetail() {
+    return true;
   }
-
-  get responseKey() {
-    return 'backup';
-  }
-
-  getListDetailUrl = () => `${this.apiVersion}/${this.module}/detail`;
 
   updateParamsSortPage = (params, sortKey, sortOrder) => {
     if (sortKey && sortOrder) {
@@ -65,9 +56,7 @@ export class BackupStore extends Base {
   @action
   restore(id, data) {
     const body = { restore: data || {} };
-    return this.submitting(
-      request.post(`${this.getDetailUrl({ id })}/restore`, body)
-    );
+    return this.submitting(this.client.restore(id, body));
   }
 }
 const globalBackupStore = new BackupStore();

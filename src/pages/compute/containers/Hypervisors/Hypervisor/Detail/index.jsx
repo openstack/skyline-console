@@ -16,8 +16,6 @@ import { inject, observer } from 'mobx-react';
 import { HypervisorStore } from 'stores/nova/hypervisor';
 import Base from 'containers/TabDetail';
 import Members from 'pages/compute/containers/Instance';
-import Link from 'react-router-dom/Link';
-import React from 'react';
 
 @inject('rootStore')
 @observer
@@ -54,15 +52,6 @@ export default class HypervisorDetail extends Base {
         dataIndex: 'memory_mb_percent',
         render: (value, record) =>
           `${record.memory_mb_used} / ${record.memory_mb}`,
-      },
-      {
-        title: t('Used Local Storage (GB)'),
-        dataIndex: 'storage_percent',
-        render: () => (
-          <Link to="/monitor-center/storage-cluster-admin">
-            {t('Click to see')}
-          </Link>
-        ),
       },
     ];
   }

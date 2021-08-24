@@ -33,10 +33,6 @@ export default class SystemStep extends Base {
     return 'SystemStep';
   }
 
-  get hasAdminRole() {
-    return globals.user.hasAdminRole;
-  }
-
   get keypairs() {
     return (this.keyPairStore.list.data || []).map((it) => ({
       ...it,

@@ -23,7 +23,8 @@ import styles from '../style.less';
 @observer
 class ResourceStatistic extends Component {
   componentDidMount() {
-    const { project: { id: project_id } = {} } = globals.user || {};
+    const { user } = this.props.rootStore || {};
+    const { project: { id: project_id } = {} } = user || {};
     this.props.store.getResourceStatisticData(project_id);
   }
 

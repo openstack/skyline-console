@@ -12,31 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { glanceBase } from 'utils/constants';
 import { action, observable } from 'mobx';
+import client from 'client';
 import Base from '../base';
-// import { getArrayBuffer } from 'utils/file';
 
 export class ImageStore extends Base {
   @observable
   members = [];
 
-  get module() {
-    return 'images';
+  get client() {
+    return client.glance.images;
   }
-
-  get apiVersion() {
-    return glanceBase();
-  }
-
-  get responseKey() {
-    return 'image';
-  }
-
-  // get listFilterByProject() {
-  //   // use it for nuetron apois
-  //   return true;
-  // }
 
   get fetchListByLimit() {
     return true;
@@ -46,9 +32,16 @@ export class ImageStore extends Base {
     return this.paramsFuncPage;
   }
 
+  updateParamsSortPage = (params, sortKey, sortOrder) => {
+    if (sortKey && sortOrder) {
+      params.sort_key = sortKey;
+      params.sort_dir = sortOrder === 'descend' ? 'desc' : 'asc';
+    }
+  };
+
   get paramsFuncPage() {
     return (params) => {
-      const { current, all_projects, ...rest } = params;
+      const { current, all_projects, withPrice, ...rest } = params;
       return {
         ...rest,
         // image_type: 'image',
@@ -73,50 +66,32 @@ export class ImageStore extends Base {
   }
 
   @action
-  async uploadImage(imageId, file) {
-    const url = `${this.getListUrl()}/${imageId}/file`;
-    // const body = await getArrayBuffer(file);
-    const body = file;
-    const headers = {
-      'content-type': 'application/octet-stream',
-    };
-
-    const options = {
-      headers,
-    };
-    return request.put(url, body, options);
+  async uploadImage(imageId, file, conf) {
+    return this.client.uploadFile(imageId, file, conf);
   }
 
   @action
-  async create(data, file, members) {
+  async create(data, file, members, conf) {
     this.isSubmitting = true;
-    const image = await request.post(this.getListUrl(), data);
+    const image = await this.client.create(data);
     const { id } = image;
     // return this.submitting(this.uploadImage(id, file));
     if (members.length > 0) {
       await Promise.all(members.map((it) => this.createMember(id, it)));
     }
-    await this.uploadImage(id, file);
+    await this.uploadImage(id, file, conf);
     this.isSubmitting = false;
     return Promise.resolve();
   }
 
   @action
   async update({ id }, newbody) {
-    const url = this.getDetailUrl({ id });
-    const headers = {
-      'content-type': 'application/openstack-images-v2.1-json-patch',
-    };
-    const options = {
-      headers,
-    };
-    return request.patch(url, newbody, options);
+    return this.client.patch(id, newbody);
   }
 
   @action
   async getMembers(id) {
-    const url = `${this.getDetailUrl({ id })}/members`;
-    const result = await request.get(url);
+    const result = await this.client.members.list(id);
     const { members = [] } = result || {};
     this.members = members;
     return members;
@@ -124,27 +99,24 @@ export class ImageStore extends Base {
 
   @action
   async createMember(id, member) {
-    const url = `${this.getDetailUrl({ id })}/members`;
     const body = {
       member,
     };
-    await request.post(url, body);
+    await this.client.members.create(id, body);
     return this.updateMemberStatus(id, member, 'accepted');
   }
 
   @action
   async updateMemberStatus(id, member, status) {
-    const url = `${this.getDetailUrl({ id })}/members/${member}`;
     const body = {
       status,
     };
-    return request.put(url, body);
+    return this.client.members.update(id, member, body);
   }
 
   @action
   async deleteMember(id, member) {
-    const url = `${this.getDetailUrl({ id })}/members/${member}`;
-    return request.delete(url);
+    return this.client.members.delete(id, member);
   }
 
   @action

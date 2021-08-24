@@ -13,43 +13,11 @@
 // limitations under the License.
 
 import { extendObservable, action } from 'mobx';
-import {
-  keystoneBase,
-  novaBase,
-  neutronBase,
-  courierBase,
-  prometheusSidecarBase,
-  skylineBase,
-  glanceBase,
-} from 'utils/constants';
+import client from 'client';
 
 export default class OverviewStore {
   constructor() {
     this.reset(true);
-  }
-
-  get keystone() {
-    return keystoneBase();
-  }
-
-  get nova() {
-    return novaBase();
-  }
-
-  get neutron() {
-    return neutronBase();
-  }
-
-  get courier() {
-    return courierBase();
-  }
-
-  get alert() {
-    return prometheusSidecarBase();
-  }
-
-  get glance() {
-    return glanceBase();
   }
 
   @action
@@ -81,29 +49,15 @@ export default class OverviewStore {
   };
 
   @action
-  requestPromise = (url) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const data = request.get(url);
-        resolve(data);
-      }, 100);
-    }).catch(() => {
-      return {};
-    });
-  };
-
-  @action
   getProjectInfoData = async () => {
     this.projectInfoLoading = true;
     const promiseArray = [
-      `${this.keystone}/projects`,
-      `${this.keystone}/users`,
-      `${this.nova}/os-services?binary=nova-compute`,
+      client.keystone.projects.list(),
+      client.keystone.users.list(),
+      client.nova.services.list({ binary: 'nova-compute' }),
     ];
     const [projectsResult, userResult, hostResult] = await Promise.all(
-      promiseArray.map((promiseItem) => {
-        return this.requestPromise(promiseItem);
-      })
+      promiseArray
     );
     const { projects = [] } = projectsResult;
     const { users = [] } = userResult;
@@ -118,14 +72,38 @@ export default class OverviewStore {
   getVirtualResource = async () => {
     this.virtualResourceLoading = true;
     const promiseArray = [
-      `${skylineBase()}/extension/servers?all_projects=true`,
-      `${skylineBase()}/extension/servers?all_projects=true&status=ACTIVE`,
-      `${skylineBase()}/extension/servers?all_projects=true&status=ERROR`,
-      `${skylineBase()}/extension/servers?all_projects=true&status=SHUTOFF`,
-      `${skylineBase()}/extension/volumes?limit=10&all_projects=true`,
-      `${skylineBase()}/extension/volumes?limit=10&all_projects=true&status=in-use`,
-      `${skylineBase()}/extension/volumes?limit=10&all_projects=true&status=error`,
-      `${skylineBase()}/extension/volumes?limit=10&all_projects=true&status=available`,
+      client.skyline.extension.servers({ limit: 10, all_projects: true }),
+      client.skyline.extension.servers({
+        limit: 10,
+        all_projects: true,
+        status: 'ACTIVE',
+      }),
+      client.skyline.extension.servers({
+        limit: 10,
+        all_projects: true,
+        status: 'ERROR',
+      }),
+      client.skyline.extension.servers({
+        limit: 10,
+        all_projects: true,
+        status: 'SHUTOFF',
+      }),
+      client.skyline.extension.volumes({ limit: 10, all_projects: true }),
+      client.skyline.extension.volumes({
+        limit: 10,
+        all_projects: true,
+        status: 'in-use',
+      }),
+      client.skyline.extension.volumes({
+        limit: 10,
+        all_projects: true,
+        status: 'error',
+      }),
+      client.skyline.extension.volumes({
+        limit: 10,
+        all_projects: true,
+        status: 'available',
+      }),
     ];
     const [
       allServers,
@@ -136,25 +114,23 @@ export default class OverviewStore {
       attachVolumes,
       errorVolumes,
       availableVoloumes,
-    ] = await Promise.all(
-      promiseArray.map((promiseItem) => {
-        return this.requestPromise(promiseItem);
-      })
-    );
+    ] = await Promise.all(promiseArray);
+    const { count: allServersCount } = allServers;
+    const { count: activeServersCount } = activeServers;
+    const { count: errorServersCount } = errorServers;
+    const { count: shutoffServersCount } = shutoffServers;
     const { count: allVolumesCount } = allvolumes;
     const { count: attachVolumesCount } = attachVolumes;
     const { count: errorVolumesCount } = errorVolumes;
     const { count: availableVoloumesCount } = availableVoloumes;
     const serviceNum = {
-      all: allServers.servers.length,
-      active: activeServers.servers.length,
-      error: errorServers.servers.length,
-      shutoff: shutoffServers.servers.length,
+      all: allServersCount,
+      active: activeServersCount,
+      error: errorServersCount,
+      shutoff: shutoffServersCount,
       other:
-        allServers.servers.length -
-        (activeServers.servers.length +
-          errorServers.servers.length +
-          shutoffServers.servers.length),
+        allServersCount -
+        (activeServersCount + errorServersCount + shutoffServersCount),
     };
     const volumeNum = {
       all: allVolumesCount,
@@ -172,7 +148,7 @@ export default class OverviewStore {
   @action
   getComputeService = async () => {
     this.computeServiceLoading = true;
-    const servicesResult = await request.get(`${this.nova}/os-services`);
+    const servicesResult = await client.nova.services.list();
     const { services } = servicesResult;
     this.computeService = services;
     this.computeServiceLoading = false;
@@ -181,7 +157,7 @@ export default class OverviewStore {
   @action
   getNetworkService = async () => {
     this.networkServiceLoading = true;
-    const networkResult = await request.get(`${this.neutron}/agents`);
+    const networkResult = await client.neutron.agents.list();
     const { agents } = networkResult;
     this.networkService = agents;
     this.networkServiceLoading = false;

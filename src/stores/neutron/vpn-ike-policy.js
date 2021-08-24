@@ -12,42 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { neutronBase } from 'utils/constants';
-import { action } from 'mobx';
+import client from 'client';
 import Base from '../base';
 
 export class VpnIKEPolicyStore extends Base {
-  get module() {
-    return 'ikepolicies';
-  }
-
-  get apiVersion() {
-    return neutronBase();
+  get client() {
+    return client.neutron.ikePolicies;
   }
 
   get listResponseKey() {
     return 'ikepolicies';
   }
 
-  get responseKey() {
-    return 'ikepolicy';
-  }
-
   get listFilterByProject() {
     return true;
-  }
-
-  @action
-  update({ id }, newObject, sleepTime) {
-    return this.submitting(
-      request.put(
-        `${this.getDetailUrl({ id })}`,
-        { [this.responseKey]: { ...newObject } },
-        null,
-        null,
-        sleepTime
-      )
-    );
   }
 }
 

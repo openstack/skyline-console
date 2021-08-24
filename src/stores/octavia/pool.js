@@ -12,24 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { octaviaBase } from 'utils/constants';
+import client from 'client';
 import Base from '../base';
 
 export class PoolStore extends Base {
-  get module() {
-    return 'lbaas/pools';
-  }
-
-  get apiVersion() {
-    return octaviaBase();
-  }
-
-  get responseKey() {
-    return 'pool';
-  }
-
-  get listResponseKey() {
-    return 'pools';
+  get client() {
+    return client.octavia.pools;
   }
 
   get listFilterByProject() {

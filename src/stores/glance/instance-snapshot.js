@@ -12,20 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { glanceBase, cinderBase, novaBase } from 'utils/constants';
+import client from 'client';
 import Base from '../base';
 
 export class InstanceSnapshotStore extends Base {
-  get module() {
-    return 'images';
-  }
-
-  get apiVersion() {
-    return glanceBase();
-  }
-
-  get responseKey() {
-    return 'image';
+  get client() {
+    return client.glance.images;
   }
 
   get listFilterByProject() {
@@ -49,16 +41,24 @@ export class InstanceSnapshotStore extends Base {
 
   get paramsFuncPage() {
     return (params, all_projects) => {
-      const { id, current, ...rest } = params;
+      const { id, current, owner, ...rest } = params;
       const newParams = {
         ...rest,
-        // image_type: 'snapshot',
+        image_type: 'snapshot',
       };
-      if (!all_projects) {
-        newParams.owner = this.currentProject;
+      if (owner) {
+        newParams.owner = owner;
+      } else if (!all_projects) {
+        newParams.owner = this.currentProjectId;
       }
       return newParams;
     };
+  }
+
+  async getCountForPage(params) {
+    const { limit, marker, ...rest } = params;
+    const result = await this.client.count(rest);
+    return result;
   }
 
   get mapperBeforeFetchProject() {
@@ -76,13 +76,11 @@ export class InstanceSnapshotStore extends Base {
     if (!id) {
       return items;
     }
-    const snapshotsUrl = `${cinderBase()}/${globals.user.project.id}/snapshots`;
-    const volumesUrl = `${novaBase()}/servers/${id}/os-volume_attachments`;
     const volumeParams = {};
     const snapshotParams = { all_tenants: allProjects };
     const results = await Promise.all([
-      request.get(snapshotsUrl, snapshotParams),
-      request.get(volumesUrl, volumeParams),
+      client.cinder.snapshots.list(snapshotParams),
+      client.nova.servers.volumeAttachments.list(id, volumeParams),
     ]);
     const snapshotsAll = results[0].snapshots;
     const volumesAll = results[1].volumeAttachments;
@@ -121,16 +119,11 @@ export class InstanceSnapshotStore extends Base {
     if (snapshot) {
       const { snapshot_id: snapshotId } = snapshot;
       item.snapshotId = snapshotId;
-      const currentProject = globals.user.project.id;
-      const snapshotsUrl = `${cinderBase()}/${currentProject}/snapshots/${snapshotId}`;
-      const snapshotResult = await request.get(snapshotsUrl);
+      const snapshotResult = await client.cinder.snapshots.show(snapshotId);
       const snapshotDetail = snapshotResult.snapshot;
       item.snapshotDetail = snapshotDetail;
       const { volume_id: volumeId } = snapshotDetail;
-      const volumeUrl = `${cinderBase()}/${
-        globals.user.project.id
-      }/volumes/${volumeId}`;
-      const volumeResult = await await request.get(volumeUrl);
+      const volumeResult = await client.cinder.volumes.show(volumeId);
       const volumeDetail = volumeResult.volume;
       item.volumeDetail = volumeDetail;
       instanceId =
@@ -142,10 +135,10 @@ export class InstanceSnapshotStore extends Base {
       const { instance_uuid } = item;
       instanceId = instance_uuid;
     }
+    let instanceResult = {};
     try {
       if (instanceId) {
-        const instanceUrl = `${novaBase()}/servers/${instanceId}`;
-        const instanceResult = await request.get(instanceUrl);
+        instanceResult = await client.nova.servers.show(instanceId);
         const { server: { name } = {} } = instanceResult;
         instanceName = name;
       }
@@ -154,6 +147,7 @@ export class InstanceSnapshotStore extends Base {
       server_id: instanceId,
       server_name: instanceName,
     };
+    item.instanceDetail = instanceResult.server || {};
     return item;
   }
 }

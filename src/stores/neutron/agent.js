@@ -12,20 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { neutronBase } from 'utils/constants';
+import client from 'client';
 import Base from '../base';
 
 export class NeutronAgentStore extends Base {
-  get module() {
-    return 'agents';
-  }
-
-  get apiVersion() {
-    return neutronBase();
-  }
-
-  get responseKey() {
-    return 'agent';
+  get client() {
+    return client.neutron.agents;
   }
 
   get listFilterByProject() {

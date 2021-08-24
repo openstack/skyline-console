@@ -22,7 +22,7 @@ import globalProjectStore from 'stores/keystone/project';
 import classnames from 'classnames';
 import { isEmpty, isFinite } from 'lodash';
 import { getUserData, canCreateIronicByLicense } from 'resources/instance';
-import { ironicOriginEndpoint } from 'utils/constants';
+import { ironicOriginEndpoint } from 'client/client/constants';
 import styles from './index.less';
 import ConfirmStep from './ConfirmStep';
 import SystemStep from './SystemStep';
@@ -68,9 +68,8 @@ export default class CreateIronic extends StepAction {
   }
 
   async getQuota() {
-    const { project: { id: project_id } = {} } = globals.user || {};
     await this.projectStore.fetchProjectQuota({
-      project_id,
+      project_id: this.currentProjectId,
     });
     this.onCountChange(1);
   }

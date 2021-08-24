@@ -12,21 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { neutronBase } from 'utils/constants';
 import { action } from 'mobx';
+import client from 'client';
 import Base from '../base';
 
 export class SubnetStore extends Base {
-  get module() {
-    return 'subnets';
-  }
-
-  get apiVersion() {
-    return neutronBase();
-  }
-
-  get responseKey() {
-    return 'subnet';
+  get client() {
+    return client.neutron.subnets;
   }
 
   get listFilterByProject() {
@@ -53,9 +45,7 @@ export class SubnetStore extends Base {
       host_routes,
       gateway_ip,
     };
-    return this.submitting(
-      request.put(`${this.getDetailUrl({ id })}`, { subnet: data })
-    );
+    return this.submitting(this.client.update(id, { subnet: data }));
   }
 }
 

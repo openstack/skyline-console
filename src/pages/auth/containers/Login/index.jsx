@@ -20,6 +20,7 @@ import { InfoCircleFilled } from '@ant-design/icons';
 import SimpleForm from 'components/SimpleForm';
 import globalSkylineStore from 'stores/skyline/skyline';
 import i18n from 'core/i18n';
+import { isEmpty } from 'lodash';
 import styles from './index.less';
 
 @inject('rootStore')
@@ -189,13 +190,15 @@ export default class Login extends Component {
     this.setState({
       loading: true,
     });
-    this.rootStore.login(values).then(
+    const { domain, password, region, username } = values;
+    const body = { domain, password, region, username };
+    this.rootStore.login(body).then(
       () => {
         this.setState({
           loading: false,
           error: false,
         });
-        if (globals.user) {
+        if (this.rootStore.user && !isEmpty(this.rootStore.user)) {
           this.rootStore.routing.push(this.nextPage);
         }
       },
@@ -205,7 +208,7 @@ export default class Login extends Component {
         });
         const {
           data: { detail },
-        } = error;
+        } = error.response;
         if (
           detail.indexOf(
             'The password is expired and needs to be changed for user'
@@ -240,13 +243,16 @@ export default class Login extends Component {
 
   getErrorMessage() {
     const { message } = this.state;
-    if (message.indexOf('The account is locked for user') >= 0) {
+    if (message.includes('The account is locked for user')) {
       return t(
         'Frequent login failure will cause the account to be temporarily locked, please operate after 5 minutes'
       );
     }
+    if (message.includes('The account is disabled for user')) {
+      return t('The user has been disabled, please contact the administrator');
+    }
     if (
-      message.indexOf('You are not authorized for any projects or domains') >= 0
+      message.includes('You are not authorized for any projects or domains')
     ) {
       return t(
         'If you are not authorized to access any project, or if the project you are involved in has been deleted or disabled, contact the platform administrator to reassign the project'

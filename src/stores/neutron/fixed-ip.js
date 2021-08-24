@@ -12,26 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { neutronBase } from 'utils/constants';
 import globalNetworkStore from 'stores/neutron/network';
 import globalFloatingIpsStore from 'stores/neutron/floatingIp';
+import client from 'client';
 import Base from '../base';
 
 export class FixedIpStore extends Base {
-  get module() {
-    return 'ports';
+  get client() {
+    return client.neutron.ports;
   }
 
-  get apiVersion() {
-    return neutronBase();
+  get paramsFunc() {
+    return ({ all_projects, ...rest }) => rest;
   }
 
-  get listResponseKey() {
-    return 'ports';
-  }
-
-  async getItemFloatingIPs(fixed_ip) {
-    return globalFloatingIpsStore.pureFetchList({ fixed_ip_address: fixed_ip });
+  async getItemFloatingIPs(fixed_ip, portId) {
+    return globalFloatingIpsStore.pureFetchList({
+      fixed_ip_address: fixed_ip,
+      port_id: portId,
+    });
   }
 
   async listDidFetch(items) {
@@ -39,7 +38,7 @@ export class FixedIpStore extends Base {
       return [];
     }
     const port = items[0];
-    const { fixed_ips: fixedIPs = [] } = port;
+    const { fixed_ips: fixedIPs = [], id } = port;
     const subnets = Array.from(new Set(fixedIPs.map((it) => it.subnet_id)));
     const subnetResults = await Promise.all(
       subnets.map((item) => globalNetworkStore.fetchSubnetDetail({ id: item }))
@@ -49,7 +48,7 @@ export class FixedIpStore extends Base {
       subnetMap[result.id] = result;
     });
     const fipResults = await Promise.all(
-      fixedIPs.map((item) => this.getItemFloatingIPs(item.ip_address))
+      fixedIPs.map((item) => this.getItemFloatingIPs(item.ip_address, id))
     );
     return fixedIPs.map((it, index) => ({
       ...it,

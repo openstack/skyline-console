@@ -12,28 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { neutronBase } from 'utils/constants';
 import { action, observable } from 'mobx';
 import globalRouterStore from 'stores/neutron/router';
 import globalServerStore from 'stores/nova/instance';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
+import client from 'client';
 import Base from '../base';
 
 export class FloatingIpStore extends Base {
-  get module() {
-    return 'floatingips';
-  }
-
-  get apiVersion() {
-    return neutronBase();
-  }
-
-  get responseKey() {
-    return 'floatingip';
+  get client() {
+    return client.neutron.floatingips;
   }
 
   get listFilterByProject() {
     return true;
+  }
+
+  get mapper() {
+    return (data) => {
+      const { created_at } = data;
+      return {
+        ...data,
+        standard_attr_id: created_at,
+      };
+    };
   }
 
   updateParamsSortPage = (params, sortKey, sortOrder) => {
@@ -45,8 +47,8 @@ export class FloatingIpStore extends Base {
 
   @observable
   addInfo = {
-    network_name: '',
-    router_name: '',
+    name: '-',
+    externalNetworkName: '-',
   };
 
   @action
@@ -142,7 +144,7 @@ export class FloatingIpStore extends Base {
         port_id: null,
       },
     };
-    return this.submitting(request.put(`${this.getDetailUrl({ id })}`, body));
+    return this.submitting(this.client.update(id, body));
   }
 
   @action
@@ -155,15 +157,17 @@ export class FloatingIpStore extends Base {
     if (fixed_ip_address !== '') {
       body.floatingip.fixed_ip_address = fixed_ip_address;
     }
-    return this.submitting(request.put(`${this.getDetailUrl({ id })}`, body));
+    return this.submitting(this.client.update(id, body));
   }
 
   @action
   async getAddInfo({ router_id }) {
     this.isLoading = true;
-    const ret = await globalRouterStore.fetchDetail({ id: router_id });
-    this.addInfo = ret;
-    this.isLoading = false;
+    try {
+      this.addInfo = await globalRouterStore.fetchDetail({ id: router_id });
+    } finally {
+      this.isLoading = false;
+    }
     return this.addInfo;
   }
 }

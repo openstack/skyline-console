@@ -16,7 +16,7 @@
  * @param {String} key api url
  * @returns {String}
  */
-import { novaBase } from 'utils/constants';
+import { novaBase } from 'client/client/constants';
 
 const getNovaBaseUrl = (key) => `${novaBase()}/${key}`;
 

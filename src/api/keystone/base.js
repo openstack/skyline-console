@@ -16,7 +16,7 @@
  * @param {String} key api url
  * @returns {String}
  */
-import { keystoneBase } from 'utils/constants';
+import { keystoneBase } from 'client/client/constants';
 
 const getKeystoneBaseUrl = (key) => `${keystoneBase()}/${key}`;
 

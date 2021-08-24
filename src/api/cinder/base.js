@@ -16,7 +16,7 @@
  * @param {String} key api url
  * @returns {String}
  */
-import { cinderBase } from 'utils/constants';
+import { cinderBase } from 'client/client/constants';
 
 const getCinderBaseUrl = (key) => `${cinderBase()}/${key}`;
 

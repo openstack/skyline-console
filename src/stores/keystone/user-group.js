@@ -13,9 +13,8 @@
 // limitations under the License.
 
 import { action, observable } from 'mobx';
-import { keystoneBase } from 'utils/constants';
-import request from 'utils/request';
 import { get } from 'lodash';
+import client from 'client';
 import Base from '../base';
 import globalProjectStore from './project';
 
@@ -32,16 +31,32 @@ export class GroupStore extends Base {
   @observable
   groupUsers = [];
 
-  get module() {
-    return 'groups';
+  get client() {
+    return client.keystone.groups;
   }
 
-  get apiVersion() {
-    return keystoneBase();
+  get domainClient() {
+    return client.keystone.domains;
   }
 
-  get responseKey() {
-    return 'group';
+  get systemGroupClient() {
+    return client.keystone.systemGroups;
+  }
+
+  get roleClient() {
+    return client.keystone.roles;
+  }
+
+  get roleAssignmentClient() {
+    return client.keystone.roleAssignments;
+  }
+
+  get userClient() {
+    return client.keystone.users;
+  }
+
+  get projectClient() {
+    return client.keystone.projects;
   }
 
   @action
@@ -51,7 +66,7 @@ export class GroupStore extends Base {
 
     body[this.responseKey] = other;
     this.isSubmitting = true;
-    const result = await request.post(this.getListUrl(), body);
+    const result = await this.client.create(body);
     const {
       group: { id: group_id },
     } = result;
@@ -83,7 +98,7 @@ export class GroupStore extends Base {
 
   @action
   async fetchDomain() {
-    const doaminsResult = await request.get(`${this.apiVersion}/domains`);
+    const doaminsResult = await this.domainClient.list();
     this.domains = doaminsResult.domains;
   }
 
@@ -99,12 +114,11 @@ export class GroupStore extends Base {
 
   @action
   async edit({ id, description, name }) {
-    const url = `${this.apiVersion}/groups/${id}`;
     this.isSubmitting = true;
     const reqBody = {
       group: { description, name },
     };
-    const result = await request.patch(url, reqBody);
+    const result = await this.client.patch(id, reqBody);
     this.isSubmitting = false;
     return result;
   }
@@ -112,51 +126,38 @@ export class GroupStore extends Base {
   @action
   async fetchSystemRole({ id }) {
     this.systemRoles = [];
-    const rolesResult = await request.get(
-      `${this.apiVersion}/system/groups/${id}/roles`
-    );
+    const rolesResult = await this.systemGroupClient.roles.list(id);
     this.systemRoles = rolesResult.roles;
   }
 
   @action
   async assignSystemRole({ id, role_id }) {
-    const result = request.put(
-      `${this.apiVersion}/system/groups/${id}/roles/${role_id}`
-    );
-    return result;
+    return this.systemGroupClient.roles.update(id, role_id);
   }
 
   @action
   async deleteSystemRole({ id, role_id }) {
-    const result = request.delete(
-      `${this.apiVersion}/system/groups/${id}/roles/${role_id}`
-    );
-    return result;
+    return this.systemGroupClient.roles.delete(id, role_id);
   }
 
   @action
   async fetchDomainRole({ id, domain_id }) {
     this.domainRoles = [];
-    const rolesResult = await request.get(
-      `${this.apiVersion}/domains/${domain_id}/groups/${id}/roles`
+    const rolesResult = await this.domainClient.groups.roles.list(
+      domain_id,
+      id
     );
     this.domainRoles = rolesResult.roles;
   }
 
   @action
   async assignDomainRole({ id, role_id, domain_id }) {
-    const result = request.put(
-      `${this.apiVersion}/domains/${domain_id}/groups/${id}/roles/${role_id}`
-    );
-    return result;
+    return this.domainClient.groups.roles.update(domain_id, id, role_id);
   }
 
   @action
   async deleteDomainRole({ id, role_id, domain_id }) {
-    const result = request.delete(
-      `${this.apiVersion}/domains/${domain_id}/groups/${id}/roles/${role_id}`
-    );
-    return result;
+    return this.domainClient.groups.roles.delete(domain_id, id, role_id);
   }
 
   @action
@@ -172,8 +173,8 @@ export class GroupStore extends Base {
     const { projectId } = filters;
     const params = {};
     const [roleAssignmentsReault, result] = await Promise.all([
-      request.get(`${this.apiVersion}/role_assignments`),
-      request.get(this.getListUrl(), params),
+      this.roleAssignmentClient.list(),
+      this.client.list(params),
     ]);
     const projectGroupIds = [];
     roleAssignmentsReault.role_assignments.forEach((roleAssignment) => {
@@ -191,33 +192,38 @@ export class GroupStore extends Base {
     data = data.filter((it) => projectGroupIds.indexOf(it.id) >= 0);
     // const items = data.map(this.mapper);
     // const newData = await this.listDidFetch(items);
-    Promise.all(
-      data.map((it) => request.get(`${this.apiVersion}/groups/${it.id}/users`))
-    ).then((rest) => {
-      const addUserItem = data.map((it, index) => {
-        const { users } = rest[index];
-        const userIds = users.map((user) => user.id);
-        it.users = userIds;
-        it.user_num = users.length;
-        return it;
-      });
-      const items = addUserItem.map((item) =>
-        this.mapperProject(roleAssignmentsReault, item)
-      );
-      this.list.update({
-        data: items,
-        total: items.length || 0,
-        limit: Number(limit) || 10,
-        page: Number(page) || 1,
-        sortKey,
-        sortOrder,
-        filters,
-        isLoading: false,
-        ...(this.list.silent ? {} : { selectedRowKeys: [] }),
-      });
+    Promise.all(data.map((it) => this.client.users.list(it.id))).then(
+      (rest) => {
+        const addUserItem = data.map((it, index) => {
+          const { users } = rest[index];
+          const userIds = users.map((user) => user.id);
+          const userInfo = users.map((user) => ({
+            id: user.id,
+            name: user.name,
+          }));
+          it.users = userIds;
+          it.user_num = users.length;
+          it.user_info = userInfo;
+          return it;
+        });
+        const items = addUserItem.map((item) =>
+          this.mapperProject(roleAssignmentsReault, item)
+        );
+        this.list.update({
+          data: items,
+          total: items.length || 0,
+          limit: Number(limit) || 10,
+          page: Number(page) || 1,
+          sortKey,
+          sortOrder,
+          filters,
+          isLoading: false,
+          ...(this.list.silent ? {} : { selectedRowKeys: [] }),
+        });
 
-      return items;
-    });
+        return items;
+      }
+    );
   }
 
   @action
@@ -233,8 +239,8 @@ export class GroupStore extends Base {
     const { userId } = filters;
     const params = {};
     const [roleAssignmentsReault, result] = await Promise.all([
-      request.get(`${this.apiVersion}/role_assignments`),
-      request.get(`${this.apiVersion}/users/${userId}/groups`, params),
+      this.roleAssignmentClient.list(),
+      this.userClient.groups.list(userId, params),
     ]);
     const projectGroupIds = [];
     roleAssignmentsReault.role_assignments.forEach((roleAssignment) => {
@@ -269,9 +275,7 @@ export class GroupStore extends Base {
 
   @action
   async fetchGroupUsers({ id }) {
-    const usersResult = await request.get(
-      `${this.apiVersion}/groups/${id}/users`
-    );
+    const usersResult = await this.client.users.list(id);
     const { users: result } = usersResult;
     this.groupUsers = result;
     return result;
@@ -279,18 +283,12 @@ export class GroupStore extends Base {
 
   @action
   async deleteGroupUsers({ id, user_id }) {
-    const result = request.delete(
-      `${this.apiVersion}/groups/${id}/users/${user_id}`
-    );
-    return result;
+    return this.client.users.delete(id, user_id);
   }
 
   @action
   async addGroupUsers({ id, user_id }) {
-    const result = request.put(
-      `${this.apiVersion}/groups/${id}/users/${user_id}`
-    );
-    return result;
+    return this.client.users.update(id, user_id);
   }
 
   mapperProject = (roleAssignmentsReault, item) => {
@@ -320,17 +318,12 @@ export class GroupStore extends Base {
     // todo: no page, no limit, fetch all
     const params = { ...filters };
 
-    const result = await request.get(
-      this.getListDetailUrl() || this.getListUrl(),
-      params
-    );
-    const roleAssignmentsReault = await request.get(
-      `${this.apiVersion}/role_assignments/`
-    );
+    const result = await this.client.list(params);
+    const roleAssignmentsReault = await this.roleAssignmentClient.list();
     const data = get(result, this.listResponseKey, []);
     Promise.all(
       data.map(
-        (it) => request.get(`${this.apiVersion}/groups/${it.id}/users`)
+        (it) => this.client.users.list(it.id)
         // const { users } = userResult;
         // return { ...it, users };
       )
@@ -338,8 +331,13 @@ export class GroupStore extends Base {
       const addUserItem = data.map((it, index) => {
         const { users } = rest[index];
         const userIds = users.map((user) => user.id);
+        const userInfo = users.map((user) => ({
+          id: user.id,
+          name: user.name,
+        }));
         it.users = userIds;
         it.user_num = users.length;
+        it.user_info = userInfo;
         return it;
       });
       const items = addUserItem.map((item) =>
@@ -369,15 +367,19 @@ export class GroupStore extends Base {
     }
     const [roleAssignmentsReault, groupResult, usersInGroup] =
       await Promise.all([
-        request.get(`${this.apiVersion}/role_assignments`),
-        request.get(`${this.apiVersion}/groups/${id}`),
-        request.get(`${this.apiVersion}/groups/${id}/users`),
+        this.roleAssignmentClient.list(),
+        this.client.show(id),
+        this.client.users.list(id),
       ]);
     const originData = get(groupResult, this.responseKey) || groupResult;
     const { users } = usersInGroup;
     const userIds = users.map((user) => user.id);
     originData.users = userIds;
     originData.user_num = users.length;
+    originData.user_info = users.map((user) => ({
+      id: user.id,
+      name: user.name,
+    }));
     const group = this.mapperProject(roleAssignmentsReault, originData);
     this.detail = group;
     this.isLoading = false;
@@ -386,7 +388,7 @@ export class GroupStore extends Base {
 
   @action
   async fetchGroupData() {
-    const result = await request.get(this.getListUrl());
+    const result = await this.client.list();
     const { groups } = result;
     return groups;
   }
@@ -404,9 +406,9 @@ export class GroupStore extends Base {
     const { roleId } = filters;
     const params = {};
     const [roleAssignmentsReault, projectResult, result] = await Promise.all([
-      request.get(`${this.apiVersion}/role_assignments`),
-      request.get(`${this.apiVersion}/projects`),
-      request.get(this.getListUrl(), params),
+      this.roleAssignmentClient.list(),
+      this.projectClient.list(),
+      this.client.list(params),
     ]);
     const projectRoleUsers = {};
     const systemRoleUsers = {};
@@ -442,30 +444,35 @@ export class GroupStore extends Base {
 
     // const items = data.map(this.mapper);
     // const newData = await this.listDidFetch(items);
-    Promise.all(
-      data.map((it) => request.get(`${this.apiVersion}/groups/${it.id}/users`))
-    ).then((rest) => {
-      items.map((it, index) => {
-        const { users } = rest[index];
-        const userIds = users.map((user) => user.id);
-        it.users = userIds;
-        it.user_num = users.length;
-        return it;
-      });
-      this.list.update({
-        data: items,
-        total: items.length || 0,
-        limit: Number(limit) || 10,
-        page: Number(page) || 1,
-        sortKey,
-        sortOrder,
-        filters,
-        isLoading: false,
-        ...(this.list.silent ? {} : { selectedRowKeys: [] }),
-      });
+    Promise.all(data.map((it) => this.client.users.list(it.id))).then(
+      (rest) => {
+        items.map((it, index) => {
+          const { users } = rest[index];
+          const userIds = users.map((user) => user.id);
+          const userInfo = users.map((user) => ({
+            id: user.id,
+            name: user.name,
+          }));
+          it.users = userIds;
+          it.user_num = users.length;
+          it.user_info = userInfo;
+          return it;
+        });
+        this.list.update({
+          data: items,
+          total: items.length || 0,
+          limit: Number(limit) || 10,
+          page: Number(page) || 1,
+          sortKey,
+          sortOrder,
+          filters,
+          isLoading: false,
+          ...(this.list.silent ? {} : { selectedRowKeys: [] }),
+        });
 
-      return items;
-    });
+        return items;
+      }
+    );
   }
 }
 

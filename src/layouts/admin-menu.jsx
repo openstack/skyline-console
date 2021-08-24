@@ -71,7 +71,7 @@ const renderMenu = (t) => {
               level: 2,
             },
             {
-              path: /^\/compute\/flavor-admin\/detail\/.[^/]+$/,
+              path: /^\/compute\/flavor-admin\/detail\/[^/]+$/,
               name: t('Flavor Detail'),
               key: 'flavor-detail',
               level: 2,

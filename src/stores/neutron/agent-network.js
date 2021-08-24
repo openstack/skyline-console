@@ -13,30 +13,34 @@
 // limitations under the License.
 
 import { action } from 'mobx';
-import { neutronBase } from 'utils/constants';
+import client from 'client';
+import { isArray } from 'lodash';
 import Base from '../base';
 
 export class NeutronAgentNetworkStore extends Base {
-  get module() {
-    return 'networks';
+  get client() {
+    return client.neutron.agents.dhcpNetworks;
   }
 
-  get apiVersion() {
-    return neutronBase();
+  get isSubResource() {
+    return true;
   }
 
-  get responseKey() {
-    return 'network';
-  }
+  getFatherResourceId = (params) => params.agentId;
 
   get listFilterByProject() {
     return true;
   }
 
-  getListUrl = ({ agentId }) =>
-    `${this.apiVersion}/agents/${agentId}/dhcp-networks`;
-
-  getDetailUrl = ({ agentId, id }) => `${this.getListUrl({ agentId })}/${id}`;
+  get mapper() {
+    return (data) => {
+      const { created_at } = data;
+      return {
+        ...data,
+        standard_attr_id: created_at,
+      };
+    };
+  }
 
   async listDidFetch(items, allProjects, filters) {
     const { agentId } = filters;
@@ -48,11 +52,16 @@ export class NeutronAgentNetworkStore extends Base {
 
   @action
   remove = ({ agentId, id }) =>
-    this.submitting(request.delete(this.getDetailUrl({ agentId, id })));
+    this.submitting(this.client.delete(agentId, id));
 
   @action
-  add = ({ agentId }, body) =>
-    this.submitting(request.post(this.getListUrl({ agentId }), body));
+  add = ({ agentId }, body) => {
+    if (!isArray(body)) {
+      return this.submitting(this.client.create(agentId, body));
+    }
+    const reqs = body.map((it) => this.client.create(agentId, it));
+    return this.submitting(Promise.allSettled(reqs));
+  };
 }
 
 const globalNeutronAgentNetworkStore = new NeutronAgentNetworkStore();

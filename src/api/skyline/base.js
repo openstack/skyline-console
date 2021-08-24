@@ -16,7 +16,7 @@
  * @param {String} key api url
  * @returns {String}
  */
-import { skylineBase } from 'utils/constants';
+import { skylineBase } from 'client/client/constants';
 
 const getSkylineBaseUrl = (key) => `${skylineBase()}/${key}`;
 

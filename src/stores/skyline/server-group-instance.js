@@ -12,33 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { skylineBase } from 'utils/constants';
 import { groupArray } from 'utils/index';
 import Base from '../base';
 
 export class ServerGroupInstanceStore extends Base {
-  get module() {
+  get listResponseKey() {
     return 'servers';
   }
-
-  get apiVersion() {
-    return skylineBase();
-  }
-
-  get responseKey() {
-    return 'server';
-  }
-
-  get mapper() {
-    return (item) => {
-      item.status = item.status.toLowerCase();
-      return item;
-    };
-  }
-
-  getListDetailUrl = () => `${skylineBase()}/extension/servers`;
-
-  getListPageUrl = () => `${skylineBase()}/extension/servers`;
 
   get paramsFunc() {
     return (params) => {
@@ -47,16 +27,16 @@ export class ServerGroupInstanceStore extends Base {
     };
   }
 
-  async requestList(url, params, filters) {
+  async requestList(params, filters) {
     const { members, isServerGroup, all_projects } = filters;
     if (members && isServerGroup && members.length === 0) {
       return [];
     }
-    const memberArrs = groupArray(members, 1);
+    const memberArrs = groupArray(members, 10);
     const results = await Promise.all(
       memberArrs.map((it) => {
         const newParams = { ...params, uuid: it, all_projects };
-        return request.get(url, newParams);
+        return this.skylineClient.extension.servers(newParams);
       })
     );
     const servers = [];

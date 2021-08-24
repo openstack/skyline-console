@@ -12,21 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { keystoneBase } from 'utils/constants';
 import { action, observable } from 'mobx';
+import client from 'client';
 import Base from '../base';
 
 export class RoleStore extends Base {
-  get module() {
-    return 'roles';
-  }
-
-  get apiVersion() {
-    return keystoneBase();
-  }
-
-  get responseKey() {
-    return 'role';
+  get client() {
+    return client.keystone.roles;
   }
 
   @observable
@@ -34,9 +26,7 @@ export class RoleStore extends Base {
 
   @action
   async fetchImpliedRoles({ id }) {
-    const rolesResult = await request.get(
-      `${this.getDetailUrl({ id })}/implies/`
-    );
+    const rolesResult = await this.client.implies.list(id);
     const {
       role_inference: { implies },
     } = rolesResult;

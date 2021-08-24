@@ -12,23 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { action, observable } from 'mobx';
-import { neutronBase } from 'utils/constants';
+import { observable } from 'mobx';
 import { PortStore } from 'stores/neutron/port';
+import client from 'client';
 import Base from '../base';
 import globalNetworkStore from './network';
 
 export class RouterStore extends Base {
-  get module() {
-    return 'routers';
-  }
-
-  get apiVersion() {
-    return neutronBase();
-  }
-
-  get responseKey() {
-    return 'router';
+  get client() {
+    return client.neutron.routers;
   }
 
   get listFilterByProject() {
@@ -59,7 +51,8 @@ export class RouterStore extends Base {
 
   get mapper() {
     return (data) => {
-      const { external_gateway_info: externalGateway = {} } = data || {};
+      const { external_gateway_info: externalGateway = {}, created_at } =
+        data || {};
       return {
         ...data,
         hasExternalGateway: !!externalGateway,
@@ -69,6 +62,7 @@ export class RouterStore extends Base {
           (externalGateway && externalGateway.network_name) || '',
         externalFixedIps:
           (externalGateway && externalGateway.external_fixed_ips) || [],
+        standard_attr_id: created_at,
       };
     };
   }
@@ -79,7 +73,7 @@ export class RouterStore extends Base {
       if (!all_projects) {
         return {
           ...rest,
-          project_id: this.currentProject,
+          project_id: this.currentProjectId,
         };
       }
       return rest;
@@ -101,7 +95,7 @@ export class RouterStore extends Base {
   }
 
   async fetchConnectedSubnets(routerItem) {
-    const subnetResult = await request.get(`${this.apiVersion}/subnets`);
+    const subnetResult = await client.neutron.subnets.list();
     const { subnets } = subnetResult;
     const routerInterfaceList = [
       'network:router_interface_distributed',
@@ -126,6 +120,15 @@ export class RouterStore extends Base {
     return routerItem;
   }
 
+  async listDidFetch(items, allProjects, filters) {
+    const { isFirewall } = filters;
+    if (!isFirewall) {
+      return items;
+    }
+    const datas = await this.listDidFetchFirewall(items);
+    return datas;
+  }
+
   async listDidFetchFirewall(items) {
     // eslint-disable-next-line no-return-await
     return Promise.all(
@@ -138,68 +141,16 @@ export class RouterStore extends Base {
     );
   }
 
-  @action
-  async fetchFirewallCreateList({
-    limit,
-    page,
-    sortKey,
-    sortOrder,
-    conditions,
-    timeFilter,
-    ...filters
-  } = {}) {
-    this.list.isLoading = true;
-    // todo: no page, no limit, fetch all
-    const { tab, all_projects, ...rest } = filters;
-    const params = { ...rest };
-    if (all_projects) {
-      if (!this.listFilterByProject) {
-        params.all_projects = true;
-      }
-    }
-    const newParams = this.paramsFunc(params);
-    const url = this.getListDetailUrl() || this.getListUrl();
-    const newUrl = this.updateUrl(url, params);
-    const allData = await this.requestList(newUrl, newParams);
-    const allDataNew = allData.map(this.mapperBeforeFetchProject);
-    const data = allDataNew.filter((item) => {
-      if (!this.listFilterByProject) {
-        return true;
-      }
-      return this.itemInCurrentProject(item, all_projects);
-    });
-    // const items = data.map(this.mapper);
-    let newData = await this.listDidFetchProject(data, all_projects);
-    newData = await this.listDidFetchFirewall(newData, all_projects, filters);
-    newData = newData.map(this.mapper);
-    this.list.update({
-      data: newData,
-      total: newData.length || 0,
-      limit: Number(limit) || 10,
-      page: Number(page) || 1,
-      sortKey,
-      sortOrder,
-      filters,
-      timeFilter,
-      isLoading: false,
-      ...(this.list.silent ? {} : { selectedRowKeys: [] }),
-    });
-
-    return newData;
-  }
-
   async connectSubnet({ id, subnetId, networkId }) {
-    const url = `${this.getListUrl()}/${id}/add_router_interface`;
     const body = {
       subnet_id: subnetId,
     };
     try {
       this.isSubmitting = true;
-      await request.put(url, body);
+      await this.client.addRouterInterface(id, body);
       this.isSubmitting = false;
       return Promise.resolve();
     } catch (error) {
-      const portUrl = `${this.apiVersion}/ports`;
       const portBody = {
         port: {
           network_id: networkId,
@@ -210,31 +161,29 @@ export class RouterStore extends Base {
           ],
         },
       };
-      const port = await request.post(portUrl, portBody);
+      const port = await client.neutron.ports.create(portBody);
       const portId = port.port.id;
       const newBody = {
         port_id: portId,
       };
-      return this.submitting(request.put(url, newBody));
+      return this.submitting(this.client.addRouterInterface(id, newBody));
     }
   }
 
   async disconnectSubnet({ id, subnetId }) {
-    const url = `${this.getListUrl()}/${id}/remove_router_interface`;
     const body = {
       subnet_id: subnetId,
     };
-    return this.submitting(request.put(url, body));
+    return this.submitting(this.client.removeRouterInterface(id, body));
   }
 
   async associateFip({ id, fip, router }) {
     const networkId = fip.floating_network_id;
-    const portUrl = `${this.apiVersion}/ports`;
     const portAddress = fip.floating_ip_address;
     const portParams = {
       network_id: networkId,
     };
-    const result = await request.get(portUrl, portParams);
+    const result = await client.neutron.ports.list(portParams);
     const port = result.ports.find((it) => {
       const { fixed_ips: fixedIps } = it;
       return (

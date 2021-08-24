@@ -44,7 +44,7 @@ export default class NetworkSelectTable extends Component {
   }
 
   get currentProjectId() {
-    return globals.user.project.id;
+    return this.props.rootStore.projectId;
   }
 
   get hasAdminRole() {

@@ -12,25 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { novaBase } from 'utils/constants';
+import { action } from 'mobx';
 import { isEmpty, isNull } from 'lodash';
+import client from 'client';
 import Base from '../base';
 
 export class AvailabilityZoneStore extends Base {
-  get module() {
-    return 'os-availability-zone';
-  }
-
-  get apiVersion() {
-    return novaBase();
-  }
-
-  get responseKey() {
-    return 'availabilityZoneInfo';
+  get client() {
+    return client.nova.zone;
   }
 
   get listResponseKey() {
-    return 'availabilityZoneInfo';
+    return this.responseKey;
+  }
+
+  get listWithDetail() {
+    return true;
   }
 
   get mapper() {
@@ -66,7 +63,12 @@ export class AvailabilityZoneStore extends Base {
     return datas;
   }
 
-  getListDetailUrl = () => `${this.apiVersion}/${this.module}/detail`;
+  @action
+  async fetchListWithoutDetail() {
+    const result = await this.client.list();
+    const datas = result[this.listResponseKey];
+    this.list.data = datas.map(this.mapper);
+  }
 }
 
 const globalAvailabilityZoneStore = new AvailabilityZoneStore();

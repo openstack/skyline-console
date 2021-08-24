@@ -13,26 +13,26 @@
 // limitations under the License.
 
 import { getGBValue } from 'utils/index';
-import { novaBase, placementBase } from 'utils/constants';
 import { action, observable } from 'mobx';
 import { get } from 'lodash';
+import client from 'client';
 import Base from '../base';
 
 export class HypervisorStore extends Base {
-  get module() {
-    return 'os-hypervisors';
-  }
-
-  get apiVersion() {
-    return novaBase();
-  }
-
-  get responseKey() {
-    return 'hypervisor';
-  }
-
   @observable
   overview = {};
+
+  get client() {
+    return client.nova.hypervisors;
+  }
+
+  get providerClient() {
+    return client.placement.resourceProviders;
+  }
+
+  get listWithDetail() {
+    return true;
+  }
 
   // get mapper() {
   //   return (item) => {
@@ -51,7 +51,7 @@ export class HypervisorStore extends Base {
       return items;
     }
     const requestList = items.map((it) =>
-      request.get(`${placementBase()}/resource_providers/${it.id}/inventories`)
+      this.providerClient.inventories.list(it.id)
     );
     const inventories = await Promise.all(requestList);
     const result = items.map((item, index) => {
@@ -82,17 +82,13 @@ export class HypervisorStore extends Base {
     return result;
   }
 
-  getListDetailUrl = () => `${this.apiVersion}/${this.module}/detail`;
-
   @action
   async fetchDetail({ id, all_projects }) {
     this.isLoading = true;
-    const result = await request.get(this.getDetailUrl({ id }));
+    const result = await this.client.show(id);
     const originData = get(result, this.responseKey) || result;
     const item = this.mapperBeforeFetchProject(originData);
-    const inventoriesReuslt = await request.get(
-      `${placementBase()}/resource_providers/${item.id}/inventories`
-    );
+    const inventoriesReuslt = await this.providerClient.inventories.list(id);
     if (item.hypervisor_type !== 'ironic') {
       const {
         inventories: {
@@ -103,6 +99,8 @@ export class HypervisorStore extends Base {
       item.vcpus *= allocation_ratio;
       item.memory_mb *= memory_ratio;
     }
+    item.memory_mb_used_gb = getGBValue(item.memory_mb_used);
+    item.memory_mb_gb = getGBValue(item.memory_mb);
     const newItem = await this.detailDidFetch(item, all_projects);
     const detail = this.mapper(newItem);
     this.detail = detail;
@@ -113,8 +111,7 @@ export class HypervisorStore extends Base {
   @action
   getOverview = async () => {
     this.isLoading = true;
-    const url = this.getListDetailUrl();
-    const hypervisorResult = await request.get(url);
+    const hypervisorResult = await this.client.listDetail();
     const { hypervisors } = hypervisorResult;
     const data = {
       vcpus: 0,
@@ -125,7 +122,7 @@ export class HypervisorStore extends Base {
       local_gb_used: 0,
     };
     const requestList = hypervisors.map((it) =>
-      request.get(`${placementBase()}/resource_providers/${it.id}/inventories`)
+      this.providerClient.inventories.list(it.id)
     );
     const inventories = await Promise.all(requestList);
     hypervisors.forEach((item, index) => {
@@ -148,6 +145,7 @@ export class HypervisorStore extends Base {
       // data.local_gb_used += item.local_gb_used;
       // fetch storage info from prometheus
     });
+
     this.overview = data;
     this.isLoading = false;
   };

@@ -12,43 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { action, observable } from 'mobx';
-import { cinderBase, skylineBase } from 'utils/constants';
+import { action } from 'mobx';
+import client from 'client';
 import Base from '../base';
 
 export class SnapshotStore extends Base {
-  @observable
-  allSnapshotList = [];
-
-  get module() {
-    if (!globals.user) {
-      return null;
-    }
-    return `${globals.user.project.id}/snapshots`;
-  }
-
-  get apiVersion() {
-    return cinderBase();
-  }
-
-  get responseKey() {
-    return 'snapshot';
+  get client() {
+    return client.cinder.snapshots;
   }
 
   get listResponseKey() {
     return 'volume_snapshots';
   }
 
+  listFetchByClient(params) {
+    return this.skylineClient.extension.volumeSnapshots(params);
+  }
+
   get paramsFunc() {
     return (params) => {
-      const { id, ...rest } = params;
+      const { id, withPrice, ...rest } = params;
       return rest;
     };
   }
-
-  getListPageUrl = () => `${skylineBase()}/extension/volume_snapshots`;
-
-  getListDetailUrl = () => `${skylineBase()}/extension/volume_snapshots`;
 
   async listDidFetch(items, allProjects, filters) {
     if (items.length === 0) {
@@ -61,10 +47,7 @@ export class SnapshotStore extends Base {
 
   async detailDidFetch(item) {
     const { volume_id } = item;
-    const volumeUrl = `${cinderBase()}/${
-      globals.user.project.id
-    }/volumes/${volume_id}`;
-    const { volume } = await request.get(volumeUrl);
+    const { volume } = await client.cinder.volumes.show(volume_id);
     item.volume = volume;
     return item;
   }
@@ -77,18 +60,9 @@ export class SnapshotStore extends Base {
   };
 
   @action
-  fetchAllList() {
-    return request.get(this.getListUrl()).then((res) => {
-      const list = res.snapshots || [];
-      this.allSnapshotList = list;
-      return list;
-    });
-  }
-
-  @action
   update(id, data) {
     const body = { [this.responseKey]: data };
-    return this.submitting(request.put(this.getDetailUrl({ id }), body));
+    return this.submitting(this.client.update(id, body));
   }
 }
 const globalSnapshotStore = new SnapshotStore();

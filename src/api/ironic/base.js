@@ -16,7 +16,7 @@
  * @param {String} key api url
  * @returns {String}
  */
-import { ironicBase } from 'utils/constants';
+import { ironicBase } from 'client/client/constants';
 
 const getIronicBaseUrl = (key) => `${ironicBase()}/${key}`;
 

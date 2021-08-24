@@ -16,7 +16,7 @@
  * @param {String} key api url
  * @returns {String}
  */
-import { neutronBase } from 'utils/constants';
+import { neutronBase } from 'client/client/constants';
 
 const getNeutronBaseUrl = (key) => `${neutronBase()}/${key}`;
 

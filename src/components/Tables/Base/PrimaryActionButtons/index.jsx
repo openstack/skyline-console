@@ -55,8 +55,8 @@ export default class TablePrimaryButtons extends Component {
     this.getActionsAllowed();
   }
 
-  componentDidUpdate(nextProps) {
-    if (!isEqual(nextProps, this.props)) {
+  componentDidUpdate(prevProps) {
+    if (!isEqual(prevProps, this.props)) {
       this.getActionsAllowed();
     }
   }

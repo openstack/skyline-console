@@ -13,25 +13,12 @@
 // limitations under the License.
 
 import { action } from 'mobx';
-import { cinderBase } from 'utils/constants';
+import client from 'client';
 import Base from '../base';
 
-const qs = require('qs');
-
 export class QosSpecStore extends Base {
-  get module() {
-    if (!globals.user) {
-      return null;
-    }
-    return `${globals.user.project.id}/qos-specs`;
-  }
-
-  get apiVersion() {
-    return cinderBase();
-  }
-
-  get responseKey() {
-    return 'qos_spec';
+  get client() {
+    return client.cinder.qosSpecs;
   }
 
   @action
@@ -39,13 +26,13 @@ export class QosSpecStore extends Base {
     const body = {};
     const { values } = data;
     body[`${this.responseKey}s`] = values;
-    return this.submitting(request.post(this.getListUrl(), body));
+    return this.submitting(this.client.create(body));
   }
 
   @action
   editConsumer({ id, consumer }) {
     return this.submitting(
-      request.put(this.getDetailUrl({ id }), {
+      this.client.update(id, {
         qos_specs: {
           consumer,
         },
@@ -66,18 +53,12 @@ export class QosSpecStore extends Base {
 
   @action
   associate(id, data) {
-    const query = qs.stringify(data);
-    return this.submitting(
-      request.get(`${this.getDetailUrl({ id })}/associate?${query}`)
-    );
+    return this.submitting(this.client.associate(id, data));
   }
 
   @action
   disassociate(id, data) {
-    const query = qs.stringify(data);
-    return this.submitting(
-      request.get(`${this.getDetailUrl({ id })}/disassociate?${query}`)
-    );
+    return this.submitting(this.client.disassociate(id, data));
   }
 }
 

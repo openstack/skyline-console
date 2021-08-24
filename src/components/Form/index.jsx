@@ -104,6 +104,11 @@ export default class BaseForm extends React.Component {
     return '';
   }
 
+  get currentUser() {
+    const { user } = this.props.rootStore || {};
+    return user || {};
+  }
+
   get isAdminPage() {
     const { pathname = '' } = this.props.location || {};
     return isAdminPage(pathname);
@@ -114,11 +119,11 @@ export default class BaseForm extends React.Component {
   }
 
   get currentProjectId() {
-    return globals.user.project.id;
+    return this.props.rootStore.projectId;
   }
 
   get currentProjectName() {
-    return globals.user.project.name;
+    return this.props.rootStore.projectName;
   }
 
   getUrl(path, adminStr) {
@@ -258,7 +263,7 @@ export default class BaseForm extends React.Component {
         this.responseError = err;
         this.showNotice && Notify.errorWithDetail(err, this.errorText);
         // eslint-disable-next-line no-console
-        console.log(err);
+        console.log('err', err);
         if (callback && isFunction(callback)) {
           callback(false, true);
         }

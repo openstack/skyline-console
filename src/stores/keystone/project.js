@@ -14,14 +14,8 @@
 
 import { action, observable } from 'mobx';
 import { getGBValue } from 'utils/index';
-import request from 'utils/request';
-import {
-  keystoneBase,
-  novaBase,
-  cinderBase,
-  neutronBase,
-} from 'utils/constants';
-import { get } from 'lodash';
+import { get, isNil, isEmpty } from 'lodash';
+import client from 'client';
 import Base from '../base';
 
 export class ProjectStore extends Base {
@@ -40,18 +34,20 @@ export class ProjectStore extends Base {
   @observable
   projectsOnly = [];
 
-  getResourceUrl = () => keystoneBase();
-
-  get module() {
-    return 'projects';
+  get client() {
+    return client.keystone.projects;
   }
 
-  get apiVersion() {
-    return keystoneBase();
+  get roleAssignmentClient() {
+    return client.keystone.roleAssignments;
   }
 
-  get responseKey() {
-    return 'project';
+  get roleClient() {
+    return client.keystone.roles;
+  }
+
+  get userClient() {
+    return client.keystone.users;
   }
 
   @action
@@ -66,16 +62,23 @@ export class ProjectStore extends Base {
     this.list.isLoading = true;
     // todo: no page, no limit, fetch all
     // const params = { ...filters };
+    const { tags } = filters;
 
     const [roleAssignmentsReault, projectsResult, roleResult] =
       await Promise.all([
-        request.get(`${this.apiVersion}/role_assignments`),
-        request.get(`${this.apiVersion}/projects`),
-        request.get(`${this.apiVersion}/roles`),
+        this.roleAssignmentClient.list(),
+        this.client.list(tags ? { tags } : {}),
+        this.roleClient.list(),
       ]);
     const { projects } = projectsResult;
     const { roles } = roleResult;
-    const projectRoleId = roles.map((it) => it.id);
+    const projectRoles = roles.filter(
+      (it) =>
+        (it.name.indexOf('project_') !== -1 &&
+          it.name.indexOf('_project_') === -1) ||
+        it.name === 'admin'
+    );
+    const projectRoleId = projectRoles.map((it) => it.id);
     projects.map((project) => {
       const userMapRole = {}; // all user include system role and project role: { user_id: [roles_id] }
       const projectGroups = {};
@@ -169,25 +172,23 @@ export class ProjectStore extends Base {
 
   @action
   async enable({ id }) {
-    const url = `${this.apiVersion}/projects/${id}`;
     const reqBody = {
       project: { enabled: true },
     };
-    return this.submitting(request.patch(url, reqBody));
+    return this.submitting(this.client.patch(id, reqBody));
   }
 
   @action
   async forbidden({ id }) {
-    const url = `${this.apiVersion}/projects/${id}`;
     const reqBody = {
       project: { enabled: false },
     };
-    return this.submitting(request.patch(url, reqBody));
+    return this.submitting(this.client.patch(id, reqBody));
   }
 
   @action
   async fetchDomain() {
-    const doaminsResult = await request.get(`${this.getResourceUrl()}/domains`);
+    const doaminsResult = await this.skylineClient.domains();
     this.domains = doaminsResult.domains;
   }
 
@@ -196,9 +197,7 @@ export class ProjectStore extends Base {
     const reqBody = {
       project: data,
     };
-    return this.submitting(
-      request.post(`${this.getResourceUrl()}/projects`, reqBody)
-    );
+    return this.submitting(this.client.create(reqBody));
   }
 
   @action
@@ -208,12 +207,18 @@ export class ProjectStore extends Base {
     }
     const [roleAssignmentsReault, projectResult, roleResult] =
       await Promise.all([
-        request.get(`${this.apiVersion}/role_assignments`),
-        request.get(`${this.apiVersion}/projects/${id}`),
-        request.get(`${this.apiVersion}/roles`),
+        this.roleAssignmentClient.list(),
+        this.client.show(id),
+        this.roleClient.list(),
       ]);
     const { roles } = roleResult;
-    const projectRoleId = roles.map((it) => it.id);
+    const projectRoles = roles.filter(
+      (it) =>
+        (it.name.indexOf('project_') !== -1 &&
+          it.name.indexOf('_project_') === -1) ||
+        it.name === 'admin'
+    );
+    const projectRoleId = projectRoles.map((it) => it.id);
     const { project } = projectResult;
     const userMapRole = {};
     const projectGroups = {};
@@ -232,30 +237,26 @@ export class ProjectStore extends Base {
     project.groups = projectGroups;
     project.user_num = Object.keys(userMapRole).length;
     project.group_num = Object.keys(projectGroups).length;
-    this.detail = project;
+    const newItem = await this.detailDidFetch(project);
+    this.detail = newItem;
     this.isLoading = false;
-    return project;
+    return newItem;
   }
 
   @action
   async edit({ id, description, name }) {
-    const url = `${this.apiVersion}/projects/${id}`;
     const reqBody = {
       project: { description, name },
     };
-    return this.submitting(request.patch(url, reqBody));
+    return this.submitting(this.client.patch(id, reqBody));
   }
 
   @action
   async fetchProjectQuota({ project_id }) {
     const [novaResult, cinderResult, neutronResult] = await Promise.all([
-      request.get(`${novaBase()}/os-quota-sets/${project_id}/detail`),
-      request.get(
-        `${cinderBase()}/${
-          globals.user.project.id
-        }/os-quota-sets/${project_id}?usage=True`
-      ),
-      request.get(`${neutronBase()}/quotas/${project_id}/details`),
+      client.nova.quotaSets.detail(project_id),
+      client.cinder.quotaSets.show(project_id, { usage: 'True' }),
+      client.neutron.quotas.details(project_id),
     ]);
     this.isSubmitting = false;
     const { quota_set: novaQuota } = novaResult;
@@ -276,6 +277,15 @@ export class ProjectStore extends Base {
     this.quota = quota;
   }
 
+  omitNil = (obj) => {
+    return Object.keys(obj).reduce((acc, v) => {
+      if (!isNil(obj[v])) {
+        acc[v] = obj[v];
+      }
+      return acc;
+    }, {});
+  };
+
   @action
   async updateProjectQuota({ project_id, data }) {
     this.isSubmitting = true;
@@ -285,6 +295,7 @@ export class ProjectStore extends Base {
       ram,
       volumes,
       gigabytes,
+      firewall_group,
       security_group_rule,
       server_groups,
       snapshots,
@@ -301,59 +312,61 @@ export class ProjectStore extends Base {
       ...others
     } = data;
     let ramGb = ram;
-    if (ram !== -1) {
+    if (ram && ram !== -1) {
       ramGb = ram * 1024;
     }
     const novaReqBody = {
-      quota_set: {
+      quota_set: this.omitNil({
         instances,
         cores,
         ram: ramGb,
         server_groups,
         server_group_members,
         key_pairs,
-      },
+      }),
     };
     const cinderReqBody = {
-      quota_set: {
+      quota_set: this.omitNil({
         volumes,
         gigabytes,
         backup_gigabytes,
         snapshots,
         backups,
         ...others,
-      },
+      }),
     };
+    const firewallValue = firewall_group ? { firewall_group } : {};
     const neutronReqBody = {
-      quota: {
+      quota: this.omitNil({
         network,
         router,
         subnet,
         floatingip,
         security_group,
         security_group_rule,
+        ...firewallValue,
         port,
-      },
+      }),
     };
-    const result = await Promise.all([
-      request.put(`${novaBase()}/os-quota-sets/${project_id}`, novaReqBody),
-      request.put(
-        `${cinderBase()}/${
-          globals.user.project.id
-        }/os-quota-sets/${project_id}`,
-        cinderReqBody
-      ),
-      request.put(`${neutronBase()}/quotas/${project_id}`, neutronReqBody),
-    ]);
+    const reqs = [];
+    if (!isEmpty(novaReqBody.quota_set)) {
+      reqs.push(client.nova.quotaSets.update(project_id, novaReqBody));
+    }
+    if (!isEmpty(cinderReqBody.quota_set)) {
+      reqs.push(client.cinder.quotaSets.update(project_id, cinderReqBody));
+    }
+    if (!isEmpty(neutronReqBody.quota)) {
+      reqs.push(client.neutron.quotas.update(project_id, neutronReqBody));
+    }
+
+    const result = await Promise.all(reqs);
     this.isSubmitting = false;
     return result;
   }
 
   @action
   async getUserRoleList({ id, user_id }) {
-    const url = `${this.apiVersion}/projects/${id}/users/${user_id}/roles/`;
-    this.isSubmitting = true;
-    const result = await request.get(url);
+    const result = await this.client.users.roles.list(id, user_id);
     this.userRoleList = result.roles;
   }
 
@@ -362,43 +375,37 @@ export class ProjectStore extends Base {
     const body = {};
     body[this.responseKey] = data;
     this.isSubmitting = true;
-    const result = await request.post(this.getListUrl(), body);
+    const result = await this.client.create(body);
     this.isSubmitting = false;
     return result;
   }
 
   @action
   async assignUserRole({ id, user_id, role_id }) {
-    const url = `${this.apiVersion}/projects/${id}/users/${user_id}/roles/${role_id}`;
-    const result = request.put(url);
+    const result = await this.client.users.roles.update(id, user_id, role_id);
     return result;
   }
 
   @action
   async removeUserRole({ id, user_id, role_id }) {
-    const url = `${this.apiVersion}/projects/${id}/users/${user_id}/roles/${role_id}`;
-    const result = request.delete(url);
+    const result = await this.client.users.roles.delete(id, user_id, role_id);
     return result;
   }
 
   @action
   async getGroupRoleList({ id, group_id }) {
-    const url = `${this.apiVersion}/projects/${id}/groups/${group_id}/roles/`;
-    this.isSubmitting = true;
-    const result = await request.get(url);
+    const result = await this.client.groups.roles.list(id, group_id);
     this.groupRoleList = result.roles;
   }
 
   @action
   async assignGroupRole({ id, group_id, role_id }) {
-    const url = `${this.apiVersion}/projects/${id}/groups/${group_id}/roles/${role_id}`;
-    const result = request.put(url);
+    const result = await this.client.groups.roles.update(id, group_id, role_id);
     return result;
   }
 
   async removeGroupRole({ id, group_id, role_id }) {
-    const url = `${this.apiVersion}/projects/${id}/groups/${group_id}/roles/${role_id}`;
-    const result = request.delete(url);
+    const result = await this.client.groups.roles.delete(id, group_id, role_id);
     return result;
   }
 
@@ -415,10 +422,10 @@ export class ProjectStore extends Base {
     const { userId } = filters;
     const [roleAssignmentsReault, projectsResult, roleResult, groupResult] =
       await Promise.all([
-        request.get(`${this.apiVersion}/role_assignments`),
-        request.get(`${this.apiVersion}/users/${userId}/projects`),
-        request.get(`${this.apiVersion}/roles`),
-        request.get(`${this.apiVersion}/users/${userId}/groups`),
+        this.roleAssignmentClient.list(),
+        this.userClient.projects.list(userId),
+        this.roleClient.list(),
+        this.userClient.groups.list(userId),
       ]);
     const projects = get(projectsResult, this.listResponseKey, []);
     projects.map((project) => {
@@ -485,9 +492,9 @@ export class ProjectStore extends Base {
     const { groupId } = filters;
     const [roleAssignmentsReault, projectsResult, roleResult] =
       await Promise.all([
-        request.get(`${this.apiVersion}/role_assignments`),
-        request.get(`${this.apiVersion}/projects`),
-        request.get(`${this.apiVersion}/roles`),
+        this.roleAssignmentClient.list(),
+        this.client.list(),
+        this.roleClient.list(),
       ]);
     const projects = get(projectsResult, this.listResponseKey, []);
     projects.map((project) => {
@@ -534,8 +541,10 @@ export class ProjectStore extends Base {
   @action
   async fetchProjectListOnly() {
     this.list.isLoading = true;
-    const result = await request.get(`${this.apiVersion}/${this.module}`);
+    const result = await this.client.list();
     this.projectsOnly = get(result, this.listResponseKey, []);
+    this.list.isLoading = false;
+    return result;
   }
 }
 

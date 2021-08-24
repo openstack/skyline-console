@@ -30,10 +30,6 @@ export default class QoSPolicy extends Base {
     return 'get_policy';
   }
 
-  get module() {
-    return 'qos_policies';
-  }
-
   get name() {
     return t('QoS policies');
   }

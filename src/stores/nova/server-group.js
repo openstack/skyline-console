@@ -12,56 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { novaBase } from 'utils/constants';
-import { get } from 'lodash';
+import client from 'client';
 import Base from '../base';
 
 export class ServerGroupStore extends Base {
-  get module() {
-    return 'os-server-groups';
-  }
-
-  get apiVersion() {
-    return novaBase();
-  }
-
-  get responseKey() {
-    return 'server_group';
+  get client() {
+    return client.nova.serverGroups;
   }
 
   get fetchListByLimit() {
     return true;
   }
 
-  async requestListByMarker(url, params, limit, marker) {
-    const newParams = {
-      ...params,
-      limit,
-    };
-    if (marker) {
-      newParams.offset = marker;
-    }
-    return request.get(url, newParams);
-  }
+  updateMarkerParams = (limit, marker) => ({
+    limit,
+    offset: marker,
+  });
 
-  async requestListAllByLimit(url, params, limit) {
-    let marker = '';
-    let hasNext = true;
-    let datas = [];
-    while (hasNext) {
-      // eslint-disable-next-line no-await-in-loop
-      const result = await this.requestListByMarker(url, params, limit, marker);
-      const data = this.listResponseKey
-        ? get(result, this.listResponseKey, [])
-        : result;
-      datas = [...datas, ...data];
-      if (data.length >= limit) {
-        marker = datas.length;
-      } else {
-        hasNext = false;
-      }
-    }
-    return datas;
+  parseMarker(datas, result, allDatas) {
+    return allDatas.length;
   }
 }
 

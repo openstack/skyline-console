@@ -16,7 +16,7 @@
  * @param {String} key api url
  * @returns {String}
  */
-import { swiftBase } from 'utils/constants';
+import { swiftBase } from 'client/client/constants';
 
 const getSwiftBaseUrl = (key) => `${swiftBase()}/${key}`;
 

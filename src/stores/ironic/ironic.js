@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { action, observable } from 'mobx';
-import { ironicBase, placementBase } from 'utils/constants';
+import client from 'client';
 import Base from '../base';
 
 export class IronicStore extends Base {
@@ -26,19 +26,17 @@ export class IronicStore extends Base {
   @observable
   traits = [];
 
-  get module() {
-    return 'nodes';
+  get client() {
+    return client.ironic.nodes;
   }
 
-  get apiVersion() {
-    return ironicBase();
+  get portClient() {
+    return client.ironic.ports;
   }
 
-  get responseKey() {
-    return 'node';
+  get listWithDetail() {
+    return true;
   }
-
-  getListDetailUrl = () => `${this.getListUrl()}/detail`;
 
   async detailDidFetch(item, all_projects, params) {
     if (params.onlyDetail) {
@@ -48,9 +46,9 @@ export class IronicStore extends Base {
     const newItem = { ...item };
     const [bootDevice, states, validate, ports] = await Promise.all([
       this.getBootDevice(id),
-      request.get(`${this.getDetailUrl({ id })}/states`),
-      request.get(`${this.getDetailUrl({ id })}/validate`),
-      request.get(`${this.getDetailUrl({ id })}/ports`),
+      this.client.states.list(id),
+      this.client.validate.list(id),
+      this.client.ports.list(id),
     ]);
     newItem.bootDevice = bootDevice;
     newItem.states = states;
@@ -63,8 +61,7 @@ export class IronicStore extends Base {
     if (items.length === 0) {
       return items;
     }
-    const url = `${this.apiVersion}/ports/detail`;
-    const result = await request.get(url);
+    const result = await this.portClient.listDetail();
     const { ports } = result;
     items.forEach((it) => {
       const nodePorts = ports.filter((port) => port.node_uuid === it.uuid);
@@ -75,33 +72,30 @@ export class IronicStore extends Base {
 
   @action
   changeProvision(id, body) {
-    const url = `${this.getDetailUrl({ id })}/states/provision`;
-    return this.submitting(request.put(url, body));
+    return this.submitting(this.client.updateStatesProvision(id, body));
   }
 
   @action
   changePower(id, body) {
-    const url = `${this.getDetailUrl({ id })}/states/power`;
-    return this.submitting(request.put(url, body));
+    return this.submitting(this.client.UpdateStatesPower(id, body));
   }
 
   @action
   setMaintenance(id, body) {
-    const url = `${this.getDetailUrl({ id })}/maintenance`;
-    return this.submitting(request.put(url, body));
+    return this.submitting(this.client.updateMaintenance(id, body));
   }
 
   @action
   clearMaintenance(id) {
-    const url = `${this.getDetailUrl({ id })}/maintenance`;
-    return this.submitting(request.delete(url));
+    return this.submitting(this.client.deleteMaintenance(id));
   }
 
   @action
   async getBootDevice(id) {
-    const url = `${this.getDetailUrl({ id })}/management/boot_device`;
     try {
-      const result = await this.submitting(request.get(url));
+      const result = await this.submitting(
+        this.client.getManagementBootDevice(id)
+      );
       this.bootDevice = result;
       return result;
     } catch (e) {
@@ -113,39 +107,38 @@ export class IronicStore extends Base {
 
   @action
   async getSupportedBootDevice(id) {
-    const url = `${this.getDetailUrl({ id })}/management/boot_device/supported`;
-    const result = await this.submitting(request.get(url));
+    const result = await this.submitting(
+      this.client.getManagementBootDeviceSupported(id)
+    );
     this.supportedBootDevices = result.supported_boot_devices || [];
     return this.supportedBootDevices;
   }
 
   @action
   setBootDevice(id, body) {
-    const url = `${this.getDetailUrl({ id })}/management/boot_device`;
-    return this.submitting(request.put(url, body));
+    return this.submitting(this.client.upateManagementBootDevice(id, body));
   }
 
   @action
   async create(body) {
     const { traits = [], ...rest } = body;
     if (traits.length === 0) {
-      return this.submitting(request.post(this.getListUrl(), rest));
+      return this.submitting(this.client.create(rest));
     }
     this.isLoading = true;
-    const result = await request.post(this.getListUrl(), rest);
+    const result = await this.client.create(rest);
     const { uuid } = result;
     return this.updateTraits(uuid, traits);
   }
 
   @action
   edit({ id }, body) {
-    return this.submitting(request.patch(`${this.getDetailUrl({ id })}`, body));
+    return this.submitting(this.client.patch(id, body));
   }
 
   @action
   async getTraits() {
-    const url = `${placementBase()}/traits`;
-    const result = await request.get(url);
+    const result = await client.placement.traits.list();
     const { traits = [] } = result;
     traits.sort();
     this.traits = traits;
@@ -153,11 +146,10 @@ export class IronicStore extends Base {
 
   @action
   updateTraits(id, traits) {
-    const url = `${this.getDetailUrl({ id })}/traits`;
     const body = {
       traits,
     };
-    return this.submitting(request.put(url, body));
+    return this.submitting(this.client.updateTraits(id, body));
   }
 }
 

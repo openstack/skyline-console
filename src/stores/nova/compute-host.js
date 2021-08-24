@@ -13,27 +13,21 @@
 // limitations under the License.
 
 import { action } from 'mobx';
-import { novaBase, skylineBase } from 'utils/constants';
+import client from 'client';
 import Base from '../base';
 
 export class ComputeHostStore extends Base {
-  get module() {
-    return 'os-services';
+  get client() {
+    return client.nova.services;
   }
 
-  get apiVersion() {
-    return novaBase();
+  listFetchByClient(params) {
+    return this.skylineClient.extension.computeServices(params);
   }
-
-  get responseKey() {
-    return 'service';
-  }
-
-  getListDetailUrl = () => `${skylineBase()}/extension/compute-services`;
 
   @action
   update(id, body) {
-    return this.submitting(request.put(`${this.getListUrl()}/${id}`, body));
+    return this.submitting(this.client.update(id, body));
   }
 
   @action

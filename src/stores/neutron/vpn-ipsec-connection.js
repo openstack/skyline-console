@@ -12,41 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { neutronBase } from 'utils/constants';
 import { action } from 'mobx';
 import { get } from 'lodash';
 import globalVpnIKEPolicyStore from 'stores/neutron/vpn-ike-policy';
 import globalVpnIPSecPolicyStore from 'stores/neutron/vpn-ipsec-policy';
+import client from 'client';
 import Base from '../base';
 
 export class VpnIPsecConnectionStore extends Base {
-  get module() {
-    return 'ipsec_site_connections';
-  }
-
-  get apiVersion() {
-    return neutronBase();
-  }
-
-  get responseKey() {
-    return 'ipsec_site_connection';
+  get client() {
+    return client.neutron.ipsecSiteConnections;
   }
 
   get listFilterByProject() {
     return true;
-  }
-
-  @action
-  update({ id }, newObject, sleepTime) {
-    return this.submitting(
-      request.put(
-        `${this.getDetailUrl({ id })}`,
-        { [this.responseKey]: { ...newObject } },
-        null,
-        null,
-        sleepTime
-      )
-    );
   }
 
   @action
@@ -57,8 +36,8 @@ export class VpnIPsecConnectionStore extends Base {
     all_projects,
   }) {
     this.isLoading = true;
-    const result = await request.get(
-      this.getDetailUrl({ id }),
+    const result = await this.client.show(
+      id,
       this.getDetailParams({ all_projects })
     );
     const ikePolicy = await globalVpnIKEPolicyStore.fetchDetail({

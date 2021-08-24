@@ -16,7 +16,7 @@
  * @param {String} key api url
  * @returns {String}
  */
-import { heatBase } from 'utils/constants';
+import { heatBase } from 'client/client/constants';
 
 const getHeatBaseUrl = (key) => `${heatBase()}/${key}`;
 

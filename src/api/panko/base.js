@@ -16,7 +16,7 @@
  * @param {String} key api url
  * @returns {String}
  */
-import { pankoBase } from 'utils/constants';
+import { pankoBase } from 'client/client/constants';
 
 const getPankoBaseUrl = (key) => `${pankoBase()}/${key}`;
 

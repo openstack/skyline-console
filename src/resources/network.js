@@ -95,3 +95,5 @@ export const getAnchorData = (num, y) => {
   }
   return result;
 };
+
+export const isExternalNetwork = (network) => !!network['router:external'];

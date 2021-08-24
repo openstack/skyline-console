@@ -13,34 +13,28 @@
 // limitations under the License.
 
 import { action } from 'mobx';
-import { neutronBase } from 'utils/constants';
+import client from 'client';
+import { isArray } from 'lodash';
 import Base from '../base';
 
 export class NeutronAgentRouterStore extends Base {
-  get module() {
-    return 'routers';
-  }
-
-  get apiVersion() {
-    return neutronBase();
-  }
-
-  get responseKey() {
-    return 'router';
+  get client() {
+    return client.neutron.agents.l3Routers;
   }
 
   get listFilterByProject() {
     return true;
   }
 
-  getListUrl = ({ agentId }) =>
-    `${this.apiVersion}/agents/${agentId}/l3-routers`;
+  get isSubResource() {
+    return true;
+  }
 
-  getDetailUrl = ({ agentId, id }) => `${this.getListUrl({ agentId })}/${id}`;
+  getFatherResourceId = (params) => params.agentId;
 
   get mapper() {
     return (data) => {
-      const externalGateway = data.external_gateway_info;
+      const { external_gateway_info: externalGateway, created_at } = data || {};
       return {
         ...data,
         hasExternalGateway: !!externalGateway,
@@ -50,6 +44,7 @@ export class NeutronAgentRouterStore extends Base {
           (externalGateway && externalGateway.network_name) || '',
         externalFixedIps:
           (externalGateway && externalGateway.external_fixed_ips) || [],
+        standard_attr_id: created_at,
       };
     };
   }
@@ -64,11 +59,16 @@ export class NeutronAgentRouterStore extends Base {
 
   @action
   remove = ({ agentId, id }) =>
-    this.submitting(request.delete(this.getDetailUrl({ agentId, id })));
+    this.submitting(this.client.delete(agentId, id));
 
   @action
-  add = ({ agentId }, body) =>
-    this.submitting(request.post(this.getListUrl({ agentId }), body));
+  add = ({ agentId }, body) => {
+    if (!isArray(body)) {
+      return this.submitting(this.client.create(agentId, body));
+    }
+    const reqs = body.map((it) => this.client.create(agentId, it));
+    return this.submitting(Promise.allSettled(reqs));
+  };
 }
 
 const globalNeutronAgentRouterStore = new NeutronAgentRouterStore();

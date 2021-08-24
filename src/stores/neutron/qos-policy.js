@@ -12,21 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { neutronBase } from 'utils/constants';
-import { action } from 'mobx';
+import client from 'client';
 import Base from '../base';
 
 export class QoSPolicyStore extends Base {
-  get module() {
-    return 'qos/policies';
-  }
-
-  get apiVersion() {
-    return neutronBase();
-  }
-
-  get responseKey() {
-    return 'policy';
+  get client() {
+    return client.neutron.qosPolicies;
   }
 
   get listResponseKey() {
@@ -37,9 +28,16 @@ export class QoSPolicyStore extends Base {
     return true;
   }
 
-  // get needGetProject() {
-  //   return false;
-  // }
+  get mapper() {
+    return (data) => {
+      const { created_at } = data;
+      return {
+        ...data,
+        standard_attr_id: created_at,
+      };
+    };
+  }
+
   updateParamsSortPage = (params, sortKey, sortOrder) => {
     if (sortKey && sortOrder) {
       params.sort_key = sortKey;
@@ -49,64 +47,44 @@ export class QoSPolicyStore extends Base {
 
   get paramsFuncPage() {
     return (params) => {
-      const { current, ...rest } = params;
+      const { current, withPrice, withFIPPrice, ...rest } = params;
       return rest;
     };
   }
 
-  @action
-  update({ id }, newObject) {
-    const data = {};
-    data[`${this.responseKey}`] = newObject;
-    return this.submitting(request.put(`${this.getDetailUrl({ id })}`, data));
-  }
-
   async createBandwidthLimitRule({ id }, data) {
-    const createPromise = request.post(
-      `${this.getDetailUrl({ id })}/bandwidth_limit_rules`,
-      { bandwidth_limit_rule: data }
-    );
-    return this.submitting(createPromise);
+    const body = {
+      bandwidth_limit_rule: data,
+    };
+    return this.submitting(this.client.bandwidthLimitRules.create(id, body));
   }
 
   async createDSCPMarkingRule({ id }, data) {
-    const createPromise = request.post(
-      `${this.getDetailUrl({ id })}/dscp_marking_rules`,
-      { dscp_marking_rule: data }
-    );
-    return this.submitting(createPromise);
+    const body = {
+      dscp_marking_rule: data,
+    };
+    return this.submitting(this.client.dscpMarkingRules.create(id, body));
   }
 
   async deleteBandwidthLimitRules({ id }, ruleId) {
-    return this.submitting(
-      request.delete(
-        `${this.getDetailUrl({ id })}/bandwidth_limit_rules/${ruleId}`
-      )
-    );
+    return this.submitting(this.client.bandwidthLimitRules.delete(id, ruleId));
   }
 
   async deleteDSCPMarkingRules({ id }, ruleId) {
-    return this.submitting(
-      request.delete(
-        `${this.getDetailUrl({ id })}/dscp_marking_rules/${ruleId}`
-      )
-    );
+    return this.submitting(this.client.dscpMarkingRules.delete(id, ruleId));
   }
 
   async updateBandwidthLimitRule({ id }, ruleId, rule) {
     return this.submitting(
-      request.put(
-        `${this.getDetailUrl({ id })}/bandwidth_limit_rules/${ruleId}`,
-        {
-          bandwidth_limit_rule: rule,
-        }
-      )
+      this.client.bandwidthLimitRules.update(id, ruleId, {
+        bandwidth_limit_rule: rule,
+      })
     );
   }
 
   async updateDSCPMarkingRule({ id }, ruleId, rule) {
     return this.submitting(
-      request.put(`${this.getDetailUrl({ id })}/dscp_marking_rules/${ruleId}`, {
+      this.client.dscpMarkingRules.update(id, ruleId, {
         dscp_marking_rule: rule,
       })
     );
@@ -115,7 +93,7 @@ export class QoSPolicyStore extends Base {
   async detailDidFetch(item, all_projects) {
     if (all_projects) {
       item.project_name =
-        (await this.fetchProjectDetail({ id: item.project_id })).project.name ||
+        (await client.keystone.projects.show(item.project_id)).project.name ||
         '-';
     }
     return item;

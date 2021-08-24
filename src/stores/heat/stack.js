@@ -13,26 +13,20 @@
 // limitations under the License.
 
 import { action, observable } from 'mobx';
-import { heatBase } from 'utils/constants';
+import client from 'client';
 import Base from '../base';
 
 export class StackStore extends Base {
   @observable
-  template = {};
+  template = null;
 
-  get module() {
-    if (!globals.user) {
-      return null;
-    }
-    return `${globals.user.project.id}/stacks`;
+  get client() {
+    return client.heat.stacks;
   }
 
-  get apiVersion() {
-    return heatBase();
-  }
-
-  get responseKey() {
-    return 'stack';
+  detailFetchByClient(resourceParams) {
+    const { id, name } = resourceParams;
+    return this.client.show({ id, name });
   }
 
   updateParamsSortPage = (params, sortKey, sortOrder) => {
@@ -41,8 +35,6 @@ export class StackStore extends Base {
       params.sort_dir = sortOrder === 'descend' ? 'desc' : 'asc';
     }
   };
-
-  getDetailUrl = ({ id, name }) => `${this.getListUrl()}/${name}/${id}`;
 
   get paramsFuncPage() {
     return (params) => {
@@ -54,7 +46,7 @@ export class StackStore extends Base {
       if (all_projects) {
         newParams.global_tenant = true;
       } else {
-        newParams.tenant = globals.user.project.id;
+        newParams.tenant = this.currentProjectId;
       }
       return newParams;
     };
@@ -76,28 +68,25 @@ export class StackStore extends Base {
 
   @action
   create(body) {
-    return this.submitting(request.post(this.getListUrl(), body));
+    return this.submitting(this.client.create(body));
   }
 
   @action
   edit({ id, name }, body) {
-    return this.submitting(request.put(this.getDetailUrl({ id, name }), body));
+    return this.submitting(this.client.update({ id, name }, body));
   }
 
   @action
-  delete = ({ id, name }) =>
-    this.submitting(request.delete(this.getDetailUrl({ id, name })));
+  delete = ({ id, name }) => this.submitting(this.client.delete({ id, name }));
 
   @action
   abandon = ({ id, name }) => {
-    const url = `${this.getDetailUrl({ id, name })}/abandon`;
-    return this.submitting(request.delete(url));
+    return this.submitting(this.client.abandon({ id, name }));
   };
 
   @action
   getTemplate = async ({ id, name }) => {
-    const url = `${this.getDetailUrl({ id, name })}/template`;
-    const result = await request.get(url);
+    const result = await this.client.template({ id, name });
     this.template = result;
   };
 }

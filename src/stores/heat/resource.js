@@ -12,27 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { heatBase } from 'utils/constants';
+import client from 'client';
 import Base from '../base';
 
 export class StackResourceStore extends Base {
-  get module() {
-    if (!globals.user) {
-      return null;
-    }
-    return `${globals.user.project.id}/stacks`;
-  }
-
-  get apiVersion() {
-    return heatBase();
+  get client() {
+    return client.heat.stacks;
   }
 
   get responseKey() {
     return 'resource';
   }
 
-  getListUrl = ({ id, name }) =>
-    `${this.apiVersion}/${this.module}/${name}/${id}/resources`;
+  listFetchByClient(params, originParams) {
+    const { id, name } = originParams;
+    return this.client.resources({ id, name }, params);
+  }
 
   get paramsFunc() {
     return () => {};

@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/List';
 import { LbaasStore } from 'stores/octavia/loadbalancer';
-import { lbEndpoint } from 'utils/constants';
+import { lbEndpoint } from 'client/client/constants';
 import { actionConfigs, adminActions } from './actions';
 
 @inject('rootStore')

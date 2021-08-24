@@ -12,20 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { novaBase } from 'utils/constants';
+import client from 'client';
 import Base from '../base';
 
 export class KeypairStore extends Base {
-  get module() {
-    return 'os-keypairs';
-  }
-
-  get apiVersion() {
-    return novaBase();
-  }
-
-  get responseKey() {
-    return 'keypair';
+  get client() {
+    return client.nova.keypairs;
   }
 
   get fetchListByLimit() {

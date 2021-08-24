@@ -126,7 +126,7 @@ class AvatarDropdown extends React.Component {
           <ItemActionButtons
             actions={{ moreActions: [{ action: Password }] }}
             onFinishAction={this.afterChangePassword}
-            item={globals.user.user}
+            item={this.user && this.user.user}
             isWide
           />
         </Menu.Item>

@@ -15,6 +15,7 @@
 import React from 'react';
 import ImageType from 'components/ImageType';
 import { get } from 'lodash';
+import globalRootStore from 'stores/root';
 
 export const imageStatus = {
   active: t('Active'),
@@ -99,21 +100,14 @@ export const imageProperties = {
 export const transitionStatusList = ['saving', 'queued', 'pending_delete'];
 
 export const isOwnerOrAdmin = (item) => {
-  const {
-    project: { id },
-    hasAdminRole,
-  } = globals.user;
-  if (id === item.owner) {
+  if (globalRootStore.projectId === item.owner) {
     return true;
   }
-  return hasAdminRole;
+  return globalRootStore.hasAdminRole;
 };
 
 export const isOwner = (item) => {
-  const {
-    project: { id },
-  } = globals.user;
-  if (id === item.owner) {
+  if (globalRootStore.projectId === item.owner) {
     return true;
   }
   return false;

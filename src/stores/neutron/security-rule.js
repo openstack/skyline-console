@@ -12,21 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { neutronBase } from 'utils/constants';
 import { mapperRule } from 'resources/security-group-rule';
+import client from 'client';
 import Base from '../base';
 
 export class SecurityGroupRuleStore extends Base {
-  get module() {
-    return 'security-group-rules';
-  }
-
-  get apiVersion() {
-    return neutronBase();
-  }
-
-  get responseKey() {
-    return 'security_group_rule';
+  get client() {
+    return client.neutron.securityGroupRules;
   }
 
   get mapper() {

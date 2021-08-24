@@ -13,12 +13,13 @@
 // limitations under the License.
 
 import { isArray, isObject, isFunction, isString, has } from 'lodash';
+import globalRootStore from 'stores/root';
 
 export const checkPolicyRule = (rule, actionName) => {
   if (!rule) {
     return true;
   }
-  const item = globals.policies.find((it) => it.rule === rule);
+  const item = globalRootStore.policies.find((it) => it.rule === rule);
   if (!item) {
     // eslint-disable-next-line no-console
     console.log('policy rule not exit', rule, actionName);
@@ -37,7 +38,7 @@ const checkPolicyRules = (rules, every, actionName) => {
 };
 
 export const systemRoleIsReader = () => {
-  const { user: { roles = [] } = {} } = globals || {};
+  const { roles = [] } = globalRootStore.user || {};
   const readerRole = 'system_reader';
   const adminRoles = ['system_admin', 'admin'];
   const hasReaderRole = roles.some((it) => it.name === readerRole);
@@ -55,9 +56,11 @@ const checkItemPolicy = ({
   isAdminPage,
   enableSystemReader,
 }) => {
-  if (globals.policies.length === 0) {
-    // TODO: change to false
-    return true;
+  if (globalRootStore.policies.length === 0) {
+    return false;
+  }
+  if (isAdminPage && !enableSystemReader && systemRoleIsReader()) {
+    return false;
   }
   if (isAdminPage && !enableSystemReader && systemRoleIsReader()) {
     return false;

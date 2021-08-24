@@ -13,21 +13,13 @@
 // limitations under the License.
 
 import { action } from 'mobx';
-import { neutronBase } from 'utils/constants';
 import { get } from 'lodash';
+import client from 'client';
 import Base from '../base';
 
 export class StaticRouteStore extends Base {
-  get module() {
-    return 'routers';
-  }
-
-  get apiVersion() {
-    return neutronBase();
-  }
-
-  get responseKey() {
-    return 'router';
+  get client() {
+    return client.neutron.routers;
   }
 
   @action
@@ -41,7 +33,7 @@ export class StaticRouteStore extends Base {
   } = {}) {
     this.list.isLoading = true;
     const { id } = filters;
-    const result = await request.get(this.getDetailUrl({ id }));
+    const result = await this.client.show(id);
     const data = get(result, this.responseKey, {});
     const { routes = [] } = data;
     routes.forEach((it) => {
@@ -63,23 +55,21 @@ export class StaticRouteStore extends Base {
   }
 
   async addStaticRoute({ id, routes }) {
-    const url = `${this.getListUrl()}/${id}/add_extraroutes`;
     const body = {
       router: {
         routes,
       },
     };
-    return this.submitting(request.put(url, body));
+    return this.submitting(this.client.addExtraRoutes(id, body));
   }
 
   async removeStaticRoute({ id, routes }) {
-    const url = `${this.getListUrl()}/${id}/remove_extraroutes`;
     const body = {
       router: {
         routes,
       },
     };
-    return this.submitting(request.put(url, body));
+    return this.submitting(this.client.removeExtraRoutes(id, body));
   }
 }
 

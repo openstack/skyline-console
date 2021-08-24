@@ -12,27 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { heatBase } from 'utils/constants';
+import client from 'client';
 import Base from '../base';
 
 export class StackEventStore extends Base {
-  get module() {
-    if (!globals.user) {
-      return null;
-    }
-    return `${globals.user.project.id}/stacks`;
-  }
-
-  get apiVersion() {
-    return heatBase();
+  get client() {
+    return client.heat.stacks;
   }
 
   get responseKey() {
     return 'event';
   }
 
-  getListUrl = ({ id, name }) =>
-    `${this.apiVersion}/${this.module}/${name}/${id}/events`;
+  listFetchByClient(params, originParams) {
+    const { id, name } = originParams;
+    return this.client.events({ id, name }, params);
+  }
 
   get paramsFunc() {
     return () => {};

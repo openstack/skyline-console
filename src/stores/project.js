@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import { action, observable } from 'mobx';
-import { keystoneBase } from 'utils/constants';
 import { has } from 'lodash';
+import client from 'client';
 
 class ProjectMapStore {
   @observable
@@ -26,12 +26,13 @@ class ProjectMapStore {
       id,
     };
     if (!has(this.projectMap, id)) {
-      const result = await request.get(
-        `${keystoneBase()}/projects/${id}`,
-        {},
-        null,
-        () => Promise.resolve('error')
-      );
+      let result = 'error';
+      try {
+        result = await client.keystone.projects.show(id);
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log(e);
+      }
       this.projectMap[id] = result === 'error' ? '' : result.project.name;
     }
     project.name = this.projectMap[id] || '-';

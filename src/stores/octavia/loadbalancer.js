@@ -12,46 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { octaviaBase } from 'utils/constants';
 import { action } from 'mobx';
 import { get } from 'lodash';
 import globalFloatingIpsStore from 'stores/neutron/floatingIp';
+import client from 'client';
 import Base from '../base';
 
 export class LbaasStore extends Base {
-  get module() {
-    return 'lbaas/loadbalancers';
-  }
-
-  get apiVersion() {
-    return octaviaBase();
-  }
-
-  get responseKey() {
-    return 'loadbalancer';
-  }
-
-  get listResponseKey() {
-    return 'loadbalancers';
+  get client() {
+    return client.octavia.loadbalancers;
   }
 
   get listFilterByProject() {
     return true;
-  }
-
-  @action
-  update({ id }, newObject, sleepTime) {
-    return this.submitting(
-      request.put(
-        `${this.getDetailUrl({ id })}`,
-        {
-          [this.responseKey]: newObject,
-        },
-        null,
-        null,
-        sleepTime
-      )
-    );
   }
 
   @action
@@ -78,13 +51,8 @@ export class LbaasStore extends Base {
     if (marker) {
       params.marker = marker;
     }
-    const url =
-      this.getListPageUrl(filters) ||
-      this.getListDetailUrl(filters) ||
-      this.getListUrl(filters);
-    const newUrl = this.updateUrl(url, params);
     const newParams = this.paramsFuncPage(params, all_projects);
-    const result = await request.get(newUrl, newParams);
+    const result = await this.client.list(newParams);
     const allData = this.listResponseKey
       ? get(result, this.listResponseKey, [])
       : result;
@@ -93,7 +61,11 @@ export class LbaasStore extends Base {
     let newData = await this.listDidFetchProject(allDataNew, all_projects);
     const fipDetails = await Promise.all(
       newData.map((item) =>
-        globalFloatingIpsStore.fetchList({ fixed_ip_address: item.vip_address })
+        globalFloatingIpsStore.pureFetchList({
+          port_id: item.vip_port_id,
+          fixed_ip_address: item.vip_address,
+          all_projects,
+        })
       )
     );
     newData.forEach((item, index) => {
@@ -137,8 +109,8 @@ export class LbaasStore extends Base {
   @action
   async fetchDetailWithFip({ id, all_projects }) {
     this.isLoading = true;
-    const result = await request.get(
-      this.getDetailUrl({ id }),
+    const result = await this.client.show(
+      id,
       this.getDetailParams({ all_projects })
     );
     const originData = get(result, this.responseKey) || result;
@@ -161,15 +133,14 @@ export class LbaasStore extends Base {
   }
 
   async pureFetchDetail({ id }) {
-    const result = await request.get(this.getDetailUrl({ id }));
+    const result = await this.client.show(id);
     return result[this.responseKey];
   }
 
   @action
   delete = ({ id }) =>
-    this.submitting(
-      request.delete(this.getDetailUrl({ id }), { cascade: true })
-    );
+    // TODO: check params;
+    this.submitting(this.client.delete(id, { cascade: true }));
 }
 
 const globalLbaasStore = new LbaasStore();

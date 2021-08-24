@@ -13,13 +13,8 @@
 // limitations under the License.
 
 import { action, observable } from 'mobx';
-import {
-  novaBase,
-  skylineBase,
-  neutronBase,
-  glanceBase,
-} from 'utils/constants';
 import { get } from 'lodash';
+import client from 'client';
 import Base from '../base';
 import { RecycleBinStore } from '../skyline/recycle-server';
 
@@ -36,16 +31,8 @@ export class ServerStore extends Base {
   @observable
   serverSnapshots = [];
 
-  get module() {
-    return 'servers';
-  }
-
-  get apiVersion() {
-    return novaBase();
-  }
-
-  get responseKey() {
-    return 'server';
+  get client() {
+    return client.nova.servers;
   }
 
   get mapper() {
@@ -58,17 +45,13 @@ export class ServerStore extends Base {
     };
   }
 
-  getListUrl = () => `${this.apiVersion}/${this.module}`;
-
-  getListPageUrl = () => `${skylineBase()}/extension/servers`;
-
-  getListDetailUrl = () => `${skylineBase()}/extension/servers`;
-
-  getDetailUrl = ({ id }) => `${this.apiVersion}/${this.module}/${id}`;
+  listFetchByClient(params) {
+    return this.skylineClient.extension.servers(params);
+  }
 
   get paramsFuncPage() {
     return (params) => {
-      const { current, ...rest } = params;
+      const { current, noReminder, ...rest } = params;
       return rest;
     };
   }
@@ -83,8 +66,8 @@ export class ServerStore extends Base {
   @action
   async fetchDetailWithoutExpiration({ id, all_projects }) {
     this.isLoading = true;
-    const result = await request.get(
-      this.getDetailUrl({ id }),
+    const result = await this.client.show(
+      id,
       this.getDetailParams({ all_projects })
     );
     const originData = get(result, this.responseKey) || result;
@@ -100,6 +83,7 @@ export class ServerStore extends Base {
       if (!isRecycleBinDetail) {
         const result = await this.fetchList({
           uuid: id,
+          noReminder: true,
           all_projects,
         });
         item.itemInList = result[0];
@@ -108,18 +92,21 @@ export class ServerStore extends Base {
         const result = await store.fetchList({ uuid: id, all_projects });
         item.itemInList = result[0];
       }
-    } catch (e) {}
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log(e);
+    }
     return item;
   }
 
-  async requestList(url, params, filters) {
-    const { members, isServerGroup } = filters;
+  async requestList(params, originParams = {}) {
+    const { members, isServerGroup } = originParams;
     if (members && isServerGroup && members.length === 0) {
       return [];
     }
     const datas = !this.fetchListByLimit
-      ? await this.requestListAll(url, params)
-      : await this.requestListAllByLimit(url, params, 100);
+      ? await this.requestListAll(params)
+      : await this.requestListAllByLimit(params, 100);
     return datas;
   }
 
@@ -128,9 +115,7 @@ export class ServerStore extends Base {
       return newData;
     }
     const { members, isServerGroup, host } = filters;
-    const isoImages = await request.get(
-      `${glanceBase()}/images?disk_format=iso`
-    );
+    const isoImages = await client.glance.images.list({ disk_format: 'iso' });
     const { images } = isoImages;
     if (images[0]) {
       const imageId = images.map((it) => it.id);
@@ -154,8 +139,10 @@ export class ServerStore extends Base {
   async fetchInterface({ id }) {
     this.interface.isLoading = true;
     const params = { device_id: id };
-    const resData = await request.get(`${neutronBase()}/ports`, params);
-    const networks = await request.get(`${neutronBase()}/networks?`);
+    const [resData, networks] = await Promise.all([
+      client.neutron.ports.list(params),
+      client.neutron.networks.list(),
+    ]);
     const interfaces = resData.ports;
     const interfaceAll = [];
     networks.networks.forEach((network) => {
@@ -180,7 +167,7 @@ export class ServerStore extends Base {
   @action
   async fetchSecurityGroup({ id }) {
     this.securityGroups.isLoading = true;
-    const portResult = await request.get(`${neutronBase()}/ports`, {
+    const portResult = await client.neutron.ports.list({
       device_id: id,
     });
     const { ports = [] } = portResult;
@@ -190,7 +177,7 @@ export class ServerStore extends Base {
     let sgItems = [];
     try {
       const result = await Promise.all(
-        sgIds.map((it) => request.get(`${neutronBase()}/security-groups/${it}`))
+        sgIds.map((it) => client.neutron.securityGroups.show(it))
       );
       sgItems = result.map((it) => it.security_group);
     } catch (e) {}
@@ -203,12 +190,12 @@ export class ServerStore extends Base {
 
   @action
   delete = async ({ id }) => {
-    return this.submitting(request.delete(this.getDetailUrl({ id })));
+    return this.client.delete(id);
   };
 
   @action
   async create(body) {
-    return this.submitting(request.post(this.getListUrl(), body));
+    return this.submitting(this.client.create(body));
   }
 
   @action
@@ -219,10 +206,7 @@ export class ServerStore extends Base {
         type: 'novnc',
       },
     };
-    const result = await request.post(
-      `${this.getListUrl()}/${id}/remote-consoles`,
-      body
-    );
+    const result = await this.client.createConsole(id, body);
     this.isSubmitting = false;
     return result;
   }
@@ -235,23 +219,25 @@ export class ServerStore extends Base {
         type: 'serial',
       },
     };
-    const result = await request.post(
-      `${this.getListUrl()}/${id}/remote-consoles`,
-      body
-    );
+    const result = await this.client.createConsole(id, body);
     this.isSubmitting = false;
     return result;
   }
 
   @action
-  async operation({ body, id, key }, sleepTime) {
+  update(id, body) {
+    return this.submitting(this.client.action(id, body));
+  }
+
+  @action
+  async operation({ body, id, key }) {
     // set timeout to delay to fresh
     let reqBody = body;
     if (!reqBody) {
       reqBody = {};
       reqBody[key] = null;
     }
-    return this.update({ id }, reqBody, sleepTime);
+    return this.update(id, reqBody);
   }
 
   @action
@@ -307,7 +293,7 @@ export class ServerStore extends Base {
     const body = {
       forceDelete: null,
     };
-    return request.post(`${this.getDetailUrl({ id })}/action`, body);
+    return this.client.action(id, body);
   }
 
   @action
@@ -422,14 +408,12 @@ export class ServerStore extends Base {
 
   @action
   async addInterface({ id, body }) {
-    const url = `${this.getListUrl()}/${id}/os-interface`;
-    return this.submitting(request.post(url, body));
+    return this.submitting(this.client.interfaces.create(id, body));
   }
 
   @action
   async fetchInterfaceList({ id }) {
-    const url = `${this.getListUrl()}/${id}/os-interface`;
-    const result = await request.get(url);
+    const result = await this.client.interfaces.list(id);
     this.interfaces = result.interfaceAttachments;
     return result.interfaceAttachments;
   }
@@ -437,29 +421,20 @@ export class ServerStore extends Base {
   @action
   async detachInterface({ id, ports }) {
     return this.submitting(
-      Promise.all(
-        ports.map((port) => {
-          const url = `${this.getListUrl()}/${id}/os-interface/${port}`;
-          return request.delete(url);
-        })
-      )
+      Promise.all(ports.map((port) => this.client.interfaces.delete(id, port)))
     );
   }
 
   @action
   async attachVolume({ id, body }) {
-    const url = `${this.getListUrl()}/${id}/os-volume_attachments`;
-    return this.submitting(request.post(url, body));
+    return this.submitting(this.client.volumeAttachments.create(id, body));
   }
 
   @action
   async detachVolume({ id, volumes }) {
     return this.submitting(
       Promise.all(
-        volumes.map((item) => {
-          const url = `${this.getListUrl()}/${id}/os-volume_attachments/${item}`;
-          return request.delete(url);
-        })
+        volumes.map((item) => this.client.volumeAttachments.delete(id, item))
       )
     );
   }

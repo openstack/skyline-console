@@ -61,6 +61,10 @@ class BaseLayout extends Component {
     return this.user && this.rootStore.hasAdminRole;
   }
 
+  get hasAdminPageRole() {
+    return this.user && this.rootStore.hasAdminPageRole;
+  }
+
   get originMenu() {
     if (this.isAdminPage) {
       return renderAdminMenu(i18n.t);

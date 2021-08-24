@@ -12,25 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ironicBase } from 'utils/constants';
 import { action } from 'mobx';
+import client from 'client';
 import Base from '../base';
 
 export class IronicPortGroupStore extends Base {
-  get module() {
-    return 'portgroups';
+  get client() {
+    return client.ironic.nodes.portgroups;
   }
 
-  get apiVersion() {
-    return ironicBase();
+  listFetchByClient(params, originParams) {
+    const { id } = originParams;
+    return this.client.listDetail(id, params);
   }
-
-  get responseKey() {
-    return 'portgroup';
-  }
-
-  getListDetailUrl = ({ id }) =>
-    `${this.apiVersion}/nodes/${id}/${this.module}/detail`;
 
   get paramsFunc() {
     return () => {};
@@ -38,12 +32,12 @@ export class IronicPortGroupStore extends Base {
 
   @action
   create(data) {
-    return this.submitting(request.post(this.getListUrl(), data));
+    return this.submitting(client.ironic.portgroups.create(data));
   }
 
   @action
   edit({ id }, body) {
-    return this.submitting(request.patch(`${this.getDetailUrl({ id })}`, body));
+    return this.submitting(client.ironic.portgroups.patch(id, body));
   }
 }
 

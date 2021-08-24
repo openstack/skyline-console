@@ -12,24 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { heatBase } from 'utils/constants';
+import client from 'client';
 import Base from '../base';
 
 export class HeatServiceStore extends Base {
-  get module() {
-    return 'services';
+  get client() {
+    return client.heat.services;
   }
-
-  get apiVersion() {
-    return heatBase();
-  }
-
-  get responseKey() {
-    return 'service';
-  }
-
-  getListUrl = () =>
-    `${this.apiVersion}/${globals.user.project.id}/${this.module}`;
 }
 
 const globalHeatServiceStore = new HeatServiceStore();

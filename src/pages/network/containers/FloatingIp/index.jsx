@@ -147,7 +147,11 @@ export default class FloatingIps extends Base {
       title: t('Associated Resource'),
       dataIndex: 'resource_name',
       render: (resource_name, record) => {
-        if (!resource_name && record.port_forwardings.length !== 0) {
+        if (
+          !resource_name &&
+          record.port_forwardings &&
+          record.port_forwardings.length !== 0
+        ) {
           return (
             <>
               {t('{number} port forwarding rules', {

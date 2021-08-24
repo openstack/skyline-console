@@ -35,8 +35,13 @@ export default class BaseDetail extends React.Component {
     return id;
   }
 
-  get currentProject() {
-    return globals.user.project.id;
+  get currentUser() {
+    const { user } = this.props.rootStore || {};
+    return user || {};
+  }
+
+  get currentProjectId() {
+    return this.props.rootStore.projectId;
   }
 
   get projectId() {
@@ -45,7 +50,7 @@ export default class BaseDetail extends React.Component {
   }
 
   get isMyResource() {
-    return this.projectId === this.currentProject;
+    return this.projectId === this.currentProjectId;
   }
 
   get detailData() {

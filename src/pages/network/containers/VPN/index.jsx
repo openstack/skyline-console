@@ -14,7 +14,7 @@
 
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/TabList';
-import { vpnEndpoint } from 'utils/constants';
+import { vpnEndpoint } from 'client/client/constants';
 import VPNGateway from './VPNGateway';
 import EndPointGroup from './EndpointGroup';
 import IKEPolicy from './IKEPolicy';

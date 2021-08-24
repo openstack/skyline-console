@@ -13,10 +13,8 @@
 // limitations under the License.
 
 import React from 'react';
-import moment from 'moment';
 import ImageType from 'components/ImageType';
 import globalRootStore from 'stores/root';
-import { getLocalTimeStr, timeFormatStr } from 'utils/time';
 
 import lockSvg from 'src/asset/image/lock.svg';
 import unlockSvg from 'src/asset/image/unlock.svg';
@@ -262,53 +260,6 @@ export const getUserData = (password, userData) => {
   }
   return onlyUserData.replace(/USER_DATA/g, userData);
 };
-
-function range(start, end) {
-  const result = [];
-  for (let i = start; i < end; i++) {
-    result.push(i);
-  }
-  return result;
-}
-
-export const getExpireDateFormItem = (autoRelease) => ({
-  name: 'expiredTime',
-  label: t('Expired Time'),
-  type: 'date-picker',
-  hidden: !autoRelease,
-  required: autoRelease,
-  format: timeFormatStr.YMDHm,
-  showTime: {
-    defaultValue: getLocalTimeStr('00:00:00', 'HH:mm'),
-    // minuteStep: 60,
-  },
-  showNow: false,
-  disabledDate: (current) => current && current < moment().startOf('day'),
-  disabledTime: (date) => {
-    const currentDay = moment();
-    const currentHour = moment().hour();
-    const currentMinute = moment().minute();
-    const disabledMap = {};
-    if (moment(date).isSame(currentDay, 'day')) {
-      disabledMap.disabledHours = () => range(0, currentHour);
-      if (moment(date).isSame(currentDay, 'hour')) {
-        disabledMap.disabledMinutes = () => range(0, currentMinute + 1);
-      }
-    }
-    return disabledMap;
-  },
-  validator: (rule, value) => {
-    if (!value) {
-      return Promise.reject(t('Please set expiration time'));
-    }
-    if (moment(value) < moment()) {
-      return Promise.reject(
-        t('The expiration time needs to be greater than the current time.')
-      );
-    }
-    return Promise.resolve();
-  },
-});
 
 export const getIpInitValue = (subnet) => {
   if (!subnet) {

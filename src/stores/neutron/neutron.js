@@ -12,24 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { neutronBase } from 'utils/constants';
 import { action, observable } from 'mobx';
+import client from 'client';
 import Base from '../base';
 
 export class NeutronStore extends Base {
   @observable
   availableZones = [];
 
-  get apiVersion() {
-    return neutronBase();
-  }
+  @observable
+  zoneLoading = false;
 
   @action
   async fetchAvailableZones() {
-    const url = `${this.apiVersion}/availability_zones`;
-    const resData = await request.get(url);
+    this.zoneLoading = true;
+    const resData = await client.neutron.azones.list();
     const { availability_zones: items = [] } = resData;
     this.availableZones = items;
+    this.zoneLoading = false;
   }
 }
 

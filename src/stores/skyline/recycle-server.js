@@ -12,20 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { skylineBase } from 'utils/constants';
 import Base from '../base';
 
 export class RecycleBinStore extends Base {
-  get module() {
-    return 'extension/recycle_servers';
-  }
-
-  get apiVersion() {
-    return skylineBase();
-  }
-
   get responseKey() {
     return 'recycle_server';
+  }
+
+  listFetchByClient(params) {
+    return this.skylineClient.extension.recycleServers(params);
   }
 
   get mapper() {

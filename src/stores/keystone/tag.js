@@ -12,40 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { keystoneBase } from 'utils/constants';
 import { action } from 'mobx';
+import client from 'client';
 import Base from '../base';
 
 export class TagStore extends Base {
-  get module() {
-    return 'tags';
+  get client() {
+    return client.keystone.projects.tags;
   }
 
-  get apiVersion() {
-    return keystoneBase();
-  }
-
-  get responseKey() {
-    return 'tag';
+  listFetchByClient(params, originParams) {
+    const { project_id } = originParams;
+    return this.client.list(project_id, params);
   }
 
   get paramsFunc() {
     return () => null;
   }
 
-  getListUrl = ({ project_id }) =>
-    `${this.apiVersion}/projects/${project_id}/${this.module}`;
-
   @action
-  update({ project_id }, newObject, sleepTime) {
+  update({ project_id }, newObject) {
     return this.submitting(
-      request.put(
-        `${this.getListUrl({ project_id })}`,
-        newObject,
-        null,
-        null,
-        sleepTime
-      )
+      client.keystone.projects.updateTags(project_id, newObject)
     );
   }
 }

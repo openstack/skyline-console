@@ -13,43 +13,21 @@
 // limitations under the License.
 
 import { action } from 'mobx';
-import { cinderBase } from 'utils/constants';
+import client from 'client';
 import Base from '../base';
 
 export class ExtraSpecStore extends Base {
-  get module() {
-    if (!globals.user) {
-      return null;
-    }
-    return `${globals.user.project.id}/types`;
+  get client() {
+    return client.cinder.types.extraSpecs;
   }
 
-  get apiVersion() {
-    return cinderBase();
+  get isSubResource() {
+    return true;
   }
 
-  get responseKey() {
-    return 'extra_spec';
-  }
+  getFatherResourceId = (params) => params.id;
 
-  getExtraSpecsUrl = ({ id }) =>
-    `${this.apiVersion}/${this.module}/${id}/extra_specs`;
-
-  @action
-  async fetchList({
-    id,
-    limit,
-    page,
-    sortKey,
-    sortOrder,
-    conditions,
-    ...filters
-  } = {}) {
-    this.list.isLoading = true;
-    // todo: no page, no limit, fetch all
-    const params = { ...filters };
-
-    const result = await request.get(this.getExtraSpecsUrl({ id }), params);
+  getListDataFromResult = (result) => {
     const { extra_specs } = result;
     const data = [];
     Object.keys(extra_specs).forEach((key) => {
@@ -60,36 +38,20 @@ export class ExtraSpecStore extends Base {
         value: extra_specs[key],
       });
     });
-    const items = data.map(this.mapper);
-
-    this.list.update({
-      data,
-      total: items.length || 0,
-      limit: Number(limit) || 10,
-      page: Number(page) || 1,
-      sortKey,
-      sortOrder,
-      filters,
-      isLoading: false,
-      ...(this.list.silent ? {} : { selectedRowKeys: [] }),
-    });
-    this.urlId = id;
     return data;
-  }
+  };
 
   @action
   createOrUpdate(id, data) {
     const body = {
       extra_specs: data,
     };
-    return this.submitting(request.post(this.getExtraSpecsUrl({ id }), body));
+    return this.submitting(this.client.create(id, body));
   }
 
   @action
   delete = ({ id, keyname }) => {
-    return this.submitting(
-      request.delete(`${this.getExtraSpecsUrl({ id })}/${keyname}`)
-    );
+    return this.submitting(this.client.delete(id, keyname));
   };
 }
 const globalExtraSpecStore = new ExtraSpecStore();

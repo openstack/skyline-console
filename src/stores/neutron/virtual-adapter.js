@@ -12,29 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { neutronBase, skylineBase } from 'utils/constants';
 import globalNetworkStore from 'stores/neutron/network';
 import { action, observable, toJS } from 'mobx';
 import globalSecurityGroupStore from 'stores/neutron/security-group';
-import { get } from 'lodash';
 import globalFloatingIpsStore from 'stores/neutron/floatingIp';
+import client from 'client';
 import List from '../base-list';
 import Base from '../base';
 
 export class VirtualAdapterStore extends Base {
-  get module() {
-    return 'ports';
+  get client() {
+    return client.neutron.ports;
   }
 
-  get apiVersion() {
-    return neutronBase();
+  listFetchByClient(params) {
+    return this.skylineClient.extension.ports(params);
   }
-
-  get responseKey() {
-    return 'port';
-  }
-
-  getListDetailUrl = () => `${skylineBase()}/extension/${this.module}`;
 
   get listFilterByProject() {
     return false;
@@ -47,6 +40,13 @@ export class VirtualAdapterStore extends Base {
     }
   };
 
+  get paramsFuncPage() {
+    return (params) => {
+      const { current, withPrice, instanceAddresses, ...rest } = params;
+      return rest;
+    };
+  }
+
   @observable
   fixed_ips = new List();
 
@@ -55,9 +55,7 @@ export class VirtualAdapterStore extends Base {
 
   @action
   update({ id }, newObject) {
-    return this.submitting(
-      request.put(`${this.getDetailUrl({ id })}`, { port: newObject })
-    );
+    return this.submitting(this.client.update(id, { port: newObject }));
   }
 
   @action
@@ -77,7 +75,7 @@ export class VirtualAdapterStore extends Base {
       return item;
     });
     const fipDetails = await Promise.all(
-      fixedIPs.map((item) => this.getItemFloatingIPs(item.ip_address))
+      fixedIPs.map((item) => this.getItemFloatingIPs(item.ip_address, item.id))
     );
     fipDetails.forEach((fips, index) => {
       fips.forEach((fip) => {
@@ -112,60 +110,27 @@ export class VirtualAdapterStore extends Base {
     });
   }
 
-  @action
-  async fetchListByPage({
-    limit = 10,
-    page = 1,
-    sortKey,
-    sortOrder,
-    conditions,
-    timeFilter,
-    ...filters
-  } = {}) {
-    this.list.isLoading = true;
-    // todo: no page, no limit, fetch all
-    const { tab, all_projects, addressAsIdKey, ...rest } = filters;
-    const params = { limit, ...rest };
-    this.updateParamsSortPage(params, sortKey, sortOrder);
-    if (all_projects) {
-      if (!this.listFilterByProject) {
-        params.all_projects = true;
-      }
+  async listDidFetch(items, allProjects, filters) {
+    if (items.length === 0) {
+      return items;
     }
-
-    const marker = this.getMarker(page);
-    if (marker) {
-      params.marker = marker;
+    const {
+      device_id,
+      device_owner,
+      addressAsIdKey,
+      network_id,
+      instanceAddresses,
+    } = filters;
+    if (instanceAddresses) {
+      items = items.map((i) => ({
+        ...i,
+        instanceAddresses,
+      }));
     }
-    let url =
-      this.getListPageUrl() || this.getListDetailUrl() || this.getListUrl();
-    let result = null;
-    if (filters.device_owner) {
-      const { device_owner } = filters;
-      url += '?';
-      device_owner.forEach((item) => {
-        url += `device_owner=${item}&`;
-      });
-      const { device_owner: d, ...restParams } = params;
-      Object.keys(restParams).forEach((key) => {
-        url += `${key}=${restParams[key]}&`;
-      });
-      result = await request.get(url);
-    } else {
-      result = await request.get(url, params);
-    }
-    let allData = this.listResponseKey
-      ? get(result, this.listResponseKey, [])
-      : result;
-    const { count } = result;
-    allData = await this.listDidFetchProject(allData, all_projects);
-    this.updateMarker(allData, page);
-
-    // if has 'device_owner' means not in detail page, need fip information to control action button show
-    if (filters.device_owner) {
+    if (device_owner || device_id || network_id) {
       // fetch fixed_ips details
       const details = await Promise.all(
-        allData.map((item) => {
+        items.map((item) => {
           if (addressAsIdKey) {
             const { id, ipv4, ipv6 } = item;
             item.address_id = id;
@@ -175,36 +140,26 @@ export class VirtualAdapterStore extends Base {
           }
           return Promise.all(
             item.fixed_ips.map((fixed_ip) =>
-              this.getItemFloatingIPs(fixed_ip.ip_address)
+              this.getItemFloatingIPs(fixed_ip.ip_address, item.id)
             )
           );
         })
       );
       details.forEach((detail, index) => {
-        allData[index].associatedDetail = [];
+        items[index].associatedDetail = [];
         detail.forEach((ip) => {
-          allData[index].associatedDetail.push(...toJS(ip));
+          items[index].associatedDetail.push(...toJS(ip));
         });
       });
     }
-
-    this.list.update({
-      data: allData,
-      limit: Number(limit) || 10,
-      page: Number(page) || 1,
-      sortKey,
-      sortOrder,
-      filters,
-      timeFilter,
-      isLoading: false,
-      total: count,
-      ...(this.list.silent ? {} : { selectedRowKeys: [] }),
-    });
-    return allData;
+    return items;
   }
 
-  async getItemFloatingIPs(fixed_ip) {
-    return globalFloatingIpsStore.pureFetchList({ fixed_ip_address: fixed_ip });
+  async getItemFloatingIPs(fixed_ip, portId) {
+    return globalFloatingIpsStore.pureFetchList({
+      fixed_ip_address: fixed_ip,
+      port_id: portId,
+    });
   }
 
   async detailDidFetch(item, all_projects) {
@@ -218,7 +173,7 @@ export class VirtualAdapterStore extends Base {
     if (item.fixed_ips.length !== 0) {
       const details = await Promise.all(
         itemContrib.fixed_ips.map((fixed_ip) =>
-          this.getItemFloatingIPs(fixed_ip.ip_address)
+          this.getItemFloatingIPs(fixed_ip.ip_address, id)
         )
       );
       details.forEach((detail) => {

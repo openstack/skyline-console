@@ -127,6 +127,7 @@ module.exports = {
       locales: root('src/locales'),
       styles: root('src/styles'),
       resources: root('src/resources'),
+      client: root('src/client'),
     },
   },
   plugins: [

@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { get, isArray } from 'lodash';
+import { get } from 'lodash';
 import { action, observable } from 'mobx';
-import { keystoneBase } from 'utils/constants';
+import client from 'client';
 import List from './base-list';
 import globalProjectMapStore from './project';
+import globalRootStore from './root';
 
 export default class BaseStore {
   list = new List();
@@ -30,16 +31,16 @@ export default class BaseStore {
   @observable
   isSubmitting = false;
 
-  get module() {
-    return '';
+  get client() {
+    return {};
   }
 
-  get apiVersion() {
-    return '';
+  get skylineClient() {
+    return client.skyline;
   }
 
   get responseKey() {
-    return '';
+    return this.client.responseKey;
   }
 
   get listResponseKey() {
@@ -48,6 +49,22 @@ export default class BaseStore {
 
   get needGetProject() {
     return true;
+  }
+
+  get currentUser() {
+    return globalRootStore.user || {};
+  }
+
+  get currentProjectId() {
+    return globalRootStore.projectId;
+  }
+
+  get hasAdminRole() {
+    return globalRootStore.hasAdminRole;
+  }
+
+  get enableBilling() {
+    return globalRootStore.enableBilling;
   }
 
   get mapper() {
@@ -112,7 +129,7 @@ export default class BaseStore {
 
   get paramsFuncPage() {
     return (params) => {
-      const { current, ...rest } = params;
+      const { current, withPrice, ...rest } = params;
       return rest;
     };
   }
@@ -126,12 +143,37 @@ export default class BaseStore {
     return false;
   }
 
-  get currentProject() {
-    return globals.user.project.id;
-  }
-
   get markerKey() {
     return 'id';
+  }
+
+  get listWithDetail() {
+    return false;
+  }
+
+  get isSubResource() {
+    return false;
+  }
+
+  getFatherResourceId = (params) => params.id;
+
+  detailFetchByClient(resourceParams, params) {
+    const { id } = resourceParams;
+    if (!this.isSubResource) {
+      return this.client.show(id, params);
+    }
+    const fatherId = this.getFatherResourceId(resourceParams);
+    return this.client.show(fatherId, id, params);
+  }
+
+  listFetchByClient(params, originParams) {
+    if (!this.isSubResource) {
+      return this.listWithDetail
+        ? this.client.listDetail(params)
+        : this.client.list(params);
+    }
+    const fatherId = this.getFatherResourceId(originParams);
+    return this.client.list(fatherId, params);
   }
 
   getItemProjectId(item) {
@@ -153,20 +195,12 @@ export default class BaseStore {
     const itemProject = globalProjectMapStore.getItemProjectId(item);
     const { shared, visibility, is_public } = item;
     return (
-      itemProject === this.currentProject ||
+      itemProject === this.currentProjectId ||
       is_public ||
       shared ||
       visibility === 'public'
     );
   };
-
-  getListUrl = () => `${this.apiVersion}/${this.module}`;
-
-  getListDetailUrl = () => '';
-
-  getListPageUrl = () => '';
-
-  getDetailUrl = ({ id }) => `${this.getListUrl()}/${id}`;
 
   @action
   setModule(module) {
@@ -188,12 +222,6 @@ export default class BaseStore {
     return promise;
   };
 
-  async fetchProjectDetail({ id }) {
-    return request.get(`${keystoneBase()}/projects/${id}`, {}, null, () =>
-      Promise.resolve('error')
-    );
-  }
-
   // eslint-disable-next-line no-unused-vars
   async listDidFetch(items, allProjects, filters) {
     return items;
@@ -208,7 +236,7 @@ export default class BaseStore {
     if (!this.needGetProject) {
       return items;
     }
-    if (!all_projects || !globals.user.hasAdminRole) {
+    if (!all_projects || !this.hasAdminRole) {
       return items;
     }
     const projectIds = [];
@@ -240,28 +268,33 @@ export default class BaseStore {
     return items;
   }
 
-  async requestListByMarker(url, params, limit, marker) {
+  updateMarkerParams = (limit, marker) => {
+    return {
+      limit,
+      marker,
+    };
+  };
+
+  async requestListByMarker(params, limit, marker) {
+    const markerParams = this.updateMarkerParams(limit, marker);
     const newParams = {
       ...params,
-      limit,
+      ...markerParams,
     };
-    if (marker) {
-      newParams.marker = marker;
-    }
-    return request.get(url, newParams);
+    return this.listFetchByClient(newParams);
   }
 
-  async requestListAllByLimit(url, params, limit) {
+  async requestListAllByLimit(params, limit) {
     let marker = '';
     let hasNext = true;
     let datas = [];
     while (hasNext) {
       // eslint-disable-next-line no-await-in-loop
-      const result = await this.requestListByMarker(url, params, limit, marker);
+      const result = await this.requestListByMarker(params, limit, marker);
       const data = this.getListDataFromResult(result);
       datas = [...datas, ...data];
       if (data.length >= limit) {
-        marker = this.parseMarker(data);
+        marker = this.parseMarker(data, result, datas);
         if (!marker) {
           // eslint-disable-next-line no-console
           console.log('parse marker error!');
@@ -274,21 +307,21 @@ export default class BaseStore {
     return datas;
   }
 
-  async requestListAll(url, params) {
-    const result = await request.get(url, params);
+  async requestListAll(params, originParams) {
+    const result = await this.listFetchByClient(params, originParams);
     return this.getListDataFromResult(result);
   }
 
-  async requestList(url, params) {
+  async requestList(params, originParams) {
     const datas = !this.fetchListByLimit
-      ? await this.requestListAll(url, params)
-      : await this.requestListAllByLimit(url, params, 100);
+      ? await this.requestListAll(params, originParams)
+      : await this.requestListAllByLimit(params, 100);
     return datas;
   }
 
   // eslint-disable-next-line no-unused-vars
-  async requestListByPage(url, params, page, filters) {
-    const datas = await request.get(url, params);
+  async requestListByPage(params, page, originParams) {
+    const datas = await this.listFetchByClient(params, originParams);
     return datas;
   }
 
@@ -319,19 +352,7 @@ export default class BaseStore {
         params.all_projects = true;
       }
     }
-    let url = `${this.getListDetailUrl() || this.getListUrl()}?`;
-    let othersStr = '';
-    Object.keys(params).forEach((item) => {
-      if (isArray(params[item])) {
-        params[item].forEach((i) => {
-          othersStr += `${item}=${i}&`;
-        });
-      } else {
-        othersStr += `${item}=${params[item]}&`;
-      }
-    });
-    url += othersStr.substring(0, othersStr.length - 1);
-    const allData = await this.requestList(url);
+    const allData = await this.requestList(params, {});
     return allData;
   }
 
@@ -355,9 +376,7 @@ export default class BaseStore {
       }
     }
     const newParams = this.paramsFunc(params);
-    const url = this.getListDetailUrl(filters) || this.getListUrl(filters);
-    const newUrl = this.updateUrl(url, params);
-    const allData = await this.requestList(newUrl, newParams, filters);
+    const allData = await this.requestList(newParams, filters);
     const allDataNew = allData.map((it) =>
       this.mapperBeforeFetchProject(it, filters)
     );
@@ -393,15 +412,15 @@ export default class BaseStore {
   }
 
   // eslint-disable-next-line no-unused-vars
-  parseMarker(datas, result) {
+  parseMarker(datas, result, allDatas) {
     return datas.length === 0
       ? ''
       : get(datas[datas.length - 1], this.markerKey);
   }
 
   @action
-  updateMarker(datas, page, result) {
-    const marker = this.parseMarker(datas, result);
+  updateMarker(datas, page, result, allDatas) {
+    const marker = this.parseMarker(datas, result, allDatas);
     if (page === 1) {
       this.list.markers = [marker];
     } else {
@@ -422,6 +441,9 @@ export default class BaseStore {
   async getCountForPage(newParams, all_projects, newDatas) {
     return {};
   }
+
+  // eslint-disable-next-line no-unused-vars
+  getOtherInfo = (result) => {};
 
   @action
   async fetchListByPage({
@@ -448,20 +470,10 @@ export default class BaseStore {
     if (marker) {
       params.marker = marker;
     }
-    const url =
-      this.getListPageUrl(filters) ||
-      this.getListDetailUrl(filters) ||
-      this.getListUrl(filters);
-    const newUrl = this.updateUrl(url, params);
     const newParams = this.paramsFuncPage(params, all_projects);
-    const result = await this.requestListByPage(
-      newUrl,
-      newParams,
-      page,
-      filters
-    );
+    const result = await this.requestListByPage(newParams, page, filters);
     const allData = this.getListDataFromResult(result);
-    this.updateMarker(allData, page, result);
+    this.updateMarker(allData, page, result, allData);
     const allDataNew = allData.map(this.mapperBeforeFetchProject);
     let newData = await this.listDidFetchProject(allDataNew, all_projects);
     newData = await this.listDidFetch(newData, all_projects, filters);
@@ -482,6 +494,7 @@ export default class BaseStore {
       count = retCount;
       total = retTotal;
     }
+    const others = this.getOtherInfo(result);
     this.list.update({
       data: newData,
       limit: Number(limit) || 10,
@@ -493,54 +506,7 @@ export default class BaseStore {
       isLoading: false,
       total: count || total,
       ...(this.list.silent ? {} : { selectedRowKeys: [] }),
-    });
-
-    return newData;
-  }
-
-  @action
-  async fetchListWithoutDetail({
-    limit,
-    page,
-    sortKey,
-    sortOrder,
-    conditions,
-    timeFilter,
-    ...filters
-  } = {}) {
-    this.list.isLoading = true;
-    // todo: no page, no limit, fetch all
-    const { tab, all_projects, ...rest } = filters;
-    const params = { ...rest };
-    if (all_projects) {
-      if (!this.listFilterByProject) {
-        params.all_projects = true;
-      }
-    }
-    const newParams = this.paramsFunc(params, all_projects);
-    const allData = await this.requestList(this.getListUrl(), newParams);
-    const allDataNew = allData.map(this.mapperBeforeFetchProject);
-    const data = allDataNew.filter((item) => {
-      if (!this.listFilterByProject) {
-        return true;
-      }
-      return this.itemInCurrentProject(item, all_projects);
-    });
-    // const items = data.map(this.mapper);
-    let newData = await this.listDidFetchProject(data, all_projects);
-    newData = await this.listDidFetch(newData, all_projects, filters);
-    newData = newData.map(this.mapper);
-    this.list.update({
-      data: newData,
-      total: newData.length || 0,
-      limit: Number(limit) || 10,
-      page: Number(page) || 1,
-      sortKey,
-      sortOrder,
-      filters,
-      timeFilter,
-      isLoading: false,
-      ...(this.list.silent ? {} : { selectedRowKeys: [] }),
+      ...others,
     });
 
     return newData;
@@ -551,8 +517,8 @@ export default class BaseStore {
     if (!silent) {
       this.isLoading = true;
     }
-    const result = await request.get(
-      this.getDetailUrl(rest),
+    const result = await this.detailFetchByClient(
+      rest,
       this.getDetailParams({ all_projects })
     );
     const originData = get(result, this.responseKey) || result;
@@ -579,37 +545,30 @@ export default class BaseStore {
   create(data) {
     const body = {};
     body[this.responseKey] = data;
-    return this.submitting(request.post(this.getListUrl(), body));
-  }
-
-  @action
-  update({ id }, newObject, sleepTime) {
-    return this.submitting(
-      request.post(
-        `${this.getDetailUrl({ id })}/action`,
-        newObject,
-        null,
-        null,
-        sleepTime
-      )
-    );
+    return this.submitting(this.client.create(body));
   }
 
   @action
   edit({ id }, newObject) {
     const body = {};
     body[this.responseKey] = newObject;
-    return this.submitting(request.put(this.getDetailUrl({ id }), body));
+    return this.submitting(this.client.update(id, body));
+  }
+
+  @action
+  update({ id }, newObject) {
+    const body = {};
+    body[this.responseKey] = newObject;
+    return this.submitting(this.client.update(id, body));
   }
 
   @action
   patch({ id }, newObject) {
-    return this.submitting(request.patch(this.getDetailUrl({ id }), newObject));
+    return this.submitting(this.client.patch(id, newObject));
   }
 
   @action
-  delete = ({ id }) =>
-    this.submitting(request.delete(this.getDetailUrl({ id })));
+  delete = ({ id }) => this.submitting(this.client.delete(id));
 
   @action
   batchDelete(rowKeys) {
@@ -617,16 +576,12 @@ export default class BaseStore {
       Promise.all(
         rowKeys.map((name) => {
           const item = this.list.data.find((_item) => _item.name === name);
-          return request.delete(this.getDetailUrl(item));
+          const { id } = item;
+          return this.client.delete(id);
         })
       )
     );
   }
-
-  reject = (res) => {
-    this.isSubmitting = false;
-    window.onunhandledrejection(res);
-  };
 
   @action
   clearData() {

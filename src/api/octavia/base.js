@@ -16,7 +16,7 @@
  * @param {String} key api url
  * @returns {String}
  */
-import { octaviaBase } from 'utils/constants';
+import { octaviaBase } from 'client/client/constants';
 
 const getOctaviaBaseUrl = (key) => `${octaviaBase()}/${key}`;
 

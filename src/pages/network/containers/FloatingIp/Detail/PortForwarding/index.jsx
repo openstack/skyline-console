@@ -36,24 +36,13 @@ export default class PortForwarding extends Base {
     return true;
   }
 
-  updateFetchParamsByPage = (params) => {
-    const { id, ...rest } = params;
+  updateFetchParams = (params) => {
+    const { id, all_projects, ...rest } = params;
     return {
       fipID: id,
+      fipInfo: this.props.detail,
       ...rest,
     };
-  };
-
-  fetchDataByPage = async (params) => {
-    await this.store.getFipAlreadyUsedPorts(params);
-    this.updateList({
-      data: this.store.list.data.map((i) => {
-        i.fip = this.props.detail;
-        i.floating_ip_address = this.props.detail.floating_ip_address;
-        return i;
-      }),
-    });
-    this.list.silent = false;
   };
 
   get actionConfigs() {

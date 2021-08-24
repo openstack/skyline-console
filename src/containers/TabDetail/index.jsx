@@ -245,12 +245,8 @@ export default class DetailBase extends React.Component {
   catch = (e) => {
     // eslint-disable-next-line no-console
     console.log(e);
-    if (
-      e.code === 404 ||
-      e.status === 404 ||
-      e.reason === 'NotFound' ||
-      e.reason === 'Not Found'
-    ) {
+    const { data, status } = e.response || e || {};
+    if (status === 404) {
       this.setState({ notFound: true });
       Notify.warn(
         t('{name} {id} could not be found.', {
@@ -260,8 +256,8 @@ export default class DetailBase extends React.Component {
       );
     } else {
       const error = {
-        message: e,
-        status: e.code || e.status,
+        message: data,
+        status,
       };
       Notify.errorWithDetail(
         error,

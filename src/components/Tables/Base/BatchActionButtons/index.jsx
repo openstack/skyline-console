@@ -59,9 +59,16 @@ function DropdownActionButton({
   const menuItems = actions.map((it) => {
     const key = `table-batch-more-${generateId()}`;
     const newConf = updateConf(it, selectedItems);
-    const { buttonType } = newConf;
+    const { buttonType, name } = newConf;
     newConf.onFinishAction = onFinishAction;
     newConf.danger = buttonType === 'danger';
+    if (!selectedItems.length) {
+      return (
+        <Menu.Item key={key} disabled style={{ textAlign: 'center' }}>
+          {name}
+        </Menu.Item>
+      );
+    }
     return (
       <Menu.Item key={key}>
         <ActionButton

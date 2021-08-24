@@ -14,31 +14,20 @@
 
 /* eslint-disable prefer-destructuring */
 import { action, observable } from 'mobx';
-import { novaBase } from 'utils/constants';
+import client from 'client';
 import Base from '../base';
 
 export class FlavorStore extends Base {
   @observable
   access = [];
 
-  get module() {
-    return 'flavors';
+  get listWithDetail() {
+    return true;
   }
 
-  get apiVersion() {
-    return novaBase();
+  get client() {
+    return client.nova.flavors;
   }
-
-  get responseKey() {
-    return 'flavor';
-  }
-
-  // get listFilterByProject() {
-  //   return true;
-  // }
-
-  // getListDetailUrl = () => `${skylineBase()}/contrib/flavors`
-  getListDetailUrl = () => `${this.apiVersion}/${this.module}/detail`;
 
   getGpuInfo = (record) => {
     const { extra_specs = {} } = record || {};
@@ -54,7 +43,7 @@ export class FlavorStore extends Base {
       gpuCount = vgpu;
     }
     if (alias) {
-      if (category && category.indexOf('_gpu') >= 0) {
+      if (category && !category.includes('visualization_')) {
         const gpu = alias.split(',')[0];
         const usb = alias.split(',')[1];
         gpuType = gpu.split(':')[0];
@@ -95,7 +84,7 @@ export class FlavorStore extends Base {
 
   get paramsFunc() {
     return (params) => {
-      const { all_projects, name, ...rest } = params;
+      const { all_projects, name, withPrice, ...rest } = params;
       if (all_projects) {
         return {
           ...rest,
@@ -119,8 +108,7 @@ export class FlavorStore extends Base {
 
   @action
   async fetchAccess(id) {
-    const url = `${this.getDetailUrl({ id })}/os-flavor-access`;
-    const result = await request.get(url);
+    const result = await this.client.access.list(id);
     this.access = result.flavor_access;
   }
 
@@ -129,31 +117,28 @@ export class FlavorStore extends Base {
     const body = {};
     body[this.responseKey] = data;
     this.isSubmitting = true;
-    const result = await request.post(this.getListUrl(), body);
+    const result = await this.client.create(body);
     const { id } = result.flavor;
-    const url = `${this.getDetailUrl({ id })}/os-extra_specs`;
     const extraBody = {
       extra_specs: extraSpecs,
     };
     if (accessControl && accessControl.length > 0) {
       await Promise.all(
         accessControl.map((it) => {
-          const accessUrl = `${this.getDetailUrl({ id })}/action`;
           const accessBody = {
             addTenantAccess: {
               tenant: it,
             },
           };
-          return request.post(accessUrl, accessBody);
+          return this.client.action(id, accessBody);
         })
       );
     }
-    return this.submitting(request.post(url, extraBody));
+    return this.submitting(this.client.extraSpecs.create(id, extraBody));
   }
 
   @action
   async updateAccess(id, adds, dels) {
-    const url = `${this.getDetailUrl({ id })}/action`;
     this.isSubmitting = true;
     await Promise.all(
       adds.map((it) => {
@@ -162,7 +147,7 @@ export class FlavorStore extends Base {
             tenant: it,
           },
         };
-        return request.post(url, accessBody);
+        return this.client.action(id, accessBody);
       })
     );
     return this.submitting(
@@ -173,7 +158,7 @@ export class FlavorStore extends Base {
               tenant: it,
             },
           };
-          return request.post(url, accessBody);
+          return this.client.action(id, accessBody);
         })
       )
     );
@@ -181,23 +166,20 @@ export class FlavorStore extends Base {
 
   @action
   async createExtraSpecs(id, extraSpecs) {
-    const url = `${this.getDetailUrl({ id })}/os-extra_specs`;
     const extraBody = {
       extra_specs: extraSpecs,
     };
-    return this.submitting(request.post(url, extraBody));
+    return this.submitting(this.client.extraSpecs.create(id, extraBody));
   }
 
   @action
   async deleteExtraSpecs(id, key) {
-    const url = `${this.getDetailUrl({ id })}/os-extra_specs/${key}`;
-    return this.submitting(request.delete(url));
+    return this.submitting(this.client.extraSpecs.delete(id, key));
   }
 
   @action
   async putExtraSpecs(id, key, body) {
-    const url = `${this.getDetailUrl({ id })}/os-extra_specs/${key}`;
-    return this.submitting(request.put(url, body));
+    return this.submitting(this.client.extraSpecs.update(id, key, body));
   }
 
   @action

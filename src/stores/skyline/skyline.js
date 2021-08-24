@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { action, observable } from 'mobx';
-import { skylineBase } from 'utils/constants';
+import client from 'client';
 import Base from '../base';
 
 export class SkylineStore extends Base {
@@ -23,25 +23,19 @@ export class SkylineStore extends Base {
   @observable
   regions = [];
 
-  get module() {
-    return 'contrib';
-  }
-
-  get apiVersion() {
-    return skylineBase();
+  get client() {
+    return client.skyline.contrib;
   }
 
   @action
   async fetchDomainList() {
-    const url = `${this.getListUrl()}/domains`;
-    const result = await request.get(url);
+    const result = await this.client.domains();
     this.domains = result;
   }
 
   @action
   async fetchRegionList() {
-    const url = `${this.getListUrl()}/regions`;
-    const result = await request.get(url);
+    const result = await this.client.regions();
     this.regions = result;
   }
 }

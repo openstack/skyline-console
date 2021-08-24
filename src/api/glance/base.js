@@ -16,7 +16,7 @@
  * @param {String} key api url
  * @returns {String}
  */
-import { glanceBase } from 'utils/constants';
+import { glanceBase } from 'client/client/constants';
 
 const getGlanceBaseUrl = (key) => `${glanceBase()}/${key}`;
 

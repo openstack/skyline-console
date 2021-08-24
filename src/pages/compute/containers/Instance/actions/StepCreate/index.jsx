@@ -63,9 +63,8 @@ class StepCreate extends StepAction {
   }
 
   async getQuota() {
-    const { project: { id: project_id } = {} } = globals.user || {};
     await this.projectStore.fetchProjectQuota({
-      project_id,
+      project_id: this.currentProjectId,
     });
     this.onCountChange(1);
   }

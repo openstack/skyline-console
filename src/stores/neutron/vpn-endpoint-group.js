@@ -12,38 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { neutronBase } from 'utils/constants';
-import { action } from 'mobx';
+import client from 'client';
 import Base from '../base';
 
 export class VpnEndPointGroupStore extends Base {
-  get module() {
-    return 'endpoint-groups';
-  }
-
-  get apiVersion() {
-    return neutronBase();
-  }
-
-  get responseKey() {
-    return 'endpoint_group';
+  get client() {
+    return client.neutron.endpointGroups;
   }
 
   get listFilterByProject() {
     return true;
-  }
-
-  @action
-  update({ id }, newObject, sleepTime) {
-    return this.submitting(
-      request.put(
-        `${this.getDetailUrl({ id })}`,
-        { [this.responseKey]: { ...newObject } },
-        null,
-        null,
-        sleepTime
-      )
-    );
   }
 }
 

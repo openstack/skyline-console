@@ -107,6 +107,15 @@ export default class BaseStepForm extends React.Component {
     return this.checkEndpoint && !this.endpoint;
   }
 
+  get currentUser() {
+    const { user } = this.props.rootStore || {};
+    return user || {};
+  }
+
+  get currentProjectId() {
+    return this.props.rootStore.projectId;
+  }
+
   get labelCol() {
     return {
       xs: { span: 4 },
@@ -218,9 +227,10 @@ export default class BaseStepForm extends React.Component {
         Notify.success(this.successText);
       },
       (err) => {
-        // eslint-disable-next-line no-console
-        console.log('reject', err);
-        Notify.errorWithDetail(err, this.errorText);
+        this.responseError = err;
+        const { response: { data: responseData } = {} } = err;
+        console.log('err', err, responseData);
+        Notify.errorWithDetail(responseData, this.errorText);
       }
     );
   };

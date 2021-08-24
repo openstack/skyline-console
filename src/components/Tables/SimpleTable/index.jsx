@@ -223,8 +223,12 @@ export default class SimpleTable extends React.Component {
     }
     return {
       onClick: () => {
-        const { selectedRowKeys, onChange, type, getCheckboxProps } =
-          rowSelection;
+        const {
+          selectedRowKeys = [],
+          onChange,
+          type,
+          getCheckboxProps,
+        } = rowSelection || {};
         if (getCheckboxProps) {
           const { disabled } = getCheckboxProps(record);
           if (disabled) {

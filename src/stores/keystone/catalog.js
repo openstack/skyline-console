@@ -12,20 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { keystoneBase } from 'utils/constants';
+import client from 'client';
 import Base from '../base';
 
 export class AuthCatalogStore extends Base {
-  get module() {
-    return 'auth/catalog';
-  }
-
-  get apiVersion() {
-    return keystoneBase();
+  get client() {
+    return client.keystone.catalog;
   }
 
   get listResponseKey() {
-    return 'catalog';
+    return this.responseKey;
   }
 
   get mapper() {

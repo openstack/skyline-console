@@ -28,7 +28,7 @@ const gotoConsole = (type, props) => {
 };
 
 const GlobalHeaderRight = (props) => {
-  const { isAdminPage = false, rootStore: { hasAdminRole = false } = {} } =
+  const { isAdminPage = false, rootStore: { hasAdminPageRole = false } = {} } =
     props;
   let linkRender = null;
   if (isAdminPage) {
@@ -41,7 +41,7 @@ const GlobalHeaderRight = (props) => {
         {t('Console')}
       </Button>
     );
-  } else if (hasAdminRole) {
+  } else if (hasAdminPageRole) {
     linkRender = (
       <Button
         type="link"

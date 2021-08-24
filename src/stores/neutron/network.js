@@ -13,10 +13,11 @@
 // limitations under the License.
 
 import { action, observable } from 'mobx';
-import { neutronBase, skylineBase } from 'utils/constants';
 import networkUtils from 'src/pages/network/containers/Network/actions/networkUtil';
 import { get } from 'lodash';
 import globalProjectStore from 'stores/keystone/project';
+import client from 'client';
+import { isExternalNetwork } from 'resources/network';
 import Base from '../base';
 
 const { splitToArray } = networkUtils;
@@ -31,20 +32,22 @@ export class NetworkStore extends Base {
   @observable
   securityGroups = [];
 
-  get module() {
-    return 'networks';
-  }
-
-  get apiVersion() {
-    return neutronBase();
-  }
-
-  get responseKey() {
-    return 'network';
+  get client() {
+    return client.neutron.networks;
   }
 
   get listFilterByProject() {
     return true;
+  }
+
+  get mapper() {
+    return (data) => {
+      const { created_at } = data;
+      return {
+        ...data,
+        standard_attr_id: created_at,
+      };
+    };
   }
 
   updateParamsSortPage = (params, sortKey, sortOrder) => {
@@ -62,65 +65,22 @@ export class NetworkStore extends Base {
   }
 
   listExtensions = async () => {
-    const extensions = await request.get(`${this.apiVersion}/extensions`);
+    const extensions = await client.neutron.extensions.list();
     return extensions;
   };
 
   fetchDHCPAgents = async (id) => {
-    const data = await request.get(
-      `${this.apiVersion}/networks/${id}/dhcp-agents`
-    );
+    const data = await this.client.dhcpAgents.list(id);
     return data;
   };
 
-  @action
-  async fetchFirewallCreateList({
-    limit,
-    page,
-    sortKey,
-    sortOrder,
-    conditions,
-    timeFilter,
-    ...filters
-  } = {}) {
-    this.list.isLoading = true;
-    // todo: no page, no limit, fetch all
-    const { tab, all_projects, ...rest } = filters;
-    const params = { ...rest };
-    if (all_projects) {
-      if (!this.listFilterByProject) {
-        params.all_projects = true;
-      }
+  async listDidFetch(items, allProjects, filters) {
+    const { isFirewall } = filters;
+    if (!isFirewall) {
+      return items;
     }
-    const newParams = this.paramsFunc(params);
-    const url = this.getListDetailUrl() || this.getListUrl();
-    const newUrl = this.updateUrl(url, params);
-    const allData = await this.requestList(newUrl, newParams);
-    const allDataNew = allData.map(this.mapperBeforeFetchProject);
-    const data = allDataNew.filter((item) => {
-      if (!this.listFilterByProject) {
-        return true;
-      }
-      return this.itemInCurrentProject(item, all_projects);
-    });
-    // const items = data.map(this.mapper);
-    let newData = await this.listDidFetchProject(data, all_projects);
-    newData = await this.listDidFetchFirewall(newData, all_projects, filters);
-    newData = newData.map(this.mapper);
-    this.list.update({
-      data: newData,
-      total: newData.length || 0,
-      limit: Number(limit) || 10,
-      page: Number(page) || 1,
-      sortKey,
-      sortOrder,
-      filters,
-      timeFilter,
-      isLoading: false,
-      ...(this.list.silent ? {} : { selectedRowKeys: [] }),
-    });
-
-    return newData;
+    const datas = await this.listDidFetchFirewall(items);
+    return datas;
   }
 
   async listDidFetchFirewall(items) {
@@ -141,32 +101,6 @@ export class NetworkStore extends Base {
     return ret;
   }
 
-  // async listDidFetch(items) {
-  //   // fix for dhcp agents number column
-  //   const { extensions } = await this.listExtensions();
-  //   const isExtensionSupported = extensions.some(item => item.alias === 'dhcp_agent_scheduler');
-  //
-  //   if (isExtensionSupported && globals.user.hasAdminRole) {
-  //     const dhcpPromises = items.map(networkItem => this.fetchDHCPAgents(networkItem.id));
-  //     const dhcpAgents = await Promise.all(dhcpPromises);
-  //     items.forEach((i, index) => {
-  //       i.agents_num = dhcpAgents[index].agents.length;
-  //     });
-  //   }
-  //
-  //   const ret = await Promise.all(items.map(async (networkItem) => {
-  //     const promises = networkItem.subnets.map(subnetItem => this.fetchSubnetDetail({ id: subnetItem }));
-  //     try {
-  //       const results = await Promise.all(promises);
-  //       networkItem.subnetDetails = results || [];
-  //     } catch (e) {
-  //       networkItem.subnetDetails = [];
-  //     }
-  //     return networkItem;
-  //   }));
-  //   return ret;
-  // }
-
   @action
   async fetchDetailWithAvailabilityAndUsage({
     id,
@@ -174,10 +108,9 @@ export class NetworkStore extends Base {
     currentProjectId,
   }) {
     this.isLoading = true;
-    const result = await request.get(this.getDetailUrl({ id }));
+    const result = await this.client.show(id);
     const originData = get(result, this.responseKey) || result;
     const promises = [
-      // request.get(`${this.apiVersion}/network-ip-availabilities/${id}`),
       Promise.resolve({ agents: [] }),
       Promise.resolve({ name: '' }),
     ];
@@ -187,7 +120,7 @@ export class NetworkStore extends Base {
       const isExtensionSupported = extensions.some(
         (item) => item.alias === 'dhcp_agent_scheduler'
       );
-      if (isExtensionSupported && globals.user.hasAdminRole) {
+      if (isExtensionSupported && this.hasAdminRole) {
         promises.splice(0, 1, this.fetchDHCPAgents(id));
       }
       const { tenant_id } = originData;
@@ -208,9 +141,7 @@ export class NetworkStore extends Base {
 
     // 处理使用IP数量，只有管理员或者当前网络所有者才能查看
     if (isAdminPage || currentProjectId === originData.project_id) {
-      const used = await request.get(
-        `${this.apiVersion}/network-ip-availabilities/${id}`
-      );
+      const used = await client.neutron.networkIpAvailabilities.show(id);
       this.detail = {
         ...this.detail,
         ...used.network_ip_availability,
@@ -240,49 +171,39 @@ export class NetworkStore extends Base {
 
   @action
   async fetchSubnetDetail({ id }) {
-    const resData = await request.get(
-      `${this.apiVersion}/subnets/${id}`,
-      null,
-      null,
-      (res) => {
-        if (res.reason === 'NotFound' || res.reason === 'Forbidden') {
-          // global.navigateTo('/404')
-        }
-        return res.subnet;
-      }
-    );
-    return resData.subnet;
+    try {
+      const resData = await client.neutron.subnets.show(id);
+      return resData.subnet;
+    } catch (e) {
+      return {};
+    }
   }
 
   @action
   async fetchTopoNetwork() {
-    await Promise.all([
-      request.get(`${this.apiVersion}/networks`),
-      request.get(`${this.apiVersion}/subnets`),
-    ]).then(([resData, subnetRes]) => {
-      resData.subnets = subnetRes.subnets;
-      resData.networks = resData.networks.filter(
-        (network) =>
-          network['router:external'] ||
-          network.shared ||
-          network.project_id === globals.user.project.id
-      );
-      this.topology = resData;
-    });
+    await Promise.all([this.client.list(), client.neutron.subnets.list()]).then(
+      ([resData, subnetRes]) => {
+        resData.subnets = subnetRes.subnets;
+        resData.networks = resData.networks.filter(
+          (network) =>
+            isExternalNetwork(network) ||
+            network.shared ||
+            network.project_id === this.currentProjectId
+        );
+        this.topology = resData;
+      }
+    );
   }
 
   @action
   async fetchTopo() {
+    const params = {
+      project_id: this.currentProjectId,
+    };
     await Promise.all([
-      // request.get(`${this.apiVersion}/networks`),
-      // request.get(`${this.apiVersion}/subnets`),
-      request.get(`${this.apiVersion}/routers`, {
-        project_id: globals.user.project.id,
-      }),
-      request.get(`${skylineBase()}/extension/servers`),
-      request.get(`${this.apiVersion}/ports`, {
-        project_id: globals.user.project.id,
-      }),
+      client.neutron.routers.list(params),
+      client.skyline.extension.servers(),
+      client.neutron.ports.list(params),
     ]).then(([routersRes, serversRes, portRes]) => {
       const resData = this.topology;
       routersRes.routers.map((it) => {
@@ -315,8 +236,8 @@ export class NetworkStore extends Base {
         );
         return it;
       });
-      resData.extNetwork = resData.networks.filter(
-        (it) => it['router:external']
+      resData.extNetwork = resData.networks.filter((it) =>
+        isExternalNetwork(it)
       );
       this.topology = resData;
     });
@@ -326,30 +247,25 @@ export class NetworkStore extends Base {
   async createAndMore(data, rest) {
     const body = {};
     body[this.responseKey] = data;
-    let res = null;
-    try {
-      res = await this.create(data);
-    } catch (e) {
+    const res = await this.create(data).catch((e) => {
       return Promise.reject(
-        JSON.stringify({ type: 'create_network', error: e })
+        JSON.stringify({ type: 'create_network', error: e.response.data })
       );
-    }
+    });
     const { network } = res;
     const { create_subnet } = rest;
-    try {
-      if (create_subnet) {
-        const { project_id, id } = network;
-        const subnet = await this.createSubnet({
-          ...rest,
-          project_id,
-          network_id: id,
-        });
-        return subnet;
-      }
-    } catch (e) {
-      return Promise.reject(
-        JSON.stringify({ type: 'create_subnet', error: e })
-      );
+    if (create_subnet) {
+      const { project_id, id } = network;
+      const subnet = await this.createSubnet({
+        ...rest,
+        project_id,
+        network_id: id,
+      }).catch((e) => {
+        return Promise.reject(
+          JSON.stringify({ type: 'create_subnet', error: e.response.data })
+        );
+      });
+      return subnet;
     }
     // return this.submitting(Promise.resolve(res));
     return Promise.resolve(res);
@@ -383,9 +299,7 @@ export class NetworkStore extends Base {
       gateway_ip: disable_gateway ? null : gateway_ip,
       cidr,
     };
-    return this.submitting(
-      request.post(`${this.apiVersion}/subnets`, { subnet: data })
-    );
+    return client.neutron.subnets.create({ subnet: data });
   }
 }
 const globalNetworkStore = new NetworkStore();

@@ -12,31 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { cinderBase, novaBase } from 'utils/constants';
 import { isOsDisk } from 'resources/volume';
+import client from 'client';
 import Base from '../base';
+import globalVolumeTypeStore from '../cinder/volume-type';
 
 export class InstanceVolumeStore extends Base {
-  get module() {
-    return 'servers';
+  get client() {
+    return client.nova.servers.volumeAttachments;
   }
 
-  get apiVersion() {
-    return novaBase();
+  get isSubResource() {
+    return true;
   }
 
-  get responseKey() {
-    return 'volumeAttachment';
-  }
-
-  get fetchListByLimit() {
-    return false;
-  }
+  getFatherResourceId = (params) => params.serverId;
 
   get paramsFunc() {
     return (params) => {
-      const { id, serverId, all_projects, projectId, serverName, ...rest } =
-        params;
+      const {
+        id,
+        serverId,
+        all_projects,
+        projectId,
+        serverName,
+        withPrice,
+        ...rest
+      } = params;
       return rest;
     };
   }
@@ -59,22 +61,16 @@ export class InstanceVolumeStore extends Base {
     });
   }
 
-  getListUrl = ({ serverId }) =>
-    `${this.apiVersion}/${this.module}/${serverId}/os-volume_attachments`;
-
   async listDidFetch(items, allProjects, filters) {
     if (items.length === 0) {
       return items;
     }
-    const { serverName, serverId } = filters;
+    const { serverName, serverId, withPrice } = filters;
     const { project_id, project_name } = items[0];
     const results = await Promise.all(
       items.map((it) => {
         const { volumeId } = it;
-        const url = `${cinderBase()}/${
-          globals.user.project.id
-        }/volumes/${volumeId}`;
-        return request.get(url);
+        return client.cinder.volumes.show(volumeId);
       })
     );
     const volumes = results.map((result) => {
@@ -93,6 +89,15 @@ export class InstanceVolumeStore extends Base {
         project_name,
       };
     });
+    if (withPrice) {
+      const volumeTypes = await globalVolumeTypeStore.fetchList({ withPrice });
+      volumes.forEach((item) => {
+        const { size, volume_type } = item;
+        const volumeType = volumeTypes.find((it) => it.name === volume_type);
+        const cost = volumeType ? (volumeType.priceCost * size).toFixed(2) : 0;
+        item.cost = cost;
+      });
+    }
     return volumes;
   }
 }

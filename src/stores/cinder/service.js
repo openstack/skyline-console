@@ -12,40 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { cinderBase } from 'utils/constants';
 import { action } from 'mobx';
+import client from 'client';
 import Base from '../base';
 
 export class ServiceStore extends Base {
-  get module() {
-    return 'os-services';
-  }
-
-  get apiVersion() {
-    return cinderBase();
-  }
-
-  get responseKey() {
-    return 'service';
-  }
-
-  getListUrl = () =>
-    `${this.apiVersion}/${globals.user.project.id}/${this.module}`;
-
-  @action
-  operate(actionName, body) {
-    const url = `${this.getListUrl()}/${actionName}`;
-    return this.submitting(request.put(url, body));
+  get client() {
+    return client.cinder.services;
   }
 
   @action
   enable(body) {
-    return this.operate('enable', body);
+    return this.submitting(this.client.enable(body));
   }
 
   @action
   disable(body) {
-    return this.operate('disable-log-reason', body);
+    return this.submitting(this.client.reason(body));
   }
 }
 

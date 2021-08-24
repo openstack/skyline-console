@@ -13,26 +13,19 @@
 // limitations under the License.
 
 import { action, observable } from 'mobx';
-import { cinderBase } from 'utils/constants';
+import client from 'client';
+import { uniq } from 'lodash';
 import Base from '../base';
 
 export class VolumeTypeStore extends Base {
   @observable
   access = [];
 
-  get module() {
-    if (!globals.user) {
-      return null;
-    }
-    return `${globals.user.project.id}/types`;
-  }
+  @observable
+  projectVolumeTypes = [];
 
-  get apiVersion() {
-    return cinderBase();
-  }
-
-  get responseKey() {
-    return 'volume_type';
+  get client() {
+    return client.cinder.types;
   }
 
   get listFilterByProject() {
@@ -41,9 +34,20 @@ export class VolumeTypeStore extends Base {
 
   get paramsFuncPage() {
     return (params) => {
-      const { current, showEncryption, ...rest } = params;
+      const {
+        current,
+        showEncryption,
+        showQoS,
+        withPrice,
+        resourceType,
+        ...rest
+      } = params;
       return rest;
     };
+  }
+
+  get paramsFunc() {
+    return this.paramsFuncPage;
   }
 
   get mapper() {
@@ -52,21 +56,36 @@ export class VolumeTypeStore extends Base {
       return {
         ...data,
         multiattach: multiattach === '<is> True',
+        enableBilling: this.enableBilling,
       };
     };
   }
 
   async listDidFetch(items, allProjects, filters) {
-    const { showEncryption } = filters;
+    const { showEncryption, showQoS } = filters;
     if (items.length === 0) {
       return items;
+    }
+    if (showQoS) {
+      const qosIds = uniq(
+        items.filter((it) => !!it.qos_specs_id).map((it) => it.qos_specs_id)
+      );
+      if (qosIds.length) {
+        const qosReqs = qosIds.map((id) => client.cinder.qosSpecs.show(id));
+        const qosResults = await Promise.all(qosReqs);
+        const qosItems = qosResults.map((it) => it.qos_specs);
+        items.forEach((it) => {
+          if (it.qos_specs_id) {
+            it.qos_specs = qosItems.find((qos) => qos.id === it.qos_specs_id);
+            it.qos_specs_name = (it.qos_specs || {}).name;
+          }
+        });
+      }
     }
     if (!showEncryption) {
       return items;
     }
-    const promiseList = items.map((i) =>
-      request.get(`${this.getDetailUrl({ id: i.id })}/encryption`)
-    );
+    const promiseList = items.map((i) => this.client.encryption.list(i.id));
     const encryptionList = await Promise.all(promiseList);
     const result = items.map((i) => {
       const { id } = i;
@@ -81,7 +100,7 @@ export class VolumeTypeStore extends Base {
 
   async detailDidFetch(item) {
     const { id } = item || {};
-    const result = await request.get(`${this.getDetailUrl({ id })}/encryption`);
+    const result = await this.client.encryption.list(id);
     item.encryption = result;
     return item;
   }
@@ -90,7 +109,7 @@ export class VolumeTypeStore extends Base {
   update(id, data) {
     const body = {};
     body[this.responseKey] = data;
-    return this.submitting(request.put(this.getDetailUrl({ id }), body));
+    return this.submitting(this.client.update(id, body));
   }
 
   @action
@@ -98,16 +117,12 @@ export class VolumeTypeStore extends Base {
     const body = {
       encryption: data,
     };
-    return this.submitting(
-      request.post(`${this.getDetailUrl({ id })}/encryption`, body)
-    );
+    return this.submitting(this.client.encryption.create(id, body));
   }
 
   @action
   deleteEncryption(id, encryption_id) {
-    return this.submitting(
-      request.delete(`${this.getDetailUrl({ id })}/encryption/${encryption_id}`)
-    );
+    return this.submitting(this.client.encryption.delete(id, encryption_id));
   }
 
   @action
@@ -115,17 +130,16 @@ export class VolumeTypeStore extends Base {
     const body = {};
     body[this.responseKey] = data;
     if (projectIds.length === 0) {
-      return this.submitting(request.post(this.getListUrl(), body));
+      return this.submitting(this.client.create(body));
     }
     this.isSubmitting = true;
-    const result = await request.post(this.getListUrl(), body);
+    const result = await this.client.create(body);
     const { id } = result[this.responseKey];
     return this.addProjectAccess(id, projectIds);
   }
 
   @action
   addProjectAccess(id, projectIds = []) {
-    const actionUrl = `${this.getDetailUrl({ id })}/action`;
     return this.submitting(
       Promise.all(
         projectIds.map((it) => {
@@ -134,7 +148,7 @@ export class VolumeTypeStore extends Base {
               project: it,
             },
           };
-          return request.post(actionUrl, actionBody);
+          return this.client.action(id, actionBody);
         })
       )
     );
@@ -142,7 +156,6 @@ export class VolumeTypeStore extends Base {
 
   @action
   removeProjectAccess(id, projectIds = []) {
-    const actionUrl = `${this.getDetailUrl({ id })}/action`;
     return this.submitting(
       Promise.all(
         projectIds.map((it) => {
@@ -151,7 +164,7 @@ export class VolumeTypeStore extends Base {
               project: it,
             },
           };
-          return request.post(actionUrl, actionBody);
+          return this.client.action(id, actionBody);
         })
       )
     );
@@ -159,8 +172,7 @@ export class VolumeTypeStore extends Base {
 
   @action
   async fetchProjectAccess(id) {
-    const url = `${this.getDetailUrl({ id })}/os-volume-type-access`;
-    const result = await request.get(url);
+    const result = await this.client.getAccess(id);
     this.access = result.volume_type_access;
   }
 
@@ -175,6 +187,30 @@ export class VolumeTypeStore extends Base {
     }
     await this.removeProjectAccess(id, dels);
     return this.addProjectAccess(id, adds);
+  }
+
+  @action
+  async fetchProjectVolumeTypes(projectId) {
+    const result = await this.client.list({ is_public: 'None' });
+    const { volume_types: types } = result;
+    const privateTypes = types.filter((it) => !it.is_public);
+    if (!privateTypes.length) {
+      this.projectVolumeTypes = types;
+      return types;
+    }
+    const projectTypes = types.filter((it) => it.public);
+    const reqs = privateTypes.map((it) => this.client.getAccess(it.id));
+    const accessResults = await Promise.all(reqs);
+    accessResults.forEach((it) => {
+      const { volume_type_access: access } = it;
+      const item = access.find((a) => a.project_id === projectId);
+      if (item) {
+        const type = types.find((t) => t.id === item.volume_type_id);
+        projectTypes.push(type);
+      }
+    });
+    this.projectVolumeTypes = projectTypes;
+    return projectTypes;
   }
 }
 const globalVolumeTypeStore = new VolumeTypeStore();

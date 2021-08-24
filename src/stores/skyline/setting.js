@@ -12,24 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { skylineBase } from 'utils/constants';
 import { action } from 'mobx';
+import client from 'client';
 import Base from '../base';
 
 export class SettingStore extends Base {
-  get module() {
-    return 'setting';
+  get client() {
+    return client.skyline.setting;
   }
-
-  get apiVersion() {
-    return skylineBase();
-  }
-
-  get responseKey() {
-    return 'setting';
-  }
-
-  getListDetailUrl = () => `${this.getListUrl()}s`;
 
   async listDidFetch(items) {
     return items.filter((it) => !it.hidden);
@@ -37,7 +27,7 @@ export class SettingStore extends Base {
 
   @action
   update(body) {
-    return this.submitting(request.put(this.getListUrl(), body));
+    return this.submitting(this.client.update(null, body));
   }
 }
 

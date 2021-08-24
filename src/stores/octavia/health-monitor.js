@@ -12,24 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { octaviaBase } from 'utils/constants';
+import client from 'client';
 import Base from '../base';
 
 export class HealthMonitorStore extends Base {
-  get module() {
-    return 'lbaas/healthmonitors';
-  }
-
-  get apiVersion() {
-    return octaviaBase();
-  }
-
-  get responseKey() {
-    return 'healthmonitor';
-  }
-
-  get listResponseKey() {
-    return 'healthmonitors';
+  get client() {
+    return client.octavia.healthMonitors;
   }
 
   get listFilterByProject() {

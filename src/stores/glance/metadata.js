@@ -12,24 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { glanceBase } from 'utils/constants';
 import { action, observable } from 'mobx';
+import client from 'client';
 import Base from '../base';
 
 export class MetadataStore extends Base {
   @observable
   resourceTypes = [];
 
-  get module() {
-    return 'metadefs/namespaces';
+  @observable
+  resourceTypeLoading = false;
+
+  get client() {
+    return client.glance.namespaces;
   }
 
-  get apiVersion() {
-    return glanceBase();
-  }
-
-  get responseKey() {
-    return 'namespace';
+  get resourceTypeClient() {
+    return client.glance.resourceTypes;
   }
 
   get needGetProject() {
@@ -44,9 +43,7 @@ export class MetadataStore extends Base {
     const results = await Promise.all(
       items.map((it) => {
         const { namespace } = it;
-        return request.get(this.getDetailUrl({ id: namespace }), {
-          resource_type: resource_types,
-        });
+        return this.client.show(namespace, { resource_type: resource_types });
       })
     );
     items.forEach((it, index) => {
@@ -95,7 +92,7 @@ export class MetadataStore extends Base {
   @action
   async fetchDetail({ id }) {
     this.isLoading = true;
-    const result = await request.get(this.getDetailUrl({ id }));
+    const result = await this.client.show(id);
     this.detail = result;
     this.isLoading = false;
     return result;
@@ -103,20 +100,18 @@ export class MetadataStore extends Base {
 
   @action
   edit({ id }, newObject) {
-    return this.submitting(
-      request.put(`${this.getDetailUrl({ id })}`, newObject)
-    );
+    return this.submitting(this.client.update(id, newObject));
   }
 
   @action
   create(newObject) {
-    return this.submitting(request.post(`${this.getListUrl()}`, newObject));
+    return this.submitting(this.client.create(newObject));
   }
 
   @action
   async fetchResourceTypes(item) {
-    const url = `${this.apiVersion}/metadefs/resource_types`;
-    const result = await request.get(url);
+    this.resourceTypeLoading = true;
+    const result = await this.resourceTypeClient.list();
     const { resource_type_associations: associations = [] } = item || {};
     const { resource_types: resourceTypes = [] } = result;
     const mapper = {};
@@ -130,6 +125,7 @@ export class MetadataStore extends Base {
       }
     });
     this.resourceTypes = resourceTypes;
+    this.resourceTypeLoading = false;
   }
 
   @action
@@ -137,11 +133,9 @@ export class MetadataStore extends Base {
     this.isSubmitting = true;
     await Promise.all(
       dels.map((it) => {
-        const delUrl = `${this.apiVersion}/${this.module}/${namespace}/resource_types/${it.name}`;
-        return request.delete(delUrl);
+        return this.client.resourceTypes.delete(namespace, it.name);
       })
     );
-    const addUrl = `${this.apiVersion}/${this.module}/${namespace}/resource_types`;
     return this.submitting(
       Promise.all(
         adds.map((it) => {
@@ -149,7 +143,7 @@ export class MetadataStore extends Base {
             name: it.name,
             prefix: it.prefix,
           };
-          return request.post(addUrl, body);
+          return this.client.resourceTypes.create(namespace, body);
         })
       )
     );

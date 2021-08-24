@@ -13,42 +13,20 @@
 // limitations under the License.
 
 import { action } from 'mobx';
-import { cinderBase } from 'utils/constants';
+import client from 'client';
 import Base from '../base';
 
 export class QosSpecKeyStore extends Base {
-  get module() {
-    if (!globals.user) {
-      return null;
-    }
-    return `${globals.user.project.id}/qos-specs`;
+  get client() {
+    return client.cinder.qosSpecs;
   }
 
-  get apiVersion() {
-    return cinderBase();
+  listFetchByClient(params) {
+    const { id } = params;
+    return this.client.show(id);
   }
 
-  get responseKey() {
-    return 'qos_specs';
-  }
-
-  getListUrl = ({ id }) => `${this.apiVersion}/${this.module}/${id}`;
-
-  @action
-  async fetchList({
-    id,
-    limit,
-    page,
-    sortKey,
-    sortOrder,
-    conditions,
-    ...filters
-  } = {}) {
-    this.list.isLoading = true;
-    // todo: no page, no limit, fetch all
-    const params = { ...filters };
-
-    const result = await request.get(this.getListUrl({ id }), params);
+  getListDataFromResult = (result) => {
     const { specs = {} } = result.qos_specs || {};
     const data = [];
     Object.keys(specs).forEach((key) => {
@@ -59,35 +37,21 @@ export class QosSpecKeyStore extends Base {
         value: specs[key],
       });
     });
-    const items = data.map(this.mapper);
-
-    this.list.update({
-      data,
-      total: items.length || 0,
-      limit: Number(limit) || 10,
-      page: Number(page) || 1,
-      sortKey,
-      sortOrder,
-      filters,
-      isLoading: false,
-      ...(this.list.silent ? {} : { selectedRowKeys: [] }),
-    });
-    this.urlId = id;
     return data;
-  }
+  };
 
   @action
   createOrUpdate(id, data) {
     const body = {};
-    body[this.responseKey] = data;
-    return this.submitting(request.put(this.getListUrl({ id }), body));
+    body.qos_specs = data;
+    return this.submitting(this.client.update(id, body));
   }
 
   // TODO
   @action
   delete = ({ id, keyname }) =>
     this.submitting(
-      request.put(`${this.getListUrl({ id })}/delete_keys`, {
+      this.client.deleteKeys(id, {
         keys: [keyname],
       })
     );

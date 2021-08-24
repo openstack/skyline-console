@@ -16,7 +16,7 @@
  * @param {String} key api url
  * @returns {String}
  */
-import { placementBase } from 'utils/constants';
+import { placementBase } from 'client/client/constants';
 
 const getPlacementBaseUrl = (key) => `${placementBase()}/${key}`;
 

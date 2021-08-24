@@ -12,24 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { octaviaBase } from 'utils/constants';
+import client from 'client';
 import Base from '../base';
 
 export class ListenerStore extends Base {
-  get module() {
-    return 'lbaas/listeners';
-  }
-
-  get apiVersion() {
-    return octaviaBase();
-  }
-
-  get responseKey() {
-    return 'listener';
-  }
-
-  get listResponseKey() {
-    return 'listeners';
+  get client() {
+    return client.octavia.listeners;
   }
 
   get listFilterByProject() {
@@ -59,9 +47,7 @@ export class ListenerStore extends Base {
     if (default_pool_id) {
       //  pool attach listener or loadbalancer ？
       try {
-        const res = await request.get(
-          `${this.apiVersion}/pools/${default_pool_id}`
-        );
+        const res = await client.octavia.pools.show(default_pool_id);
         item.default_pool = res.pool;
         return item;
       } catch (err) {

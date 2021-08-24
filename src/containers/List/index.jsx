@@ -271,8 +271,13 @@ export default class BaseList extends React.Component {
     return true;
   }
 
+  get currentUser() {
+    const { user } = this.props.rootStore || {};
+    return user || {};
+  }
+
   get currentProjectId() {
-    return globals.user.project.id;
+    return this.props.rootStore.projectId;
   }
 
   get fetchDataByCurrentProject() {
@@ -480,7 +485,7 @@ export default class BaseList extends React.Component {
   }
 
   getDataWithPolicy(params) {
-    if (!globals.user) {
+    if (!this.currentUser || isEmpty(this.currentUser)) {
       return;
     }
     if (this.endpointError) {
@@ -510,7 +515,7 @@ export default class BaseList extends React.Component {
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log('fetch list error', e);
-      const { message = '', data, status } = e || {};
+      const { message = '', data, status } = e.response || e || {};
       if (status === 500) {
         const sysErr = t('System is error, please try again later.');
         const title = `${t('Get {name} error.', {
@@ -520,7 +525,7 @@ export default class BaseList extends React.Component {
       } else {
         const error = {
           message: data || message || e || '',
-          status: e.status,
+          status,
         };
         Notify.errorWithDetail(
           error,

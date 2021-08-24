@@ -12,30 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { neutronBase } from 'utils/constants';
 import { action } from 'mobx';
-import { get } from 'lodash';
+import { get, uniq } from 'lodash';
+import client from 'client';
+import { isExternalNetwork } from 'resources/network';
 import Base from '../base';
 
 export class PortStore extends Base {
-  get module() {
-    return 'ports';
-  }
-
-  get apiVersion() {
-    return neutronBase();
-  }
-
-  get responseKey() {
-    return 'port';
+  get client() {
+    return client.neutron.ports;
   }
 
   async detailDidFetch(item) {
     const { network_id } = item;
     try {
-      const res = await request.get(
-        `${this.apiVersion}/networks/${network_id}`
-      );
+      const res = await client.neutron.networks.show(network_id);
       item.network = res.network;
       item.network_name = item.network.name;
       return item;
@@ -44,11 +35,33 @@ export class PortStore extends Base {
     }
   }
 
+  async listDidFetch(items, allProjects, filters) {
+    const { withPrice } = filters;
+    if (!withPrice) {
+      return items;
+    }
+    const networkIds = uniq(items.map((it) => it.network_id));
+    const networkResults = await Promise.all(
+      networkIds.map((it) => {
+        return client.neutron.networks.show(it);
+      })
+    );
+    const networks = networkResults.map((it) => it.network);
+    return items.map((it) => {
+      const network = networks.find((net) => net.id === it.network_id);
+      return {
+        ...it,
+        network,
+        isExternalNetwork: isExternalNetwork(network),
+      };
+    });
+  }
+
   async listDidFetchByFirewall(items) {
-    const routerUrl = `${this.apiVersion}/routers`;
-    const networkUrl = `${this.apiVersion}/networks`;
-    const routerResult = await request.get(routerUrl);
-    const networkResult = await request.get(networkUrl);
+    const [networkResult, routerResult] = await Promise.all([
+      client.neutron.networks.list(),
+      client.neutron.routers.list(),
+    ]);
     const { routers = [] } = routerResult;
     const { networks = [] } = networkResult;
     items.forEach((item) => {
@@ -86,7 +99,7 @@ export class PortStore extends Base {
     const params = {
       device_owner: 'network:ha_router_replicated_interface',
     };
-    const result = await request.get(this.getListUrl(), params);
+    const result = await this.client.list(params);
     let data = get(result, this.listResponseKey, []);
     data = data.filter((it) => ports.indexOf(it.id) >= 0);
     const items = data.map(this.mapper);

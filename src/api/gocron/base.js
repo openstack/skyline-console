@@ -16,7 +16,7 @@
  * @param {String} key api url
  * @returns {String}
  */
-import { gocronBase } from 'utils/constants';
+import { gocronBase } from 'client/client/constants';
 
 const getGocronBaseUrl = (key) => `${gocronBase()}/${key}`;
 

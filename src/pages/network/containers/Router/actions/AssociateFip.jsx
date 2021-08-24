@@ -68,7 +68,7 @@ export default class AssociateFip extends ModalAction {
     } = this.item;
     this.floatingIpStore.fetchList({
       floating_network_id: network_id,
-      project_id: globals.user.project.id,
+      project_id: this.currentProjectId,
       status: 'DOWN',
     });
   }

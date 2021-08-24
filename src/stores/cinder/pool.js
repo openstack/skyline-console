@@ -12,25 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { cinderBase } from 'utils/constants';
 import { isNumber } from 'lodash';
+import client from 'client';
 import Base from '../base';
 
 export class PoolStore extends Base {
-  get module() {
-    return 'scheduler-stats/get_pools';
-  }
-
-  get apiVersion() {
-    return cinderBase();
-  }
-
-  get responseKey() {
-    return 'pool';
+  get client() {
+    return client.cinder.pools;
   }
 
   get listFilterByProject() {
     return false;
+  }
+
+  get paramsFunc() {
+    return (params) => ({
+      ...params,
+      detail: true,
+    });
   }
 
   get mapper() {
@@ -46,9 +45,6 @@ export class PoolStore extends Base {
       return newItem;
     };
   }
-
-  getListUrl = () =>
-    `${this.apiVersion}/${globals.user.project.id}/${this.module}?detail=true`;
 }
 
 const globalPoolStore = new PoolStore();

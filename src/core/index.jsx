@@ -21,34 +21,13 @@ import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
 import enUS from 'antd/es/locale/en_US';
 import globalRootStore from 'stores/root';
-import request from 'utils/request';
 import PageLoading from 'components/PageLoading';
 import i18n from './i18n';
 import App from './App';
 
 window.t = i18n.t;
-window.request = request;
-window.globals = {
-  user: null,
-};
 
 const store = globalRootStore;
-
-// request error handler
-window.onunhandledrejection = function (e) {
-  if (e && (e.status === 'Failure' || e.status >= 400)) {
-    if (e.status === 401) {
-      // session timeout handler, except app store page.
-      /* eslint-disable no-alert */
-      const currentPath = window.location.pathname;
-      if (currentPath.indexOf('login') < 0) {
-        store.gotoLoginPage(currentPath);
-        // window.location.href = `/user/login?referer=${currentPath}`;
-      }
-    }
-  }
-};
-
 const browserHistory = createBrowserHistory();
 const history = syncHistoryWithStore(browserHistory, store.routing);
 const lang = i18n.getLocale();

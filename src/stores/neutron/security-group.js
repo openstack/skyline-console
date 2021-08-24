@@ -12,23 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { neutronBase } from 'utils/constants';
 import { action } from 'mobx';
 import { mapperRule } from 'resources/security-group-rule';
+import client from 'client';
 import Base from '../base';
 import globalProjectMapStore from '../project';
 
 export class SecurityGroupStore extends Base {
-  get module() {
-    return 'security-groups';
-  }
-
-  get apiVersion() {
-    return neutronBase();
-  }
-
-  get responseKey() {
-    return 'security_group';
+  get client() {
+    return client.neutron.securityGroups;
   }
 
   get listFilterByProject() {
@@ -56,9 +48,7 @@ export class SecurityGroupStore extends Base {
 
   @action
   async updatePortSecurityGroup({ id, reqBody }) {
-    return this.submitting(
-      request.put(`${this.apiVersion}/ports/${id}`, reqBody)
-    );
+    return this.submitting(client.neutron.ports.update(id, reqBody));
   }
 }
 
