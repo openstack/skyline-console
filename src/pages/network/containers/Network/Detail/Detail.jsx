@@ -18,8 +18,6 @@ import Base from 'containers/BaseDetail';
 @inject('rootStore')
 @observer
 export default class BaseDetail extends Base {
-  fetchData = () => {};
-
   get leftCards() {
     const cards = [this.baseInfoCard];
     return cards;

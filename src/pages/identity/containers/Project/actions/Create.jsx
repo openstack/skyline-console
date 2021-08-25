@@ -68,10 +68,6 @@ class CreateForm extends ModalAction {
     return data;
   }
 
-  get listUrl() {
-    return this.getUrl('/identity/project');
-  }
-
   get domainList() {
     const {
       rootStore: { baseDomains },

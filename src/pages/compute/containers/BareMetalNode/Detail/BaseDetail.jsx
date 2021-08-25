@@ -14,17 +14,12 @@
 
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { IronicStore } from 'stores/ironic/ironic';
 import Base from 'containers/BaseDetail';
 import SimpleTable from 'components/Tables/SimpleTable';
 
 @inject('rootStore')
 @observer
 export default class BaseDetail extends Base {
-  init() {
-    this.store = new IronicStore();
-  }
-
   get leftCards() {
     const cards = [
       this.baseInfoCard,

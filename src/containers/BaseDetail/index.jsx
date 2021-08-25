@@ -16,7 +16,7 @@ import React from 'react';
 import classnames from 'classnames';
 import Card from 'components/DetailCard';
 import { toJS } from 'mobx';
-import { has, isEmpty } from 'lodash';
+import { has } from 'lodash';
 import { isAdminPage } from 'utils/index';
 import styles from './index.less';
 
@@ -78,24 +78,23 @@ export default class BaseDetail extends React.Component {
     return isAdminPage(pathname);
   }
 
+  get shouldFetchDetail() {
+    return false;
+  }
+
   getUrl(path, adminStr) {
     return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
   }
 
-  getDetailData = () => {
-    const { detail } = this.props;
-    if (!detail || isEmpty(detail)) {
-      this.fetchData();
-    }
-  };
-
   fetchData = (params) => {
-    this.store
-      .fetchDetail({
-        id: this.id,
-        ...params,
-      })
-      .catch(this.catch);
+    if (this.shouldFetchDetail && this.store.fetchDetail) {
+      this.store
+        .fetchDetail({
+          id: this.id,
+          ...params,
+        })
+        .catch(this.catch);
+    }
   };
 
   init() {

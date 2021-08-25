@@ -33,6 +33,10 @@ export default class Edit extends ModalAction {
     return t('Edit metadata');
   }
 
+  get instanceName() {
+    return this.item.display_name;
+  }
+
   static policy = 'modify_metadef_namespace';
 
   static allowed = () => Promise.resolve(true);

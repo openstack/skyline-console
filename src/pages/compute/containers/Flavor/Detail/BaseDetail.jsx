@@ -14,7 +14,6 @@
 
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { FlavorStore } from 'stores/nova/flavor';
 import Base from 'containers/BaseDetail';
 import {
   categoryHasIOPS,
@@ -30,10 +29,6 @@ import {
 @inject('rootStore')
 @observer
 export default class BaseDetail extends Base {
-  init() {
-    this.store = new FlavorStore();
-  }
-
   get leftCards() {
     const { category, disk, usbType } = this.detailData;
     const isGPUType = isGpuCategory(category);

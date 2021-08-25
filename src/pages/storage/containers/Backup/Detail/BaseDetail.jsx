@@ -20,8 +20,6 @@ import { Link } from 'react-router-dom';
 @inject('rootStore')
 @observer
 export default class BaseDetail extends Base {
-  fetchData = () => Promise.resolve(true);
-
   get leftCards() {
     const cards = [this.volumeCard];
     return cards;

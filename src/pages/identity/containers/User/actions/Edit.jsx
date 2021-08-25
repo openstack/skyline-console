@@ -56,10 +56,6 @@ class EditForm extends ModalAction {
     return Promise.resolve(true);
   }
 
-  get listUrl() {
-    return this.getUrl('/identity/user');
-  }
-
   get domainList() {
     return (this.userGroupStore.list.data || []).map((it) => ({
       label: it.name,

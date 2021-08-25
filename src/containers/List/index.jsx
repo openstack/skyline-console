@@ -85,6 +85,20 @@ export default class BaseList extends React.Component {
     });
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.isInDetailPage) {
+      const { detail: oldDetail } = prevProps;
+      const { detail: newDetail } = this.props;
+      if (
+        !isEmpty(oldDetail) &&
+        !isEmpty(newDetail) &&
+        !isEqual(oldDetail, newDetail)
+      ) {
+        this.handleRefresh(true);
+      }
+    }
+  }
+
   componentWillUnmount() {
     this.unsubscribe && this.unsubscribe();
     this.disposer && this.disposer();

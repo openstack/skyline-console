@@ -21,8 +21,6 @@ import { bindingTypes } from 'resources/port';
 @inject('rootStore')
 @observer
 export default class BaseDetail extends Base {
-  componentDidMount() {}
-
   get leftCards() {
     return [this.baseInfoCard];
   }

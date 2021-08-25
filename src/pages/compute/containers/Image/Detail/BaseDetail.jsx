@@ -15,7 +15,6 @@
 import React from 'react';
 import { toJS } from 'mobx';
 import { inject, observer } from 'mobx-react';
-import { ImageStore } from 'stores/glance/image';
 import { imageProperties, imageVisibility, imageOS } from 'resources/image';
 import Base from 'containers/BaseDetail';
 import { isObject, isArray } from 'lodash';
@@ -24,10 +23,6 @@ import { Link } from 'react-router-dom';
 @inject('rootStore')
 @observer
 export default class BaseDetail extends Base {
-  init() {
-    this.store = new ImageStore();
-  }
-
   get isImageDetail() {
     const { pathname } = this.props.location;
     return pathname.indexOf('image') >= 0;

@@ -52,10 +52,6 @@ class EditForm extends ModalAction {
     return {};
   }
 
-  get listUrl() {
-    return this.getUrl('/identity/project');
-  }
-
   checkName = (rule, value) => {
     if (!value) {
       return Promise.reject(t('Please input'));

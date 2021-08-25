@@ -13,16 +13,11 @@
 // limitations under the License.
 
 import { inject, observer } from 'mobx-react';
-import { KeypairStore } from 'stores/nova/keypair';
 import Base from 'containers/BaseDetail';
 
 @inject('rootStore')
 @observer
 export default class BaseDetail extends Base {
-  init() {
-    this.store = new KeypairStore();
-  }
-
   get leftCards() {
     return [this.keypairInfoCard];
   }
