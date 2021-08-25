@@ -47,6 +47,10 @@ export default class InstanceDetail extends Base {
     this.store = new ProjectStore();
   }
 
+  get forceLoadingTabs() {
+    return ['quota'];
+  }
+
   get detailInfos() {
     return [
       {

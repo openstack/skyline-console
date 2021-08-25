@@ -20,8 +20,6 @@ import { rollbackTip } from 'resources/stack';
 @inject('rootStore')
 @observer
 export default class BaseDetail extends Base {
-  fetchData = () => Promise.resolve(true);
-
   get leftCards() {
     return [this.startCard, this.outputCard];
   }

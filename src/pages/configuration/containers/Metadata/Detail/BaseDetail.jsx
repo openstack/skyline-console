@@ -14,17 +14,12 @@
 
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { MetadataStore } from 'stores/glance/metadata';
 import Base from 'containers/BaseDetail';
 import styles from './styles.less';
 
 @inject('rootStore')
 @observer
 export default class BaseDetail extends Base {
-  init() {
-    this.store = new MetadataStore();
-  }
-
   get leftCards() {
     return [this.baseInfoCard, this.resourceCard];
   }

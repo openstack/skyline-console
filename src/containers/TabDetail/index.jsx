@@ -170,6 +170,11 @@ export default class DetailBase extends React.Component {
     return [];
   }
 
+  // After the operation, the refreshed Tab needs to be forced to load
+  get forceLoadingTabs() {
+    return [];
+  }
+
   handleDetailInfo = () => {
     const { collapsed } = this.state;
     this.setState(
@@ -238,8 +243,8 @@ export default class DetailBase extends React.Component {
     this.fetchDataWithPolicy(true);
   };
 
-  refreshDetailByAction = () => {
-    this.fetchDataWithPolicy(true);
+  refreshDetailByAction = (silence) => {
+    this.fetchDataWithPolicy(silence);
   };
 
   catch = (e) => {
@@ -276,7 +281,8 @@ export default class DetailBase extends React.Component {
     if (success && isDelete) {
       this.goBack();
     } else {
-      this.refreshDetailByAction();
+      const silence = !this.forceLoadingTabs.includes(this.tab.key);
+      this.refreshDetailByAction(silence);
     }
   };
 

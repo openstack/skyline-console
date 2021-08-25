@@ -92,10 +92,6 @@ class CreateForm extends ModalAction {
     return data;
   }
 
-  get listUrl() {
-    return '/identity/user-group-admin';
-  }
-
   get domainList() {
     const { domains } = this.domainStore;
     return (domains || []).map((it) => ({

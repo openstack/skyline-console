@@ -20,8 +20,6 @@ import Base from 'containers/BaseDetail';
 @inject('rootStore')
 @observer
 export default class BaseDetail extends Base {
-  fetchData = () => Promise.resolve(true);
-
   get leftCards() {
     const cards = [this.attachmentsCard];
     if (this.detailData.volume_image_metadata) {

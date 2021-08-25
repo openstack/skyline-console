@@ -15,15 +15,10 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
-import { NeutronAgentStore } from 'stores/neutron/agent';
 
 @inject('rootStore')
 @observer
 export default class BaseDetail extends Base {
-  init() {
-    this.store = new NeutronAgentStore();
-  }
-
   get leftCards() {
     return [this.baseCard];
   }

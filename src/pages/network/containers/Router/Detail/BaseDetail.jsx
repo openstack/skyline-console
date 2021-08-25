@@ -14,16 +14,11 @@
 
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { RouterStore } from 'stores/neutron/router';
 import Base from 'containers/BaseDetail';
 
 @inject('rootStore')
 @observer
 export default class BaseDetail extends Base {
-  init() {
-    this.store = new RouterStore();
-  }
-
   get leftCards() {
     const cards = [this.aZoneCard];
     return cards;

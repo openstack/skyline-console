@@ -28,6 +28,10 @@ export default class BaseDetail extends Base {
     }
   }
 
+  get shouldFetchDetail() {
+    return true;
+  }
+
   init() {
     this.store = globalListenerStore;
     this.healthmonitorStore = new HealthMonitorStore();

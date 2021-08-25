@@ -14,7 +14,6 @@
 
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { PortStore } from 'stores/neutron/port';
 import Base from 'containers/BaseDetail';
 import { bindingTypes } from 'resources/port';
 import { isEmpty } from 'lodash';
@@ -22,10 +21,6 @@ import { isEmpty } from 'lodash';
 @inject('rootStore')
 @observer
 export default class BaseDetail extends Base {
-  init() {
-    this.store = new PortStore();
-  }
-
   get leftCards() {
     const cards = [this.portInfo];
     const {

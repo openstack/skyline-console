@@ -13,17 +13,12 @@
 // limitations under the License.
 
 import { inject, observer } from 'mobx-react';
-import { VolumeTypeStore } from 'stores/cinder/volume-type';
 import Base from 'containers/BaseDetail';
 import { controls } from 'resources/volume-type';
 
 @inject('rootStore')
 @observer
 export default class BaseDetail extends Base {
-  init() {
-    this.store = new VolumeTypeStore();
-  }
-
   get leftCards() {
     return [this.encryptionInfo];
   }
