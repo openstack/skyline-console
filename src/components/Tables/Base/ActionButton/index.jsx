@@ -244,7 +244,7 @@ class ActionButton extends Component {
       return;
     }
     const { submitErrorMsg } = this.props.action;
-    const { data: responseData } = error.response || error || {};
+    const { data: responseData } = (error || {}).response || error || {};
     const realError = responseData || error;
     const message = submitErrorMsg
       ? submitErrorMsg(data, realError)
