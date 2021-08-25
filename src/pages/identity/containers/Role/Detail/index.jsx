@@ -12,16 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { Button, Divider } from 'antd';
-import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import { RoleStore } from 'stores/keystone/role';
 import Base from 'containers/TabDetail';
 import User from '../../User';
 import Group from '../../UserGroup';
 import impliedRole from './BaseDetail';
-import styles from './index.less';
 
 @inject('rootStore')
 @observer
@@ -74,29 +70,5 @@ export default class RoleDetail extends Base {
       },
     ];
     return tabs;
-  }
-
-  get detailTitle() {
-    const {
-      detail: { id },
-    } = this.store;
-    const { collapsed } = this.state;
-    const icon = collapsed ? <DownOutlined /> : <UpOutlined />;
-    return (
-      <div>
-        <span className={styles['title-label']}>{t('Role Id')}:</span>
-        <span className={styles['header-title']}>{id}</span>
-        <Divider type="vertical" className={styles['header-divider']} />
-        <Button onClick={this.goBack} type="link">
-          {t('Back')}
-        </Button>
-        <Button
-          onClick={this.handleDetailInfo}
-          icon={icon}
-          type="link"
-          className={styles['header-button']}
-        />
-      </div>
-    );
   }
 }

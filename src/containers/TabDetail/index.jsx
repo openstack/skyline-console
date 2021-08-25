@@ -18,10 +18,9 @@ import classnames from 'classnames';
 import { isEmpty, get } from 'lodash';
 import { renderFilterMap, isAdminPage } from 'utils/index';
 import { Button, Divider, Tabs, Typography } from 'antd';
-import { UpOutlined, DownOutlined } from '@ant-design/icons';
+import { UpOutlined, DownOutlined, SyncOutlined } from '@ant-design/icons';
 import NotFound from 'components/Cards/NotFound';
 import Infos from 'components/Infos';
-
 import Notify from 'components/Notify';
 import { toJS } from 'mobx';
 import checkItemPolicy from 'resources/policy';
@@ -123,23 +122,35 @@ export default class DetailBase extends React.Component {
     return tabs;
   }
 
+  get titleLabel() {
+    return 'ID:';
+  }
+
+  get titleValue() {
+    return this.params.id;
+  }
+
   get detailTitle() {
-    const { id } = this.params;
     const { collapsed } = this.state;
     const { Paragraph } = Typography;
     const icon = collapsed ? <DownOutlined /> : <UpOutlined />;
     return (
       <div>
-        <span className={styles['title-label']}>ID:</span>
+        <span className={styles['title-label']}>{this.titleLabel}</span>
         <span className={styles['header-title']}>
           <Paragraph style={{ display: 'inherit' }} copyable>
-            {id}
+            {this.titleValue}
           </Paragraph>
         </span>
         <Divider type="vertical" className={styles['header-divider']} />
         <Button onClick={this.goBack} type="link">
           {t('Back')}
         </Button>
+        <Button
+          type="link"
+          icon={<SyncOutlined />}
+          onClick={this.handleRefresh}
+        />
         <Button
           onClick={this.handleDetailInfo}
           icon={icon}
@@ -245,6 +256,10 @@ export default class DetailBase extends React.Component {
 
   refreshDetailByAction = (silence) => {
     this.fetchDataWithPolicy(silence);
+  };
+
+  handleRefresh = () => {
+    this.fetchDataWithPolicy(false);
   };
 
   catch = (e) => {
@@ -391,7 +406,7 @@ export default class DetailBase extends React.Component {
 
   renderActions() {
     const data = this.getActionData();
-    if (isEmpty(data)) {
+    if (isEmpty(data) || this.store.isLoading) {
       return null;
     }
     return (

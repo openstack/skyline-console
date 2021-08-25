@@ -14,12 +14,10 @@
 
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { Button, Divider, Badge } from 'antd';
-import { UpOutlined, DownOutlined } from '@ant-design/icons';
+import { Badge } from 'antd';
 import { DomainStore } from 'stores/keystone/domain';
 import Base from 'containers/TabDetail';
 import User from '../../User';
-import styles from './index.less';
 
 @inject('rootStore')
 @observer
@@ -81,30 +79,6 @@ export default class DomainDetail extends Base {
     } = this.props.match;
     this.routing.push(`${this.listUrl}/edit/${id}`);
   };
-
-  get detailTitle() {
-    const {
-      detail: { id },
-    } = this.store;
-    const { collapsed } = this.state;
-    const icon = collapsed ? <DownOutlined /> : <UpOutlined />;
-    return (
-      <div>
-        <span className={styles['title-label']}>{t('Domain ID')}:</span>
-        <span className={styles['header-title']}>{id}</span>
-        <Divider type="vertical" className={styles['header-divider']} />
-        <Button onClick={this.goBack} type="link">
-          {t('Back')}
-        </Button>
-        <Button
-          onClick={this.handleDetailInfo}
-          icon={icon}
-          type="link"
-          className={styles['header-button']}
-        />
-      </div>
-    );
-  }
 
   init() {
     this.store = new DomainStore();
