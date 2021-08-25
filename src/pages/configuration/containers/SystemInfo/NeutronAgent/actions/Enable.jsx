@@ -36,7 +36,7 @@ export default class Enable extends ConfirmAction {
     return t('enable neutron agent');
   }
 
-  getName = (data) => data.binary;
+  getItemName = (data) => data.binary;
 
   policy = 'update_agent';
 

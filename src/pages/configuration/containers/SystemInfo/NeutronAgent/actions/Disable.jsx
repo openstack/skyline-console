@@ -36,7 +36,7 @@ export default class Disable extends ConfirmAction {
     return t('disable neutron agent');
   }
 
-  getName = (data) => data.binary;
+  getItemName = (data) => data.binary;
 
   policy = 'update_agent';
 

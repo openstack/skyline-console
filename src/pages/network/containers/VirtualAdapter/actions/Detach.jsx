@@ -39,8 +39,6 @@ export default class Detach extends ConfirmAction {
 
   policy = 'os_compute_api:os-attach-interfaces:delete';
 
-  getNameOne = (data) => data.name || data.id;
-
   hasMoreInterfaces(instance) {
     let count = 0;
     const { addresses } = instance;

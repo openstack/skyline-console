@@ -89,12 +89,14 @@ export default class ConfirmAction {
 
   unescape = (message) => unescapeHtml(message);
 
-  getNameOne = (data) => data.name;
+  getItemId = (data) => data.id;
+
+  getItemName = (data) => data.name || `- (${this.getItemId(data)})`;
 
   getName = (data) =>
     isArray(data)
-      ? data.map((it) => this.getNameOne(it)).join(', ')
-      : this.getNameOne(data);
+      ? data.map((it) => this.getItemName(it)).join(', ')
+      : this.getItemName(data);
 
   // eslint-disable-next-line no-unused-vars
   allowedCheckFunc = (data) => true;
@@ -154,7 +156,14 @@ export default class ConfirmAction {
     );
   };
 
-  performErrorMsg = (data) => {
+  performErrorMsg = (data, isBatch) => {
+    if (isBatch) {
+      if (!this.messageHasItemName) {
+        return '';
+      }
+      const name = this.getName(data);
+      return t('instance: {name}.', { name });
+    }
     if (!this.messageHasItemName) {
       return t('You are not allowed to {action}.', {
         action: this.actionNameDisplay || this.title,
@@ -184,8 +193,14 @@ export default class ConfirmAction {
   onSubmit = (data) => Promise.resolve();
 
   getBatchPerformTitle() {
+    if (this.messageHasItemName) {
+      return t(
+        'There are resources that cannot {action} in the selected resources, such as:',
+        { action: this.passiveAction.toLowerCase() }
+      );
+    }
     return t(
-      'There are resources that cannot {action} in the selected resources, such as:',
+      'There are resources that cannot {action} in the selected resources.',
       { action: this.passiveAction.toLowerCase() }
     );
   }
@@ -208,7 +223,7 @@ export default class ConfirmAction {
           failedItems.push(items[index]);
         }
       });
-      const errorMsg = this.unescape(this.performErrorMsg(failedItems));
+      const errorMsg = this.unescape(this.performErrorMsg(failedItems, true));
       const title = this.getBatchPerformTitle();
       const msg = (
         <div>

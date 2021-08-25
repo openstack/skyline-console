@@ -31,7 +31,7 @@ export default class Inspect extends ConfirmAction {
 
   policy = 'baremetal:node:set_provision_state';
 
-  getNameOne = (data) => data.name || data.uuid;
+  getItemId = (data) => data.uuid;
 
   allowedCheckFunc = (item) => item.provision_state === 'manageable';
 

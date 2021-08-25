@@ -37,7 +37,7 @@ export default class DeleteAction extends ConfirmAction {
     return t('delete allowed address pair');
   }
 
-  getNameOne = (data) => data.ip_address;
+  getItemName = (data) => data.ip_address;
 
   policy = 'update_port';
 

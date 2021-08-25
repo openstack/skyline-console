@@ -40,7 +40,7 @@ export default class DeleteAction extends ConfirmAction {
     return t('be released');
   }
 
-  getNameOne = (data) => data.ip_address;
+  getItemName = (data) => data.ip_address;
 
   policy = 'update_port';
 

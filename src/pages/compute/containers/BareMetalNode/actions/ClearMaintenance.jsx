@@ -30,7 +30,7 @@ export default class ClearMaintenance extends ConfirmAction {
 
   policy = 'baremetal:node:clear_maintenance';
 
-  getNameOne = (data) => data.name || data.uuid;
+  getItemId = (data) => data.uuid;
 
   allowedCheckFunc = (item) => item.maintenance;
 

@@ -36,7 +36,7 @@ export default class Enable extends ConfirmAction {
     return t('enable cinder service');
   }
 
-  getName = (data) => data.binary;
+  getItemName = (data) => data.binary;
 
   policy = 'volume_extension:services:update';
 

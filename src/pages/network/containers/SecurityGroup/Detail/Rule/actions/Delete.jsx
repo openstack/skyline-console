@@ -38,7 +38,7 @@ export default class DeleteAction extends ConfirmAction {
 
   policy = 'delete_security_group_rule';
 
-  getNameOne = (item) => {
+  getItemName = (item) => {
     if (item.name) {
       return item.name;
     }

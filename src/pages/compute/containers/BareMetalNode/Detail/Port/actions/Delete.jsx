@@ -42,7 +42,7 @@ export default class Delete extends ConfirmAction {
 
   policy = 'baremetal:port:delete';
 
-  getNameOne = (data) => data.name || data.uuid;
+  getItemId = (data) => data.uuid;
 
   allowedCheckFunc = () => true;
 

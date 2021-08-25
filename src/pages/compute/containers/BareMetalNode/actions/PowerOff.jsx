@@ -34,7 +34,7 @@ export default class PowerOn extends ConfirmAction {
 
   policy = 'baremetal:node:set_power_state';
 
-  getNameOne = (data) => data.name || data.uuid;
+  getItemId = (data) => data.uuid;
 
   allowedCheckFunc = (item) => item.power_state === 'power off';
 

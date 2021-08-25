@@ -36,8 +36,6 @@ export default class DeleteAction extends ConfirmAction {
     return t('delete virtual adapter');
   }
 
-  getNameOne = (data) => data.name || data.id;
-
   policy = 'delete_port';
 
   allowedCheckFunc = (item) => {

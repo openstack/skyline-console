@@ -148,18 +148,30 @@ export default class BaseStepForm extends React.Component {
   }
 
   get successText() {
+    if (this.instanceName) {
+      return firstUpperCase(
+        t('{action} successfully, instance: {name}.', {
+          action: this.name.toLowerCase(),
+          name: this.instanceName,
+        })
+      );
+    }
     return firstUpperCase(
-      t('{action} successfully, instance: {name}.', {
+      t('{action} successfully.', {
         action: this.name.toLowerCase(),
-        name: this.instanceName,
       })
     );
   }
 
   get errorText() {
-    return t('Unable to {action}, instance: {name}.', {
+    if (this.instanceName) {
+      return t('Unable to {action}, instance: {name}.', {
+        action: this.name.toLowerCase(),
+        name: this.instanceName,
+      });
+    }
+    return t('Unable to {action}.', {
       action: this.name.toLowerCase(),
-      name: this.instanceName,
     });
   }
 

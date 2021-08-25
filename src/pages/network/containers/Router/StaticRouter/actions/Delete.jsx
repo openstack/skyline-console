@@ -38,7 +38,7 @@ export default class DeleteAction extends ConfirmAction {
 
   policy = 'update_router';
 
-  getNameOne = (data) => {
+  getItemName = (data) => {
     const { destination, nexthop } = data;
     return `${destination}(${nexthop})`;
   };

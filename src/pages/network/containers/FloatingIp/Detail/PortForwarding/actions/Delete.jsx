@@ -38,7 +38,7 @@ export default class DeleteAction extends ConfirmAction {
 
   policy = 'delete_floatingip_port_forwarding';
 
-  getNameOne = (data) => {
+  getItemName = (data) => {
     const {
       floating_ip_address,
       external_port,

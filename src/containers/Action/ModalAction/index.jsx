@@ -70,7 +70,7 @@ export default class ModalAction extends BaseForm {
   }
 
   get instanceName() {
-    return this.item.name || this.values.name;
+    return (this.item || {}).name || (this.values || {}).name;
   }
 
   get isAsyncAction() {

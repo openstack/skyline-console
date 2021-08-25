@@ -42,8 +42,6 @@ export default class DeleteAction extends ConfirmAction {
 
   policy = 'volume:delete';
 
-  getNameOne = (data) => data.name || data.id;
-
   canDelete = (item) =>
     ['available', 'error', 'error_extending'].indexOf(item.status) >= 0;
 

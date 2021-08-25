@@ -32,7 +32,7 @@ export default class Reset extends ConfirmAction {
     return t('Reset To Initial Value');
   }
 
-  getNameOne = (data) => data.key;
+  getItemName = (data) => data.key;
 
   policy = 'skyline:system_admin';
 

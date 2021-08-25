@@ -38,7 +38,7 @@ export default class Release extends ConfirmAction {
   allowedCheckFunc = (item) =>
     !_.isNull(item.fixed_ip_address) && item.status !== 'DOWN';
 
-  getNameOne = (data) => data.floating_ip_address;
+  getItemName = (data) => data.floating_ip_address;
 
   onSubmit = (value) => globalFloatingIpsStore.disassociateFip(value);
 }

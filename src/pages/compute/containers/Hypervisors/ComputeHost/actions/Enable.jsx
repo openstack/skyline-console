@@ -28,7 +28,7 @@ export default class EnableAction extends ConfirmAction {
     return t('Enable');
   }
 
-  getNameOne = (data) => data.host;
+  getItemName = (data) => data.host;
 
   get actionName() {
     return t('Enable compute host');

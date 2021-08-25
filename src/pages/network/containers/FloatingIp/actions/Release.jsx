@@ -41,7 +41,7 @@ export default class Release extends ConfirmAction {
 
   policy = 'delete_floatingip';
 
-  getNameOne = (data) => data.floating_ip_address;
+  getItemName = (data) => data.floating_ip_address;
 
   onChangeType(choosed, data) {
     if (isArray(data)) {
