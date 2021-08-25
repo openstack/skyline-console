@@ -1,3 +1,38 @@
+- job:
+    name: skyline-nodejs14-run-lint-src
+    parent: nodejs-run-lint
+    description: |
+      Run lint using Node 14 for skyline-console src directory.
+    vars:
+      node_version: 14
+      js_build_command: lint
+
+- job:
+    name: skyline-nodejs14-run-lint-test
+    parent: nodejs-run-lint
+    description: |
+      Run lint using Node 14 for skyline-console test directory.
+    vars:
+      node_version: 14
+      js_build_command: lint:test
+
+- job:
+    name: skyline-nodejs14-run-unit-test
+    parent: nodejs-run-test
+    description: |
+      Run unit test using Node 14 for skyline-console.
+    vars:
+      node_version: 14
+      js_build_command: test:unit
+
 - project:
-    templates:
-      - noop-jobs
+    check:
+      jobs:
+        - skyline-nodejs14-run-lint-src
+        - skyline-nodejs14-run-lint-test
+        - skyline-nodejs14-run-unit-test
+    gate:
+      jobs:
+        - skyline-nodejs14-run-lint-src
+        - skyline-nodejs14-run-lint-test
+        - skyline-nodejs14-run-unit-test

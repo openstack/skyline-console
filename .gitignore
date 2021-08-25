@@ -4,6 +4,7 @@
 yarn-error.log
 package-lock.json
 .vscode
+.idea
 test/e2e/videos
 test/e2e/screenshots
 test/e2e/downloads
