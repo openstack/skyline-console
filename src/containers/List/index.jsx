@@ -515,7 +515,7 @@ export default class BaseList extends React.Component {
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log('fetch list error', e);
-      const { message = '', data, status } = e.response || e || {};
+      const { message = '', data, status } = (e || {}).response || e || {};
       if (status === 500) {
         const sysErr = t('System is error, please try again later.');
         const title = `${t('Get {name} error.', {

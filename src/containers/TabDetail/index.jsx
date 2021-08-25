@@ -245,7 +245,7 @@ export default class DetailBase extends React.Component {
   catch = (e) => {
     // eslint-disable-next-line no-console
     console.log(e);
-    const { data, status } = e.response || e || {};
+    const { data, status } = (e || {}).response || e || {};
     if (status === 404) {
       this.setState({ notFound: true });
       Notify.warn(

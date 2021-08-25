@@ -14,7 +14,7 @@
 
 import Axios from 'axios';
 import { getLocalStorageItem } from 'utils/local-storage';
-import { getOpenstackApiVersion } from 'utils/constants';
+import { getOpenstackApiVersion } from 'client/client/constants';
 import Notify from 'components/Notify';
 import { isEqual } from 'lodash';
 import baseURL from './base-url';
