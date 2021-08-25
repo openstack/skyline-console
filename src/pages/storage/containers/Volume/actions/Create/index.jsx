@@ -14,8 +14,9 @@
 
 import React from 'react';
 import { inject, observer } from 'mobx-react';
+import Confirm from 'components/Confirm';
 import { getSinceTime } from 'utils/time';
-import { volumeStatus, multiTip } from 'resources/volume';
+import { volumeStatus, multiTip, snapshotTypeTip } from 'resources/volume';
 import globalSnapshotStore from 'stores/cinder/snapshot';
 import globalImageStore from 'stores/glance/image';
 import globalVolumeStore from 'stores/cinder/volume';
@@ -53,6 +54,7 @@ export default class Create extends FormAction {
       ...this.state,
       count: 1,
       sharedDisabled: false,
+      confirmCount: 0,
     };
   }
 
@@ -142,7 +144,7 @@ export default class Create extends FormAction {
   }
 
   get volumeTypes() {
-    return this.volumeTypeStore.list.data || [];
+    return toJS(this.volumeTypeStore.list.data || []);
   }
 
   get backups() {
@@ -225,22 +227,54 @@ export default class Create extends FormAction {
   }
 
   getVolumeTypeExtra() {
+    if (this.sourceTypeIsSnapshot) {
+      return snapshotTypeTip;
+    }
     const { multiattach = false } = this.state;
     return multiattach ? multiTip : undefined;
   }
 
+  onConfirmCancel = () => {
+    const { initVolumeType } = this.state;
+    const { selectedRows, selectedRowKeys, snapshotId } = initVolumeType;
+    const newValue = {
+      selectedRows,
+      selectedRowKeys,
+      snapshotId: `${snapshotId}-1`,
+    };
+    this.setState({
+      initVolumeType: newValue,
+    });
+  };
+
   onVolumeTypeChange = (value) => {
     const { selectedRows = [] } = value;
-    if (selectedRows.length > 0) {
-      const { extra_specs: { multiattach = 'False' } = {} } = selectedRows[0];
-      this.setState({
-        multiattach: multiattach === '<is> True',
-      });
-    } else {
+    if (selectedRows.length === 0) {
       this.setState({
         multiattach: false,
       });
+      return;
     }
+    const { id, extra_specs: { multiattach = 'False' } = {} } = selectedRows[0];
+    if (this.sourceTypeIsSnapshot) {
+      const {
+        initVolumeType: { selectedRowKeys = [] },
+        confirmCount = 0,
+      } = this.state;
+      if (id !== selectedRowKeys[0] && confirmCount < 1) {
+        Confirm.warn({
+          title: t('Note: Are you sure you need to modify the volume type?'),
+          content: snapshotTypeTip,
+          onCancel: this.onConfirmCancel,
+        });
+        this.setState({
+          confirmCount: 1,
+        });
+      }
+    }
+    this.setState({
+      multiattach: multiattach === '<is> True',
+    });
   };
 
   get sourceTypeIsImage() {
@@ -266,16 +300,34 @@ export default class Create extends FormAction {
     return Math.max(imageSize, 1);
   }
 
+  onSnapshotChange = (value) => {
+    const { selectedRows = [] } = value || {};
+    if (selectedRows.length) {
+      const { origin_data: { volume_type_id } = {}, id } =
+        selectedRows[0] || {};
+      const volumeType = this.volumeTypes.find(
+        (it) => it.id === volume_type_id
+      );
+      if (volumeType) {
+        const newValue = {
+          selectedRowKeys: [volume_type_id],
+          selectedRows: [volumeType],
+          snapshotId: id,
+        };
+        this.setState({
+          initVolumeType: newValue,
+        });
+      }
+    }
+  };
+
   get nameForStateUpdate() {
     return ['source', 'image', 'snapshot'];
   }
 
   get formItems() {
-    const { source, initVolumeType } = this.state;
-    const sourceTypesIsImage = source === this.sourceTypes[1].value;
-    const sourceTypeIsSnapshot = source === this.sourceTypes[2].value;
+    const { initVolumeType } = this.state;
     const minSize = this.getDiskMinSize();
-    // const sourceTypeIsBackup = source === this.sourceTypes[3].value;
     return [
       {
         name: 'project',
@@ -308,9 +360,9 @@ export default class Create extends FormAction {
         label: t('Operating System'),
         type: 'select-table',
         datas: this.images,
-        required: sourceTypesIsImage,
+        required: this.sourceTypeIsImage,
         isMulti: false,
-        hidden: !sourceTypesIsImage,
+        hidden: !this.sourceTypeIsImage,
         filterParams: [
           {
             label: t('Name'),
@@ -328,12 +380,13 @@ export default class Create extends FormAction {
         label: t('Snapshot'),
         type: 'select-table',
         backendPageStore: this.snapshotStore,
-        required: sourceTypeIsSnapshot,
+        required: this.sourceTypeIsSnapshot,
         isMulti: false,
-        hidden: !sourceTypeIsSnapshot,
+        hidden: !this.sourceTypeIsSnapshot,
         isSortByBack: true,
         defaultSortKey: 'created_at',
         defaultSortOrder: 'descend',
+        onChange: this.onSnapshotChange,
         filterParams: [
           {
             label: t('Name'),

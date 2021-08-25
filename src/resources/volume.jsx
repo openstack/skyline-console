@@ -212,3 +212,18 @@ export const volumeSelectTablePropsBackend = {
   filterParams: volumeFilters,
   columns: volumeColumns,
 };
+
+export const snapshotTypeTip = (
+  <>
+    <p style={{ marginTop: 10 }}>
+      {t(
+        'The volume type needs to be consistent with the volume type when the snapshot is created.'
+      )}
+    </p>
+    <p>
+      {t(
+        'If the volume associated with the snapshot has changed the volume type, please modify this option manually; if the volume associated with the snapshot keeps the volume type unchanged, please ignore this option. (no need to change).'
+      )}
+    </p>
+  </>
+);

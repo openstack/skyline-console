@@ -125,7 +125,18 @@ export default class SelectTable extends React.Component {
     this.sortOrder = props.defaultSortOrder;
   }
 
-  componentDidMount() {
+  componentDidUpdate(prevProps, prevState) {
+    if (!isEqual(prevProps.backendPageStore, this.props.backendPageStore)) {
+      this.getData();
+    }
+    const { selectedRowKeys: newKeys } = this.state;
+    const { selectedRowKeys: oldKeys } = prevState;
+    if (!isEqual(newKeys, oldKeys)) {
+      this.onChange({ selectedRowKeys: newKeys });
+    }
+  }
+
+  getData() {
     const { backendPageStore, pageSize } = this.props;
     if (backendPageStore) {
       this.handleFooterPaginationChange(1, pageSize);
@@ -343,15 +354,10 @@ export default class SelectTable extends React.Component {
   handleSelectRow = (selectedRowKeys) => {
     const newKeys = this.getRealSelectedKeys(selectedRowKeys);
     const selectedRows = this.getSelectedRows(newKeys);
-    this.setState(
-      {
-        selectedRowKeys: newKeys,
-        selectedRows,
-      },
-      () => {
-        this.onChange({ selectedRowKeys: newKeys });
-      }
-    );
+    this.setState({
+      selectedRowKeys: newKeys,
+      selectedRows,
+    });
   };
 
   handleFilterInput = (tags) => {
@@ -560,15 +566,10 @@ export default class SelectTable extends React.Component {
     const { selectedRowKeys } = this.state;
     const newKeys = selectedRowKeys.filter((it) => it !== getItemKey(item));
     const selectedRows = this.getSelectedRows(newKeys);
-    this.setState(
-      {
-        selectedRowKeys: newKeys,
-        selectedRows,
-      },
-      () => {
-        this.onChange({ selectedRowKeys: newKeys });
-      }
-    );
+    this.setState({
+      selectedRowKeys: newKeys,
+      selectedRows,
+    });
   };
 
   initTabChange() {
