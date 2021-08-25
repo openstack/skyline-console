@@ -32,6 +32,9 @@ export default class BaseDetail extends Base {
       {
         label: t('Volume ID'),
         dataIndex: 'volume_id',
+        copyable: {
+          text: this.detailData.volume_id,
+        },
         render: (value) => (
           <Link to={`${this.getUrl('/storage/volume')}/detail/${value}`}>
             {value}
