@@ -189,6 +189,8 @@ export default class Login extends Component {
   onFinish = (values) => {
     this.setState({
       loading: true,
+      message: '',
+      error: false,
     });
     const { domain, password, region, username } = values;
     const body = { domain, password, region, username };
@@ -210,9 +212,9 @@ export default class Login extends Component {
           data: { detail },
         } = error.response;
         if (
-          detail.indexOf(
+          detail.includes(
             'The password is expired and needs to be changed for user'
-          ) >= 0
+          )
         ) {
           const userId = this.getUserId(detail);
           const data = {
