@@ -32,7 +32,7 @@ import {
 import PrimaryActionButtons from 'components/Tables/Base/PrimaryActionButtons';
 import { ipValidate } from 'utils/validate';
 import { toJS } from 'mobx';
-import { getAnchorData } from 'resources/network';
+import { getAnchorData, isExternalNetwork } from 'resources/network';
 import styles from './index.less';
 import CreateRouter from '../Router/actions/Create';
 import CreateNetwork from '../Network/actions/CreateNetwork';
@@ -219,7 +219,7 @@ export default class Topology extends React.Component {
     const { extendWidth } = this.state;
     data.subnetNodes = [];
     networks.forEach((network) => {
-      if (!network['router:external']) {
+      if (!isExternalNetwork(network)) {
         const networkSubnet = [];
         // const firstSubnetY = 250 + (netIndex * 150);
         const { firstSubnetY } = this.state;

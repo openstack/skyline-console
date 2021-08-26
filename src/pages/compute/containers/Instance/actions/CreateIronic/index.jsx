@@ -191,11 +191,15 @@ export default class CreateIronic extends StepAction {
   };
 
   renderBadge() {
-    const { status } = this.state;
+    const { status = 'success' } = this.state;
     if (status === 'success') {
       return null;
     }
-    return <Badge status={status} text={this.msg} />;
+    return (
+      <div style={{ marginTop: 8, marginBottom: 8 }}>
+        <Badge status={status} text={this.msg} />
+      </div>
+    );
   }
 
   renderFooterLeft() {
@@ -209,13 +213,17 @@ export default class CreateIronic extends StepAction {
       formatter: (value) => `$ ${value}`.replace(/\D/g, ''),
     };
     return (
-      <div>
-        <span>{t('Count')}</span>
-        <InputNumber
-          {...configs}
-          value={count}
-          className={classnames(styles.input, 'instance-count')}
-        />
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div className={styles['number-input']}>
+            <span>{t('Count')}</span>
+            <InputNumber
+              {...configs}
+              value={count}
+              className={classnames(styles.input, 'instance-count')}
+            />
+          </div>
+        </div>
         {this.renderBadge()}
       </div>
     );

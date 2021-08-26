@@ -335,7 +335,11 @@ export default class BaseStepForm extends React.Component {
     return (
       <div className={styles.footer}>
         <div
-          className={classnames(styles['footer-left'], 'step-form-footer-left')}
+          className={classnames(
+            styles['footer-left'],
+            this.footerStyle,
+            'step-form-footer-left'
+          )}
         >
           {this.renderFooterLeft()}
         </div>

@@ -150,6 +150,9 @@ export default class NetworkStep extends Base {
         this.getSubnets();
       }
     );
+    this.updateContext({
+      networkSelectRows: selectedRows,
+    });
   };
 
   get nameForStateUpdate() {
