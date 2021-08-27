@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { ConfirmAction } from 'containers/Action';
 import { isArray } from 'lodash';
 import { isNotLockedOrAdmin, checkStatus } from 'resources/instance';
@@ -56,21 +57,28 @@ export default class Stop extends ConfirmAction {
   };
 
   performErrorMsg = (failedItems) => {
-    const instance = isArray(failedItems) ? failedItems[0] : failedItems;
-    let errorMsg = t('You are not allowed to stop instance "{ name }".', {
-      name: instance.name,
-    });
-    if (!this.isRunning(instance)) {
-      errorMsg = t(
-        'Instance "{ name }" status is not in active or suspended, can not stop it.',
-        { name: instance.name }
+    const items = isArray(failedItems) ? failedItems : [failedItems];
+    const notRunningItems = items.filter((it) => !this.isRunning(it));
+    const lockedItems = items.filter(
+      (it) => !isNotLockedOrAdmin(it, this.isAdminPage)
+    );
+    const msgs = [];
+    if (notRunningItems.length) {
+      msgs.push(
+        t(
+          'Instance "{ name }" status is not in active or suspended, can not stop it.',
+          { name: this.getName(notRunningItems) }
+        )
       );
-    } else if (!isNotLockedOrAdmin(instance, this.isAdminPage)) {
-      errorMsg = t('Instance "{ name }" is locked, can not stop it.', {
-        name: instance.name,
-      });
     }
-    return errorMsg;
+    if (lockedItems.length) {
+      msgs.push(
+        t('Instance "{ name }" is locked, can not stop it.', {
+          name: this.getName(lockedItems),
+        })
+      );
+    }
+    return msgs.map((it) => <p>{it}</p>);
   };
 
   onSubmit = (item) => {

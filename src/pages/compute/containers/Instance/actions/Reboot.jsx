@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { ConfirmAction } from 'containers/Action';
 import { isArray } from 'lodash';
 import { isNotLockedOrAdmin, checkStatus } from 'resources/instance';
@@ -52,22 +53,28 @@ export default class RebootAction extends ConfirmAction {
   };
 
   performErrorMsg = (failedItems) => {
-    const instance = isArray(failedItems) ? failedItems[0] : failedItems;
-    let errorMsg = t('You are not allowed to { action } "{ name }".', {
-      action: this.actionName,
-      name: instance.name,
-    });
-    if (!this.canReboot(instance)) {
-      errorMsg = t(
-        'Instance "{ name }" status is not in active or shutoff, can not reboot it.',
-        { name: instance.name }
+    const items = isArray(failedItems) ? failedItems : [failedItems];
+    const statusErrorItems = items.filter((it) => !this.canReboot(it));
+    const lockedItems = items.filter(
+      (it) => !isNotLockedOrAdmin(it, this.isAdminPage)
+    );
+    const msgs = [];
+    if (statusErrorItems.length) {
+      msgs.push(
+        t(
+          'Instance "{ name }" status is not in active or shutoff, can not reboot it.',
+          { name: this.getName(statusErrorItems) }
+        )
       );
-    } else if (!isNotLockedOrAdmin(instance, this.isAdminPage)) {
-      errorMsg = t('Instance "{ name }" is locked, can not reboot it.', {
-        name: instance.name,
-      });
     }
-    return errorMsg;
+    if (lockedItems.length) {
+      msgs.push(
+        t('Instance "{ name }" is locked, can not reboot it.', {
+          name: this.getName(lockedItems),
+        })
+      );
+    }
+    return msgs.map((it) => <p>{it}</p>);
   };
 
   onSubmit = (item) => {

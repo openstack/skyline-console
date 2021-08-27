@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { ConfirmAction } from 'containers/Action';
 import { isArray } from 'lodash';
 import { isNotLockedOrAdmin, checkStatus } from 'resources/instance';
@@ -56,22 +57,25 @@ export default class StartAction extends ConfirmAction {
   };
 
   performErrorMsg = (failedItems) => {
-    const instance = isArray(failedItems) ? failedItems[0] : failedItems;
-    let errorMsg = t('You are not allowed to {action} "{ name }".', {
-      action: this.actionName,
-      name: instance.name,
-    });
-    if (!isNotLockedOrAdmin(instance, this.isAdminPage)) {
-      errorMsg = t('Instance "{ name }" is locked, can not start it.', {
-        name: instance.name,
-      });
-    } else if (!this.canStart(instance)) {
-      errorMsg = t(
-        'Instance "{ name }" status is not shutoff, can not start it.',
-        { name: instance.name }
+    const items = isArray(failedItems) ? failedItems : [failedItems];
+    const lockedItems = items.filter((it) => !isNotLockedOrAdmin(it));
+    const statusErrorItems = items.filter((it) => !this.canStart(it));
+    const msgs = [];
+    if (lockedItems.length) {
+      msgs.push(
+        t('Instance "{ name }" is locked, can not start it.', {
+          name: this.getName(lockedItems),
+        })
       );
     }
-    return errorMsg;
+    if (statusErrorItems.length) {
+      msgs.push(
+        t('Instance "{ name }" status is not shutoff, can not start it.', {
+          name: this.getName(statusErrorItems),
+        })
+      );
+    }
+    return msgs.map((it) => <p>{it}</p>);
   };
 
   onSubmit = (item) => {

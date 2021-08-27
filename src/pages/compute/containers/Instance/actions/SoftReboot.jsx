@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { ConfirmAction } from 'containers/Action';
 import { isArray } from 'lodash';
 import {
@@ -56,22 +57,27 @@ export default class SoftRebootAction extends ConfirmAction {
   };
 
   performErrorMsg = (failedItems) => {
-    const instance = isArray(failedItems) ? failedItems[0] : failedItems;
-    let errorMsg = t('You are not allowed to { action } "{ name }".', {
-      action: this.actionName,
-      name: instance.name,
-    });
-    if (!this.isActive(instance)) {
-      errorMsg = t(
-        'Instance "{ name }" status is not active, can not soft reboot it.',
-        { name: instance.name }
+    const items = isArray(failedItems) ? failedItems : [failedItems];
+    const notActiveItems = items.filter((it) => !this.isActive(it));
+    const lockedItems = items.filter(
+      (it) => !isNotLockedOrAdmin(it, this.isAdminPage)
+    );
+    const msgs = [];
+    if (notActiveItems.length) {
+      msgs.push(
+        t('Instance "{ name }" status is not active, can not soft reboot it.', {
+          name: this.getName(notActiveItems),
+        })
       );
-    } else if (!isNotLockedOrAdmin(instance, this.isAdminPage)) {
-      errorMsg = t('Instance "{ name }" is locked, can not soft reboot it.', {
-        name: instance.name,
-      });
     }
-    return errorMsg;
+    if (lockedItems.length) {
+      msgs.push(
+        t('Instance "{ name }" is locked, can not soft reboot it.', {
+          name: this.getName(lockedItems),
+        })
+      );
+    }
+    return msgs.map((it) => <p>{it}</p>);
   };
 
   onSubmit = (item) => {
