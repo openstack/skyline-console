@@ -145,8 +145,11 @@ export const isLocked = (instance) => !!instance.locked;
 export const lockRender = (value) => (value ? lockIcon : unlockIcon);
 
 export const checkStatus = (statusList = [], instance) => {
-  const { status } = instance;
-  return statusList.indexOf(status.toLowerCase()) >= 0;
+  const { status, vm_state } = instance;
+  return (
+    statusList.includes(status.toLowerCase()) ||
+    (vm_state && statusList.includes(vm_state.toLowerCase()))
+  );
 };
 
 export const isNotLockedOrAdmin = (instance, isAdmin = false) => {
