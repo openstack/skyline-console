@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React, { useEffect, useState } from 'react';
+import { Col, Empty, Popover, Row, Spin } from 'antd';
+import { FileTextOutlined } from '@ant-design/icons';
+import { SubnetStore } from 'stores/neutron/subnet';
+
 export const networkStatus = {
   ACTIVE: t('Active'),
   BUILD: t('Build'),
@@ -57,7 +62,19 @@ export const networkColumns = (self) => [
   {
     title: t('Subnet Count'),
     dataIndex: 'subnets',
-    render: (value) => (value && value.length) || 0,
+    render: (value, record) => {
+      const content = <PopUpSubnet subnetIds={record.subnets} />;
+      return (
+        <>
+          {(value && value.length) || 0}{' '}
+          {value && value.length !== 0 && (
+            <Popover content={content} destroyTooltipOnHide>
+              <FileTextOutlined />
+            </Popover>
+          )}
+        </>
+      );
+    },
     sorter: false,
   },
   {
@@ -97,3 +114,32 @@ export const getAnchorData = (num, y) => {
 };
 
 export const isExternalNetwork = (network) => !!network['router:external'];
+
+function PopUpSubnet({ subnetIds }) {
+  const [subnets, setSubnets] = useState(subnetIds);
+  const [isLoading, setLoaidng] = useState(false);
+  useEffect(() => {
+    setLoaidng(true);
+    (async function () {
+      const promises = subnets.map((i) =>
+        new SubnetStore().fetchDetail({ id: i })
+      );
+      const ret = await Promise.all(promises);
+      setSubnets(ret);
+      setLoaidng(false);
+    })();
+  }, []);
+  if (isLoading) {
+    return <Spin />;
+  }
+  return subnets.length === 0 ? (
+    <Empty />
+  ) : (
+    subnets.map((item, index) => (
+      <Row gutter={[24]} key={`${item}_${index}`} style={{ minWidth: 300 }}>
+        <Col span={12}>{item.name}</Col>
+        <Col span={12}>{item.cidr}</Col>
+      </Row>
+    ))
+  );
+}

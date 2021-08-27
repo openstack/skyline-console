@@ -232,7 +232,12 @@ export default class NetworkSelect extends React.Component {
     return subnets
       .filter((it) => it.network_id === network)
       .map((it) => ({
-        label: it.name,
+        label: (
+          <div>
+            <span>{it.name}</span>
+            <span className={styles.subnet_options_cidr}>{it.cidr}</span>
+          </div>
+        ),
         value: it.id,
       }));
   };
@@ -252,21 +257,9 @@ export default class NetworkSelect extends React.Component {
   }
 
   renderSubnet() {
-    const { network, subnets, subnet, ipType } = this.state;
+    const { network, subnet, ipType } = this.state;
     if (!network || !ipType) {
       return null;
-    }
-    let tips = '';
-    if (subnet) {
-      const item = subnets.find((it) => it.id === subnet);
-      if (item) {
-        tips = (
-          <span>
-            <span className={styles.label}>{t('Cidr')}: </span>
-            <span className={styles.content}>{item.cidr}</span>
-          </span>
-        );
-      }
     }
     return (
       <Col span={6}>
@@ -276,7 +269,6 @@ export default class NetworkSelect extends React.Component {
           placeholder={t('please select subnet')}
           onChange={this.onSubnetChange}
         />
-        <div className={styles.tips}>{tips}</div>
       </Col>
     );
   }
