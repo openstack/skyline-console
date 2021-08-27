@@ -70,7 +70,7 @@ export default class NodeCard extends React.Component {
         render: (value) => routerStatus[value] || '-',
       },
       {
-        title: t('Floating IP'),
+        title: t('External Fixed IP'),
         dataIndex: 'external_gateway_info',
         isHideable: true,
         render: (value) =>
