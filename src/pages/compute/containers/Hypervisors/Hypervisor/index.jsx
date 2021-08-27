@@ -40,6 +40,10 @@ export default class Hypervisors extends Base {
     return false;
   }
 
+  get hideCustom() {
+    return true;
+  }
+
   getColumns = () => {
     const columns = [...hypervisorColumns];
     columns[0] = {
