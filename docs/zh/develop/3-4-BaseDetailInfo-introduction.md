@@ -1,8 +1,8 @@
-简体中文 | [English](/docs/en/develop/3-4-BaseDetailInfo-introduction.md)
+简体中文 | [English](../../en/develop/3-4-BaseDetailInfo-introduction.md)
 
 # 用途
 
-![详情信息页](/docs/zh/develop/images/detail/image-detail-info.png)
+![详情信息页](../../zh/develop/images/detail/image-detail-info.png)
 
 - 各资源详情页中详情 Tab 中组件的基类
 - 左右结构展示

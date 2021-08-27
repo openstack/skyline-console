@@ -1,8 +1,8 @@
-简体中文 | [English](/docs/en/develop/3-7-ModalAction-introduction.md)
+简体中文 | [English](../../en/develop/3-7-ModalAction-introduction.md)
 
 # 用途
 
-![弹窗型表单](/docs/zh/develop/images/form/modal.png)
+![弹窗型表单](../../zh/develop/images/form/modal.png)
 
 - 操作按钮点击后，弹窗显示表单
 - 点击`确认`按钮后，会根据请求的发送情况，展示`loading`状态

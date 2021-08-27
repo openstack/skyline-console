@@ -1,8 +1,8 @@
-English | [Chinese](/docs/zh/develop/3-3-BaseDetail-introduction.md)
+English | [Chinese](../../zh/develop/3-3-BaseDetail-introduction.md)
 
 # Application
 
-![Details page](/docs/en/develop/images/detail/volume.png)
+![Details page](../../en/develop/images/detail/volume.png)
 
 - The base class of each resource detail page
 - Support return to list page

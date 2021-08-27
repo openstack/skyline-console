@@ -1,4 +1,4 @@
-English | [Chinese](/docs/zh/develop/1-ready-to-work.md)
+English | [Chinese](../../zh/develop/1-ready-to-work.md)
 
 # Preparation before development
 

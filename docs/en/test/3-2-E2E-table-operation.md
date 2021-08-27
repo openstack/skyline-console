@@ -1,4 +1,4 @@
-English | [简体中文](/docs/zh/test/3-2-E2E-table-operation.md)
+English | [简体中文](../../zh/test/3-2-E2E-table-operation.md)
 
 Because of the consistent use of the front-end framework, when we write related use cases for form operations, select elements and perform operations, we often find that there is a strong regularity, so we have written corresponding Cypress functions for most table operations. It greatly reduces the difficulty of writing test cases. The following will give a detailed description of the main table operation functions.
 

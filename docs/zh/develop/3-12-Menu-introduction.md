@@ -1,15 +1,15 @@
-简体中文 | [English](/docs/en/develop/3-12-Menu-introduction.md)
+简体中文 | [English](../../en/develop/3-12-Menu-introduction.md)
 
 # 用途
 
 - 点击后直接跳转到相应页面
 - 配置控制台的左侧菜单项
 
-  ![控制台](/docs/zh/develop/images/menu/console-menu.png)
+  ![控制台](../../zh/develop/images/menu/console-menu.png)
 
 - 配置管理平台的左侧菜单项
 
-  ![管理平台](/docs/zh/develop/images/menu/admin-menu.png)
+  ![管理平台](../../zh/develop/images/menu/admin-menu.png)
 
 - 支持一级菜单带图标
 - 支持二级菜单展开

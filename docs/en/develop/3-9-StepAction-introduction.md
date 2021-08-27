@@ -1,8 +1,8 @@
-English | [简体中文](/docs/zh/develop/3-9-StepAction-introduction.md)
+English | [简体中文](../../zh/develop/3-9-StepAction-introduction.md)
 
 # Usage
 
-![StepForm](/docs/zh/develop/images/form/step.png)
+![StepForm](../../zh/develop/images/form/step.png)
 
 - After click the action button, the step modal will display.
 - Has it own route to visit
@@ -11,7 +11,7 @@ English | [简体中文](/docs/zh/develop/3-9-StepAction-introduction.md)
 - After click the `Cancle` button, will automatically jump to the corresponding resource list page
 - If the request is sent successfully, a prompt message of successful action will be displayed in the upper right corner, and it will automatically disappear after a few seconds.
 
-  ![FormOneStep](/docs/zh/develop/images/form/create-success.png)
+  ![FormOneStep](../../zh/develop/images/form/create-success.png)
 
 - If the request fails, an error message will be displayed in the upper right corner of the form page, which can only disappear after clicking the close button.
 

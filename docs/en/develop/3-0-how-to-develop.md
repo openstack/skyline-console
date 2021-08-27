@@ -1,4 +1,4 @@
-English | [Chinese](/docs/zh/develop/3-0-how-to-develop.md)
+English | [Chinese](../../zh/develop/3-0-how-to-develop.md)
 
 # Develop a new resource list page
 

@@ -1,4 +1,4 @@
-简体中文 | [English](/docs/en/develop/1-ready-to-work.md)
+简体中文 | [English](../../en/develop/1-ready-to-work.md)
 
 # 开发前准备
 

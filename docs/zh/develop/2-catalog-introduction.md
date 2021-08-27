@@ -1,4 +1,4 @@
-简体中文 | [English](/docs/en/develop/2-catalog-introduction.md)
+简体中文 | [English](../../en/develop/2-catalog-introduction.md)
 
 # 一级目录简介
 
@@ -90,7 +90,7 @@
 
 # test 目录介绍
 
-[简体中文](/docs/zh/test/2-catalog-introduction.md) | [English](/docs/en/test/2-catalog-introduction.md)
+[简体中文](../../zh/test/2-catalog-introduction.md) | [English](../../en/test/2-catalog-introduction.md)
 
 # 目录简介-图像版
 

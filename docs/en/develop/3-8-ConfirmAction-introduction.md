@@ -1,8 +1,8 @@
-English | [简体中文](/docs/zh/develop/3-8-ConfirmAction-introduction.md)
+English | [简体中文](../../zh/develop/3-8-ConfirmAction-introduction.md)
 
 # Usage
 
-![Confirm](/docs/zh/develop/images/form/confirm.png)
+![Confirm](../../zh/develop/images/form/confirm.png)
 
 - After click the action button, the confirm modal will display.
 - After click the `Confirm` button, the `loading` status will be displayed according to the status of request.

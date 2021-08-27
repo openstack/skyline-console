@@ -1,38 +1,38 @@
-English | [Chinese](/docs/zh/develop/3-1-BaseList-introduction.md)
+English | [Chinese](../../zh/develop/3-1-BaseList-introduction.md)
 
 # Application
 
 - The base class of each resource list page
 
-  ![List page](/docs/en/develop/images/list/volumes.png)
+  ![List page](../../en/develop/images/list/volumes.png)
 
 - Support data paging
 
-  ![List page pagination](/docs/en/develop/images/list/pagination.png)
+  ![List page pagination](../../en/develop/images/list/pagination.png)
 
 - Support search
 
-  ![List page search](/docs/en/develop/images/list/search.png)
+  ![List page search](../../en/develop/images/list/search.png)
 
 - Support manual refresh of data
 
-  ![List page fresh](/docs/en/develop/images/list/fresh.png)
+  ![List page fresh](../../en/develop/images/list/fresh.png)
 
 - Support data download
 
-  ![List page download](/docs/en/develop/images/list/download.png)
+  ![List page download](../../en/develop/images/list/download.png)
 
 - Support batch operation
 
-  ![List page batch](/docs/en/develop/images/list/batch.png)
+  ![List page batch](../../en/develop/images/list/batch.png)
 
 - With automatic data refresh function (automatically refresh the list data every 60 seconds, if the user does not operate, no automatic refresh after 30 minutes, the automatic refresh function can be paused)
 
-  ![List page auto-refresh](/docs/en/develop/images/list/stop-auto-refresh.png)
+  ![List page auto-refresh](../../en/develop/images/list/stop-auto-refresh.png)
 
 - Configurable list header
 
-  ![List page table columns hide/show](/docs/en/develop/images/list/hide.png)
+  ![List page table columns hide/show](../../en/develop/images/list/hide.png)
 
 - Each resource list page can be completed by copy function
 
@@ -299,7 +299,7 @@ English | [Chinese](/docs/zh/develop/3-1-BaseList-introduction.md)
     }
     ```
 
-    ![List page Tab](/docs/en/develop/images/list/tab-service.png)
+    ![List page Tab](../../en/develop/images/list/tab-service.png)
 
 - `hideCustom`
   - Whether to display the header configuration icon

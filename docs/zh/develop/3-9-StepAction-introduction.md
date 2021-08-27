@@ -1,8 +1,8 @@
-简体中文 | [English](/docs/en/develop/3-9-StepAction-introduction.md)
+简体中文 | [English](../../en/develop/3-9-StepAction-introduction.md)
 
 # 用途
 
-![分步Form](/docs/zh/develop/images/form/step.png)
+![分步Form](../../zh/develop/images/form/step.png)
 
 - 操作按钮点击后，单页显示分步操作的表单
 - 有独立的路由可供访问
@@ -11,7 +11,7 @@
 - 点击`取消`按钮后，会自动跳转到相应的资源列表页
 - 如果请求发送成功，会在右上角展示操作成功的提示信息，该提示信息几秒后可自动消失
 
-  ![Form单页](/docs/zh/develop/images/form/create-success.png)
+  ![Form单页](../../zh/develop/images/form/create-success.png)
 
 - 如果请求发送失败，会在表单页的右上角展示错误信息，该提示信息只有点击关闭按钮后才可消失
 

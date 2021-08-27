@@ -1,8 +1,8 @@
-简体中文 | [English](/docs/en/develop/3-8-ConfirmAction-introduction.md)
+简体中文 | [English](../../en/develop/3-8-ConfirmAction-introduction.md)
 
 # 用途
 
-![确认型](/docs/zh/develop/images/form/confirm.png)
+![确认型](../../zh/develop/images/form/confirm.png)
 
 - 操作按钮点击后，显示确认类型的表单
 - 点击`确认`按钮后，会根据请求的发送情况，展示`loading`状态

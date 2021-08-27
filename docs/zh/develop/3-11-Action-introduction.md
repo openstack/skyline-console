@@ -1,10 +1,10 @@
-简体中文 | [English](/docs/en/develop/3-11-Action-introduction.md)
+简体中文 | [English](../../en/develop/3-11-Action-introduction.md)
 
 # 用途
 
 - 配置资源对应的所有操作
 
-  ![操作](/docs/zh/develop/images/form/action.png)
+  ![操作](../../zh/develop/images/form/action.png)
 
 - 按照相应的配置编写后，会在资源列表页相应的位置展示相应的操作按钮
 
@@ -107,11 +107,11 @@
   - 支持两种格式的配置，对应了不同的展示方案
     - 每个元素是个含有`action`属性的对象
 
-      ![云硬盘操作](/docs/zh/develop/images/form/volume-action.png)
+      ![云硬盘操作](../../zh/develop/images/form/volume-action.png)
 
     - 每个元素是个含有`title`、`actions`属性的对象
 
-      ![云主机操作](/docs/zh/develop/images/form/instance-action.png)
+      ![云主机操作](../../zh/develop/images/form/instance-action.png)
 
       - 以云主机`src/pages/compute/containers/Instance/actions/index.jsx`为例
 

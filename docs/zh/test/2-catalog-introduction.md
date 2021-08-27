@@ -1,4 +1,4 @@
-简体中文 | [English](/docs/en/test/2-catalog-introduction.md)
+简体中文 | [English](../../en/test/2-catalog-introduction.md)
 
 ```
 test

@@ -1,12 +1,12 @@
-English | [简体中文](/docs/zh/develop/3-14-I18n-introduction.md)
+English | [简体中文](../../zh/develop/3-14-I18n-introduction.md)
 
 # Usage
 
 - Framework supports internationalization, default support in English, Chinese
 
-  ![i18n](/docs/zh/develop/images/i18n/i18n.png)
+  ![i18n](../../zh/develop/images/i18n/i18n.png)
 
-  ![english](/docs/zh/develop/images/i18n/english.png)
+  ![english](../../zh/develop/images/i18n/english.png)
 
 # Code location
 
