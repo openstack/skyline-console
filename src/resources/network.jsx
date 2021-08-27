@@ -75,6 +75,7 @@ export const networkColumns = (self) => [
         </>
       );
     },
+    stringify: (subnets) => `${subnets.length}(${subnets.join(',')})`,
     sorter: false,
   },
   {
