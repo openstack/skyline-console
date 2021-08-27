@@ -1,15 +1,15 @@
-English | [简体中文](/docs/zh/develop/3-12-Menu-introduction.md)
+English | [简体中文](../../zh/develop/3-12-Menu-introduction.md)
 
 # Usage
 
 - Jump to the corresponding page after click
 - Configuration of menu item on the left side of the console platform
 
-  ![console-platform](/docs/zh/develop/images/menu/console-menu.png)
+  ![console-platform](../../zh/develop/images/menu/console-menu.png)
 
 - Configuration of menu item on the left side of the management platform
 
-  ![management-platform](/docs/zh/develop/images/menu/admin-menu.png)
+  ![management-platform](../../zh/develop/images/menu/admin-menu.png)
 
 - Support first-level menu with icon
 - Support secondary menu expand

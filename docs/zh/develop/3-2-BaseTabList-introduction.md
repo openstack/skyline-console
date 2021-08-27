@@ -1,10 +1,10 @@
-简体中文 | [English](/docs/en/develop/3-2-BaseTabList-introduction.md)
+简体中文 | [English](../../en/develop/3-2-BaseTabList-introduction.md)
 
 # 用途
 
 - 各可切换列表页的基类
 
-  ![Tab列表页](/docs/zh/develop/images/list/tab-list.png)
+  ![Tab列表页](../../zh/develop/images/list/tab-list.png)
 
 - 支持切换时自动处理数据展示
 

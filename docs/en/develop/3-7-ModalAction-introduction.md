@@ -1,8 +1,8 @@
-English | [简体中文](/docs/zh/develop/3-7-ModalAction-introduction.md)
+English | [简体中文](../../zh/develop/3-7-ModalAction-introduction.md)
 
 # Usage
 
-![Modal Form](/docs/zh/develop/images/form/modal.png)
+![Modal Form](../../zh/develop/images/form/modal.png)
 
 - After click the action button, the form modal will display.
 - After click the `Confirm` button, the `loading` status will be displayed according to the status of request.

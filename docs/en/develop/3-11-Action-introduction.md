@@ -1,10 +1,10 @@
-English | [简体中文](/docs/zh/develop/3-11-Action-introduction.md)
+English | [简体中文](../../zh/develop/3-11-Action-introduction.md)
 
 # Usage
 
 - Configure all the actions corresponding to resources
 
-  ![Action](/docs/zh/develop/images/form/action.png)
+  ![Action](../../zh/develop/images/form/action.png)
 
 - After writing the corresponding configuration, the action button will be displayed in the corresponding position of resource list page.
 
@@ -107,11 +107,11 @@ English | [简体中文](/docs/zh/develop/3-11-Action-introduction.md)
   - Supports two types of configurations, corresponding to different display schemes
     - Each item is an object include `action` attribute
 
-      ![volume-action](/docs/zh/develop/images/form/volume-action.png)
+      ![volume-action](../../zh/develop/images/form/volume-action.png)
 
     - Each item is an object include `title`, `actions` attributes
 
-      ![instance-action](/docs/zh/develop/images/form/instance-action.png)
+      ![instance-action](../../zh/develop/images/form/instance-action.png)
 
       - Take instance actions as an example `src/pages/compute/containers/Instance/actions/index.jsx` :
 

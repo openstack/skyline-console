@@ -1,4 +1,4 @@
-English | [简体中文](/docs/zh/test/3-0-how-to-edit-e2e-case.md)
+English | [简体中文](../../zh/test/3-0-how-to-edit-e2e-case.md)
 
 For specific introduction and usage of Cypress, please refer to[Official document](https://docs.cypress.io/guides/overview/why-cypress)
 

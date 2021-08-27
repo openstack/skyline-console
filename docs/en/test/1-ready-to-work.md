@@ -1,4 +1,4 @@
-English | [简体中文](/docs/zh/test/1-ready-to-work.md)
+English | [简体中文](../../zh/test/1-ready-to-work.md)
 
 # Two kinds of tests
 

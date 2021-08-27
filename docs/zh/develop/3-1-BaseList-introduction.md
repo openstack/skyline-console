@@ -1,38 +1,38 @@
-简体中文 | [English](/docs/en/develop/3-1-BaseList-introduction.md)
+简体中文 | [English](../../en/develop/3-1-BaseList-introduction.md)
 
 # 用途
 
 - 各资源列表页的基类
 
-  ![列表页](/docs/zh/develop/images/list/volumes.png)
+  ![列表页](../../zh/develop/images/list/volumes.png)
 
 - 支持数据分页
 
-  ![列表页分页](/docs/zh/develop/images/list/pagination.png)
+  ![列表页分页](../../zh/develop/images/list/pagination.png)
 
 - 支持搜索
 
-  ![列表页搜索](/docs/zh/develop/images/list/search.png)
+  ![列表页搜索](../../zh/develop/images/list/search.png)
 
 - 支持手动刷新数据
 
-  ![列表页刷新](/docs/zh/develop/images/list/fresh.png)
+  ![列表页刷新](../../zh/develop/images/list/fresh.png)
 
 - 支持数据下载
 
-  ![列表页下载](/docs/zh/develop/images/list/download.png)
+  ![列表页下载](../../zh/develop/images/list/download.png)
 
 - 支持批量操作
 
-  ![列表页批量](/docs/zh/develop/images/list/batch.png)
+  ![列表页批量](../../zh/develop/images/list/batch.png)
 
 - 具有自动刷新数据的功能(每隔 60 秒自动刷新列表数据，用户无操作的情况下，30 分钟后不再自动刷新，可暂停自动刷新功能)
 
-  ![列表页自动刷新](/docs/zh/develop/images/list/stop-auto-refresh.png)
+  ![列表页自动刷新](../../zh/develop/images/list/stop-auto-refresh.png)
 
 - 可配置列表表头
 
-  ![列表页表头隐藏/展示](/docs/zh/develop/images/list/hide.png)
+  ![列表页表头隐藏/展示](../../zh/develop/images/list/hide.png)
 
 - 各资源列表页通过复写函数即可完成
 
@@ -299,7 +299,7 @@
     }
     ```
 
-    ![列表页Tab](/docs/zh/develop/images/list/tab-service.png)
+    ![列表页Tab](../../zh/develop/images/list/tab-service.png)
 
 - `hideCustom`
   - 是否显示表头配置图标

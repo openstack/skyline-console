@@ -1,4 +1,4 @@
-English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
+English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
 
 # Usage
 
@@ -29,7 +29,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![extra](/docs/zh/develop/images/form/form-extra.png)
+      ![extra](../../zh/develop/images/form/form-extra.png)
 
   - `tip`, the `?` icon at the right side of label, hover to see `tip`.
     - Take create instance as an example `src/pages/compute/containers/Instance/actions/StepCreate/BaseStep/index.jsx` :
@@ -49,7 +49,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![tip](/docs/zh/develop/images/form/form-tip.png)
+      ![tip](../../zh/develop/images/form/form-tip.png)
 
   - `validator`, validate whether the value of form item matchs requirements
     - Return `Promise`
@@ -108,7 +108,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![labelCol](/docs/zh/develop/images/form/label-col.png)
+      ![labelCol](../../zh/develop/images/form/label-col.png)
 
   - `wrapperCol`, adjust the layout of the right side of the form, default use of the layout defined under
     - Take resize instance as an example `src/pages/compute/containers/Instance/actions/Resize.jsx` :
@@ -133,7 +133,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![wrapperCol](/docs/zh/develop/images/form/wrapper-col.png)
+      ![wrapperCol](../../zh/develop/images/form/wrapper-col.png)
 
   - `style`, define the style of the form
     - Take create port as an example `src/pages/network/containers/VirtualAdapter/actions/Create.jsx`
@@ -210,7 +210,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
         },
         ```
 
-        ![label](/docs/zh/develop/images/form/form-label.png)
+        ![label](../../zh/develop/images/form/form-label.png)
 
     - `content` attribute, default is base on `name` to show, if has `content`, will show things in `content`
       - `content` can be string / ReactNode
@@ -240,7 +240,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       },
       ```
 
-      ![input](/docs/zh/develop/images/form/input.png)
+      ![input](../../zh/develop/images/form/input.png)
 
   - `select`
     - selector
@@ -273,7 +273,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       },
       ```
 
-      ![select](/docs/zh/develop/images/form/select.png)
+      ![select](../../zh/develop/images/form/select.png)
 
     - `isWrappedValue`, indicates whether to include `option` information in the form item value
       - Default `false`, value is the value of selected `option`
@@ -289,7 +289,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![divider](/docs/zh/develop/images/form/form-divider.png)
+      ![divider](../../zh/develop/images/form/form-divider.png)
 
   - `radio`
     - radio
@@ -322,7 +322,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       },
       ```
 
-      ![radio](/docs/zh/develop/images/form/radio.png)
+      ![radio](../../zh/develop/images/form/radio.png)
 
     - `isWrappedValue`, indicates whether to include `option` information in the form item value
       - Default `false`, value is the value of selected `option`
@@ -390,7 +390,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       },
       ```
 
-      ![select-table](/docs/zh/develop/images/form/select-table.png)
+      ![select-table](../../zh/develop/images/form/select-table.png)
 
     - Take create volumn as an example `src/pages/storage/containers/Volume/actions/Create/index.jsx` :
       - This is a table with tab, default to show the first tab, when switching tab, data source will change
@@ -421,7 +421,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![select-table-tabs](/docs/zh/develop/images/form/select-table-tabs.png)
+      ![select-table-tabs](../../zh/develop/images/form/select-table-tabs.png)
 
   - `input-number`
     - Number input
@@ -441,7 +441,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       },
       ```
 
-      ![input-number](/docs/zh/develop/images/form/input-number.png)
+      ![input-number](../../zh/develop/images/form/input-number.png)
 
   - `input-int`
     - Integer input
@@ -460,7 +460,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![input-int](/docs/zh/develop/images/form/input-int.png)
+      ![input-int](../../zh/develop/images/form/input-int.png)
 
   - `instance-volume`
     - Insatnce volume configuration component
@@ -483,7 +483,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![instance-volume](/docs/zh/develop/images/form/instance-volume.png)
+      ![instance-volume](../../zh/develop/images/form/instance-volume.png)
 
   - `input-password`
     - password input
@@ -509,7 +509,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       },
       ```
 
-      ![input-password](/docs/zh/develop/images/form/input-password.png)
+      ![input-password](../../zh/develop/images/form/input-password.png)
 
   - `input-name`
     - Name input box with format verification
@@ -532,7 +532,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![input-name](/docs/zh/develop/images/form/input-name.png)
+      ![input-name](../../zh/develop/images/form/input-name.png)
 
   - `port-range`
     - Port input with Verification
@@ -548,7 +548,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![port-range](/docs/zh/develop/images/form/port-range.png)
+      ![port-range](../../zh/develop/images/form/port-range.png)
 
   - `more`
     - Hide / show more configuration items
@@ -562,7 +562,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![more](/docs/zh/develop/images/form/more.png)
+      ![more](../../zh/develop/images/form/more.png)
 
   - `textarea`
     - textarea
@@ -576,7 +576,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![textarea](/docs/zh/develop/images/form/textarea.png)
+      ![textarea](../../zh/develop/images/form/textarea.png)
 
   - `upload`
     - file upload
@@ -591,7 +591,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![upload](/docs/zh/develop/images/form/upload.png)
+      ![upload](../../zh/develop/images/form/upload.png)
 
   - `add-select`
     - Can added, delete an entry form item
@@ -622,7 +622,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       },
       ```
 
-      ![add-select](/docs/zh/develop/images/form/add-select.png)
+      ![add-select](../../zh/develop/images/form/add-select.png)
 
   - `ip-input`
     - IP input with verification
@@ -643,7 +643,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![ip-input](/docs/zh/develop/images/form/ip-input.png)
+      ![ip-input](../../zh/develop/images/form/ip-input.png)
 
   - `member-allocator`
     - Member allocator used in load balancer
@@ -658,7 +658,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![member-allocator](/docs/zh/develop/images/form/member-allocator.png)
+      ![member-allocator](../../zh/develop/images/form/member-allocator.png)
 
   - `descriptions`
     - A form item to show types of information
@@ -712,7 +712,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![descriptions](/docs/zh/develop/images/form/descriptions.png)
+      ![descriptions](../../zh/develop/images/form/descriptions.png)
 
   - `slider-input`
     - Input + Slider linkage form item
@@ -735,7 +735,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       },
       ```
 
-      ![slider-input](/docs/zh/develop/images/form/slider-input.png)
+      ![slider-input](../../zh/develop/images/form/slider-input.png)
 
   - `title`
     - Show title
@@ -748,7 +748,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![title](/docs/zh/develop/images/form/title.png)
+      ![title](../../zh/develop/images/form/title.png)
 
   - `switch`
     - switch form item
@@ -770,7 +770,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![switch](/docs/zh/develop/images/form/switch.png)
+      ![switch](../../zh/develop/images/form/switch.png)
 
   - `check`
     - checkbox
@@ -787,7 +787,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       },
       ```
 
-      ![check](/docs/zh/develop/images/form/check.png)
+      ![check](../../zh/develop/images/form/check.png)
 
   - `transfer`
     - transfer form item
@@ -817,7 +817,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![transfer](/docs/zh/develop/images/form/transfer.png)
+      ![transfer](../../zh/develop/images/form/transfer.png)
 
   - `check-group`
     - checkbox group
@@ -839,7 +839,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![check-group](/docs/zh/develop/images/form/check-group.png)
+      ![check-group](../../zh/develop/images/form/check-group.png)
 
   - `textarea-from-file`
     - Textarea with read file feature
@@ -856,7 +856,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![textarea-from-file](/docs/zh/develop/images/form/textarea-from-file.png)
+      ![textarea-from-file](../../zh/develop/images/form/textarea-from-file.png)
 
   - `ip-distributer`
     - IP distributer
@@ -876,7 +876,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![ip-distributer](/docs/zh/develop/images/form/ip-distributer.png)
+      ![ip-distributer](../../zh/develop/images/form/ip-distributer.png)
 
   - `mac-address`
     - Mac address input
@@ -893,7 +893,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![mac-address](/docs/zh/develop/images/form/mac-address.png)
+      ![mac-address](../../zh/develop/images/form/mac-address.png)
 
   - `network-select-table`
     - network selector
@@ -910,7 +910,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       },
       ```
 
-      ![network-select-table](/docs/zh/develop/images/form/network-select-table.png)
+      ![network-select-table](../../zh/develop/images/form/network-select-table.png)
 
   - `volume-select-table`
     - volume selector
@@ -937,7 +937,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![volume-select-table](/docs/zh/develop/images/form/volume-select-table.png)
+      ![volume-select-table](../../zh/develop/images/form/volume-select-table.png)
 
   - `tab-select-table`
     - select table with tabs
@@ -957,7 +957,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![tab-select-table](/docs/zh/develop/images/form/tab-select-table.png)
+      ![tab-select-table](../../zh/develop/images/form/tab-select-table.png)
 
   - `metadata-transfer`
     - metadata transfer form item
@@ -978,7 +978,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![metadata-transfer](/docs/zh/develop/images/form/metadata-transfer.png)
+      ![metadata-transfer](../../zh/develop/images/form/metadata-transfer.png)
 
   - `aceEditor`
     - aceEditor
@@ -1014,7 +1014,7 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       }
       ```
 
-      ![aceEditor](/docs/zh/develop/images/form/ace-editor.png)
+      ![aceEditor](../../zh/develop/images/form/ace-editor.png)
 
   - `input-json`
     - input value in type of json
@@ -1044,4 +1044,4 @@ English | [简体中文](/docs/zh/develop/3-10-FormItem-introduction.md)
       };
       ```
 
-      ![input-json](/docs/zh/develop/images/form/input-json.png)
+      ![input-json](../../zh/develop/images/form/input-json.png)

@@ -1,4 +1,4 @@
-简体中文 | [English](/docs/en/develop/3-10-FormItem-introduction.md)
+简体中文 | [English](../../en/develop/3-10-FormItem-introduction.md)
 
 # 用途
 
@@ -29,7 +29,7 @@
       }
       ```
 
-      ![extra](/docs/zh/develop/images/form/form-extra.png)
+      ![extra](../../zh/develop/images/form/form-extra.png)
 
   - `tip`，表单项左侧标签旁边的问号悬停时显示的内容
     - 以创建云主机`src/pages/compute/containers/Instance/actions/StepCreate/BaseStep/index.jsx`为例
@@ -49,7 +49,7 @@
       }
       ```
 
-      ![tip](/docs/zh/develop/images/form/form-tip.png)
+      ![tip](../../zh/develop/images/form/form-tip.png)
 
   - `validator`，验证表单的数值是否符合要求
     - 返回`Promise`
@@ -108,7 +108,7 @@
       }
       ```
 
-      ![labelCol](/docs/zh/develop/images/form/label-col.png)
+      ![labelCol](../../zh/develop/images/form/label-col.png)
 
   - `wrapperCol`，调整表单项右侧的布局，默认使用`Form`下定义的布局
     - 以云主机修改配置`src/pages/compute/containers/Instance/actions/Resize.jsx`为例
@@ -133,7 +133,7 @@
       }
       ```
 
-      ![wrapperCol](/docs/zh/develop/images/form/wrapper-col.png)
+      ![wrapperCol](../../zh/develop/images/form/wrapper-col.png)
 
   - `style`，定义表单项的样式
     - 以创建虚拟网卡`src/pages/network/containers/VirtualAdapter/actions/Create.jsx`为例
@@ -210,7 +210,7 @@
         },
         ```
 
-        ![label](/docs/zh/develop/images/form/form-label.png)
+        ![label](../../zh/develop/images/form/form-label.png)
 
     - `content`属性，默认是基于`name`属性展示内容，如果具有`content`属性，则依照`content`展示内容
       - `content`可以是字符串，也可以是 ReactNode
@@ -240,7 +240,7 @@
       },
       ```
 
-      ![input](/docs/zh/develop/images/form/input.png)
+      ![input](../../zh/develop/images/form/input.png)
 
   - `select`
     - 选择
@@ -273,7 +273,7 @@
       },
       ```
 
-      ![select](/docs/zh/develop/images/form/select.png)
+      ![select](../../zh/develop/images/form/select.png)
 
     - `isWrappedValue`，表示表单项的值中是否要包含`option`信息
       - 默认值为`false`，值为选中的`option`中的`value`
@@ -288,7 +288,7 @@
       }
       ```
 
-      ![divider](/docs/zh/develop/images/form/form-divider.png)
+      ![divider](../../zh/develop/images/form/form-divider.png)
 
   - `radio`
     - 单选
@@ -321,7 +321,7 @@
       },
       ```
 
-      ![radio](/docs/zh/develop/images/form/radio.png)
+      ![radio](../../zh/develop/images/form/radio.png)
 
     - `isWrappedValue`，表示表单项的值中是否要包含`option`信息
       - 默认值为`false`，值为选中的`option`中的`value`
@@ -388,7 +388,7 @@
       },
       ```
 
-      ![select-table](/docs/zh/develop/images/form/select-table.png)
+      ![select-table](../../zh/develop/images/form/select-table.png)
 
     - 以创建云硬盘选择镜像`src/pages/storage/containers/Volume/actions/Create/index.jsx`为例
       - 这是带有 Tab 标签的表格，默认展示第一个 tab，tab 切换时会更新数据源
@@ -419,7 +419,7 @@
       }
       ```
 
-      ![select-table-tabs](/docs/zh/develop/images/form/select-table-tabs.png)
+      ![select-table-tabs](../../zh/develop/images/form/select-table-tabs.png)
 
   - `input-number`
     - 数字输入框
@@ -439,7 +439,7 @@
       },
       ```
 
-      ![input-number](/docs/zh/develop/images/form/input-number.png)
+      ![input-number](../../zh/develop/images/form/input-number.png)
 
   - `input-int`
     - 整数输入框
@@ -458,7 +458,7 @@
       }
       ```
 
-      ![input-int](/docs/zh/develop/images/form/input-int.png)
+      ![input-int](../../zh/develop/images/form/input-int.png)
 
   - `instance-volume`
     - 云主机硬盘配置组件
@@ -481,7 +481,7 @@
       }
       ```
 
-      ![instance-volume](/docs/zh/develop/images/form/instance-volume.png)
+      ![instance-volume](../../zh/develop/images/form/instance-volume.png)
 
   - `input-password`
     - 密码输入框
@@ -507,7 +507,7 @@
       },
       ```
 
-      ![input-password](/docs/zh/develop/images/form/input-password.png)
+      ![input-password](../../zh/develop/images/form/input-password.png)
 
   - `input-name`
     - 带有格式验证的名称输入框
@@ -530,7 +530,7 @@
       }
       ```
 
-      ![input-name](/docs/zh/develop/images/form/input-name.png)
+      ![input-name](../../zh/develop/images/form/input-name.png)
 
   - `port-range`
     - 带有验证的 port 输入框
@@ -546,7 +546,7 @@
       }
       ```
 
-      ![port-range](/docs/zh/develop/images/form/port-range.png)
+      ![port-range](../../zh/develop/images/form/port-range.png)
 
   - `more`
     - 隐藏/展示更多配置项按钮
@@ -560,7 +560,7 @@
       }
       ```
 
-      ![more](/docs/zh/develop/images/form/more.png)
+      ![more](../../zh/develop/images/form/more.png)
 
   - `textarea`
     - 多行文本输入框
@@ -574,7 +574,7 @@
       }
       ```
 
-      ![textarea](/docs/zh/develop/images/form/textarea.png)
+      ![textarea](../../zh/develop/images/form/textarea.png)
 
   - `upload`
     - 上传文件输入框
@@ -589,7 +589,7 @@
       }
       ```
 
-      ![upload](/docs/zh/develop/images/form/upload.png)
+      ![upload](../../zh/develop/images/form/upload.png)
 
   - `add-select`
     - 可以添加、删除条目的表单项
@@ -620,7 +620,7 @@
       },
       ```
 
-      ![add-select](/docs/zh/develop/images/form/add-select.png)
+      ![add-select](../../zh/develop/images/form/add-select.png)
 
   - `ip-input`
     - 带有验证功能的 IP 输入框
@@ -641,7 +641,7 @@
       }
       ```
 
-      ![ip-input](/docs/zh/develop/images/form/ip-input.png)
+      ![ip-input](../../zh/develop/images/form/ip-input.png)
 
   - `member-allocator`
     - 负载均衡器中使用的成员选择表单
@@ -656,7 +656,7 @@
       }
       ```
 
-      ![member-allocator](/docs/zh/develop/images/form/member-allocator.png)
+      ![member-allocator](../../zh/develop/images/form/member-allocator.png)
 
   - `descriptions`
     - 展示多种信息的表单项
@@ -710,7 +710,7 @@
       }
       ```
 
-      ![descriptions](/docs/zh/develop/images/form/descriptions.png)
+      ![descriptions](../../zh/develop/images/form/descriptions.png)
 
   - `slider-input`
     - 滑动与输入联动的表单项
@@ -733,7 +733,7 @@
       },
       ```
 
-      ![slider-input](/docs/zh/develop/images/form/slider-input.png)
+      ![slider-input](../../zh/develop/images/form/slider-input.png)
 
   - `title`
     - 展示标题
@@ -746,7 +746,7 @@
       }
       ```
 
-      ![title](/docs/zh/develop/images/form/title.png)
+      ![title](../../zh/develop/images/form/title.png)
 
   - `switch`
     - 开关
@@ -768,7 +768,7 @@
       }
       ```
 
-      ![switch](/docs/zh/develop/images/form/switch.png)
+      ![switch](../../zh/develop/images/form/switch.png)
 
   - `check`
     - checkbox
@@ -785,7 +785,7 @@
       },
       ```
 
-      ![check](/docs/zh/develop/images/form/check.png)
+      ![check](../../zh/develop/images/form/check.png)
 
   - `transfer`
     - 穿梭框
@@ -815,7 +815,7 @@
       }
       ```
 
-      ![transfer](/docs/zh/develop/images/form/transfer.png)
+      ![transfer](../../zh/develop/images/form/transfer.png)
 
   - `check-group`
     - checkbox 组
@@ -837,7 +837,7 @@
       }
       ```
 
-      ![check-group](/docs/zh/develop/images/form/check-group.png)
+      ![check-group](../../zh/develop/images/form/check-group.png)
 
   - `textarea-from-file`
     - 带有读取文件功能的多行文本输入框
@@ -854,7 +854,7 @@
       }
       ```
 
-      ![textarea-from-file](/docs/zh/develop/images/form/textarea-from-file.png)
+      ![textarea-from-file](../../zh/develop/images/form/textarea-from-file.png)
 
   - `ip-distributer`
     - IP 输入框
@@ -874,7 +874,7 @@
       }
       ```
 
-      ![ip-distributer](/docs/zh/develop/images/form/ip-distributer.png)
+      ![ip-distributer](../../zh/develop/images/form/ip-distributer.png)
 
   - `mac-address`
     - mac 地址输入框
@@ -891,7 +891,7 @@
       }
       ```
 
-      ![mac-address](/docs/zh/develop/images/form/mac-address.png)
+      ![mac-address](../../zh/develop/images/form/mac-address.png)
 
   - `network-select-table`
     - 选择网络的表单项
@@ -908,7 +908,7 @@
       },
       ```
 
-      ![network-select-table](/docs/zh/develop/images/form/network-select-table.png)
+      ![network-select-table](../../zh/develop/images/form/network-select-table.png)
 
   - `volume-select-table`
     - 选择硬盘的表单项
@@ -935,7 +935,7 @@
       }
       ```
 
-      ![volume-select-table](/docs/zh/develop/images/form/volume-select-table.png)
+      ![volume-select-table](../../zh/develop/images/form/volume-select-table.png)
 
   - `tab-select-table`
     - 带有 Tab 的表格型选择表单项
@@ -955,7 +955,7 @@
       }
       ```
 
-      ![tab-select-table](/docs/zh/develop/images/form/tab-select-table.png)
+      ![tab-select-table](../../zh/develop/images/form/tab-select-table.png)
 
   - `metadata-transfer`
     - 编辑元数据的表单项
@@ -976,7 +976,7 @@
       }
       ```
 
-      ![metadata-transfer](/docs/zh/develop/images/form/metadata-transfer.png)
+      ![metadata-transfer](../../zh/develop/images/form/metadata-transfer.png)
 
   - `aceEditor`
     - aceEditor
@@ -1012,7 +1012,7 @@
       }
       ```
 
-      ![aceEditor](/docs/zh/develop/images/form/ace-editor.png)
+      ![aceEditor](../../zh/develop/images/form/ace-editor.png)
 
   - `input-json`
     - 带有 json 格式验证的输入框
@@ -1042,4 +1042,4 @@
       };
       ```
 
-      ![input-json](/docs/zh/develop/images/form/input-json.png)
+      ![input-json](../../zh/develop/images/form/input-json.png)

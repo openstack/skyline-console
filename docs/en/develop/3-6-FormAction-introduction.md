@@ -1,8 +1,8 @@
-English | [Chinese](/docs/zh/develop/3-6-FormAction-introduction.md)
+English | [Chinese](../../zh/develop/3-6-FormAction-introduction.md)
 
 # Application
 
-![Form single page](/docs/en/develop/images/form/page.png)
+![Form single page](../../en/develop/images/form/page.png)
 
 - After the operation button is clicked, a single page displays the Form form
 - There is an independent route for access
@@ -11,7 +11,7 @@ English | [Chinese](/docs/zh/develop/3-6-FormAction-introduction.md)
 - After clicking the `Cancel` button, it will automatically jump to the corresponding resource list page
 - If the request is sent successfully, a message indicating that the operation was successful will be displayed in the upper right corner, and the message will automatically disappear after a few seconds
 
-  ![Form single page](/docs/en/develop/images/form/create-success.png)
+  ![Form single page](../../en/develop/images/form/create-success.png)
 
 - If the request fails, an error message will be displayed in the upper right corner of the form page, which can only disappear after clicking the close button
 

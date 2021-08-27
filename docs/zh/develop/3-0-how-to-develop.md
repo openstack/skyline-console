@@ -1,4 +1,4 @@
-简体中文 | [English](/docs/en/develop/3-0-how-to-develop.md)
+简体中文 | [English](../../en/develop/3-0-how-to-develop.md)
 
 # 开发一个新的资源列表页
 

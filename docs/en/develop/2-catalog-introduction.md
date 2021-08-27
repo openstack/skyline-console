@@ -1,4 +1,4 @@
-English | [Chinese](/docs/zh/develop/2-catalog-introduction.md)
+English | [Chinese](../../zh/develop/2-catalog-introduction.md)
 
 # Introduction to the first-level directory
 
@@ -90,7 +90,7 @@ English | [Chinese](/docs/zh/develop/2-catalog-introduction.md)
 
 # Directory Introduction for test
 
-[English](/docs/en/test/2-catalog-introduction.md) | [Chinese](/docs/zh/test/2-catalog-introduction.md)
+[English](../../en/test/2-catalog-introduction.md) | [Chinese](../../zh/test/2-catalog-introduction.md)
 
 # Catalog Introduction-Image Version
 

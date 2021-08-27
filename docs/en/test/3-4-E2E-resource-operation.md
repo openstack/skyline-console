@@ -1,4 +1,4 @@
-English | [简体中文]](/docs/zh/test/3-4-E2E-resource-operation.md)
+English | [简体中文]](../../zh/test/3-4-E2E-resource-operation.md)
 
 In the E2E process, when creating a resource, it is often necessary to create the associated resource first, and after deleting the resource, the related resource also needs to be deleted. Therefore, the operation of the related resource is encapsulated based on the principle of complete creation/deletion.
 

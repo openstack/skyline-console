@@ -1,4 +1,4 @@
-English | [简体中文](/docs/zh/develop/3-13-Route-introduction.md)
+English | [简体中文](../../zh/develop/3-13-Route-introduction.md)
 
 # Usage
 

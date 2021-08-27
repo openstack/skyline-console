@@ -1,8 +1,8 @@
-简体中文 | [English](/docs/en/develop/3-3-BaseDetail-introduction.md)
+简体中文 | [English](../../en/develop/3-3-BaseDetail-introduction.md)
 
 # 用途
 
-![详情页](/docs/zh/develop/images/detail/volume.png)
+![详情页](../../zh/develop/images/detail/volume.png)
 
 - 各资源详情页的基类
 - 支持返回列表页

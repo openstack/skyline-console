@@ -1,8 +1,8 @@
-English | [Chinese](/docs/zh/develop/3-4-BaseDetailInfo-introduction.md)
+English | [Chinese](../../zh/develop/3-4-BaseDetailInfo-introduction.md)
 
 # Application
 
-![Details page](/docs/en/develop/images/detail/image-detail-info.png)
+![Details page](../../en/develop/images/detail/image-detail-info.png)
 
 - The base class of components in the Details Tab of each resource detail page
 - Left and right structure display

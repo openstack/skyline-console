@@ -1,12 +1,12 @@
-简体中文 | [English](/docs/en/develop/3-14-I18n-introduction.md)
+简体中文 | [English](../../en/develop/3-14-I18n-introduction.md)
 
 # 用途
 
 - 框架支持国际化，默认支持英文、中文
 
-  ![i18n](/docs/zh/develop/images/i18n/i18n.png)
+  ![i18n](../../zh/develop/images/i18n/i18n.png)
 
-  ![english](/docs/zh/develop/images/i18n/english.png)
+  ![english](../../zh/develop/images/i18n/english.png)
 
 # 代码位置
 

@@ -1,10 +1,10 @@
-English | [Chinese](/docs/zh/develop/3-2-BaseTabList-introduction.md)
+English | [Chinese](../../zh/develop/3-2-BaseTabList-introduction.md)
 
 # Application
 
 - The base class of each switchable list page
 
-  ![Tab list page](/docs/en/develop/images/list/tab-list.png)
+  ![Tab list page](../../en/develop/images/list/tab-list.png)
 
 - Support automatic processing of data display when switching
 

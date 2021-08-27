@@ -1,4 +1,4 @@
-简体中文 | [English](/docs/en/develop/3-5-BaseStore-introduction.md)
+简体中文 | [English](../../en/develop/3-5-BaseStore-introduction.md)
 
 # 用途
 
@@ -82,7 +82,7 @@
     }
     ```
 
-    ![请求](/docs/zh/develop/images/store/response-key.png)
+    ![请求](../../zh/develop/images/store/response-key.png)
 
 ## 按需复写的属性与函数
 

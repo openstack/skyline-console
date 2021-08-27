@@ -1,4 +1,4 @@
-English | [Chinese](/docs/zh/develop/3-5-BaseStore-introduction.md)
+English | [Chinese](../../zh/develop/3-5-BaseStore-introduction.md)
 
 # Application
 
@@ -82,7 +82,7 @@ English | [Chinese](/docs/zh/develop/3-5-BaseStore-introduction.md)
     }
     ```
 
-    ![Request](/docs/en/develop/images/store/response-key.png)
+    ![Request](../../en/develop/images/store/response-key.png)
 
 ## Properties and functions for on-demand overridden
 

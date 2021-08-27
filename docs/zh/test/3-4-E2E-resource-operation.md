@@ -1,4 +1,4 @@
-简体中文 | [English](/docs/en/test/3-4-E2E-resource-operation.md)
+简体中文 | [English](../../en/test/3-4-E2E-resource-operation.md)
 
 在E2E的过程中，创建资源的时候，往往需要先创建关联资源，而删除资源后，也需要删除掉相关资源，所以以完整创建/删除为原则，封装了对相关资源的操作。
 
