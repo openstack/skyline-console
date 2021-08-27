@@ -214,13 +214,13 @@ export default class Create extends ModalAction {
         component: (
           <Row>
             {!peer_ep_group_id ? (
-              <Col>
+              <Col span={24}>
                 <Empty />
               </Col>
             ) : (
               this.endpointGroupStore.list.data
                 .find((i) => i.id === peer_ep_group_id)
-                .endpoints.map((item) => <Col>{item}</Col>)
+                .endpoints.map((item) => <Col span={24}>{item}</Col>)
             )}
           </Row>
         ),
