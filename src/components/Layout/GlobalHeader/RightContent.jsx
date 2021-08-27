@@ -17,6 +17,7 @@ import { Button, Col, Row } from 'antd';
 import Avatar from './AvatarDropdown';
 import styles from './index.less';
 
+// eslint-disable-next-line no-unused-vars
 const gotoConsole = (type, props) => {
   const { rootStore } = props;
   rootStore.clearData();
@@ -35,7 +36,7 @@ const GlobalHeaderRight = (props) => {
     linkRender = (
       <Button
         type="link"
-        onClick={() => gotoConsole(0, props)}
+        href="/base/overview"
         className={styles['single-link']}
       >
         {t('Console')}
@@ -45,8 +46,7 @@ const GlobalHeaderRight = (props) => {
     linkRender = (
       <Button
         type="link"
-        onClick={() => gotoConsole(1, props)}
-        to="/base/overview-admin"
+        href="/base/overview-admin"
         className={styles['single-link']}
       >
         {t('Administrator')}
@@ -72,36 +72,3 @@ const GlobalHeaderRight = (props) => {
 };
 
 export default GlobalHeaderRight;
-
-// import React from 'react';
-// import Avatar from './AvatarDropdown';
-// import { Divider } from 'antd';
-// import styles from './index.less';
-// import Message from './Message';
-// import { Link } from 'react-router-dom';
-
-// const GlobalHeaderRight = (props) => {
-//   const { isAdminPage = false, rootStore: { hasAdminRole = false } = {} } = props;
-//   let linkRender = null;
-//   if (hasAdminRole) {
-//     const consoleLink = isAdminPage ?
-//       <Link to="/base/overview" className={styles.link}>{ t('Console') }</Link> :
-//       <span className={styles.active}>{t('Console')}</span>;
-//     const adminLink = !isAdminPage ?
-//       <Link to="/base/overview-admin" className={styles.link}>{ t('Administrator') }</Link> :
-//       <span className={styles.active}>{t('Administrator')}</span>;
-//     linkRender = <div className={styles.links}>
-//       { consoleLink }
-//       <Divider type="vertical" />
-//       { adminLink }
-//     </div>;
-//   }
-
-//   return <div className={styles.right}>
-//     {linkRender}
-//     <Message />
-//     <Avatar menu />
-//   </div>;
-// };
-
-// export default GlobalHeaderRight;
