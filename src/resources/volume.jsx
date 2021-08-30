@@ -189,7 +189,7 @@ export const volumeFilters = [
   {
     label: t('Status'),
     name: 'status',
-    options: ['available', 'in-use', 'error'].map((it) => ({
+    options: ['available', 'in-use', 'error', 'maintenance'].map((it) => ({
       key: it,
       label: volumeStatus[it],
     })),
