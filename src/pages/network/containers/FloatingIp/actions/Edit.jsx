@@ -42,7 +42,14 @@ export class Edit extends ModalAction {
       description: this.item.description,
       qos_policy_id: {
         selectedRowKeys: item.qos_policy_id ? [item.qos_policy_id] : [],
-        selectedRows: item.qos_policy_id ? [{ name: item.qos_policy_id }] : [],
+        selectedRows: item.qos_policy_id
+          ? [
+              {
+                key: item.qos_policy_id,
+                name: item.qos_policy_id,
+              },
+            ]
+          : [],
       },
     };
   }

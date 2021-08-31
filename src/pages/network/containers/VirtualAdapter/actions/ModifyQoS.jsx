@@ -70,15 +70,19 @@ export default class ModifyQoS extends ModalAction {
   }
 
   get defaultValue() {
+    const enableQosPolicy = this.item.qos_policy_id !== null;
     return {
-      enableQosPolicy: this.item.qos_policy_id !== null,
+      enableQosPolicy,
       qos_policy_id: {
-        selectedRowKeys: [this.item.qos_policy_id],
-        selectedRows: [
-          {
-            name: this.item.qos_policy_id,
-          },
-        ],
+        selectedRowKeys: enableQosPolicy ? [this.item.qos_policy_id] : [],
+        selectedRows: enableQosPolicy
+          ? [
+              {
+                id: this.item.qos_policy_id,
+                name: this.item.qos_policy_id,
+              },
+            ]
+          : [],
       },
     };
   }
