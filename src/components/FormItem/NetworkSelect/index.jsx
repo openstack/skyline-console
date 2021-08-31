@@ -238,6 +238,7 @@ export default class NetworkSelect extends React.Component {
             <span className={styles.subnet_options_cidr}>{it.cidr}</span>
           </div>
         ),
+        name: it.name,
         value: it.id,
       }));
   };

@@ -12,9 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
 import { physicalNodeTypes } from 'resources/instance';
+import { Col, Row } from 'antd';
 
 export class ConfirmStep extends Base {
   init() {}
@@ -81,7 +83,13 @@ export class ConfirmStep extends Base {
         ipTypeOption.label
       } ${subnet} ${ipTypeOption.value === 1 ? ip : ''}`;
     });
-    return values;
+    return (
+      <Row>
+        {values.map((i) => (
+          <Col span={24}>{i}</Col>
+        ))}
+      </Row>
+    );
     // return values.join(<br />);
   }
 
