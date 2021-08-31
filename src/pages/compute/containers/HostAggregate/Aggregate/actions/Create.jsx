@@ -14,7 +14,7 @@
 
 import { inject, observer } from 'mobx-react';
 import globalAggregateStore from 'stores/nova/aggregate';
-import { ModalAction } from '@/containers/Action';
+import { ModalAction } from 'containers/Action';
 import globalAvailabilityZoneStore from 'stores/nova/zone';
 import { getYesNoList } from 'utils/index';
 

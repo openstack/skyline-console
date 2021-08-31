@@ -18,9 +18,7 @@ import globalFloatingIpsStore from 'stores/neutron/floatingIp';
 import { getQoSPolicyTabs } from 'resources/qos-policy';
 import { QoSPolicyStore } from 'stores/neutron/qos-policy';
 
-@inject('rootStore')
-@observer
-export default class Edit extends ModalAction {
+export class Edit extends ModalAction {
   static id = 'edit-floating-ip';
 
   static policy = 'update_floatingip';
@@ -86,3 +84,5 @@ export default class Edit extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Edit));

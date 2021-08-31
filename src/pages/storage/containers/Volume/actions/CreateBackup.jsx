@@ -18,9 +18,7 @@ import globalBackupStore from 'stores/cinder/backup';
 import { isAvailableOrInUse, isInUse } from 'resources/volume';
 import { createTip, backupModeList, modeTip } from 'resources/backup';
 
-@inject('rootStore')
-@observer
-export default class CreateBackup extends ModalAction {
+export class CreateBackup extends ModalAction {
   static id = 'create-backup';
 
   static title = t('Create Backup');
@@ -86,3 +84,5 @@ export default class CreateBackup extends ModalAction {
     return this.store.create(body);
   };
 }
+
+export default inject('rootStore')(observer(CreateBackup));

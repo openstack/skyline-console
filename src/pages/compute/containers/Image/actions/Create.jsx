@@ -27,8 +27,6 @@ import { NoSetValue, getOptionsWithNoset, getOptions } from 'utils/index';
 import { ProjectStore } from 'stores/keystone/project';
 import { projectTableOptions } from 'resources/project';
 
-@inject('rootStore')
-@observer
 class CreateForm extends FormAction {
   init() {
     this.store = globalImageStore;
@@ -334,4 +332,4 @@ class CreateForm extends FormAction {
   };
 }
 
-export default CreateForm;
+export default inject('rootStore')(observer(CreateForm));

@@ -38,9 +38,7 @@ import { volumeTypeSelectProps } from 'resources/volume-type';
 import { allSettled } from 'utils';
 import styles from './index.less';
 
-@inject('rootStore')
-@observer
-export default class Create extends FormAction {
+export class Create extends FormAction {
   init() {
     this.snapshotStore = globalSnapshotStore;
     this.imageStore = globalImageStore;
@@ -582,3 +580,5 @@ export default class Create extends FormAction {
     );
   };
 }
+
+export default inject('rootStore')(observer(Create));

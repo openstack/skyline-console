@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import BlankLayout from '@/layouts/Blank';
+import BlankLayout from 'layouts/Blank';
 import E404 from 'pages/base/containers/404';
 import { lazy } from 'react';
 

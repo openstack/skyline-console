@@ -17,9 +17,7 @@ import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
 
-@inject('rootStore')
-@observer
-export default class BaseDetail extends Base {
+export class BaseDetail extends Base {
   get leftCards() {
     const cards = [this.attachmentsCard];
     if (this.detailData.volume_image_metadata) {
@@ -106,3 +104,5 @@ export default class BaseDetail extends Base {
     };
   }
 }
+
+export default inject('rootStore')(observer(BaseDetail));

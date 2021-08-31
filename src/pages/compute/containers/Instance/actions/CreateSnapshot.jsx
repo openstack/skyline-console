@@ -19,9 +19,7 @@ import { checkStatus, isIronicInstance } from 'resources/instance';
 import globalInstanceVolumeStore from 'stores/nova/instance-volume';
 import globalVolumeTypeStore from 'stores/cinder/volume-type';
 
-@inject('rootStore')
-@observer
-export default class CreateSnapshot extends ModalAction {
+export class CreateSnapshot extends ModalAction {
   static id = 'create-snapshot';
 
   static title = t('Create Snapshot');
@@ -87,3 +85,5 @@ export default class CreateSnapshot extends ModalAction {
     return this.store.createImage({ id, image: snapshot });
   };
 }
+
+export default inject('rootStore')(observer(CreateSnapshot));

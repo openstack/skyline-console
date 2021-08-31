@@ -18,9 +18,7 @@ import { FloatingIpStore } from 'stores/neutron/floatingIp';
 import { Link } from 'react-router-dom';
 import Base from 'containers/BaseDetail';
 
-@inject('rootStore')
-@observer
-export default class BaseDetail extends Base {
+export class BaseDetail extends Base {
   init() {
     this.store = new FloatingIpStore();
   }
@@ -86,3 +84,5 @@ export default class BaseDetail extends Base {
     };
   }
 }
+
+export default inject('rootStore')(observer(BaseDetail));

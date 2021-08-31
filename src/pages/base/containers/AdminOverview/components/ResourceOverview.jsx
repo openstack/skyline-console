@@ -81,8 +81,6 @@ const volumeColors = {
   other: { color: '#F6B23D', text: t('Others') },
 };
 
-@inject('rootStore')
-@observer
 class virtualResourceInfo extends Component {
   componentDidMount() {
     this.props.store.getVirtualResource();
@@ -199,4 +197,4 @@ virtualResourceInfo.propTypes = {
   store: PropTypes.object.isRequired,
 };
 
-export default virtualResourceInfo;
+export default inject('rootStore')(observer(virtualResourceInfo));

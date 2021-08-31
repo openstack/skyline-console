@@ -30,9 +30,7 @@ import SecurityGroup from './SecurityGroup';
 import ActionLog from './ActionLog';
 import actionConfigs from '../actions';
 
-@inject('rootStore')
-@observer
-export default class InstanceDetail extends Base {
+export class InstanceDetail extends Base {
   get name() {
     return t('instance');
   }
@@ -161,3 +159,5 @@ export default class InstanceDetail extends Base {
     this.store = new ServerStore();
   }
 }
+
+export default inject('rootStore')(observer(InstanceDetail));

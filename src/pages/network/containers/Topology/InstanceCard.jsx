@@ -15,7 +15,7 @@
 import React from 'react';
 import { Popover, Avatar } from 'antd';
 import { instanceStatus } from 'resources/instance';
-import instanceImage from '@/asset/image/instance.png';
+import instanceImage from 'asset/image/instance.png';
 import ImageType from 'components/ImageType';
 import { Link } from 'react-router-dom';
 import styles from './index.less';

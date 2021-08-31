@@ -22,9 +22,7 @@ import globalSubnetStore from 'stores/neutron/subnet';
 import { QoSPolicyStore } from 'stores/neutron/qos-policy';
 import { getQoSPolicyTabs } from 'resources/qos-policy';
 
-@inject('rootStore')
-@observer
-export default class Allocate extends ModalAction {
+export class Allocate extends ModalAction {
   static id = 'allocate';
 
   static title = t('Allocate IP');
@@ -227,3 +225,5 @@ export default class Allocate extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Allocate));

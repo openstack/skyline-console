@@ -22,9 +22,7 @@ import User from '../../User';
 import Quota from './Quota';
 import actionConfigs from '../actions';
 
-@inject('rootStore')
-@observer
-export default class InstanceDetail extends Base {
+export class Detail extends Base {
   get name() {
     return t('project');
   }
@@ -114,3 +112,5 @@ export default class InstanceDetail extends Base {
     this.routing.push(`${this.listUrl}/edit/${id}`);
   };
 }
+
+export default inject('rootStore')(observer(Detail));

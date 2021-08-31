@@ -18,9 +18,7 @@ import { QoSPolicyStore } from 'stores/neutron/qos-policy';
 import { qosPolicyColumns, qosPolicyFilters } from 'resources/qos-policy';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class QoSPolicy extends Base {
+export class QoSPolicy extends Base {
   init() {
     this.store = new QoSPolicyStore();
     this.downloadStore = new QoSPolicyStore();
@@ -83,3 +81,5 @@ export default class QoSPolicy extends Base {
     return filters;
   }
 }
+
+export default inject('rootStore')(observer(QoSPolicy));

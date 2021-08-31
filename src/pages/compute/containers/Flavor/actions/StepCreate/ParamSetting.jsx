@@ -37,9 +37,7 @@ import { parse } from 'qs';
 import KeyValueInput from 'components/FormItem/KeyValueInput';
 import { isEmpty } from 'lodash';
 
-@inject('rootStore')
-@observer
-export default class ParamSetting extends Base {
+export class ParamSetting extends Base {
   init() {
     this.settingStore = globalSettingStore;
     this.getSettings();
@@ -520,3 +518,5 @@ export default class ParamSetting extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(ParamSetting));

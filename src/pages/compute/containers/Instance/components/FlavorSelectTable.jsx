@@ -32,9 +32,7 @@ import {
 } from 'resources/flavor';
 import styles from './index.less';
 
-@inject('rootStore')
-@observer
-export default class FlavorSelectTable extends Component {
+export class FlavorSelectTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -351,3 +349,5 @@ export default class FlavorSelectTable extends Component {
     return <SelectTable {...props} />;
   }
 }
+
+export default inject('rootStore')(observer(FlavorSelectTable));

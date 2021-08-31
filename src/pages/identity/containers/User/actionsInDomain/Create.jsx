@@ -22,9 +22,7 @@ import { getPasswordOtherRule } from 'utils/validate';
 import globalDomainStore from 'stores/keystone/domain';
 import { statusTypes } from 'utils/constants';
 
-@inject('rootStore')
-@observer
-export default class CreateForm extends ModalAction {
+export class CreateForm extends ModalAction {
   init() {
     this.store = globalUserStore;
     this.userGroupStore = globalGroupStore;
@@ -233,3 +231,5 @@ export default class CreateForm extends ModalAction {
     return this.store.create(data);
   };
 }
+
+export default inject('rootStore')(observer(CreateForm));

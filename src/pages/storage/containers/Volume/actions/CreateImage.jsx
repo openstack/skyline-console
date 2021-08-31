@@ -18,9 +18,7 @@ import { imageOS, imageFormats } from 'resources/image';
 import globalVolumeStore from 'stores/cinder/volume';
 import { isAvailable } from 'resources/volume';
 
-@inject('rootStore')
-@observer
-export default class CreateImage extends ModalAction {
+export class CreateImage extends ModalAction {
   static id = 'create-image';
 
   static title = t('Create Image');
@@ -84,3 +82,5 @@ export default class CreateImage extends ModalAction {
     return this.store.uploadImage(id, values);
   };
 }
+
+export default inject('rootStore')(observer(CreateImage));

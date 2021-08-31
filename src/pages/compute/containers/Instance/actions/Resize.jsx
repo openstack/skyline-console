@@ -24,9 +24,7 @@ import {
 } from 'resources/instance';
 import FlavorSelectTable from '../components/FlavorSelectTable';
 
-@inject('rootStore')
-@observer
-export default class Resize extends ModalAction {
+export class Resize extends ModalAction {
   static id = 'resize';
 
   static title = t('Resize');
@@ -142,3 +140,5 @@ export default class Resize extends ModalAction {
     return globalServerStore.resize({ id, flavor });
   };
 }
+
+export default inject('rootStore')(observer(Resize));

@@ -26,9 +26,7 @@ import {
 import Base from 'components/Form';
 import FlavorSelectTable from '../../../components/FlavorSelectTable';
 
-@inject('rootStore')
-@observer
-export default class BaseStep extends Base {
+export class BaseStep extends Base {
   init() {
     this.imageStore = globalImageStore;
     this.getAvailZones();
@@ -209,3 +207,5 @@ export default class BaseStep extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(BaseStep));

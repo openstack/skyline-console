@@ -19,9 +19,7 @@ import { isEqual } from 'lodash';
 import members from './Rule';
 import actionConfigs from '../actions';
 
-@inject('rootStore')
-@observer
-export default class SecurityGroupDetail extends Base {
+export class SecurityGroupDetail extends Base {
   get name() {
     return t('security group');
   }
@@ -79,3 +77,5 @@ export default class SecurityGroupDetail extends Base {
     }
   }
 }
+
+export default inject('rootStore')(observer(SecurityGroupDetail));

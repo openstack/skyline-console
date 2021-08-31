@@ -20,9 +20,7 @@ import Base from 'containers/BaseDetail';
 import { isObject, isArray } from 'lodash';
 import { Link } from 'react-router-dom';
 
-@inject('rootStore')
-@observer
-export default class BaseDetail extends Base {
+export class BaseDetail extends Base {
   get isImageDetail() {
     const { pathname } = this.props.location;
     return pathname.indexOf('image') >= 0;
@@ -197,3 +195,5 @@ export default class BaseDetail extends Base {
     };
   }
 }
+
+export default inject('rootStore')(observer(BaseDetail));

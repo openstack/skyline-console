@@ -18,9 +18,7 @@ import globalVolumeStore from 'stores/cinder/volume';
 import globalVolumeTypeStore from 'stores/cinder/volume-type';
 import { isAvailableOrInUse, isOsDisk } from 'resources/volume';
 
-@inject('rootStore')
-@observer
-export default class ChangeType extends ModalAction {
+export class ChangeType extends ModalAction {
   static id = 'change-type';
 
   static title = t('Change Type');
@@ -99,3 +97,5 @@ export default class ChangeType extends ModalAction {
     return this.store.retype(id, body);
   };
 }
+
+export default inject('rootStore')(observer(ChangeType));

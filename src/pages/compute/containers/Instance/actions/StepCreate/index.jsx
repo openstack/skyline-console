@@ -29,8 +29,6 @@ import SystemStep from './SystemStep';
 import NetworkStep from './NetworkStep';
 import BaseStep from './BaseStep';
 
-@inject('rootStore')
-@observer
 class StepCreate extends StepAction {
   static id = 'instance-create';
 
@@ -387,4 +385,4 @@ class StepCreate extends StepAction {
   };
 }
 
-export default StepCreate;
+export default inject('rootStore')(observer(StepCreate));

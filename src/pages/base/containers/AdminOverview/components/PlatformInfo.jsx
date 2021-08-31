@@ -48,8 +48,6 @@ const actions = [
   },
 ];
 
-@inject('rootStore')
-@observer
 class ProjectInfo extends Component {
   componentDidMount() {
     this.props.store.getProjectInfoData();
@@ -101,4 +99,4 @@ ProjectInfo.propTypes = {
   store: PropTypes.object.isRequired,
 };
 
-export default ProjectInfo;
+export default inject('rootStore')(observer(ProjectInfo));

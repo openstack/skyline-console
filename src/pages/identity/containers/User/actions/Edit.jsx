@@ -18,8 +18,6 @@ import globalUserStore from 'stores/keystone/user';
 import globalDomainStore from 'stores/keystone/domain';
 import { phoneNumberValidate, emailValidate } from 'utils/validate';
 
-@inject('rootStore')
-@observer
 class EditForm extends ModalAction {
   init() {
     this.store = globalUserStore;
@@ -182,4 +180,4 @@ class EditForm extends ModalAction {
   };
 }
 
-export default EditForm;
+export default inject('rootStore')(observer(EditForm));

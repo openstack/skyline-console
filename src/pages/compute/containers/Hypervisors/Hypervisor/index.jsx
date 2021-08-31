@@ -17,9 +17,7 @@ import Base from 'containers/List';
 import globalHypervisorStore from 'stores/nova/hypervisor';
 import { hypervisorColumns, hypervisorFilters } from 'resources/hypervisor';
 
-@inject('rootStore')
-@observer
-export default class Hypervisors extends Base {
+export class Hypervisors extends Base {
   init() {
     this.store = globalHypervisorStore;
   }
@@ -59,3 +57,5 @@ export default class Hypervisors extends Base {
     return hypervisorFilters;
   }
 }
+
+export default inject('rootStore')(observer(Hypervisors));

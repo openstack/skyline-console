@@ -20,9 +20,7 @@ import globalGroupStore from 'stores/keystone/user-group';
 import globalRoleStore from 'stores/keystone/role';
 import { ModalAction } from 'containers/Action';
 
-@inject('rootStore')
-@observer
-export default class UserGroupManager extends ModalAction {
+export class UserGroupManager extends ModalAction {
   constructor(props) {
     super(props);
     this.state = {
@@ -204,3 +202,5 @@ export default class UserGroupManager extends ModalAction {
     return results;
   };
 }
+
+export default inject('rootStore')(observer(UserGroupManager));

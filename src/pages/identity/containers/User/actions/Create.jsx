@@ -28,8 +28,6 @@ import {
 } from 'utils/validate';
 import { statusTypes } from 'utils/constants';
 
-@inject('rootStore')
-@observer
 class CreateForm extends FormAction {
   constructor(props) {
     super(props);
@@ -395,4 +393,4 @@ class CreateForm extends FormAction {
   };
 }
 
-export default CreateForm;
+export default inject('rootStore')(observer(CreateForm));

@@ -33,9 +33,7 @@ import {
 // import EditYamlModal from 'components/Modals/EditYaml';
 const { isIPv4, isIpv6 } = ipValidate;
 
-@inject('rootStore')
-@observer
-export default class NetworkStep extends Base {
+export class NetworkStep extends Base {
   init() {
     this.networkStore = new NetworkStore();
     this.subnetStore = new SubnetStore();
@@ -259,3 +257,5 @@ export default class NetworkStep extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(NetworkStep));

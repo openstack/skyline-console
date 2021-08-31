@@ -27,8 +27,6 @@ const colors = {
   full: { color: '#E8684A', text: t('Full') },
 };
 
-@inject('rootStore')
-@observer
 class QuotaOverview extends Component {
   constructor(props) {
     super(props);
@@ -272,4 +270,4 @@ class QuotaOverview extends Component {
   }
 }
 
-export default QuotaOverview;
+export default inject('rootStore')(observer(QuotaOverview));

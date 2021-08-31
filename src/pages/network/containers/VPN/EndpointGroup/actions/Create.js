@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { inject, observer } from 'mobx-react';
-import { ModalAction } from '@/containers/Action';
+import { ModalAction } from 'containers/Action';
 import { ipValidate } from 'utils/validate';
 import { RouterStore } from 'stores/neutron/router';
 import { SubnetStore } from 'stores/neutron/subnet';

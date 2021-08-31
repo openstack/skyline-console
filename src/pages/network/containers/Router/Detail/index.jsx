@@ -23,9 +23,7 @@ import StaticRouter from '../StaticRouter';
 import actionConfigs from '../actions';
 // import Snat from '../Snat';
 
-@inject('rootStore')
-@observer
-export default class RouterDetail extends Base {
+export class RouterDetail extends Base {
   get name() {
     return t('router');
   }
@@ -118,3 +116,5 @@ export default class RouterDetail extends Base {
     this.store = new RouterStore();
   }
 }
+
+export default inject('rootStore')(observer(RouterDetail));

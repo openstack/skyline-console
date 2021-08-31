@@ -36,8 +36,7 @@ export const color = {
   warnColor: '#FE9901',
   dangerColor: '#D93126',
 };
-@inject('rootStore')
-@observer
+
 class ResourceCircle extends Component {
   constructor(props) {
     super(props);
@@ -129,4 +128,4 @@ class ResourceCircle extends Component {
   }
 }
 
-export default ResourceCircle;
+export default inject('rootStore')(observer(ResourceCircle));

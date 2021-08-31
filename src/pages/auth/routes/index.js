@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import AuthLayout from '@/layouts/Auth';
+import AuthLayout from 'layouts/Auth';
 import Login from '../containers/Login';
 import ChangePassword from '../containers/ChangePassword';
 

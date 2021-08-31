@@ -29,9 +29,7 @@ import {
   canImageCreateInstance,
 } from 'resources/image';
 
-@inject('rootStore')
-@observer
-export default class Rebuild extends ModalAction {
+export class Rebuild extends ModalAction {
   static id = 'rebuild';
 
   static title = t('Rebuild Instance');
@@ -170,3 +168,5 @@ export default class Rebuild extends ModalAction {
     return this.store.rebuild({ id, image: selectedRowKeys[0] });
   };
 }
+
+export default inject('rootStore')(observer(Rebuild));

@@ -24,9 +24,7 @@ import {
   isIronicInstance,
 } from 'resources/instance';
 
-@inject('rootStore')
-@observer
-export default class DetachIsoVolume extends ModalAction {
+export class DetachIsoVolume extends ModalAction {
   static id = 'detach-iso-volume';
 
   static title = t('Detach Iso Volume');
@@ -143,3 +141,5 @@ export default class DetachIsoVolume extends ModalAction {
     return this.store.detachVolume({ id, volumes: selectedRowKeys });
   };
 }
+
+export default inject('rootStore')(observer(DetachIsoVolume));

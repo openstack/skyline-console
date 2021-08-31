@@ -30,9 +30,7 @@ import SystemStep from './SystemStep';
 import NetworkStep from './NetworkStep';
 import BaseStep from './BaseStep';
 
-@inject('rootStore')
-@observer
-export default class CreateIronic extends StepAction {
+export class CreateIronic extends StepAction {
   static id = 'ironic-create';
 
   static title = t('Create Ironic Instance');
@@ -344,3 +342,5 @@ export default class CreateIronic extends StepAction {
     );
   };
 }
+
+export default inject('rootStore')(observer(CreateIronic));

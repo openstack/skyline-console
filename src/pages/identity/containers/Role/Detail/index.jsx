@@ -19,9 +19,7 @@ import User from '../../User';
 import Group from '../../UserGroup';
 import impliedRole from './BaseDetail';
 
-@inject('rootStore')
-@observer
-export default class RoleDetail extends Base {
+export class RoleDetail extends Base {
   get name() {
     return t('role');
   }
@@ -72,3 +70,5 @@ export default class RoleDetail extends Base {
     return tabs;
   }
 }
+
+export default inject('rootStore')(observer(RoleDetail));

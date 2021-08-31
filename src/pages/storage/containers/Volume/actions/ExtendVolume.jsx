@@ -17,9 +17,7 @@ import { ModalAction } from 'containers/Action';
 import globalVolumeStore from 'stores/cinder/volume';
 import { isAvailableOrInUse } from 'resources/volume';
 
-@inject('rootStore')
-@observer
-export default class ExtendVolume extends ModalAction {
+export class ExtendVolume extends ModalAction {
   static id = 'extend-snapshot';
 
   static title = t('Extend Volume');
@@ -77,3 +75,5 @@ export default class ExtendVolume extends ModalAction {
     return this.store.extendSize(id, rest);
   };
 }
+
+export default inject('rootStore')(observer(ExtendVolume));

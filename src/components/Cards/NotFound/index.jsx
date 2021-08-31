@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import React from 'react';
-import emptyCard from '@/asset/image/empty-card.svg';
+import emptyCard from 'asset/image/empty-card.svg';
 import { firstUpperCase } from 'utils/index';
 import { Link } from 'react-router-dom';
 import styles from './index.less';

@@ -19,8 +19,6 @@ import globalProjectStore from 'stores/keystone/project';
 import { regex } from 'utils/validate';
 import { statusTypes } from 'utils/constants';
 
-@inject('rootStore')
-@observer
 class CreateForm extends ModalAction {
   constructor(props) {
     super(props);
@@ -156,4 +154,4 @@ class CreateForm extends ModalAction {
   };
 }
 
-export default CreateForm;
+export default inject('rootStore')(observer(CreateForm));

@@ -21,9 +21,7 @@ import { volumeStatus } from 'resources/volume';
 import BaseDetail from './BaseDetail';
 import actionConfigs from '../actions';
 
-@inject('rootStore')
-@observer
-export default class VolumeDetail extends Base {
+export class VolumeDetail extends Base {
   get name() {
     return t('volume');
   }
@@ -113,3 +111,5 @@ export default class VolumeDetail extends Base {
     this.store = new VolumeStore();
   }
 }
+
+export default inject('rootStore')(observer(VolumeDetail));

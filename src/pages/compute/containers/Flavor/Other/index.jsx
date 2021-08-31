@@ -19,9 +19,7 @@ import { emptyActionConfig } from 'utils/constants';
 import { getBaseColumns, extraColumns } from 'resources/flavor';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class Flavor extends Base {
+export class Flavor extends Base {
   init() {
     this.store = new FlavorStore();
   }
@@ -62,3 +60,5 @@ export default class Flavor extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Flavor));

@@ -25,9 +25,7 @@ import {
 } from 'resources/instance';
 import FlavorSelectTable from '../components/FlavorSelectTable';
 
-@inject('rootStore')
-@observer
-export default class ResizeOnline extends ModalAction {
+export class ResizeOnline extends ModalAction {
   static id = 'resize-online';
 
   static title = t('Online Resize');
@@ -138,3 +136,5 @@ export default class ResizeOnline extends ModalAction {
     return globalServerStore.liveResize({ id, flavor });
   };
 }
+
+export default inject('rootStore')(observer(ResizeOnline));
