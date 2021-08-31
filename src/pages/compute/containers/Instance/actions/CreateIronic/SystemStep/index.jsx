@@ -17,9 +17,7 @@ import globalKeyPairStore from 'stores/nova/keypair';
 import Base from 'components/Form';
 import { getPasswordOtherRule } from 'utils/validate';
 
-@inject('rootStore')
-@observer
-export default class SystemStep extends Base {
+export class SystemStep extends Base {
   init() {
     this.keyPairStore = globalKeyPairStore;
     this.getKeypairs();
@@ -142,3 +140,5 @@ export default class SystemStep extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(SystemStep));

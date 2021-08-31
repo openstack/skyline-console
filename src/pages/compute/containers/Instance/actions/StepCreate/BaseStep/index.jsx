@@ -32,9 +32,7 @@ import InstanceVolume from 'components/FormItem/InstanceVolume';
 import { isGpuCategory } from 'resources/flavor';
 import FlavorSelectTable from '../../../components/FlavorSelectTable';
 
-@inject('rootStore')
-@observer
-export default class BaseStep extends Base {
+export class BaseStep extends Base {
   init() {
     this.serverStore = globalServerStore;
     this.imageStore = globalImageStore;
@@ -458,3 +456,5 @@ export default class BaseStep extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(BaseStep));

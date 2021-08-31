@@ -23,9 +23,7 @@ import { getPasswordOtherRule } from 'utils/validate';
 import { hypervisorColumns, hypervisorFilters } from 'resources/hypervisor';
 import { physicalNodeTypes } from 'resources/instance';
 
-@inject('rootStore')
-@observer
-export default class SystemStep extends Base {
+export class SystemStep extends Base {
   init() {
     this.keyPairStore = globalKeyPairStore;
     this.serverStore = globalServerStore;
@@ -340,3 +338,5 @@ export default class SystemStep extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(SystemStep));

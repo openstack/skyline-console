@@ -29,7 +29,7 @@ import {
 } from 'antd';
 import PrimaryActionButtons from 'components/Tables/Base/PrimaryActionButtons';
 import classnames from 'classnames';
-import interfaceImg from '@/asset/image/interface.png';
+import interfaceImg from 'asset/image/interface.png';
 import { CaretRightOutlined } from '@ant-design/icons';
 import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
 import { getSelfColumns } from 'resources/security-group-rule';
@@ -41,9 +41,7 @@ import ManageSecurityGroup from './action/ManageSecurityGroup';
 const { Panel } = Collapse;
 const { TabPane } = Tabs;
 
-@inject('rootStore')
-@observer
-export default class SecurityGroup extends React.Component {
+export class SecurityGroup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -248,3 +246,5 @@ export default class SecurityGroup extends React.Component {
     );
   }
 }
+
+export default inject('rootStore')(observer(SecurityGroup));

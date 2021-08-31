@@ -30,6 +30,10 @@ export class HttpRequest {
     this.request = {};
   }
 
+  gotoLoginPage(path) {
+    globalRootStore.gotoLoginPage(path);
+  }
+
   /**
    * @param instance instance of axios
    * @param url request url
@@ -93,7 +97,7 @@ export class HttpRequest {
           if (status === 401) {
             const currentPath = window.location.pathname;
             if (currentPath.indexOf('login') < 0) {
-              globalRootStore.gotoLoginPage(currentPath);
+              this.gotoLoginPage(currentPath);
             }
           }
         }

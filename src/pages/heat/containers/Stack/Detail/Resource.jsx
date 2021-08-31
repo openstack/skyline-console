@@ -19,9 +19,7 @@ import { StackResourceStore } from 'stores/heat/resource';
 import { stackStatus } from 'resources/stack';
 import { Link } from 'react-router-dom';
 
-@inject('rootStore')
-@observer
-export default class Resource extends Base {
+export class Resource extends Base {
   init() {
     this.store = new StackResourceStore();
   }
@@ -237,3 +235,5 @@ export default class Resource extends Base {
     },
   ];
 }
+
+export default inject('rootStore')(observer(Resource));

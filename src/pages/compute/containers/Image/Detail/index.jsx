@@ -19,9 +19,7 @@ import Base from 'containers/TabDetail';
 import BaseDetail from './BaseDetail';
 import actionConfigs from '../actions';
 
-@inject('rootStore')
-@observer
-export default class ImageDetail extends Base {
+export class ImageDetail extends Base {
   get name() {
     return this.isImageDetail ? t('image') : t('instance snapshot');
   }
@@ -92,3 +90,5 @@ export default class ImageDetail extends Base {
     this.store = new ImageStore();
   }
 }
+
+export default inject('rootStore')(observer(ImageDetail));

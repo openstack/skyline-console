@@ -37,9 +37,7 @@ import { getSinceTime } from 'utils/time';
 import AttachVolume from 'pages/compute/containers/Instance/actions/AttachVolume';
 import styles from './index.less';
 
-@inject('rootStore')
-@observer
-export default class BaseDetail extends Base {
+export class BaseDetail extends Base {
   componentDidMount() {
     this.fetchVolumes();
     this.fetchInterfaces();
@@ -424,3 +422,5 @@ export default class BaseDetail extends Base {
     };
   }
 }
+
+export default inject('rootStore')(observer(BaseDetail));

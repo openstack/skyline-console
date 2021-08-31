@@ -20,7 +20,7 @@
 import React from 'react';
 import { Card, Button, Spin, Checkbox } from 'antd';
 import G6 from '@antv/g6';
-import image from '@/asset/image/cloud.png';
+import image from 'asset/image/cloud.png';
 import { RedoOutlined } from '@ant-design/icons';
 import { observer, inject } from 'mobx-react';
 import globalNetworkStore from 'stores/neutron/network';

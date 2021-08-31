@@ -18,8 +18,6 @@ import globalProjectStore from 'stores/keystone/project';
 import { regex } from 'utils/validate';
 import { statusTypes } from 'utils/constants';
 
-@inject('rootStore')
-@observer
 class EditForm extends ModalAction {
   init() {
     this.store = globalProjectStore;
@@ -108,4 +106,4 @@ class EditForm extends ModalAction {
   };
 }
 
-export default EditForm;
+export default inject('rootStore')(observer(EditForm));

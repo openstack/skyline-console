@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import BaseLayout from '@/layouts/Basic';
+import BaseLayout from 'layouts/Basic';
 import E404 from 'pages/base/containers/404';
 import Network from '../containers/Network';
 import AdminNetwork from '../containers/Network/AdminNetwork';

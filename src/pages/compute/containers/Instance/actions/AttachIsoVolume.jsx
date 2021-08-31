@@ -24,9 +24,7 @@ import {
 import { multiTip } from 'resources/volume';
 import { get as _get } from 'lodash';
 
-@inject('rootStore')
-@observer
-export default class AttachIsoVolume extends ModalAction {
+export class AttachIsoVolume extends ModalAction {
   static id = 'attach-iso-volume';
 
   static title = t('Attach Iso Volume');
@@ -128,3 +126,5 @@ export default class AttachIsoVolume extends ModalAction {
     return this.store.attachVolume({ id, body });
   };
 }
+
+export default inject('rootStore')(observer(AttachIsoVolume));

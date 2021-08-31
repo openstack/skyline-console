@@ -22,9 +22,7 @@ import Event from './Event';
 import Template from './Template';
 import actionConfigs from '../actions';
 
-@inject('rootStore')
-@observer
-export default class StackDetail extends Base {
+export class StackDetail extends Base {
   get name() {
     return t('stack');
   }
@@ -99,3 +97,5 @@ export default class StackDetail extends Base {
     return tabs;
   }
 }
+
+export default inject('rootStore')(observer(StackDetail));

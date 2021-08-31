@@ -21,9 +21,7 @@ import { yesNoOptions, emptyActionConfig } from 'utils/constants';
 import actionConfigs from './actions';
 import actionConfigsInDomain from './actionsInDomain';
 
-@inject('rootStore')
-@observer
-export default class User extends Base {
+export class User extends Base {
   init() {
     this.store = globalUserStore;
     this.getDomains();
@@ -202,3 +200,5 @@ export default class User extends Base {
     this.list.silent = false;
   }
 }
+
+export default inject('rootStore')(observer(User));

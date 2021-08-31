@@ -64,7 +64,7 @@ export default class DeleteAction extends ConfirmAction {
     }
     const direction = item.direction === 'egress' ? 'to' : 'from';
     if (remote_group_id) {
-      remote = remote_group_id.substr(0, 13);
+      remote = remote_group_id;
     } else {
       remote = remote_ip_prefix || t('ANY');
     }

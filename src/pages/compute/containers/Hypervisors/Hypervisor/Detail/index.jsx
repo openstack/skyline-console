@@ -17,9 +17,7 @@ import { HypervisorStore } from 'stores/nova/hypervisor';
 import Base from 'containers/TabDetail';
 import Members from 'pages/compute/containers/Instance';
 
-@inject('rootStore')
-@observer
-export default class HypervisorDetail extends Base {
+export class HypervisorDetail extends Base {
   get name() {
     return t('hypervisor');
   }
@@ -71,3 +69,5 @@ export default class HypervisorDetail extends Base {
     this.store = new HypervisorStore();
   }
 }
+
+export default inject('rootStore')(observer(HypervisorDetail));

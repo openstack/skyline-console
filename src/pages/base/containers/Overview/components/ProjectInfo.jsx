@@ -18,8 +18,6 @@ import { inject, observer } from 'mobx-react';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import styles from '../style.less';
 
-@inject('rootStore')
-@observer
 class ProjectInfo extends Component {
   constructor(props) {
     super(props);
@@ -87,4 +85,4 @@ class ProjectInfo extends Component {
   }
 }
 
-export default ProjectInfo;
+export default inject('rootStore')(observer(ProjectInfo));

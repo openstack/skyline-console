@@ -18,9 +18,7 @@ import React from 'react';
 import { ModalAction } from 'containers/Action';
 import globalVolumeTypeStore from 'stores/cinder/volume-type';
 
-@inject('rootStore')
-@observer
-export default class QuotaManager extends ModalAction {
+export class QuotaManager extends ModalAction {
   static id = 'quota-management';
 
   static title = t('Edit Quota');
@@ -374,3 +372,5 @@ export default class QuotaManager extends ModalAction {
     return results;
   };
 }
+
+export default inject('rootStore')(observer(QuotaManager));

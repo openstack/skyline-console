@@ -21,9 +21,7 @@ import { ModalAction } from 'containers/Action';
 import { isNotLocked, checkStatus, isIronicInstance } from 'resources/instance';
 import { isOsDisk } from 'resources/volume';
 
-@inject('rootStore')
-@observer
-export default class ExtendRootVolume extends ModalAction {
+export class ExtendRootVolume extends ModalAction {
   static id = 'extend-root-volume';
 
   static title = t('Extend Root Volume');
@@ -118,3 +116,5 @@ export default class ExtendRootVolume extends ModalAction {
     return globalVolumeStore.extendSize(id, body);
   };
 }
+
+export default inject('rootStore')(observer(ExtendRootVolume));

@@ -18,9 +18,7 @@ import { getRouterColumns, routerFitlers } from 'resources/router';
 import { RouterStore } from 'stores/neutron/router';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class Routes extends Base {
+export class Routes extends Base {
   init() {
     this.store = new RouterStore();
     this.downloadStore = new RouterStore();
@@ -62,3 +60,5 @@ export default class Routes extends Base {
     return routerFitlers;
   }
 }
+
+export default inject('rootStore')(observer(Routes));

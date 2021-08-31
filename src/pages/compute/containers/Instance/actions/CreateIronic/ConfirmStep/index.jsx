@@ -15,9 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
 
-@inject('rootStore')
-@observer
-export default class ConfirmStep extends Base {
+export class ConfirmStep extends Base {
   init() {}
 
   get title() {
@@ -169,3 +167,5 @@ export default class ConfirmStep extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(ConfirmStep));

@@ -24,9 +24,7 @@ import {
   availabilityZoneResource,
 } from 'resources/neutron';
 
-@inject('rootStore')
-@observer
-export default class Create extends ModalAction {
+export class Create extends ModalAction {
   static id = 'create';
 
   static title = t('Create Router');
@@ -183,3 +181,5 @@ export default class Create extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Create));

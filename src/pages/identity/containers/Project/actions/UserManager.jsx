@@ -21,9 +21,7 @@ import globalRoleStore from 'stores/keystone/role';
 import { ModalAction } from 'containers/Action';
 import globalDomainStore from 'stores/keystone/domain';
 
-@inject('rootStore')
-@observer
-export default class UserManager extends ModalAction {
+export class UserManager extends ModalAction {
   constructor(props) {
     super(props);
     const projectRole = JSON.stringify(this.item.userMapProjectRoles);
@@ -313,3 +311,5 @@ export default class UserManager extends ModalAction {
     return results;
   };
 }
+
+export default inject('rootStore')(observer(UserManager));

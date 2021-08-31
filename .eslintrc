@@ -32,7 +32,8 @@
           ["layouts", "./src/layouts"],
           ["client", "./src/client"],
           ["resources", "./src/resources"],
-          ["core", "./src/core"]
+          ["core", "./src/core"],
+          ["asset", "./src/asset"]
         ],
         "extensions": [".js", ".jsx"]
       }
@@ -68,6 +69,7 @@
     "import/no-extraneous-dependencies": "warn",
     "import/prefer-default-export": "warn",
     "no-nested-ternary": "warn",
+    "import/no-named-as-default": "warn"
   },
   "globals": {
     "t": true,

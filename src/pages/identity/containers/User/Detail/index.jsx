@@ -22,9 +22,7 @@ import UserGroup from '../../UserGroup';
 import Project from '../../Project';
 import actionConfigs from '../actions';
 
-@inject('rootStore')
-@observer
-export default class UserDetail extends Base {
+export class UserDetail extends Base {
   get name() {
     return t('user');
   }
@@ -134,3 +132,5 @@ export default class UserDetail extends Base {
     return tabs;
   }
 }
+
+export default inject('rootStore')(observer(UserDetail));
