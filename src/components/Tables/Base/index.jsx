@@ -41,6 +41,7 @@ import {
   getValueRenderFunc,
 } from 'utils/table';
 import { getNoValue } from 'utils/index';
+import { columnRender } from 'utils/render';
 import { getLocalStorageItem, setLocalStorageItem } from 'utils/local-storage';
 import { inject } from 'mobx-react';
 import CustomColumns from './CustomColumns';
@@ -481,7 +482,11 @@ export default class BaseTable extends React.Component {
       if (newRender) {
         newColumn.render = newRender;
       }
-      return newColumn;
+      return {
+        ...newColumn,
+        render: (value, record) =>
+          columnRender(newColumn.render, value, record),
+      };
     });
 
   getColumns = () => {
