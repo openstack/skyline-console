@@ -116,15 +116,19 @@ export default class CreateAction extends ModalAction {
       ...rest
     } = values;
     const data = {
-      fixed_ips: fixed_ips.map((i) => {
-        const ret = {
-          subnet_id: i.subnet,
-        };
-        if (i.ip_address && i.ip_address.type === 'manual') {
-          ret.ip_address = i.ip_address.ip;
-        }
-        return ret;
-      }),
+      ...(fixed_ips && fixed_ips.length > 0
+        ? {
+            fixed_ips: fixed_ips.map((i) => {
+              const ret = {
+                subnet_id: i.subnet,
+              };
+              if (i.ip_address && i.ip_address.type === 'manual') {
+                ret.ip_address = i.ip_address.ip;
+              }
+              return ret;
+            }),
+          }
+        : {}),
       network_id: network_id.selectedRowKeys[0],
       ...rest,
     };
@@ -192,11 +196,10 @@ export default class CreateAction extends ModalAction {
       {
         name: 'fixed_ips',
         label: t('Owned Subnet'),
-        // component: <IPDistributer subnets={subnetDetails} />,
         type: 'ip-distributer',
         subnets: subnetDetails,
         hidden: !network_id,
-        required: true,
+        // required: true,
       },
       {
         name: 'ipv6',
