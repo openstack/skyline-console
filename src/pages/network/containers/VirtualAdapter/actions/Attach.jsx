@@ -15,7 +15,10 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalServerStore, { ServerStore } from 'stores/nova/instance';
-import { instanceSelectTablePropsBackend } from 'resources/instance';
+import {
+  instanceSelectTablePropsBackend,
+  allowAttachInterfaceStatus,
+} from 'resources/instance';
 
 @inject('rootStore')
 @observer
@@ -85,6 +88,8 @@ export default class Attach extends ModalAction {
         type: 'select-table',
         backendPageStore: this.store,
         extraParams: { noReminder: true },
+        disabledFunc: (item) =>
+          item.locked || !allowAttachInterfaceStatus.includes(item.vm_state),
         required: true,
         isMulti: false,
         ...instanceSelectTablePropsBackend,

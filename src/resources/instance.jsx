@@ -574,3 +574,5 @@ export const actionColumn = (self) => {
     },
   ];
 };
+
+export const allowAttachInterfaceStatus = ['active', 'paused', 'stopped'];
