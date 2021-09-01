@@ -23,6 +23,9 @@ import actionConfigs from './actions';
 export default class AllowedAddressPair extends Base {
   init() {
     this.store = globalVirtualAdapterStore;
+    // because of the father component use new Store
+    // so set detail to globalStore to share data
+    this.store.setDetail(this.props.detail);
   }
 
   getDownloadData = () => this.props.detail.allowed_address_pairs;
