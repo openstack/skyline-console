@@ -118,6 +118,7 @@ export default class Projects extends Base {
           }
           return <Badge color="red" text={t('No')} />;
         },
+        stringify: (enabled) => (enabled ? t('Yes') : t('No')),
       },
       {
         title: t('Tags'),
