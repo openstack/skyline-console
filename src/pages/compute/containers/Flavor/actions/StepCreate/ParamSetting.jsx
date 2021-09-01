@@ -298,6 +298,9 @@ export class ParamSetting extends Base {
         label: t('CPU(Core)'),
         type: 'input-int',
         min: 1,
+        extra: t(
+          'The number of vCPU cores should not exceed the maximum number of CPU cores of the physical node. Otherwise it will cause fail to schedule to any physical node when creating instance.'
+        ),
         required: true,
       },
       {
