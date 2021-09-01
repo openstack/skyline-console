@@ -140,6 +140,10 @@ export default class Edit extends ModalAction {
       virtual_adapter: {
         selectedRowKeys: [internal_port_id],
       },
+      fixed_ip_address: {
+        selectedRowKeys: [internal_ip_address],
+        selectedRows: [{ fixed_ip_address: internal_ip_address }],
+      },
       ...rest,
     };
     return value;
@@ -170,7 +174,7 @@ export default class Edit extends ModalAction {
     return portFixedIPs;
   };
 
-  static policy = 'update_floatingip';
+  static policy = 'update_floatingip_port_forwarding';
 
   static allowed = () => true;
 
@@ -226,7 +230,13 @@ export default class Edit extends ModalAction {
         type: 'input-number',
         min: 1,
         max: 65535,
+        required: true,
         validator: (_, val) => {
+          if (!val) {
+            return Promise.reject(
+              new Error(`${t('Please input')} ${t('External Port')}`)
+            );
+          }
           const { alreadyUsedPorts } = this.state;
           const { external_port: initialExternalPort } = this.item;
           const flag = alreadyUsedPorts.some(
@@ -251,7 +261,13 @@ export default class Edit extends ModalAction {
         hidden: fixed_ip_address.selectedRows.length === 0,
         min: 1,
         max: 65535,
+        required: true,
         validator: (_, val) => {
+          if (!val) {
+            return Promise.reject(
+              new Error(`${t('Please input')} ${t('Internal Port')}`)
+            );
+          }
           const formData = this.formRef.current.getFieldsValue([
             'virtual_adapter',
             'fixed_ip_address',
