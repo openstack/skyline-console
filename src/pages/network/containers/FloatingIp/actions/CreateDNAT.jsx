@@ -108,7 +108,7 @@ export default class CreateDNAT extends ModalAction {
       this.formRef.current.resetFields(['fixed_ip_address', 'internal_port']);
   };
 
-  static policy = 'update_floatingip';
+  static policy = 'create_floatingip_port_forwarding';
 
   static allowed = (item) => Promise.resolve(isNull(item.fixed_ip_address));
 
@@ -161,7 +161,13 @@ export default class CreateDNAT extends ModalAction {
         type: 'input-number',
         min: 1,
         max: 65535,
+        required: true,
         validator: (_, val) => {
+          if (!val) {
+            return Promise.reject(
+              new Error(`${t('Please input')} ${t('External Port')}`)
+            );
+          }
           const { alreadyUsedPorts } = this.state;
           const flag = alreadyUsedPorts.some((pf) => pf.external_port === val);
           if (flag) {
@@ -181,7 +187,13 @@ export default class CreateDNAT extends ModalAction {
         hidden: fixed_ip_address.selectedRows.length === 0,
         min: 1,
         max: 65535,
+        required: true,
         validator: (_, val) => {
+          if (!val) {
+            return Promise.reject(
+              new Error(`${t('Please input')} ${t('Internal Port')}`)
+            );
+          }
           const formData = this.formRef.current.getFieldsValue([
             'virtual_adapter',
             'fixed_ip_address',
@@ -190,7 +202,7 @@ export default class CreateDNAT extends ModalAction {
             formData.fixed_ip_address.selectedRows[0].fixed_ip_address;
           const internal_port_id = formData.virtual_adapter.selectedRows[0].id;
           const { alreadyUsedPorts } = this.state;
-          // 判断是否本FIP已经绑定了本虚拟网卡的本端口
+          // determine whether the FIP has been bound to the port of the port
           const flag = alreadyUsedPorts.some(
             (pf) =>
               pf.internal_port === val &&
