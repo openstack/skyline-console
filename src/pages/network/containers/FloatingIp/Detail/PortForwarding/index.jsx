@@ -22,6 +22,7 @@ import actionConfigs from './actions';
 export default class PortForwarding extends Base {
   init() {
     this.store = new PortForwardingStore();
+    this.downloadStore = new PortForwardingStore();
   }
 
   get policy() {
@@ -32,11 +33,7 @@ export default class PortForwarding extends Base {
     return t('port forwardings');
   }
 
-  get isFilterByBackend() {
-    return true;
-  }
-
-  updateFetchParams = (params) => {
+  updateFetchParamsByPage = (params) => {
     const { id, all_projects, ...rest } = params;
     return {
       fipId: id,
@@ -44,6 +41,10 @@ export default class PortForwarding extends Base {
       ...rest,
     };
   };
+
+  get isFilterByBackend() {
+    return true;
+  }
 
   get actionConfigs() {
     return this.isAdminPage
@@ -55,7 +56,6 @@ export default class PortForwarding extends Base {
     {
       title: t('External Port'),
       dataIndex: 'external_port',
-      isHideable: true,
     },
     {
       title: t('Internal Ip Address'),
@@ -75,6 +75,25 @@ export default class PortForwarding extends Base {
   ];
 
   get searchFilters() {
-    return [];
+    return [
+      {
+        label: t('Protocol'),
+        name: 'protocol',
+        options: [
+          {
+            label: 'TCP',
+            key: 'tcp',
+          },
+          {
+            label: 'UDP',
+            key: 'udp',
+          },
+        ],
+      },
+      {
+        label: t('External Port'),
+        name: 'external_port',
+      },
+    ];
   }
 }
