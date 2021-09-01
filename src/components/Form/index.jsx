@@ -404,10 +404,18 @@ export default class BaseForm extends React.Component {
   };
 
   updateDefaultValue = () => {
-    if (this.formRef.current && this.formRef.current.resetFields) {
-      this.formRef.current.resetFields();
-    }
+    this.resetFormValue();
     this.updateContext(this.defaultValue);
+  };
+
+  resetFormValue = (fields) => {
+    if (this.formRef.current && this.formRef.current.resetFields) {
+      if (!fields) {
+        this.formRef.current.resetFields();
+      } else {
+        this.formRef.current.resetFields(fields);
+      }
+    }
   };
 
   updateFormValue = (key, value) => {
@@ -516,7 +524,10 @@ export default class BaseForm extends React.Component {
   renderFormItems() {
     try {
       return this.formItems.map((it, index) => {
-        const { name } = it;
+        const { name, display = true } = it;
+        if (!display) {
+          return '';
+        }
         this.codeError = false;
         return (
           <Col
