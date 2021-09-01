@@ -15,6 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/TabDetail';
 import { LbaasStore } from 'stores/octavia/loadbalancer';
+import { provisioningStatusCodes } from 'resources/lb';
 import Listeners from '../../Listener';
 import { actionConfigs, adminActions } from '../actions';
 
@@ -60,7 +61,7 @@ export default class LoadBalancerDetail extends Base {
       {
         title: t('Status'),
         dataIndex: 'provisioning_status',
-        // render: data => loadBalancerStatus[data] || '-',
+        render: (data) => provisioningStatusCodes[data],
       },
       {
         title: t('Network'),

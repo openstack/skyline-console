@@ -31,6 +31,7 @@ const successKeys = [
   'resolved',
   'power on',
   'complete',
+  'online',
 ];
 
 const successKeysContain = ['complete'];
@@ -55,6 +56,7 @@ const errorKeys = [
   'firing',
   'power off',
   'error',
+  'offline',
 ];
 
 const errorKeysContain = ['fail'];

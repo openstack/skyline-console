@@ -14,6 +14,7 @@
 
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
+import { provisioningStatusCodes } from 'resources/lb';
 import { ListenerStore } from 'stores/octavia/listener';
 import { actionConfigs, adminActions } from './Actions';
 
@@ -68,6 +69,7 @@ export default class Listeners extends Base {
     {
       title: t('Status'),
       dataIndex: 'provisioning_status',
+      render: (t) => provisioningStatusCodes[t],
       isHideable: true,
     },
     {

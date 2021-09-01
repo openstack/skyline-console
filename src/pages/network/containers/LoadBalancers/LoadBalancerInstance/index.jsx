@@ -12,9 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/List';
+import { Col, Row } from 'antd';
 import { LbaasStore } from 'stores/octavia/loadbalancer';
+import { operatingStatusCodes, provisioningStatusCodes } from 'resources/lb';
 import { lbEndpoint } from 'client/client/constants';
 import { actionConfigs, adminActions } from './actions';
 
@@ -102,10 +105,24 @@ export default class LoadBalancerInstance extends Base {
       {
         title: t('Operating Status'),
         dataIndex: 'operating_status',
+        render: (t) => operatingStatusCodes[t],
+        titleTip: (
+          <Row>
+            <Col>
+              {t('DRAINING: The member is not accepting new connections')}
+            </Col>
+            <Col>
+              {t(
+                'DEGRADED: One or more of the entity’s components are in ERROR'
+              )}
+            </Col>
+          </Row>
+        ),
       },
       {
         title: t('Provisioning Status'),
         dataIndex: 'provisioning_status',
+        render: (t) => provisioningStatusCodes[t],
       },
       {
         title: t('Listener Number'),
