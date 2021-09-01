@@ -14,8 +14,8 @@
 
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import { toJS } from 'mobx';
 import { allCanReadPolicy } from 'resources/policy';
+import globalUserStore from 'stores/keystone/user';
 
 @inject('rootStore')
 @observer
@@ -26,7 +26,14 @@ export default class ProjectSelect extends ModalAction {
 
   static buttonText = ' ';
 
-  init() {}
+  init() {
+    this.getAllUserProjects();
+  }
+
+  async getAllUserProjects() {
+    await globalUserStore.getUserProjects();
+    this.updateDefaultValue();
+  }
 
   get name() {
     return t('Switch Project');
@@ -73,16 +80,15 @@ export default class ProjectSelect extends ModalAction {
   }
 
   get projects() {
-    const { projects = {} } = this.user || {};
     const { projectName } = this.state;
-    const items = Object.keys(toJS(projects) || {})
-      .map((key) => {
-        const { name, domain_id } = projects[key];
+    const { data: projects } = globalUserStore.userProjects;
+    const items = projects
+      .map((project) => {
+        const { id, ...rest } = project;
         return {
-          id: key,
-          projectId: key,
-          name,
-          domain_id,
+          id,
+          projectId: id,
+          ...rest,
         };
       })
       .filter((it) => {
@@ -102,6 +108,7 @@ export default class ProjectSelect extends ModalAction {
     return {
       project: {
         selectedRowKeys: [projectId],
+        selectedRows: this.projects.filter((i) => i.id === projectId),
       },
     };
   }
@@ -113,6 +120,8 @@ export default class ProjectSelect extends ModalAction {
         label: t('Owned Project'),
         type: 'select-table',
         datas: this.projects,
+        isLoading: globalUserStore.userProjects.isLoading,
+        disabledFunc: (record) => !record.enabled,
         filterParams: [
           {
             label: t('Project Name'),

@@ -195,8 +195,10 @@ export default class Projects extends Base {
       {
         label: t('Tags'),
         name: 'tags',
-        filterFunc: (val, filterVal) =>
-          val.some((tag) => tag.includes(filterVal)),
+        filterFunc: (val, filterVal) => {
+          const lFilterVal = filterVal.toLowerCase();
+          return val.some((tag) => tag.toLowerCase().includes(lFilterVal));
+        },
       },
     ];
   }
