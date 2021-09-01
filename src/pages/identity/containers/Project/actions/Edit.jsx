@@ -40,14 +40,11 @@ class EditForm extends ModalAction {
 
   get defaultValue() {
     const { name, description, enabled } = this.item;
-    if (name && this.formRef.current) {
-      this.formRef.current.setFieldsValue({
-        name,
-        description,
-        enabled: statusTypes.filter((it) => it.value === enabled),
-      });
-    }
-    return {};
+    return {
+      name,
+      description,
+      enabled,
+    };
   }
 
   checkName = (rule, value) => {
@@ -84,7 +81,6 @@ class EditForm extends ModalAction {
         label: t('Status'),
         type: 'radio',
         optionType: 'default',
-        isWrappedValue: true,
         options: statusTypes,
         disabled: true,
         help: t(
