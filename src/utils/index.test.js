@@ -71,13 +71,13 @@ describe('test utils index.js', () => {
     expect(getGBValue(2.554 * 1024)).toBe(2.55);
     expect(getGBValue(2.555 * 1024)).toBe(2.56);
     expect(getGBValue(2.556 * 1024)).toBe(2.56);
-    expect(getGBValue(true)).toBe('');
-    expect(getGBValue(false)).toBe('');
-    expect(getGBValue(null)).toBe('');
-    expect(getGBValue(undefined)).toBe('');
-    expect(getGBValue(NaN)).toBe('');
-    expect(getGBValue('')).toBe('');
-    expect(getGBValue(0)).toBe('');
+    expect(getGBValue(true)).toBe(0);
+    expect(getGBValue(false)).toBe(0);
+    expect(getGBValue(null)).toBe(0);
+    expect(getGBValue(undefined)).toBe(0);
+    expect(getGBValue(NaN)).toBe(0);
+    expect(getGBValue('')).toBe(0);
+    expect(getGBValue(0)).toBe(0);
   });
 
   it('getNoValue', () => {

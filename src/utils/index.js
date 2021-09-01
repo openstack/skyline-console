@@ -85,7 +85,7 @@ export const getYesNo = (input) => (input ? t('Yes') : t('No'));
 export const getGBValue = (input) => {
   const gb = 1024;
   if (isNaN(input) || isNil(input) || !input || !isNumber(input)) {
-    return '';
+    return 0;
   }
   return parseFloat(Number(input / gb).toFixed(2));
 };
