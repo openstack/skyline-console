@@ -163,8 +163,8 @@ export default class FloatingIps extends Base {
                   <Row className={styles.popover_row} gutter={[8, 8]}>
                     {record.port_forwardings
                       .sort((a, b) => a.external_port - b.external_port)
-                      .map((i) => (
-                        <Col span={24}>
+                      .map((i, idx) => (
+                        <Col span={24} key={`pfw-${idx}`}>
                           {`${record.floating_ip_address}:${i.external_port} => ${i.internal_ip_address}:${i.internal_port}`}
                         </Col>
                       ))}
@@ -179,6 +179,18 @@ export default class FloatingIps extends Base {
           );
         }
         return resource_name || '';
+      },
+      stringify: (resource_name, record) => {
+        if (!resource_name && record.port_forwardings.length !== 0) {
+          const ret = record.port_forwardings
+            .sort((a, b) => a.external_port - b.external_port)
+            .map(
+              (i) =>
+                `${record.floating_ip_address}:${i.external_port} => ${i.internal_ip_address}:${i.internal_port}`
+            );
+          return ret.join('\n');
+        }
+        return resource_name;
       },
       isHideable: true,
       sorter: false,
