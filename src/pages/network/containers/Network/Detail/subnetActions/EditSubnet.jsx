@@ -46,6 +46,8 @@ export default class EditSubnet extends ModalAction {
     return t('Edit Subnet');
   }
 
+  static buttonText = t('Edit');
+
   get subnet() {
     return this.props.item;
   }

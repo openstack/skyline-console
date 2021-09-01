@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalNetworkStore from 'stores/neutron/network';
-import checkPolicy, { checkPolicyRule } from 'resources/policy';
+import { checkPolicyRule } from 'resources/policy';
 import globalRootStore from 'stores/root';
 import { getYesNoList } from 'utils/index';
 
@@ -39,10 +39,7 @@ export default class Edit extends ModalAction {
 
   static allowed = (item) => {
     const rootStore = globalRootStore;
-    if (
-      !checkPolicyRule('skyline:system_admin') &&
-      item.project_id !== rootStore.user.project.id
-    ) {
+    if (!this.isSystemAdmin && item.project_id !== rootStore.user.project.id) {
       return Promise.resolve(false);
     }
     return Promise.resolve(true);
@@ -62,10 +59,7 @@ export default class Edit extends ModalAction {
   };
 
   get isSystemAdmin() {
-    return checkPolicy({
-      rules: ['skyline:system_admin'],
-      every: false,
-    });
+    return checkPolicyRule('skyline:system_admin');
   }
 
   get formItems() {

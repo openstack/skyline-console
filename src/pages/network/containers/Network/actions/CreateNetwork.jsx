@@ -19,7 +19,7 @@ import globalNetworkStore from 'stores/neutron/network';
 import globalProjectStore from 'stores/keystone/project';
 import { isEmpty, isFunction } from 'lodash';
 import Notify from 'components/Notify';
-import checkPolicy from 'resources/policy';
+import { checkPolicyRule } from 'resources/policy';
 import globalNeutronStore from 'stores/neutron/neutron';
 import networkUtil from './networkUtil';
 
@@ -58,10 +58,7 @@ export default class CreateNetwork extends ModalAction {
   }
 
   get isSystemAdmin() {
-    return checkPolicy({
-      rules: ['skyline:system_admin'],
-      every: false,
-    });
+    return checkPolicyRule('skyline:system_admin');
   }
 
   get defaultValue() {
