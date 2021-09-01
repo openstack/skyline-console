@@ -17,6 +17,10 @@ import TableButton from 'components/TableButton';
 import { getSelfColumns } from 'resources/security-group-rule';
 
 export default class RuleButton extends Component {
+  getUrl(path, adminStr) {
+    return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
+  }
+
   render() {
     const { item: { security_group_rules: datas = [] } = {} } = this.props;
     const configs = {

@@ -124,7 +124,6 @@ export default class SecurityGroup extends React.Component {
 
   render() {
     const { security_groups } = this.store;
-
     return (
       <div className={classnames(styles.wrapper, this.className)}>
         {this.isAdminPage ? null : (
@@ -136,8 +135,8 @@ export default class SecurityGroup extends React.Component {
             />
           </div>
         )}
-        {security_groups.data && security_groups.data.length !== 0 ? (
-          <Spin spinning={security_groups.isLoading}>
+        <Spin spinning={security_groups.isLoading}>
+          {security_groups.data && security_groups.data.length !== 0 ? (
             <Collapse
               className={styles.collapse}
               accordion
@@ -150,13 +149,13 @@ export default class SecurityGroup extends React.Component {
                 this.renderPanel(item, index)
               )}
             </Collapse>
-          </Spin>
-        ) : (
-          <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            style={{ backgroundColor: 'white', padding: '32px 0' }}
-          />
-        )}
+          ) : (
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              style={{ backgroundColor: 'white', padding: '32px 0' }}
+            />
+          )}
+        </Spin>
       </div>
     );
   }

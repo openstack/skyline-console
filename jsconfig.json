@@ -5,6 +5,7 @@
     "experimentalDecorators": true,
     "paths": {
       "@/*": ["./src/*"],
+      "client/*": ["./src/client/*"],
       "src/*": ["./src/*"],
       "asset/*": ["./src/asset/*"],
       "image/*": ["./src/asset/image/*"],
