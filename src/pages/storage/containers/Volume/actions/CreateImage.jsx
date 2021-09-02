@@ -14,7 +14,7 @@
 
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import { imageOS, imageFormats } from 'resources/image';
+import { volumeCreateImageTypes, imageOS } from 'resources/image';
 import globalVolumeStore from 'stores/cinder/volume';
 import { isAvailable } from 'resources/volume';
 
@@ -46,10 +46,9 @@ export class CreateImage extends ModalAction {
   }
 
   get formatList() {
-    // todo: filter formats by settings
-    return Object.keys(imageFormats).map((key) => ({
+    return Object.keys(volumeCreateImageTypes).map((key) => ({
+      label: volumeCreateImageTypes[key],
       value: key,
-      label: imageFormats[key],
     }));
   }
 
