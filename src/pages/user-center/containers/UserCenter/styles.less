@@ -1,0 +1,46 @@
+@import '~styles/variables';
+
+.content {
+  padding: 24px;
+  overflow: auto;
+  height: 100%;
+
+  .user_info_card {
+    .normalBgc();
+    height: 255px;
+
+    .user_info_avatar {
+      .hvc();
+    }
+
+    .user_info_detail {
+      text-align: left;
+      height: 100%;
+      padding: 24px;
+
+      .user_info_detail_item {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        padding-left: 3rem;
+        font-weight: 400;
+        font-size: 16px;
+        color: @color-text-body;
+      }
+    }
+  }
+}
+
+.hvc {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.normalBgc {
+  background-color: white;
+  box-shadow: @base-shadow;
+  padding: 24px;
+  border-radius: @border-radius;
+  margin-bottom: 16px;
+}

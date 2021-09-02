@@ -16,13 +16,14 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { toJS } from 'mobx';
 import i18n from 'core/i18n';
-import { isAdminPage } from 'utils/index';
+import { isAdminPage, isUserCenterPage } from 'utils/index';
 import { BellOutlined } from '@ant-design/icons';
 import checkItemPolicy from 'resources/policy';
 import { Layout } from 'antd';
 import GlobalHeader from 'components/Layout/GlobalHeader';
 import renderAdminMenu from '../admin-menu';
 import renderMenu from '../menu';
+import renderUserMenu from '../user-menu';
 import RightContext from './Right';
 import LayoutMenu from './Menu';
 import styles from './index.less';
@@ -66,10 +67,18 @@ class BaseLayout extends Component {
   }
 
   get originMenu() {
-    if (this.isAdminPage) {
-      return renderAdminMenu(i18n.t);
+    const {
+      location: { pathname },
+    } = this.props;
+    let ret = [];
+    if (isUserCenterPage(pathname)) {
+      ret = renderUserMenu(i18n.t);
+    } else if (this.isAdminPage) {
+      ret = renderAdminMenu(i18n.t);
+    } else {
+      ret = renderMenu(i18n.t);
     }
-    return renderMenu(i18n.t);
+    return ret;
   }
 
   get menu() {

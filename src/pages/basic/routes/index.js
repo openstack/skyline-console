@@ -38,6 +38,9 @@ const Management = lazy(() =>
 const Heat = lazy(() =>
   import(/* webpackChunkName: "heat" */ '@/pages/heat/App')
 );
+const UserCenter = lazy(() =>
+  import(/* webpackChunkName: "user-center" */ '@/pages/user-center/App')
+);
 const E404 = lazy(() =>
   import(/* webpackChunkName: "E404" */ '@/pages/base/containers/404')
 );
@@ -73,6 +76,10 @@ export default [
       {
         path: `/heat`,
         component: Heat,
+      },
+      {
+        path: `/user`,
+        component: UserCenter,
       },
       { path: '*', component: E404 },
     ],
