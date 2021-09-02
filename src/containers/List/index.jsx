@@ -33,6 +33,7 @@ import Notify from 'components/Notify';
 import { checkTimeIn } from 'utils/time';
 import checkItemPolicy from 'resources/policy';
 import NotFound from 'components/Cards/NotFound';
+import { getTags } from 'components/MagicInput';
 import styles from './index.less';
 
 const tabOtherHeight = 326;
@@ -80,11 +81,13 @@ export default class BaseList extends React.Component {
         location.pathname === this.props.match.url &&
         location.key === this.props.location.key
       ) {
-        const params = parse(location.search.slice(1));
-        // this.getDataWithPolicy(params);
-        const { limit, page } = this.store.list;
-        this.list.filters = {};
-        this.handleFetch({ ...params, limit, page }, true);
+        const params = this.initFilter;
+        const { tags = [] } = getTags(params, this.searchFilters);
+        if (!tags.length && !this.filterTimeKey) {
+          const { limit, page } = this.store.list;
+          this.list.filters = {};
+          this.handleFetch({ ...params, limit, page }, true);
+        }
       }
     });
     window.addEventListener('resize', this.debounceSetTableHeight);
@@ -220,6 +223,11 @@ export default class BaseList extends React.Component {
 
   get endpointError() {
     return this.checkEndpoint && !this.endpoint;
+  }
+
+  get initFilter() {
+    const params = parse(this.location.search.slice(1));
+    return params || {};
   }
 
   get hintHeight() {
@@ -1031,6 +1039,7 @@ export default class BaseList extends React.Component {
           hideDownload={this.hideDownload}
           primaryActionsExtra={this.primaryActionsExtra}
           isAdminPage={this.isAdminPage}
+          initFilter={this.initFilter}
           {...this.getEnabledTableProps()}
         />
       );

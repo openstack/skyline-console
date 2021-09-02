@@ -649,7 +649,7 @@ export default class BaseTable extends React.Component {
   }
 
   renderSearch() {
-    const { hideSearch, searchFilters } = this.props;
+    const { hideSearch, searchFilters, initFilter = {} } = this.props;
 
     if (hideSearch) {
       return null;
@@ -660,6 +660,7 @@ export default class BaseTable extends React.Component {
         <div className={styles['search-row']}>
           <MagicInput
             filterParams={searchFilters}
+            initValue={initFilter}
             onInputChange={this.handleFilterInput}
             onInputFocus={this.handleInputFocus}
             placeholder={t('Multiple filter tags are separated by enter')}
