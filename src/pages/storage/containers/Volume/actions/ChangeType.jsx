@@ -48,6 +48,10 @@ export class ChangeType extends ModalAction {
     this.volumeTypeStore.fetchList();
   }
 
+  get isAsyncAction() {
+    return true;
+  }
+
   get volumeTypes() {
     const { volume_type } = this.item;
     const { data = [] } = this.volumeTypeStore.list;
