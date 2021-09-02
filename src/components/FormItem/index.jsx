@@ -57,6 +57,7 @@ import MetadataTransfer from './MetadataTransfer';
 import NetworkSelectTable from './NetworkSelectTable';
 import VolumeSelectTable from './VolumeSelectTable';
 import TabSelectTable from './TabSelectTable';
+import TreeSelect from './TreeSelect';
 // import styles from './index.less';
 
 const type2component = {
@@ -101,6 +102,7 @@ const type2component = {
   'metadata-transfer': MetadataTransfer,
   aceEditor: AceEditor,
   'input-json': JsonInput,
+  'tree-select': TreeSelect,
 };
 
 export default class FormItem extends React.Component {
