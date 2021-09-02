@@ -87,26 +87,38 @@ export class ParamSetting extends Base {
     const item = (this.settingStore.list.data || []).find(
       (it) => it.key === 'gpu_models'
     );
-    return item
-      ? item.value.map((it) => ({
-          value: it,
-          label: it,
-        }))
-      : [];
+    if (item && item.value instanceof Array) {
+      return item.value.map((it) => ({
+        value: it,
+        label: it,
+      }));
+    }
+    if (item && typeof item.value === 'object') {
+      return Object.keys(item.value).map((it) => ({
+        label: it,
+        value: it,
+      }));
+    }
+    return [];
   }
 
   get usbTypes() {
     const item = (this.settingStore.list.data || []).find(
       (it) => it.key === 'usb_models'
     );
-    return item
-      ? [
-          {
-            value: item.value,
-            label: item.value,
-          },
-        ]
-      : [];
+    if (item && item.value instanceof Array) {
+      return item.value.map((it) => ({
+        value: it,
+        label: it,
+      }));
+    }
+    if (item && typeof item.value === 'object') {
+      return Object.keys(item.value).map((it) => ({
+        label: it,
+        value: it,
+      }));
+    }
+    return [];
   }
 
   get vgpuTypes() {
