@@ -23,8 +23,7 @@ import globalRootStore from 'stores/root';
 import networkUtil from './networkUtil';
 
 const {
-  checkAllocation_pools,
-  checkIpv6Allocation_pools,
+  validateAllocationPoolsWithGatewayIp,
   checkDNS,
   checkIpv6DNS,
   checkHostRoutes,
@@ -124,6 +123,10 @@ export default class CreateSubnet extends ModalAction {
   get isSystemAdmin() {
     return checkPolicyRule('skyline:system_admin');
   }
+
+  validateAllocationPools = (rule, value) => {
+    return validateAllocationPoolsWithGatewayIp.call(this, rule, value);
+  };
 
   get formItems() {
     const { more, ip_version = 'ipv4', disable_gateway = false } = this.state;
@@ -230,6 +233,11 @@ export default class CreateSubnet extends ModalAction {
         name: 'gateway_ip',
         label: t('Gateway IP'),
         type: 'ip-input',
+        onChange: (e) => {
+          this.setState({
+            gateway_ip: e.target.value,
+          });
+        },
         tip: t(
           'If no gateway is specified, the first IP address will be defaulted.'
         ),
@@ -239,6 +247,11 @@ export default class CreateSubnet extends ModalAction {
         name: 'gateway_ip',
         label: t('Gateway IP'),
         type: 'input',
+        onChange: (e) => {
+          this.setState({
+            gateway_ip: e.target.value,
+          });
+        },
         tip: t(
           'If no gateway is specified, the first IP address will be defaulted.'
         ),
@@ -275,7 +288,7 @@ export default class CreateSubnet extends ModalAction {
           ip: isIpv4 ? '192.168.1.2,192.168.1.200' : '1001:1001::,1001:1002::',
         }),
         hidden: !more,
-        validator: isIpv4 ? checkAllocation_pools : checkIpv6Allocation_pools,
+        validator: this.validateAllocationPools,
       },
       {
         name: 'dns',

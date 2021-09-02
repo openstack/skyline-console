@@ -12,8 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import _, { isString } from 'lodash';
+import { isString } from 'lodash';
 import { ipValidate } from 'utils/validate';
+import { Address4, Address6 } from 'ip-address';
 
 const { ipFull, isIpCidr, isIPv6Cidr, isIPv4, isIpv6, compareIpv6 } =
   ipValidate;
@@ -25,7 +26,7 @@ const segmentationNetworkArray = ['vxlan', 'vlan', 'gre'];
 const segmentationNetworkRequireArray = ['vlan', 'gre'];
 
 const checkAllocation_pools = (rule, value) => {
-  if (value && _.isString(value)) {
+  if (value && isString(value)) {
     const lines = value.trim().split(/\s*[\r\n]+\s*/g);
     const flag = !lines.some(hasError);
     return flag
@@ -53,7 +54,7 @@ const checkAllocation_pools = (rule, value) => {
 };
 
 const checkIpv6Allocation_pools = (rule, value) => {
-  if (value && _.isString(value)) {
+  if (value && isString(value)) {
     const lines = value.trim().split(/\s*[\r\n]+\s*/g);
     const flag = !lines.some(hasError);
     return flag
@@ -81,8 +82,112 @@ const checkIpv6Allocation_pools = (rule, value) => {
   }
 };
 
+function validateAllocationPoolsWithGatewayIp(rule, value) {
+  const { ip_version = 'ipv4', gateway_ip } = this.state;
+  const isIpv4 = ip_version === 'ipv4';
+  const IPAddressConstructor = isIpv4 ? Address4 : Address6;
+  let translateIPSuccess = true;
+
+  if (value && isString(value)) {
+    const lines = value.trim().split(/\s*[\r\n]+\s*/g);
+    const sortedLines = Array.from(lines).sort((a, b) => {
+      try {
+        const ip1 = new IPAddressConstructor(a.split(',')[0]);
+        const ip2 = new IPAddressConstructor(b.split(',')[0]);
+        return ip1.bigInteger().compareTo(ip2.bigInteger());
+      } catch (e) {
+        translateIPSuccess = false;
+      }
+      return 0;
+    });
+
+    if (sortedLines.length > 0 && translateIPSuccess) {
+      if (gateway_ip) {
+        // check if gateway ip is include
+        let conflictPool;
+        let isGatewayIPIn;
+        try {
+          const gatewayIP = new IPAddressConstructor(gateway_ip);
+          conflictPool = '';
+          isGatewayIPIn = sortedLines.some((l) => {
+            const ipStart = new IPAddressConstructor(l.split(',')[0]);
+            const ipEnd = new IPAddressConstructor(l.split(',')[1]);
+            if (
+              gatewayIP.bigInteger().compareTo(ipStart.bigInteger()) >= 0 &&
+              ipEnd.bigInteger().compareTo(gatewayIP.bigInteger()) >= 0
+            ) {
+              isGatewayIPIn = true;
+              conflictPool = l;
+              return true;
+            }
+            return false;
+          });
+        } catch (e) {
+          translateIPSuccess = false;
+        }
+
+        if (isGatewayIPIn && translateIPSuccess) {
+          return Promise.reject(
+            new Error(
+              t(
+                'Gateway ip {gateway_ip} conflicts with allocation pool {pool}',
+                {
+                  gateway_ip,
+                  pool: conflictPool.replace(',', '-'),
+                }
+              )
+            )
+          );
+        }
+        // check if gateway ip is include
+      }
+
+      // check if is overlapping
+      let errorIdxStart = 0;
+
+      const isOverlapping = sortedLines.some((i, idx) => {
+        if (idx < sortedLines.length - 1) {
+          try {
+            const ipBefore = new IPAddressConstructor(i.split(',')[1]);
+            const ipAfter = new IPAddressConstructor(
+              sortedLines[idx + 1].split(',')[0]
+            );
+            const f = ipAfter.bigInteger().compareTo(ipBefore.bigInteger());
+            if (f > 0) {
+              errorIdxStart = idx;
+            }
+            return f < 0;
+          } catch (e) {
+            translateIPSuccess = false;
+          }
+        }
+        return false;
+      });
+
+      if (isOverlapping && translateIPSuccess) {
+        const pools = `${sortedLines[errorIdxStart].replace(
+          ',',
+          '-'
+        )}, ${sortedLines[errorIdxStart + 1].replace(',', '-')}`;
+        return Promise.reject(
+          new Error(
+            t('Overlapping allocation pools: {pools}', {
+              pools,
+            })
+          )
+        );
+      }
+      // check if is overlapping
+    }
+  }
+
+  return isIpv4
+    ? checkAllocation_pools(rule, value)
+    : checkIpv6Allocation_pools(rule, value);
+}
+
 const checkDNS = (rule, value) => {
-  if (value && _.isString(value)) {
+  if (value && isString(value)) {
     const lines = value.trim().split(/\s*[\r\n]+\s*/g);
     const flag = !lines.some(hasError);
     return flag
@@ -98,7 +203,7 @@ const checkDNS = (rule, value) => {
 };
 
 const checkIpv6DNS = (rule, value) => {
-  if (value && _.isString(value)) {
+  if (value && isString(value)) {
     const lines = value.trim().split(/\s*[\r\n]+\s*/g);
     const flag = !lines.some(hasError);
     return flag
@@ -114,7 +219,7 @@ const checkIpv6DNS = (rule, value) => {
 };
 
 const checkHostRoutes = (rule, value) => {
-  if (value && _.isString(value)) {
+  if (value && isString(value)) {
     const lines = value.trim().split(/\s*[\r\n]+\s*/g);
     const flag = !lines.some(hasError);
     return flag
@@ -133,7 +238,7 @@ const checkHostRoutes = (rule, value) => {
 };
 
 const checkIpv6HostRoutes = (rule, value) => {
-  if (value && _.isString(value)) {
+  if (value && isString(value)) {
     const lines = value.trim().split(/\s*[\r\n]+\s*/g);
     const flag = !lines.some(hasError);
     return flag
@@ -153,7 +258,7 @@ const checkIpv6HostRoutes = (rule, value) => {
 
 const getAllocationPools = (allocation_pools) => {
   const allocationPools = [];
-  if (allocation_pools && _.isString(allocation_pools)) {
+  if (allocation_pools && isString(allocation_pools)) {
     const lines = allocation_pools.trim().split(/\s*[\r\n]+\s*/g);
     lines.forEach((item) => {
       const [start, end] = item.split(',');
@@ -168,7 +273,7 @@ const getAllocationPools = (allocation_pools) => {
 
 const getHostRouters = (host_routes) => {
   const hostRouters = [];
-  if (host_routes && _.isString(host_routes)) {
+  if (host_routes && isString(host_routes)) {
     const lines = host_routes.trim().split(/\s*[\r\n]+\s*/g);
     lines.forEach((item) => {
       const [destination, nexthop] = item.split(',');
@@ -217,6 +322,7 @@ export default {
   physicalNetworkArray,
   segmentationNetworkArray,
   segmentationNetworkRequireArray,
+  validateAllocationPoolsWithGatewayIp,
   checkAllocation_pools,
   checkIpv6Allocation_pools,
   checkDNS,
