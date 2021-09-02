@@ -137,6 +137,11 @@ export default class ProjectSelect extends ModalAction {
             title: t('ID'),
             dataIndex: 'id',
           },
+          {
+            title: t('Enabled'),
+            dataIndex: 'enabled',
+            valueRender: 'yesNo',
+          },
         ],
       },
     ];

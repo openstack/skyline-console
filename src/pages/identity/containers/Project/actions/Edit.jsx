@@ -15,12 +15,12 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalProjectStore from 'stores/keystone/project';
-import { regex } from 'utils/validate';
 import { statusTypes } from 'utils/constants';
 
 class EditForm extends ModalAction {
   init() {
     this.store = globalProjectStore;
+    this.store.fetchList();
   }
 
   static id = 'project-edit';
@@ -51,16 +51,13 @@ class EditForm extends ModalAction {
     if (!value) {
       return Promise.reject(t('Please input'));
     }
-    const { nameRegexWithoutChinese } = regex;
-    if (!nameRegexWithoutChinese.test(value)) {
-      return Promise.reject(t('Invalid: Project name can not be chinese'));
-    }
     const {
       list: { data },
     } = this.store;
-    const { name } = this.item;
-    const nameUsed = data.filter((it) => it.name === value);
-    if (nameUsed[0] && nameUsed[0].name !== name) {
+    const nameUsed = data.find(
+      (i) => i.name === value && i.id !== this.item.id
+    );
+    if (nameUsed) {
       return Promise.reject(t('Invalid: Project name can not be duplicated'));
     }
     return Promise.resolve();
