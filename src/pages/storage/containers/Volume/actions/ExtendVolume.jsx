@@ -16,6 +16,9 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalVolumeStore from 'stores/cinder/volume';
 import { isAvailableOrInUse } from 'resources/volume';
+import { get } from 'lodash';
+import client from 'client';
+import Notify from 'components/Notify';
 
 export class ExtendVolume extends ModalAction {
   static id = 'extend-snapshot';
@@ -69,9 +72,25 @@ export class ExtendVolume extends ModalAction {
     this.store = globalVolumeStore;
   }
 
-  onSubmit = (values) => {
+  onSubmit = async (values) => {
     const { volume, ...rest } = values;
     const { id } = this.item;
+
+    const instanceId = get(this.item, 'attachments[0].server_id');
+    if (instanceId) {
+      const { server } = await client.nova.servers.show(instanceId);
+      if (server.locked) {
+        Notify.errorWithDetail(
+          t('The server {name} is locked. Please unlock first.', {
+            name: server.name,
+          }),
+          t('The server {name} is locked. Please unlock first.', {
+            name: server.name,
+          })
+        );
+        return Promise.reject();
+      }
+    }
     return this.store.extendSize(id, rest);
   };
 }

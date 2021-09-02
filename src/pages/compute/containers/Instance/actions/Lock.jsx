@@ -57,6 +57,24 @@ export default class LockAction extends ConfirmAction {
     return errorMsg;
   };
 
+  confirmContext = (data) => {
+    if (!this.messageHasItemName) {
+      return t('Are you sure to {action}?', {
+        action: this.actionNameDisplay || this.title,
+      });
+    }
+    const name = this.getName(data);
+    return (
+      t('Are you sure to {action} (instance: {name})?', {
+        action: this.actionNameDisplay || this.title,
+        name,
+      }) +
+      t(
+        'Lock instance will lock the operations that have a direct impact on the operation of the instance, such as shutdown, restart, delete, etc. It does not involve the mounting, unmounting and capacity expansion of volumn.'
+      )
+    );
+  };
+
   onSubmit = () => {
     const { id } = this.item;
     return globalServerStore.lock({ id });
