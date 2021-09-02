@@ -119,7 +119,7 @@ export default class CreateAllowedAddressPair extends ModalAction {
       },
       {
         name: 'ip_address',
-        label: t('IP Address'),
+        label: t('CIDR'),
         type: 'input',
         // placeholder: isIpv4 ? '192.168.0.0/24' : '1001:1001::/64',
         required: true,
