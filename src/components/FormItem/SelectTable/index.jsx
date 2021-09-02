@@ -25,7 +25,7 @@ import styles from './index.less';
 
 const getItemKey = (item) => item.key || item.id;
 
-const getInitRows = (value, datas) => {
+const getInitRows = (value, datas, backendPageStore) => {
   const { selectedRowKeys = [], selectedRows = [] } = value;
   if (!selectedRowKeys || selectedRowKeys.length === 0) {
     return [];
@@ -36,7 +36,8 @@ const getInitRows = (value, datas) => {
   }
 
   const rows = selectedRowKeys.map((key) => {
-    const item = (datas || []).find((it) => getItemKey(it) === key);
+    const findSourceData = !backendPageStore ? datas : selectedRows;
+    const item = (findSourceData || []).find((it) => getItemKey(it) === key);
     return (
       item || {
         key,
@@ -150,18 +151,18 @@ export default class SelectTable extends React.Component {
   }
 
   getInitValue(props) {
-    const { value = {}, initValue = {}, datas = [] } = props;
+    const { value = {}, initValue = {}, datas = [], backendPageStore } = props;
     if (!isEmpty(initValue)) {
       const { selectedRowKeys = [] } = initValue;
       return {
         selectedRowKeys,
-        selectedRows: getInitRows(initValue, datas),
+        selectedRows: getInitRows(initValue, datas, backendPageStore),
       };
     }
     const { selectedRowKeys = [] } = value || {};
     return {
       selectedRowKeys,
-      selectedRows: getInitRows(value || {}, datas),
+      selectedRows: getInitRows(value || {}, datas, backendPageStore),
     };
   }
 
@@ -195,7 +196,7 @@ export default class SelectTable extends React.Component {
     }
     if (!isEqual(initValue, prevState.initValue)) {
       const { selectedRowKeys = [] } = initValue;
-      const selectedRows = getInitRows(initValue, datas);
+      const selectedRows = getInitRows(initValue, datas, backendPageStore);
       newState.selectedRowKeys = selectedRowKeys;
       newState.selectedRows = selectedRows;
       newState.initValue = initValue;
