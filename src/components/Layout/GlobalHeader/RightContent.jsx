@@ -14,6 +14,7 @@
 
 import React from 'react';
 import { Button, Col, Row } from 'antd';
+import { isUserCenterPage } from 'utils';
 import Avatar from './AvatarDropdown';
 import styles from './index.less';
 
@@ -29,10 +30,13 @@ const gotoConsole = (type, props) => {
 };
 
 const GlobalHeaderRight = (props) => {
-  const { isAdminPage = false, rootStore: { hasAdminPageRole = false } = {} } =
-    props;
+  const {
+    isAdminPage = false,
+    rootStore: { hasAdminPageRole = false } = {},
+    location: { pathname },
+  } = props;
   let linkRender = null;
-  if (isAdminPage) {
+  if (isAdminPage || isUserCenterPage(pathname)) {
     linkRender = (
       <Button
         type="link"

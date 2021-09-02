@@ -272,6 +272,9 @@ export const unescapeHtml = (message) => {
 
 export const isAdminPage = (url) => url && url.indexOf('admin') >= 0;
 
+export const isUserCenterPage = (url) =>
+  url && (url === '/user' || url.startsWith('/user/'));
+
 export const allSettled = (promises) => {
   if (!Promise.allSettled) {
     return Promise.all(

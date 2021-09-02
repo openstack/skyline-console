@@ -55,7 +55,7 @@ export const fetchUserDetails = (userId) =>
  * @param {String} data.user.email The email for the user.
  * @param {String} data.user.password The password for the user.
  * @param {String} data.user.phone The phone for the user.
- * @param {String} data.user.real_name The true name for the user.
+ * @param {String} data.user.real_name The real name for the user.
  * @param {Boolean} data.user.enabled Default value : true
  * @param {String} data.user.description The description for the user.
  * @returns {Promise}
@@ -75,7 +75,7 @@ export const createUser = (data) =>
  * @param {String} data.user.name The name for the user.
  * @param {String} data.user.email The email for the user.
  * @param {String} data.user.phone The phone for the user.
- * @param {String} data.user.real_name The true name for the user.
+ * @param {String} data.user.real_name The real name for the user.
  * @param {String} data.user.description The description for the user.
  * @returns {Promise}
  */
