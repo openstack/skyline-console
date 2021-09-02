@@ -17,7 +17,7 @@ import PropTypes from 'prop-types';
 import { Input, Tag, Menu, Divider, Button, Checkbox } from 'antd';
 import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import { isEmpty, isBoolean } from 'lodash';
 import styles from './index.less';
 
 const option = PropTypes.shape({
@@ -265,7 +265,10 @@ class MagicInput extends PureComponent {
       const { options } = filter;
       let label = value;
       if (options) {
-        const current = options.find((item) => item.key === value);
+        const current = options.find((item) => {
+          const key = isBoolean(item.key) ? item.key.toString() : item.key;
+          return key === (isBoolean(value) ? value.toString() : value);
+        });
         label = current ? current.label : value;
       }
       return (

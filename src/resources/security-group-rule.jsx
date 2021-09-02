@@ -114,6 +114,14 @@ export const getSelfColumns = (self) => [
 
 export const filterParams = [
   {
+    label: t('Remote IP Prefix'),
+    name: 'remote_ip_prefix',
+    filterFunc: (record, value) => {
+      const recordValue = record || '0.0.0.0/0';
+      return recordValue.includes(value);
+    },
+  },
+  {
     label: t('Direction'),
     name: 'direction',
     options: Object.keys(directions).map((key) => ({
