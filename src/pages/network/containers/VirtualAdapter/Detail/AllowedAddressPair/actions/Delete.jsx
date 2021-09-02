@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import { ConfirmAction } from 'containers/Action';
-import _ from 'lodash';
 import globalVirtualAdapterStore from 'stores/neutron/virtual-adapter';
 
 export default class DeleteAction extends ConfirmAction {
@@ -53,17 +52,16 @@ export default class DeleteAction extends ConfirmAction {
     return true;
   }
 
-  onSubmit = async (data) => {
-    const { allowed_address_pairs = [], id } = globalVirtualAdapterStore.detail;
-    _.remove(
-      allowed_address_pairs,
-      (item) => item.ip_address === data.ip_address
+  onSubmit = async (data, containerProps) => {
+    const { allowed_address_pairs = [], id } = containerProps.detail;
+    const newData = allowed_address_pairs.filter(
+      (i) => i.ip_address !== data.ip_address
     );
     return globalVirtualAdapterStore
       .update(
         { id },
         {
-          allowed_address_pairs,
+          allowed_address_pairs: newData,
         }
       )
       .then((ret) => {

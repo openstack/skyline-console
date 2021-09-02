@@ -16,9 +16,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import globalVirtualAdapterStore, {
-  VirtualAdapterStore,
-} from 'stores/neutron/virtual-adapter';
+import { VirtualAdapterStore } from 'stores/neutron/virtual-adapter';
 import { portStatus } from 'resources/port';
 import { emptyActionConfig } from 'utils/constants';
 import actionConfigs from './actions';
@@ -27,9 +25,7 @@ import actionConfigs from './actions';
 @observer
 export default class VirtualAdapter extends Base {
   init() {
-    this.store = this.inDetailPage
-      ? new VirtualAdapterStore()
-      : globalVirtualAdapterStore;
+    this.store = new VirtualAdapterStore();
     this.downloadStore = new VirtualAdapterStore();
   }
 
