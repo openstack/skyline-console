@@ -62,6 +62,11 @@ export const imageFormatsConsole = {
   iso: t('ISO - Optical disc image format'),
 };
 
+export const volumeCreateImageTypes = {
+  raw: t('RAW - Raw disk image format'),
+  qcow2: t('QCOW2 - QEMU image format'),
+};
+
 export const imageFormatsAdmin = {
   aki: t('AKI - Amazon kernel image format'),
   ari: t('ARI - Amazon ramdisk image format'),
