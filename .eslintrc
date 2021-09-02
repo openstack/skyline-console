@@ -67,7 +67,7 @@
     "jsx-a11y/click-events-have-key-events": "warn",
     "jsx-a11y/no-static-element-interactions": "warn",
     "import/no-extraneous-dependencies": "warn",
-    "import/prefer-default-export": "warn",
+    "import/prefer-default-export": "off",
     "no-nested-ternary": "warn",
     "import/no-named-as-default": "warn"
   },
