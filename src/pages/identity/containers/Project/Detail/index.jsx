@@ -28,7 +28,7 @@ export class Detail extends Base {
   }
 
   get policy() {
-    return 'os_compute_api:os-quota-sets:defaults';
+    return 'identity:list_projects';
   }
 
   get listUrl() {
