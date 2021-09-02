@@ -66,7 +66,10 @@ export class BaseDetail extends Base {
         dataIndex: 'router_id',
         render: (data, record) => {
           if (data) {
-            const { router_name } = record;
+            const { router_name, network_name } = record;
+            if (router_name === '-' && network_name === '-') {
+              return data;
+            }
             return (
               <Link to={`${this.getUrl('/network/router')}/detail/${data}`}>
                 {`${data}`}
