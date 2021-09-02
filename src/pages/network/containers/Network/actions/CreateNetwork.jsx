@@ -27,8 +27,7 @@ const {
   physicalNetworkArray,
   segmentationNetworkArray,
   segmentationNetworkRequireArray,
-  checkAllocation_pools,
-  checkIpv6Allocation_pools,
+  validateAllocationPoolsWithGatewayIp,
   checkDNS,
   checkIpv6DNS,
   checkHostRoutes,
@@ -228,6 +227,10 @@ export default class CreateNetwork extends ModalAction {
     if (!isIpv6(value)) return false;
 
     return true;
+  };
+
+  validateAllocationPools = (rule, value) => {
+    return validateAllocationPoolsWithGatewayIp.call(this, rule, value);
   };
 
   get formItems() {
@@ -482,6 +485,11 @@ export default class CreateNetwork extends ModalAction {
         name: 'gateway_ip',
         label: t('Gateway IP'),
         type: 'ip-input',
+        onChange: (e) => {
+          this.setState({
+            gateway_ip: e.target.value,
+          });
+        },
         tip: t(
           'If no gateway is specified, the first IP address will be defaulted.'
         ),
@@ -491,6 +499,11 @@ export default class CreateNetwork extends ModalAction {
         name: 'gateway_ip',
         label: t('Gateway IP'),
         type: 'input',
+        onChange: (e) => {
+          this.setState({
+            gateway_ip: e.target.value,
+          });
+        },
         tip: t(
           'If no gateway is specified, the first IP address will be defaulted.'
         ),
@@ -532,7 +545,8 @@ export default class CreateNetwork extends ModalAction {
           ip: isIpv4 ? '192.168.1.2,192.168.1.200' : '1001:1001::,1001:1002::',
         }),
         hidden: !(create_subnet && more),
-        validator: isIpv4 ? checkAllocation_pools : checkIpv6Allocation_pools,
+        validator: this.validateAllocationPools,
+        dependencies: ['gateway_ip'],
       },
       {
         name: 'dns',
