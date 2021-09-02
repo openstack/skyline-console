@@ -23,7 +23,7 @@ const Item = ({ subnetsAvailable, onChange, value }) => {
   };
 
   const [subnet, setSubnet] = useState(value.subnet);
-  const [ip_address, setIP] = useState({ type: 'dhcp' });
+  const [ip_address, setIP] = useState(value.ip_address);
   const [visible, setVisible] = useState(!!value.subnet || false);
   const subnetItem = subnetsAvailable.find((i) => i.id === subnet);
 
