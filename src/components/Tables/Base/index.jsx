@@ -553,7 +553,8 @@ export default class BaseTable extends React.Component {
     const downloadColumns = columns
       .filter((it) => !it.hidden)
       .map((it) => {
-        if (it.title.includes('/')) {
+        const { title, splitColumnForDownload = true } = it;
+        if (title.includes('/') && splitColumnForDownload) {
           const [fTitle, sTitle] = it.title.split('/');
           let sName = sTitle;
           if (fTitle.length > 2) {

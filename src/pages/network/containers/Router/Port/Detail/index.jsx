@@ -18,9 +18,7 @@ import Base from 'containers/TabDetail';
 import { portStatus } from 'resources/port';
 import BaseDetail from './BaseDetail';
 
-@inject('rootStore')
-@observer
-export default class PortDetail extends Base {
+export class PortDetail extends Base {
   get name() {
     return t('port');
   }
@@ -80,3 +78,5 @@ export default class PortDetail extends Base {
     this.store = new PortStore();
   }
 }
+
+export default inject('rootStore')(observer(PortDetail));
