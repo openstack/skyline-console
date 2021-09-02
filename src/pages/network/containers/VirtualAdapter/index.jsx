@@ -142,6 +142,15 @@ export default class VirtualAdapter extends Base {
       {
         title: t('Bind Resource'),
         dataIndex: 'server_name',
+        stringify: (server_name, item) => {
+          if (item.device_id && item.device_owner === 'compute:nova') {
+            return `${item.device_owner} \n ${item.device_id} (${server_name})`;
+          }
+          return `
+            ${item.device_owner} ${item.device_owner && `\n`}
+            ${item.device_id || '-'}
+          `;
+        },
         render: (server_name, item) => {
           if (item.device_id && item.device_owner === 'compute:nova') {
             return (
