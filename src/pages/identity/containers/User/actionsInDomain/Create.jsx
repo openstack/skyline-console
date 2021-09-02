@@ -29,6 +29,7 @@ export class CreateForm extends ModalAction {
     this.projectStore = globalProjectStore;
     this.roleStore = globalRoleStore;
     this.domainStore = globalDomainStore;
+    this.getAllUser();
     this.getUserGroup();
     this.getProject();
     this.getRole();
@@ -37,6 +38,10 @@ export class CreateForm extends ModalAction {
 
   get name() {
     return t('Create User');
+  }
+
+  async getAllUser() {
+    this.allUser = await this.store.pureFetchList();
   }
 
   getUserGroup() {
@@ -62,6 +67,17 @@ export class CreateForm extends ModalAction {
     'identity:list_projects',
     'identity:list_domains',
   ];
+
+  checkName = (rule, value) => {
+    if (!value) {
+      return Promise.reject(t('Please input'));
+    }
+    const nameUsed = this.allUser.find((i) => i.name === value);
+    if (nameUsed) {
+      return Promise.reject(t('Invalid: User name can not be duplicated'));
+    }
+    return Promise.resolve();
+  };
 
   static allowed(item, containerProps) {
     const {
@@ -138,6 +154,7 @@ export class CreateForm extends ModalAction {
         name: 'name',
         label: t('User Name'),
         type: 'input',
+        validator: this.checkName,
         placeholder: t('Please input user name'),
         required: true,
       },
@@ -226,8 +243,6 @@ export class CreateForm extends ModalAction {
       real_name,
       default_project_id,
     };
-    // eslint-disable-next-line no-console
-    console.log(data);
     return this.store.create(data);
   };
 }
