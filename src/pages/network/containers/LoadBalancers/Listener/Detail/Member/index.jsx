@@ -15,6 +15,7 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
+import { provisioningStatusCodes } from 'resources/lb';
 import globalPoolMemberStore from 'stores/octavia/pool-member';
 import { actionConfigs, adminActions } from './Actions';
 // import { toJS } from 'mobx';
@@ -73,6 +74,7 @@ export default class Members extends Base {
     {
       title: t('Status'),
       dataIndex: 'provisioning_status',
+      render: (data) => provisioningStatusCodes[data],
       isHideable: true,
     },
     {
