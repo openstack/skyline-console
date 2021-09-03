@@ -218,7 +218,7 @@ const passwordAndUserData =
   '\n' +
   '--===============2309984059743762475==--';
 
-const onlyPasword =
+const onlyPassword =
   'Content-Type: multipart/mixed; boundary="===============2309984059743762475==" \n' +
   'MIME-Version: 1.0\n' +
   '\n' +
@@ -264,7 +264,7 @@ export const getUserData = (password, userData) => {
     return str.replace(/USER_DATA/g, userData);
   }
   if (password) {
-    return onlyPasword.replace(/USER_PASSWORD/g, password);
+    return onlyPassword.replace(/USER_PASSWORD/g, password);
   }
   return onlyUserData.replace(/USER_DATA/g, userData);
 };

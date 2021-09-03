@@ -16,7 +16,6 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import renderRoutes from 'utils/RouterConfig';
 import SelectLang from 'components/SelectLang';
-import { Link } from 'react-router-dom';
 
 import logo from 'src/asset/image/logo.png';
 // import loginImage from 'src/asset/image/login.png';
@@ -48,9 +47,7 @@ class AuthLayout extends Component {
           <div className={styles.main}>
             <div className={styles.top}>
               <div className={styles.header}>
-                <Link to="/">
-                  <img alt="logo" className={styles.logo} src={logo} />
-                </Link>
+                <img alt="logo" className={styles.logo} src={logo} />
               </div>
             </div>
             {renderRoutes(this.routes)}
