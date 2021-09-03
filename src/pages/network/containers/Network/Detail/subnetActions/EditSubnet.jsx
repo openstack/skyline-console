@@ -68,8 +68,14 @@ export default class EditSubnet extends ModalAction {
   }
 
   onSubmit = (values) => {
-    const { disable_gateway = true } = this.state;
-    const { gateway_ip, allocation_pools, host_routes, dns, ...rest } = values;
+    const {
+      gateway_ip,
+      allocation_pools,
+      host_routes,
+      dns,
+      disable_gateway,
+      ...rest
+    } = values;
 
     const allocationPools = getAllocationPools(
       allocation_pools || this.defaultValue.allocation_pools
