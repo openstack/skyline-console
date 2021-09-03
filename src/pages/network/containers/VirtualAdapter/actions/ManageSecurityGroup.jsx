@@ -35,7 +35,8 @@ export default class ManageSecurityGroup extends ModalAction {
 
   static policy = 'update_port:port_security_enabled';
 
-  static allowed = (item) => Promise.resolve(item.port_security_enabled);
+  static allowed = (item) =>
+    Promise.resolve(item.origin_data.allowed_address_pairs.length === 0);
 
   init() {
     this.securityGroupStore = new SecurityGroupStore();
@@ -61,6 +62,7 @@ export default class ManageSecurityGroup extends ModalAction {
     const { selectedRowKeys = [] } = sgInitValue || {};
     if (selectedRowKeys.length) {
       return {
+        port_security_enabled: this.item.port_security_enabled,
         securityGroup: sgInitValue,
       };
     }
@@ -68,7 +70,7 @@ export default class ManageSecurityGroup extends ModalAction {
   }
 
   async getPortDetail() {
-    const { id, security_groups } = this.item;
+    const { id, security_groups, port_security_enabled } = this.item;
     let sgs = security_groups;
     if (!security_groups) {
       const detail = await globalVirtualAdapterStore.fetchDetail({ id });
@@ -83,15 +85,24 @@ export default class ManageSecurityGroup extends ModalAction {
     };
     this.setState({
       sgInitValue,
+      port_security_enabled,
     });
     this.updateFormValue('securityGroup', sgInitValue);
+    this.updateFormValue('port_security_enabled', port_security_enabled);
   }
 
   onSubmit = (values) => {
-    const { securityGroup: { selectedRowKeys: security_groups = [] } = {} } =
-      values;
+    const {
+      securityGroup: { selectedRowKeys: security_groups = [] } = {},
+      port_security_enabled,
+    } = values;
     const { id } = this.item;
-    const reqBody = { port: { security_groups } };
+    const reqBody = {
+      port: {
+        security_groups: port_security_enabled ? security_groups : [],
+        port_security_enabled,
+      },
+    };
     return this.securityGroupStore.updatePortSecurityGroup({ id, reqBody });
   };
 
@@ -101,8 +112,19 @@ export default class ManageSecurityGroup extends ModalAction {
   }
 
   get formItems() {
-    const { sgInitValue } = this.state;
+    const { sgInitValue, port_security_enabled } = this.state;
     return [
+      {
+        name: 'port_security_enabled',
+        label: t('Port Security'),
+        type: 'switch',
+        onChange: (e) => {
+          this.setState({
+            port_security_enabled: e,
+          });
+        },
+        required: true,
+      },
       {
         name: 'securityGroup',
         label: t('Security Group'),
@@ -113,11 +135,11 @@ export default class ManageSecurityGroup extends ModalAction {
         backendPageStore: this.securityGroupStore,
         extraParams: { project_id: this.currentProjectId },
         initValue: sgInitValue,
-        required: true,
         isMulti: true,
         filterParams: securityGroupFilter,
         columns: securityGroupColumns,
         onRow: () => {},
+        hidden: !port_security_enabled,
       },
     ];
   }
