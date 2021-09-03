@@ -67,7 +67,6 @@ export default class Index extends Base {
           <div>{name}</div>
         </div>
       ),
-      stringify: (name, record) => `${record.id}\n${name}`,
     },
     {
       title: t('Project ID/Name'),

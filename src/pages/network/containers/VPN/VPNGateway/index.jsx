@@ -65,7 +65,6 @@ export default class Index extends Base {
           <div>{name}</div>
         </div>
       ),
-      stringify: (name, record) => `${record.id}\n${name}`,
     },
     {
       title: t('Project ID/Name'),
@@ -80,7 +79,7 @@ export default class Index extends Base {
     },
     {
       title: t('External IP'),
-      dataIndex: 'id',
+      dataIndex: 'null',
       render: (value, record) => record.external_v4_ip || record.external_v6_ip,
     },
     {
