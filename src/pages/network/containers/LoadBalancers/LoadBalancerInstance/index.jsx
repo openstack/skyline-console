@@ -34,6 +34,20 @@ export default class LoadBalancerInstance extends Base {
     this.list.silent = false;
   };
 
+  fetchDownloadData = async (params) => {
+    let result = [];
+    if (this.isFilterByBackend) {
+      result = await this.downloadStore.fetchListByPageWithFip(
+        this.updateFetchParamsByPage(params)
+      );
+    } else {
+      result = await this.downloadStore.fetchList(
+        this.updateFetchParams(params)
+      );
+    }
+    return result;
+  };
+
   get fetchDataByCurrentProject() {
     // add project_id to fetch data;
     return true;
