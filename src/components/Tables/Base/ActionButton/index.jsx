@@ -271,19 +271,21 @@ class ActionButton extends Component {
     try {
       perform(data).then(
         () => {
-          Confirm.confirm({
+          const modal = Confirm.confirm({
             title,
             content,
             okText,
             cancelText,
-            onOk: () =>
+            onOk: () => {
               this.onConfirmOK(
                 data,
                 onSubmit,
                 isBatch,
                 containerProps,
-                afterSubmit
-              ),
+                afterSubmit,
+                modal
+              );
+            },
             onCancel: () => {
               onCancelAction && onCancelAction();
             },
@@ -363,7 +365,14 @@ class ActionButton extends Component {
       });
     });
 
-  onConfirmOK = (data, onSubmit, isBatch, containerProps, afterSubmit) => {
+  onConfirmOK = (
+    data,
+    onSubmit,
+    isBatch,
+    containerProps,
+    afterSubmit,
+    modal
+  ) => {
     if (isBatch) {
       return this.onSubmitBatch(
         data,
@@ -371,7 +380,12 @@ class ActionButton extends Component {
         containerProps,
         isBatch,
         afterSubmit
-      );
+      ).catch(() => {
+        modal &&
+          modal.update({
+            visible: false,
+          });
+      });
     }
     return this.onSubmitOne(data, onSubmit, containerProps, afterSubmit);
   };
@@ -444,6 +458,7 @@ class ActionButton extends Component {
       confirmLoading: submitLoading,
       okText,
       cancelText,
+      maskClosable: false,
     };
     if (readOnly) {
       modalProps.cancelButtonProps = {
