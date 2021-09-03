@@ -1,15 +1,16 @@
-@import "~styles/variables";
+@import '~styles/variables';
 
 .magic-input-outer-wrapper {
   display: flex;
 }
+
 .magic-input-wrapper {
-  flex: 1;
-  height: 32px;
+  align-items: center;
+  width: 100%;
+  min-width: 200px;
   border: 1px solid rgb(217, 217, 217);
   border-radius: @border-radius;
   padding: 3px 0 3px 8px;
-  display: flex;
   background-color: #fff;
   position: relative;
 
@@ -29,43 +30,51 @@
         margin-left: 16px;
       }
     }
+
     .ant-btn {
       margin-top: -3px;
       margin-right: 0;
     }
+
     .ant-btn-icon-only {
       background-color: #fff;
-      height: 30px;
     }
   }
 }
+
 .magic-input-wrapper-active {
   border-color: @primary-color;
   box-shadow: 0 0 0 2px rgba(0, 104, 255, 0.2);
 }
+
 .input-wrapper {
-  margin-top: -4px;
-  height: 32px;
   position: relative;
   flex-grow: 1;
+  height: 24px;
+  line-height: 24px;
+
   :global {
     .ant-input {
       border: none;
       box-shadow: none;
-      padding-left: 0;
+      padding: 0;
       background: none;
     }
+
     .ant-input:focus {
       border: none;
       box-shadow: none;
     }
+
     input::placeholder {
       font-size: 10px;
     }
+
     .ant-menu-vertical > .ant-menu-item {
       height: 26px;
       line-height: 26px;
     }
+
     .ant-menu-vertical .ant-menu-item {
       font-size: 10px;
       margin-top: 0px;
@@ -73,17 +82,20 @@
     }
   }
 }
-.tags {
-  height: 24px;
-  overflow: hidden;
-  flex: 0 0 auto;
+
+.tagItem {
+  margin-bottom: 5px;
 }
+
 .input {
 }
+
 .menu {
   box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.09) !important;
 }
-.menu, .option-menu {
+
+.menu,
+.option-menu {
   position: absolute;
   z-index: 100;
   top: 34px;
@@ -92,9 +104,11 @@
   overflow-x: hidden;
   max-height: 310px;
 }
+
 .key {
   font-size: 10px;
   line-height: 24px;
+
   :global {
     .ant-divider,
     .ant-divider-vertical {
@@ -103,15 +117,26 @@
     }
   }
 }
+
 :global {
   .ant-form-item-has-error .magic-input-wrapper .ant-input,
   .ant-form-item-has-error .magic-input-wrapper .ant-input:focus,
-  .ant-form-item-has-error .magic-input-wrapper .ant-input:not([disabled]):hover {
+  .ant-form-item-has-error
+    .magic-input-wrapper
+    .ant-input:not([disabled]):hover {
     background: none;
     border: none;
     box-shadow: none;
   }
+
+  .magic-input-wrapper .ant-tag {
+    display: inline-block;
+    height: 24px;
+    line-height: 24px;
+    margin: 0 5px 0 0;
+  }
 }
+
 .search-icon {
   position: absolute;
   right: 8px;
@@ -120,13 +145,23 @@
   font-size: 12px;
   line-height: 32px;
 }
-.close-btn {
-  height: 28px !important;
+
+.close-btn-col {
+  height: 24px;
+  line-height: 24px;
+
+  .close-btn {
+    border: none;
+    height: 24px !important;
+    padding: 0;
+  }
 }
+
 .close-option-btn {
-  height: 28px !important;
+  height: 24px !important;
   top: 3px;
 }
+
 .magic-input-checks {
   line-height: 32px;
   margin-left: 8px;

@@ -14,7 +14,7 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Input, Tag, Menu, Divider, Button, Checkbox } from 'antd';
+import { Input, Tag, Menu, Divider, Button, Checkbox, Row, Col } from 'antd';
 import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
 import { isEmpty, isBoolean } from 'lodash';
@@ -283,7 +283,7 @@ class MagicInput extends PureComponent {
         </Tag>
       );
     });
-    return <div className={styles.tags}>{tagItems}</div>;
+    return tagItems;
   }
 
   renderOptions() {
@@ -368,12 +368,14 @@ class MagicInput extends PureComponent {
       return null;
     }
     return (
-      <Button
-        className={styles['close-btn']}
-        type="link"
-        icon={<CloseOutlined />}
-        onClick={this.clearAll}
-      />
+      <Col className={styles['close-btn-col']}>
+        <Button
+          className={styles['close-btn']}
+          type="link"
+          icon={<CloseOutlined />}
+          onClick={this.clearAll}
+        />
+      </Col>
     );
   }
 
@@ -531,16 +533,16 @@ class MagicInput extends PureComponent {
           'magic-input-outer-wrapper'
         )}
       >
-        <div
+        <Row
           className={classnames(
             'magic-input-wrapper',
             styles['magic-input-wrapper'],
             isFocus ? styles['magic-input-wrapper-active'] : ''
           )}
         >
-          {this.renderTags()}
-          {this.renderKey()}
-          <div className={styles['input-wrapper']}>
+          <Col>{this.renderTags()}</Col>
+          <Col>{this.renderKey()}</Col>
+          <Col className={styles['input-wrapper']}>
             <Input
               className={styles.input}
               ref={this.inputRef}
@@ -553,12 +555,12 @@ class MagicInput extends PureComponent {
               onKeyUp={this.handleKeyUp}
             />
             {this.renderMenu()}
-          </div>
-          <div className={styles['search-icon']}>
+          </Col>
+          <Col className={styles['search-icon']}>
             <SearchOutlined />
-          </div>
+          </Col>
           {this.renderClose()}
-        </div>
+        </Row>
         {this.renderChecks()}
       </div>
     );
