@@ -129,12 +129,6 @@ export const volumeColumns = [
   {
     title: t('ID/Name'),
     dataIndex: 'name',
-    render: (value, record) => (
-      <div>
-        <div>{record.id}</div>
-        <div>{value || '-'}</div>
-      </div>
-    ),
   },
   {
     title: t('Type'),
