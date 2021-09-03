@@ -126,7 +126,6 @@ export default class VirtualAdapter extends Base {
           'virtual_adapter',
           '_admin'
         )}/detail`,
-        stringify: (name, record) => name || record.id,
       },
       {
         title: t('Project ID/Name'),
