@@ -220,6 +220,11 @@ export class CreateForm extends ModalAction {
     ];
   }
 
+  get instanceName() {
+    const { name } = this.values || {};
+    return name;
+  }
+
   onSubmit = (values) => {
     const {
       name,
