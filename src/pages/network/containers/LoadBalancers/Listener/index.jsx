@@ -23,6 +23,7 @@ import { actionConfigs, adminActions } from './Actions';
 export default class Listeners extends Base {
   init() {
     this.store = new ListenerStore();
+    this.downloadStore = new ListenerStore();
   }
 
   updateFetchParamsByPage = (params) => {
