@@ -37,7 +37,7 @@ export const color = {
   dangerColor: '#D93126',
 };
 
-class ResourceCircle extends Component {
+export class ResourceCircle extends Component {
   constructor(props) {
     super(props);
     this.store = globalHypervisorStore;

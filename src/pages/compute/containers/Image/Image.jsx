@@ -27,9 +27,7 @@ import { ImageStore } from 'stores/glance/image';
 import { getOptions } from 'utils/index';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class Image extends Base {
+export class Image extends Base {
   init() {
     this.store = new ImageStore();
     this.downloadStore = new ImageStore();
@@ -208,3 +206,5 @@ export default class Image extends Base {
     return filters;
   }
 }
+
+export default inject('rootStore')(observer(Image));

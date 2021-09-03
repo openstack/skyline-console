@@ -48,7 +48,7 @@ const actions = [
   },
 ];
 
-class ProjectInfo extends Component {
+export class ProjectInfo extends Component {
   componentDidMount() {
     this.props.store.getProjectInfoData();
   }

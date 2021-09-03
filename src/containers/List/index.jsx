@@ -759,6 +759,7 @@ export default class BaseList extends React.Component {
       this.setRefreshdataTimerAuto();
     }
     this.updateHintsByDatas(datas);
+    this.setTableHeight();
     return datas;
   };
 
@@ -916,6 +917,7 @@ export default class BaseList extends React.Component {
   updateHintsByOthers() {
     if (this.updateHints) {
       this.updateHints();
+      setTimeout(this.setTableHeight, 0);
       this.setState({
         newHints: true,
       });

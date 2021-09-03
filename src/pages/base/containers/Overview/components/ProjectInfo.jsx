@@ -18,7 +18,7 @@ import { inject, observer } from 'mobx-react';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import styles from '../style.less';
 
-class ProjectInfo extends Component {
+export class ProjectInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
