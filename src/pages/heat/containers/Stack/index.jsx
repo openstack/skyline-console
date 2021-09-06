@@ -102,6 +102,10 @@ export default class Stack extends Base {
       'CREATE_FAILED',
       'ROLLBACK_COMPLETE',
       'ROLLBACK_FAILED',
+      'UPDATE_COMPLETE',
+      'UPDATE_FAILED',
+      'DELETE_COMPLETE',
+      'DELETE_FAILED',
     ];
     const options = statuses.map((status) => ({
       key: status,
