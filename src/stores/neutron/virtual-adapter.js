@@ -40,13 +40,6 @@ export class VirtualAdapterStore extends Base {
     }
   };
 
-  get paramsFuncPage() {
-    return (params) => {
-      const { current, withPrice, instanceAddresses, ...rest } = params;
-      return rest;
-    };
-  }
-
   @observable
   fixed_ips = new List();
 
@@ -114,19 +107,7 @@ export class VirtualAdapterStore extends Base {
     if (items.length === 0) {
       return items;
     }
-    const {
-      device_id,
-      device_owner,
-      addressAsIdKey,
-      network_id,
-      instanceAddresses,
-    } = filters;
-    if (instanceAddresses) {
-      items = items.map((i) => ({
-        ...i,
-        instanceAddresses,
-      }));
-    }
+    const { device_id, device_owner, addressAsIdKey, network_id } = filters;
     if (device_owner || device_id || network_id) {
       // fetch fixed_ips details
       const details = await Promise.all(

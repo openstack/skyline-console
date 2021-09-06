@@ -13,8 +13,7 @@
 // limitations under the License.
 
 import { ConfirmAction } from 'containers/Action';
-import globalServerStore, { ServerStore } from 'stores/nova/instance';
-// import { isActiveOrShutOff, isNotLocked } from 'resources/instance';
+import globalServerStore from 'stores/nova/instance';
 
 export default class Detach extends ConfirmAction {
   get id() {
@@ -39,50 +38,10 @@ export default class Detach extends ConfirmAction {
 
   policy = 'os_compute_api:os-attach-interfaces:delete';
 
-  hasMoreInterfaces(instance) {
-    let count = 0;
-    const { addresses } = instance;
-    Object.keys(addresses).forEach((key) => {
-      const detail = addresses[key];
-      count += detail.length;
-    });
-    return count > 1;
-  }
-
-  allowedCheckFunc = (item) => {
-    const flag = !!item.device_id;
-    const { detail } = this.containerProps;
-    if (detail) {
-      return flag && this.hasMoreInterfaces(detail);
-    }
-    // && item.instance
-    // && isNotLocked(item.instance) && isActiveOrShutOff(item.instance)
-    // && this.hasMoreInterfaces(item.instance);
-    // console.log(flag, item);
-    return flag;
-  };
+  allowedCheckFunc = (item) => !!item.device_id;
 
   onSubmit = async () => {
     const { id, device_id } = this.item;
-    const { detail } = this.containerProps;
-    if (!detail) {
-      const store = new ServerStore();
-      await store.fetchDetail({ id: device_id });
-      if (!this.hasMoreInterfaces(store.detail)) {
-        this.onlyOne = true;
-        this.showConfirmErrorBeforeSubmit = true;
-        this.confirmErrorMessageBeforeSubmit = t(
-          'Unable to {action}, because : {reason}, instance: {name}.',
-          {
-            action: this.actionName || this.title,
-            name: this.item.name,
-            reason: t('the instance only has one virtual adapter'),
-          }
-        );
-        return Promise.reject();
-      }
-    }
-    this.showConfirmErrorBeforeSubmit = false;
     return globalServerStore.detachInterface({ id: device_id, ports: [id] });
   };
 }
