@@ -141,8 +141,9 @@ describe('test utils index.js', () => {
     expect(toLocalTimeFilter(1622025465 * 1000)).toBe(
       moment.unix(1622025465).format(timeFormatStr.YMDHms)
     );
-    expect(toLocalTimeFilter(moment().utc().format())).toBe(
-      moment().format(timeFormatStr.YMDHms)
+    const now = moment();
+    expect(toLocalTimeFilter(now.clone().utc().format())).toBe(
+      now.clone().format(timeFormatStr.YMDHms)
     );
   });
 
