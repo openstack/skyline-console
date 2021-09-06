@@ -281,6 +281,7 @@ export default class FormItem extends React.Component {
       tip,
       name,
       hidden,
+      label,
     } = this.props;
     if (hidden) {
       return [];
@@ -294,7 +295,7 @@ export default class FormItem extends React.Component {
     if (required) {
       if (tip && type.indexOf('select-table') < 0) {
         requiredRule.required = true;
-        requiredRule.message = t('Please input!');
+        requiredRule.message = `${t('Please input') + label}!`;
       } else {
         newRule.required = required;
       }

@@ -210,8 +210,6 @@ export default class CreateNetwork extends ModalAction {
   }
 
   checkCidr = (value) => {
-    if (isEmpty(value)) return false;
-
     const { ip_version = 'ipv4' } = this.state;
 
     if (ip_version === 'ipv4' && !isIpCidr(value)) return false;
@@ -435,9 +433,9 @@ export default class CreateNetwork extends ModalAction {
           if (!create_subnet && !value) {
             return Promise.resolve();
           }
-          if (!this.checkCidr(value)) {
+          if (!isEmpty(value) && !this.checkCidr(value)) {
             // eslint-disable-next-line prefer-promise-reject-errors
-            return Promise.reject(new Error(t('Invalid CIDR.')));
+            return Promise.reject(new Error(t('Invalid: ') + t('CIDR')));
           }
           return Promise.resolve();
         },
@@ -484,7 +482,7 @@ export default class CreateNetwork extends ModalAction {
       {
         name: 'gateway_ip',
         label: t('Gateway IP'),
-        type: 'ip-input',
+        type: ip_version === 'ipv6' ? 'input' : 'ip-input',
         onChange: (e) => {
           this.setState({
             gateway_ip: e.target.value,
@@ -493,32 +491,18 @@ export default class CreateNetwork extends ModalAction {
         tip: t(
           'If no gateway is specified, the first IP address will be defaulted.'
         ),
-        hidden: !(create_subnet && more && isIpv4 && !disable_gateway),
-      },
-      {
-        name: 'gateway_ip',
-        label: t('Gateway IP'),
-        type: 'input',
-        onChange: (e) => {
-          this.setState({
-            gateway_ip: e.target.value,
-          });
-        },
-        tip: t(
-          'If no gateway is specified, the first IP address will be defaulted.'
-        ),
-        hidden: !(
-          create_subnet &&
-          more &&
-          ip_version === 'ipv6' &&
-          !disable_gateway
-        ),
-        validator: (rule, value) => {
-          if (!this.checkGateway(value)) {
-            return Promise.reject(new Error(t('Invalid Ip.')));
-          }
-          return Promise.resolve();
-        },
+        hidden: !(create_subnet && more && !disable_gateway),
+        validator:
+          ip_version === 'ipv6'
+            ? (rule, value) => {
+                if (!this.checkGateway(value)) {
+                  return Promise.reject(
+                    new Error(t('Invalid: Please input a valid ipv6.'))
+                  );
+                }
+                return Promise.resolve();
+              }
+            : null,
       },
       {
         name: 'enable_dhcp',

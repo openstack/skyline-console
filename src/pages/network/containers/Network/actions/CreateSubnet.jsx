@@ -73,8 +73,6 @@ export default class CreateSubnet extends ModalAction {
   }
 
   checkCidr = (value) => {
-    if (isEmpty(value)) return false;
-
     const { ip_version = 'ipv4' } = this.state;
 
     if (ip_version === 'ipv4' && !isIpCidr(value)) return false;
@@ -207,8 +205,8 @@ export default class CreateSubnet extends ModalAction {
         required: true,
         // validator: (rule, value) => (isIpWithMask(value) ? Promise.resolve(true) : Promise.reject(new Error(t('Invalid CIDR.')))),
         validator: (rule, value) => {
-          if (!this.checkCidr(value)) {
-            return Promise.reject(new Error(t('Invalid CIDR.')));
+          if (!isEmpty(value) && !this.checkCidr(value)) {
+            return Promise.reject(new Error(t('Invalid: ') + t('CIDR')));
           }
           return Promise.resolve();
         },
@@ -232,7 +230,7 @@ export default class CreateSubnet extends ModalAction {
       {
         name: 'gateway_ip',
         label: t('Gateway IP'),
-        type: 'ip-input',
+        type: ip_version === 'ipv6' ? 'input' : 'ip-input',
         onChange: (e) => {
           this.setState({
             gateway_ip: e.target.value,
@@ -241,27 +239,18 @@ export default class CreateSubnet extends ModalAction {
         tip: t(
           'If no gateway is specified, the first IP address will be defaulted.'
         ),
-        hidden: !(more && isIpv4 && !disable_gateway),
-      },
-      {
-        name: 'gateway_ip',
-        label: t('Gateway IP'),
-        type: 'input',
-        onChange: (e) => {
-          this.setState({
-            gateway_ip: e.target.value,
-          });
-        },
-        tip: t(
-          'If no gateway is specified, the first IP address will be defaulted.'
-        ),
-        hidden: !(more && ip_version === 'ipv6' && !disable_gateway),
-        validator: (rule, value) => {
-          if (!this.checkGateway(value)) {
-            return Promise.reject(new Error(t('Invalid Ip.')));
-          }
-          return Promise.resolve();
-        },
+        hidden: !(more && !disable_gateway),
+        validator:
+          ip_version === 'ipv6'
+            ? (rule, value) => {
+                if (!this.checkGateway(value)) {
+                  return Promise.reject(
+                    new Error(t('Invalid: Please input a valid ipv6.'))
+                  );
+                }
+                return Promise.resolve();
+              }
+            : null,
       },
       {
         name: 'enable_dhcp',
