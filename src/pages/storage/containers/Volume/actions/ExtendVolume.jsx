@@ -70,6 +70,11 @@ export class ExtendVolume extends ModalAction {
 
   init() {
     this.store = globalVolumeStore;
+    this.state.showNotice = true;
+  }
+
+  get showNotice() {
+    return this.state.showNotice;
   }
 
   onSubmit = async (values) => {
@@ -88,7 +93,10 @@ export class ExtendVolume extends ModalAction {
             name: server.name,
           })
         );
-        return Promise.reject();
+        this.setState({
+          showNotice: false,
+        });
+        return;
       }
     }
     return this.store.extendSize(id, rest);
