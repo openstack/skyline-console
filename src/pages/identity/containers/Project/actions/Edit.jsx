@@ -17,7 +17,7 @@ import { ModalAction } from 'containers/Action';
 import globalProjectStore from 'stores/keystone/project';
 import { statusTypes } from 'utils/constants';
 
-class EditForm extends ModalAction {
+export class EditForm extends ModalAction {
   init() {
     this.store = globalProjectStore;
     this.store.fetchList();

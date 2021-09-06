@@ -68,6 +68,10 @@ export class SecurityGroup extends React.Component {
     return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
   }
 
+  getDetailUrl(id) {
+    return `${this.getUrl('/network/security-group')}/detail/${id}`;
+  }
+
   actionCallback = async (first) => {
     const {
       match: {

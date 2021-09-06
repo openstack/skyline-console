@@ -31,6 +31,10 @@ export class Rule extends Base {
     return t('security group rules');
   }
 
+  getDetailUrl(id) {
+    return `${this.getUrl('/network/security-group')}/detail/${id}`;
+  }
+
   getColumns = () => getSelfColumns(this);
 
   get actionConfigs() {

@@ -21,6 +21,10 @@ export default class RuleButton extends Component {
     return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
   }
 
+  getDetailUrl(id) {
+    return `${this.getUrl('/network/security-group')}/detail/${id}`;
+  }
+
   render() {
     const { item: { security_group_rules: datas = [] } = {} } = this.props;
     const configs = {

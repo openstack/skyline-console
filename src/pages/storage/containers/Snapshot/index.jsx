@@ -18,9 +18,7 @@ import { volumeStatus, snapshotTransitionStatuses } from 'resources/volume';
 import globalSnapshotStore, { SnapshotStore } from 'stores/cinder/snapshot';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class Snapshots extends Base {
+export class Snapshots extends Base {
   init() {
     if (this.inDetailPage) {
       this.store = new SnapshotStore();
@@ -150,3 +148,5 @@ export default class Snapshots extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Snapshots));

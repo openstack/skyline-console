@@ -18,13 +18,10 @@ import { Divider, Badge, Tag, Tooltip } from 'antd';
 import Base from 'containers/List';
 import globalProjectStore from 'stores/keystone/project';
 import { yesNoOptions, projectTagsColors } from 'utils/constants';
-
 import actionConfigs from './actions';
 import styles from './index.less';
 
-@inject('rootStore')
-@observer
-export default class Projects extends Base {
+export class Projects extends Base {
   init() {
     this.store = globalProjectStore;
   }
@@ -222,3 +219,5 @@ export default class Projects extends Base {
     this.list.silent = false;
   }
 }
+
+export default inject('rootStore')(observer(Projects));

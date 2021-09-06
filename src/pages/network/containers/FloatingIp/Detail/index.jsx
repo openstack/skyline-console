@@ -21,9 +21,7 @@ import actionConfigs from '../actions';
 import BaseDetail from './BaseDetail';
 import PortForwarding from './PortForwarding';
 
-@inject('rootStore')
-@observer
-export default class FloatingIpDetail extends Base {
+export class FloatingIpDetail extends Base {
   get name() {
     return t('floating ip');
   }
@@ -92,3 +90,5 @@ export default class FloatingIpDetail extends Base {
     this.store = new FloatingIpStore();
   }
 }
+
+export default inject('rootStore')(observer(FloatingIpDetail));

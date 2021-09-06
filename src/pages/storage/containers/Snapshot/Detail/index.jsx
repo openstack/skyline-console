@@ -19,9 +19,7 @@ import { volumeStatus } from 'resources/volume';
 import BaseDetail from './BaseDetail';
 import actionConfigs from '../actions';
 
-@inject('rootStore')
-@observer
-export default class Detail extends Base {
+export class Detail extends Base {
   get name() {
     return t('snapshot');
   }
@@ -84,3 +82,5 @@ export default class Detail extends Base {
     this.store = new SnapshotStore();
   }
 }
+
+export default inject('rootStore')(observer(Detail));

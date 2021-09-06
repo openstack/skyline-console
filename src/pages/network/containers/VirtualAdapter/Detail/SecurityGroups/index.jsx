@@ -30,9 +30,7 @@ import styles from './index.less';
 
 const { Panel } = Collapse;
 
-@inject('rootStore')
-@observer
-export default class SecurityGroup extends React.Component {
+export class SecurityGroup extends React.Component {
   constructor(props) {
     super(props);
     this.store = new VirtualAdapterStore();
@@ -44,6 +42,10 @@ export default class SecurityGroup extends React.Component {
 
   getUrl(path, adminStr) {
     return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
+  }
+
+  getDetailUrl(id) {
+    return `${this.getUrl('/network/security-group')}/detail/${id}`;
   }
 
   get portId() {
@@ -66,6 +68,7 @@ export default class SecurityGroup extends React.Component {
     const {
       security_groups: { data },
     } = this.store;
+    const detailUrl = this.getDetailUrl(item);
     return (
       <Row>
         <Col span={18}>
@@ -76,10 +79,7 @@ export default class SecurityGroup extends React.Component {
         <Col span={6}>
           {!this.isAdminPage && (
             <>
-              <Link
-                style={{ fontSize: 12, marginRight: 16 }}
-                to={`/network/security-group/detail/${item.id}`}
-              >
+              <Link style={{ fontSize: 12, marginRight: 16 }} to={detailUrl}>
                 {t('Edit Rule')}
               </Link>
             </>
@@ -160,3 +160,5 @@ export default class SecurityGroup extends React.Component {
     );
   }
 }
+
+export default inject('rootStore')(observer(SecurityGroup));

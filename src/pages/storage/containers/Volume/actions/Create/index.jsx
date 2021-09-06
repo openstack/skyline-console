@@ -476,6 +476,8 @@ export class Create extends FormAction {
     ];
   }
 
+  onCountChangeCallback() {}
+
   onCountChange = (value) => {
     let msg = t('Quota: Project quotas sufficient resources can be created');
     let status = 'success';
@@ -487,10 +489,17 @@ export class Create extends FormAction {
       status = 'error';
     }
     this.msg = msg;
-    this.setState({
-      count: value,
-      status,
-    });
+    this.setState(
+      {
+        count: value,
+        status,
+      },
+      () => {
+        if (this.onCountChangeCallback) {
+          this.onCountChangeCallback();
+        }
+      }
+    );
   };
 
   renderBadge() {
@@ -499,6 +508,10 @@ export class Create extends FormAction {
       return null;
     }
     return <Badge status={status} text={this.msg} />;
+  }
+
+  renderExtra() {
+    return this.renderBadge();
   }
 
   renderFooterLeft() {
@@ -518,7 +531,7 @@ export class Create extends FormAction {
           value={count}
           className={classnames(styles.input, 'volume-count')}
         />
-        {this.renderBadge()}
+        {this.renderExtra()}
       </div>
     );
   }

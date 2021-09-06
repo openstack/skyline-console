@@ -22,9 +22,7 @@ import AllowedAddressPair from './AllowedAddressPair';
 import BaseDetail from './BaseDetail';
 import actionConfigs from '../actions';
 
-@inject('rootStore')
-@observer
-export default class VirtualAdapterDetail extends Base {
+export class VirtualAdapterDetail extends Base {
   get name() {
     return t('virtual adapter');
   }
@@ -123,3 +121,5 @@ export default class VirtualAdapterDetail extends Base {
     this.store = new VirtualAdapterStore();
   }
 }
+
+export default inject('rootStore')(observer(VirtualAdapterDetail));

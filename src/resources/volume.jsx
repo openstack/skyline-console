@@ -14,6 +14,8 @@
 
 import React from 'react';
 import { yesNoOptions } from 'utils/constants';
+import { toLocalTimeFilter } from 'utils/index';
+import { Link } from 'react-router-dom';
 
 export const volumeStatus = {
   available: t('Available'),
@@ -221,3 +223,113 @@ export const snapshotTypeTip = (
     </p>
   </>
 );
+
+export const getVolumnColumnsList = (self) => {
+  const columns = [
+    {
+      title: t('ID/Name'),
+      dataIndex: 'name',
+      linkPrefix: `/storage/${self.getUrl('volume')}/detail`,
+      stringify: (name, record) => name || record.id,
+      sortKey: 'name',
+    },
+    {
+      title: t('Project ID/Name'),
+      dataIndex: 'project_name',
+      hidden: !self.isAdminPage,
+      isHideable: true,
+      sorter: false,
+    },
+    {
+      title: t('Host'),
+      dataIndex: 'host',
+      isHideable: true,
+      hidden: !self.isAdminPage,
+      sorter: false,
+    },
+    {
+      title: t('Size'),
+      dataIndex: 'size',
+      isHideable: true,
+      render: (value) => `${value}GB`,
+    },
+    {
+      title: t('Status'),
+      dataIndex: 'status',
+      render: (value) => volumeStatus[value] || '-',
+    },
+    {
+      title: t('Type'),
+      dataIndex: 'volume_type',
+      isHideable: true,
+      width: 100,
+      sorter: false,
+    },
+    {
+      title: t('Disk Tag'),
+      dataIndex: 'disk_tag',
+      isHideable: true,
+      render: (value) => diskTag[value] || '-',
+      sorter: false,
+    },
+    {
+      title: t('Attached To'),
+      dataIndex: 'attachments',
+      isHideable: true,
+      sorter: false,
+      render: (value) => {
+        if (value && value.length > 0) {
+          return value.map((it) => (
+            <div key={it.server_id}>
+              {it.device} on{' '}
+              <Link
+                to={`${self.getUrl('/compute/instance')}/detail/${
+                  it.server_id
+                }?tab=volumes`}
+              >
+                {it.server_name}
+              </Link>
+            </div>
+          ));
+        }
+        return '-';
+      },
+      stringify: (value) => {
+        if (value && value.length) {
+          return value
+            .map((it) => `${it.server_name}(${it.server_id})`)
+            .join(',');
+        }
+        return '-';
+      },
+    },
+    {
+      title: t('Bootable'),
+      titleTip: t(
+        'When the volume is "bootable" and the status is "available", it can be used as a startup source to create an instance.'
+      ),
+      dataIndex: 'bootable',
+      isHideable: true,
+      render: (value) => bootableType[value] || '-',
+    },
+    {
+      title: t('Shared'),
+      dataIndex: 'multiattach',
+      valueRender: 'yesNo',
+      titleTip: multiTip,
+      width: 80,
+      sorter: false,
+    },
+    {
+      title: t('Created At'),
+      dataIndex: 'created_at',
+      isHideable: true,
+      valueRender: 'sinceTime',
+      stringify: (value) => toLocalTimeFilter(value),
+    },
+  ];
+  if (self.inDetailPage) {
+    return columns.filter((it) => it.dataIndex !== 'attachments');
+  }
+  return columns;
+};

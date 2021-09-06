@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalVolumeStore from 'stores/cinder/volume';
 
-@inject('rootStore')
-@observer
-export default class CreateVolume extends ModalAction {
+export class CreateVolume extends ModalAction {
   static id = 'create';
 
   static title = t('Create Volume');
@@ -36,11 +34,15 @@ export default class CreateVolume extends ModalAction {
 
   static allowed = () => Promise.resolve(true);
 
+  get volumeTypeParams() {
+    return {};
+  }
+
   async getVolumeTypes() {
     const { volume_id: id } = this.item;
     // eslint-disable-next-line no-unused-vars
     const [_, volume] = await Promise.all([
-      this.volumeStore.fetchVolumeTypes(),
+      this.volumeStore.fetchVolumeTypes(this.volumeTypeParams),
       this.volumeStore.fetchDetail({ id }),
     ]);
     const { volume_type: volumeType } = volume;
@@ -122,3 +124,5 @@ export default class CreateVolume extends ModalAction {
     return globalVolumeStore.create(body);
   };
 }
+
+export default inject('rootStore')(observer(CreateVolume));

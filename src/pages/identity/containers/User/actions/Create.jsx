@@ -28,7 +28,7 @@ import {
 } from 'utils/validate';
 import { statusTypes } from 'utils/constants';
 
-class CreateForm extends FormAction {
+export class CreateForm extends FormAction {
   constructor(props) {
     super(props);
 

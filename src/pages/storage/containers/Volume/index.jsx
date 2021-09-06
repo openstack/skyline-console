@@ -12,27 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
-import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import {
-  volumeStatus,
-  diskTag,
   volumeTransitionStatuses,
-  bootableType,
   volumeFilters,
-  multiTip,
+  getVolumnColumnsList,
 } from 'resources/volume';
 import globalVolumeStore, { VolumeStore } from 'stores/cinder/volume';
 import { InstanceVolumeStore } from 'stores/nova/instance-volume';
-import { toLocalTimeFilter } from 'utils/index';
 import { emptyActionConfig } from 'utils/constants';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class Volume extends Base {
+export class Volume extends Base {
   init() {
     if (this.inDetailPage) {
       this.store = new InstanceVolumeStore();
@@ -91,113 +83,7 @@ export default class Volume extends Base {
   }
 
   getColumns = () => {
-    const columns = [
-      {
-        title: t('ID/Name'),
-        dataIndex: 'name',
-        linkPrefix: `/storage/${this.getUrl('volume')}/detail`,
-        stringify: (name, record) => name || record.id,
-        sortKey: 'name',
-      },
-      {
-        title: t('Project ID/Name'),
-        dataIndex: 'project_name',
-        hidden: !this.isAdminPage,
-        isHideable: true,
-        sorter: false,
-      },
-      {
-        title: t('Host'),
-        dataIndex: 'host',
-        isHideable: true,
-        hidden: !this.isAdminPage,
-        sorter: false,
-      },
-      {
-        title: t('Size'),
-        dataIndex: 'size',
-        isHideable: true,
-        render: (value) => `${value}GB`,
-      },
-      {
-        title: t('Status'),
-        dataIndex: 'status',
-        render: (value) => volumeStatus[value] || '-',
-      },
-      {
-        title: t('Type'),
-        dataIndex: 'volume_type',
-        isHideable: true,
-        width: 100,
-        sorter: false,
-      },
-      {
-        title: t('Disk Tag'),
-        dataIndex: 'disk_tag',
-        isHideable: true,
-        render: (value) => diskTag[value] || '-',
-        sorter: false,
-      },
-      {
-        title: t('Attached To'),
-        dataIndex: 'attachments',
-        isHideable: true,
-        sorter: false,
-        render: (value) => {
-          if (value && value.length > 0) {
-            return value.map((it) => (
-              <div key={it.server_id}>
-                {it.device} on{' '}
-                <Link
-                  to={`${this.getUrl('/compute/instance')}/detail/${
-                    it.server_id
-                  }?tab=volumes`}
-                >
-                  {it.server_name}
-                </Link>
-              </div>
-            ));
-          }
-          return '-';
-        },
-        stringify: (value) => {
-          if (value && value.length) {
-            return value
-              .map((it) => `${it.server_name}(${it.server_id})`)
-              .join(',');
-          }
-          return '-';
-        },
-      },
-      {
-        title: t('Bootable'),
-        titleTip: t(
-          'When the volume is "bootable" and the status is "available", it can be used as a startup source to create an instance.'
-        ),
-        dataIndex: 'bootable',
-        isHideable: true,
-        render: (value) => bootableType[value] || '-',
-      },
-      {
-        title: t('Shared'),
-        dataIndex: 'multiattach',
-        valueRender: 'yesNo',
-        titleTip: multiTip,
-        width: 80,
-        sorter: false,
-      },
-      {
-        title: t('Created At'),
-        dataIndex: 'created_at',
-        isHideable: true,
-        valueRender: 'sinceTime',
-        stringify: (value) => toLocalTimeFilter(value),
-      },
-    ];
-    if (this.inDetailPage) {
-      return columns.filter((it) => it.dataIndex !== 'attachments');
-    }
-    return columns;
+    return getVolumnColumnsList(this);
   };
 
   get searchFilters() {
@@ -219,3 +105,5 @@ export default class Volume extends Base {
     return params;
   };
 }
+
+export default inject('rootStore')(observer(Volume));

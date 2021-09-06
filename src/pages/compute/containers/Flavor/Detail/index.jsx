@@ -21,9 +21,7 @@ import { emptyActionConfig } from 'utils/constants';
 import actionConfigs from '../actions';
 import BaseDetail from './BaseDetail';
 
-@inject('rootStore')
-@observer
-export default class Detail extends Base {
+export class Detail extends Base {
   get name() {
     return t('flavor');
   }
@@ -96,3 +94,5 @@ export default class Detail extends Base {
     this.store = new FlavorStore();
   }
 }
+
+export default inject('rootStore')(observer(Detail));

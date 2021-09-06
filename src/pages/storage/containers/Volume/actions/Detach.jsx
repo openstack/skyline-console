@@ -18,9 +18,7 @@ import { ModalAction } from 'containers/Action';
 import globalServerStore from 'stores/nova/instance';
 import { isInUse, isOsDisk } from 'resources/volume';
 
-@inject('rootStore')
-@observer
-export default class Detach extends ModalAction {
+export class Detach extends ModalAction {
   static id = 'detach';
 
   static title = t('Detach');
@@ -92,10 +90,6 @@ export default class Detach extends ModalAction {
             label: t('Name'),
             name: 'name',
           },
-          // {
-          //   label: t('IP'),
-          //   name: 'private_ip',
-          // },
         ],
         columns: [
           {
@@ -106,36 +100,6 @@ export default class Detach extends ModalAction {
             title: t('Attached To'),
             dataIndex: 'device',
           },
-          // {
-          //   title: t('Image'),
-          //   dataIndex: ['image', 'os_distro'],
-          //   render: value => <ImageType type={value} />,
-          // },
-          // {
-          //   title: t('Fixed IP'),
-          //   dataIndex: 'private_ip',
-          //   render: private_ip => (private_ip || []).map(it => <span key={it.ip}>{it.ip}<br /></span>),
-          // },
-          // {
-          //   title: t('Floating IP'),
-          //   dataIndex: 'addresses',
-          //   render: (addresses) => {
-          //     if (!addresses || !addresses['pub-net']) {
-          //       return '-';
-          //     }
-          //     return addresses['pub-net'].map(it => <span key={it.addr}>{it.addr}<br /></span>);
-          //   },
-          // },
-          // {
-          //   title: t('Flavor'),
-          //   dataIndex: 'flavor',
-          //   render: flavor => `${flavor.disk}G/${Number.parseInt(flavor.ram / 1024, 10)}G`,
-          // },
-          // {
-          //   title: t('Created At'),
-          //   dataIndex: 'created',
-          //   valueRender: 'sinceTime',
-          // },
         ],
       },
     ];
@@ -151,3 +115,5 @@ export default class Detach extends ModalAction {
     );
   };
 }
+
+export default inject('rootStore')(observer(Detach));

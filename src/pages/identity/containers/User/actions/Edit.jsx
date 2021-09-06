@@ -18,7 +18,7 @@ import globalUserStore from 'stores/keystone/user';
 import globalDomainStore from 'stores/keystone/domain';
 import { phoneNumberValidate, emailValidate } from 'utils/validate';
 
-class EditForm extends ModalAction {
+export class EditForm extends ModalAction {
   init() {
     this.store = globalUserStore;
     this.domainStore = globalDomainStore;

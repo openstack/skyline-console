@@ -78,7 +78,7 @@ export class ExtendVolume extends ModalAction {
   }
 
   onSubmit = async (values) => {
-    const { volume, ...rest } = values;
+    const { new_size } = values;
     const { id } = this.item;
 
     const instanceId = get(this.item, 'attachments[0].server_id');
@@ -99,7 +99,7 @@ export class ExtendVolume extends ModalAction {
         return;
       }
     }
-    return this.store.extendSize(id, rest);
+    return this.store.extendSize(id, { new_size });
   };
 }
 

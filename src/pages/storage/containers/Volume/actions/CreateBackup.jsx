@@ -74,10 +74,11 @@ export class CreateBackup extends ModalAction {
 
   onSubmit = (values) => {
     const { id } = this.item;
-    const { volume, ...rest } = values;
+    const { name, incremental } = values;
     const force = isInUse(this.item);
     const body = {
-      ...rest,
+      name,
+      incremental,
       volume_id: id,
       force,
     };

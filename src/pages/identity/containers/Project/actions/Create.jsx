@@ -19,7 +19,7 @@ import globalProjectStore from 'stores/keystone/project';
 import { regex } from 'utils/validate';
 import { statusTypes } from 'utils/constants';
 
-class CreateForm extends ModalAction {
+export class CreateForm extends ModalAction {
   constructor(props) {
     super(props);
     this.state = {

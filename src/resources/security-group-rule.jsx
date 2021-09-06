@@ -88,19 +88,8 @@ export const getSelfColumns = (self) => [
     dataIndex: 'remote_group_id',
     isHideable: true,
     render: (value) => {
-      return (
-        <div>
-          {value ? (
-            <Link
-              to={`/network/${self.getUrl('security-group')}/detail/${value}`}
-            >
-              {value}
-            </Link>
-          ) : (
-            '-'
-          )}
-        </div>
-      );
+      const url = self.getDetailUrl(value);
+      return <div>{value ? <Link to={url}>{value}</Link> : '-'}</div>;
     },
   },
   {
