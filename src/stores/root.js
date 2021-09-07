@@ -146,14 +146,6 @@ export class RootStore {
     const exp = getLocalTime(keystone_token_exp).valueOf();
     setLocalStorageItem('keystone_token', keystone_token, 0, exp);
     this.endpoints = endpoints;
-    this.checkBilling();
-  }
-
-  @action
-  checkBilling() {
-    const enableBilling =
-      this.checkLicense('billing') && this.checkEndpoint('billing_system');
-    this.enableBilling = enableBilling;
   }
 
   @action

@@ -14,7 +14,7 @@
 
 import { action, observable } from 'mobx';
 import client from 'client';
-import Base from '../base';
+import Base from 'stores/base';
 
 export class IronicStore extends Base {
   @observable
@@ -32,6 +32,10 @@ export class IronicStore extends Base {
 
   get portClient() {
     return client.ironic.ports;
+  }
+
+  get traitClient() {
+    return client.placement.traits;
   }
 
   get listWithDetail() {
@@ -138,7 +142,7 @@ export class IronicStore extends Base {
 
   @action
   async getTraits() {
-    const result = await client.placement.traits.list();
+    const result = await this.traitClient.list();
     const { traits = [] } = result;
     traits.sort();
     this.traits = traits;

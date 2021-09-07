@@ -15,7 +15,7 @@
 import { action, observable } from 'mobx';
 import { get } from 'lodash';
 import client from 'client';
-import Base from '../base';
+import Base from 'stores/base';
 import { RecycleBinStore } from '../skyline/recycle-server';
 
 export class ServerStore extends Base {
@@ -33,6 +33,22 @@ export class ServerStore extends Base {
 
   get client() {
     return client.nova.servers;
+  }
+
+  get imageClient() {
+    return client.glance.images;
+  }
+
+  get portClient() {
+    return client.neutron.ports;
+  }
+
+  get networkClient() {
+    return client.neutron.networks;
+  }
+
+  get sgClient() {
+    return client.neutron.securityGroups;
   }
 
   get mapper() {
@@ -115,7 +131,7 @@ export class ServerStore extends Base {
       return newData;
     }
     const { members, isServerGroup, host } = filters;
-    const isoImages = await client.glance.images.list({ disk_format: 'iso' });
+    const isoImages = await this.imageClient.list({ disk_format: 'iso' });
     const { images } = isoImages;
     if (images[0]) {
       const imageId = images.map((it) => it.id);
@@ -140,8 +156,8 @@ export class ServerStore extends Base {
     this.interface.isLoading = true;
     const params = { device_id: id };
     const [resData, networks] = await Promise.all([
-      client.neutron.ports.list(params),
-      client.neutron.networks.list(),
+      this.portClient.list(params),
+      this.networkClient.list(),
     ]);
     const interfaces = resData.ports;
     const interfaceAll = [];
@@ -167,7 +183,7 @@ export class ServerStore extends Base {
   @action
   async fetchSecurityGroup({ id }) {
     this.securityGroups.isLoading = true;
-    const portResult = await client.neutron.ports.list({
+    const portResult = await this.portClient.list({
       device_id: id,
     });
     const { ports = [] } = portResult;
@@ -177,7 +193,7 @@ export class ServerStore extends Base {
     let sgItems = [];
     try {
       const result = await Promise.all(
-        sgIds.map((it) => client.neutron.securityGroups.show(it))
+        sgIds.map((it) => this.sgClient.show(it))
       );
       sgItems = result.map((it) => it.security_group);
     } catch (e) {}

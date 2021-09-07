@@ -13,20 +13,27 @@
 // limitations under the License.
 
 import { action } from 'mobx';
-import { get, uniq } from 'lodash';
+import { get } from 'lodash';
 import client from 'client';
-import { isExternalNetwork } from 'resources/network';
-import Base from '../base';
+import Base from 'stores/base';
 
 export class PortStore extends Base {
   get client() {
     return client.neutron.ports;
   }
 
+  get networkClient() {
+    return client.neutron.ports;
+  }
+
+  get routerClient() {
+    return client.neutron.routers;
+  }
+
   async detailDidFetch(item) {
     const { network_id } = item;
     try {
-      const res = await client.neutron.networks.show(network_id);
+      const res = await this.networkClient.show(network_id);
       item.network = res.network;
       item.network_name = item.network.name;
       return item;
@@ -35,32 +42,10 @@ export class PortStore extends Base {
     }
   }
 
-  async listDidFetch(items, allProjects, filters) {
-    const { withPrice } = filters;
-    if (!withPrice) {
-      return items;
-    }
-    const networkIds = uniq(items.map((it) => it.network_id));
-    const networkResults = await Promise.all(
-      networkIds.map((it) => {
-        return client.neutron.networks.show(it);
-      })
-    );
-    const networks = networkResults.map((it) => it.network);
-    return items.map((it) => {
-      const network = networks.find((net) => net.id === it.network_id);
-      return {
-        ...it,
-        network,
-        isExternalNetwork: isExternalNetwork(network),
-      };
-    });
-  }
-
   async listDidFetchByFirewall(items) {
     const [networkResult, routerResult] = await Promise.all([
-      client.neutron.networks.list(),
-      client.neutron.routers.list(),
+      this.networkClient.list(),
+      this.routerClient.list(),
     ]);
     const { routers = [] } = routerResult;
     const { networks = [] } = networkResult;

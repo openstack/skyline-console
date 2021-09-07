@@ -17,8 +17,8 @@ import { action, observable, toJS } from 'mobx';
 import globalSecurityGroupStore from 'stores/neutron/security-group';
 import globalFloatingIpsStore from 'stores/neutron/floatingIp';
 import client from 'client';
-import List from '../base-list';
-import Base from '../base';
+import List from 'stores/base-list';
+import Base from 'stores/base';
 
 export class VirtualAdapterStore extends Base {
   get client() {

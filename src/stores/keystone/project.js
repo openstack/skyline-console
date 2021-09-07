@@ -16,7 +16,7 @@ import { action, observable } from 'mobx';
 import { getGBValue } from 'utils/index';
 import { get, isNil, isEmpty } from 'lodash';
 import client from 'client';
-import Base from '../base';
+import Base from 'stores/base';
 
 export class ProjectStore extends Base {
   @observable
@@ -48,6 +48,18 @@ export class ProjectStore extends Base {
 
   get userClient() {
     return client.keystone.users;
+  }
+
+  get novaQuotaClient() {
+    return client.nova.quotaSets;
+  }
+
+  get cinderQuotaClient() {
+    return client.cinder.quotaSets;
+  }
+
+  get neutronQuotaClient() {
+    return client.neutron.quotas;
   }
 
   @action
@@ -254,9 +266,9 @@ export class ProjectStore extends Base {
   @action
   async fetchProjectQuota({ project_id }) {
     const [novaResult, cinderResult, neutronResult] = await Promise.all([
-      client.nova.quotaSets.detail(project_id),
-      client.cinder.quotaSets.show(project_id, { usage: 'True' }),
-      client.neutron.quotas.details(project_id),
+      this.novaQuotaClient.detail(project_id),
+      this.cinderQuotaClient.show(project_id, { usage: 'True' }),
+      this.neutronQuotaClient.details(project_id),
     ]);
     this.isSubmitting = false;
     const { quota_set: novaQuota } = novaResult;

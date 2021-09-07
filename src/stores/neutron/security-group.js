@@ -15,8 +15,8 @@
 import { action } from 'mobx';
 import { mapperRule } from 'resources/security-group-rule';
 import client from 'client';
-import Base from '../base';
-import globalProjectMapStore from '../project';
+import Base from 'stores/base';
+import globalProjectMapStore from 'stores/project';
 
 export class SecurityGroupStore extends Base {
   get client() {

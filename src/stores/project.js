@@ -16,9 +16,13 @@ import { action, observable } from 'mobx';
 import { has } from 'lodash';
 import client from 'client';
 
-class ProjectMapStore {
+export class ProjectMapStore {
   @observable
   projectMap = {};
+
+  get client() {
+    return client.keystone.projects;
+  }
 
   @action
   async fetchProjectDetail({ id }) {
@@ -28,7 +32,7 @@ class ProjectMapStore {
     if (!has(this.projectMap, id)) {
       let result = 'error';
       try {
-        result = await client.keystone.projects.show(id);
+        result = await this.client.show(id);
       } catch (e) {
         // eslint-disable-next-line no-console
         console.log(e);

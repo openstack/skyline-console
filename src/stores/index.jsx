@@ -1,29 +1,27 @@
-import globalFloatingIpsStore from './neutron/floatingIp';
-import globalImageStore from './glance/image';
-import globalServerStore from './nova/instance';
-import globalInstanceSnapshotStore from './glance/instance-snapshot';
-import globalKeypairStore from './nova/keypair';
-import globalNetworkStore from './neutron/network';
-import globalPortForwardingStore from './neutron/port-forwarding';
-import globalQoSPolicyStore from './neutron/qos-policy';
-import globalRecycleBinStore from './skyline/recycle-server';
-import globalSecurityGroupStore from './neutron/security-group';
-import globalSecurityGroupRuleStore from './neutron/security-rule';
-import globalServerGroupStore from './nova/server-group';
-import globalSnapshotStore from './cinder/snapshot';
-import globalStaticRouteStore from './neutron/static-route';
-import globalSubnetStore from './neutron/subnet';
-import globalVirtualAdapterStore from './neutron/virtual-adapter';
-import globalVolumeStore from './cinder/volume';
-import globalComputeHostStore from './nova/compute-host';
-import globalHypervisorStore from './nova/hypervisor';
-import globalStackStore from './heat/stack';
+import globalFloatingIpsStore from 'stores/neutron/floatingIp';
+import globalImageStore from 'stores/glance/image';
+import globalServerStore from 'stores/nova/instance';
+import globalKeypairStore from 'stores/nova/keypair';
+import globalNetworkStore from 'stores/neutron/network';
+import globalPortForwardingStore from 'stores/neutron/port-forwarding';
+import globalQoSPolicyStore from 'stores/neutron/qos-policy';
+import globalRecycleBinStore from 'stores/skyline/recycle-server';
+import globalSecurityGroupStore from 'stores/neutron/security-group';
+import globalSecurityGroupRuleStore from 'stores/neutron/security-rule';
+import globalServerGroupStore from 'stores/nova/server-group';
+import globalSnapshotStore from 'stores/cinder/snapshot';
+import globalStaticRouteStore from 'stores/neutron/static-route';
+import globalSubnetStore from 'stores/neutron/subnet';
+import globalVirtualAdapterStore from 'stores/neutron/virtual-adapter';
+import globalVolumeStore from 'stores/cinder/volume';
+import globalComputeHostStore from 'stores/nova/compute-host';
+import globalHypervisorStore from 'stores/nova/hypervisor';
+import globalStackStore from 'stores/heat/stack';
 
 export default {
   globalFloatingIpsStore,
   globalImageStore,
   globalServerStore,
-  globalInstanceSnapshotStore,
   globalKeypairStore,
   globalNetworkStore,
   globalPortForwardingStore,

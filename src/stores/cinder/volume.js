@@ -16,8 +16,8 @@ import { action, observable } from 'mobx';
 import { isOsDisk } from 'resources/volume';
 import { renderFilterMap } from 'utils/index';
 import client from 'client';
-import Base from '../base';
-import globalVolumeTypeStore from './volume-type';
+import Base from 'stores/base';
+import globalVolumeTypeStore from 'stores/cinder/volume-type';
 
 export class VolumeStore extends Base {
   @observable
@@ -38,6 +38,14 @@ export class VolumeStore extends Base {
 
   get transferClient() {
     return client.cinder.volumeTransfers;
+  }
+
+  get quotaClient() {
+    return client.cinder.quotaSets;
+  }
+
+  get zoneClient() {
+    return client.cinder.azones;
   }
 
   listFetchByClient(params, originParams) {
@@ -82,18 +90,8 @@ export class VolumeStore extends Base {
   };
 
   async listDidFetch(items, _, filters) {
-    const { withPrice } = filters;
     if (items.length === 0) {
       return items;
-    }
-    if (withPrice) {
-      const volumeTypes = await globalVolumeTypeStore.fetchList({ withPrice });
-      items.forEach((item) => {
-        const { size, volume_type } = item;
-        const volumeType = volumeTypes.find((it) => it.name === volume_type);
-        const cost = volumeType ? (volumeType.priceCost * size).toFixed(2) : 0;
-        item.cost = cost;
-      });
     }
     const { serverId } = filters;
     return !serverId
@@ -105,26 +103,19 @@ export class VolumeStore extends Base {
         );
   }
 
-  async detailDidFetch(item, all_projects, { withPrice }) {
+  async detailDidFetch(item, all_projects) {
     const { id } = item;
     try {
       const result = await this.fetchList({ uuid: id, all_projects });
       item.itemInList = result[0];
       item.attachmentsContrib = result[0].attachments;
     } catch (e) {}
-    if (withPrice) {
-      const volumeTypes = await globalVolumeTypeStore.fetchList({ withPrice });
-      const { size, volume_type } = item;
-      const volumeType = volumeTypes.find((it) => it.name === volume_type);
-      const cost = volumeType ? (volumeType.priceCost * size).toFixed(2) : 0;
-      item.cost = cost;
-    }
     return item;
   }
 
   @action
   async fetchQuota() {
-    const result = await client.cinder.quotaSets.show(this.currentProjectId, {
+    const result = await this.quotaClient.show(this.currentProjectId, {
       usage: 'True',
     });
     this.quotaSet = result.quota_set;
@@ -132,7 +123,7 @@ export class VolumeStore extends Base {
 
   @action
   async fetchAvailabilityZoneList() {
-    const result = await client.cinder.azones.list();
+    const result = await this.zoneClient.list();
     this.availabilityZones = result.availabilityZoneInfo;
   }
 

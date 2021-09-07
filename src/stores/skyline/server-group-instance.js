@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { groupArray } from 'utils/index';
-import Base from '../base';
+import Base from 'stores/base';
 
 export class ServerGroupInstanceStore extends Base {
   get listResponseKey() {

@@ -15,7 +15,7 @@
 import { action, observable } from 'mobx';
 import client from 'client';
 import { uniq } from 'lodash';
-import Base from '../base';
+import Base from 'stores/base';
 
 export class VolumeTypeStore extends Base {
   @observable
@@ -26,6 +26,10 @@ export class VolumeTypeStore extends Base {
 
   get client() {
     return client.cinder.types;
+  }
+
+  get qosClient() {
+    return client.cinder.qosSpecs;
   }
 
   get listFilterByProject() {
@@ -64,7 +68,7 @@ export class VolumeTypeStore extends Base {
         items.filter((it) => !!it.qos_specs_id).map((it) => it.qos_specs_id)
       );
       if (qosIds.length) {
-        const qosReqs = qosIds.map((id) => client.cinder.qosSpecs.show(id));
+        const qosReqs = qosIds.map((id) => this.qosClient.show(id));
         const qosResults = await Promise.all(qosReqs);
         const qosItems = qosResults.map((it) => it.qos_specs);
         items.forEach((it) => {
@@ -80,7 +84,7 @@ export class VolumeTypeStore extends Base {
         items.filter((it) => !!it.qos_specs_id).map((it) => it.qos_specs_id)
       );
       if (qosIds.length) {
-        const qosReqs = qosIds.map((id) => client.cinder.qosSpecs.show(id));
+        const qosReqs = qosIds.map((id) => this.qosClient.show(id));
         const qosResults = await Promise.all(qosReqs);
         const qosItems = qosResults.map((it) => it.qos_specs);
         items.forEach((it) => {
@@ -207,7 +211,7 @@ export class VolumeTypeStore extends Base {
       this.projectVolumeTypes = types;
       return types;
     }
-    const projectTypes = types.filter((it) => it.public);
+    const projectTypes = types.filter((it) => it.is_public);
     const reqs = privateTypes.map((it) => this.client.getAccess(it.id));
     const accessResults = await Promise.all(reqs);
     accessResults.forEach((it) => {

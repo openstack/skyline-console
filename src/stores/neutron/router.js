@@ -15,12 +15,20 @@
 import { observable } from 'mobx';
 import { PortStore } from 'stores/neutron/port';
 import client from 'client';
-import Base from '../base';
-import globalNetworkStore from './network';
+import Base from 'stores/base';
+import globalNetworkStore from 'stores/neutron/network';
 
 export class RouterStore extends Base {
   get client() {
     return client.neutron.routers;
+  }
+
+  get subnetClient() {
+    return client.neutron.subnets;
+  }
+
+  get portClient() {
+    return client.neutron.ports;
   }
 
   get listFilterByProject() {
@@ -95,7 +103,7 @@ export class RouterStore extends Base {
   }
 
   async fetchConnectedSubnets(routerItem) {
-    const subnetResult = await client.neutron.subnets.list();
+    const subnetResult = await this.subnetClient.list();
     const { subnets } = subnetResult;
     const routerInterfaceList = [
       'network:router_interface_distributed',
@@ -161,7 +169,7 @@ export class RouterStore extends Base {
           ],
         },
       };
-      const port = await client.neutron.ports.create(portBody);
+      const port = await this.portClient.create(portBody);
       const portId = port.port.id;
       const newBody = {
         port_id: portId,
@@ -183,7 +191,7 @@ export class RouterStore extends Base {
     const portParams = {
       network_id: networkId,
     };
-    const result = await client.neutron.ports.list(portParams);
+    const result = await this.portClient.list(portParams);
     const port = result.ports.find((it) => {
       const { fixed_ips: fixedIps } = it;
       return (

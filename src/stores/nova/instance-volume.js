@@ -14,8 +14,7 @@
 
 import { isOsDisk } from 'resources/volume';
 import client from 'client';
-import Base from '../base';
-import globalVolumeTypeStore from '../cinder/volume-type';
+import Base from 'stores/base';
 
 export class InstanceVolumeStore extends Base {
   get client() {
@@ -30,15 +29,8 @@ export class InstanceVolumeStore extends Base {
 
   get paramsFunc() {
     return (params) => {
-      const {
-        id,
-        serverId,
-        all_projects,
-        projectId,
-        serverName,
-        withPrice,
-        ...rest
-      } = params;
+      const { id, serverId, all_projects, projectId, serverName, ...rest } =
+        params;
       return rest;
     };
   }
@@ -65,7 +57,7 @@ export class InstanceVolumeStore extends Base {
     if (items.length === 0) {
       return items;
     }
-    const { serverName, serverId, withPrice } = filters;
+    const { serverName, serverId } = filters;
     const { project_id, project_name } = items[0];
     const results = await Promise.all(
       items.map((it) => {
@@ -89,15 +81,6 @@ export class InstanceVolumeStore extends Base {
         project_name,
       };
     });
-    if (withPrice) {
-      const volumeTypes = await globalVolumeTypeStore.fetchList({ withPrice });
-      volumes.forEach((item) => {
-        const { size, volume_type } = item;
-        const volumeType = volumeTypes.find((it) => it.name === volume_type);
-        const cost = volumeType ? (volumeType.priceCost * size).toFixed(2) : 0;
-        item.cost = cost;
-      });
-    }
     return volumes;
   }
 }

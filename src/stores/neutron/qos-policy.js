@@ -13,11 +13,15 @@
 // limitations under the License.
 
 import client from 'client';
-import Base from '../base';
+import Base from 'stores/base';
 
 export class QoSPolicyStore extends Base {
   get client() {
     return client.neutron.qosPolicies;
+  }
+
+  get projectClient() {
+    return client.keystone.projects;
   }
 
   get listResponseKey() {
@@ -47,7 +51,7 @@ export class QoSPolicyStore extends Base {
 
   get paramsFuncPage() {
     return (params) => {
-      const { current, withPrice, withFIPPrice, ...rest } = params;
+      const { current, ...rest } = params;
       return rest;
     };
   }
@@ -93,8 +97,7 @@ export class QoSPolicyStore extends Base {
   async detailDidFetch(item, all_projects) {
     if (all_projects) {
       item.project_name =
-        (await client.keystone.projects.show(item.project_id)).project.name ||
-        '-';
+        (await this.projectClient.show(item.project_id)).project.name || '-';
     }
     return item;
   }

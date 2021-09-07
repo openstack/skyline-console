@@ -15,9 +15,9 @@
 import { get } from 'lodash';
 import { action, observable } from 'mobx';
 import client from 'client';
-import List from './base-list';
-import globalProjectMapStore from './project';
-import globalRootStore from './root';
+import List from 'stores/base-list';
+import globalProjectMapStore from 'stores/project';
+import globalRootStore from 'stores/root';
 
 export default class BaseStore {
   list = new List();
@@ -129,7 +129,7 @@ export default class BaseStore {
 
   get paramsFuncPage() {
     return (params) => {
-      const { current, withPrice, ...rest } = params;
+      const { current, ...rest } = params;
       return rest;
     };
   }

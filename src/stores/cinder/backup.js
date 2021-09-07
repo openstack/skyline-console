@@ -14,8 +14,8 @@
 
 import { action } from 'mobx';
 import client from 'client';
-import Base from '../base';
-import { VolumeStore } from './volume';
+import Base from 'stores/base';
+import { VolumeStore } from 'stores/cinder/volume';
 
 export class BackupStore extends Base {
   get client() {

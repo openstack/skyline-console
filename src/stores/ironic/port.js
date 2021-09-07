@@ -14,16 +14,20 @@
 
 import { action } from 'mobx';
 import client from 'client';
-import Base from '../base';
+import Base from 'stores/base';
 
 export class IronicPortStore extends Base {
   get client() {
     return client.ironic.ports;
   }
 
+  get nodePortsClient() {
+    return client.ironic.nodes.ports;
+  }
+
   listFetchByClient(params, originParams) {
     const { id } = originParams;
-    return client.ironic.nodes.ports.listDetail(id, params);
+    return this.nodePortsClient.listDetail(id, params);
   }
 
   get paramsFunc() {
