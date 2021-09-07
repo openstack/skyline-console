@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { firstUpperCase } from 'utils/index';
-import BaseForm from '../../../components/Form';
+import BaseForm from 'components/Form';
 
 export default class ModalAction extends BaseForm {
   static id = 'modalAction';

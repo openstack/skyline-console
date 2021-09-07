@@ -436,6 +436,78 @@ export default class BaseList extends React.Component {
     };
   }
 
+  getBaseTableProps() {
+    const {
+      keyword,
+      selectedRowKeys,
+      total,
+      page,
+      limit,
+      silent,
+      sortKey,
+      sortOrder,
+      timerFilter,
+    } = this.list;
+    const pagination = {
+      total,
+      current: Number(page),
+      pageSize: limit || 10,
+      // eslint-disable-next-line no-shadow
+      showTotal: (total) => t('Total {total} items', { total }),
+      showSizeChanger: true,
+    };
+    if (this.pageSizeOptions) {
+      pagination.pageSizeOptions = this.pageSizeOptions;
+    }
+    const { autoRefresh, tableHeight } = this.state;
+    return {
+      resourceName: this.name,
+      data: this.getDataSource(),
+      // data:data,
+      columns: this.getColumns(),
+      filters: this.getFilters(),
+      timerFilter,
+      searchFilters: this.getSearchFilters(),
+      keyword,
+      pagination,
+      primaryActions: this.primaryActions,
+      batchActions: this.batchActions,
+      itemActions: this.itemActions,
+      getCheckboxProps: this.getCheckboxProps,
+      isLoading: this.isLoading,
+      silentLoading: silent,
+      rowKey: this.rowKey,
+      selectedRowKeys: toJS(selectedRowKeys),
+      scrollY: tableHeight,
+      sortKey,
+      sortOrder,
+      defaultSortKey: this.defaultSortKey,
+      defaultSortOrder: this.defaultSortOrder,
+      getDownloadData: this.getDownloadData,
+      containerProps: this.props,
+      expandable: this.expandable,
+      showTimeFilter: !!this.filterTimeKey,
+      filterTimeDefalutValue: this.filterTimeDefalutValue,
+      isPageByBack: this.isFilterByBackend,
+      isSortByBack: this.isSortByBackend,
+      isCourier: this.isCourier,
+      autoRefresh,
+      startRefreshAuto: this.startRefreshAuto,
+      stopRefreshAuto: this.onStopRefreshAuto,
+      onClickAction: this.onClickAction,
+      onFinishAction: this.onFinishAction,
+      onCancelAction: this.onCancelAction,
+      dataDurationAuto: this.dataDurationAuto,
+      handleInputFocus: this.handleInputFocus,
+      hideTotal: this.hideTotal,
+      hideDownload: this.hideDownload,
+      primaryActionsExtra: this.primaryActionsExtra,
+      isAdminPage: this.isAdminPage,
+      initFilter: this.initFilter,
+      ...this.getEnabledTableProps(),
+    };
+  }
+
   onStopRefreshAuto = () => {
     this.setState({
       autoRefresh: false,
@@ -973,78 +1045,8 @@ export default class BaseList extends React.Component {
 
   renderTable() {
     try {
-      const {
-        keyword,
-        selectedRowKeys,
-        total,
-        page,
-        limit,
-        silent,
-        sortKey,
-        sortOrder,
-        timerFilter,
-      } = this.list;
-      const pagination = {
-        total,
-        current: Number(page),
-        pageSize: limit || 10,
-        // eslint-disable-next-line no-shadow
-        showTotal: (total) => t('Total {total} items', { total }),
-        showSizeChanger: true,
-      };
-      if (this.pageSizeOptions) {
-        pagination.pageSizeOptions = this.pageSizeOptions;
-      }
-      const { autoRefresh, tableHeight } = this.state;
-
-      return (
-        <BaseTable
-          resourceName={this.name}
-          data={this.getDataSource()}
-          // data={data}
-          columns={this.getColumns()}
-          filters={this.getFilters()}
-          timerFilter={timerFilter}
-          searchFilters={this.getSearchFilters()}
-          keyword={keyword}
-          pagination={pagination}
-          primaryActions={this.primaryActions}
-          batchActions={this.batchActions}
-          itemActions={this.itemActions}
-          getCheckboxProps={this.getCheckboxProps}
-          isLoading={this.isLoading}
-          silentLoading={silent}
-          rowKey={this.rowKey}
-          selectedRowKeys={toJS(selectedRowKeys)}
-          scrollY={tableHeight}
-          sortKey={sortKey}
-          sortOrder={sortOrder}
-          defaultSortKey={this.defaultSortKey}
-          defaultSortOrder={this.defaultSortOrder}
-          getDownloadData={this.getDownloadData}
-          containerProps={this.props}
-          expandable={this.expandable}
-          showTimeFilter={!!this.filterTimeKey}
-          filterTimeDefalutValue={this.filterTimeDefalutValue}
-          isPageByBack={this.isFilterByBackend}
-          isSortByBack={this.isSortByBackend}
-          isCourier={this.isCourier}
-          autoRefresh={autoRefresh}
-          startRefreshAuto={this.startRefreshAuto}
-          stopRefreshAuto={this.onStopRefreshAuto}
-          onClickAction={this.onClickAction}
-          onFinishAction={this.onFinishAction}
-          onCancelAction={this.onCancelAction}
-          dataDurationAuto={this.dataDurationAuto}
-          handleInputFocus={this.handleInputFocus}
-          hideTotal={this.hideTotal}
-          hideDownload={this.hideDownload}
-          primaryActionsExtra={this.primaryActionsExtra}
-          isAdminPage={this.isAdminPage}
-          initFilter={this.initFilter}
-          {...this.getEnabledTableProps()}
-        />
-      );
+      const props = this.getBaseTableProps();
+      return <BaseTable {...props} />;
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log(e);

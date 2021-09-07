@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import globalRootStore from 'stores/root';
 import { toJS } from 'mobx';
 
 export const groupNameVersionMap = {
@@ -48,6 +47,7 @@ const endpointsDefault = {
 };
 
 export const getOpenstackEndpoint = (key) => {
+  const globalRootStore = require('stores/root').default;
   const { endpoints = {} } = globalRootStore || {};
   const version = endpointVersionMap[key];
   const endpoint = endpoints[key] || endpointsDefault[key] || '';
@@ -55,6 +55,7 @@ export const getOpenstackEndpoint = (key) => {
 };
 
 export const getOriginEndpoint = (key) => {
+  const globalRootStore = require('stores/root').default;
   const endpoints = toJS((globalRootStore && globalRootStore.endpoints) || {});
   return endpoints[key];
 };

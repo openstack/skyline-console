@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import globalRootStore from 'stores/root';
 import clientRequest from './request';
 
 export default class BaseClient {
@@ -64,6 +63,7 @@ export default class BaseClient {
     if (!this.projectInUrl) {
       return '';
     }
+    const globalRootStore = require('stores/root').default;
     const { project: { id } = {} } = globalRootStore.user || {};
     return id || '';
   }

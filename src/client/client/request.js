@@ -16,9 +16,7 @@ import Axios from 'axios';
 import { getLocalStorageItem } from 'utils/local-storage';
 import { isEqual } from 'lodash';
 import qs from 'qs';
-import globalRootStore from 'stores/root';
 import { v4 as uuidv4 } from 'uuid';
-import { getOpenstackApiVersion } from './constants';
 
 const METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD'];
 /**
@@ -31,6 +29,7 @@ export class HttpRequest {
   }
 
   gotoLoginPage(path) {
+    const globalRootStore = require('stores/root').defaullt;
     globalRootStore.gotoLoginPage(path);
   }
 
@@ -46,6 +45,7 @@ export class HttpRequest {
         const uuid = uuidv4();
         config.headers['X-Openstack-Request-Id'] = `req-${uuid}`;
         const keystoneToken = getLocalStorageItem('keystone_token') || '';
+        const { getOpenstackApiVersion } = require('./constants');
         const apiVersionMap = getOpenstackApiVersion(url);
         if (keystoneToken) {
           config.headers['X-Auth-Token'] = keystoneToken;

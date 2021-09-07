@@ -20,11 +20,11 @@ import { getQueryString } from 'utils/index';
 import { getLocalTime } from 'utils/time';
 import { setLocalStorageItem } from 'utils/local-storage';
 import { isEmpty, values } from 'lodash';
-import checkItemPolicy, { onlyAdminCanReadPolicy } from 'resources/policy';
-// global stores need to be clear data when change auth
-import allGlobalStores from './index';
 
-class RootStore {
+const checkItemPolicy = require('resources/policy').default;
+const { onlyAdminCanReadPolicy } = require('resources/policy');
+
+export class RootStore {
   @observable
   user = null;
 
@@ -261,6 +261,8 @@ class RootStore {
   }
 
   clearData() {
+    // global stores need to be clear data when change auth
+    const allGlobalStores = require('./index').default;
     const stores = values(allGlobalStores);
     stores.forEach((store) => {
       store.clearData();

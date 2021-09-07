@@ -14,7 +14,6 @@
 
 import { action } from 'mobx';
 import { get } from 'lodash';
-import globalFloatingIpsStore from 'stores/neutron/floatingIp';
 import client from 'client';
 import Base from '../base';
 
@@ -59,6 +58,7 @@ export class LbaasStore extends Base {
     this.updateMarker(allData, page, result);
     const allDataNew = allData.map(this.mapperBeforeFetchProject);
     let newData = await this.listDidFetchProject(allDataNew, all_projects);
+    const globalFloatingIpsStore = require('stores/neutron/floatingIp').default;
     const fipDetails = await Promise.all(
       newData.map((item) =>
         globalFloatingIpsStore.pureFetchList({
@@ -118,6 +118,8 @@ export class LbaasStore extends Base {
     try {
       const newItem = await this.detailDidFetch(item, all_projects);
       const detail = this.mapper(newItem);
+      const globalFloatingIpsStore =
+        require('stores/neutron/floatingIp').default;
       const fipInfo = await globalFloatingIpsStore.fetchList({
         fixed_ip_address: item.vip_address,
       });

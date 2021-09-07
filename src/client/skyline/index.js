@@ -59,6 +59,10 @@ class SkylineClient extends Base {
           {
             key: 'ports',
           },
+          {
+            name: 'computeServices',
+            key: 'compute-services',
+          },
         ],
       },
       {

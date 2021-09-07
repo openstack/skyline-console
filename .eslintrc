@@ -56,7 +56,6 @@
     "consistent-return": "warn",
     "no-underscore-dangle": "warn",
     "no-unused-expressions": "warn",
-    "import/no-cycle": "warn",
     "no-empty": [
       2,
       {
@@ -69,7 +68,8 @@
     "import/no-extraneous-dependencies": "warn",
     "import/prefer-default-export": "off",
     "no-nested-ternary": "warn",
-    "import/no-named-as-default": "warn"
+    "import/no-named-as-default": "warn",
+    "global-require": "off"
   },
   "globals": {
     "t": true,
