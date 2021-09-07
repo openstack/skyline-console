@@ -3,7 +3,7 @@
 @min-space: 8px;
 @mid-space: 16px;
 @lg-space: 24px;
-@topo-line: 1px solid #D2D2D2;
+@topo-line: 1px solid #d2d2d2;
 @resource-box-bg: #fbfdff;
 @resource-box-border: 1px solid #cfe1ff;
 
@@ -33,8 +33,6 @@
       display: inline-block;
     }
   }
-
-
 
   .vm {
     padding: @mid-space;
@@ -131,7 +129,7 @@
         border-bottom: @topo-line;
         width: 60px;
         height: @lg-space;
-        margin-right: 10px
+        margin-right: 10px;
       }
     }
   }
@@ -143,4 +141,12 @@
   }
 }
 
+.errorCard {
+  flex-grow: 0;
 
+  .preWrap {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: Monaco, Menlo, Consolas, Courier New, monospace;
+  }
+}

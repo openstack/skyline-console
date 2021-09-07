@@ -135,7 +135,8 @@ export default class BaseDetail extends React.Component {
 
   renderRightCards() {
     return this.rightCards.map((it, index) => {
-      const { title, options, labelCol, titleHelp, render, button } = it;
+      const { title, options, labelCol, titleHelp, render, button, className } =
+        it;
       if (render) {
         return render();
       }
@@ -148,7 +149,7 @@ export default class BaseDetail extends React.Component {
       return (
         <Card
           key={`card-right-${index}`}
-          className="detail-right-card"
+          className={classnames('detail-right-card', className)}
           data={this.detailData}
           title={title}
           titleHelp={titleHelp}
