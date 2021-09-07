@@ -14,11 +14,15 @@
 
 import { action } from 'mobx';
 import client from 'client';
-import Base from '../base';
+import Base from 'stores/base';
 
 export class PoolMemberStore extends Base {
   get client() {
-    return client.octavia.pools.members;
+    return this.poolClient.members;
+  }
+
+  get poolClient() {
+    return client.octavia.pools;
   }
 
   get responseKey() {
@@ -46,7 +50,7 @@ export class PoolMemberStore extends Base {
     const body = {};
     body[this.listResponseKey] = data;
     return this.submitting(
-      client.octavia.pools.batchUpdateMembers(default_pool_id, body)
+      this.poolClient.batchUpdateMembers(default_pool_id, body)
     );
   }
 

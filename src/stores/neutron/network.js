@@ -18,7 +18,7 @@ import { get } from 'lodash';
 import globalProjectStore from 'stores/keystone/project';
 import client from 'client';
 import { isExternalNetwork } from 'resources/network';
-import Base from '../base';
+import Base from 'stores/base';
 
 const { splitToArray } = networkUtils;
 
@@ -34,6 +34,26 @@ export class NetworkStore extends Base {
 
   get client() {
     return client.neutron.networks;
+  }
+
+  get subnetClient() {
+    return client.neutron.subnets;
+  }
+
+  get extensionClient() {
+    return client.neutron.extensions;
+  }
+
+  get routerClient() {
+    return client.neutron.routers;
+  }
+
+  get ipClient() {
+    return client.neutron.networkIpAvailabilities;
+  }
+
+  get portClient() {
+    return client.neutron.ports;
   }
 
   get listFilterByProject() {
@@ -65,7 +85,7 @@ export class NetworkStore extends Base {
   }
 
   listExtensions = async () => {
-    const extensions = await client.neutron.extensions.list();
+    const extensions = await this.extensionClient.list();
     return extensions;
   };
 
@@ -141,7 +161,7 @@ export class NetworkStore extends Base {
 
     // 处理使用IP数量，只有管理员或者当前网络所有者才能查看
     if (isAdminPage || currentProjectId === originData.project_id) {
-      const used = await client.neutron.networkIpAvailabilities.show(id);
+      const used = await this.ipClient.show(id);
       this.detail = {
         ...this.detail,
         ...used.network_ip_availability,
@@ -172,7 +192,7 @@ export class NetworkStore extends Base {
   @action
   async fetchSubnetDetail({ id }) {
     try {
-      const resData = await client.neutron.subnets.show(id);
+      const resData = await this.subnetClient.show(id);
       return resData.subnet;
     } catch (e) {
       return {};
@@ -181,7 +201,7 @@ export class NetworkStore extends Base {
 
   @action
   async fetchTopoNetwork() {
-    await Promise.all([this.client.list(), client.neutron.subnets.list()]).then(
+    await Promise.all([this.client.list(), this.subnetClient.list()]).then(
       ([resData, subnetRes]) => {
         resData.subnets = subnetRes.subnets;
         resData.networks = resData.networks.filter(
@@ -201,9 +221,9 @@ export class NetworkStore extends Base {
       project_id: this.currentProjectId,
     };
     await Promise.all([
-      client.neutron.routers.list(params),
-      client.skyline.extension.servers(),
-      client.neutron.ports.list(params),
+      this.routerClient.list(params),
+      this.extensionClient.servers(),
+      this.portClient.list(params),
     ]).then(([routersRes, serversRes, portRes]) => {
       const resData = this.topology;
       routersRes.routers.map((it) => {
@@ -299,7 +319,7 @@ export class NetworkStore extends Base {
       gateway_ip: disable_gateway ? null : gateway_ip,
       cidr,
     };
-    return client.neutron.subnets.create({ subnet: data });
+    return this.subnetClient.create({ subnet: data });
   }
 }
 const globalNetworkStore = new NetworkStore();

@@ -14,11 +14,15 @@
 
 import { action } from 'mobx';
 import client from 'client';
-import Base from '../base';
+import Base from 'stores/base';
 
 export class TagStore extends Base {
   get client() {
     return client.keystone.projects.tags;
+  }
+
+  get projectClient() {
+    return client.keystone.projects;
   }
 
   listFetchByClient(params, originParams) {
@@ -33,7 +37,7 @@ export class TagStore extends Base {
   @action
   update({ project_id }, newObject) {
     return this.submitting(
-      client.keystone.projects.updateTags(project_id, newObject)
+      this.projectClient.updateTags(project_id, newObject)
     );
   }
 }

@@ -15,8 +15,8 @@
 import { action, observable } from 'mobx';
 import { get } from 'lodash';
 import client from 'client';
-import Base from '../base';
-import globalProjectStore from './project';
+import Base from 'stores/base';
+import globalProjectStore from 'stores/keystone/project';
 
 export class GroupStore extends Base {
   @observable

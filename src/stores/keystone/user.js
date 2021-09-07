@@ -17,9 +17,9 @@ import { get } from 'lodash';
 import List from 'stores/base-list';
 import client from 'client';
 import globalRootStore from 'stores/root';
-import globalProjectStore from './project';
-import globalGroupStore from './user-group';
-import Base from '../base';
+import globalProjectStore from 'stores/keystone/project';
+import globalGroupStore from 'stores/keystone/user-group';
+import Base from 'stores/base';
 
 export class UserStore extends Base {
   @observable

@@ -14,11 +14,15 @@
 
 import { action } from 'mobx';
 import client from 'client';
-import Base from '../base';
+import Base from 'stores/base';
 
 export class SnapshotStore extends Base {
   get client() {
     return client.cinder.snapshots;
+  }
+
+  get volumeClient() {
+    return client.cinder.volumes;
   }
 
   get listResponseKey() {
@@ -31,7 +35,7 @@ export class SnapshotStore extends Base {
 
   get paramsFunc() {
     return (params) => {
-      const { id, withPrice, ...rest } = params;
+      const { id, ...rest } = params;
       return rest;
     };
   }
@@ -47,7 +51,7 @@ export class SnapshotStore extends Base {
 
   async detailDidFetch(item) {
     const { volume_id } = item;
-    const { volume } = await client.cinder.volumes.show(volume_id);
+    const { volume } = await this.volumeClient.show(volume_id);
     item.volume = volume;
     return item;
   }

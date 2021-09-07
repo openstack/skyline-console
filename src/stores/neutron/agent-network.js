@@ -15,7 +15,7 @@
 import { action } from 'mobx';
 import client from 'client';
 import { isArray } from 'lodash';
-import Base from '../base';
+import Base from 'stores/base';
 
 export class NeutronAgentNetworkStore extends Base {
   get client() {

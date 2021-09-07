@@ -14,7 +14,7 @@
 
 import { mapperRule } from 'resources/security-group-rule';
 import client from 'client';
-import Base from '../base';
+import Base from 'stores/base';
 
 export class SecurityGroupRuleStore extends Base {
   get client() {

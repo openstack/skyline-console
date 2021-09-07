@@ -13,11 +13,15 @@
 // limitations under the License.
 
 import client from 'client';
-import Base from '../base';
+import Base from 'stores/base';
 
 export class ListenerStore extends Base {
   get client() {
     return client.octavia.listeners;
+  }
+
+  get poolClient() {
+    return client.octavia.pools;
   }
 
   get listFilterByProject() {
@@ -47,7 +51,7 @@ export class ListenerStore extends Base {
     if (default_pool_id) {
       //  pool attach listener or loadbalancer ？
       try {
-        const res = await client.octavia.pools.show(default_pool_id);
+        const res = await this.poolClient.show(default_pool_id);
         item.default_pool = res.pool;
         return item;
       } catch (err) {

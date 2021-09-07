@@ -17,7 +17,7 @@ import { get } from 'lodash';
 import globalVpnIKEPolicyStore from 'stores/neutron/vpn-ike-policy';
 import globalVpnIPSecPolicyStore from 'stores/neutron/vpn-ipsec-policy';
 import client from 'client';
-import Base from '../base';
+import Base from 'stores/base';
 
 export class VpnIPsecConnectionStore extends Base {
   get client() {

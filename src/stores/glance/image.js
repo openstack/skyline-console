@@ -14,7 +14,7 @@
 
 import { action, observable } from 'mobx';
 import client from 'client';
-import Base from '../base';
+import Base from 'stores/base';
 
 export class ImageStore extends Base {
   @observable
@@ -41,7 +41,7 @@ export class ImageStore extends Base {
 
   get paramsFuncPage() {
     return (params) => {
-      const { current, all_projects, withPrice, ...rest } = params;
+      const { current, all_projects, ...rest } = params;
       return {
         ...rest,
         // image_type: 'image',

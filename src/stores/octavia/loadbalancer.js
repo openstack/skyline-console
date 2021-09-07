@@ -15,7 +15,7 @@
 import { action } from 'mobx';
 import { get } from 'lodash';
 import client from 'client';
-import Base from '../base';
+import Base from 'stores/base';
 
 export class LbaasStore extends Base {
   get client() {

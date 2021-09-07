@@ -14,7 +14,7 @@
 
 import { action, observable } from 'mobx';
 import client from 'client';
-import Base from '../base';
+import Base from 'stores/base';
 
 export class NeutronStore extends Base {
   @observable
@@ -23,10 +23,14 @@ export class NeutronStore extends Base {
   @observable
   zoneLoading = false;
 
+  get zoneClient() {
+    return client.neutron.azones;
+  }
+
   @action
   async fetchAvailableZones() {
     this.zoneLoading = true;
-    const resData = await client.neutron.azones.list();
+    const resData = await this.zoneClient.list();
     const { availability_zones: items = [] } = resData;
     this.availableZones = items;
     this.zoneLoading = false;

@@ -15,7 +15,7 @@
 /* eslint-disable prefer-destructuring */
 import { action, observable } from 'mobx';
 import client from 'client';
-import Base from '../base';
+import Base from 'stores/base';
 
 export class FlavorStore extends Base {
   @observable
@@ -84,7 +84,7 @@ export class FlavorStore extends Base {
 
   get paramsFunc() {
     return (params) => {
-      const { all_projects, name, withPrice, ...rest } = params;
+      const { all_projects, name, ...rest } = params;
       if (all_projects) {
         return {
           ...rest,

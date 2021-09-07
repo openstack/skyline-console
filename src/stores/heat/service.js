@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import client from 'client';
-import Base from '../base';
+import Base from 'stores/base';
 
 export class HeatServiceStore extends Base {
   get client() {

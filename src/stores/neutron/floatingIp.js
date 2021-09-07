@@ -17,7 +17,7 @@ import globalRouterStore from 'stores/neutron/router';
 import globalServerStore from 'stores/nova/instance';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
 import client from 'client';
-import Base from '../base';
+import Base from 'stores/base';
 
 export class FloatingIpStore extends Base {
   get client() {
