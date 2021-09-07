@@ -33,8 +33,9 @@ import classnames from 'classnames';
 import ImageType from 'components/ImageType';
 import { instanceStatus, isIronicInstance } from 'resources/instance';
 import { generateId } from 'utils/index';
-import { getSinceTime } from 'utils/time';
+import { getSinceTime, getLocalTimeStr } from 'utils/time';
 import AttachVolume from 'pages/compute/containers/Instance/actions/AttachVolume';
+import globalRootStore from 'stores/root';
 import styles from './index.less';
 
 export class BaseDetail extends Base {
@@ -67,7 +68,14 @@ export class BaseDetail extends Base {
   }
 
   get rightCards() {
-    return [this.topoCard];
+    const ret = [this.topoCard];
+    const {
+      detail: { fault },
+    } = this.props;
+    if (fault && fault.message) {
+      ret.splice(0, 0, this.errorCard);
+    }
+    return ret;
   }
 
   get networkCard() {
@@ -419,6 +427,38 @@ export class BaseDetail extends Base {
       titleHelp,
       options,
       button,
+    };
+  }
+
+  get errorCard() {
+    const {
+      detail: { fault },
+    } = this.props;
+    const options = [
+      {
+        label: t('Message'),
+        content: fault.message,
+      },
+      {
+        label: t('Code'),
+        content: fault.code,
+      },
+      {
+        label: t('Created At'),
+        content: getLocalTimeStr(fault.created),
+      },
+    ];
+    if (globalRootStore.hasAdminRole) {
+      options.splice(1, 0, {
+        label: t('Details'),
+        content: <pre className={styles.preWrap}>{fault.details}</pre>,
+      });
+    }
+    return {
+      labelCol: 4,
+      title: t('Error'),
+      options,
+      className: styles.errorCard,
     };
   }
 }
