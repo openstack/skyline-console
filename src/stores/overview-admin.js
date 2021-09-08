@@ -20,9 +20,8 @@ export default class OverviewStore {
     this.reset(true);
   }
 
-  @action
-  reset = (init) => {
-    const state = {
+  get initValue() {
+    return {
       projectInfoLoading: true,
       computeServiceLoading: true,
       networkServiceLoading: true,
@@ -34,10 +33,13 @@ export default class OverviewStore {
         projectNum: 0,
         userNum: 0,
         nodeNum: 0,
-        ticketNum: 0,
-        criticalNum: 0,
       },
     };
+  }
+
+  @action
+  reset(init) {
+    const state = this.initValue;
 
     if (init) {
       extendObservable(this, state);
@@ -46,10 +48,10 @@ export default class OverviewStore {
         this[key] = state[key];
       });
     }
-  };
+  }
 
   @action
-  getProjectInfoData = async () => {
+  async getProjectInfoData() {
     this.projectInfoLoading = true;
     const promiseArray = [
       client.keystone.projects.list(),
@@ -66,10 +68,10 @@ export default class OverviewStore {
     this.platformNum.userNum = users.length;
     this.platformNum.nodeNum = services.length;
     this.projectInfoLoading = false;
-  };
+  }
 
   @action
-  getVirtualResource = async () => {
+  async getVirtualResource() {
     this.virtualResourceLoading = true;
     const promiseArray = [
       client.skyline.extension.servers({ limit: 10, all_projects: true }),
@@ -143,23 +145,23 @@ export default class OverviewStore {
     };
     this.virtualResource = { serviceNum, volumeNum };
     this.virtualResourceLoading = false;
-  };
+  }
 
   @action
-  getComputeService = async () => {
+  async getComputeService() {
     this.computeServiceLoading = true;
     const servicesResult = await client.nova.services.list();
     const { services } = servicesResult;
     this.computeService = services;
     this.computeServiceLoading = false;
-  };
+  }
 
   @action
-  getNetworkService = async () => {
+  async getNetworkService() {
     this.networkServiceLoading = true;
     const networkResult = await client.neutron.agents.list();
     const { agents } = networkResult;
     this.networkService = agents;
     this.networkServiceLoading = false;
-  };
+  }
 }

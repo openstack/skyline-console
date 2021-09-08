@@ -19,7 +19,7 @@ export const groupNameVersionMap = {
   system: 'v1',
 };
 
-const endpointVersionMap = {
+export const endpointVersionMap = {
   keystone: 'v3',
   nova: 'v2.1',
   cinder: 'v3',
@@ -28,21 +28,12 @@ const endpointVersionMap = {
   ironic: 'v1',
   ironicInspector: 'v1',
   heat: 'v1',
-  swift: 'v1',
   octavia: 'v2',
-  courier: 'v1',
-  prometheus: 'api/v1',
-  prometheus_sidecar: 'api/v1',
-  gocron: 'api',
-  panko: 'v2',
-  billing_system: 'api/core.io/v1',
-  workflow: 'api/core.io/v1',
 };
 
-const endpointsDefault = {
+export const endpointsDefault = {
   ironic: '/api/openstack/ironic',
   ironicInspector: '/api/openstack/ironic-inspector',
-  swift: '/api/openstack/swift/swift',
   octavia: '/api/openstack/octavia',
 };
 
@@ -71,23 +62,9 @@ export const ironicInspectorBase = () =>
   getOpenstackEndpoint('ironicInspector');
 export const placementBase = () => getOpenstackEndpoint('placement');
 export const heatBase = () => getOpenstackEndpoint('heat');
-export const swiftBase = () => getOpenstackEndpoint('swift');
 export const octaviaBase = () => getOpenstackEndpoint('octavia');
-export const alertmanagerBase = () => getOpenstackEndpoint('alertmanager');
-export const prometheusBase = () => getOpenstackEndpoint('prometheus');
-export const prometheusSidecarBase = () =>
-  getOpenstackEndpoint('prometheus_sidecar');
-export const courierBase = () => getOpenstackEndpoint('courier');
-export const gocronBase = () => getOpenstackEndpoint('gocron');
-export const pankoBase = () => getOpenstackEndpoint('panko');
-export const s3Base = () => getOpenstackEndpoint('s3');
-export const billingBase = () => getOpenstackEndpoint('billing_system');
-export const workflowBase = () => getOpenstackEndpoint('workflow');
 
 export const ironicOriginEndpoint = () => getOriginEndpoint('ironic');
-export const s3OriginEndpoint = () => getOriginEndpoint('s3');
-export const billingEndpoint = () => getOriginEndpoint('billing_system');
-export const firewallEndpoint = () => getOriginEndpoint('neutron_firewall');
 export const vpnEndpoint = () => getOriginEndpoint('neutron_vpn');
 export const lbEndpoint = () => getOriginEndpoint('octavia');
 

@@ -22,6 +22,11 @@ export class LbaasStore extends Base {
     return client.octavia.loadbalancers;
   }
 
+  get fipStore() {
+    const globalFloatingIpsStore = require('stores/neutron/floatingIp').default;
+    return globalFloatingIpsStore;
+  }
+
   get listFilterByProject() {
     return true;
   }
@@ -58,10 +63,9 @@ export class LbaasStore extends Base {
     this.updateMarker(allData, page, result);
     const allDataNew = allData.map(this.mapperBeforeFetchProject);
     let newData = await this.listDidFetchProject(allDataNew, all_projects);
-    const globalFloatingIpsStore = require('stores/neutron/floatingIp').default;
     const fipDetails = await Promise.all(
       newData.map((item) =>
-        globalFloatingIpsStore.pureFetchList({
+        this.fipStore.pureFetchList({
           port_id: item.vip_port_id,
           fixed_ip_address: item.vip_address,
           all_projects,
@@ -118,9 +122,7 @@ export class LbaasStore extends Base {
     try {
       const newItem = await this.detailDidFetch(item, all_projects);
       const detail = this.mapper(newItem);
-      const globalFloatingIpsStore =
-        require('stores/neutron/floatingIp').default;
-      const fipInfo = await globalFloatingIpsStore.fetchList({
+      const fipInfo = await this.fipStore.fetchList({
         fixed_ip_address: item.vip_address,
       });
       fipInfo.length > 0 && (detail.fip = fipInfo[0].floating_ip_address);

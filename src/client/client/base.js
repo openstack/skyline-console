@@ -27,7 +27,7 @@ export default class BaseClient {
   };
 
   get request() {
-    const { request } = clientRequest;
+    const request = this.originRequest;
     return {
       get: (url, params, conf) => request.get(this.getUrl(url), params, conf),
       post: (url, data, params, conf) =>
