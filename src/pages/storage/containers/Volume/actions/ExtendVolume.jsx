@@ -14,7 +14,7 @@
 
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import globalVolumeStore from 'stores/cinder/volume';
+import globalVolumeStore, { VolumeStore } from 'stores/cinder/volume';
 import { isAvailableOrInUse } from 'resources/volume';
 import { get } from 'lodash';
 import client from 'client';
@@ -46,9 +46,42 @@ export class ExtendVolume extends ModalAction {
     return t('After the volume is expanded, the volume cannot be reduced.');
   }
 
+  async getQuota() {
+    await this.volumeStore.fetchQuota();
+    this.updateDefaultValue();
+  }
+
+  get isQuotaLimited() {
+    const { gigabytes: { limit } = {} } = this.volumeStore.quotaSet || {};
+    return limit !== -1;
+  }
+
+  get leftSize() {
+    const { gigabytes: { limit = 10, in_use = 0 } = {} } =
+      this.volumeStore.quotaSet || {};
+    return limit - in_use;
+  }
+
+  get maxSize() {
+    const { size: currentSize } = this.item;
+    return currentSize + this.leftSize;
+  }
+
+  isQuotaEnough() {
+    return !this.isQuotaLimited || this.leftSize >= 1;
+  }
+
   get formItems() {
     const { size } = this.item;
     const minSize = size + 1;
+    if (!this.isQuotaEnough()) {
+      return [
+        {
+          type: 'label',
+          component: t('Quota is not enough for extend volume.'),
+        },
+      ];
+    }
     return [
       {
         name: 'volume',
@@ -60,10 +93,19 @@ export class ExtendVolume extends ModalAction {
         name: 'new_size',
         label: t('Capacity (GB)'),
         type: 'slider-input',
-        max: 500,
+        max: this.maxSize,
         min: minSize,
-        description: `${minSize}GB-500GB`,
+        description: `${minSize}GB-${this.maxSize}GB`,
         required: true,
+        display: this.isQuotaLimited,
+      },
+      {
+        name: 'new_size',
+        label: t('Capacity (GB)'),
+        type: 'input-int',
+        min: minSize,
+        required: true,
+        display: !this.isQuotaLimited,
       },
     ];
   }
@@ -71,6 +113,9 @@ export class ExtendVolume extends ModalAction {
   init() {
     this.store = globalVolumeStore;
     this.state.showNotice = true;
+    this.volumeStore = new VolumeStore();
+
+    this.getQuota();
   }
 
   get showNotice() {
@@ -78,6 +123,13 @@ export class ExtendVolume extends ModalAction {
   }
 
   onSubmit = async (values) => {
+    if (!this.isQuotaEnough()) {
+      this.setState({
+        showNotice: false,
+      });
+      return Promise.resolve();
+    }
+
     const { new_size } = values;
     const { id } = this.item;
 
