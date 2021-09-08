@@ -1285,6 +1285,7 @@
   "Queued": "已排队",
   "Quota Overview": "配额概况",
   "Quota exceeded": "配额用尽",
+  "Quota is not enough for extend volume.": "配额不足以扩容云硬盘。",
   "Quota: Insufficient quota to create resources, please adjust resource quantity or quota(left { quota }, input { input }).": "配额：项目配额不足，无法创建资源，请进行资源数量或配额的调整（剩余{ quota }，输入{ input }）。",
   "Quota: Project quotas sufficient resources can be created": "配额：项目配额充足，可创建资源",
   "RAM": "内存",

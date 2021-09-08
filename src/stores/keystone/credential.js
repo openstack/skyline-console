@@ -16,7 +16,7 @@ import { action } from 'mobx';
 import client from 'client';
 import globalRootStore from 'stores/root';
 import globalUserStore from 'stores/keystone/user';
-import Base from '../base';
+import Base from 'stores/base';
 
 export class CredentialStore extends Base {
   get isSubResource() {
@@ -29,7 +29,7 @@ export class CredentialStore extends Base {
 
   get paramsFuncPage() {
     return (params) => {
-      const { current, withPrice, id, ...rest } = params;
+      const { current, id, ...rest } = params;
       return rest;
     };
   }
