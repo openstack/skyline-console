@@ -44,6 +44,7 @@ import { getNoValue } from 'utils/index';
 import { columnRender } from 'utils/render';
 import { getLocalStorageItem, setLocalStorageItem } from 'utils/local-storage';
 import { inject } from 'mobx-react';
+import globalRootStore from 'stores/root';
 import CustomColumns from './CustomColumns';
 import ItemActionButtons from './ItemActionButtons';
 import PrimaryActionButtons from './PrimaryActionButtons';
@@ -331,7 +332,11 @@ export default class BaseTable extends React.Component {
       return (
         <>
           <div>
-            <Link to={url}>{projectId}</Link>
+            {globalRootStore.hasAdminRole ? (
+              <Link to={url}>{projectId}</Link>
+            ) : (
+              projectId
+            )}
           </div>
           <div>{value || '-'}</div>
         </>
@@ -360,7 +365,14 @@ export default class BaseTable extends React.Component {
     if (render) {
       return render;
     }
-    const { linkPrefix, dataIndex, idKey, linkPrefixFunc, linkFunc } = column;
+    const {
+      linkPrefix,
+      dataIndex,
+      idKey,
+      linkPrefixFunc,
+      linkFunc,
+      hasNoDetail = false,
+    } = column;
     const { rowKey } = this.props;
     return (value, record) => {
       const idValue = get(record, idKey || rowKey);
@@ -374,7 +386,15 @@ export default class BaseTable extends React.Component {
         url = this.getLinkUrl(linkValue, idValue);
       }
       const nameValue = value || get(record, dataIndex) || '-';
-      if (!url) {
+      if (hasNoDetail) {
+        return (
+          <div>
+            <div>{idValue}</div>
+            <div>{nameValue}</div>
+          </div>
+        );
+      }
+      if (!url && !hasNoDetail) {
         return nameValue;
       }
       return (

@@ -151,6 +151,7 @@ export class UserStore extends Base {
       data: projects,
       isLoading: false,
     });
+    return projects;
   }
 
   @action

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import React from 'react';
-import { HomeOutlined } from '@ant-design/icons';
+import { HomeOutlined, UserOutlined } from '@ant-design/icons';
 
 const renderMenu = (t) => {
   if (!t) {
@@ -27,6 +27,15 @@ const renderMenu = (t) => {
       icon: <HomeOutlined />,
       level: 0,
       hasBreadcrumb: false,
+      hasChildren: false,
+    },
+    {
+      path: '/user/application-credentials',
+      name: t('Application Credentials'),
+      key: '/user/application-credentials',
+      level: 0,
+      icon: <UserOutlined />,
+      children: [],
       hasChildren: false,
     },
   ];

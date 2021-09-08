@@ -18,6 +18,7 @@ import { Badge } from 'antd';
 import { UserStore } from 'stores/keystone/user';
 import globalDomainStore from 'stores/keystone/domain';
 import Base from 'containers/TabDetail';
+import Credentials from 'src/pages/user-center/containers/Credentials';
 import UserGroup from '../../UserGroup';
 import Project from '../../Project';
 import actionConfigs from '../actions';
@@ -127,6 +128,11 @@ export class UserDetail extends Base {
         title: t('Subordinate User Group'),
         key: 'userGroup',
         component: UserGroup,
+      },
+      {
+        title: t('Application Credentials'),
+        key: 'applicationCredentials',
+        component: Credentials,
       },
     ];
     return tabs;

@@ -12,29 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import BaseLayout from 'layouts/Basic';
+import Create from './Create';
+import Delete from './Delete';
 
-import E404 from 'pages/base/containers/404';
-import Credentials from '../containers/Credentials';
-import UserCenter from '../containers/UserCenter';
-
-const PATH = '/user';
-export default [
-  {
-    path: PATH,
-    component: BaseLayout,
-    routes: [
-      {
-        path: `${PATH}/center`,
-        component: UserCenter,
-        exact: true,
-      },
-      {
-        path: `${PATH}/application-credentials`,
-        component: Credentials,
-        exact: true,
-      },
-      { path: '*', component: E404 },
-    ],
+export const actionConfigs = {
+  rowActions: {
+    firstAction: Delete,
   },
-];
+  batchActions: [Delete],
+  primaryActions: [Create],
+};
+
+export const detailConfigs = {
+  rowActions: {
+    firstAction: Delete,
+  },
+  batchActions: [Delete],
+  primaryActions: [],
+};

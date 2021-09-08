@@ -105,6 +105,11 @@ class KeystoneClient extends Base {
           {
             key: 'groups',
           },
+          {
+            name: 'applicationCredentials',
+            key: 'application_credentials',
+            responseKey: 'application_credential',
+          },
         ],
         extendOperations: [
           {

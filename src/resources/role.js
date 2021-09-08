@@ -16,8 +16,8 @@ const rolePermission = {
   project_admin: t('Project Admin'),
   project_reader: t('Project Reader'),
   project_member: t('Project Member'),
-  system_admin: t('Syetem Admin'),
-  system_reader: t('Syetem Reader'),
+  system_admin: t('System Admin'),
+  system_reader: t('System Reader'),
 };
 
 export default rolePermission;
