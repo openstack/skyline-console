@@ -48,6 +48,7 @@ export default class SimpleTable extends React.Component {
     // eslint-disable-next-line react/no-unused-prop-types
     defaultSortOrder: PropTypes.string,
     onRow: PropTypes.func,
+    childrenColumnName: PropTypes.string,
   };
 
   static defaultProps = {
@@ -78,6 +79,7 @@ export default class SimpleTable extends React.Component {
         render,
         isStatus,
         isName,
+        isPrice,
         ...rest
       } = column;
       if (column.key === 'operation') {
@@ -98,6 +100,9 @@ export default class SimpleTable extends React.Component {
       }
       if (dataIndex === 'name' || isName) {
         newRender = this.getNameRender(newRender, column);
+      }
+      if (dataIndex === 'cost' || isPrice) {
+        newRender = this.getPriceRender(newRender, column);
       }
       const newColumn = {
         ...rest,
@@ -194,6 +199,17 @@ export default class SimpleTable extends React.Component {
     const { columns } = this.props;
     const baseColumns = this.getBaseColumns(columns);
     return baseColumns;
+  };
+
+  // eslint-disable-next-line no-unused-vars
+  getPriceRender = (render, column) => {
+    if (render) {
+      return render;
+    }
+    return (value) => {
+      const valueStr = isString(value) ? value : (value || 0).toFixed(2);
+      return <span style={{ color: '#f50' }}>{valueStr}</span>;
+    };
   };
 
   getDataSource = () => {
@@ -297,7 +313,8 @@ export default class SimpleTable extends React.Component {
   };
 
   render() {
-    const { className, isLoading, rowSelection, footer } = this.props;
+    const { className, isLoading, rowSelection, footer, childrenColumnName } =
+      this.props;
 
     const currentColumns = this.getColumns();
     const dataSource = this.getDataSource();
@@ -314,6 +331,7 @@ export default class SimpleTable extends React.Component {
         showSorterTooltip={false}
         footer={footer}
         onRow={this.onRow}
+        childrenColumnName={childrenColumnName}
       />
     );
   }

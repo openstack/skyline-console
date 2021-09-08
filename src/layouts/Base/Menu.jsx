@@ -25,9 +25,7 @@ import styles from './index.less';
 
 const { SubMenu } = Menu;
 
-@inject('rootStore')
-@observer
-class LayoutMenu extends Component {
+export class LayoutMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -56,6 +54,10 @@ class LayoutMenu extends Component {
   onCollapse = (collapsed) => {
     this.setState({ collapsed });
   };
+
+  getImage(isExtend) {
+    return !isExtend ? logoSmall : logoExtend;
+  }
 
   changeCollapse = () => {
     const { collapsed } = this.state;
@@ -200,7 +202,7 @@ class LayoutMenu extends Component {
   renderLogo() {
     const { collapsed, hover } = this.state;
     const isExtend = !collapsed || hover;
-    const imageSvg = !isExtend ? logoSmall : logoExtend;
+    const imageSvg = this.getImage(isExtend);
     const homeUrl = this.getUrl('/base/overview');
     return (
       <div
@@ -240,4 +242,4 @@ class LayoutMenu extends Component {
   }
 }
 
-export default LayoutMenu;
+export default inject('rootStore')(observer(LayoutMenu));

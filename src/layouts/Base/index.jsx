@@ -30,9 +30,7 @@ import styles from './index.less';
 
 const { Header } = Layout;
 
-@inject('rootStore')
-@observer
-class BaseLayout extends Component {
+export class BaseLayout extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -204,7 +202,7 @@ class BaseLayout extends Component {
   };
 
   init() {
-    if (this.isAdminPage && !this.hasAdminRole) {
+    if (this.isAdminPage && !this.hasAdminPageRole) {
       window.location.href = '/base/overview';
     }
     this.routes = this.props.route.routes;
@@ -260,4 +258,4 @@ class BaseLayout extends Component {
   }
 }
 
-export default BaseLayout;
+export default inject('rootStore')(observer(BaseLayout));

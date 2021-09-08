@@ -49,9 +49,9 @@ const keypairNameRegex = /^[a-zA-Z][\w_-]{0,127}$/;
 const crontabNameRegex =
   /^[a-zA-Z\u4e00-\u9fa5][\u4e00-\u9fa5\w"'\[\]^.:()_-]{0,63}$/; // eslint-disable-line
 const imageNameRegex =
-  /^[a-zA-Z\u4e00-\u9fa5][\u4e00-\u9fa5\w"'\[\]^.()_-]{0,127}$/; // eslint-disable-line
+  /^[a-zA-Z\u4e00-\u9fa5][\u4e00-\u9fa5\w"'\[\].()_-]{0,127}$/; // eslint-disable-line
 const instanceNameRegex =
-  /^[a-zA-Z\u4e00-\u9fa5][\u4e00-\u9fa5\w"'.()_-]{0,127}$/;
+  /^[a-zA-Z\u4e00-\u9fa5][\u4e00-\u9fa5\w"'._-]{0,127}$/;
 const ipv6CidrOnly =
   /^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9-]*[A-Za-z0-9])$|^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*\/(1[01][0-9]|12[0-8]|[0-9]{1,2})$/;
 
@@ -307,11 +307,11 @@ const crontabNameMessage = t(
 );
 
 const imageNameMessage = t(
-  'The name should start with upper letter, lower letter or chinese, and be a string of 1 to 128, characters can only contain "0-9, a-z, A-Z, "-\'_()[].^".'
+  'The name should start with upper letter, lower letter or chinese, and be a string of 1 to 128, characters can only contain "0-9, a-z, A-Z, "-\'_()[].".'
 );
 
 const instanceNameMessage = t(
-  'The name should start with upper letter, lower letter or chinese, and be a string of 1 to 128, characters can only contain "0-9, a-z, A-Z, "-\'_().".'
+  'The name should start with upper letter, lower letter or chinese, and be a string of 1 to 128, characters can only contain "0-9, a-z, A-Z, "-\'_.".'
 );
 
 export const nameMessageInfo = {
@@ -414,7 +414,6 @@ const stackNameValidate = (rule, value) => {
 };
 
 const crontabNameValidate = (rule, value) => {
-  console.log(rule, value, isCrontabName(value));
   if (!rule.required && value === undefined) {
     return Promise.resolve(true);
   }

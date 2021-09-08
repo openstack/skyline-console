@@ -32,6 +32,7 @@ const successKeys = [
   'power on',
   'complete',
   'online',
+  'ready',
 ];
 
 const successKeysContain = ['complete'];
@@ -90,7 +91,7 @@ const getStatus = (key) => {
 
 export default class index extends Component {
   static propTypes = {
-    status: PropTypes.string,
+    status: PropTypes.any,
     text: PropTypes.string,
     style: PropTypes.object,
   };

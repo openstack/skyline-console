@@ -60,7 +60,7 @@ import TabSelectTable from './TabSelectTable';
 import TreeSelect from './TreeSelect';
 // import styles from './index.less';
 
-const type2component = {
+export const type2component = {
   label: Label,
   input: Input,
   select: Select,
@@ -132,8 +132,8 @@ export default class FormItem extends React.Component {
   getComponentProps(type) {
     switch (type) {
       case 'label': {
-        const { content, icon, iconType } = this.props;
-        return { content, icon, iconType };
+        const { content, icon, iconType, showLoading } = this.props;
+        return { content, icon, iconType, showLoading };
       }
       case 'divider':
         return {
@@ -319,6 +319,10 @@ export default class FormItem extends React.Component {
     return newRules;
   }
 
+  getComponent(type) {
+    return type2component[type];
+  }
+
   renderTip(tip) {
     if (!tip) {
       return null;
@@ -347,7 +351,7 @@ export default class FormItem extends React.Component {
     if (component) {
       return <Form.Item {...formItemProps}>{component}</Form.Item>;
     }
-    const TypeComp = type2component[type];
+    const TypeComp = this.getComponent(type);
     const props = this.getComponentProps(type);
     if (type === 'divider') {
       return <Divider className="form-item-divider" />;

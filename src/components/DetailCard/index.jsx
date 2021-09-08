@@ -108,6 +108,7 @@ const DetailCard = ({
         arrowPointAtCenter="true"
         placement="rightTop"
         content={titleHelp}
+        getPopupContainer={(node) => node.parentNode}
       >
         <InfoCircleOutlined className={styles['title-help']} />
       </Popover>

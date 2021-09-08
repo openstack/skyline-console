@@ -31,6 +31,7 @@ import {
   TagOutlined,
   HddOutlined,
   CloudServerOutlined,
+  LoadingOutlined,
 } from '@ant-design/icons';
 import styles from './index.less';
 
@@ -82,14 +83,19 @@ export default class index extends Component {
   }
 
   render() {
-    const { content, value, iconType, ...rest } = this.props;
+    const { content, value, iconType, showLoading, ...rest } = this.props;
+    const failValues = [undefined, null, ''];
     if (content) {
       return content;
     }
     return (
       <span {...rest}>
         {this.renderIcon()}
-        {value}
+        {showLoading && failValues.includes(value) ? (
+          <LoadingOutlined />
+        ) : (
+          value
+        )}
       </span>
     );
   }

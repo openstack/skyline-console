@@ -82,6 +82,7 @@ export default class SelectTable extends React.Component {
     defaultSortKey: PropTypes.string,
     defaultSortOrder: PropTypes.string,
     onRow: PropTypes.func,
+    childrenColumnName: PropTypes.string,
   };
 
   static defaultProps = {
@@ -105,6 +106,7 @@ export default class SelectTable extends React.Component {
     isSortByBack: false,
     defaultSortKey: '',
     defaultSortOrder: '',
+    childrenColumnName: 'children',
   };
 
   constructor(props) {
@@ -652,6 +654,7 @@ export default class SelectTable extends React.Component {
       filterParams,
       onRow,
       rowKey,
+      childrenColumnName,
     } = this.props;
     const { current, pageSize, total, filters } = this.state;
     const defaultPageSizeOptions = [10, 20, 50, 100];
@@ -697,6 +700,7 @@ export default class SelectTable extends React.Component {
         onChange={this.handleChange}
         footer={footer}
         onRow={onRow}
+        childrenColumnName={childrenColumnName}
       />
     );
   }
