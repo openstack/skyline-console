@@ -18,7 +18,7 @@ import classnames from 'classnames';
 import isEqual from 'react-fast-compare';
 import { toJS } from 'mobx';
 import { Link } from 'react-router-dom';
-import { includes, get, isArray } from 'lodash';
+import { includes, get, isArray, isString } from 'lodash';
 import { Button, Table, Dropdown, Input, Typography, Tooltip } from 'antd';
 import MagicInput from 'components/MagicInput';
 import Pagination from 'components/Pagination';
@@ -408,6 +408,17 @@ export default class BaseTable extends React.Component {
     };
   };
 
+  // eslint-disable-next-line no-unused-vars
+  getPriceRender = (render, column) => {
+    if (render) {
+      return render;
+    }
+    return (value) => {
+      const valueStr = isString(value) ? value : (value || 0).toFixed(2);
+      return <span style={{ color: '#f50' }}>{valueStr}</span>;
+    };
+  };
+
   getTipRender = (tip, render, dataIndex, Icon = FileTextOutlined) => {
     const newRender = (value, record) => {
       const tipValue = tip(value, record);
@@ -456,6 +467,7 @@ export default class BaseTable extends React.Component {
         tip,
         isStatus,
         isName,
+        isPrice,
         ...rest
       } = column;
       const newSorter = getColumnSorter(column, this.props);
@@ -473,6 +485,9 @@ export default class BaseTable extends React.Component {
       }
       if (dataIndex === 'name' || isName) {
         newRender = this.getNameRender(newRender, column);
+      }
+      if (dataIndex === 'cost' || isPrice) {
+        newRender = this.getPriceRender(newRender, column);
       }
       if (copyable) {
         newRender = (value) => {
@@ -922,6 +937,7 @@ export default class BaseTable extends React.Component {
       expandable,
       isPageByBack = true,
       isCourier,
+      childrenColumnName,
       // scrollX,
     } = this.props;
 
@@ -983,6 +999,7 @@ export default class BaseTable extends React.Component {
           showSorterTooltip={false}
           expandable={expandable}
           footer={footer}
+          childrenColumnName={childrenColumnName}
         />
       </div>
     );

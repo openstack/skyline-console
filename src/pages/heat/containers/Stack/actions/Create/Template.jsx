@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
 import { yamlTip, validateYaml, paramTip } from 'resources/stack';
 
-@inject('rootStore')
-@observer
-export default class Template extends Base {
+export class Template extends Base {
   get isStep() {
     return true;
   }
@@ -38,7 +36,6 @@ export default class Template extends Base {
   get defaultValue() {
     const { versionContent = '' } = this.state;
     return {
-      source: 'manually',
       versionContent,
       name: this.isEdit ? this.props.extra.stack_name : '',
     };
@@ -79,3 +76,5 @@ export default class Template extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Template));

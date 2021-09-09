@@ -20,9 +20,7 @@ import { toJS } from 'mobx';
 import Parameter from './Parameter';
 import Template from './Template';
 
-@inject('rootStore')
-@observer
-export default class StepCreate extends StepAction {
+export class StepCreate extends StepAction {
   static id = 'stack-create';
 
   static title = t('Create Stack');
@@ -107,3 +105,5 @@ export default class StepCreate extends StepAction {
     return this.store.create(body);
   };
 }
+
+export default inject('rootStore')(observer(StepCreate));

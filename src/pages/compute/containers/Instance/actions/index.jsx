@@ -34,7 +34,6 @@ import AttachVolume from './AttachVolume';
 import AttachIsoVolume from './AttachIsoVolume';
 import DetachIsoVolume from './DetachIsoVolume';
 import DetachVolume from './DetachVolume';
-import ExtendRootVolume from './ExtendRootVolume';
 import Resize from './Resize';
 import ResizeOnline from './ResizeOnline';
 import MigrateAction from './Migrate';
@@ -78,13 +77,7 @@ const resourceActions = [
   ManageSecurityGroup,
 ];
 
-const configActions = [
-  Resize,
-  ResizeOnline,
-  ExtendRootVolume,
-  ChangePassword,
-  Rebuild,
-];
+const configActions = [Resize, ResizeOnline, ChangePassword, Rebuild];
 
 const batchActions = [
   StartAction,

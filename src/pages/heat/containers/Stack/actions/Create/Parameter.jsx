@@ -22,9 +22,7 @@ import {
   rollbackTip,
 } from 'resources/stack';
 
-@inject('rootStore')
-@observer
-export default class Parameter extends Base {
+export class Parameter extends Base {
   get isStep() {
     return true;
   }
@@ -123,3 +121,5 @@ export default class Parameter extends Base {
     return formItems;
   }
 }
+
+export default inject('rootStore')(observer(Parameter));

@@ -18,9 +18,7 @@ import globalStackStore, { StackStore } from 'stores/heat/stack';
 import { stackStatus } from 'resources/stack';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class Stack extends Base {
+export class Stack extends Base {
   init() {
     this.store = globalStackStore;
     this.downloadStore = new StackStore();
@@ -128,3 +126,5 @@ export default class Stack extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Stack));

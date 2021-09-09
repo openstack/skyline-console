@@ -83,49 +83,12 @@ export const paramTip = t(
   'When your Yaml file is a fixed template, variable variables can be stored in an environment variable file to implement template deployment. The parameters in the environment variable file need to match the parameters defined in the template file.'
 );
 
-export const templateTip = t(
-  'A template is used to automate the deployment of infrastructure, services, and applications.'
-);
-
 export const rollbackTip = t(
   'If "Enable" fails to roll back, the resource will be deleted after the creation fails; if "Disable" fails to roll back, the resource will be retained after the creation fails.'
 );
 
-export const templateColumns = (self) => [
-  {
-    title: t('ID/Name'),
-    dataIndex: 'name',
-    linkPrefix: `/heat/${self.getUrl('template')}/detail/`,
-  },
-  {
-    title: t('Project ID/Name'),
-    dataIndex: 'project_name',
-    hidden: !self.isAdminPage,
-  },
-  {
-    title: t('Description'),
-    dataIndex: 'description',
-    isHideable: true,
-  },
-  {
-    title: t('Version Count'),
-    dataIndex: 'contents',
-    render: (value) => value.length,
-  },
-];
-
-export const templateFilters = [
-  {
-    label: t('Name'),
-    name: 'template_name',
-  },
-];
-
 export const getTemplate = (context = {}) => {
-  const { source, content, versionContent } = context;
-  if (source === 'platform') {
-    return versionContent;
-  }
+  const { content } = context;
   return content;
 };
 
