@@ -131,10 +131,12 @@ export const isSnapshot = (item) => {
 };
 
 export const canImageCreateInstance = (item) =>
-  item.status === 'active' && (item.usage_type === 'common' || item.usage_type === undefined);
+  item.status === 'active' &&
+  (item.usage_type === 'common' || item.usage_type === undefined);
 
 export const canImageCreateIronicInstance = (item) =>
-  item.status === 'active' && (item.usage_type === 'ironic' || item.usage_type === undefined);
+  item.status === 'active' &&
+  (item.usage_type === 'ironic' || item.usage_type === undefined);
 
 export const canSnapshotCreateInstance = (item) => item.status === 'active';
 

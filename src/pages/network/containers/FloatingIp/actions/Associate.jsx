@@ -30,9 +30,7 @@ import { instanceSelectTablePropsBackend } from 'resources/instance';
 import { getPortFormItem, getPortsAndReasons } from 'resources/port';
 import { getInterfaceWithReason } from 'resources/floatingip';
 
-@inject('rootStore')
-@observer
-export default class Associate extends ModalAction {
+export class Associate extends ModalAction {
   static id = 'associate';
 
   static title = t('Associate');
@@ -398,3 +396,5 @@ export default class Associate extends ModalAction {
     return ret;
   }
 }
+
+export default inject('rootStore')(observer(Associate));

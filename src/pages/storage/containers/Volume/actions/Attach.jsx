@@ -25,9 +25,7 @@ import {
 } from 'resources/instance';
 import { isAvailable, isMultiAttach } from 'resources/volume';
 
-@inject('rootStore')
-@observer
-export default class Attach extends ModalAction {
+export class Attach extends ModalAction {
   static id = 'attach';
 
   static title = t('Attach');
@@ -119,3 +117,5 @@ export default class Attach extends ModalAction {
     );
   };
 }
+
+export default inject('rootStore')(observer(Attach));

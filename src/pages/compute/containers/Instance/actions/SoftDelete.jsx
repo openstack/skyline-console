@@ -83,7 +83,7 @@ export default class SoftDelete extends ConfirmAction {
         <p className={styles['tip-content']}>
           {/* {t('After the instance is deleted, the instance root disk data will be lost. ')} */}
           {t(
-            'If you still want to keep the disk data, it is recommended that you create a snapshot for the disk before deleting, or create a snapshot for instance.'
+            'If you still want to keep the disk data, it is recommended that you create a snapshot for the disk before deleting.'
           )}
         </p>
       </div>
@@ -97,7 +97,7 @@ export default class SoftDelete extends ConfirmAction {
         </p>
         <p className={styles.mb16}>
           {t(
-            'After deletion, the instance will be stored in the recycle bin, which will be reserved for 7 * 24h by default and can be restored within the period. After successful recovery, the status of the instance is running and related resources remain unchanged.'
+            'When the computing service starts the recycling instance interval, the instance will be stored in the recycling bin after deletion, and will be retained according to the corresponding time interval. You can choose to restore it within this period. After successful recovery, the status of the instance is running and related resources remain unchanged.'
           )}
         </p>
         <div>
@@ -140,10 +140,10 @@ export default class SoftDelete extends ConfirmAction {
   };
 
   onSubmit = (item) => {
-    const { id, isHardDeleted = false, expiredTime } = item || this.item;
+    const { id, isHardDeleted = false } = item || this.item;
     if (isHardDeleted) {
-      return globalServerStore.forceDelete({ id }, expiredTime);
+      return globalServerStore.forceDelete({ id });
     }
-    return globalServerStore.delete({ id }, expiredTime);
+    return globalServerStore.delete({ id });
   };
 }

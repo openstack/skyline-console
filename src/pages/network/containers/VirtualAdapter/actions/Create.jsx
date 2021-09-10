@@ -28,9 +28,7 @@ import { getQoSPolicyTabs } from 'resources/qos-policy';
 const portTypes =
   'normal,macvtap,direct,baremetal,direct-physical,virtio-forwarder,smart-nic';
 
-@inject('rootStore')
-@observer
-export default class CreateAction extends ModalAction {
+export class CreateAction extends ModalAction {
   static id = 'create-virtual-adapter';
 
   static title = t('Create Virtual Adapter');
@@ -366,3 +364,5 @@ export default class CreateAction extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(CreateAction));

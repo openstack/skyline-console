@@ -20,9 +20,7 @@ import {
   allowAttachInterfaceStatus,
 } from 'resources/instance';
 
-@inject('rootStore')
-@observer
-export default class Attach extends ModalAction {
+export class Attach extends ModalAction {
   static id = 'attach_instance';
 
   static title = t('Attach Instance');
@@ -97,3 +95,5 @@ export default class Attach extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Attach));

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Delete from './Delete';
+import SoftDelete from './SoftDelete';
 // import CreateImage from './CreateImage';
 import CreateSnapshot from './CreateSnapshot';
 import AttachInterface from './AttachInterface';
@@ -46,7 +46,6 @@ import Unshelve from './Unshelve';
 import DisassociateFip from './DisassociateFip';
 import LiveMigrate from './LiveMigrate';
 import AssociateFip from './AssociateFip';
-// import SoftDelete from './SoftDelete';
 import ManageSecurityGroup from './ManageSecurityGroup';
 import DeleteIronic from './DeleteIronic';
 
@@ -84,8 +83,7 @@ const batchActions = [
   StopAction,
   RebootAction,
   SoftRebootAction,
-  // SoftDelete,
-  Delete,
+  SoftDelete,
 ];
 
 const batchActionsForIronic = batchActions.slice(0, -2).concat(DeleteIronic);
@@ -122,8 +120,7 @@ const actionConfigs = {
         action: Edit,
       },
       {
-        // action: SoftDelete,
-        action: Delete,
+        action: SoftDelete,
       },
       {
         action: DeleteIronic,
@@ -149,8 +146,7 @@ const adminActions = {
         action: LiveMigrate,
       },
       {
-        // action: SoftDelete,
-        action: Delete,
+        action: SoftDelete,
       },
       {
         action: DeleteIronic,

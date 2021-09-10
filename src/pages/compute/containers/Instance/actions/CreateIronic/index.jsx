@@ -200,6 +200,10 @@ export class CreateIronic extends StepAction {
     );
   }
 
+  renderExtra() {
+    return null;
+  }
+
   renderFooterLeft() {
     const { data } = this.state;
     const { count = 1 } = data;
@@ -221,16 +225,17 @@ export class CreateIronic extends StepAction {
               className={classnames(styles.input, 'instance-count')}
             />
           </div>
+          {this.renderExtra()}
         </div>
         {this.renderBadge()}
       </div>
     );
   }
 
-  onSubmit = (values) => {
+  getSubmitData(values) {
     const { status } = this.state;
     if (status === 'error') {
-      return Promise.reject();
+      return null;
     }
     /* eslint-disable no-unused-vars */
     const {
@@ -311,16 +316,23 @@ export class CreateIronic extends StepAction {
     if (server.adminPass || userData) {
       server.user_data = btoa(getUserData(server.adminPass, userData));
     }
-    const body = {
+    return {
       server,
     };
+  }
+
+  onSubmit = (body) => {
+    if (!body) {
+      return Promise.reject();
+    }
     return this.store.create(body);
   };
 
   onOk = () => {
     const { data } = this.state;
     this.values = data;
-    this.onSubmit(data).then(
+    const submitData = this.getSubmitData(data);
+    this.onSubmit(submitData).then(
       () => {
         this.routing.push(this.listUrl);
         Notify.success(this.successText);

@@ -27,9 +27,7 @@ import globalServerStore, { ServerStore } from 'stores/nova/instance';
 import { ServerGroupInstanceStore } from 'stores/skyline/server-group-instance';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class Instance extends Base {
+export class Instance extends Base {
   init() {
     if (!this.inDetailPage) {
       this.store = globalServerStore;
@@ -304,3 +302,5 @@ export default class Instance extends Base {
     return newParams;
   };
 }
+
+export default inject('rootStore')(observer(Instance));

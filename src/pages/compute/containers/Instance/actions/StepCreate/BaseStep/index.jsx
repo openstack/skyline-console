@@ -58,9 +58,9 @@ export class BaseStep extends Base {
 
   get defaultValue() {
     const { volume } = this.locationParams;
-    let source = this.sourceTypes[0];
+    let source = this.imageSourceType;
     if (volume) {
-      source = this.sourceTypes[1];
+      source = this.volumeSourceType;
     }
     const values = {
       systemDisk: this.defaultVolumeType,
@@ -144,6 +144,14 @@ export class BaseStep extends Base {
     ];
   }
 
+  get imageSourceType() {
+    return this.sourceTypes[0];
+  }
+
+  get volumeSourceType() {
+    return this.sourceTypes[1];
+  }
+
   allowed = () => Promise.resolve();
 
   async getAvailZones() {
@@ -185,7 +193,7 @@ export class BaseStep extends Base {
         id: volume,
       });
       this.updateContext({
-        source: this.sourceTypes[1],
+        source: this.volumeSourceType,
       });
     } else {
       await this.volumeStore.fetchList({
@@ -256,12 +264,12 @@ export class BaseStep extends Base {
 
   get sourceTypeIsImage() {
     const { source } = this.state;
-    return source === this.sourceTypes[0].value;
+    return source === this.imageSourceType.value;
   }
 
   get sourceTypeIsVolume() {
     const { source } = this.state;
-    return source === this.sourceTypes[1].value;
+    return source === this.volumeSourceType.value;
   }
 
   getImageExtraWords() {
@@ -292,11 +300,11 @@ export class BaseStep extends Base {
     });
   };
 
-  onSourceChange = (value) => {
+  onSourceChange(value) {
     this.updateContext({
       source: value,
     });
-  };
+  }
 
   onDataDiskChange = (value) => {
     this.updateContext({

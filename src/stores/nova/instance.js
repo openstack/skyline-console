@@ -302,10 +302,7 @@ export class ServerStore extends Base {
   }
 
   @action
-  async forceDelete({ id }, expiredTime) {
-    if (!expiredTime) {
-      return this.operation({ key: 'forceDelete', id });
-    }
+  async forceDelete({ id }) {
     const body = {
       forceDelete: null,
     };

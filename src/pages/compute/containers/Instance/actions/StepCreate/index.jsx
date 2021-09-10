@@ -29,7 +29,7 @@ import SystemStep from './SystemStep';
 import NetworkStep from './NetworkStep';
 import BaseStep from './BaseStep';
 
-class StepCreate extends StepAction {
+export class StepCreate extends StepAction {
   static id = 'instance-create';
 
   static title = t('Create Instance');
@@ -189,6 +189,10 @@ class StepCreate extends StepAction {
     );
   }
 
+  renderExtra() {
+    return null;
+  }
+
   renderFooterLeft() {
     const { data } = this.state;
     const { count = 1, source: { value: sourceValue } = {} } = data;
@@ -210,16 +214,17 @@ class StepCreate extends StepAction {
               className={classnames(styles.input, 'instance-count')}
             />
           </div>
+          {this.renderExtra()}
         </div>
         {this.renderBadge()}
       </div>
     );
   }
 
-  onSubmit = (values) => {
+  getSubmitData(values) {
     const { status } = this.state;
     if (status === 'error') {
-      return Promise.reject();
+      return null;
     }
     /* eslint-disable no-unused-vars */
     const {
@@ -357,13 +362,21 @@ class StepCreate extends StepAction {
         group: serverGroup.selectedRowKeys[0],
       };
     }
+    return body;
+  }
+
+  onSubmit = (body) => {
+    if (!body) {
+      return Promise.reject();
+    }
     return this.store.create(body);
   };
 
   onOk = () => {
     const { data } = this.state;
     this.values = data;
-    this.onSubmit(data).then(
+    const submitData = this.getSubmitData(data);
+    this.onSubmit(submitData).then(
       () => {
         this.routing.push(this.listUrl);
         Notify.success(this.successText);

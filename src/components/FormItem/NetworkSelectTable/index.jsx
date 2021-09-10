@@ -20,9 +20,7 @@ import { yesNoOptions } from 'utils/constants';
 import { networkColumns, networkSortProps } from 'resources/network';
 import { isAdminPage } from 'utils/index';
 
-@inject('rootStore')
-@observer
-export default class NetworkSelectTable extends Component {
+export class NetworkSelectTable extends Component {
   constructor(props) {
     super(props);
     this.stores = {
@@ -188,3 +186,5 @@ export default class NetworkSelectTable extends Component {
     );
   }
 }
+
+export default inject('rootStore')(observer(NetworkSelectTable));

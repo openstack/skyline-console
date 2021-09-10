@@ -233,7 +233,8 @@ export default class BaseStepForm extends React.Component {
     // eslint-disable-next-line no-console
     console.log('onOk', data);
     this.values = data;
-    this.onSubmit(data).then(
+    const submitData = this.getSubmitData(data);
+    this.onSubmit(submitData).then(
       () => {
         this.routing.push(this.listUrl);
         Notify.success(this.successText);
@@ -274,6 +275,10 @@ export default class BaseStepForm extends React.Component {
         {`${t('Next')}: ${title}`}
       </Button>
     );
+  }
+
+  getSubmitData(data) {
+    return { ...data };
   }
 
   updateDataOnPrev = (values) => {

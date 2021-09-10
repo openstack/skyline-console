@@ -242,6 +242,10 @@ export default class BaseForm extends React.Component {
     return false;
   }
 
+  getSubmitData(data) {
+    return { ...data };
+  }
+
   updateContext = (allFields) => {
     const { updateContext } = this.props;
     updateContext && updateContext(allFields);
@@ -271,7 +275,8 @@ export default class BaseForm extends React.Component {
     if (!this.onSubmit) {
       return callback(true, false);
     }
-    return this.onSubmit(values, containerProps).then(
+    const submitData = this.getSubmitData(values);
+    return this.onSubmit(submitData, containerProps).then(
       (response) => {
         this.updateSumbitting(false);
         !this.isModal && this.routing.push(this.listUrl);

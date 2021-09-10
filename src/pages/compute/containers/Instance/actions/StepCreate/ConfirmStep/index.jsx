@@ -147,9 +147,7 @@ export class ConfirmStep extends Base {
   }
 
   get defaultValue() {
-    return {
-      autoRelease: false,
-    };
+    return {};
   }
 
   get formItems() {
