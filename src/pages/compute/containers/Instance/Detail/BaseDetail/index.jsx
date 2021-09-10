@@ -224,6 +224,10 @@ export class BaseDetail extends Base {
     return infos;
   }
 
+  get volumeActions() {
+    return { firstAction: AttachVolume };
+  }
+
   fetchVolumes = async () => {
     const params = {
       serverId: this.id,
@@ -280,6 +284,16 @@ export class BaseDetail extends Base {
     return <Row>{interfaceItem}</Row>;
   }
 
+  renderImageType(osDistro) {
+    return (
+      <ImageType
+        className={styles['info-item-icon']}
+        type={osDistro}
+        title={osDistro}
+      />
+    );
+  }
+
   renderVmRow() {
     const item = toJS(this.detailData.itemInList) || {};
     const { status } = this.detailData;
@@ -291,11 +305,7 @@ export class BaseDetail extends Base {
         </div>
         <div className={styles['vm-info']}>
           <div className={styles['info-item']}>
-            <ImageType
-              className={styles['info-item-icon']}
-              type={image_os_distro}
-              title={image_os_distro}
-            />
+            {this.renderImageType(image_os_distro)}
             <span>{image_name}</span>
           </div>
           <div className={styles['info-item']}>
@@ -370,7 +380,7 @@ export class BaseDetail extends Base {
             <div className={styles['attach-action-line']} />
             {/* <a onClick={this.info}>{t('Attach volume')}</a> */}
             <ItemActionButtons
-              actions={{ firstAction: AttachVolume }}
+              actions={this.volumeActions}
               onFinishAction={this.handleRefreshVolume}
               item={this.detailData}
               containerProps={containerProps}

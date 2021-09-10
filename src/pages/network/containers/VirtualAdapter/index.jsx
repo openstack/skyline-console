@@ -21,9 +21,7 @@ import { portStatus } from 'resources/port';
 import { emptyActionConfig } from 'utils/constants';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class VirtualAdapter extends Base {
+export class VirtualAdapter extends Base {
   init() {
     this.store = new VirtualAdapterStore();
     this.downloadStore = new VirtualAdapterStore();
@@ -262,3 +260,5 @@ export default class VirtualAdapter extends Base {
     return ret;
   }
 }
+
+export default inject('rootStore')(observer(VirtualAdapter));

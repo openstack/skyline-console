@@ -221,37 +221,19 @@ export class StepCreate extends StepAction {
     );
   }
 
-  getSubmitData(values) {
+  getVolumeAndImageData(values) {
     const { status } = this.state;
     if (status === 'error') {
       return null;
     }
     /* eslint-disable no-unused-vars */
     const {
-      availableZone,
       bootableVolume,
       dataDisk,
-      host,
       image,
       instanceSnapshot,
-      iso,
-      keypair,
-      loginType,
-      network,
-      networks,
-      password,
-      physicalNode,
-      physicalNodeType,
-      project,
-      resource,
-      securityGroup,
       source,
-      flavor,
       systemDisk,
-      userData = '',
-      serverGroup,
-      name,
-      count = 1,
     } = values;
     let imageRef = null;
     let rootVolume = {};
@@ -295,7 +277,6 @@ export class StepCreate extends StepAction {
           };
         })
       : [];
-    let hasIp = false;
     if (
       sourceValue === 'image' &&
       image.selectedRows[0].disk_format === 'iso' &&
@@ -305,9 +286,35 @@ export class StepCreate extends StepAction {
       dataVolumes[0].device_type = 'disk';
       rootVolume.boot_index = 1;
       rootVolume.device_type = 'cdrom';
-      // rootVolume.disk_bus = 'ide';
-      // dataVolumes[0].disk_bus = 'virtio';
     }
+    return {
+      volumes: [rootVolume, ...dataVolumes],
+      imageRef,
+    };
+  }
+
+  getSubmitData(values) {
+    const { status } = this.state;
+    if (status === 'error') {
+      return null;
+    }
+    const { volumes, imageRef } = this.getVolumeAndImageData(values);
+    const {
+      availableZone,
+      keypair,
+      loginType,
+      networks,
+      password,
+      physicalNode,
+      physicalNodeType,
+      securityGroup,
+      flavor,
+      userData = '',
+      serverGroup,
+      name,
+      count = 1,
+    } = values;
+    let hasIp = false;
     const { selectedRows: securityGroupSelectedRows = [] } =
       securityGroup || {};
     const server = {
@@ -317,7 +324,7 @@ export class StepCreate extends StepAction {
       name,
       flavorRef: flavor.selectedRowKeys[0],
       availability_zone: availableZone.value,
-      block_device_mapping_v2: [rootVolume, ...dataVolumes],
+      block_device_mapping_v2: volumes,
       networks: networks.map((it) => {
         const net = {
           uuid: it.value.network,

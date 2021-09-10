@@ -29,7 +29,7 @@ export class HttpRequest {
   }
 
   gotoLoginPage(path) {
-    const globalRootStore = require('stores/root').defaullt;
+    const globalRootStore = require('stores/root').default;
     globalRootStore.gotoLoginPage(path);
   }
 

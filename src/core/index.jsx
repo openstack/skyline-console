@@ -44,13 +44,14 @@ const render = (component) => {
 };
 
 const getUser = async (callback) => {
-  if (window.location.pathname.indexOf('/login') < 0) {
+  const currentPath = window.location.pathname;
+  if (currentPath.indexOf('/login') < 0) {
     try {
       await store.getUserProfileAndPolicy();
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log(e);
-      store.gotoLoginPage();
+      store.gotoLoginPage(currentPath);
     } finally {
       callback && callback();
     }

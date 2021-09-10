@@ -24,9 +24,7 @@ import { FileTextOutlined } from '@ant-design/icons';
 import styles from './styles.less';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class FloatingIps extends Base {
+export class FloatingIps extends Base {
   init() {
     this.store = new FloatingIpStore();
     this.downloadStore = new FloatingIpStore();
@@ -114,100 +112,102 @@ export default class FloatingIps extends Base {
     return true;
   }
 
-  getColumns = () => [
-    {
-      title: t('ID/Floating IP'),
-      dataIndex: 'floating_ip_address',
-      isName: true,
-      linkPrefix: `/network/${this.getUrl('floatingip')}/detail`,
-    },
-    {
-      title: t('QoS Policy'),
-      dataIndex: 'qos_policy_id',
-      render: (value) => (
-        <Link to={`/network/${this.getUrl('qos-policy')}/detail/${value}`}>
-          {value}
-        </Link>
-      ),
-    },
-    {
-      title: t('Project ID/Name'),
-      dataIndex: 'project_name',
-      hidden: !this.isAdminPage,
-      sortKey: 'project_id',
-    },
-    {
-      title: t('Description'),
-      dataIndex: 'description',
-      render: (value) => value || '-',
-      isHideable: true,
-      sorter: false,
-    },
-    {
-      title: t('Associated Resource'),
-      dataIndex: 'resource_name',
-      render: (resource_name, record) => {
-        if (
-          !resource_name &&
-          record.port_forwardings &&
-          record.port_forwardings.length !== 0
-        ) {
-          return (
-            <>
-              {t('{number} port forwarding rules', {
-                number: record.port_forwardings.length,
-              })}
-              &nbsp;
-              <Popover
-                content={
-                  <Row className={styles.popover_row} gutter={[8, 8]}>
-                    {record.port_forwardings
-                      .sort((a, b) => a.external_port - b.external_port)
-                      .map((i, idx) => (
-                        <Col span={24} key={`pfw-${idx}`}>
-                          {`${record.floating_ip_address}:${i.external_port} => ${i.internal_ip_address}:${i.internal_port}`}
-                        </Col>
-                      ))}
-                  </Row>
-                }
-                title={t('Port Forwarding')}
-                destroyTooltipOnHide
-              >
-                <FileTextOutlined />
-              </Popover>
-            </>
-          );
-        }
-        return resource_name || '';
+  getColumns() {
+    return [
+      {
+        title: t('ID/Floating IP'),
+        dataIndex: 'floating_ip_address',
+        isName: true,
+        linkPrefix: `/network/${this.getUrl('floatingip')}/detail`,
       },
-      stringify: (resource_name, record) => {
-        if (!resource_name && record.port_forwardings.length !== 0) {
-          const ret = record.port_forwardings
-            .sort((a, b) => a.external_port - b.external_port)
-            .map(
-              (i) =>
-                `${record.floating_ip_address}:${i.external_port} => ${i.internal_ip_address}:${i.internal_port}`
+      {
+        title: t('QoS Policy'),
+        dataIndex: 'qos_policy_id',
+        render: (value) => (
+          <Link to={`/network/${this.getUrl('qos-policy')}/detail/${value}`}>
+            {value}
+          </Link>
+        ),
+      },
+      {
+        title: t('Project ID/Name'),
+        dataIndex: 'project_name',
+        hidden: !this.isAdminPage,
+        sortKey: 'project_id',
+      },
+      {
+        title: t('Description'),
+        dataIndex: 'description',
+        render: (value) => value || '-',
+        isHideable: true,
+        sorter: false,
+      },
+      {
+        title: t('Associated Resource'),
+        dataIndex: 'resource_name',
+        render: (resource_name, record) => {
+          if (
+            !resource_name &&
+            record.port_forwardings &&
+            record.port_forwardings.length !== 0
+          ) {
+            return (
+              <>
+                {t('{number} port forwarding rules', {
+                  number: record.port_forwardings.length,
+                })}
+                &nbsp;
+                <Popover
+                  content={
+                    <Row className={styles.popover_row} gutter={[8, 8]}>
+                      {record.port_forwardings
+                        .sort((a, b) => a.external_port - b.external_port)
+                        .map((i, idx) => (
+                          <Col span={24} key={`pfw-${idx}`}>
+                            {`${record.floating_ip_address}:${i.external_port} => ${i.internal_ip_address}:${i.internal_port}`}
+                          </Col>
+                        ))}
+                    </Row>
+                  }
+                  title={t('Port Forwarding')}
+                  destroyTooltipOnHide
+                >
+                  <FileTextOutlined />
+                </Popover>
+              </>
             );
-          return ret.join('\n');
-        }
-        return resource_name;
+          }
+          return resource_name || '';
+        },
+        stringify: (resource_name, record) => {
+          if (!resource_name && record.port_forwardings.length !== 0) {
+            const ret = record.port_forwardings
+              .sort((a, b) => a.external_port - b.external_port)
+              .map(
+                (i) =>
+                  `${record.floating_ip_address}:${i.external_port} => ${i.internal_ip_address}:${i.internal_port}`
+              );
+            return ret.join('\n');
+          }
+          return resource_name;
+        },
+        isHideable: true,
+        sorter: false,
       },
-      isHideable: true,
-      sorter: false,
-    },
-    {
-      title: t('Status'),
-      dataIndex: 'status',
-      render: (value) => floatingIpStatus[value] || '-',
-    },
-    {
-      title: t('Created At'),
-      dataIndex: 'created_at',
-      valueRender: 'toLocalTime',
-      isHideable: true,
-      sorter: false,
-    },
-  ];
+      {
+        title: t('Status'),
+        dataIndex: 'status',
+        render: (value) => floatingIpStatus[value] || '-',
+      },
+      {
+        title: t('Created At'),
+        dataIndex: 'created_at',
+        valueRender: 'toLocalTime',
+        isHideable: true,
+        sorter: false,
+      },
+    ];
+  }
 
   get searchFilters() {
     const filters = [
@@ -227,3 +227,5 @@ export default class FloatingIps extends Base {
     return filters;
   }
 }
+
+export default inject('rootStore')(observer(FloatingIps));

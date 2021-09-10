@@ -126,7 +126,7 @@ export class Instance extends Base {
     };
   }
 
-  getColumns = () => {
+  getColumns() {
     const columns = [
       {
         title: t('ID/Name'),
@@ -227,7 +227,7 @@ export class Instance extends Base {
       return columns.filter((it) => it.dataIndex !== 'host');
     }
     return columns;
-  };
+  }
 
   get actionConfigs() {
     const { batchActions } = this;

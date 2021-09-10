@@ -64,6 +64,10 @@ export class SecurityGroup extends React.Component {
     return isAdminPage(pathname);
   }
 
+  get showActions() {
+    return !this.isAdminPage;
+  }
+
   getUrl(path, adminStr) {
     return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
   }
@@ -114,7 +118,7 @@ export class SecurityGroup extends React.Component {
             <Button type="link">{item.name}</Button>
           </Col>
           <Col span={2}>
-            {filterData.length !== 1 && !this.isAdminPage ? (
+            {filterData.length !== 1 && this.showActions ? (
               <ItemActionButtons
                 actions={{ firstAction: Detach }}
                 onFinishAction={this.actionCallback}
@@ -216,7 +220,7 @@ export class SecurityGroup extends React.Component {
               : null}
           </Radio.Group>
         </Spin>
-        {!this.isAdminPage && port_security_enabled && (
+        {this.showActions && port_security_enabled && (
           <div style={{ marginBottom: 20, marginTop: 20 }}>
             <PrimaryActionButtons
               primaryActions={[ManageSecurityGroup]}

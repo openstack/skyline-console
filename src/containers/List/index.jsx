@@ -619,6 +619,10 @@ export default class BaseList extends React.Component {
     }
   }
 
+  getColumns() {
+    return [];
+  }
+
   fetchListWithTry = async (func) => {
     try {
       func && (await func());
@@ -721,8 +725,6 @@ export default class BaseList extends React.Component {
   };
 
   getFilteredValue = (dataIndex) => this.list.filters[dataIndex];
-
-  getColumns = () => [];
 
   checkIsProjectFilter = (item) => item.name === this.projectFilterKey;
 
