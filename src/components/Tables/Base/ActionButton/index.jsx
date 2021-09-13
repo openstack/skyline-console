@@ -277,7 +277,7 @@ class ActionButton extends Component {
             okText,
             cancelText,
             onOk: () => {
-              this.onConfirmOK(
+              return this.onConfirmOK(
                 data,
                 onSubmit,
                 isBatch,
