@@ -1990,6 +1990,7 @@
   "users": "users",
   "vCPU": "vCPU",
   "vCPUs": "vCPUs",
+  "vCPUs and ram are not used for bare metal scheduling": "vCPUs and ram are not used for bare metal scheduling",
   "virtual adapter": "virtual adapter",
   "virtual adapters": "virtual adapters",
   "volume": "volume",

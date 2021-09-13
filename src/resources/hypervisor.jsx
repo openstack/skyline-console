@@ -14,6 +14,7 @@
 
 import React from 'react';
 import Progress from 'components/Progress';
+import { Tooltip } from 'antd';
 
 export const hypervisorColumns = [
   {
@@ -27,12 +28,19 @@ export const hypervisorColumns = [
   {
     title: t('VCPU (Core)'),
     dataIndex: 'vcpus_used_percent',
-    render: (value, record) => (
-      <Progress
-        value={value}
-        label={`${record.vcpus_used} / ${record.vcpus}`}
-      />
-    ),
+    render: (value, record) =>
+      record.hypervisor_type === 'ironic' ? (
+        <Tooltip
+          title={t('vCPUs and ram are not used for bare metal scheduling')}
+        >
+          <span>-</span>
+        </Tooltip>
+      ) : (
+        <Progress
+          value={value}
+          label={`${record.vcpus_used} / ${record.vcpus}`}
+        />
+      ),
     width: 180,
     stringify: (value, record) =>
       `${value}% (${t('Used')}: ${record.vcpus_used} / ${t('Total')}: ${
@@ -42,12 +50,19 @@ export const hypervisorColumns = [
   {
     title: t('Configured Memory (GB)'),
     dataIndex: 'memory_mb_percent',
-    render: (value, record) => (
-      <Progress
-        value={value}
-        label={`${record.memory_mb_used_gb} / ${record.memory_mb_gb}`}
-      />
-    ),
+    render: (value, record) =>
+      record.hypervisor_type === 'ironic' ? (
+        <Tooltip
+          title={t('vCPUs and ram are not used for bare metal scheduling')}
+        >
+          <span>-</span>
+        </Tooltip>
+      ) : (
+        <Progress
+          value={value}
+          label={`${record.memory_mb_used_gb} / ${record.memory_mb_gb}`}
+        />
+      ),
     width: 180,
     stringify: (value, record) =>
       `${value}% (${t('Used')}: ${record.memory_mb_used_gb} / ${t('Total')}: ${

@@ -13,6 +13,7 @@ coverage
 test/e2e/results
 test/e2e/report
 *.qcow2
+/packages
 
 # config
 test/e2e/config/local_config.yaml

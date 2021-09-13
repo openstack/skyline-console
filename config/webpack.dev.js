@@ -47,6 +47,9 @@ module.exports = (env) => {
         target: 'http://localhost',
         changeOrigin: true,
         secure: false,
+        headers: {
+          Connection: 'keep-alive',
+        },
       },
     };
   }

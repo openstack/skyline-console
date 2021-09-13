@@ -1990,6 +1990,7 @@
   "users": "用户",
   "vCPU": "虚拟CPU",
   "vCPUs": "虚拟CPU",
+  "vCPUs and ram are not used for bare metal scheduling": "vCPUs 和 ram 不用于裸机调度",
   "virtual adapter": "虚拟网卡",
   "virtual adapters": "虚拟网卡",
   "volume": "云硬盘",

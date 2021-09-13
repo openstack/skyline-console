@@ -12,10 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { HypervisorStore } from 'stores/nova/hypervisor';
 import Base from 'containers/TabDetail';
 import Members from 'pages/compute/containers/Instance';
+import { Tooltip } from 'antd';
 
 export class HypervisorDetail extends Base {
   get name() {
@@ -43,13 +45,30 @@ export class HypervisorDetail extends Base {
       {
         title: t('VCPU (Core)'),
         dataIndex: 'vcpus_used_percent',
-        render: (value, record) => `${record.vcpus_used} / ${record.vcpus}`,
+        render: (value, record) =>
+          record.hypervisor_type === 'ironic' ? (
+            <Tooltip
+              title={t('vCPUs and ram are not used for bare metal scheduling')}
+            >
+              <span>-</span>
+            </Tooltip>
+          ) : (
+            `${record.vcpus_used} / ${record.vcpus}`
+          ),
       },
       {
         title: t('Configured Memory (GB)'),
         dataIndex: 'memory_mb_percent',
         render: (value, record) =>
-          `${record.memory_mb_used_gb} / ${record.memory_mb_gb}`,
+          record.hypervisor_type === 'ironic' ? (
+            <Tooltip
+              title={t('vCPUs and ram are not used for bare metal scheduling')}
+            >
+              <span>-</span>
+            </Tooltip>
+          ) : (
+            `${record.memory_mb_used_gb} / ${record.memory_mb_gb}`
+          ),
       },
     ];
   }
