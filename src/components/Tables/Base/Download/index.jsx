@@ -31,6 +31,7 @@ export default class index extends Component {
     total: PropTypes.number,
     getValueRenderFunc: PropTypes.func.isRequired,
     resourceName: PropTypes.string,
+    extraName: PropTypes.string,
     getData: PropTypes.func,
     totalMax: PropTypes.number,
   };
@@ -41,6 +42,7 @@ export default class index extends Component {
     total: 0,
     totalMax: 10000,
     resourceName: '',
+    extraName: '',
     getData: () =>
       Promise.resolve({
         data: {
@@ -171,10 +173,11 @@ export default class index extends Component {
 
   getFileName = (all) => {
     const timeStr = toLocalTimeFilter(new Date().getTime());
-    const { resourceName } = this.props;
+    const { resourceName, extraName } = this.props;
+    const name = extraName ? `${extraName}-${resourceName}` : resourceName;
     return all
-      ? `${resourceName}-${t('all')}-${timeStr}.csv`
-      : `${resourceName}-${timeStr}.csv`;
+      ? `${name}-${t('all')}-${timeStr}.csv`
+      : `${name}-${timeStr}.csv`;
   };
 
   exportCurrentData = (event, all) => {

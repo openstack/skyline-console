@@ -369,6 +369,7 @@ export default class DetailBase extends React.Component {
       <tabItem.component
         {...this.props}
         detail={this.detailData}
+        detailName={`${this.name}-${this.id}`}
         refreshDetail={this.refreshDetailByTab}
       />
     ) : (

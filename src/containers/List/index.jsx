@@ -140,6 +140,14 @@ export default class BaseList extends React.Component {
     return !!detail;
   }
 
+  get detailName() {
+    if (!this.inDetailPage) {
+      return '';
+    }
+    const { detailName } = this.props;
+    return detailName;
+  }
+
   get shouldRefreshDetail() {
     return true;
   }
@@ -462,6 +470,7 @@ export default class BaseList extends React.Component {
     const { autoRefresh, tableHeight } = this.state;
     return {
       resourceName: this.name,
+      detailName: this.detailName,
       data: this.getDataSource(),
       // data:data,
       columns: this.getColumns(),
