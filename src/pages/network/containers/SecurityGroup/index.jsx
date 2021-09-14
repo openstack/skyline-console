@@ -20,9 +20,7 @@ import globalSecurityGroupStore, {
 import { emptyActionConfig } from 'utils/constants';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class SecurityGroups extends Base {
+export class SecurityGroups extends Base {
   init() {
     this.store = globalSecurityGroupStore;
     this.downloadStore = new SecurityGroupStore();
@@ -62,11 +60,15 @@ export default class SecurityGroups extends Base {
     return true;
   }
 
+  get detailLink() {
+    return `/network/${this.getUrl('security-group')}/detail`;
+  }
+
   getColumns = () => [
     {
       title: t('ID/Name'),
       dataIndex: 'name',
-      linkPrefix: `/network/${this.getUrl('security-group')}/detail`,
+      linkPrefix: this.detailLink,
     },
     {
       title: t('Project ID/Name'),
@@ -95,3 +97,5 @@ export default class SecurityGroups extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(SecurityGroups));
