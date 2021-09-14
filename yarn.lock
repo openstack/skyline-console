@@ -10690,6 +10690,11 @@ performance-now@^2.1.0:
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
+phone@^3.1.6:
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/phone/-/phone-3.1.6.tgz#eefff0be1ce4ce9f2ee028c67be6b58dc5616ef1"
+  integrity sha512-46WCdbDG32OKoPsntTg2l0VBaWVWg0A3zvH5dUhApwOupyn7owXRtDBz6vAjsJiZQGTft++WvTxEZeqxlCUv9g==
+
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.3:
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.2.3.tgz#465547f359ccc206d3c48e46a1bcb89bf7ee619d"
