@@ -18,7 +18,7 @@ import globalUserStore from 'stores/keystone/user';
 import { ModalAction } from 'containers/Action';
 import globalProjectStore from 'stores/keystone/project';
 import globalRoleStore from 'stores/keystone/role';
-import { getPasswordOtherRule } from 'utils/validate';
+import { getPasswordOtherRule, phoneNumberValidate } from 'utils/validate';
 import globalDomainStore from 'stores/keystone/domain';
 import { statusTypes } from 'utils/constants';
 
@@ -182,6 +182,7 @@ export class CreateForm extends ModalAction {
       {
         name: 'phone',
         label: t('Phone'),
+        validator: phoneNumberValidate,
         type: 'input',
         required: true,
       },

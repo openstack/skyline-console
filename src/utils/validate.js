@@ -15,6 +15,7 @@
 import { isString, isNil } from 'lodash';
 import { Address4, Address6 } from 'ip-address';
 import cidrRegex from 'cidr-regex';
+import { phone } from 'phone';
 
 const { v4, v6 } = cidrRegex;
 
@@ -38,8 +39,6 @@ const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\\[\]`~!@#$%^&*()_\-+=?:"{}|,.\\/;'])[A-Za-z\d\\[\]`~!@#$%^&*()_\-+=?:"{}|,.\\/;']{8,16}$/;
 const instancePasswordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\\[\]`~!@#$%^&*()_\-+=?:"{}|,.\\/;']{8,16}$/;
-const phoneNumberRegex = /^1[3456789]\d{9}$/;
-const phoneRegexp = /^(\+\d{1,3}-)(\d{7,11})?$/;
 const emailRegex =
   /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
 const nameRegexWithoutChinese = /^[a-zA-Z][\w"'\[\]^.:()_-]{0,127}$/; // eslint-disable-line
@@ -65,8 +64,6 @@ export const regex = {
   ipWithMask,
   passwordRegex,
   instancePasswordRegex,
-  phoneNumberRegex,
-  phoneRegexp,
   emailRegex,
   nameRegexWithoutChinese,
   fileNameRegex,
@@ -76,8 +73,7 @@ export const regex = {
   ipv6CidrOnly,
 };
 
-export const isPhoneNumber = (value) =>
-  phoneNumberRegex.test(value) || phoneRegexp.test(value);
+export const isPhoneNumber = (value) => phone(value).isValid;
 
 export const isEmailNumber = (value) => emailRegex.test(value);
 
