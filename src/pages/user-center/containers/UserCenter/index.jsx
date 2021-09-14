@@ -19,7 +19,7 @@ import globalUserStore from 'stores/keystone/user';
 import ProfileIcon from 'asset/image/profile.svg';
 import styles from './styles.less';
 
-class Index extends Component {
+export class Overview extends Component {
   componentDidMount() {
     this.fetchData();
   }
@@ -34,7 +34,7 @@ class Index extends Component {
   renderInfoItem(item) {
     return (
       <Row className={styles.user_info_detail_item}>
-        <Col span={6}>{t(item.label)}</Col>
+        <Col span={6}>{item.label}</Col>
         <Col span={18}>{item.value}</Col>
       </Row>
     );
@@ -75,13 +75,18 @@ class Index extends Component {
     );
   }
 
+  renderExtra() {
+    return null;
+  }
+
   render() {
     return (
       <Layout.Content className={styles.content}>
         <Row className={styles.user_info_card}>{this.renderUserInfo()}</Row>
+        {this.renderExtra()}
       </Layout.Content>
     );
   }
 }
 
-export default inject('rootStore')(observer(Index));
+export default inject('rootStore')(observer(Overview));

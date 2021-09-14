@@ -44,6 +44,11 @@ export class BaseLayout extends Component {
     return isAdminPage(pathname);
   }
 
+  get isUserCenterPage() {
+    const { pathname } = this.props.location;
+    return isUserCenterPage(pathname);
+  }
+
   get rootStore() {
     return this.props.rootStore;
   }
@@ -65,11 +70,8 @@ export class BaseLayout extends Component {
   }
 
   get originMenu() {
-    const {
-      location: { pathname },
-    } = this.props;
     let ret = [];
-    if (isUserCenterPage(pathname)) {
+    if (this.isUserCenterPage) {
       ret = renderUserMenu(i18n.t);
     } else if (this.isAdminPage) {
       ret = renderAdminMenu(i18n.t);
@@ -223,7 +225,11 @@ export class BaseLayout extends Component {
   }
 
   renderHeader = () => (
-    <GlobalHeader {...this.props} isAdminPage={this.isAdminPage} />
+    <GlobalHeader
+      {...this.props}
+      isAdminPage={this.isAdminPage}
+      isUserCenterPage={this.isUserCenterPage}
+    />
   );
 
   render() {
