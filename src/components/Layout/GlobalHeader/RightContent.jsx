@@ -12,42 +12,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Button, Col, Row } from 'antd';
-import { isUserCenterPage } from 'utils';
 import Avatar from './AvatarDropdown';
 import styles from './index.less';
 
-// eslint-disable-next-line no-unused-vars
-const gotoConsole = (type, props) => {
-  const { rootStore } = props;
-  rootStore.clearData();
-  if (type === 0) {
-    rootStore.routing.push('/base/overview');
-  } else {
-    rootStore.routing.push('/base/overview-admin');
+export class GlobalHeaderRight extends PureComponent {
+  get isAdminPage() {
+    const { isAdminPage = false } = this.props;
+    return isAdminPage;
   }
-};
 
-const GlobalHeaderRight = (props) => {
-  const {
-    isAdminPage = false,
-    rootStore: { hasAdminPageRole = false } = {},
-    location: { pathname },
-  } = props;
-  let linkRender = null;
-  if (isAdminPage || isUserCenterPage(pathname)) {
-    linkRender = (
-      <Button
-        type="link"
-        href="/base/overview"
-        className={styles['single-link']}
-      >
-        {t('Console')}
-      </Button>
-    );
-  } else if (hasAdminPageRole) {
-    linkRender = (
+  get isUserCenterPage() {
+    const { isUserCenterPage = false } = this.props;
+    return isUserCenterPage;
+  }
+
+  renderConsole() {
+    if (this.isAdminPage || this.isUserCenterPage) {
+      return (
+        <Button
+          type="link"
+          href="/base/overview"
+          className={styles['single-link']}
+        >
+          {t('Console')}
+        </Button>
+      );
+    }
+    return null;
+  }
+
+  renderAdministrator() {
+    const { rootStore: { hasAdminPageRole = false } = {} } = this.props;
+    if (!hasAdminPageRole || this.isAdminPage) {
+      return null;
+    }
+    return (
       <Button
         type="link"
         href="/base/overview-admin"
@@ -58,21 +59,26 @@ const GlobalHeaderRight = (props) => {
     );
   }
 
-  return (
-    <div className={styles.right}>
-      <Row
-        justify="space-between"
-        align="middle"
-        gutter={10}
-        // wrap={false}
-      >
-        <Col>{linkRender}</Col>
-        <Col>
-          <Avatar menu />
-        </Col>
-      </Row>
-    </div>
-  );
-};
+  renderExtra() {
+    return null;
+  }
+
+  render() {
+    return (
+      <div className={styles.right}>
+        <Row justify="space-between" align="middle" gutter={10}>
+          <Col>
+            {this.renderConsole()}
+            {this.renderAdministrator()}
+          </Col>
+          {this.renderExtra()}
+          <Col>
+            <Avatar menu />
+          </Col>
+        </Row>
+      </div>
+    );
+  }
+}
 
 export default GlobalHeaderRight;

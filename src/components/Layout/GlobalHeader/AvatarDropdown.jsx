@@ -152,13 +152,8 @@ class AvatarDropdown extends React.Component {
             shape="circle"
             icon={<UserOutlined />}
             className={styles.avatar}
-            onClick={() => {
-              const { rootStore } = this.props;
-              rootStore.routing.push('/user/center');
-            }}
+            href="/user/center"
           />
-          {/* <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" /> */}
-          {/* <span className={styles.name}>{currentUser.name}</span> */}
         </div>
       </HeaderDropdown>
     );
