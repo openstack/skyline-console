@@ -39,14 +39,6 @@ export default class Domains extends Base {
     return false;
   }
 
-  getTableProps() {
-    const baseProps = Base.prototype.getTableProps.call(this);
-    return {
-      ...baseProps,
-      searchType: 'keyword',
-    };
-  }
-
   getColumns = () => [
     {
       title: t('Domain ID/Name'),

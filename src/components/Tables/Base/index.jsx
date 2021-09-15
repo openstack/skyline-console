@@ -705,29 +705,6 @@ export default class BaseTable extends React.Component {
         </div>
       );
     }
-
-    // if (searchType === 'keyword') {
-    //   const placeholder =
-    //     this.props.placeholder || t('Please input a keyword to find');
-
-    //   return (
-    //     <div className={styles['search-row']}>
-    //       <MagicInput
-    //         filterParams={searchFilters}
-    //         onInputChange={this.handleFilterInput}
-    //         initValue={filters}
-    //       />
-    //       {/* <Input.Search
-    //         className={styles['search-input']}
-    //         value={keyword}
-    //         onSearch={this.handleSearch}
-    //         placeholder={placeholder}
-    //         allowClear
-    //       /> */}
-    //     </div>
-    //   );
-    // }
-    // return null;
     return (
       <div className={styles['search-row']}>
         <Input

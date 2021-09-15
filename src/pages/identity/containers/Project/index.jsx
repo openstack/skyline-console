@@ -16,14 +16,18 @@ import React from 'react';
 import { observer, inject } from 'mobx-react';
 import { Divider, Badge, Tag, Tooltip } from 'antd';
 import Base from 'containers/List';
-import globalProjectStore from 'stores/keystone/project';
-import { yesNoOptions, projectTagsColors } from 'utils/constants';
+import globalProjectStore, { ProjectStore } from 'stores/keystone/project';
+import {
+  yesNoOptions,
+  projectTagsColors,
+  emptyActionConfig,
+} from 'utils/constants';
 import actionConfigs from './actions';
 import styles from './index.less';
 
 export class Projects extends Base {
   init() {
-    this.store = globalProjectStore;
+    this.store = this.inDetailPage ? new ProjectStore() : globalProjectStore;
   }
 
   get tabs() {
@@ -42,19 +46,23 @@ export class Projects extends Base {
     return false;
   }
 
-  getTableProps() {
-    const baseProps = Base.prototype.getTableProps.call(this);
-    return {
-      ...baseProps,
-      searchType: 'keyword',
-    };
+  get inProject() {
+    const { pathname } = this.props.location;
+    return pathname.includes('project-admin');
   }
 
-  getColumns = () => {
-    const {
-      match: { path },
-    } = this.props;
-    const components = [
+  get inUserDetail() {
+    const { pathname } = this.props.location;
+    return this.inDetailPage && pathname.includes('user-admin/detail');
+  }
+
+  get inUserGroupDetail() {
+    const { pathname } = this.props.location;
+    return this.inDetailPage && pathname.includes('user-group-admin/detail');
+  }
+
+  getColumns() {
+    const columns = [
       {
         title: t('Project ID/Name'),
         dataIndex: 'name',
@@ -64,17 +72,13 @@ export class Projects extends Base {
         title: t('Role'),
         dataIndex: 'projectRole',
         render: (roles, value) => {
-          const rolesAll = [...(roles || [])];
-          if (value.groupProjectRole) {
-            rolesAll.push(...value.groupProjectRole);
-          }
+          const { groupProjectRole = [] } = value;
+          const rolesAll = [...(roles || []), ...(groupProjectRole || [])];
           return (rolesAll || []).map((it) => <div>{it}</div>);
         },
         stringify: (roles, value) => {
-          const rolesAll = [...(roles || [])];
-          if (value.groupProjectRole) {
-            rolesAll.push(...value.groupProjectRole);
-          }
+          const { groupProjectRole = [] } = value;
+          const rolesAll = [...(roles || []), ...(groupProjectRole || [])];
           return (rolesAll || []).join(';');
         },
       },
@@ -154,26 +158,16 @@ export class Projects extends Base {
       },
     ];
 
-    if (path.indexOf('project-admin') >= 0) {
-      components.splice(1, 1);
+    if (this.inProject) {
+      return columns.filter((it) => it.dataIndex !== 'projectRole');
     }
 
-    return components;
-  };
+    return columns;
+  }
 
   get actionConfigs() {
-    const {
-      match: { path },
-    } = this.props;
-    if (
-      path.indexOf('user-admin/detail') >= 0 ||
-      path.indexOf('user-group-admin/detail') >= 0
-    ) {
-      return {
-        batchActions: [],
-        primaryActions: [],
-        rowActions: [],
-      };
+    if (this.inUserDetail || this.inUserGroupDetail) {
+      return emptyActionConfig;
     }
     return actionConfigs;
   }
@@ -202,15 +196,13 @@ export class Projects extends Base {
 
   async getData({ silent, ...params } = {}) {
     const { match } = this.props;
-    const { path } = match;
+    const { id } = match.params || {};
     const newParams = { ...params };
     silent && (this.list.silent = true);
-    if (path.indexOf('user-admin/detail') >= 0) {
-      const { id } = match.params;
+    if (this.inUserDetail) {
       newParams.userId = id;
       await this.store.fetchListInUserDetail(newParams);
-    } else if (path.indexOf('user-group-admin/detail') >= 0) {
-      const { id } = match.params;
+    } else if (this.inUserGroupDetail) {
       newParams.groupId = id;
       await this.store.fetchListInGroupDetail(newParams);
     } else {
