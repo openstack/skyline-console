@@ -15,7 +15,7 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { QoSPolicyStore } from 'stores/neutron/qos-policy';
-import { qosPolicyColumns, qosPolicyFilters } from 'resources/qos-policy';
+import { getQosPolicyColumns, getQosPolicyFilters } from 'resources/qos-policy';
 import actionConfigs from './actions';
 
 export class QoSPolicy extends Base {
@@ -23,6 +23,11 @@ export class QoSPolicy extends Base {
     this.store = new QoSPolicyStore();
     this.downloadStore = new QoSPolicyStore();
   }
+
+  updateFetchParamsByPage = (params) => ({
+    ...params,
+    all_projects: this.tabKey === 'allQoSPolicy' || this.isAdminPage,
+  });
 
   get policy() {
     return 'get_policy';
@@ -51,26 +56,46 @@ export class QoSPolicy extends Base {
     return 'name';
   }
 
-  getColumns = () => {
-    const ret = [...qosPolicyColumns];
-    ret[0].linkPrefix = `/network/${this.getUrl('qos-policy')}/detail`;
-    ret.splice(2, 0, {
-      title: t('Project ID/Name'),
-      dataIndex: 'project_name',
-      sortKey: 'project_id',
-    });
-    return ret;
-  };
+  get tabKey() {
+    const { tab } = this.props;
+    return tab;
+  }
+
+  getColumnParamsFromTabKey() {
+    switch (this.tabKey) {
+      case 'projectQoSPolicy':
+        return {
+          self: this,
+          all: false,
+          shared: false,
+        };
+      case 'sharedQoSPolicy':
+        return {
+          self: this,
+          all: false,
+          shared: true,
+        };
+      case 'allQoSPolicy':
+        return {
+          self: this,
+          all: true,
+          shared: false,
+        };
+      default:
+        return {
+          self: this,
+          all: true,
+          shared: false,
+        };
+    }
+  }
+
+  getColumns() {
+    return getQosPolicyColumns(this.getColumnParamsFromTabKey());
+  }
 
   get searchFilters() {
-    const filters = [
-      ...qosPolicyFilters,
-      {
-        label: t('Project ID'),
-        name: 'tenant_id',
-      },
-    ];
-    return filters;
+    return getQosPolicyFilters(this.getColumnParamsFromTabKey());
   }
 }
 

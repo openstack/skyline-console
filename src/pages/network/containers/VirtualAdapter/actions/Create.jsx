@@ -317,7 +317,7 @@ export class CreateAction extends ModalAction {
         name: 'qos_policy_id',
         label: t('QoS Policy'),
         type: 'tab-select-table',
-        tabs: getQoSPolicyTabs.call(this, {}, false),
+        tabs: getQoSPolicyTabs.call(this),
         isMulti: false,
         required: enableQosPolicy,
         tip: t('Choosing a QoS policy can limit bandwidth and DSCP'),

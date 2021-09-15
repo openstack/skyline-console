@@ -19,9 +19,7 @@ import { QoSPolicyStore } from 'stores/neutron/qos-policy';
 import globalVirtualAdapterStore from 'stores/neutron/virtual-adapter';
 import { getQoSPolicyTabs } from 'resources/qos-policy';
 
-@inject('rootStore')
-@observer
-export default class ModifyQoS extends ModalAction {
+export class ModifyQoS extends ModalAction {
   static id = 'modify_qos';
 
   static title = t('Modify QoS');
@@ -132,13 +130,9 @@ export default class ModifyQoS extends ModalAction {
         name: 'qos_policy_id',
         label: t('QoS Policy'),
         type: 'tab-select-table',
-        tabs: getQoSPolicyTabs.call(
-          this,
-          {
-            disabledFunc: (item) => item.id === this.item.qos_policy_id,
-          },
-          false
-        ),
+        tabs: getQoSPolicyTabs.call(this, {
+          disabledFunc: (item) => item.id === this.item.qos_policy_id,
+        }),
         isMulti: false,
         required: true,
         tip: t('Choosing a QoS policy can limit bandwidth and DSCP'),
@@ -147,3 +141,5 @@ export default class ModifyQoS extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(ModifyQoS));

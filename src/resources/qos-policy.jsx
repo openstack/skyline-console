@@ -30,76 +30,98 @@ const getRuleValue = (rule) => {
     : `${t('DSCP Marking')}: ${rule.dscp_mark}`;
 };
 
-export const qosPolicyColumns = [
-  {
-    title: t('ID/Name'),
-    dataIndex: 'name',
-  },
-  {
-    title: t('Description'),
-    dataIndex: 'description',
-    sorter: false,
-  },
-  {
-    title: t('Rules Number'),
-    dataIndex: 'rulesNumber',
-    render: (value, record) => record.rules.length,
-    isHideable: true,
-    sorter: false,
-  },
-  {
-    title: t('Rules'),
-    dataIndex: 'rules',
-    render: (rules) => (
-      <Row>
-        {rules.map((rule) => (
-          <Col span={24} key={rule.direction}>
-            {getRuleValue(rule)}
-          </Col>
-        ))}
-      </Row>
-    ),
-    stringify: (rules) => rules.map((rule) => getRuleValue(rule)).join('\n'),
-  },
-  {
-    title: t('Shared'),
-    dataIndex: 'shared',
-    valueRender: 'yesNo',
-    width: 80,
-    sorter: false,
-  },
-  {
-    title: t('Default Policy'),
-    dataIndex: 'is_default',
-    valueRender: 'yesNo',
-    isHideable: true,
-    width: 100,
-    sorter: false,
-  },
-  {
-    title: t('Created At'),
-    dataIndex: 'created_at',
-    valueRender: 'toLocalTime',
-    isHideable: true,
-    sorter: false,
-  },
-];
+export const getQosPolicyColumns = ({ self, all = false }) => {
+  const ret = [
+    {
+      title: t('ID/Name'),
+      dataIndex: 'name',
+      linkPrefix: `/network/${self.getUrl('qos-policy')}/detail`,
+    },
+    {
+      title: t('Description'),
+      dataIndex: 'description',
+      sorter: false,
+    },
+    {
+      title: t('Rules Number'),
+      dataIndex: 'rulesNumber',
+      render: (value, record) => record.rules.length,
+      isHideable: true,
+      sorter: false,
+    },
+    {
+      title: t('Rules'),
+      dataIndex: 'rules',
+      render: (rules) => (
+        <Row>
+          {rules.map((rule) => (
+            <Col span={24} key={rule.direction}>
+              {getRuleValue(rule)}
+            </Col>
+          ))}
+        </Row>
+      ),
+      stringify: (rules) => rules.map((rule) => getRuleValue(rule)).join('\n'),
+    },
+    {
+      title: t('Shared'),
+      dataIndex: 'shared',
+      valueRender: 'yesNo',
+      width: 80,
+      sorter: false,
+    },
+    {
+      title: t('Default Policy'),
+      dataIndex: 'is_default',
+      valueRender: 'yesNo',
+      isHideable: true,
+      width: 100,
+      sorter: false,
+    },
+    {
+      title: t('Created At'),
+      dataIndex: 'created_at',
+      valueRender: 'toLocalTime',
+      isHideable: true,
+      sorter: false,
+    },
+  ];
+  if (all) {
+    ret.splice(2, 0, {
+      title: t('Project ID/Name'),
+      dataIndex: 'project_name',
+      sortKey: 'project_id',
+    });
+  }
+  return ret;
+};
 
-export const qosPolicyFilters = [
-  {
-    label: t('Name'),
-    name: 'name',
-  },
-  {
-    label: t('Description'),
-    name: 'description',
-  },
-  {
-    label: t('Shared'),
-    name: 'shared',
-    options: yesNoOptions,
-  },
-];
+export const getQosPolicyFilters = ({ self, shared = false }) => {
+  const ret = [
+    {
+      label: t('Name'),
+      name: 'name',
+    },
+    {
+      label: t('Description'),
+      name: 'description',
+    },
+  ];
+  if (!shared) {
+    ret.push({
+      label: t('Shared'),
+      name: 'shared',
+      options: yesNoOptions,
+    });
+  }
+  if (self.hasAdminRole) {
+    ret.push({
+      label: t('Project ID'),
+      name: 'tenant_id',
+    });
+  }
+  return ret;
+};
 
 export const qosPolicySortProps = {
   isSortByBack: true,
@@ -107,32 +129,26 @@ export const qosPolicySortProps = {
   defaultSortOrder: 'descend',
 };
 
-export const qosPolicySelectTableProps = {
+export const getQosPolicySelectTableProps = ({ self, all, shared }) => ({
   ...qosPolicySortProps,
-  columns: qosPolicyColumns,
-  filterParams: qosPolicyFilters,
-};
+  columns: getQosPolicyColumns({ self, all }),
+  filterParams: getQosPolicyFilters({ self, shared }),
+});
 
 /**
- *  * getQosPolicyTabs in component, should used by call/apply to make ‘this' point to component
- * @param {*} extraProps
- * @returns {[{title: *, key: string, props: *}, {title: *, key: string, props: *}]}
+ *  getQosPolicyTabs in component, should used by call/apply to make ‘this' point to component
  */
-export function getQoSPolicyTabs(extraProps) {
+export function getQoSPolicyTabs(extraProps = {}) {
   const baseProps = {
-    ...qosPolicySelectTableProps,
     backendPageStore: this.qosPolicyStore,
     ...extraProps,
   };
-  // make ID/Name column show id
-  baseProps.columns[0].linkPrefix = `/network/${this.getUrl(
-    'qos-policy'
-  )}/detail`;
   const ret = [
     {
       title: t('Current Project QoS Policy'),
       key: 'project',
       props: merge({}, baseProps, {
+        ...getQosPolicySelectTableProps({ self: this }),
         extraParams: {
           project_id: this.currentProjectId,
         },
@@ -142,6 +158,7 @@ export function getQoSPolicyTabs(extraProps) {
       title: t('Shared QoS Policy'),
       key: 'shared',
       props: merge({}, baseProps, {
+        ...getQosPolicySelectTableProps({ shared: true, self: this }),
         extraParams: {
           shared: true,
         },
@@ -149,28 +166,18 @@ export function getQoSPolicyTabs(extraProps) {
     },
   ];
 
-  // shared tab do not need shared filter
-  const sharedFilterIndex = ret[1].props.filterParams.findIndex(
-    (i) => i.name === 'shared'
-  );
-  ret[1].props.filterParams.splice(sharedFilterIndex, 1);
-
   if (this.hasAdminRole) {
-    const adminBaseProps = merge({}, baseProps, {
-      extraParams: {
-        all_projects: true,
-      },
-    });
-    adminBaseProps.columns.splice(1, 0, {
-      title: t('Project ID/Name'),
-      dataIndex: 'project_name',
-      sortKey: 'project_id',
-    });
     ret.push({
       title: t('All QoS Policy'),
       key: 'all',
-      props: adminBaseProps,
+      props: merge({}, baseProps, {
+        ...getQosPolicySelectTableProps({ all: true, self: this }),
+        extraParams: {
+          all_projects: true,
+        },
+      }),
     });
   }
+
   return ret;
 }

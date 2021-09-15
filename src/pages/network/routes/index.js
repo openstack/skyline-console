@@ -26,7 +26,7 @@ import PortDetail from '../containers/Router/Port/Detail';
 import VirtualAdapter from '../containers/VirtualAdapter';
 import VirtualAdapterDetail from '../containers/VirtualAdapter/Detail';
 import QoSPolicy from '../containers/QoSPolicy';
-import AdminQoSPolicy from '../containers/QoSPolicy/AdminQoSPolicy';
+import AdminQoSPolicy from '../containers/QoSPolicy/QoSPolicy';
 import QoSPolicyDetail from '../containers/QoSPolicy/Detail';
 import LoadBalancers from '../containers/LoadBalancers/LoadBalancerInstance';
 import StepCreateLoadBalancer from '../containers/LoadBalancers/LoadBalancerInstance/actions/StepCreate';

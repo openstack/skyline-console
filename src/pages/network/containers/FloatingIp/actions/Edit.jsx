@@ -33,7 +33,6 @@ export class Edit extends ModalAction {
 
   init() {
     this.qosPolicyStore = new QoSPolicyStore();
-    this.state.qosPolicy = this.item.qos_policy_id;
   }
 
   get defaultValue() {
@@ -45,7 +44,7 @@ export class Edit extends ModalAction {
         selectedRows: item.qos_policy_id
           ? [
               {
-                key: item.qos_policy_id,
+                id: item.qos_policy_id,
                 name: item.qos_policy_id,
               },
             ]

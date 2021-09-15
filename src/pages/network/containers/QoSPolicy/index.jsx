@@ -14,31 +14,29 @@
 
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/TabList';
-import ProjectQoSPolicy from './ProjectQoSPolicy';
-import AdminQoSPolicy from './AdminQoSPolicy';
-import SharedQoSPolicy from './SharedQoSPolicy';
+import QoSPolicyComponent from './QoSPolicy';
 
 @inject('rootStore')
 @observer
-export default class Network extends Base {
+export default class QoSPolicy extends Base {
   get tabs() {
     const tabs = [
       {
         title: t('Current Project QoS Policy'),
         key: 'projectQoSPolicy',
-        component: ProjectQoSPolicy,
+        component: QoSPolicyComponent,
       },
       {
         title: t('Shared QoS Policy'),
         key: 'sharedQoSPolicy',
-        component: SharedQoSPolicy,
+        component: QoSPolicyComponent,
       },
     ];
     if (this.hasAdminRole) {
       tabs.push({
         title: t('All QoS Policy'),
         key: 'allQoSPolicy',
-        component: AdminQoSPolicy,
+        component: QoSPolicyComponent,
       });
     }
     return tabs;
