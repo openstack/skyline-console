@@ -15,15 +15,15 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import centosIcon from 'src/asset/image/centos.svg';
-import ubuntuIcon from 'src/asset/image/ubuntu.svg';
-import fedoraIcon from 'src/asset/image/fedora.svg';
-import windowsIcon from 'src/asset/image/windows.svg';
-import debianIcon from 'src/asset/image/debian.svg';
-import coreosIcon from 'src/asset/image/coreos.svg';
-import archIcon from 'src/asset/image/arch.svg';
-import freebsdIcon from 'src/asset/image/freebsd.svg';
-import othersIcon from 'src/asset/image/others.svg';
+import centosIcon from 'asset/image/centos.svg';
+import ubuntuIcon from 'asset/image/ubuntu.svg';
+import fedoraIcon from 'asset/image/fedora.svg';
+import windowsIcon from 'asset/image/windows.svg';
+import debianIcon from 'asset/image/debian.svg';
+import coreosIcon from 'asset/image/coreos.svg';
+import archIcon from 'asset/image/arch.svg';
+import freebsdIcon from 'asset/image/freebsd.svg';
+import othersIcon from 'asset/image/others.svg';
 import { Tooltip } from 'antd';
 import styles from './index.less';
 

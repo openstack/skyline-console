@@ -14,7 +14,9 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import imageSvg from 'src/asset/image/image.svg';
+import imageSvg from 'asset/image/image.svg';
+import securityImg from 'asset/image/security-group.svg';
+import lbImg from 'asset/image/load-balancer.png';
 
 import {
   DesktopOutlined,
@@ -39,6 +41,12 @@ const ImageIcon = (
   <img src={imageSvg} alt="image_icon" style={{ width: '12px' }} />
 );
 
+const SecurityIcon = (
+  <img src={securityImg} alt="security_icon" style={{ width: '12px' }} />
+);
+
+const LBIcon = <img src={lbImg} alt="lb_icon" style={{ width: '12px' }} />;
+
 const iconTypeMap = {
   instance: <DesktopOutlined />,
   router: <BorderOuterOutlined />,
@@ -56,6 +64,8 @@ const iconTypeMap = {
   metadata: <TagOutlined />,
   flavor: <HddOutlined />,
   host: <CloudServerOutlined />,
+  security: SecurityIcon,
+  lb: LBIcon,
 };
 
 export default class index extends Component {

@@ -20,8 +20,8 @@ import { Table, Popover } from 'antd';
 import globalActionLogStore from 'stores/nova/action-log';
 import { Link } from 'react-router-dom';
 
-import lockSvg from 'src/asset/image/lock.svg';
-import unlockSvg from 'src/asset/image/unlock.svg';
+import lockSvg from 'asset/image/lock.svg';
+import unlockSvg from 'asset/image/unlock.svg';
 
 const lockIcon = <img src={lockSvg} alt="lock" style={{ width: '12px' }} />;
 const unlockIcon = (

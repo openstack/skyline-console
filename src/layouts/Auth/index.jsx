@@ -17,12 +17,10 @@ import { inject, observer } from 'mobx-react';
 import renderRoutes from 'utils/RouterConfig';
 import SelectLang from 'components/SelectLang';
 
-import logo from 'src/asset/image/logo.png';
-// import loginImage from 'src/asset/image/login.png';
-import loginFullImage from 'src/asset/image/loginFull.png';
-import loginRightLogo from 'src/asset/image/loginRightLogo.png';
+import logo from 'asset/image/logo.png';
+import loginFullImage from 'asset/image/login-full.png';
+import loginRightLogo from 'asset/image/loginRightLogo.png';
 import styles from './index.less';
-// import bgcImg from 'src/asset/image/animnbus.png';
 
 @inject('rootStore')
 @observer
@@ -36,11 +34,7 @@ class AuthLayout extends Component {
   render() {
     return (
       <div className={styles.container}>
-        <div
-          className={styles.left}
-          // TODO wait for RGB
-          // style={ { backgroundImage: `url(${bgcImg})` } }
-        >
+        <div className={styles.left}>
           <div className={styles.lang}>
             <SelectLang />
           </div>
@@ -54,7 +48,6 @@ class AuthLayout extends Component {
           </div>
         </div>
         <div className={styles.right}>
-          {/* <img alt="" className={styles['login-image']} src={loginImage} /> */}
           <img
             alt=""
             className={styles['login-full-image']}

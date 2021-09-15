@@ -19,8 +19,8 @@ import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { toJS } from 'mobx';
 import classnames from 'classnames';
-import logoSmall from 'src/asset/image/logo-small.svg';
-import logoExtend from 'src/asset/image/logo-extend.svg';
+import logoSmall from 'asset/image/logo-small.svg';
+import logoExtend from 'asset/image/logo-extend.svg';
 import styles from './index.less';
 
 const { SubMenu } = Menu;

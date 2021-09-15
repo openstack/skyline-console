@@ -15,34 +15,34 @@ import { lazy } from 'react';
 import BaseLayout from 'layouts/Base';
 
 const Base = lazy(() =>
-  import(/* webpackChunkName: "base" */ '@/pages/base/App')
+  import(/* webpackChunkName: "base" */ 'pages/base/App')
 );
 const Compute = lazy(() =>
-  import(/* webpackChunkName: "compute" */ '@/pages/compute/App')
+  import(/* webpackChunkName: "compute" */ 'pages/compute/App')
 );
 const Storage = lazy(() =>
-  import(/* webpackChunkName: "storage" */ '@/pages/storage/App')
+  import(/* webpackChunkName: "storage" */ 'pages/storage/App')
 );
 const Network = lazy(() =>
-  import(/* webpackChunkName: "network" */ '@/pages/network/App')
+  import(/* webpackChunkName: "network" */ 'pages/network/App')
 );
 const Identity = lazy(() =>
-  import(/* webpackChunkName: "identity" */ '@/pages/identity/App')
+  import(/* webpackChunkName: "identity" */ 'pages/identity/App')
 );
 const Configs = lazy(() =>
-  import(/* webpackChunkName: "configuration" */ '@/pages/configuration/App')
+  import(/* webpackChunkName: "configuration" */ 'pages/configuration/App')
 );
 const Management = lazy(() =>
-  import(/* webpackChunkName: "management" */ '@/pages/management/App')
+  import(/* webpackChunkName: "management" */ 'pages/management/App')
 );
 const Heat = lazy(() =>
-  import(/* webpackChunkName: "heat" */ '@/pages/heat/App')
+  import(/* webpackChunkName: "heat" */ 'pages/heat/App')
 );
 const UserCenter = lazy(() =>
-  import(/* webpackChunkName: "user-center" */ '@/pages/user-center/App')
+  import(/* webpackChunkName: "user-center" */ 'pages/user-center/App')
 );
 const E404 = lazy(() =>
-  import(/* webpackChunkName: "E404" */ '@/pages/base/containers/404')
+  import(/* webpackChunkName: "E404" */ 'pages/base/containers/404')
 );
 const PATH = '/';
 

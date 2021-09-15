@@ -16,9 +16,6 @@ import { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import renderRoutes from 'utils/RouterConfig';
 
-// import loginImage from 'src/asset/image/login.png';
-// import bgcImg from 'src/asset/image/animnbus.png';
-
 @inject('rootStore')
 @observer
 class BaseLayout extends Component {

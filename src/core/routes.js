@@ -17,11 +17,11 @@ import E404 from 'pages/base/containers/404';
 import { lazy } from 'react';
 
 const Auth = lazy(() =>
-  import(/* webpackChunkName: "auth" */ '@/pages/auth/App')
+  import(/* webpackChunkName: "auth" */ 'pages/auth/App')
 );
 
 const Basic = lazy(() =>
-  import(/* webpackChunkName: "basic" */ '@/pages/basic/App')
+  import(/* webpackChunkName: "basic" */ 'pages/basic/App')
 );
 
 export default [

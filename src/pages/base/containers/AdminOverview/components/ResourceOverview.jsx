@@ -16,13 +16,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Badge, Row, Col, Card, Descriptions } from 'antd';
 import { inject, observer } from 'mobx-react';
-import adminInstance from 'src/asset/image/adminInstance.svg';
-import adminVolume from 'src/asset/image/adminVolume.svg';
+import adminInstance from 'asset/image/admin-instance.svg';
+import adminVolume from 'asset/image/admin-volume.svg';
 import { Link } from 'react-router-dom';
-import adminNetwork from 'src/asset/image/adminNetwork.svg';
-import adminImage from 'src/asset/image/adminImage.svg';
-import adminSecurityGroup from 'src/asset/image/adminSecurityGroup.svg';
-import adminRouter from 'src/asset/image/adminRouter.svg';
+import adminNetwork from 'asset/image/admin-network.svg';
+import adminImage from 'asset/image/admin-image.svg';
+import adminSecurityGroup from 'asset/image/admin-security-group.svg';
+import adminRouter from 'asset/image/admin-router.svg';
 import styles from '../style.less';
 
 const card = [
