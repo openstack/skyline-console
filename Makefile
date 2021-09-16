@@ -23,7 +23,7 @@ GIT_COMMIT ?= $(shell git rev-parse --verify HEAD)
 
 
 .PHONY: all
-all: install fmt lint test package
+all: install fmt lint test package e2e
 
 
 .PHONY: help
@@ -38,6 +38,7 @@ help:
 	@echo "  package             Build package from source code."
 	@echo "  lint                Check JavaScript code."
 	@echo "  test                Run unit tests."
+	@echo "  e2e                 Run e2e tests."
 	@echo
 
 
@@ -95,3 +96,15 @@ test:
 .PHONY: clean
 clean:
 	rm -rf .venv node_modules dist
+
+
+.PHONY: e2e
+e2e: install
+	rm -rf test/e2e/results/*; \
+	rm -rf test/e2e/report; \
+	mkdir test/e2e/report; \
+	CODE=0; \
+	yarn cypress run || CODE=1; \
+	yarn mochawesome-merge test/e2e/results/*.json -o test/e2e/report/merge-report.json; \
+	yarn marge test/e2e/report/merge-report.json -o test/e2e/report; \
+	exit $$CODE

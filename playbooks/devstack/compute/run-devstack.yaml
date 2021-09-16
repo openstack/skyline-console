@@ -1,0 +1,16 @@
+---
+- hosts: controller
+  tasks:
+    - name: Add enable_plugin into local.conf
+      shell:
+        executable: /bin/bash
+        cmd: |
+          local_conf="/opt/stack/devstack/local.conf"
+          sed -i '1a enable_plugin skyline-apiserver https://opendev.org/skyline/skyline-apiserver' $local_conf
+          sed -i '1a enable_plugin ironic https://opendev.org/openstack/ironic' $local_conf
+          sed -i '1a enable_plugin neutron https://opendev.org/openstack/neutron' $local_conf
+      become: yes
+
+- hosts: all
+  roles:
+    - orchestrate-devstack

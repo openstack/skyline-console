@@ -1,3 +1,500 @@
+---
+- job:
+    name: skyline-console-devstack-e2etests-compute
+    parent: devstack-multinode
+    description: |
+      Skyline-console e2e tests compute job based on devstack (multi-node).
+    pre-run: playbooks/devstack/pre.yaml
+    run:
+      - playbooks/devstack/compute/run-devstack.yaml
+      - playbooks/devstack/compute/run-e2etests.yaml
+    post-run:
+      - playbooks/devstack/post.yaml
+    required-projects:
+      - openstack/cinder
+      - openstack/devstack
+      - openstack/glance
+      - openstack/ironic
+      - openstack/ironic-python-agent
+      - openstack/ironic-python-agent-builder
+      - openstack/keystone
+      - openstack/neutron
+      - openstack/nova
+      - openstack/placement
+      - openstack/requirements
+      - openstack/virtualbmc
+      - skyline/skyline-apiserver
+      - skyline/skyline-console
+    timeout: 10800
+    vars:
+      devstack_services:
+        # Keystone services
+        key: true
+        # Nova services
+        n-api: true
+        n-api-meta: true
+        n-cond: true
+        n-cpu: true
+        n-novnc: true
+        n-sch: true
+        # Placement service
+        placement-api: true
+        placement-client: true
+        # Glance services
+        g-api: true
+        # Cinder services
+        c-api: true
+        c-bak: false
+        c-sch: true
+        c-vol: true
+        # OVN services
+        ovn-controller: false
+        ovn-northd: false
+        ovs-vswitchd: false
+        ovsdb-server: false
+        # Neutron services
+        q-svc: true
+        q-agt: true
+        q-dhcp: true
+        q-l3: true
+        q-meta: true
+        q-metering: false
+        q-qos: false
+        q-ovn-metadata-agent: false
+        # Horizon service
+        horizon: false
+        # Shared services
+        etcd3: true
+        memory_tracker: true
+        mysql: true
+        rabbit: true
+        # TODO: re-enable dstat once https://storyboard.openstack.org/#!/story/2008185
+        # is resolved
+        dstat: false
+        tls-proxy: false
+        # Tempest service
+        tempest: false
+        # Ironic services
+        ironic: true
+        ir-api: true
+        ir-cond: true
+      devstack_localrc:
+        # Credentials
+        DATABASE_PASSWORD: secretdatabase
+        RABBIT_PASSWORD: secretrabbit
+        ADMIN_PASSWORD: secretadmin
+        SERVICE_PASSWORD: secretservice
+        SERVICE_TOKEN: secrettoken
+        # Log all output to files
+        VERBOSE: true
+        LOG_COLOR: false
+        LOGFILE: /opt/stack/logs/devstacklog.txt
+        LOGDIR: /opt/stack/logs
+        IRONIC_VM_LOG_DIR: /opt/stack/ironic-bm-logs
+        # Set glance's default limit to be baremetal image friendly
+        GLANCE_LIMIT_IMAGE_SIZE_TOTAL: 5000
+        # Create 1 virtual machines to pose as Ironic's baremetal nodes.
+        IRONIC_VM_COUNT: 1
+        IRONIC_BAREMETAL_BASIC_OPS: True
+        DEFAULT_INSTANCE_TYPE: baremetal
+        IRONIC_RPC_TRANSPORT: json-rpc
+        IRONIC_RAMDISK_TYPE: tinyipa
+        IRONIC_DEPLOY_DRIVER: ipmi
+        # The parameters below represent the minimum possible values to create
+        # functional nodes.
+        IRONIC_VM_SPECS_RAM: 1024
+        IRONIC_VM_SPECS_DISK: 3
+        # Size of the ephemeral partition in GB. Use 0 for no ephemeral partition.
+        IRONIC_VM_EPHEMERAL_DISK: 0
+        # To build your own IPA ramdisk from source, set this to True
+        IRONIC_BUILD_DEPLOY_RAMDISK: False
+        INSTALL_TEMPEST: False
+        VIRT_DRIVER: ironic
+        # By default, DevStack creates a 10.0.0.0/24 network for instances.
+        # If this overlaps with the hosts network, you may adjust with the
+        # following.
+        IP_VERSION: 4
+        FIXED_RANGE: 10.1.0.0/20
+        IPV4_ADDRS_SAFE_TO_USE: 10.1.0.0/20
+        NETWORK_GATEWAY: 10.1.0.1
+        Q_AGENT: openvswitch
+        Q_ML2_TENANT_NETWORK_TYPE: vxlan
+        Q_ML2_PLUGIN_MECHANISM_DRIVERS: openvswitch
+      zuul_copy_output:
+        /var/log/skyline: logs
+        /etc/skyline: logs
+        /etc/nginx: logs
+        /opt/stack/skyline-console/test/e2e/report: logs
+        /opt/stack/skyline-console/test/e2e/screenshots: logs
+        /opt/stack/skyline-console/test/e2e/config: logs
+    group-vars:
+      subnode:
+        devstack_services:
+          # Keystone services
+          key: false
+          # Nova services
+          n-api: false
+          n-api-meta: false
+          n-cond: false
+          n-cpu: true
+          n-novnc: false
+          n-sch: false
+          # Placement service
+          placement-api: false
+          placement-client: true
+          # Cinder services
+          c-api: false
+          c-bak: false
+          c-sch: false
+          c-vol: true
+          # OVN services
+          ovn-controller: false
+          ovn-northd: false
+          ovs-vswitchd: false
+          ovsdb-server: false
+          # Neutron services
+          q-svc: false
+          q-agt: true
+          q-dhcp: false
+          q-l3: false
+          q-meta: false
+          q-metering: false
+          q-qos: false
+          q-ovn-metadata-agent: false
+          # Horizon service
+          horizon: false
+          # Shared services
+          etcd3: false
+          memory_tracker: true
+          mysql: false
+          rabbit: false
+          # TODO: re-enable dstat once https://storyboard.openstack.org/#!/story/2008185
+          # is resolved
+          dstat: false
+          tls-proxy: false
+          # Tempest service
+          tempest: false
+        devstack_localrc:
+          # Subnode specific settings
+          GLANCE_HOSTPORT: "{{ hostvars['controller']['nodepool']['private_ipv4'] }}:9292"
+          Q_HOST: "{{ hostvars['controller']['nodepool']['private_ipv4'] }}"
+          NOVA_VNC_ENABLED: true
+          ENABLE_CHASSIS_AS_GW: false
+          VIRT_DRIVER: libvirt
+          Q_AGENT: openvswitch
+          Q_ML2_TENANT_NETWORK_TYPE: vxlan
+          Q_ML2_PLUGIN_MECHANISM_DRIVERS: openvswitch
+
+- job:
+    name: skyline-console-devstack-e2etests-network
+    parent: devstack
+    description: |
+      Skyline-console e2e tests network job based on devstack (single-node).
+    pre-run: playbooks/devstack/pre.yaml
+    run:
+      - playbooks/devstack/network/run-devstack.yaml
+      - playbooks/devstack/network/run-e2etests.yaml
+    post-run:
+      - playbooks/devstack/post.yaml
+    required-projects:
+      - openstack/cinder
+      - openstack/devstack
+      - openstack/glance
+      - openstack/keystone
+      - openstack/neutron
+      - openstack/neutron-vpnaas
+      - openstack/nova
+      - openstack/octavia
+      - openstack/octavia-lib
+      - openstack/placement
+      - openstack/python-octaviaclient
+      - openstack/requirements
+      - skyline/skyline-apiserver
+      - skyline/skyline-console
+    timeout: 10800
+    vars:
+      devstack_services:
+        # Keystone services
+        key: true
+        # Nova services
+        n-api: true
+        n-api-meta: true
+        n-cond: true
+        n-cpu: true
+        n-novnc: true
+        n-sch: true
+        # Placement service
+        placement-api: true
+        placement-client: true
+        # Glance services
+        g-api: true
+        # Cinder services
+        c-api: true
+        c-bak: false
+        c-sch: true
+        c-vol: true
+        # OVN services
+        ovn-controller: false
+        ovn-northd: false
+        ovs-vswitchd: false
+        ovsdb-server: false
+        # Neutron services
+        q-svc: true
+        q-agt: true
+        q-dhcp: true
+        q-l3: true
+        q-meta: true
+        q-metering: false
+        q-qos: true
+        q-ovn-metadata-agent: false
+        # Horizon service
+        horizon: false
+        # Shared services
+        etcd3: true
+        memory_tracker: true
+        mysql: true
+        rabbit: true
+        # TODO: re-enable dstat once https://storyboard.openstack.org/#!/story/2008185
+        # is resolved
+        dstat: false
+        tls-proxy: false
+        # Tempest service
+        tempest: false
+        # Octavia services
+        octavia: true
+        o-api: true
+        o-cw: true
+        o-hm: true
+        o-hk: true
+        o-da: true
+      devstack_localrc:
+        # Credentials
+        DATABASE_PASSWORD: secretdatabase
+        RABBIT_PASSWORD: secretrabbit
+        ADMIN_PASSWORD: secretadmin
+        SERVICE_PASSWORD: secretservice
+        SERVICE_TOKEN: secrettoken
+        # Log all output to files
+        VERBOSE: true
+        LOG_COLOR: false
+        LOGFILE: /opt/stack/logs/devstacklog.txt
+        LOGDIR: /opt/stack/logs
+        VIRT_DRIVER: libvirt
+        Q_AGENT: openvswitch
+        Q_ML2_TENANT_NETWORK_TYPE: vxlan
+        Q_ML2_PLUGIN_MECHANISM_DRIVERS: openvswitch
+      zuul_copy_output:
+        /var/log/skyline: logs
+        /etc/skyline: logs
+        /etc/nginx: logs
+        /opt/stack/skyline-console/test/e2e/report: logs
+        /opt/stack/skyline-console/test/e2e/screenshots: logs
+        /opt/stack/skyline-console/test/e2e/config: logs
+        # octavia
+        /var/log/dib-build/: logs
+        /var/log/octavia-tenant-traffic.log: logs
+        /var/log/octavia-amphora.log: logs
+
+- job:
+    name: skyline-console-devstack-e2etests-other
+    parent: devstack
+    description: |
+      Skyline-console e2e tests other job based on devstack (single-node).
+    pre-run: playbooks/devstack/pre.yaml
+    run:
+      - playbooks/devstack/other/run-devstack.yaml
+      - playbooks/devstack/other/run-e2etests.yaml
+    post-run:
+      - playbooks/devstack/post.yaml
+    required-projects:
+      - openstack/cinder
+      - openstack/devstack
+      - openstack/glance
+      - openstack/heat
+      - openstack/keystone
+      - openstack/neutron
+      - openstack/nova
+      - openstack/placement
+      - openstack/requirements
+      - skyline/skyline-apiserver
+      - skyline/skyline-console
+    timeout: 10800
+    vars:
+      devstack_services:
+        # Keystone services
+        key: true
+        # Nova services
+        n-api: true
+        n-api-meta: true
+        n-cond: true
+        n-cpu: true
+        n-novnc: true
+        n-sch: true
+        # Placement service
+        placement-api: true
+        placement-client: true
+        # Glance services
+        g-api: true
+        # Cinder services
+        c-api: true
+        c-bak: false
+        c-sch: true
+        c-vol: true
+        # OVN services
+        ovn-controller: false
+        ovn-northd: false
+        ovs-vswitchd: false
+        ovsdb-server: false
+        # Neutron services
+        q-svc: true
+        q-agt: true
+        q-dhcp: true
+        q-l3: true
+        q-meta: true
+        q-metering: false
+        q-qos: false
+        q-ovn-metadata-agent: false
+        # Horizon service
+        horizon: false
+        # Shared services
+        etcd3: true
+        memory_tracker: true
+        mysql: true
+        rabbit: true
+        # TODO: re-enable dstat once https://storyboard.openstack.org/#!/story/2008185
+        # is resolved
+        dstat: false
+        tls-proxy: false
+        # Tempest service
+        tempest: false
+      devstack_localrc:
+        # Credentials
+        DATABASE_PASSWORD: secretdatabase
+        RABBIT_PASSWORD: secretrabbit
+        ADMIN_PASSWORD: secretadmin
+        SERVICE_PASSWORD: secretservice
+        SERVICE_TOKEN: secrettoken
+        # Log all output to files
+        VERBOSE: true
+        LOG_COLOR: false
+        LOGFILE: /opt/stack/logs/devstacklog.txt
+        LOGDIR: /opt/stack/logs
+        INSTALL_TEMPEST: False
+        VIRT_DRIVER: libvirt
+        Q_AGENT: openvswitch
+        Q_ML2_TENANT_NETWORK_TYPE: vxlan
+        Q_ML2_PLUGIN_MECHANISM_DRIVERS: openvswitch
+      zuul_copy_output:
+        /var/log/skyline: logs
+        /etc/skyline: logs
+        /etc/nginx: logs
+        /opt/stack/skyline-console/test/e2e/report: logs
+        /opt/stack/skyline-console/test/e2e/screenshots: logs
+        /opt/stack/skyline-console/test/e2e/config: logs
+
+- job:
+    name: skyline-console-devstack-e2etests-storage
+    parent: devstack
+    description: |
+      Skyline-console e2e tests storage job based on devstack (single-node).
+    pre-run: playbooks/devstack/pre.yaml
+    run:
+      - playbooks/devstack/storage/run-devstack.yaml
+      - playbooks/devstack/storage/run-e2etests.yaml
+    post-run:
+      - playbooks/devstack/post.yaml
+    required-projects:
+      - openstack/cinder
+      - openstack/devstack
+      - openstack/glance
+      - openstack/keystone
+      - openstack/neutron
+      - openstack/nova
+      - openstack/placement
+      - openstack/requirements
+      - openstack/swift
+      - skyline/skyline-apiserver
+      - skyline/skyline-console
+    timeout: 10800
+    vars:
+      devstack_services:
+        # Keystone services
+        key: true
+        # Nova services
+        n-api: true
+        n-api-meta: true
+        n-cond: true
+        n-cpu: true
+        n-novnc: true
+        n-sch: true
+        # Placement service
+        placement-api: true
+        placement-client: true
+        # Glance services
+        g-api: true
+        # Cinder services
+        c-api: true
+        c-bak: true
+        c-sch: true
+        c-vol: true
+        # OVN services
+        ovn-controller: false
+        ovn-northd: false
+        ovs-vswitchd: false
+        ovsdb-server: false
+        # Neutron services
+        q-svc: true
+        q-agt: true
+        q-dhcp: true
+        q-l3: true
+        q-meta: true
+        q-metering: false
+        q-qos: false
+        q-ovn-metadata-agent: false
+        # Horizon service
+        horizon: false
+        # Shared services
+        etcd3: true
+        memory_tracker: true
+        mysql: true
+        rabbit: true
+        # TODO: re-enable dstat once https://storyboard.openstack.org/#!/story/2008185
+        # is resolved
+        dstat: false
+        tls-proxy: false
+        # Tempest service
+        tempest: false
+        # Swift services
+        swift: true
+        s-account: true
+        s-container: true
+        s-object: true
+        s-proxy: true
+        s3api: true
+      devstack_localrc:
+        # Credentials
+        DATABASE_PASSWORD: secretdatabase
+        RABBIT_PASSWORD: secretrabbit
+        ADMIN_PASSWORD: secretadmin
+        SERVICE_PASSWORD: secretservice
+        SERVICE_TOKEN: secrettoken
+        # Log all output to files
+        VERBOSE: true
+        LOG_COLOR: false
+        LOGFILE: /opt/stack/logs/devstacklog.txt
+        LOGDIR: /opt/stack/logs
+        VIRT_DRIVER: libvirt
+        Q_AGENT: openvswitch
+        Q_ML2_TENANT_NETWORK_TYPE: vxlan
+        Q_ML2_PLUGIN_MECHANISM_DRIVERS: openvswitch
+      zuul_copy_output:
+        /var/log/skyline: logs
+        /etc/skyline: logs
+        /etc/nginx: logs
+        /opt/stack/skyline-console/test/e2e/report: logs
+        /opt/stack/skyline-console/test/e2e/screenshots: logs
+        /opt/stack/skyline-console/test/e2e/config: logs
+
 - job:
     name: skyline-nodejs14-run-lint-src
     parent: nodejs-run-lint
@@ -31,8 +528,16 @@
         - skyline-nodejs14-run-lint-src
         - skyline-nodejs14-run-lint-test
         - skyline-nodejs14-run-unit-test
+        - skyline-console-devstack-e2etests-compute
+        - skyline-console-devstack-e2etests-network
+        - skyline-console-devstack-e2etests-other
+        - skyline-console-devstack-e2etests-storage
     gate:
       jobs:
         - skyline-nodejs14-run-lint-src
         - skyline-nodejs14-run-lint-test
         - skyline-nodejs14-run-unit-test
+        - skyline-console-devstack-e2etests-compute
+        - skyline-console-devstack-e2etests-network
+        - skyline-console-devstack-e2etests-other
+        - skyline-console-devstack-e2etests-storage

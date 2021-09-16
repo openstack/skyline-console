@@ -1,0 +1,28 @@
+---
+- hosts: controller
+  vars:
+    - devstack_base_dir: /opt/stack
+  tasks:
+    - name: Run e2e tests
+      shell:
+        executable: /bin/bash
+        cmd: |
+          # use nvm
+          . $HOME/.nvm/nvm.sh
+
+          # make e2e
+          config_file="test/e2e/config/local_config.yaml"
+          cp test/e2e/config/config-compute.yaml $config_file
+          sed -i "s#baseUrl.*#baseUrl: https://127.0.0.1:9999#" $config_file
+          sed -i "s/- ironic/# - ironic/" $config_file
+          # TODO
+          sed -i "s#- pages/compute/image.spec.js#\#- pages/compute/image.spec.js#" $config_file
+          sed -i "s#username:.*#username: admin#" $config_file
+          sed -i "s#password:.*#password: secretadmin#" $config_file
+          sed -i "s#usernameAdmin:.*#usernameAdmin: admin#" $config_file
+          sed -i "s#passwordAdmin:.*#passwordAdmin: secretadmin#" $config_file
+          make e2e
+      args:
+        chdir: "{{ devstack_base_dir }}/skyline-console"
+      become_user: stack
+      become: yes

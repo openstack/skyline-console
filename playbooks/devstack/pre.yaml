@@ -1,0 +1,34 @@
+---
+- hosts: all
+  roles:
+    - ensure-tox
+
+- hosts: controller
+  vars:
+    - devstack_base_dir: /opt/stack
+  tasks:
+    - name: Copy skyline-apiserver repos into devstack working directory
+      command: rsync -a {{ item }} {{ devstack_base_dir }}
+      with_items:
+        - src/opendev.org/skyline/skyline-apiserver
+        - src/opendev.org/skyline/skyline-console
+      become: yes
+
+    - name: Remove the old skyline-console in skyline-apiserver/libs
+      file:
+        path: "{{ devstack_base_dir }}/skyline-apiserver/libs/skyline-console/"
+        state: absent
+      become: yes
+
+    - name: Copy skyline-console from {{ devstack_base_dir }} to {{ devstack_base_dir }}/skyline-apiserver/libs
+      command: rsync -a {{ devstack_base_dir }}/skyline-console {{ devstack_base_dir }}/skyline-apiserver/libs
+      become: yes
+
+    - name: Set ownership of repos
+      file:
+        path: '{{ devstack_base_dir }}'
+        state: directory
+        recurse: true
+        owner: stack
+        group: stack
+      become: yes
