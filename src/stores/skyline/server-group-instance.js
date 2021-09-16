@@ -27,12 +27,16 @@ export class ServerGroupInstanceStore extends Base {
     };
   }
 
+  get groupArraySize() {
+    return 1;
+  }
+
   async requestList(params, filters) {
     const { members, isServerGroup, all_projects } = filters;
     if (members && isServerGroup && members.length === 0) {
       return [];
     }
-    const memberArrs = groupArray(members, 10);
+    const memberArrs = groupArray(members, this.groupArraySize);
     const results = await Promise.all(
       memberArrs.map((it) => {
         const newParams = { ...params, uuid: it, all_projects };

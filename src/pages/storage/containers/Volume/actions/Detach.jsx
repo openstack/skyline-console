@@ -16,7 +16,12 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalServerStore from 'stores/nova/instance';
+import { ServerGroupInstanceStore } from 'stores/skyline/server-group-instance';
 import { isInUse, isOsDisk } from 'resources/volume';
+import {
+  instanceColumnsBackend,
+  allowAttachVolumeInstance,
+} from 'resources/instance';
 
 export class Detach extends ModalAction {
   static id = 'detach';
@@ -31,6 +36,8 @@ export class Detach extends ModalAction {
 
   init() {
     this.store = globalServerStore;
+    this.instanceStore = new ServerGroupInstanceStore();
+    this.getInstances();
   }
 
   static get modalSize() {
@@ -40,13 +47,15 @@ export class Detach extends ModalAction {
   getModalSize() {
     return 'large';
   }
-  // get instances() {
-  //   return this.store.list.data || [];
-  // }
 
-  // async getInstances() {
-  //   await this.store.fetchList({ limit: Infinity });
-  // }
+  get instances() {
+    return this.instanceStore.list.data || [];
+  }
+
+  getInstances() {
+    const members = (this.item.attachments || []).map((it) => it.server_id);
+    this.instanceStore.fetchList({ members });
+  }
 
   get defaultValue() {
     const { name, size, volume_type } = this.item;
@@ -66,6 +75,8 @@ export class Detach extends ModalAction {
         item.attachments.length
     );
 
+  disabledInstance = (ins) => !allowAttachVolumeInstance(ins);
+
   get formItems() {
     return [
       {
@@ -79,11 +90,7 @@ export class Detach extends ModalAction {
         label: t('Instance'),
         type: 'select-table',
         required: true,
-        data: (this.item.attachments || []).map((s) => ({
-          ...s,
-          name: s.server_name,
-          id: s.server_id,
-        })),
+        data: this.instances,
         isMulti: true,
         filterParams: [
           {
@@ -91,16 +98,9 @@ export class Detach extends ModalAction {
             name: 'name',
           },
         ],
-        columns: [
-          {
-            title: t('Name'),
-            dataIndex: 'name',
-          },
-          {
-            title: t('Attached To'),
-            dataIndex: 'device',
-          },
-        ],
+        columns: instanceColumnsBackend,
+        isLoading: this.instanceStore.list.isLoading,
+        disabledFunc: this.disabledInstance,
       },
     ];
   }

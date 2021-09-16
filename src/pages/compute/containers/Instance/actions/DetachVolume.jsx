@@ -17,12 +17,7 @@ import { VolumeStore } from 'stores/cinder/volume';
 import globalServerStore from 'stores/nova/instance';
 import { ModalAction } from 'containers/Action';
 import { volumeStatus, isOsDisk } from 'resources/volume';
-import {
-  isActive,
-  isNotLocked,
-  isNotDeleting,
-  isIronicInstance,
-} from 'resources/instance';
+import { allowAttachVolumeInstance } from 'resources/instance';
 
 export class DetachVolume extends ModalAction {
   static id = 'detach-volume';
@@ -66,16 +61,10 @@ export class DetachVolume extends ModalAction {
 
   static policy = 'os_compute_api:os-volumes-attachments:delete';
 
-  // static hasDataVolume = item => item.volumes_attached && item.volumes_attached.length > 1
-
-  // static allowed = item => Promise.resolve(isActive(item) && isNotDeleting(item) && isNotLocked(item) && this.hasDataVolume(item))
-  static allowed = (item) =>
-    Promise.resolve(
-      isActive(item) &&
-        isNotDeleting(item) &&
-        isNotLocked(item) &&
-        !isIronicInstance(item)
-    );
+  static allowed = (item, containerProps) => {
+    const { isAdminPage } = containerProps;
+    return Promise.resolve(!isAdminPage && allowAttachVolumeInstance(item));
+  };
 
   get formItems() {
     return [

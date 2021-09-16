@@ -15,12 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import globalServerStore from 'stores/nova/instance';
 import { ModalAction } from 'containers/Action';
-import {
-  isActive,
-  isNotDeleting,
-  isNotLocked,
-  isIronicInstance,
-} from 'resources/instance';
+import { allowAttachVolumeInstance } from 'resources/instance';
 import { multiTip } from 'resources/volume';
 import { get as _get } from 'lodash';
 
@@ -61,13 +56,7 @@ export class AttachVolume extends ModalAction {
 
   static allowed = (item, containerProps) => {
     const { isAdminPage } = containerProps;
-    return Promise.resolve(
-      !isAdminPage &&
-        isActive(item) &&
-        isNotDeleting(item) &&
-        isNotLocked(item) &&
-        !isIronicInstance(item)
-    );
+    return Promise.resolve(!isAdminPage && allowAttachVolumeInstance(item));
   };
 
   get formItems() {

@@ -309,7 +309,6 @@ export const instanceColumnsBackend = [
     render: (value, record) => (
       <ImageType type={value} title={record.image_name} />
     ),
-    stringify: (_, record) => record.image_name,
   },
   {
     title: t('Fixed IP'),
@@ -351,6 +350,18 @@ export const instanceColumnsBackend = [
     sorter: false,
   },
   {
+    title: t('Status'),
+    dataIndex: 'status',
+    sorter: false,
+    render: (value) => instanceStatus[value && value.toLowerCase()] || '-',
+  },
+  {
+    title: t('Locked'),
+    dataIndex: 'locked',
+    isHideable: true,
+    render: lockRender,
+  },
+  {
     title: t('Created At'),
     dataIndex: 'created_at',
     valueRender: 'sinceTime',
@@ -378,6 +389,27 @@ export const instanceSelectTablePropsBackend = {
 
 export const canCreateIronicByLicense = () =>
   globalRootStore.checkLicense('ironic');
+
+export const allowAttachVolumeInstance = (item) => {
+  const statusResult = checkStatus(
+    [
+      'active',
+      'paused',
+      'stopped',
+      'resized',
+      'soft-delete',
+      'shelved',
+      'shelved_offloaded',
+    ],
+    item
+  );
+  return (
+    statusResult &&
+    isNotDeleting(item) &&
+    isNotLocked(item) &&
+    !isIronicInstance(item)
+  );
+};
 
 export const instanceStatusFilter = {
   label: t('Status'),

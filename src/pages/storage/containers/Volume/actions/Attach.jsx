@@ -17,10 +17,7 @@ import { ModalAction } from 'containers/Action';
 import { ServerStore } from 'stores/nova/instance';
 import globalVolumeStore from 'stores/cinder/volume';
 import {
-  isActive,
-  isNotDeleting,
-  isNotLockedOrAdmin,
-  isIronicInstance,
+  allowAttachVolumeInstance,
   instanceSelectTablePropsBackend,
 } from 'resources/instance';
 import { isAvailable, isMultiAttach } from 'resources/volume';
@@ -51,12 +48,7 @@ export class Attach extends ModalAction {
     return 'large';
   }
 
-  disabledInstance = (ins) =>
-    !isActive(ins) ||
-    !isNotDeleting(ins) ||
-    !isNotLockedOrAdmin(ins) ||
-    this.alreadyAttached(ins) ||
-    isIronicInstance(ins);
+  disabledInstance = (ins) => !allowAttachVolumeInstance(ins);
 
   get defaultValue() {
     const { name, id, size, volume_type } = this.item;
@@ -78,7 +70,6 @@ export class Attach extends ModalAction {
     Promise.resolve(isAvailable(item) || isMultiAttach(item));
 
   get formItems() {
-    // const { multiattach } = this.item;
     return [
       {
         name: 'volume',
