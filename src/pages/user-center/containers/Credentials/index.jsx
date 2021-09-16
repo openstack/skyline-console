@@ -14,16 +14,14 @@
 
 import React from 'react';
 import { observer, inject } from 'mobx-react';
-import { Popover, Row, Col } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { Row, Col } from 'antd';
 import Base from 'containers/List';
 import { CredentialStore } from 'stores/keystone/credential';
 import globalRootStore from 'stores/root';
+import rolePermission from 'resources/role';
 import { actionConfigs, detailConfigs } from './actions';
 
-@inject('rootStore')
-@observer
-export default class Credentials extends Base {
+export class Credentials extends Base {
   init() {
     this.store = new CredentialStore();
     this.downloadStore = new CredentialStore();
@@ -42,6 +40,10 @@ export default class Credentials extends Base {
     }
     return params;
   };
+
+  get rolePermissions() {
+    return rolePermission;
+  }
 
   get isFilterByBackend() {
     return true;
@@ -91,23 +93,17 @@ export default class Credentials extends Base {
       {
         title: t('Roles'),
         dataIndex: 'roles',
-        render: (roles) => {
-          const content = (
-            <Row gutter={[8]} style={{ maxWidth: 200 }}>
-              {roles.map((i) => (
-                <Col span={24} key={i.id}>
-                  {i.name}
-                </Col>
-              ))}
-            </Row>
-          );
-          return (
-            <Popover content={content}>
-              <SearchOutlined />
-            </Popover>
-          );
-        },
-        isHideable: true,
+        render: (roles) => (
+          <Row gutter={[8]} style={{ maxWidth: 300 }}>
+            {roles.map((i) => (
+              <Col span={24} key={i.id}>
+                {this.rolePermissions[i.name] || i.name}
+              </Col>
+            ))}
+          </Row>
+        ),
+        stringify: (values) =>
+          values.map((i) => this.rolePermissions[i.name] || i.name).join('\n'),
       },
     ];
     return ret;
@@ -123,3 +119,5 @@ export default class Credentials extends Base {
     return filters;
   }
 }
+
+export default inject('rootStore')(observer(Credentials))

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import React, { Component } from 'react';
-import { Checkbox } from 'antd';
+import { Checkbox, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 
 export default class index extends Component {
@@ -57,12 +57,22 @@ export default class index extends Component {
   };
 
   render() {
-    const { className, options } = this.props;
+    const { className, options, span } = this.props;
     const values = this.getValues();
     const conf = {
       className,
       onChange: this.onChange,
     };
-    return <Checkbox.Group {...conf} options={options} value={values} />;
+    return (
+      <Checkbox.Group {...conf} value={values} style={{ width: '100%' }}>
+        <Row>
+          {options.map((opt) => (
+            <Col span={span} key={opt.value}>
+              <Checkbox value={opt.value}>{opt.label}</Checkbox>
+            </Col>
+          ))}
+        </Row>
+      </Checkbox.Group>
+    );
   }
 }

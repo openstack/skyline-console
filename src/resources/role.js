@@ -18,6 +18,9 @@ const rolePermission = {
   project_member: t('Project Member'),
   system_admin: t('System Admin'),
   system_reader: t('System Reader'),
+  admin: t('Admin'),
+  reader: t('Reader'),
+  member: t('Member'),
 };
 
 export default rolePermission;
