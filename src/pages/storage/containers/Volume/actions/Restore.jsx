@@ -17,11 +17,8 @@ import { VolumeStore } from 'stores/cinder/volume';
 import globalSnapshotStore from 'stores/cinder/snapshot';
 import { volumeStatus } from 'resources/volume';
 import { getSinceTime } from 'utils/time';
-import { revertTip } from 'resources/snapshot';
 
-@inject('rootStore')
-@observer
-export default class RestoreAction extends ModalAction {
+export class RestoreAction extends ModalAction {
   static id = 'Restore from snapshot';
 
   static title = t('Restore from snapshot');
@@ -99,10 +96,6 @@ export default class RestoreAction extends ModalAction {
     ];
   }
 
-  get tips() {
-    return revertTip;
-  }
-
   get name() {
     return t('Restore from snapshot');
   }
@@ -119,3 +112,5 @@ export default class RestoreAction extends ModalAction {
     return this.store.revert(id, { snapshot_id: selectedRowKeys[0] });
   };
 }
+
+export default inject('rootStore')(observer(RestoreAction));
