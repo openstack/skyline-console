@@ -120,4 +120,4 @@ export class Credentials extends Base {
   }
 }
 
-export default inject('rootStore')(observer(Credentials))
+export default inject('rootStore')(observer(Credentials));

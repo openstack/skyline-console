@@ -14,10 +14,7 @@
 
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/TabList';
-import ProjectNetwork from './ProjectNetwork';
-import SharedNetwork from './SharedNetwork';
-import ExtNetwork from './ExtNetwork';
-import AdminNetwork from './AdminNetwork';
+import NetworkTab from './Network';
 
 @inject('rootStore')
 @observer
@@ -27,24 +24,24 @@ export default class Network extends Base {
       {
         title: t('Current Project Network'),
         key: 'projectNetwork',
-        component: ProjectNetwork,
+        component: NetworkTab,
       },
       {
         title: t('Shared Network'),
         key: 'sharedNetwork',
-        component: SharedNetwork,
+        component: NetworkTab,
       },
       {
         title: t('External Network'),
         key: 'externalNetwork',
-        component: ExtNetwork,
+        component: NetworkTab,
       },
     ];
     if (this.hasAdminRole) {
       tabs.push({
         title: t('All Network'),
         key: 'allNetwork',
-        component: AdminNetwork,
+        component: NetworkTab,
       });
     }
     return tabs;

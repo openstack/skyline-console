@@ -26,7 +26,6 @@ export class Create extends ModalAction {
 
   static title = t('Create Application Credentials');
 
-
   static get modalSize() {
     return 'middle';
   }
@@ -113,4 +112,4 @@ export class Create extends ModalAction {
   }
 }
 
-export default inject('rootStore')(observer(Create))
+export default inject('rootStore')(observer(Create));
