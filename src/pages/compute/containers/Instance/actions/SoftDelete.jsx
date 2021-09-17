@@ -65,9 +65,70 @@ export default class SoftDelete extends ConfirmAction {
     }
   }
 
-  confirmContext = (data) => {
-    const name = this.getName(data);
+  isShelved = (item) => item.status === 'shelved_offloaded';
+
+  hasShelvedItem = (data) => {
+    const items = isArray(data) ? data : [data];
+    const item = items.find(this.isShelved);
+    return !!item;
+  };
+
+  allShelvedItem = (data) => {
+    const items = isArray(data) ? data : [data];
+    return items.every(this.isShelved);
+  };
+
+  initChangeType = (data) => {
+    if (this.allShelvedItem(data)) {
+      this.onChangeType(true, data);
+      this.initCheckedValue = true;
+      return;
+    }
+    this.initCheckedValue = false;
     this.onChangeType(false, data);
+  };
+
+  renderExtra(data) {
+    if (this.hasShelvedItem(data)) {
+      return (
+        <div style={{ color: 'rgba(0, 0, 0, 0.45)' }}>
+          {t('The shelved offloaded instance only supports immediate deletion')}
+        </div>
+      );
+    }
+    return null;
+  }
+
+  renderCheckbox(data) {
+    const checkbox = this.initCheckedValue ? (
+      <Checkbox checked={this.initCheckedValue} disabled>
+        {t('Immediately delete')}
+      </Checkbox>
+    ) : (
+      <Checkbox
+        onChange={(e) => {
+          this.onChangeType(e.target.checked, data);
+        }}
+      >
+        {t('Immediately delete')}
+      </Checkbox>
+    );
+    return checkbox;
+  }
+
+  get deleteTip() {
+    return t(
+      'When the computing service starts the recycling instance interval, the instance will be stored in the recycling bin after deletion, and will be retained according to the corresponding time interval. You can choose to restore it within this period. After successful recovery, the status of the instance is running and related resources remain unchanged.'
+    );
+  }
+
+  get snapshotTip() {
+    return t(
+      'If you still want to keep the disk data, it is recommended that you create a snapshot for the disk before deleting.'
+    );
+  }
+
+  renderCheckboxTip() {
     const tip = (
       <div className={styles.tip}>
         <h4 className={styles['tip-title']}>
@@ -78,16 +139,20 @@ export default class SoftDelete extends ConfirmAction {
           {t(
             'The associated floating IP, virtual adapter, volume and other resources will be automatically disassociated.'
           )}
-          {/* {t('The instance root volume and snapshot will be removed.')} */}
         </p>
-        <p className={styles['tip-content']}>
-          {/* {t('After the instance is deleted, the instance root disk data will be lost. ')} */}
-          {t(
-            'If you still want to keep the disk data, it is recommended that you create a snapshot for the disk before deleting.'
-          )}
-        </p>
+        <p className={styles['tip-content']}>{this.snapshotTip}</p>
       </div>
     );
+    return (
+      <Tooltip title={tip} color="white">
+        <QuestionCircleOutlined />
+      </Tooltip>
+    );
+  }
+
+  confirmContext = (data) => {
+    const name = this.getName(data);
+    this.initChangeType(data);
     return (
       <div>
         <p className={styles.mb16}>
@@ -95,23 +160,12 @@ export default class SoftDelete extends ConfirmAction {
             t('Are you sure to delete instance { name }? ', { name })
           )}
         </p>
-        <p className={styles.mb16}>
-          {t(
-            'When the computing service starts the recycling instance interval, the instance will be stored in the recycling bin after deletion, and will be retained according to the corresponding time interval. You can choose to restore it within this period. After successful recovery, the status of the instance is running and related resources remain unchanged.'
-          )}
-        </p>
+        <p className={styles.mb16}>{this.deleteTip}</p>
         <div>
-          <Checkbox
-            onChange={(e) => {
-              this.onChangeType(e.target.checked, data);
-            }}
-          >
-            {t('Immediately delete')}
-          </Checkbox>
-          <Tooltip title={tip} color="white">
-            <QuestionCircleOutlined />
-          </Tooltip>
+          {this.renderCheckbox(data)}
+          {this.renderCheckboxTip()}
         </div>
+        {this.renderExtra(data)}
       </div>
     );
   };
@@ -141,7 +195,8 @@ export default class SoftDelete extends ConfirmAction {
 
   onSubmit = (item) => {
     const { id, isHardDeleted = false } = item || this.item;
-    if (isHardDeleted) {
+    const isShelved = this.isShelved(item || this.item);
+    if (isHardDeleted || isShelved) {
       return globalServerStore.forceDelete({ id });
     }
     return globalServerStore.delete({ id });
