@@ -89,6 +89,8 @@ export class VolumeStore extends Base {
     }
   };
 
+  updateParamsSort = this.updateParamsSortPage;
+
   async listDidFetch(items, _, filters) {
     if (items.length === 0) {
       return items;

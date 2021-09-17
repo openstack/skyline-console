@@ -370,6 +370,7 @@ export default class BaseStore {
     // todo: no page, no limit, fetch all
     const { tab, all_projects, ...rest } = filters;
     const params = { ...rest };
+    this.updateParamsSort(params, sortKey, sortOrder);
     if (all_projects) {
       if (!this.listFilterByProject) {
         params.all_projects = true;

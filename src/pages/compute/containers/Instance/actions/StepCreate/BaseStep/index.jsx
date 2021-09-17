@@ -145,11 +145,11 @@ export class BaseStep extends Base {
   }
 
   get imageSourceType() {
-    return this.sourceTypes[0];
+    return this.sourceTypes.find((it) => it.value === 'image');
   }
 
   get volumeSourceType() {
-    return this.sourceTypes[1];
+    return this.sourceTypes.find((it) => it.value === 'bootableVolume');
   }
 
   allowed = () => Promise.resolve();
@@ -198,7 +198,7 @@ export class BaseStep extends Base {
     } else {
       await this.volumeStore.fetchList({
         sortKey: 'bootable',
-        sortDir: 'ascend',
+        sortOrder: 'ascend',
       });
     }
     if (volume) {
@@ -217,26 +217,6 @@ export class BaseStep extends Base {
 
   get systemTabs() {
     return getImageSystemTabs();
-  }
-
-  get specTabs() {
-    return [
-      {
-        label: t('General Computing Type'),
-        // value: 'general'
-        value: 1,
-      },
-      {
-        label: t('Optimized Computing Type'),
-        // value: 'computing'
-        value: 5,
-      },
-      {
-        label: t('GPU Accelerated Computing Type'),
-        // value: 'gpu'
-        value: 10,
-      },
-    ];
   }
 
   checkSystemDisk = (rule, value) => {
@@ -312,6 +292,48 @@ export class BaseStep extends Base {
     });
   };
 
+  get imageColumns() {
+    return getImageColumns(this);
+  }
+
+  get volumeColumns() {
+    return [
+      {
+        title: t('Name'),
+        dataIndex: 'name',
+      },
+      {
+        title: t('Size'),
+        dataIndex: 'size',
+        render: (value) => `${value}GB`,
+        width: 80,
+      },
+      {
+        title: t('Status'),
+        dataIndex: 'status',
+        render: (value) => volumeStatus[value] || '-',
+        width: 80,
+      },
+      {
+        title: t('Type'),
+        dataIndex: 'volume_type',
+      },
+      {
+        title: t('Created At'),
+        dataIndex: 'created_at',
+        valueRender: 'sinceTime',
+      },
+    ];
+  }
+
+  get showSystemDisk() {
+    return this.sourceTypeIsImage;
+  }
+
+  getFlavorComponent() {
+    return <FlavorSelectTable onChange={this.onFlavorChange} />;
+  }
+
   get formItems() {
     const { image } = this.locationParams;
     const imageLoading = image
@@ -341,7 +363,7 @@ export class BaseStep extends Base {
       {
         name: 'flavor',
         label: t('Specification'),
-        component: <FlavorSelectTable onChange={this.onFlavorChange} />,
+        component: this.getFlavorComponent(),
         required: true,
         wrapperCol: {
           xs: {
@@ -362,7 +384,9 @@ export class BaseStep extends Base {
         tip: t(
           'The start source is a template used to create an instance. You can choose an image or a bootable volume.'
         ),
-        onChange: this.onSourceChange,
+        onChange: (value) => {
+          this.onSourceChange(value);
+        },
       },
       {
         name: 'image',
@@ -372,7 +396,7 @@ export class BaseStep extends Base {
         isLoading: imageLoading,
         required: this.sourceTypeIsImage,
         isMulti: false,
-        hidden: !this.sourceTypeIsImage,
+        display: this.sourceTypeIsImage,
         extra: this.getImageExtraWords(),
         filterParams: [
           {
@@ -380,7 +404,7 @@ export class BaseStep extends Base {
             name: 'name',
           },
         ],
-        columns: getImageColumns(this),
+        columns: this.imageColumns,
         tabs: this.systemTabs,
         defaultTabValue:
           this.locationParams.os_distro || this.systemTabs[0].value,
@@ -395,7 +419,7 @@ export class BaseStep extends Base {
         isLoading: this.volumeStore.list.isLoading,
         required: this.sourceTypeIsVolume,
         isMulti: false,
-        hidden: !this.sourceTypeIsVolume,
+        display: this.sourceTypeIsVolume,
         onChange: this.onBootableVolumeChange,
         filterParams: [
           {
@@ -403,33 +427,7 @@ export class BaseStep extends Base {
             name: 'name',
           },
         ],
-        columns: [
-          {
-            title: t('Name'),
-            dataIndex: 'name',
-          },
-          {
-            title: t('Size'),
-            dataIndex: 'size',
-            render: (value) => `${value}GB`,
-            width: 80,
-          },
-          {
-            title: t('Status'),
-            dataIndex: 'status',
-            render: (value) => volumeStatus[value] || '-',
-            width: 80,
-          },
-          {
-            title: t('Type'),
-            dataIndex: 'volume_type',
-          },
-          {
-            title: t('Created At'),
-            dataIndex: 'created_at',
-            valueRender: 'sinceTime',
-          },
-        ],
+        columns: this.volumeColumns,
       },
       {
         type: 'divider',
@@ -439,8 +437,8 @@ export class BaseStep extends Base {
         label: t('System Disk'),
         type: 'instance-volume',
         options: this.volumeTypes,
-        required: !this.sourceTypeIsVolume,
-        hidden: this.sourceTypeIsVolume,
+        required: this.showSystemDisk,
+        hidden: !this.showSystemDisk,
         validator: this.checkSystemDisk,
         minSize: this.getSystemDiskMinSize(),
         extra: t('Disk size is limited by the min disk of flavor, image, etc.'),
