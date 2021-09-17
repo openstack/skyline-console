@@ -31,8 +31,6 @@ import UnlockAction from './Unlock';
 import SuspendAction from './Suspend';
 import ResumeAction from './Resume';
 import AttachVolume from './AttachVolume';
-import AttachIsoVolume from './AttachIsoVolume';
-import DetachIsoVolume from './DetachIsoVolume';
 import DetachVolume from './DetachVolume';
 import Resize from './Resize';
 import ResizeOnline from './ResizeOnline';
@@ -68,8 +66,6 @@ const resourceActions = [
   AttachInterface,
   DetachInterface,
   AttachVolume,
-  AttachIsoVolume,
-  DetachIsoVolume,
   DetachVolume,
   AssociateFip,
   DisassociateFip,
