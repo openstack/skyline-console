@@ -19,16 +19,28 @@ import moment from 'moment';
 import globalRootStore from 'stores/root';
 import { toJS } from 'mobx';
 import FileSaver from 'file-saver';
+import rolePermission from 'resources/role';
 
-@inject('rootStore')
-@observer
-export default class Create extends ModalAction {
+export class Create extends ModalAction {
   static id = 'create-application_credentials';
 
   static title = t('Create Application Credentials');
 
+
+  static get modalSize() {
+    return 'middle';
+  }
+
+  getModalSize() {
+    return 'middle';
+  }
+
   get name() {
     return t('Create Application Credentials');
+  }
+
+  get rolePermissions() {
+    return rolePermission;
   }
 
   onSubmit = (values) => {
@@ -61,7 +73,10 @@ export default class Create extends ModalAction {
     // const baseRoles = toJS(globalRootStore.baseRoles);
     const roles = toJS(globalRootStore.roles);
 
-    return roles.map((i) => ({ label: i.name, value: i.id }));
+    return roles.map((i) => ({
+      label: this.rolePermissions[i.name] || i.name,
+      value: i.id,
+    }));
   }
 
   get formItems() {
@@ -86,6 +101,7 @@ export default class Create extends ModalAction {
         label: t('Roles'),
         type: 'check-group',
         options: this.roleOptions,
+        span: 12,
       },
       {
         name: 'description',
@@ -96,3 +112,5 @@ export default class Create extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Create))
