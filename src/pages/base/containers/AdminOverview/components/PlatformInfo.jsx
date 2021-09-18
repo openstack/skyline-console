@@ -24,7 +24,7 @@ import {
 import { Link } from 'react-router-dom';
 import styles from '../style.less';
 
-const actions = [
+export const actions = [
   {
     key: 'projectNum',
     label: t('Project Num'),
@@ -53,6 +53,10 @@ export class ProjectInfo extends Component {
     this.props.store.getProjectInfoData();
   }
 
+  get actions() {
+    return this.props.actions || actions;
+  }
+
   render() {
     const { projectInfoLoading, platformNum } = this.props.store;
     return (
@@ -65,7 +69,7 @@ export class ProjectInfo extends Component {
         <Descriptions column={1}>
           <div className="site-card-wrapper">
             <Row>
-              {actions.map((item) => (
+              {this.actions.map((item) => (
                 <Col key={item.key} style={{ margin: 'auto' }}>
                   <Link to={item.to} style={{ color: item.color }}>
                     <Row>

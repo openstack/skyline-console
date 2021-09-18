@@ -14,7 +14,6 @@
 
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-// import cssModules from 'react-css-modules';
 import { Row, Col } from 'antd';
 import OverviewAdminStore from 'stores/overview-admin';
 import styles from './style.less';
@@ -24,37 +23,50 @@ import NetworkService from './components/NetworkService';
 import VirtualResource from './components/VirtualResource';
 import ResourceOverview from './components/ResourceOverview';
 
-@observer
-class Overview extends Component {
+export class Overview extends Component {
   constructor(props) {
     super(props);
     this.adminStore = new OverviewAdminStore();
+  }
+
+  renderPlatformInfo() {
+    return <PlatformInfo store={this.adminStore} />;
+  }
+
+  renderVirutalResource() {
+    return <VirtualResource store={this.adminStore} />;
+  }
+
+  renderResourceOverview() {
+    return <ResourceOverview store={this.adminStore} />;
+  }
+
+  renderComputeService() {
+    return <ComputeService store={this.adminStore} />;
+  }
+
+  renderNetworkService() {
+    return <NetworkService store={this.adminStore} />;
   }
 
   render() {
     return (
       <div className={styles.container}>
         <Row gutter={16} style={{ marginBottom: 22 }}>
-          <Col span={24}>
-            <PlatformInfo store={this.adminStore} />
-          </Col>
+          <Col span={24}>{this.renderPlatformInfo()}</Col>
         </Row>
         <Row gutter={16} style={{ marginBottom: 22 }}>
-          <Col span={24}>
-            <VirtualResource store={this.adminStore} />
-          </Col>
+          <Col span={24}>{this.renderVirutalResource()}</Col>
         </Row>
         <Row gutter={16} style={{ marginBottom: 22 }}>
-          <Col span={24}>
-            <ResourceOverview store={this.adminStore} />
-          </Col>
+          <Col span={24}>{this.renderResourceOverview()}</Col>
         </Row>
         <Row gutter={16}>
           <Col span={12} className={styles.right}>
-            <ComputeService store={this.adminStore} />
+            {this.renderComputeService()}
           </Col>
           <Col span={12} className={styles.right}>
-            <NetworkService store={this.adminStore} />
+            {this.renderNetworkService()}
           </Col>
         </Row>
       </div>
@@ -62,4 +74,4 @@ class Overview extends Component {
   }
 }
 
-export default Overview;
+export default observer(Overview);

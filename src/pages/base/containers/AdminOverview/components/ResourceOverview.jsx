@@ -25,7 +25,7 @@ import adminSecurityGroup from 'asset/image/admin-security-group.svg';
 import adminRouter from 'asset/image/admin-router.svg';
 import styles from '../style.less';
 
-const card = [
+export const card = [
   {
     key: 'serviceNum',
     label: t('Instance'),
@@ -40,7 +40,7 @@ const card = [
   },
 ];
 
-const smallCard = [
+export const smallCard = [
   {
     key: 'networkNum',
     label: t('Network'),
@@ -86,6 +86,14 @@ export class virtualResourceInfo extends Component {
     this.props.store.getVirtualResource();
   }
 
+  get card() {
+    return this.props.card || card;
+  }
+
+  get smallCard() {
+    return this.props.smallCard || smallCard;
+  }
+
   renderStatusColor(resource, resourceKey) {
     let colors = null;
     switch (resourceKey) {
@@ -109,7 +117,7 @@ export class virtualResourceInfo extends Component {
     const { virtualResource } = this.props.store;
     return (
       <Row>
-        {card.map((item) => (
+        {this.card.map((item) => (
           <Col span={12} style={{ textAlign: 'center' }} key={item.key}>
             <Card className={styles.card}>
               <Link to={item.to} style={{ color: '#000000' }}>
@@ -150,7 +158,7 @@ export class virtualResourceInfo extends Component {
     const { virtualResource } = this.props.store;
     return (
       <Row style={{ marginTop: '14px' }}>
-        {smallCard.map((item) => (
+        {this.smallCard.map((item) => (
           <Col span={6} style={{ textAlign: 'center' }} key={item.key}>
             <Card className={styles.card}>
               <Link to={item.to} style={{ color: '#000000' }}>

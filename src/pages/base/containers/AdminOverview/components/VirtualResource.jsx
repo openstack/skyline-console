@@ -18,7 +18,7 @@ import { inject, observer } from 'mobx-react';
 import globalHypervisorStore from 'stores/nova/hypervisor';
 import styles from '../style.less';
 
-const resourceCircle = [
+export const resourceCircle = [
   {
     resource: 'vcpus',
     used: 'vcpus_used',
@@ -47,6 +47,14 @@ export class ResourceCircle extends Component {
     this.store.getOverview();
   }
 
+  get resourceCircle() {
+    return this.props.resourceCircle || resourceCircle;
+  }
+
+  get resourceCircleSpan() {
+    return this.props.resourceCircleSpan || 12;
+  }
+
   renderCircle = (item, index) => {
     const { overview } = this.store;
     const resource = overview[item.resource];
@@ -63,7 +71,7 @@ export class ResourceCircle extends Component {
     }
     return (
       <Col
-        span={12}
+        span={this.resourceCircleSpan}
         style={{ textAlign: 'center' }}
         key={`${resource}-${index}`}
       >
@@ -117,7 +125,7 @@ export class ResourceCircle extends Component {
         <Descriptions column={1}>
           <div className="site-card-wrapper">
             <Row gutter={16}>
-              {resourceCircle.map((item, index) => {
+              {this.resourceCircle.map((item, index) => {
                 return this.renderCircle(item, index);
               })}
             </Row>
