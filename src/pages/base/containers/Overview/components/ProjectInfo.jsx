@@ -40,46 +40,108 @@ export class ProjectInfo extends Component {
     );
   };
 
-  render() {
-    const { rootStore = {} } = this.props;
-    const { roles = [], baseRoles = [], user = {} } = rootStore;
+  get rootStore() {
+    return this.props.rootStore || {};
+  }
+
+  get currentUser() {
+    const { user: { user } = {} } = this.rootStore;
+    return user || {};
+  }
+
+  get showRoles() {
+    const { roles = [], baseRoles = [] } = this.rootStore;
+    return roles.filter((it) => baseRoles.indexOf(it.name) === -1);
+  }
+
+  get baseRoles() {
+    const { roles = [], baseRoles = [] } = this.rootStore;
+    return roles.filter((it) => baseRoles.indexOf(it.name) !== -1);
+  }
+
+  renderAccount() {
+    return (
+      <Descriptions.Item
+        label={t('User Account')}
+        labelStyle={{ fontSize: 14 }}
+        contentStyle={{ fontSize: 14 }}
+      >
+        {this.currentUser.name}
+      </Descriptions.Item>
+    );
+  }
+
+  renderShowRole() {
+    return (
+      <Descriptions.Item
+        label={t('My Role')}
+        labelStyle={{ fontSize: 14 }}
+        contentStyle={{ fontSize: 14 }}
+      >
+        {this.showRoles.map((item) => item.name).join(', ')}
+      </Descriptions.Item>
+    );
+  }
+
+  renderDomain() {
+    return (
+      <Descriptions.Item
+        label={t('Affiliated Domain')}
+        labelStyle={{ fontSize: 14 }}
+        contentStyle={{ fontSize: 14 }}
+      >
+        {this.currentUser.domain.name}
+      </Descriptions.Item>
+    );
+  }
+
+  renderBaseRole() {
     const { collapsed } = this.state;
-    const icon = collapsed ? <DownOutlined /> : <UpOutlined />;
-    if (!user) {
+    if (collapsed) {
       return null;
     }
-    const { user: currentUser } = user;
-    const showRole = roles.filter((it) => baseRoles.indexOf(it.name) === -1);
-    const baseRole = roles.filter((it) => baseRoles.indexOf(it.name) !== -1);
 
     return (
+      <Descriptions.Item
+        label={t('Base Role')}
+        labelStyle={{ fontSize: 14 }}
+        contentStyle={{ fontSize: 14 }}
+      >
+        {this.baseRoles.map((item) => item.name).join(', ')}
+      </Descriptions.Item>
+    );
+  }
+
+  renderButton() {
+    const { collapsed } = this.state;
+    const icon = collapsed ? <DownOutlined /> : <UpOutlined />;
+    return (
+      <Button
+        onClick={this.handleDetailInfo}
+        icon={icon}
+        type="link"
+        className={styles.role_button}
+      />
+    );
+  }
+
+  render() {
+    if (!this.currentUser.name) {
+      return null;
+    }
+    return (
       <Card
-        className={styles.top}
-        title={`Hello, ${currentUser.name}`}
+        className={styles.project}
+        title={`Hello, ${this.currentUser.name}`}
         bordered={false}
       >
         <Descriptions column={1}>
-          <Descriptions.Item label={t('User Account')}>
-            {currentUser.name}
-          </Descriptions.Item>
-          <Descriptions.Item label={t('My Role')}>
-            {showRole.map((item) => item.name).join(', ')}
-          </Descriptions.Item>
-          <Descriptions.Item label={t('Affiliated Domain')}>
-            {currentUser.domain.name}
-          </Descriptions.Item>
-          {collapsed ? null : (
-            <Descriptions.Item label={t('Base Role')}>
-              {baseRole.map((item) => item.name).join(', ')}
-            </Descriptions.Item>
-          )}
+          {this.renderAccount()}
+          {this.renderShowRole()}
+          {this.renderDomain()}
+          {this.renderBaseRole()}
         </Descriptions>
-        <Button
-          onClick={this.handleDetailInfo}
-          icon={icon}
-          type="link"
-          className={styles.role_button}
-        />
+        {this.renderButton()}
       </Card>
     );
   }

@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import React, { Component } from 'react';
-// import { PropTypes } from 'prop-types';
 import { observer } from 'mobx-react';
 import { Row, Col } from 'antd';
 import overviewInstance from 'asset/image/overview-instance.svg';
@@ -27,7 +26,7 @@ import ProjectInfo from './components/ProjectInfo';
 
 const actions = [
   {
-    key: 'createInstance',
+    key: 'nstance',
     label: t('Instance'),
     avatar: overviewInstance,
     to: '/compute/instance',
@@ -39,31 +38,50 @@ const actions = [
     to: '/storage/volume',
   },
   {
-    key: 'createNetwork',
+    key: 'network',
     label: t('Network'),
     avatar: overviewNetwork,
     to: '/network/networks',
   },
   {
-    key: 'createRouter',
+    key: 'router',
     label: t('Router'),
     avatar: overviewRouter,
     to: '/network/router',
   },
 ];
 
-@observer
-class Overview extends Component {
+export class Overview extends Component {
   renderAction = (item) => (
     <Row className={styles.actionButton} gutter={[8]}>
-      <Col span={12} className={styles.main_icon}>
+      <Col span={8} className={styles.main_icon}>
         <img alt="avatar" src={item.avatar} className={styles.actionIcon} />
       </Col>
-      <Col span={12} style={{ textAlign: 'center' }}>
+      <Col span={16} style={{ textAlign: 'center' }}>
         {item.label}
       </Col>
     </Row>
   );
+
+  renderActions() {
+    return actions.map((item) => (
+      <Col span={6} key={item.key}>
+        <Link to={item.to}>{this.renderAction(item)}</Link>
+      </Col>
+    ));
+  }
+
+  renderQuota() {
+    return <QuotaOverview />;
+  }
+
+  renderProject() {
+    return <ProjectInfo />;
+  }
+
+  renderExtra() {
+    return null;
+  }
 
   render() {
     return (
@@ -73,19 +91,15 @@ class Overview extends Component {
           gutter={[22, 22]}
           style={{ marginBottom: '22px' }}
         >
-          {actions.map((item) => (
-            <Col span={6} key={item.key}>
-              <Link to={item.to}>{this.renderAction(item)}</Link>
-            </Col>
-          ))}
+          {this.renderActions()}
         </Row>
         <Row gutter={16}>
           <Col span={16} className={styles.left}>
-            {/* <ResourceStatistic store={store} chartArray={chartArray} /> */}
-            <QuotaOverview />
+            {this.renderQuota()}
           </Col>
           <Col span={8} className={styles.right}>
             <ProjectInfo />
+            {this.renderExtra()}
           </Col>
         </Row>
       </div>
@@ -93,4 +107,4 @@ class Overview extends Component {
   }
 }
 
-export default Overview;
+export default observer(Overview);

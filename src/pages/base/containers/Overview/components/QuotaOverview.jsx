@@ -27,6 +27,58 @@ const colors = {
   full: { color: '#E8684A', text: t('Full') },
 };
 
+export const quotaCardList = [
+  {
+    text: t('Compute'),
+    type: 'compute',
+    value: [
+      { text: t('Instances'), key: 'instances' },
+      { text: t('vCPUs'), key: 'cores' },
+      { text: t('Memory'), key: 'ram' },
+      { text: t('Server Group'), key: 'server_groups' },
+    ],
+  },
+  {
+    text: t('Storage'),
+    type: 'storage',
+    value: [
+      {
+        text: t('volumes'),
+        key: 'volumes',
+      },
+      {
+        text: t('Gigabytes(GB)'),
+        key: 'gigabytes',
+      },
+      {
+        text: t('Snapshots'),
+        key: 'snapshots',
+      },
+      {
+        text: t('backups'),
+        key: 'backups',
+      },
+      {
+        text: t('backup gigabytes (GiB)'),
+        key: 'backup_gigabytes',
+      },
+    ],
+  },
+  {
+    text: t('Network'),
+    type: 'network',
+    value: [
+      { text: t('Router'), key: 'router' },
+      { text: t('Network'), key: 'network' },
+      { text: t('Subnet'), key: 'subnet' },
+      { text: t('Floating IP'), key: 'floatingip' },
+      { text: `${t('port')}`, key: 'port' },
+      { text: t('Security Group'), key: 'security_group' },
+      { text: t('Security Group Rule'), key: 'security_group_rule' },
+    ],
+  },
+];
+
 export class QuotaOverview extends Component {
   constructor(props) {
     super(props);
@@ -39,41 +91,55 @@ export class QuotaOverview extends Component {
     this.getData();
   }
 
-  getData = async () => {
+  async getData() {
     const { user } = this.props.rootStore;
     const { project: { id: projectId = '' } = {} } = user;
-    await globalProjectStore.fetchProjectQuota({ project_id: projectId });
-    await globalVolumeTypeStore.fetchList();
-    await globalKeypairStore.fetchList();
+    await Promise.all([
+      globalProjectStore.fetchProjectQuota({ project_id: projectId }),
+      globalVolumeTypeStore.fetchList(),
+      globalKeypairStore.fetchList(),
+    ]);
     this.setState({
       isLoading: false,
     });
-  };
+  }
+
+  get volumeTypesQuota() {
+    const volumeTypes = globalVolumeTypeStore.list.data.map((item, index) => {
+      return {
+        index,
+        value: [
+          {
+            text: t('{name} type', { name: item.name }),
+            key: `volumes_${item.name}`,
+          },
+          {
+            text: t('{name} type gigabytes(GB)', { name: item.name }),
+            key: `gigabytes_${item.name}`,
+          },
+          {
+            text: t('{name} type snapshots', { name: item.name }),
+            key: `snapshots_${item.name}`,
+          },
+        ],
+      };
+    });
+    return {
+      text: t('Storage Types'),
+      type: 'VolumeTypes',
+      value: volumeTypes,
+    };
+  }
+
+  get quotaCardList() {
+    return this.props.quotaCardList || quotaCardList;
+  }
+
+  get quotaAction() {
+    return this.props.quotaAction;
+  }
 
   getFilteredValue = (value) => value.filter((it) => !it.hidden);
-
-  renderQuotaCardList = (quotaCardList) => {
-    const { isLoading } = this.state;
-    return (
-      <Row className={styles.content}>
-        {Object.keys(quotaCardList).map((item, index) => (
-          <Col
-            className={styles.card}
-            span={index === 3 ? 24 : 12}
-            key={quotaCardList[item].text}
-          >
-            <Card
-              title={quotaCardList[item].text}
-              bordered={false}
-              loading={isLoading}
-            >
-              {this.renderQuotaCardContent(index, quotaCardList, item)}
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    );
-  };
 
   getItemInfo = (data, i) => {
     let percent = 0;
@@ -115,134 +181,74 @@ export class QuotaOverview extends Component {
     );
   };
 
-  renderQuotaCardContent(index, quotaCardList, item) {
+  renderQuotaCardList = () => {
+    const { isLoading } = this.state;
+    return (
+      <Row className={styles.content}>
+        {this.quotaCardList.map((item) => (
+          <Col className={styles.card} span={12} key={item.type}>
+            <Card title={item.text} bordered={false} loading={isLoading}>
+              {this.renderQuotaCardContent(item)}
+            </Card>
+          </Col>
+        ))}
+        <Col className={styles.card} span={24} key={this.volumeTypesQuota.type}>
+          <Card
+            title={this.volumeTypesQuota.text}
+            bordered={false}
+            loading={isLoading}
+          >
+            {this.renderVolumeTypes()}
+          </Card>
+        </Col>
+      </Row>
+    );
+  };
+
+  renderQuotaCardContent(item) {
     const { isLoading } = this.state;
     if (isLoading) {
       return <Spin />;
     }
-    return index === 3
-      ? this.renderVolumeTypes(
-          globalProjectStore.quota,
-          quotaCardList[item].value
-        )
-      : this.renderQuotaCart(
-          globalProjectStore.quota,
-          this.getFilteredValue(quotaCardList[item].value)
-        );
+    return this.renderQuotaCart(
+      globalProjectStore.quota,
+      this.getFilteredValue(item.value)
+    );
   }
 
   renderQuotaCart = (data, item = []) =>
     item.map((i) => <div key={i.text}>{this.getItemInfo(data, i)}</div>);
 
-  renderVolumeTypes = (data, listData) => (
-    <List
-      itemLayout="vertical"
-      size="large"
-      pagination={{
-        hideOnSinglePage: true,
-        pageSize: 5,
-        size: 'small',
-      }}
-      dataSource={listData}
-      renderItem={(item) => (
-        <Row key={item.index} gutter={[16]}>
-          {item.value.map((i) => (
-            <Col span={8} key={i.text}>
-              {this.getItemInfo(data, i)}
-            </Col>
-          ))}
-        </Row>
-      )}
-    />
-  );
+  renderVolumeTypes = () => {
+    const { isLoading } = this.state;
+    if (isLoading) {
+      return <Spin />;
+    }
+    return (
+      <List
+        itemLayout="vertical"
+        size="large"
+        pagination={{
+          hideOnSinglePage: true,
+          pageSize: 5,
+          size: 'small',
+        }}
+        dataSource={this.volumeTypesQuota.value}
+        renderItem={(item) => (
+          <Row key={item.index} gutter={[16]}>
+            {item.value.map((i) => (
+              <Col span={8} key={i.text}>
+                {this.getItemInfo(globalProjectStore.quota, i)}
+              </Col>
+            ))}
+          </Row>
+        )}
+      />
+    );
+  };
 
   render() {
     const { isLoading } = this.state;
-
-    const storage = [
-      {
-        text: t('volumes'),
-        key: 'volumes',
-      },
-      {
-        text: t('Gigabytes(GB)'),
-        key: 'gigabytes',
-      },
-      {
-        text: t('Snapshots'),
-        key: 'snapshots',
-      },
-      {
-        text: t('backups'),
-        key: 'backups',
-      },
-      {
-        text: t('backup gigabytes (GiB)'),
-        key: 'backup_gigabytes',
-      },
-    ];
-
-    const volumeTypes = [];
-
-    globalVolumeTypeStore.list.data.forEach((item, index) => {
-      volumeTypes.push({
-        index,
-        value: [
-          {
-            text: t('{name} type', { name: item.name }),
-            key: `volumes_${item.name}`,
-          },
-          {
-            text: t('{name} type gigabytes(GB)', { name: item.name }),
-            key: `gigabytes_${item.name}`,
-          },
-          {
-            text: t('{name} type snapshots', { name: item.name }),
-            key: `snapshots_${item.name}`,
-          },
-        ],
-      });
-    });
-
-    const quotaCardList = {
-      Compute: {
-        text: t('Compute'),
-        value: [
-          { text: t('Instances'), key: 'instances' },
-          { text: t('vCPUs'), key: 'cores' },
-          { text: t('Memory'), key: 'ram' },
-          { text: t('Server Group'), key: 'server_groups' },
-          // { text: t('Server Group Member'), key: 'server_group_members' },
-          // { text: t('keypair'), key: 'key_pairs' },
-        ],
-      },
-      Storage: {
-        text: t('Storage'),
-        value: storage,
-      },
-      Network: {
-        text: t('Network'),
-        value: [
-          { text: t('Router'), key: 'router' },
-          { text: t('Network'), key: 'network' },
-          { text: t('Subnet'), key: 'subnet' },
-          { text: t('Floating IP'), key: 'floatingip' },
-          { text: `${t('port')}`, key: 'port' },
-          { text: t('Security Group'), key: 'security_group' },
-          { text: t('Security Group Rule'), key: 'security_group_rule' },
-          // TODO wait for add.
-          // { text: `${t('VPN')}`, key: 'vpnservice' },
-          // { text: `${t('VPN Tunnel')}`, key: 'vpnservice' },
-          // { text: `${t('VPN Endpoint Group')}`, key: 'endpoint_group' },
-          // { text: `${t('Load Balancer')}`, key: 'loadbalancer' },
-        ],
-      },
-      VolumeTypes: {
-        text: t('Storage Types'),
-        value: volumeTypes,
-      },
-    };
-
     return (
       <Card
         className={styles.bottom}
@@ -258,13 +264,9 @@ export class QuotaOverview extends Component {
             ))}
           </div>
         }
-        // extra={
-        //   <div className={styles.action} onClick={this.handleApplyQuota}>
-        //     {t('Apply for extended quota')}
-        //   </div>
-        // }
+        extra={this.quotaAction}
       >
-        {this.renderQuotaCardList(quotaCardList)}
+        {this.renderQuotaCardList()}
       </Card>
     );
   }
