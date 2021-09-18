@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
 import { inject, observer } from 'mobx-react';
 import globalImageStore from 'stores/glance/image';
 import globalServerStore from 'stores/nova/instance';
@@ -22,11 +21,11 @@ import {
   isNotLocked,
   isIsoInstance,
 } from 'resources/instance';
-import ImageType from 'components/ImageType';
 import {
   getImageOS,
   getImageColumns,
   canImageCreateInstance,
+  getImageSystemTabs,
 } from 'resources/image';
 
 export class Rebuild extends ModalAction {
@@ -77,28 +76,7 @@ export class Rebuild extends ModalAction {
   }
 
   get systemTabs() {
-    const valueList = [
-      'centos',
-      'ubuntu',
-      'fedora',
-      'windows',
-      'debian',
-      'coreos',
-      'arch',
-      'freebsd',
-      'others',
-    ];
-    return valueList.map((value) => {
-      const label =
-        value !== 'others'
-          ? value.slice(0, 1).toUpperCase() + value.slice(1)
-          : t('Others');
-      return {
-        label,
-        value,
-        component: <ImageType type={value} title={value} />,
-      };
-    });
+    return getImageSystemTabs();
   }
 
   get defaultValue() {
