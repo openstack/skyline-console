@@ -62,18 +62,7 @@ export class ProjectStore extends Base {
     return client.neutron.quotas;
   }
 
-  @action
-  async fetchList({
-    limit,
-    page,
-    sortKey,
-    sortOrder,
-    conditions,
-    ...filters
-  } = {}) {
-    this.list.isLoading = true;
-    // todo: no page, no limit, fetch all
-    // const params = { ...filters };
+  async fetchProjects(filters) {
     const { tags } = filters;
 
     const [roleAssignmentsReault, projectsResult, roleResult] =
@@ -111,11 +100,25 @@ export class ProjectStore extends Base {
       project.group_num = Object.keys(projectGroups).length;
       return project;
     });
-    const items = projects.map(this.mapper);
-    const newData = await this.listDidFetch(items);
+    return projects;
+  }
+
+  @action
+  async fetchList({
+    limit,
+    page,
+    sortKey,
+    sortOrder,
+    conditions,
+    ...filters
+  } = {}) {
+    this.list.isLoading = true;
+    const items = await this.fetchProjects(filters);
+    const data = await this.listDidFetch(items, true, filters);
+    const newData = data.map(this.mapper);
     this.list.update({
       data: newData,
-      total: projects.length || 0,
+      total: newData.length || 0,
       limit: Number(limit) || 10,
       page: Number(page) || 1,
       sortKey,
@@ -124,7 +127,7 @@ export class ProjectStore extends Base {
       isLoading: false,
       ...(this.list.silent ? {} : { selectedRowKeys: [] }),
     });
-    return projects;
+    return items;
   }
 
   @action
@@ -212,11 +215,7 @@ export class ProjectStore extends Base {
     return this.submitting(this.client.create(reqBody));
   }
 
-  @action
-  async fetchDetail({ id, silent }) {
-    if (!silent) {
-      this.isLoading = true;
-    }
+  async fetchProject(id) {
     const [roleAssignmentsReault, projectResult, roleResult] =
       await Promise.all([
         this.roleAssignmentClient.list(),
@@ -250,9 +249,19 @@ export class ProjectStore extends Base {
     project.user_num = Object.keys(userMapRole).length;
     project.group_num = Object.keys(projectGroups).length;
     const newItem = await this.detailDidFetch(project);
-    this.detail = newItem;
-    this.isLoading = false;
     return newItem;
+  }
+
+  @action
+  async fetchDetail({ id, silent }) {
+    if (!silent) {
+      this.isLoading = true;
+    }
+    const item = await this.fetchProject(id);
+    const detail = this.mapper(item);
+    this.detail = detail;
+    this.isLoading = false;
+    return detail;
   }
 
   @action
@@ -287,6 +296,7 @@ export class ProjectStore extends Base {
       }
     });
     this.quota = quota;
+    return quota;
   }
 
   omitNil = (obj) => {
@@ -298,30 +308,14 @@ export class ProjectStore extends Base {
     }, {});
   };
 
-  @action
-  async updateProjectQuota({ project_id, data }) {
-    this.isSubmitting = true;
+  getNovaQuotaBody(data) {
     const {
       instances,
       cores,
       ram,
-      volumes,
-      gigabytes,
-      firewall_group,
-      security_group_rule,
       server_groups,
-      snapshots,
-      backups,
-      backup_gigabytes,
-      network,
-      router,
-      subnet,
-      floatingip,
-      security_group,
-      port,
       server_group_members,
       key_pairs,
-      ...others
     } = data;
     let ramGb = ram;
     if (ram && ram !== -1) {
@@ -337,17 +331,40 @@ export class ProjectStore extends Base {
         key_pairs,
       }),
     };
+    return novaReqBody;
+  }
+
+  getCinderQuotaBody(data) {
+    const { backups, ...others } = data;
+    const rest = {};
+    Object.keys(others).forEach((key) => {
+      if (
+        key.includes('volumes') ||
+        key.includes('gigabytes') ||
+        key.includes('snapshots')
+      ) {
+        rest[key] = others[key];
+      }
+    });
     const cinderReqBody = {
       quota_set: this.omitNil({
-        volumes,
-        gigabytes,
-        backup_gigabytes,
-        snapshots,
         backups,
-        ...others,
+        ...rest,
       }),
     };
-    const firewallValue = firewall_group ? { firewall_group } : {};
+    return cinderReqBody;
+  }
+
+  getNeutronQuotaBody(data) {
+    const {
+      security_group_rule,
+      network,
+      router,
+      subnet,
+      floatingip,
+      security_group,
+      port,
+    } = data;
     const neutronReqBody = {
       quota: this.omitNil({
         network,
@@ -356,10 +373,16 @@ export class ProjectStore extends Base {
         floatingip,
         security_group,
         security_group_rule,
-        ...firewallValue,
         port,
       }),
     };
+    return neutronReqBody;
+  }
+
+  async updateQuota(project_id, data) {
+    const novaReqBody = this.getNovaQuotaBody(data);
+    const cinderReqBody = this.getCinderQuotaBody(data);
+    const neutronReqBody = this.getNeutronQuotaBody(data);
     const reqs = [];
     if (!isEmpty(novaReqBody.quota_set)) {
       reqs.push(client.nova.quotaSets.update(project_id, novaReqBody));
@@ -372,6 +395,13 @@ export class ProjectStore extends Base {
     }
 
     const result = await Promise.all(reqs);
+    return result;
+  }
+
+  @action
+  async updateProjectQuota({ project_id, data }) {
+    this.isSubmitting = true;
+    const result = await this.updateQuota(project_id, data);
     this.isSubmitting = false;
     return result;
   }
@@ -461,7 +491,6 @@ export class ProjectStore extends Base {
       }
       groupResult.groups.forEach((group) => {
         if (projectGroups[group.id]) {
-          // const id = 3;
           project.groupProjectRole = projectGroups[group.id].map(
             (it) =>
               `${roleResult.roles.filter((role) => role.id === it)[0].name}(${t(
@@ -470,8 +499,6 @@ export class ProjectStore extends Base {
           );
         }
       });
-      // const { id } = project;
-      // this.getUserRoleList({ id, user_id: userId });
       project.user_num = Object.keys(userMapRole).length;
       project.group_num = Object.keys(projectGroups).length;
       return project;

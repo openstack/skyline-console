@@ -34,8 +34,8 @@ export const quotaCardList = [
       { text: t('Instances'), key: 'instances' },
       { text: t('vCPUs'), key: 'cores' },
       { text: t('Memory'), key: 'ram' },
-      { text: t('Server Group'), key: 'server_groups' },
       { text: t('Key Pair'), key: 'key_pairs' },
+      { text: t('Server Group'), key: 'server_groups' },
     ],
   },
   {
@@ -66,18 +66,45 @@ export const quotaCardList = [
   },
   {
     text: t('Network'),
-    type: 'network',
+    type: 'networks',
     value: [
       { text: t('Router'), key: 'router' },
       { text: t('Network'), key: 'network' },
       { text: t('Subnet'), key: 'subnet' },
       { text: t('Floating IP'), key: 'floatingip' },
-      { text: `${t('port')}`, key: 'port' },
+      { text: t('Port'), key: 'port' },
       { text: t('Security Group'), key: 'security_group' },
       { text: t('Security Group Rule'), key: 'security_group_rule' },
     ],
   },
 ];
+
+export const getVolumeTypeCards = (data) => {
+  const value = data.map((item, index) => {
+    return {
+      index,
+      value: [
+        {
+          text: t('{name} type', { name: item.name }),
+          key: `volumes_${item.name}`,
+        },
+        {
+          text: t('{name} type gigabytes(GB)', { name: item.name }),
+          key: `gigabytes_${item.name}`,
+        },
+        {
+          text: t('{name} type snapshots', { name: item.name }),
+          key: `snapshots_${item.name}`,
+        },
+      ],
+    };
+  });
+  return {
+    text: t('Storage Types'),
+    type: 'volumeTypes',
+    value,
+  };
+};
 
 export class QuotaOverview extends Component {
   constructor(props) {
@@ -117,30 +144,7 @@ export class QuotaOverview extends Component {
   }
 
   get volumeTypesQuota() {
-    const volumeTypes = this.volumeTypeData.map((item, index) => {
-      return {
-        index,
-        value: [
-          {
-            text: t('{name} type', { name: item.name }),
-            key: `volumes_${item.name}`,
-          },
-          {
-            text: t('{name} type gigabytes(GB)', { name: item.name }),
-            key: `gigabytes_${item.name}`,
-          },
-          {
-            text: t('{name} type snapshots', { name: item.name }),
-            key: `snapshots_${item.name}`,
-          },
-        ],
-      };
-    });
-    return {
-      text: t('Storage Types'),
-      type: 'VolumeTypes',
-      value: volumeTypes,
-    };
+    return getVolumeTypeCards(this.volumeTypeData);
   }
 
   get quotaCardList() {

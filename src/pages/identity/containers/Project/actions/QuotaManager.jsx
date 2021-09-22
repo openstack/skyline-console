@@ -13,10 +13,14 @@
 // limitations under the License.
 
 import { inject, observer } from 'mobx-react';
-import globalProjectStore from 'stores/keystone/project';
+import globalProjectStore, { ProjectStore } from 'stores/keystone/project';
 import React from 'react';
 import { ModalAction } from 'containers/Action';
 import { VolumeTypeStore } from 'stores/cinder/volume-type';
+import {
+  quotaCardList,
+  getVolumeTypeCards,
+} from 'pages/base/containers/Overview/components/QuotaOverview';
 
 export class QuotaManager extends ModalAction {
   static id = 'quota-management';
@@ -25,33 +29,29 @@ export class QuotaManager extends ModalAction {
 
   init() {
     this.store = globalProjectStore;
+    this.projectStore = new ProjectStore();
     this.volumeTypeStore = new VolumeTypeStore();
-    // this.getQuota();
+    this.getData();
   }
 
   get name() {
     return t('Edit quota');
   }
 
-  componentDidMount() {
-    this.getData();
+  async getData() {
+    const { id: project_id } = this.item;
+    await Promise.all([
+      this.projectStore.fetchProjectQuota({
+        project_id,
+      }),
+      this.volumeTypeStore.fetchProjectVolumeTypes(project_id),
+    ]);
+    this.updateDefaultValue();
   }
 
-  getData = async () => {
-    const { id: project_id } = this.item;
-    await this.store.fetchProjectQuota({
-      project_id,
-    });
-    await this.volumeTypeStore.fetchProjectVolumeTypes(project_id);
-  };
-
   get tips() {
-    return (
-      <>
-        {t(
-          'quota set to -1 means there is no quota limit on the current resource'
-        )}
-      </>
+    return t(
+      'quota set to -1 means there is no quota limit on the current resource'
     );
   }
 
@@ -62,99 +62,21 @@ export class QuotaManager extends ModalAction {
 
   static allowed = () => Promise.resolve(true);
 
-  get volumeTypesData() {
-    const volumeTypes = [];
-    const { projectVolumeTypes: data = [] } = this.volumeTypeStore;
-    if (data[0] && this.formRef.current) {
-      data.forEach((item) => {
-        volumeTypes.push.apply(volumeTypes, [
-          {
-            text: t('{name} type', { name: item.name }),
-            key: `volumes_${item.name}`,
-          },
-          {
-            text: t('{name} type gigabytes(GB)', { name: item.name }),
-            key: `gigabytes_${item.name}`,
-          },
-          {
-            text: t('{name} type snapshots', { name: item.name }),
-            key: `snapshots_${item.name}`,
-          },
-        ]);
-      });
-    }
-
-    return volumeTypes;
-  }
-
   get defaultValue() {
-    const {
-      quota: {
-        instances,
-        cores,
-        security_group,
-        ram,
-        ipsecpolicy,
-        key_pairs,
-        security_group_rule,
-        router,
-        volumes,
-        network,
-        subnet,
-        floatingip,
-        vpnservice,
-        vpntunnel,
-        gigabytes,
-        backups,
-        port,
-        backup_gigabytes,
-        endpoint_group,
-        loadbalancer,
-        snapshots,
-        server_groups,
-        server_group_members,
-      },
-    } = this.store;
-    if (instances && this.formRef.current) {
-      const initData = {
-        more: false,
-        instances: (instances || {}).limit,
-        cores: (cores || {}).limit,
-        security_group: (security_group || {}).limit,
-        ram: (ram || {}).limit,
-        ipsecpolicy: (ipsecpolicy || {}).limit,
-        key_pairs: (key_pairs || {}).limit,
-        security_group_rule: (security_group_rule || {}).limit,
-        router: (router || {}).limit,
-        volumes: (volumes || {}).limit,
-        network: (network || {}).limit,
-        subnet: (subnet || {}).limit,
-        floatingip: (floatingip || {}).limit,
-        vpnservice: (vpnservice || {}).limit,
-        vpntunnel: (vpntunnel || {}).limit,
-        port: (port || {}).limit,
-        gigabytes: (gigabytes || {}).limit,
-        backup_gigabytes: (backup_gigabytes || {}).limit,
-        backups: (backups || {}).limit,
-        snapshots: (snapshots || {}).limit,
-        server_groups: (server_groups || {}).limit,
-        server_group_members: (server_group_members || {}).limit,
-        endpoint_group: (endpoint_group || {}).limit,
-        loadbalancer: (loadbalancer || {}).limit,
-      };
-      // eslint-disable-next-line no-return-assign
-      this.volumeTypesData.forEach((i) => {
-        initData[i.key] = this.store.quota[i.key].limit;
-      });
-      this.formRef.current.setFieldsValue(initData);
-    }
-    return {};
+    const { quota = {} } = this.projectStore;
+    const initData = {};
+    Object.keys(quota).forEach((key) => {
+      const item = this.formItems.find((it) => it.name === key);
+      if (item) {
+        const { limit } = quota[key] || {};
+        initData[key] = limit;
+      }
+    });
+    return initData;
   }
-
-  // static allowed = item => Promise.resolve(true);
 
   checkMin = (rule, value) => {
-    const { quota } = this.store;
+    const { quota } = this.projectStore;
     const { field } = rule;
     const { used } = quota[field];
     const intNum = /^-?\d+$/;
@@ -169,205 +91,107 @@ export class QuotaManager extends ModalAction {
     return Promise.resolve();
   };
 
-  get formItems() {
+  getTitleLabel = (name, title, hidden) => {
+    const content = (
+      <div style={{ textAlign: 'center', fontWeight: 'bolder' }}>{title}</div>
+    );
+    return {
+      name,
+      label: '',
+      type: 'label',
+      content,
+      wrapperCol: { span: 24 },
+      hidden,
+    };
+  };
+
+  getInputItem(name, label, hidden) {
+    return {
+      name,
+      label,
+      type: 'input-number',
+      labelCol: { span: 12 },
+      colNum: 2,
+      validator: this.checkMin,
+      hidden,
+    };
+  }
+
+  get quotaCardList() {
+    return quotaCardList;
+  }
+
+  getFormItemsByCards(cardType) {
+    const card = this.quotaCardList.find((it) => it.type === cardType);
+    if (!card) {
+      return [];
+    }
+    const { type, text, value } = card;
+    const labelItem = this.getTitleLabel(type, text);
+    const items = value.map((it) => {
+      const { key, text: vText } = it;
+      return this.getInputItem(key, vText);
+    });
+    return [labelItem, ...items];
+  }
+
+  getComputeFormItems() {
+    const formItems = this.getFormItemsByCards('compute');
+    const memberItem = this.getInputItem(
+      'server_group_members',
+      t('Server Group Member')
+    );
+    return [...formItems, memberItem];
+  }
+
+  get volumeTypeData() {
+    const { projectVolumeTypes: data = [] } = this.volumeTypeStore;
+    return data;
+  }
+
+  getVolumeTypeFormItems() {
     const { more } = this.state;
+    const card = getVolumeTypeCards(this.volumeTypeData);
+    const { type, text, value } = card;
+    const newValue = [];
+    value.forEach((it) => newValue.push(...it.value));
+    const labelItem = this.getTitleLabel(type, text, !more);
+    const items = newValue.map((it) =>
+      this.getInputItem(it.key, it.text, !more)
+    );
+    return [labelItem, ...items];
+  }
+
+  get formItems() {
+    const computeFormItems = this.getComputeFormItems();
+    const cinderFormItems = this.getFormItemsByCards('storage');
+    const networkFormItems = this.getFormItemsByCards('networks');
+    const volumeTypeFormItems = this.getVolumeTypeFormItems();
     const form = [
-      {
-        name: 'nova',
-        label: t('Compute'),
-        type: 'label',
-        labelCol: { span: 12, offset: 6 },
-      },
-      {
-        name: 'instances',
-        label: t('instance'),
-        type: 'input-number',
-        labelCol: { span: 12 },
-        colNum: 2,
-        validator: this.checkMin,
-      },
-      {
-        name: 'cores',
-        label: t('vCPU'),
-        type: 'input-number',
-        labelCol: { span: 12 },
-        colNum: 2,
-        validator: this.checkMin,
-      },
-      {
-        name: 'ram',
-        label: t('RAM(GB)'),
-        type: 'input-number',
-        labelCol: { span: 12 },
-        colNum: 2,
-        validator: this.checkMin,
-      },
-      {
-        name: 'key_pairs',
-        label: t('keypair'),
-        type: 'input-number',
-        labelCol: { span: 12 },
-        colNum: 2,
-        validator: this.checkMin,
-      },
-      {
-        name: 'server_groups',
-        label: t('Server Group'),
-        type: 'input-number',
-        labelCol: { span: 6 },
-        validator: this.checkMin,
-      },
-      {
-        name: 'server_group_members',
-        label: t('Server Group Member'),
-        type: 'input-number',
-        labelCol: { span: 6 },
-        validator: this.checkMin,
-      },
-      {
-        name: 'cinder',
-        label: t('Storage'),
-        type: 'label',
-        labelCol: { span: 12, offset: 6 },
-        colNum: 2,
-      },
-      {
-        name: 'networks',
-        label: t('Network'),
-        type: 'label',
-        labelCol: { span: 12, offset: 6 },
-        colNum: 2,
-      },
-      {
-        name: 'volumes',
-        label: t('Volume'),
-        type: 'input-number',
-        labelCol: { span: 12 },
-        colNum: 2,
-        validator: this.checkMin,
-      },
-      {
-        name: 'router',
-        label: t('router'),
-        type: 'input-number',
-        labelCol: { span: 12 },
-        colNum: 2,
-        validator: this.checkMin,
-      },
-      {
-        name: 'gigabytes',
-        label: `${t('gigabytes')}(GB)`,
-        type: 'input-number',
-        labelCol: { span: 12 },
-        colNum: 2,
-        validator: this.checkMin,
-      },
-      {
-        name: 'network',
-        label: t('network'),
-        type: 'input-number',
-        labelCol: { span: 12 },
-        colNum: 2,
-        validator: this.checkMin,
-      },
-      {
-        name: 'backups',
-        label: t('Backup'),
-        type: 'input-number',
-        labelCol: { span: 12 },
-        colNum: 2,
-        validator: this.checkMin,
-      },
-      {
-        name: 'subnet',
-        label: t('subnet'),
-        type: 'input-number',
-        labelCol: { span: 12 },
-        colNum: 2,
-        validator: this.checkMin,
-      },
-      {
-        name: 'backup_gigabytes',
-        label: t('Backup Capacity'),
-        type: 'input-number',
-        labelCol: { span: 12 },
-        colNum: 2,
-        validator: this.checkMin,
-      },
-      {
-        name: 'floatingip',
-        label: t('floatingip'),
-        type: 'input-number',
-        labelCol: { span: 12 },
-        colNum: 2,
-        validator: this.checkMin,
-      },
-      {
-        name: 'snapshots',
-        label: t('Snapshot'),
-        type: 'input-number',
-        labelCol: { span: 12 },
-        colNum: 2,
-        validator: this.checkMin,
-      },
-      {
-        name: 'port',
-        label: t('Port'),
-        type: 'input-number',
-        labelCol: { span: 12 },
-        colNum: 2,
-        validator: this.checkMin,
-      },
-      {
-        name: 'security_group',
-        label: t('security_group'),
-        type: 'input-number',
-        labelCol: { span: 6, offset: 12 },
-        validator: this.checkMin,
-      },
-      {
-        name: 'security_group_rule',
-        label: t('Security Group Rules'),
-        type: 'input-number',
-        labelCol: { span: 6, offset: 12 },
-        validator: this.checkMin,
-      },
+      ...computeFormItems,
+      ...cinderFormItems,
+      ...networkFormItems,
       {
         name: 'more',
         label: t('Advanced Options'),
         type: 'more',
       },
-      {
-        name: 'cinder_types',
-        label: t('Storage Types'),
-        type: 'label',
-        labelCol: { span: 21, offset: 3 },
-        hidden: !more,
-      },
+      ...volumeTypeFormItems,
     ];
-
-    this.volumeTypesData.forEach((i) =>
-      form.push({
-        name: i.key,
-        label: i.text,
-        type: 'input-number',
-        labelCol: { span: 12 },
-        colNum: 2,
-        hidden: !more,
-        validator: this.checkMin,
-      })
-    );
     return form;
   }
 
-  onSubmit = async (values) => {
+  getSubmitData(values) {
     const { id: project_id } = this.item;
-    const { more, cinder, networks, cinder_types, nova, security, ...others } =
-      values;
-    const results = this.store.updateProjectQuota({
+    const { more, compute, storage, networks, volumeTypes, ...others } = values;
+    return {
       project_id,
       data: others,
-    });
+    };
+  }
+
+  onSubmit = async (body) => {
+    const results = this.store.updateProjectQuota(body);
     return results;
   };
 }
