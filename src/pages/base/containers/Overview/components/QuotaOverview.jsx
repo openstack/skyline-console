@@ -16,7 +16,6 @@ import React, { Component } from 'react';
 import { Badge, Card, Col, List, Progress, Row, Spin, Tooltip } from 'antd';
 import { inject, observer } from 'mobx-react';
 import globalVolumeTypeStore from 'stores/cinder/volume-type';
-import globalKeypairStore from 'stores/nova/keypair';
 import globalProjectStore from 'stores/keystone/project';
 import { isNumber } from 'lodash';
 import styles from '../style.less';
@@ -36,6 +35,7 @@ export const quotaCardList = [
       { text: t('vCPUs'), key: 'cores' },
       { text: t('Memory'), key: 'ram' },
       { text: t('Server Group'), key: 'server_groups' },
+      { text: t('Key Pair'), key: 'key_pairs' },
     ],
   },
   {
@@ -85,6 +85,9 @@ export class QuotaOverview extends Component {
     this.state = {
       isLoading: true,
     };
+    const { projectStore, volumeTypeStore } = props;
+    this.projectStore = projectStore || globalProjectStore;
+    this.volumeTypeStore = volumeTypeStore || globalVolumeTypeStore;
   }
 
   componentDidMount() {
@@ -92,20 +95,29 @@ export class QuotaOverview extends Component {
   }
 
   async getData() {
-    const { user } = this.props.rootStore;
-    const { project: { id: projectId = '' } = {} } = user;
-    await Promise.all([
-      globalProjectStore.fetchProjectQuota({ project_id: projectId }),
-      globalVolumeTypeStore.fetchList(),
-      globalKeypairStore.fetchList(),
-    ]);
+    const { getData } = this.props;
+    if (getData) {
+      await getData();
+    } else {
+      const { user } = this.props.rootStore;
+      const { project: { id: projectId = '' } = {} } = user;
+      await Promise.all([
+        this.projectStore.fetchProjectQuota({ project_id: projectId }),
+        this.volumeTypeStore.fetchList(),
+      ]);
+    }
     this.setState({
       isLoading: false,
     });
   }
 
+  get volumeTypeData() {
+    const { volumeTypeData } = this.props;
+    return volumeTypeData || this.volumeTypeStore.list.data;
+  }
+
   get volumeTypesQuota() {
-    const volumeTypes = globalVolumeTypeStore.list.data.map((item, index) => {
+    const volumeTypes = this.volumeTypeData.map((item, index) => {
       return {
         index,
         value: [
@@ -211,7 +223,7 @@ export class QuotaOverview extends Component {
       return <Spin />;
     }
     return this.renderQuotaCart(
-      globalProjectStore.quota,
+      this.projectStore.quota,
       this.getFilteredValue(item.value)
     );
   }
@@ -238,7 +250,7 @@ export class QuotaOverview extends Component {
           <Row key={item.index} gutter={[16]}>
             {item.value.map((i) => (
               <Col span={8} key={i.text}>
-                {this.getItemInfo(globalProjectStore.quota, i)}
+                {this.getItemInfo(this.projectStore.quota, i)}
               </Col>
             ))}
           </Row>
