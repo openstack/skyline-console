@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import React, { Component } from 'react';
-import { Menu } from 'antd';
+import { Menu, Tooltip } from 'antd';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
@@ -110,7 +110,13 @@ export class LayoutMenu extends Component {
           {item.icon}
           <span>
             <Link key={item.key} to={item.path}>
-              {item.name}
+              {item.name.length > 15 ? (
+                <Tooltip title={item.name} placement="right">
+                  {item.name}
+                </Tooltip>
+              ) : (
+                item.name
+              )}
             </Link>
           </span>
         </Menu.Item>
@@ -119,7 +125,15 @@ export class LayoutMenu extends Component {
     const title = (
       <span>
         {item.icon}
-        <span>{item.name}</span>
+        <span>
+          {item.name.length > 15 ? (
+            <Tooltip title={item.name} placement="right">
+              {item.name}
+            </Tooltip>
+          ) : (
+            item.name
+          )}
+        </span>
       </span>
     );
     const subMenuItems = item.children.map((it) => this.renderMenuItem(it));

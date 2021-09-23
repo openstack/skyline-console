@@ -1,4 +1,4 @@
-@import "~styles/variables";
+@import '~styles/variables';
 
 .nav {
   left: -(@nav-width + 10px);
@@ -16,7 +16,7 @@
   padding-left: 230px;
 }
 
-.header-collapsed{
+.header-collapsed {
   &:extend(.header);
   padding-left: 88px;
 }
@@ -115,6 +115,9 @@
     a {
       color: inherit;
     }
+    a::before {
+      width: 5px;
+    }
   }
 }
 
@@ -132,30 +135,33 @@
       padding-right: 5px;
     }
 
-    .ant-menu-item>span>a {
+    .ant-menu-item > span > a {
       padding-left: 13px;
       display: inline-block;
       width: 100%;
       color: transparent;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
 
-    .ant-menu-item>span>a::before {
+    .ant-menu-item > span > a::before {
       position: absolute;
       top: 18px;
       bottom: 0;
       left: 30px;
-      content: "";
+      content: '';
       width: 5px;
       height: 5px;
       background-color: rgba(255, 255, 255, 0.65);
       border-radius: 50%;
     }
 
-    .ant-menu-item-selected>span>a::before {
+    .ant-menu-item-selected > span > a::before {
       background-color: #fff !important;
     }
 
-    .ant-menu-item-active>span>a::before {
+    .ant-menu-item-active > span > a::before {
       background-color: @primary-color;
     }
 
@@ -164,7 +170,8 @@
     //     background-color: transparent !important;
     //   }
     // }
-    .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal)
+      .ant-menu-item-selected {
       background-color: @primary-color;
       border-radius: @border-radius;
     }
@@ -227,7 +234,7 @@
 }
 
 .trigger::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   right: 0;
@@ -294,7 +301,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
-  color: #0068FF;
+  color: #0068ff;
   position: absolute;
   top: 48px;
   right: 0;
@@ -309,6 +316,8 @@
   word-wrap: break-word;
   background: #fff;
   border-radius: 4px;
-  -webkit-box-shadow: 0 3px 6px -4px rgba(0, 0, 0, .12), 0 6px 16px 0 rgba(0, 0, 0, .08), 0 9px 28px 8px rgba(0, 0, 0, .05);
-  box-shadow: 0 3px 6px -4px rgba(0, 0, 0, .12), 0 6px 16px 0 rgba(0, 0, 0, .08), 0 9px 28px 8px rgba(0, 0, 0, .05);
+  -webkit-box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12),
+    0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12),
+    0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
 }
