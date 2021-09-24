@@ -110,7 +110,7 @@ export class LayoutMenu extends Component {
           {item.icon}
           <span>
             <Link key={item.key} to={item.path}>
-              {item.name.length > 15 ? (
+              {item.name.length >= 14 ? (
                 <Tooltip title={item.name} placement="right">
                   {item.name}
                 </Tooltip>
@@ -126,7 +126,7 @@ export class LayoutMenu extends Component {
       <span>
         {item.icon}
         <span>
-          {item.name.length > 15 ? (
+          {item.name.length >= 14 ? (
             <Tooltip title={item.name} placement="right">
               {item.name}
             </Tooltip>
