@@ -84,14 +84,15 @@ export default class AssociateFip extends ModalAction {
 
   handleFixedIPChange = (e) => handleFixedIPChange.call(this, e);
 
-  static canAssociated = (item) =>
-    item.associatedDetail && item.associatedDetail.length < item.ipv4.length;
-
   static allowed = (item, containerProps) => {
     const { isAdminPage = false } = containerProps;
-    return Promise.resolve(
-      !isAdminPage && isNotError(item) && this.canAssociated(item)
-    );
+    return Promise.resolve(!isAdminPage && isNotError(item) && canAssociated());
+
+    function canAssociated() {
+      return (
+        item.associatedDetail && item.associatedDetail.length < item.ipv4.length
+      );
+    }
   };
 
   onSubmit = (values) => {

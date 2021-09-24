@@ -151,9 +151,8 @@ export class VirtualAdapter extends Base {
                 {item.device_owner}
                 <br />
                 <Link
-                  to={`${this.getUrl('/compute/instance')}/detail/${
-                    item.device_id
-                  }?tab=interface`}
+                  to={`${this.getUrl('/compute/instance')}/detail/${item.device_id
+                    }?tab=interface`}
                 >
                   {`${item.device_id}`}
                   {server_name && `(${server_name})`}
@@ -201,23 +200,6 @@ export class VirtualAdapter extends Base {
         dataIndex: 'mac_address',
         isHideable: true,
       },
-      {
-        title: t('Floating IP Address'),
-        dataIndex: 'associatedDetail',
-        isHideable: true,
-        render: (value) =>
-          value && value.length ? value[0].floating_ip_address : '-',
-        sorter: false,
-      },
-      // {
-      //   title: t('Associated Resources'),
-      //   dataIndex: 'device_owner',
-      // },
-      // {
-      //   title: t('Created At'),
-      //   dataIndex: 'created_at',
-      //   valueRender: 'toLocalTime',
-      // },
       {
         title: t('Status'),
         dataIndex: 'status',
