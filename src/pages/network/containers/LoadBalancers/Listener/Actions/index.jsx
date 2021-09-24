@@ -39,9 +39,6 @@ export const actionConfigs = {
       {
         action: EditHealthMonitor,
       },
-      // {
-      //   action: MemberManagement,
-      // },
     ],
   },
   batchActions: [

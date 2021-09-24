@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import globalNetworkStore from 'stores/neutron/network';
-import { action, observable, toJS } from 'mobx';
+import { action, observable } from 'mobx';
 import globalSecurityGroupStore from 'stores/neutron/security-group';
 import globalFloatingIpsStore from 'stores/neutron/floatingIp';
 import client from 'client';
@@ -101,39 +101,6 @@ export class VirtualAdapterStore extends Base {
       isLoading: false,
       ...(this.security_groups.silent ? {} : { selectedRowKeys: [] }),
     });
-  }
-
-  async listDidFetch(items, allProjects, filters) {
-    if (items.length === 0) {
-      return items;
-    }
-    const { device_id, device_owner, addressAsIdKey, network_id } = filters;
-    if (device_owner || device_id || network_id) {
-      // fetch fixed_ips details
-      const details = await Promise.all(
-        items.map((item) => {
-          if (addressAsIdKey) {
-            const { id, ipv4, ipv6 } = item;
-            item.address_id = id;
-            item.member_ip = ipv6.concat(ipv4);
-            item.member_show = item.member_ip.join('、');
-            // item.id = item.member_ip[0];
-          }
-          return Promise.all(
-            item.fixed_ips.map((fixed_ip) =>
-              this.getItemFloatingIPs(fixed_ip.ip_address, item.id)
-            )
-          );
-        })
-      );
-      details.forEach((detail, index) => {
-        items[index].associatedDetail = [];
-        detail.forEach((ip) => {
-          items[index].associatedDetail.push(...toJS(ip));
-        });
-      });
-    }
-    return items;
   }
 
   async getItemFloatingIPs(fixed_ip, portId) {

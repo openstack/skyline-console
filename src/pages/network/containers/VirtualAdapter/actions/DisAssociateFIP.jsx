@@ -46,13 +46,15 @@ export default class DisAssociateFip extends ModalAction {
 
   static policy = 'update_floatingip';
 
-  static canDisassociated = (item) => item.associatedDetail.length !== 0;
-
   static allowed = (item, containerProps) => {
     const { isAdminPage = false } = containerProps;
     return Promise.resolve(
-      !isAdminPage && isNotError(item) && this.canDisassociated(item)
+      !isAdminPage && isNotError(item) && canDisassociated()
     );
+
+    function canDisassociated() {
+      return item.associatedDetail && item.associatedDetail.length;
+    }
   };
 
   get formItems() {
