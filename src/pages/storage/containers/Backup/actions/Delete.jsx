@@ -44,8 +44,8 @@ export default class DeleteAction extends ConfirmAction {
 
   allowedCheckFunc = () => true;
 
-  onSubmit = () => {
-    const { id } = this.item;
+  onSubmit = (item) => {
+    const { id } = item || this.item;
     return globalBackupStore.delete({ id });
   };
 }
