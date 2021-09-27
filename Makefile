@@ -75,6 +75,7 @@ package: install
 	rm -rf $(ROOT_DIR)/skyline_console/static
 	yarn run build
 	poetry build -f wheel
+	poetry build -f sdist
 
 
 .PHONY: fmt
