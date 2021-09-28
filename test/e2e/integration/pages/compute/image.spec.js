@@ -24,11 +24,16 @@ describe('The Image Page', () => {
   const name = `e2e-image-${uuid}`;
   const sharedImage = `e2e-image-shared-${uuid}`;
   const newname = `${name}-1`;
-  const filename = 'cirros-0.4.0-x86_64-disk.qcow2';
+  const filename = `cirros-disk-${uuid}.qcow2`;
   const volumeName = `e2e-volume-by-image-${uuid}`;
+  const downloadUrl = Cypress.env('imageDownloadUrl');
 
   beforeEach(() => {
     cy.login(listUrl);
+  });
+
+  it('successfully download image', () => {
+    cy.downloadFile(downloadUrl, 'test/e2e/fixtures', filename);
   });
 
   it('successfully list', () => {
@@ -133,6 +138,9 @@ describe('The Image Page', () => {
 
   it('successfully delete', () => {
     cy.tableSearchText(newname).clickConfirmActionInMore('Delete');
-    cy.tableSearchText(sharedImage).clickConfirmActionInMore('Delete');
+    cy.loginAdmin()
+      .visitPage(imageListUrlAdmin)
+      .tableSearchText(sharedImage)
+      .clickConfirmActionInMore('Delete');
   });
 });

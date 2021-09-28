@@ -13,6 +13,7 @@
 // limitations under the License.
 
 // / <reference types="cypress" />
+const { downloadFile } = require('cypress-downloadfile/lib/addPlugin');
 const { getConfig } = require('../utils');
 
 /**
@@ -36,6 +37,7 @@ module.exports = (on, config) => {
     ...env,
   };
 
+  on('task', { downloadFile });
   // eslint-disable-next-line global-require
   require('@cypress/code-coverage/task')(on, config);
   // eslint-disable-next-line global-require

@@ -34,6 +34,9 @@ import './table-commands';
 import './detail-commands';
 import './commands';
 import './resource-commands';
+import 'cypress-file-upload';
+
+require('cypress-downloadfile/lib/downloadFileCommand');
 
 Cypress.Cookies.defaults({
   preserve: ['session', 'X-Auth-Token'],
