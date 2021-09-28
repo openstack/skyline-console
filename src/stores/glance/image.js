@@ -15,6 +15,7 @@
 import { action, observable } from 'mobx';
 import client from 'client';
 import Base from 'stores/base';
+import { imageOS } from 'resources/image';
 
 export class ImageStore extends Base {
   @observable
@@ -61,6 +62,17 @@ export class ImageStore extends Base {
         ...data,
         project_id: data.owner,
         project_name: data.owner_project_name || data.project_name,
+      };
+    };
+  }
+
+  get mapper() {
+    return (data) => {
+      const { os_distro } = data;
+      const os = imageOS[os_distro] ? os_distro : 'others';
+      return {
+        ...data,
+        os_distro: os,
       };
     };
   }
