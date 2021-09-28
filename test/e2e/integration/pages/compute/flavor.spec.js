@@ -17,7 +17,6 @@ import { flavorListUrl } from '../../../support/constants';
 describe('The Flavor Page', () => {
   const listUrl = flavorListUrl;
   const name = `e2e-flavor-${Cypress._.random(0, 1e6)}`;
-  const customName = '1C.1G';
 
   beforeEach(() => {
     cy.loginAdmin(listUrl);
@@ -51,7 +50,6 @@ describe('The Flavor Page', () => {
       .checkDetailName(name)
       .clickDetailTab('Instance', 'members');
     cy.goBackToList(listUrl);
-    cy.clickTab('Custom').goToDetail().clickDetailTab('Instance', 'members');
   });
 
   it('successfully manage access', () => {
@@ -64,7 +62,6 @@ describe('The Flavor Page', () => {
 
   it('successfully manage metadata', () => {
     cy.clickTab('Custom')
-      .tableSearchText(customName)
       .clickActionButtonByTitle('Manage Metadata')
       .wait(5000)
       .formTransferLeftCheck('systems', 0)
@@ -72,7 +69,6 @@ describe('The Flavor Page', () => {
 
     // todo: remove key-value metadata
     cy.clickTab('Custom')
-      .tableSearchText(customName)
       .clickActionButtonByTitle('Manage Metadata')
       .wait(5000)
       .formTransferRightCheck('systems', 0)

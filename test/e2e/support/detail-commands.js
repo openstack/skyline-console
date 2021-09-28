@@ -34,3 +34,15 @@ Cypress.Commands.add('clickDetailTab', (label, urlTab, waitTime = 2000) => {
   }
   cy.waitTableLoading();
 });
+
+Cypress.Commands.add('clickDetailActionInMore', (title, waitTime = 2000) => {
+  cy.get('.detail-main')
+    .first()
+    .find('.ant-dropdown-trigger')
+    .trigger('mouseover');
+  const realTitle = getTitle(title);
+  cy.get('ul.ant-dropdown-menu-light')
+    .contains(realTitle)
+    .click({ force: true })
+    .wait(waitTime);
+});

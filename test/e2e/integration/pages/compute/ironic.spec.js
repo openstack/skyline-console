@@ -20,6 +20,7 @@ describe('The Ironic Page', () => {
   const name = `e2e-ironic-${uuid}`;
   const newname = `${name}-1`;
   const password = 'passW0rd_1';
+  const flavorName = `e2e-flavor-for-ironic-${uuid}`;
   const networkName = `e2e-network-for-ironic-${uuid}`;
   const routerName = `e2e-router-for-ironic-${uuid}`;
   const imageName = Cypress.env('imageName');
@@ -27,6 +28,10 @@ describe('The Ironic Page', () => {
 
   beforeEach(() => {
     cy.login(listUrl);
+  });
+
+  it('successfully prepair resource by admin', () => {
+    cy.loginAdmin().createIronicFlavor(flavorName);
   });
 
   it('successfully prepair resource', () => {
@@ -179,5 +184,6 @@ describe('The Ironic Page', () => {
     cy.deleteAll('fip');
     cy.deleteRouter(routerName, networkName);
     cy.deleteAll('network', networkName);
+    cy.loginAdmin().deleteAll('flavor', flavorName, 'Bare Metal');
   });
 });

@@ -1,0 +1,66 @@
+[
+  {
+    "architecture": "x86_architecture",
+    "categories": [
+      {
+        "name": "general_purpose",
+        "properties": []
+      },
+      {
+        "name": "compute_optimized",
+        "properties": []
+      },
+      {
+        "name": "memory_optimized",
+        "properties": []
+      },
+      {
+        "name": "high_clock_speed",
+        "properties": []
+      }
+    ]
+  },
+  {
+    "architecture": "heterogeneous_computing",
+    "categories": [
+      {
+        "name": "compute_optimized_type_with_gpu",
+        "properties": []
+      },
+      {
+        "name": "visualization_compute_optimized_type_with_gpu",
+        "properties": []
+      }
+    ]
+  },
+  {
+    "architecture": "bare_metal",
+    "categories": [
+      {
+        "name": "general_purpose",
+        "properties": []
+      }
+    ]
+  },
+  {
+    "architecture": "arm_architecture",
+    "categories": [
+      {
+        "name": "general_purpose",
+        "properties": []
+      },
+      {
+        "name": "compute_optimized",
+        "properties": []
+      },
+      {
+        "name": "memory_optimized",
+        "properties": []
+      },
+      {
+        "name": "high_clock_speed",
+        "properties": []
+      }
+    ]
+  }
+]

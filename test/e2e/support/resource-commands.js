@@ -25,6 +25,8 @@ import urlMap, {
   fipListUrl,
   imageListUrl,
   projectListUrl,
+  settingUrl,
+  flavorListUrl,
 } from './constants';
 
 Cypress.Commands.add('createInstance', ({ name, networkName }) => {
@@ -227,6 +229,28 @@ Cypress.Commands.add('createProject', ({ name }) => {
     .clickHeaderButton(1)
     .formInput('name', name)
     .clickModalActionSubmitButton();
+});
+
+Cypress.Commands.add('createIronicFlavor', (name) => {
+  const filename = 'flavor-family.json';
+  const settingName = 'flavor_families';
+  cy.fixture(filename).then((data) => {
+    cy.visitPage(settingUrl)
+      .tableSimpleSearchText(settingName)
+      .clickActionInMore('Edit')
+      .formJsonInput('value', data)
+      .wait(2000)
+      .clickModalActionSubmitButton();
+
+    cy.visitPage(flavorListUrl)
+      .clickTab('Bare Metal', 'bare_metal')
+      .clickHeaderButton(1)
+      .formRadioChoose('category', 0)
+      .formInput('name', name)
+      .clickStepActionNextButton()
+      .wait(2000)
+      .clickStepActionNextButton();
+  });
 });
 
 Cypress.Commands.add('createIronicImage', ({ name }) => {

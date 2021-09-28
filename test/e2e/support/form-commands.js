@@ -137,11 +137,12 @@ Cypress.Commands.add('formText', (formItemName, value) => {
 });
 
 Cypress.Commands.add('formJsonInput', (formItemName, content) => {
-  const value = JSON.stringify(content).replace('{', '{{}');
+  const value = JSON.stringify(content);
   cy.get(getId(formItemName))
     .find('textarea')
     .clear({ force: true })
-    .type(value, { force: true });
+    .wait(1000)
+    .type(value, { force: true, parseSpecialCharSequences: false });
 });
 
 Cypress.Commands.add('formInputName', (formItemName, typeName) => {
