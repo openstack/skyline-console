@@ -19,11 +19,7 @@ describe('The Volume Backup Page', () => {
   const uuid = Cypress._.random(0, 1e6);
   const name = `e2e-backup-${uuid}`;
   const nameInc = `${name}-inc`;
-  const nameIns = `e2e-backup-ins-${uuid}`;
-  const nameInsInc = `${nameIns}-inc`;
   const volumeName = `e2e-volume-for-backup-${uuid}`;
-  const networkName = `e2e-network-for-backup-${uuid}`;
-  const instanceName = `e2e-instance-for-backup-${uuid}`;
   const volumeNameByBackup = `e2e-volume-by-backup-${uuid}`;
   const newname = `${name}-1`;
 
@@ -33,8 +29,6 @@ describe('The Volume Backup Page', () => {
 
   it('successfully prepair resource', () => {
     cy.createVolume(volumeName);
-    cy.createNetwork({ name: networkName });
-    cy.createInstance({ name: instanceName, networkName });
   });
 
   it('successfully create full bakcup', () => {
@@ -44,11 +38,6 @@ describe('The Volume Backup Page', () => {
       .clickModalActionSubmitButton()
       .wait(5000)
       .waitTableLoading();
-
-    cy.clickHeaderButton(1, 5000)
-      .formInput('name', nameIns)
-      .formTableSelectBySearchOption('volume', 'Status', 'In-use')
-      .clickModalActionSubmitButton();
 
     cy.wait(30000);
   });
@@ -61,12 +50,6 @@ describe('The Volume Backup Page', () => {
       .clickModalActionSubmitButton()
       .wait(5000)
       .waitTableLoading();
-
-    cy.clickHeaderButton(1, 5000)
-      .formInput('name', nameInsInc)
-      .formRadioChoose('incremental', 1)
-      .formTableSelectBySearchOption('volume', 'Status', 'In-use')
-      .clickModalActionSubmitButton();
   });
 
   it('successfully detail', () => {
@@ -110,15 +93,9 @@ describe('The Volume Backup Page', () => {
     cy.tableSearchText(newname)
       .clickConfirmActionInMore('Delete')
       .tableSearchText(newname);
-
-    cy.tableSearchText(nameIns)
-      .clickConfirmActionInMore('Delete')
-      .tableSearchText(nameIns);
   });
 
   it('successfully delete related resources', () => {
-    cy.forceDeleteInstance(instanceName);
-    cy.deleteAll('network', networkName);
     cy.deleteAll('volume', volumeName);
     cy.deleteAll('volume', volumeNameByBackup);
   });

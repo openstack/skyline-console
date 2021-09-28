@@ -19,10 +19,12 @@ describe('The Instance Page', () => {
   const uuid = Cypress._.random(0, 1e6);
   const name = `e2e-instance-${uuid}`;
   const newname = `${name}-1`;
-  const password = 'passw0rd_1';
+  const password = 'passW0rd_1';
   const volumeName = `e2e-instance-attach-volume-${uuid}`;
   const networkName = `e2e-network-for-instance-${uuid}`;
   const routerName = `e2e-router-for-instance-${uuid}`;
+  const imageName = Cypress.env('imageName');
+  const imageType = Cypress.env('imageType');
 
   beforeEach(() => {
     cy.login(listUrl);
@@ -41,7 +43,8 @@ describe('The Instance Page', () => {
       .should('include', `${listUrl}/create`)
       .wait(5000)
       .formTableSelect('flavor')
-      .formTableSelect('image')
+      .formRadioChooseByLabel('image', imageType)
+      .formTableSelectBySearch('image', imageName)
       .formSelect('systemDisk')
       .formAddSelectAdd('dataDisk')
       .formSelect('dataDisk')

@@ -19,10 +19,11 @@ describe('The Ironic Page', () => {
   const uuid = Cypress._.random(0, 1e6);
   const name = `e2e-ironic-${uuid}`;
   const newname = `${name}-1`;
-  const password = 'passw0rd_1';
+  const password = 'passW0rd_1';
   const networkName = `e2e-network-for-ironic-${uuid}`;
   const routerName = `e2e-router-for-ironic-${uuid}`;
-  const imageName = `e2e-image-for-ironic-${uuid}`;
+  const imageName = Cypress.env('imageName');
+  const imageType = Cypress.env('imageType');
 
   beforeEach(() => {
     cy.login(listUrl);
@@ -32,13 +33,13 @@ describe('The Ironic Page', () => {
     cy.createNetwork({ name: networkName });
     cy.createRouter({ name: routerName, network: networkName });
     cy.createFip();
-    cy.createIronicImage({ name: imageName });
   });
 
   it('successfully create', () => {
     cy.clickHeaderButton(2)
       .wait(5000)
       .formTableSelect('flavor')
+      .formRadioChooseByLabel('image', imageType)
       .formTableSelectBySearch('image', imageName)
       .clickStepActionNextButton()
       .wait(5000)
@@ -178,6 +179,5 @@ describe('The Ironic Page', () => {
     cy.deleteAll('fip');
     cy.deleteRouter(routerName, networkName);
     cy.deleteAll('network', networkName);
-    cy.deleteAll('image', imageName);
   });
 });

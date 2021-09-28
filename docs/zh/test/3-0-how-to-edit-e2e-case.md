@@ -17,7 +17,7 @@
    const uuid = Cypress._.random(0, 1e6);
    const name = `e2e-instance-${uuid}`;
    const newname = `${name}-1`;
-   const password = 'passw0rd_1';
+   const password = 'passW0rd_1';
    const volumeName = `e2e-instance-attach-volume-${uuid}`;
    const networkName = `e2e-network-for-instance-${uuid}`;
    const routerName = `e2e-router-for-instance-${uuid}`;

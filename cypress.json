@@ -5,7 +5,7 @@
   "video": false,
   "env": {
     "username": "administrator",
-    "password": "passw0rd",
+    "password": "passW0rd",
     "region": "RegionOne",
     "domain": "Default",
     "sessionKey": "X-Auth-Token",

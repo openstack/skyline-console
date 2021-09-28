@@ -255,6 +255,15 @@ Cypress.Commands.add('formRadioChoose', (formItemName, itemIndex = 0) => {
     .click();
 });
 
+Cypress.Commands.add('formRadioChooseByLabel', (formItemName, label) => {
+  const realName = getTitle(label);
+  cy.get(getId(formItemName))
+    .find('.ant-radio-button-wrapper')
+    .contains(realName)
+    .first()
+    .click();
+});
+
 Cypress.Commands.add('formAttachFile', (formItemName, filename) => {
   cy.get(getId(formItemName)).find('input').attachFile(filename).wait(2000);
 });

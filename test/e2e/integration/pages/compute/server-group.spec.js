@@ -17,9 +17,11 @@ import { serverGroupListUrl } from '../../../support/constants';
 describe('The Server Group Page', () => {
   const listUrl = serverGroupListUrl;
   const uuid = Cypress._.random(0, 1e6);
-  const name = `e2e-server-group-${Cypress._.random(0, 1e6)}`;
+  const name = `e2e-server-group-${uuid}`;
   const instanceName = `e2e-instance-by-server-group-${uuid}`;
   const networkName = `e2e-network-for-server-group-${uuid}`;
+  const imageName = Cypress.env('imageName');
+  const imageType = Cypress.env('imageType');
 
   beforeEach(() => {
     cy.login(listUrl);
@@ -45,12 +47,13 @@ describe('The Server Group Page', () => {
   });
 
   it('successfully create instance', () => {
-    const password = 'passw0rd_1';
+    const password = 'passW0rd_1';
     cy.tableSearchText(name)
       .goToDetail()
       .clickHeaderButton(1)
       .formTableSelect('flavor')
-      .formTableSelect('image')
+      .formRadioChooseByLabel('image', imageType)
+      .formTableSelectBySearch('image', imageName)
       .formSelect('systemDisk')
       .clickStepActionNextButton()
       .wait(5000)
@@ -75,9 +78,9 @@ describe('The Server Group Page', () => {
   });
 
   it('successfully delete', () => {
-    cy.clickFirstActionDisabled();
+    cy.tableSearchText(name).clickFirstActionDisabled();
     cy.forceDeleteInstance(instanceName);
-    cy.wait(5000);
+    cy.wait(10000);
     cy.visitPage(listUrl)
       .tableSearchText(name)
       .clickConfirmActionInFirst()

@@ -23,11 +23,9 @@ describe('The Volume Page', () => {
     0,
     1e6
   )}`;
-  // eslint-disable-next-line no-unused-vars
   const imageName = `e2e-image-by-volume-${uuid}`;
   const snapshotName = `e2e-snapshot-by-volume-${uuid}`;
   const backupName = `e2e-backup-by-volume-${uuid}`;
-  // eslint-disable-next-line no-unused-vars
   const backupIncName = `e2e-backup-inc-by-volume-${uuid}`;
   const cloneVolumeName = `e2e-clone-volume-${uuid}`;
 
@@ -57,6 +55,7 @@ describe('The Volume Page', () => {
       .url()
       .should('include', creatUrl)
       .wait(5000)
+      .formInput('size', 1)
       .formInput('name', name)
       .clickFormActionSubmitButton()
       .wait(2000)
@@ -78,13 +77,6 @@ describe('The Volume Page', () => {
       'snapshot'
     );
     cy.goBackToList(listUrl);
-  });
-
-  it('successfully extend volume', () => {
-    cy.tableSearchText(name)
-      .clickActionInMore('Extend Volume')
-      .clickModalActionSubmitButton();
-    cy.tableSearchText(name).waitStatusActiveByRefresh();
   });
 
   it('successfully create snapshot', () => {
@@ -113,16 +105,17 @@ describe('The Volume Page', () => {
       .waitStatusActiveByRefresh();
   });
 
-  // it("successfully create backup inc", () => {
-  //   cy.tableSearchText(name)
-  //     .clickActionInMore("Create Backup")
-  //     .formInput("name", backupIncName)
-  //     .formRadioChoose("incremental", 1)
-  //     .clickModalActionSubmitButton()
-  //     .tableSearchText(name)
-  //     .waitStatusActive();
-  //   cy.deleteAll("backup");
-  // });
+  it('successfully create backup inc', () => {
+    cy.tableSearchText(name)
+      .clickActionInMore('Create Backup')
+      .formInput('name', backupIncName)
+      .formRadioChoose('incremental', 1)
+      .clickModalActionSubmitButton()
+      .tableSearchText(name)
+      .waitStatusActive();
+    cy.deleteAll('backup', backupIncName);
+    cy.wait(5000).deleteAll('backup', backupName);
+  });
 
   it('successfully clone volume', () => {
     cy.tableSearchText(name)
@@ -147,21 +140,23 @@ describe('The Volume Page', () => {
       .wait(5000)
       .formTableSelect('instance')
       .clickModalActionSubmitButton();
-
-    cy.tableSearchText(name).checkColumnValue(3, 'Available');
+    cy.tableSearchText(name).waitStatusActiveByRefresh();
   });
 
-  // it('successfully create image', () => {
-  //   cy.tableSearchText(name)
-  //     .clickActionInMore('Create Image')
-  //     .formInput('image_name', imageName)
-  //     .clickModalActionSubmitButton()
-  //     .waitStatusActiveByRefresh();
+  it('successfully create image', () => {
+    cy.tableSearchText(name)
+      .clickActionInMore('Create Image')
+      .formInput('image_name', imageName)
+      .clickModalActionSubmitButton();
+    cy.tableSearchText(name).waitStatusActiveByRefresh();
+  });
 
-  //   cy.clearTableSearch()
-  //     .tableSearchSelect('Status', 'In-use')
-  //     .checkActionDisabled('Create Image');
-  // });
+  it('successfully extend volume', () => {
+    cy.tableSearchText(name)
+      .clickActionInMore('Extend Volume')
+      .clickModalActionSubmitButton();
+    cy.tableSearchText(name).waitStatusActiveByRefresh();
+  });
 
   it('successfully change type', () => {
     cy.tableSearchText(name)
@@ -183,11 +178,11 @@ describe('The Volume Page', () => {
   });
 
   it('successfully delete related resources', () => {
+    cy.deleteAll('image', imageName);
     cy.deleteAll('volume', cloneVolumeName);
     cy.forceDeleteInstance(instanceName);
     cy.deleteAll('network', networkName);
     cy.loginAdmin().wait(5000);
     cy.deleteAll('volumeType', volumeTypeName);
-    // cy.deleteAll('image', imageName);
   });
 });

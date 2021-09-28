@@ -99,8 +99,8 @@ describe('The VPN Page', () => {
       .wait(2000)
       .formInput('peer_address', '192.168.1.1')
       .formSelect('peer_ep_group_id', endpointPeer)
-      .formInput('password', 'passw0rd')
-      .formInput('confirmPassword', 'passw0rd')
+      .formInput('password', 'passW0rd')
+      .formInput('confirmPassword', 'passW0rd')
       .formButtonClick('more')
       .clickModalActionSubmitButton();
   });

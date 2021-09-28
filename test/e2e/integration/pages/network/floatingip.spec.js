@@ -37,6 +37,7 @@ describe('The Floating IP Page', () => {
   });
 
   it('successfully create', () => {
+    cy.wait(2000);
     cy.intercept('GET', '/networks').as('networks');
     cy.clickHeaderButton(1)
       .wait('@networks')
@@ -45,6 +46,7 @@ describe('The Floating IP Page', () => {
   });
 
   it('successfully batch create', () => {
+    cy.wait(2000);
     cy.intercept('GET', '/networks').as('networks');
     cy.clickHeaderButton(1)
       .wait('@networks')

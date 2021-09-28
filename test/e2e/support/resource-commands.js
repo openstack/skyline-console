@@ -28,12 +28,15 @@ import urlMap, {
 } from './constants';
 
 Cypress.Commands.add('createInstance', ({ name, networkName }) => {
-  const password = 'passw0rd_1';
+  const password = 'passW0rd_1';
+  const imageName = Cypress.env('imageName');
+  const imageType = Cypress.env('imageType');
   cy.visitPage(instanceListUrl)
     .clickHeaderButton(1)
-    .wait(5000)
+    .wait(8000)
     .formTableSelect('flavor')
-    .formTableSelect('image')
+    .formRadioChooseByLabel('image', imageType)
+    .formTableSelectBySearch('image', imageName)
     .formSelect('systemDisk')
     .clickStepActionNextButton()
     .wait(5000)
@@ -127,7 +130,11 @@ Cypress.Commands.add('deleteInstance', (name, deleteRecycleBin = true) => {
 Cypress.Commands.add('forceDeleteInstance', (name) => {
   cy.visitPage(instanceListUrl)
     .tableSearchText(name)
-    .clickConfirmActionInMore('Delete');
+    .clickActionInMore('Delete');
+  cy.get('.ant-modal-confirm-content')
+    .find('.ant-checkbox-input')
+    .click()
+    .clickConfirmActionSubmitButton();
 });
 
 Cypress.Commands.add('deleteAllAvailableVolume', () => {
@@ -140,7 +147,7 @@ Cypress.Commands.add('deleteAllAvailableVolume', () => {
 Cypress.Commands.add(
   'createInstanceByResource',
   ({ name, networkName, resource }) => {
-    const password = 'passw0rd_1';
+    const password = 'passW0rd_1';
     cy.formTableSelect('flavor')
       .formTableSelect(resource)
       .formSelect('systemDisk')
@@ -183,6 +190,7 @@ Cypress.Commands.add('createSecurityGrouop', ({ name }) => {
 Cypress.Commands.add('createFip', () => {
   cy.intercept('GET', '/networks').as('networks');
   cy.visitPage(fipListUrl)
+    .wait(2000)
     .clickHeaderButton(1)
     .wait('@networks')
     .formSelect('floating_network_id')
@@ -199,7 +207,7 @@ Cypress.Commands.add('createUserGroup', ({ name }) => {
 Cypress.Commands.add('createUser', ({ name }) => {
   const email = `${name}@example.com`;
   const phone = '18500000000';
-  const password = 'passw0rd_';
+  const password = 'passW0rd_';
   cy.visitPage(userListUrl)
     .clickHeaderButton(1)
     .wait(2000)
