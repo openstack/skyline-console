@@ -14,10 +14,10 @@
 
 import React, { useEffect, useState } from 'react';
 import ImageType from 'components/ImageType';
-import globalRootStore from 'stores/root';
 import { getLocalTimeStr } from 'utils/time';
 import { Table, Popover } from 'antd';
 import globalActionLogStore from 'stores/nova/action-log';
+import { ironicOriginEndpoint } from 'client/client/constants';
 import { Link } from 'react-router-dom';
 
 import lockSvg from 'asset/image/lock.svg';
@@ -387,8 +387,7 @@ export const instanceSelectTablePropsBackend = {
   columns: instanceColumnsBackend,
 };
 
-export const canCreateIronicByLicense = () =>
-  globalRootStore.checkLicense('ironic');
+export const canCreateIronicByEndpoint = () => ironicOriginEndpoint();
 
 export const allowAttachVolumeInstance = (item) => {
   const statusResult = checkStatus(

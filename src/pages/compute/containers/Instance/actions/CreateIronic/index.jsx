@@ -21,7 +21,7 @@ import globalServerStore from 'stores/nova/instance';
 import globalProjectStore from 'stores/keystone/project';
 import classnames from 'classnames';
 import { isEmpty, isFinite } from 'lodash';
-import { getUserData, canCreateIronicByLicense } from 'resources/instance';
+import { getUserData, canCreateIronicByEndpoint } from 'resources/instance';
 import { ironicOriginEndpoint } from 'client/client/constants';
 import Notify from 'components/Notify';
 import styles from './index.less';
@@ -61,7 +61,7 @@ export class CreateIronic extends StepAction {
     const { match } = containerProps || {};
     const inServerGroupDetailPage = match.path.indexOf('/compute/server') >= 0;
     return Promise.resolve(
-      !inServerGroupDetailPage && !isAdminPage && canCreateIronicByLicense()
+      !inServerGroupDetailPage && !isAdminPage && canCreateIronicByEndpoint()
     );
   }
 

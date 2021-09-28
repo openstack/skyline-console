@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import CreateInstance from 'pages/compute/containers/Instance/actions/StepCreate';
 import { canImageCreateIronicInstance } from 'resources/image';
-import { canCreateIronicByLicense } from 'resources/instance';
+import { canCreateIronicByEndpoint } from 'resources/instance';
 
 @inject('rootStore')
 @observer
@@ -34,7 +34,7 @@ export default class CreateIronic extends CreateInstance {
     const { isAdminPage } = containerProps;
     return Promise.resolve(
       !isAdminPage &&
-        canCreateIronicByLicense() &&
+        canCreateIronicByEndpoint() &&
         canImageCreateIronicInstance(item)
     );
   }
