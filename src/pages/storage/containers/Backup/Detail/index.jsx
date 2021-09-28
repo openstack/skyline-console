@@ -15,6 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import globalBackupStore from 'stores/cinder/backup';
 import Base from 'containers/TabDetail';
+import { backupStatus } from 'resources/backup';
 import BaseDetail from './BaseDetail';
 import actionConfigs from '../actions';
 
@@ -63,6 +64,11 @@ export default class Detail extends Base {
       {
         title: t('Description'),
         dataIndex: 'description',
+      },
+      {
+        title: t('Status'),
+        dataIndex: 'status',
+        render: (value) => backupStatus[value] || '-',
       },
       {
         title: t('Project ID'),
