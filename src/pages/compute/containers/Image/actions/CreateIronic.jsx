@@ -17,9 +17,7 @@ import CreateInstance from 'pages/compute/containers/Instance/actions/StepCreate
 import { canImageCreateIronicInstance } from 'resources/image';
 import { canCreateIronicByEndpoint } from 'resources/instance';
 
-@inject('rootStore')
-@observer
-export default class CreateIronic extends CreateInstance {
+export class CreateIronic extends CreateInstance {
   static id = 'ironic-create';
 
   static title = t('Create Ironic Instance');
@@ -39,3 +37,5 @@ export default class CreateIronic extends CreateInstance {
     );
   }
 }
+
+export default inject('rootStore')(observer(CreateIronic));
