@@ -10,6 +10,7 @@ env:
   imageName: cirros-0.5.2-x86_64-disk
   imageType: Others
   imageDownloadUrl: http://download.cirros-cloud.net/0.5.1/cirros-0.5.1-x86_64-disk.img
+  imageCanChangePassword: false
 testFiles:
   - pages/login.spec.js
   - pages/error.spec.js
@@ -33,7 +34,7 @@ testFiles:
   - pages/network/vpn.spec.js
   - pages/network/lb.spec.js
   - pages/network/topology.spec.js
-  - pages/compute/image.spec.js # need to put an image file in fixtures
+  - pages/compute/image.spec.js
   - pages/compute/flavor.spec.js
   - pages/compute/server-group.spec.js
   - pages/compute/keypair.spec.js

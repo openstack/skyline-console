@@ -25,6 +25,7 @@ describe('The Instance Page', () => {
   const routerName = `e2e-router-for-instance-${uuid}`;
   const imageName = Cypress.env('imageName');
   const imageType = Cypress.env('imageType');
+  const ableChangePwd = Cypress.env('imageCanChangePassword') || false;
 
   beforeEach(() => {
     cy.login(listUrl);
@@ -103,9 +104,8 @@ describe('The Instance Page', () => {
   it('successfully stop', () => {
     cy.tableSearchText(name)
       .clickConfirmActionInMoreSub('Stop', 'Instance Status')
-      .wait(10000)
       .tableSearchText(name)
-      .checkColumnValue(6, 'Shutoff')
+      .waitStatusTextByFresh('Shutoff')
       .selectFirst()
       .clickHeaderButtonByTitle('Stop')
       .checkDisableAction(2000);
@@ -124,9 +124,8 @@ describe('The Instance Page', () => {
   it('successfully suspend', () => {
     cy.tableSearchText(name)
       .clickConfirmActionInMoreSub('Suspend', 'Instance Status')
-      .wait(10000)
       .tableSearchText(name)
-      .checkColumnValue(6, 'Suspended');
+      .waitStatusTextByFresh('Suspended');
   });
 
   it('successfully resume', () => {
@@ -138,9 +137,8 @@ describe('The Instance Page', () => {
   it('successfully pause', () => {
     cy.tableSearchText(name)
       .clickConfirmActionInMoreSub('Pause', 'Instance Status')
-      .wait(10000)
       .tableSearchText(name)
-      .checkColumnValue(6, 'Paused');
+      .waitStatusTextByFresh('Paused');
   });
 
   it('successfully unpause', () => {
@@ -152,7 +150,7 @@ describe('The Instance Page', () => {
   it('successfully shelve', () => {
     cy.tableSearchText(name)
       .clickConfirmActionInMoreSub('Shelve', 'Instance Status')
-      .wait(20000);
+      .waitStatusTextByFresh('Shelved');
   });
 
   it('successfully unshelve', () => {
@@ -248,15 +246,10 @@ describe('The Instance Page', () => {
       .clickModalActionCancelButton();
   });
 
-  it('successfully extend root volume', () => {
-    cy.tableSearchText(name)
-      .clickActionInMoreSub('Extend Root Volume', 'Configuration Update')
-      .wait(5000)
-      .clickModalActionSubmitButton()
-      .wait(30000);
-  });
-
   it('successfully change password', () => {
+    if (!ableChangePwd) {
+      return;
+    }
     const passowrdNew = `${password}_1`;
     cy.tableSearchText(name)
       .clickActionInMoreSub('Change Password', 'Configuration Update')
@@ -269,20 +262,22 @@ describe('The Instance Page', () => {
     cy.tableSearchText(name)
       .clickActionInMoreSub('Rebuild Instance', 'Configuration Update')
       .wait(5000)
-      .formTableSelect('image')
+      .formRadioChooseByLabel('image', imageType)
+      .formTableSelectBySearch('image', imageName)
       .clickModalActionSubmitButton()
       .waitStatusActiveByRefresh();
   });
 
-  it('successfully resize', () => {
-    cy.tableSearchText(name)
-      .clickActionInMoreSub('Resize', 'Configuration Update')
-      .wait(5000)
-      .formTableSelect('newFlavor')
-      .formCheckboxClick('option')
-      .clickModalActionSubmitButton()
-      .waitStatusActiveByRefresh();
-  });
+  // todo: need a confirm resize button
+  // it('successfully resize', () => {
+  //   cy.tableSearchText(name)
+  //     .clickActionInMoreSub('Resize', 'Configuration Update')
+  //     .wait(5000)
+  //     .formTableSelect('newFlavor')
+  //     .formCheckboxClick('option')
+  //     .clickModalActionSubmitButton()
+  //     .waitStatusActiveByRefresh();
+  // });
 
   it('successfully edit', () => {
     cy.tableSearchText(name)
@@ -293,7 +288,7 @@ describe('The Instance Page', () => {
   });
 
   it('successfully delete', () => {
-    cy.deleteInstance(newname);
+    cy.forceDeleteInstance(newname);
   });
 
   it('successfully delete related resources', () => {

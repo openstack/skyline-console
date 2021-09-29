@@ -296,6 +296,37 @@ Cypress.Commands.add('checkColumnValue', (columnIndex, value) => {
     .should('exist');
 });
 
+Cypress.Commands.add(
+  'getStatusValueLength',
+  (value, hasLengthCallback, noLengthCallback) => {
+    const eles = Cypress.$('.ant-badge-status-text').filter(
+      `:contains(${value})`
+    );
+    if (eles.length > 0) {
+      hasLengthCallback();
+    } else {
+      noLengthCallback();
+      cy.getStatusValueLength(value, hasLengthCallback, noLengthCallback);
+    }
+  }
+);
+
+Cypress.Commands.add('waitStatusTextByFresh', (text) => {
+  let index = 0;
+  const hasLengthCallback = () => {
+    // eslint-disable-next-line no-console
+    console.log('contain', index);
+  };
+  const noLengthCallback = () => {
+    // eslint-disable-next-line no-console
+    console.log('not contain', index);
+    cy.freshTable();
+    index += 1;
+    cy.wait(5000);
+  };
+  cy.getStatusValueLength(text, hasLengthCallback, noLengthCallback);
+});
+
 Cypress.Commands.add('selectFirst', () => {
   cy.get('.ant-table-row')
     .first()
