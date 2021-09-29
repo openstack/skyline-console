@@ -118,8 +118,7 @@ Cypress.Commands.add('deleteRouter', (name, networkName) => {
 Cypress.Commands.add('deleteInstance', (name, deleteRecycleBin = true) => {
   cy.visitPage(instanceListUrl)
     .tableSearchText(name)
-    .clickConfirmActionInMore('Delete')
-    .checkEmptyTable();
+    .clickConfirmActionInMore('Delete');
 
   if (deleteRecycleBin) {
     cy.visitPage(recycleBinListUrl)
