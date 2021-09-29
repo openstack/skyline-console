@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { formatSize } from 'utils';
+
 export const cpuPolicyList = {
   dedicated: t('Dedicated'),
   shared: t('Shared'),
@@ -151,7 +153,7 @@ export const getBaseColumns = (self) => [
     title: t('Memory'),
     dataIndex: 'ram',
     isHideable: true,
-    render: (ram) => `${Number.parseInt(ram / 1024, 10)}G`,
+    render: (ram) => formatSize(ram, 2),
   },
   {
     title: t('Internal Network Bandwidth(Gbps)'),

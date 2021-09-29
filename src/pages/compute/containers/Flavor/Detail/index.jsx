@@ -18,6 +18,7 @@ import Base from 'containers/TabDetail';
 import { flavorCategoryList, flavorArchitectures } from 'resources/flavor';
 import Members from 'pages/compute/containers/Instance';
 import { emptyActionConfig } from 'utils/constants';
+import { formatSize } from 'utils';
 import actionConfigs from '../actions';
 import BaseDetail from './BaseDetail';
 
@@ -63,7 +64,7 @@ export class Detail extends Base {
         title: t('Memory'),
         dataIndex: 'ram',
         isHideable: true,
-        render: (ram) => `${Number.parseInt(ram / 1024, 10)}G`,
+        render: (ram) => formatSize(ram, 2),
       },
       {
         title: t('Public'),
