@@ -1572,6 +1572,7 @@
   "The selected VPC/ subnet does not have IPv6 enabled.": "The selected VPC/ subnet does not have IPv6 enabled.",
   "The selected network has no subnet": "The selected network has no subnet",
   "The server {name} is locked. Please unlock first.": "The server {name} is locked. Please unlock first.",
+  "The session has expired, please log in again.": "The session has expired, please log in again.",
   "The shelved offloaded instance only supports immediate deletion": "The shelved offloaded instance only supports immediate deletion",
   "The start source is a template used to create an instance. You can choose an image or a bootable volume.": "The start source is a template used to create an instance. You can choose an image or a bootable volume.",
   "The starting number must be less than the ending number": "The starting number must be less than the ending number",

@@ -639,7 +639,10 @@ export default class BaseList extends React.Component {
       // eslint-disable-next-line no-console
       console.log('fetch list error', e);
       const { message = '', data, status } = (e || {}).response || e || {};
-      if (status === 500) {
+      if (status === 401) {
+        const title = t('The session has expired, please log in again.');
+        Notify.errorWithDetail(null, title);
+      } else if (status === 500) {
         const sysErr = t('System is error, please try again later.');
         const title = `${t('Get {name} error.', {
           name: this.name.toLowerCase(),

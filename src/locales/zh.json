@@ -1572,6 +1572,7 @@
   "The selected VPC/ subnet does not have IPv6 enabled.": "所选的VPC/子网未开通IPv6",
   "The selected network has no subnet": "选择的网络没有子网",
   "The server {name} is locked. Please unlock first.": "云主机{name}已被锁定，请先解锁。",
+  "The session has expired, please log in again.": "会话已过期，请重新登录。",
   "The shelved offloaded instance only supports immediate deletion": "已归档的云主机仅支持立即删除",
   "The start source is a template used to create an instance. You can choose an image or a bootable volume.": "启动源是用来创建云主机的模板， 您可以选择镜像或者可启动的卷。",
   "The starting number must be less than the ending number": "起始数字必须小于结束数字",

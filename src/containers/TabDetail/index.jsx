@@ -266,7 +266,10 @@ export default class DetailBase extends React.Component {
     // eslint-disable-next-line no-console
     console.log(e);
     const { data, status } = (e || {}).response || e || {};
-    if (status === 404) {
+    if (status === 401) {
+      const title = t('The session has expired, please log in again.');
+      Notify.errorWithDetail(null, title);
+    } else if (status === 404) {
       this.setState({ notFound: true });
       Notify.warn(
         t('{name} {id} could not be found.', {
