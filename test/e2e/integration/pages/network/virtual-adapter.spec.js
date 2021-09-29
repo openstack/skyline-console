@@ -86,7 +86,8 @@ describe('The Virtual Adapter Page', () => {
 
   it('successfully associate floating IP', () => {
     cy.tableSearchText(name)
-      .clickActionInMore('Associate Floating IP')
+      .goToDetail()
+      .clickDetailActionInMore('Associate Floating IP')
       .wait(5000)
       .formTableSelect('fixed_ip')
       .wait(5000)

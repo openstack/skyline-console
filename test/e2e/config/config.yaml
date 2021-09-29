@@ -45,5 +45,6 @@ testFiles:
   # - pages/management/recycle-bin.spec.js
   - pages/configuration/metadata.spec.js
   - pages/configuration/system.spec.js
+  - pages/configuration/setting.spec.js
   - pages/heat/stack.spec.js
 

@@ -55,6 +55,7 @@ export const domainListUrl = '/identity/domain-admin';
 // configuration
 export const metadataListUrl = '/configuration-admin/metadata';
 export const infoListUrl = '/configuration-admin/info';
+export const settingUrl = '/configuration-admin/setting';
 
 // stack
 export const stackListUrl = '/heat/stack';
@@ -63,6 +64,7 @@ export default {
   // compute
   instance: instanceListUrl,
   image: imageListUrl,
+  flavor: flavorListUrl,
 
   // storage
   volume: volumeListUrl,
