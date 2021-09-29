@@ -102,10 +102,6 @@ export default class AddNetwork extends ModalAction {
   getSearchFilters() {
     return [
       {
-        label: t('Project ID'),
-        name: 'project_id',
-      },
-      {
         label: t('Name'),
         name: 'name',
       },
@@ -118,6 +114,10 @@ export default class AddNetwork extends ModalAction {
         label: t('External'),
         name: 'router:external',
         options: yesNoOptions,
+      },
+      {
+        label: t('Project ID'),
+        name: 'project_id',
       },
     ];
   }
