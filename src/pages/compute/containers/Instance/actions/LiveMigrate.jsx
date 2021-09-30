@@ -15,7 +15,12 @@
 import { inject, observer } from 'mobx-react';
 import globalServerStore from 'stores/nova/instance';
 import { ModalAction } from 'containers/Action';
-import { isActive, isNotDeleting, isIronicInstance } from 'resources/instance';
+import {
+  isActive,
+  isNotDeleting,
+  isIronicInstance,
+  isPaused,
+} from 'resources/instance';
 import globalHypervisorStore from 'stores/nova/hypervisor';
 import globalComputeHostStore from 'stores/nova/compute-host';
 import { hypervisorColumns, hypervisorFilters } from 'resources/hypervisor';
@@ -98,7 +103,9 @@ export default class LiveMigrate extends ModalAction {
 
   static allowed = (item) =>
     Promise.resolve(
-      isActive(item) && isNotDeleting(item) && !isIronicInstance(item)
+      (isActive(item) || isPaused(item)) &&
+        isNotDeleting(item) &&
+        !isIronicInstance(item)
     );
 
   get formItems() {

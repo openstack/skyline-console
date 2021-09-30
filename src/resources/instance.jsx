@@ -166,6 +166,10 @@ export const isShutOff = (item) => checkStatus(['shutoff'], item);
 
 export const isActive = (item) => checkStatus(['active'], item);
 
+export const isStopped = (item) => checkStatus(['stopped'], item);
+
+export const isPaused = (item) => checkStatus(['paused'], item);
+
 export const isNotError = (item) => !checkStatus(['error'], item);
 
 export const isIsoInstance = (item) => {
