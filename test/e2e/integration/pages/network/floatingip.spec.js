@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { onlyOn } from '@cypress/skip-test';
 import { fipListUrl, instanceListUrl } from '../../../support/constants';
 
 describe('The Floating IP Page', () => {
@@ -21,13 +22,18 @@ describe('The Floating IP Page', () => {
   const networkName = `e2e-network-for-fip-${uuid}`;
   const instanceName = `e2e-instance-for-fip-${uuid}`;
   const routerName = `e2e-router-for-fip-${uuid}`;
+  const qosServiceEnabled = (Cypress.env('extensions') || []).includes(
+    'neutron::qos'
+  );
 
   beforeEach(() => {
     cy.login(listUrl);
   });
 
-  it('successfully prepair resource by admin', () => {
-    cy.loginAdmin().wait(5000).createNetworkPolicy({ name: policyName });
+  onlyOn(qosServiceEnabled, () => {
+    it('successfully prepair resource by admin', () => {
+      cy.loginAdmin().wait(5000).createNetworkPolicy({ name: policyName });
+    });
   });
 
   it('successfully prepair resource', () => {
@@ -84,14 +90,25 @@ describe('The Floating IP Page', () => {
       .clickConfirmActionInMore('Disassociate');
   });
 
-  it('successfully edit', () => {
-    cy.clickFirstActionButton()
-      .formText('description', 'description')
-      .formTabClick('qos_policy_id', 1)
-      .wait(5000)
-      .formTableSelectBySearch('qos_policy_id', policyName)
-      .clickModalActionSubmitButton()
-      .wait(2000);
+  onlyOn(!qosServiceEnabled, () => {
+    it('successfully edit with qos', () => {
+      cy.clickFirstActionButton()
+        .formText('description', 'description')
+        .clickModalActionSubmitButton()
+        .wait(2000);
+    });
+  });
+
+  onlyOn(qosServiceEnabled, () => {
+    it('successfully edit with qos', () => {
+      cy.clickFirstActionButton()
+        .formText('description', 'description')
+        .formTabClick('qos_policy_id', 1)
+        .wait(5000)
+        .formTableSelectBySearch('qos_policy_id', policyName)
+        .clickModalActionSubmitButton()
+        .wait(2000);
+    });
   });
 
   it('successfully delete', () => {
@@ -105,6 +122,8 @@ describe('The Floating IP Page', () => {
     cy.deleteRouter(routerName, networkName);
     cy.deleteAll('network', networkName);
     cy.loginAdmin().wait(5000);
-    cy.deleteAll('networkQosPolicy', policyName);
+    onlyOn(qosServiceEnabled, () => {
+      cy.deleteAll('networkQosPolicy', policyName);
+    });
   });
 });

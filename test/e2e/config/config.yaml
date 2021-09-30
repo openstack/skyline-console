@@ -11,20 +11,31 @@ env:
   imageType: Others
   imageDownloadUrl: http://download.cirros-cloud.net/0.5.1/cirros-0.5.1-x86_64-disk.img
   imageCanChangePassword: false
+  extensions:
+    - cinder::buckup
+    - neutron::qos
+    - neutron::vpn
+    - neutron::port-forwarding
+    - octavia
+    - heat
+    - ironic
 testFiles:
   - pages/login.spec.js
   - pages/error.spec.js
+  # identity
   - pages/identity/role.spec.js
   - pages/identity/domain.spec.js
   - pages/identity/user.spec.js
   - pages/identity/project.spec.js
   - pages/identity/user-group.spec.js
+  # storage
   - pages/storage/qos.spec.js
   - pages/storage/volume-type.spec.js
   - pages/storage/volume.spec.js
   - pages/storage/backup.spec.js
   - pages/storage/snapshot.spec.js
   - pages/storage/storage.spec.js
+  # network
   - pages/network/router.spec.js
   - pages/network/network.spec.js
   - pages/network/virtual-adapter.spec.js
@@ -34,6 +45,7 @@ testFiles:
   - pages/network/vpn.spec.js
   - pages/network/lb.spec.js
   - pages/network/topology.spec.js
+  # compute
   - pages/compute/image.spec.js
   - pages/compute/flavor.spec.js
   - pages/compute/server-group.spec.js
@@ -44,8 +56,9 @@ testFiles:
   - pages/compute/hypervisor.spec.js
   - pages/compute/baremetal.spec.js
   # - pages/management/recycle-bin.spec.js
+  # configuration
   - pages/configuration/metadata.spec.js
   - pages/configuration/system.spec.js
   - pages/configuration/setting.spec.js
+  # heat
   - pages/heat/stack.spec.js
-

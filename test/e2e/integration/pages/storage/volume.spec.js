@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { onlyOn } from '@cypress/skip-test';
 import { volumeListUrl, volumeTypeListUrl } from '../../../support/constants';
 
 describe('The Volume Page', () => {
@@ -31,6 +32,10 @@ describe('The Volume Page', () => {
 
   const networkName = `e2e-network-for-volume-${uuid}`;
   const instanceName = `e2e-instance-for-volume-${uuid}`;
+
+  const backupServiceEnabled = (Cypress.env('extensions') || []).includes(
+    'cinder::buckup'
+  );
 
   beforeEach(() => {
     cy.login(listUrl);
@@ -96,25 +101,27 @@ describe('The Volume Page', () => {
     cy.deleteAll('volumeSnapshot', snapshotName);
   });
 
-  it('successfully create backup', () => {
-    cy.tableSearchText(name)
-      .clickActionInMore('Create Backup')
-      .formInput('name', backupName)
-      .clickModalActionSubmitButton()
-      .tableSearchText(name)
-      .waitStatusActiveByRefresh();
-  });
+  onlyOn(backupServiceEnabled, () => {
+    it('successfully create backup', () => {
+      cy.tableSearchText(name)
+        .clickActionInMore('Create Backup')
+        .formInput('name', backupName)
+        .clickModalActionSubmitButton()
+        .tableSearchText(name)
+        .waitStatusActiveByRefresh();
+    });
 
-  it('successfully create backup inc', () => {
-    cy.tableSearchText(name)
-      .clickActionInMore('Create Backup')
-      .formInput('name', backupIncName)
-      .formRadioChoose('incremental', 1)
-      .clickModalActionSubmitButton()
-      .tableSearchText(name)
-      .waitStatusActive();
-    cy.deleteAll('backup', backupIncName);
-    cy.wait(5000).deleteAll('backup', backupName);
+    it('successfully create backup inc', () => {
+      cy.tableSearchText(name)
+        .clickActionInMore('Create Backup')
+        .formInput('name', backupIncName)
+        .formRadioChoose('incremental', 1)
+        .clickModalActionSubmitButton()
+        .tableSearchText(name)
+        .waitStatusActive();
+      cy.deleteAll('backup', backupIncName);
+      cy.wait(5000).deleteAll('backup', backupName);
+    });
   });
 
   it('successfully clone volume', () => {

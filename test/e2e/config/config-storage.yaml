@@ -1,0 +1,24 @@
+# For the use case configuration under the storage menu
+covarage: true
+baseUrl: http://localhost:8081
+env:
+  switchToAdminProject: false
+  username: e2e
+  password: passW0rdY_
+  usernameAdmin: e2e-admin
+  passwordAdmin: passW0rdY_
+  userIsRegisted: true
+  imageName: cirros-0.5.2-x86_64-disk
+  imageType: Others
+  imageDownloadUrl: http://download.cirros-cloud.net/0.5.1/cirros-0.5.1-x86_64-disk.img
+  imageCanChangePassword: false
+  extensions:
+    - cinder::buckup
+testFiles:
+  # storage
+  - pages/storage/qos.spec.js
+  - pages/storage/volume-type.spec.js
+  - pages/storage/volume.spec.js
+  - pages/storage/backup.spec.js
+  - pages/storage/snapshot.spec.js
+  - pages/storage/storage.spec.js

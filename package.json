@@ -97,6 +97,7 @@
     "@babel/preset-env": "^7.14.2",
     "@babel/preset-react": "^7.13.13",
     "@cypress/code-coverage": "^3.9.5",
+    "@cypress/skip-test": "^2.6.1",
     "autoprefixer": "^9.3.1",
     "babel-eslint": "^9.0.0",
     "babel-jest": "^26.6.3",

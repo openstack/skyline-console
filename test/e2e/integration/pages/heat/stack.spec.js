@@ -12,111 +12,122 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { onlyOn } from '@cypress/skip-test';
 import { stackListUrl } from '../../../support/constants';
 
-describe('The Stack Page', () => {
-  const listUrl = stackListUrl;
-  const uuid = Cypress._.random(0, 1e6);
-  const name = `e2e-stack-${uuid}`;
-  const nameAbandon = `e2e-stack-abandon-${uuid}`;
-  const contentFile = 'stack-content.yaml';
-  const paramFile = 'stack-params.yaml';
-  const volumeName = `e2e-volume-for-stack-${uuid}`;
-  const volumeNameUpdate = `e2e-volume-for-stack-update-${uuid}`;
-  const volumeNameAbandon = `e2e-volume-for-stack-abandon-${uuid}`;
+const heatServiceEnabled = (Cypress.env('extensions') || []).includes('heat');
 
-  beforeEach(() => {
-    cy.login(listUrl);
+onlyOn(!heatServiceEnabled, () => {
+  describe('Skip The Stack Page', () => {
+    it('successfully skip', () => {});
   });
+});
 
-  it('successfully create', () => {
-    const volumeJson = {
-      name: volumeName,
-    };
-    cy.clickHeaderButton(1, 2000)
-      .formAttachFile('content', contentFile)
-      .formAttachFile('params', paramFile)
-      .clickStepActionNextButton()
-      .wait(2000)
-      .formInput('name', name)
-      .formJsonInput('volume_name_spec', volumeJson)
-      .clickStepActionNextButton()
-      .waitFormLoading()
-      .wait(5000)
-      .tableSearchSelectText('Name', name)
-      .waitStatusActiveByRefresh();
-  });
+onlyOn(heatServiceEnabled, () => {
+  describe('The Stack Page', () => {
+    const listUrl = stackListUrl;
+    const uuid = Cypress._.random(0, 1e6);
+    const name = `e2e-stack-${uuid}`;
+    const nameAbandon = `e2e-stack-abandon-${uuid}`;
+    const contentFile = 'stack-content.yaml';
+    const paramFile = 'stack-params.yaml';
+    const volumeName = `e2e-volume-for-stack-${uuid}`;
+    const volumeNameUpdate = `e2e-volume-for-stack-update-${uuid}`;
+    const volumeNameAbandon = `e2e-volume-for-stack-abandon-${uuid}`;
 
-  it('successfully detail', () => {
-    cy.tableSearchSelectText('Name', name)
-      .checkTableFirstRow(name)
-      .goToDetail()
-      .checkDetailName(name);
-    cy.clickDetailTab('Stack Resources', 'resource')
-      .clickDetailTab('Stack Events', 'event')
-      .clickDetailTab('YAML File', 'template');
-    cy.goBackToList(listUrl);
-  });
+    beforeEach(() => {
+      cy.login(listUrl);
+    });
 
-  it('successfully link resource', () => {
-    cy.tableSearchSelectText('Name', name)
-      .checkTableFirstRow(name)
-      .goToDetail()
-      .checkDetailName(name);
-    cy.clickDetailTab('Stack Resources').goToDetail();
-  });
+    it('successfully create', () => {
+      const volumeJson = {
+        name: volumeName,
+      };
+      cy.clickHeaderButton(1, 2000)
+        .formAttachFile('content', contentFile)
+        .formAttachFile('params', paramFile)
+        .clickStepActionNextButton()
+        .wait(2000)
+        .formInput('name', name)
+        .formJsonInput('volume_name_spec', volumeJson)
+        .clickStepActionNextButton()
+        .waitFormLoading()
+        .wait(5000)
+        .tableSearchSelectText('Name', name)
+        .waitStatusActiveByRefresh();
+    });
 
-  it('successfully update template', () => {
-    const volumeJson = {
-      name: volumeNameUpdate,
-    };
-    cy.tableSearchSelectText('Name', name)
-      .clickActionInMore('Update Template')
-      .wait(2000)
-      .formAttachFile('content', contentFile)
-      .formAttachFile('params', paramFile)
-      .clickStepActionNextButton()
-      .wait(2000)
-      .formJsonInput('volume_name_spec', volumeJson)
-      .clickStepActionNextButton()
-      .waitFormLoading()
-      .wait(5000)
-      .tableSearchSelectText('Name', name)
-      .waitStatusActiveByRefresh();
-  });
+    it('successfully detail', () => {
+      cy.tableSearchSelectText('Name', name)
+        .checkTableFirstRow(name)
+        .goToDetail()
+        .checkDetailName(name);
+      cy.clickDetailTab('Stack Resources', 'resource')
+        .clickDetailTab('Stack Events', 'event')
+        .clickDetailTab('YAML File', 'template');
+      cy.goBackToList(listUrl);
+    });
 
-  it('successfully delete', () => {
-    cy.tableSearchSelectText('Name', name)
-      .clickConfirmActionInFirst()
-      .wait(10000);
-  });
+    it('successfully link resource', () => {
+      cy.tableSearchSelectText('Name', name)
+        .checkTableFirstRow(name)
+        .goToDetail()
+        .checkDetailName(name);
+      cy.clickDetailTab('Stack Resources').goToDetail();
+    });
 
-  it('successfully create for abandon', () => {
-    const volumeJson = {
-      name: volumeNameAbandon,
-    };
-    cy.clickHeaderButton(1, 2000)
-      .formAttachFile('content', contentFile)
-      .formAttachFile('params', paramFile)
-      .clickStepActionNextButton()
-      .wait(2000)
-      .formInput('name', nameAbandon)
-      .wait(2000)
-      .formJsonInput('volume_name_spec', volumeJson)
-      .clickStepActionNextButton()
-      .waitFormLoading()
-      .wait(5000)
-      .tableSearchSelectText('Name', nameAbandon)
-      .waitStatusActiveByRefresh();
-  });
+    it('successfully update template', () => {
+      const volumeJson = {
+        name: volumeNameUpdate,
+      };
+      cy.tableSearchSelectText('Name', name)
+        .clickActionInMore('Update Template')
+        .wait(2000)
+        .formAttachFile('content', contentFile)
+        .formAttachFile('params', paramFile)
+        .clickStepActionNextButton()
+        .wait(2000)
+        .formJsonInput('volume_name_spec', volumeJson)
+        .clickStepActionNextButton()
+        .waitFormLoading()
+        .wait(5000)
+        .tableSearchSelectText('Name', name)
+        .waitStatusActiveByRefresh();
+    });
 
-  it('successfully abandon stack', () => {
-    cy.tableSearchSelectText('Name', nameAbandon).clickConfirmActionInMore(
-      'Abandon Stack'
-    );
-  });
+    it('successfully delete', () => {
+      cy.tableSearchSelectText('Name', name)
+        .clickConfirmActionInFirst()
+        .wait(10000);
+    });
 
-  it('successfully delete resource', () => {
-    cy.deleteAll('volume', volumeNameAbandon);
+    it('successfully create for abandon', () => {
+      const volumeJson = {
+        name: volumeNameAbandon,
+      };
+      cy.clickHeaderButton(1, 2000)
+        .formAttachFile('content', contentFile)
+        .formAttachFile('params', paramFile)
+        .clickStepActionNextButton()
+        .wait(2000)
+        .formInput('name', nameAbandon)
+        .wait(2000)
+        .formJsonInput('volume_name_spec', volumeJson)
+        .clickStepActionNextButton()
+        .waitFormLoading()
+        .wait(5000)
+        .tableSearchSelectText('Name', nameAbandon)
+        .waitStatusActiveByRefresh();
+    });
+
+    it('successfully abandon stack', () => {
+      cy.tableSearchSelectText('Name', nameAbandon).clickConfirmActionInMore(
+        'Abandon Stack'
+      );
+    });
+
+    it('successfully delete resource', () => {
+      cy.deleteAll('volume', volumeNameAbandon);
+    });
   });
 });

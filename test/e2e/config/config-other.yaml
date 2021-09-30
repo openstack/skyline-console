@@ -1,0 +1,31 @@
+# For the use case configuration under the identity, configuration, heat menu
+covarage: true
+baseUrl: http://localhost:8081
+env:
+  switchToAdminProject: false
+  username: e2e
+  password: passW0rdY_
+  usernameAdmin: e2e-admin
+  passwordAdmin: passW0rdY_
+  userIsRegisted: true
+  imageName: cirros-0.5.2-x86_64-disk
+  imageType: Others
+  imageDownloadUrl: http://download.cirros-cloud.net/0.5.1/cirros-0.5.1-x86_64-disk.img
+  imageCanChangePassword: false
+  extensions:
+    - heat
+testFiles:
+  - pages/login.spec.js
+  - pages/error.spec.js
+  # identity
+  - pages/identity/role.spec.js
+  - pages/identity/domain.spec.js
+  - pages/identity/user.spec.js
+  - pages/identity/project.spec.js
+  - pages/identity/user-group.spec.js
+  # configuration
+  - pages/configuration/metadata.spec.js
+  - pages/configuration/system.spec.js
+  - pages/configuration/setting.spec.js
+  # heat
+  - pages/heat/stack.spec.js

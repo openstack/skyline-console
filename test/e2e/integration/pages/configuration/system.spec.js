@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { onlyOn } from '@cypress/skip-test';
 import { infoListUrl } from '../../../support/constants';
 
 describe('The System Info Page', () => {
@@ -25,6 +26,8 @@ describe('The System Info Page', () => {
 
   const routerName = `e2e-router-for-neutronAgent-${uuid}`;
   const networkName = `e2e-network-for-neutronAgent-${uuid}`;
+
+  const heatServiceEnabled = (Cypress.env('extensions') || []).includes('heat');
 
   beforeEach(() => {
     cy.loginAdmin(listUrl);
@@ -150,8 +153,10 @@ describe('The System Info Page', () => {
       .clickModalActionSubmitButton();
   });
 
-  it('successfully orchestration services', () => {
-    cy.clickTab(orchestrationServicesTab, 'heatService');
+  onlyOn(heatServiceEnabled, () => {
+    it('successfully orchestration services', () => {
+      cy.clickTab(orchestrationServicesTab, 'heatService');
+    });
   });
 
   it('successfully delete related resources', () => {

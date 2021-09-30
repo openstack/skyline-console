@@ -12,220 +12,231 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { onlyOn } from '@cypress/skip-test';
 import { lbListUrl } from '../../../support/constants';
 
-describe('The LB Page', () => {
-  const listUrl = lbListUrl;
-  const uuid = Cypress._.random(0, 1e6);
-  const name = `e2e-lb-${uuid}`;
-  const listener = `e2e-listener-${uuid}`;
-  const pool = `e2e-pool-${uuid}`;
-  const health = `e2e-health-${uuid}`;
+const lbServiceEnabled = (Cypress.env('extensions') || []).includes('octavia');
 
-  const listener2 = `e2e-listener2-${uuid}`;
-  const pool2 = `e2e-pool2-${uuid}`;
-
-  const port = 55;
-  const port2 = 56;
-  const networkName = `e2e-network-for-lb-${uuid}`;
-  const routerName = `e2e-router-for-lb-${uuid}`;
-
-  beforeEach(() => {
-    cy.login(listUrl);
+onlyOn(!lbServiceEnabled, () => {
+  describe('Skip The LB Page', () => {
+    it('successfully skip', () => {});
   });
+});
 
-  it('successfully prepair resource', () => {
-    cy.createNetwork({ name: networkName });
-    cy.createRouter({ name: routerName, network: networkName });
-    cy.createFip();
-  });
+onlyOn(lbServiceEnabled, () => {
+  describe('The LB Page', () => {
+    const listUrl = lbListUrl;
+    const uuid = Cypress._.random(0, 1e6);
+    const name = `e2e-lb-${uuid}`;
+    const listener = `e2e-listener-${uuid}`;
+    const pool = `e2e-pool-${uuid}`;
+    const health = `e2e-health-${uuid}`;
 
-  it('successfully create lb', () => {
-    cy.clickHeaderButton(1)
-      .wait(5000)
-      .formInput('name', name)
-      .formText('description', name)
-      .formTableSelectBySearch('vip_network_id', networkName)
-      .wait(5000)
-      .formButtonClick('vip_address')
-      .formSelect('vip_address')
-      .clickStepActionNextButton();
+    const listener2 = `e2e-listener2-${uuid}`;
+    const pool2 = `e2e-pool2-${uuid}`;
 
-    cy.formInput('listener_name', listener)
-      .formText('listener_description', listener)
-      .formSelect('listener_protocol')
-      .formInput('listener_protocol_port', port)
-      .clickStepActionNextButton();
+    const port = 55;
+    const port2 = 56;
+    const networkName = `e2e-network-for-lb-${uuid}`;
+    const routerName = `e2e-router-for-lb-${uuid}`;
 
-    cy.formInput('pool_name', pool)
-      .formText('pool_description', pool)
-      .formSelect('pool_lb_algorithm')
-      .formSelect('pool_protocol')
-      .clickStepActionNextButton();
+    beforeEach(() => {
+      cy.login(listUrl);
+    });
 
-    cy.wait(5000).clickStepActionNextButton();
+    it('successfully prepair resource', () => {
+      cy.createNetwork({ name: networkName });
+      cy.createRouter({ name: routerName, network: networkName });
+      cy.createFip();
+    });
 
-    cy.formInput('health_name', health)
-      .formSelect('health_type')
-      .clickStepActionNextButton()
-      .waitFormLoading()
-      .url()
-      .should('include', listUrl)
-      .closeNotice()
-      .wait(5000)
-      .tableSearchText(name)
-      .waitStatusActiveByRefresh();
-  });
+    it('successfully create lb', () => {
+      cy.clickHeaderButton(1)
+        .wait(5000)
+        .formInput('name', name)
+        .formText('description', name)
+        .formTableSelectBySearch('vip_network_id', networkName)
+        .wait(5000)
+        .formButtonClick('vip_address')
+        .formSelect('vip_address')
+        .clickStepActionNextButton();
 
-  it('successfully detail', () => {
-    cy.tableSearchText(name).goToDetail(1, 2000).goBackToList(listUrl);
-  });
+      cy.formInput('listener_name', listener)
+        .formText('listener_description', listener)
+        .formSelect('listener_protocol')
+        .formInput('listener_protocol_port', port)
+        .clickStepActionNextButton();
 
-  it('successfully edit', () => {
-    cy.tableSearchText(name)
-      .clickFirstActionButton()
-      .formText('description', 'description')
-      .clickModalActionSubmitButton()
-      .waitStatusActiveByRefresh();
-  });
+      cy.formInput('pool_name', pool)
+        .formText('pool_description', pool)
+        .formSelect('pool_lb_algorithm')
+        .formSelect('pool_protocol')
+        .clickStepActionNextButton();
 
-  it('successfully associate fip', () => {
-    cy.tableSearchText(name)
-      .clickActionInMore('Associate Floating IP')
-      .formTableSelect('fixed_ip')
-      .formTableSelect('fip')
-      .clickModalActionSubmitButton()
-      .waitStatusActiveByRefresh();
-  });
+      cy.wait(5000).clickStepActionNextButton();
 
-  it('successfully disassociate fip', () => {
-    cy.tableSearchText(name)
-      .clickConfirmActionInMore('Disassociate Floating IP')
-      .waitStatusActiveByRefresh();
-  });
+      cy.formInput('health_name', health)
+        .formSelect('health_type')
+        .clickStepActionNextButton()
+        .waitFormLoading()
+        .url()
+        .should('include', listUrl)
+        .closeNotice()
+        .wait(5000)
+        .tableSearchText(name)
+        .waitStatusActiveByRefresh();
+    });
 
-  it('successfully create listener', () => {
-    cy.tableSearchText(name)
-      .goToDetail(1, 2000)
-      .clickHeaderButton(1)
-      .formInput('name', listener2)
-      .formText('description', listener2)
-      .formSelect('protocol')
-      .formInput('protocol_port', port2)
-      .clickModalActionSubmitButton();
-  });
+    it('successfully detail', () => {
+      cy.tableSearchText(name).goToDetail(1, 2000).goBackToList(listUrl);
+    });
 
-  it('successfully edit listener', () => {
-    cy.tableSearchText(name)
-      .goToDetail(1, 2000)
-      .tableSearchText(listener)
-      .clickFirstActionButton()
-      .formText('description', 'description')
-      .clickModalActionSubmitButton();
-  });
+    it('successfully edit', () => {
+      cy.tableSearchText(name)
+        .clickFirstActionButton()
+        .formText('description', 'description')
+        .clickModalActionSubmitButton()
+        .waitStatusActiveByRefresh();
+    });
 
-  it('successfully edit listener health monitor', () => {
-    cy.tableSearchText(name)
-      .goToDetail(1, 2000)
-      .tableSearchText(listener)
-      .clickActionInMore('Edit Health Monitor')
-      .formRadioChoose('admin_state_up', 1)
-      .clickModalActionSubmitButton()
-      .tableSearchText(listener)
-      .waitStatusActiveByRefresh();
-  });
+    it('successfully associate fip', () => {
+      cy.tableSearchText(name)
+        .clickActionInMore('Associate Floating IP')
+        .formTableSelect('fixed_ip')
+        .formTableSelect('fip')
+        .clickModalActionSubmitButton()
+        .waitStatusActiveByRefresh();
+    });
 
-  it('successfully edit listener default pool', () => {
-    cy.tableSearchText(name)
-      .goToDetail(1, 2000)
-      .tableSearchText(listener)
-      .clickActionInMore('Edit Default Pool')
-      .formText('description', 'description')
-      .clickModalActionSubmitButton()
-      .tableSearchText(listener)
-      .waitStatusActiveByRefresh();
-  });
+    it('successfully disassociate fip', () => {
+      cy.tableSearchText(name)
+        .clickConfirmActionInMore('Disassociate Floating IP')
+        .waitStatusActiveByRefresh();
+    });
 
-  it('successfully delete listener default pool', () => {
-    cy.tableSearchText(name)
-      .goToDetail(1, 2000)
-      .tableSearchText(listener)
-      .clickConfirmActionInMore('Delete Default Pool')
-      .tableSearchText(listener)
-      .waitStatusActiveByRefresh();
-  });
+    it('successfully create listener', () => {
+      cy.tableSearchText(name)
+        .goToDetail(1, 2000)
+        .clickHeaderButton(1)
+        .formInput('name', listener2)
+        .formText('description', listener2)
+        .formSelect('protocol')
+        .formInput('protocol_port', port2)
+        .clickModalActionSubmitButton();
+    });
 
-  it('successfully create listener default pool', () => {
-    cy.tableSearchText(name)
-      .goToDetail(1, 2000)
-      .tableSearchText(listener)
-      .clickActionInMore('Create Default Pool')
-      .formInput('name', pool2)
-      .formText('description', pool2)
-      .formSelect('lb_algorithm')
-      .formSelect('protocol')
-      .clickModalActionSubmitButton()
-      .tableSearchText(listener)
-      .waitStatusActiveByRefresh();
-  });
+    it('successfully edit listener', () => {
+      cy.tableSearchText(name)
+        .goToDetail(1, 2000)
+        .tableSearchText(listener)
+        .clickFirstActionButton()
+        .formText('description', 'description')
+        .clickModalActionSubmitButton();
+    });
 
-  it('successfully listener detail', () => {
-    cy.tableSearchText(name)
-      .goToDetail(1, 2000)
-      .tableSearchText(listener)
-      .goToDetail(0, 2000)
-      .clickDetailTab('Member', 'members');
-  });
+    it('successfully edit listener health monitor', () => {
+      cy.tableSearchText(name)
+        .goToDetail(1, 2000)
+        .tableSearchText(listener)
+        .clickActionInMore('Edit Health Monitor')
+        .formRadioChoose('admin_state_up', 1)
+        .clickModalActionSubmitButton()
+        .tableSearchText(listener)
+        .waitStatusActiveByRefresh();
+    });
 
-  it('successfully create listener member', () => {
-    cy.tableSearchText(name)
-      .goToDetail(1, 2000)
-      .tableSearchText(listener)
-      .goToDetail(0, 2000)
-      .clickDetailTab('Member')
-      .clickHeaderButton(1)
-      .formButtonClick('extMembers')
-      .get('.ant-form-item')
-      .eq(1)
-      .find('.ant-input-number-input')
-      .first()
-      .type(port2)
-      .clickModalActionSubmitButton()
-      .waitStatusActiveByRefresh();
-  });
+    it('successfully edit listener default pool', () => {
+      cy.tableSearchText(name)
+        .goToDetail(1, 2000)
+        .tableSearchText(listener)
+        .clickActionInMore('Edit Default Pool')
+        .formText('description', 'description')
+        .clickModalActionSubmitButton()
+        .tableSearchText(listener)
+        .waitStatusActiveByRefresh();
+    });
 
-  it('successfully edit listener member', () => {
-    cy.tableSearchText(name)
-      .goToDetail(1, 2000)
-      .tableSearchText(listener)
-      .goToDetail(0, 2000)
-      .clickDetailTab('Member')
-      .clickFirstActionButton()
-      .wait(2000)
-      .formInput('weight', 2)
-      .clickModalActionSubmitButton()
-      .waitStatusActiveByRefresh();
-  });
+    it('successfully delete listener default pool', () => {
+      cy.tableSearchText(name)
+        .goToDetail(1, 2000)
+        .tableSearchText(listener)
+        .clickConfirmActionInMore('Delete Default Pool')
+        .tableSearchText(listener)
+        .waitStatusActiveByRefresh();
+    });
 
-  it('successfully delete listener member', () => {
-    cy.tableSearchText(name)
-      .goToDetail(1, 2000)
-      .tableSearchText(listener)
-      .goToDetail(0, 2000)
-      .clickDetailTab('Member')
-      .clickConfirmActionButton('Delete')
-      .goBackToList()
-      .tableSearchText(listener)
-      .waitStatusActiveByRefresh();
-  });
+    it('successfully create listener default pool', () => {
+      cy.tableSearchText(name)
+        .goToDetail(1, 2000)
+        .tableSearchText(listener)
+        .clickActionInMore('Create Default Pool')
+        .formInput('name', pool2)
+        .formText('description', pool2)
+        .formSelect('lb_algorithm')
+        .formSelect('protocol')
+        .clickModalActionSubmitButton()
+        .tableSearchText(listener)
+        .waitStatusActiveByRefresh();
+    });
 
-  it('successfully delete', () => {
-    cy.tableSearchText(name).clickConfirmActionInMore('Delete');
-  });
+    it('successfully listener detail', () => {
+      cy.tableSearchText(name)
+        .goToDetail(1, 2000)
+        .tableSearchText(listener)
+        .goToDetail(0, 2000)
+        .clickDetailTab('Member', 'members');
+    });
 
-  it('successfully delete related resources', () => {
-    cy.deleteRouter(routerName, networkName);
-    cy.deleteAll('network', networkName);
-    cy.deleteAll('fip');
+    it('successfully create listener member', () => {
+      cy.tableSearchText(name)
+        .goToDetail(1, 2000)
+        .tableSearchText(listener)
+        .goToDetail(0, 2000)
+        .clickDetailTab('Member')
+        .clickHeaderButton(1)
+        .formButtonClick('extMembers')
+        .get('.ant-form-item')
+        .eq(1)
+        .find('.ant-input-number-input')
+        .first()
+        .type(port2)
+        .clickModalActionSubmitButton()
+        .waitStatusActiveByRefresh();
+    });
+
+    it('successfully edit listener member', () => {
+      cy.tableSearchText(name)
+        .goToDetail(1, 2000)
+        .tableSearchText(listener)
+        .goToDetail(0, 2000)
+        .clickDetailTab('Member')
+        .clickFirstActionButton()
+        .wait(2000)
+        .formInput('weight', 2)
+        .clickModalActionSubmitButton()
+        .waitStatusActiveByRefresh();
+    });
+
+    it('successfully delete listener member', () => {
+      cy.tableSearchText(name)
+        .goToDetail(1, 2000)
+        .tableSearchText(listener)
+        .goToDetail(0, 2000)
+        .clickDetailTab('Member')
+        .clickConfirmActionButton('Delete')
+        .goBackToList()
+        .tableSearchText(listener)
+        .waitStatusActiveByRefresh();
+    });
+
+    it('successfully delete', () => {
+      cy.tableSearchText(name).clickConfirmActionInMore('Delete');
+    });
+
+    it('successfully delete related resources', () => {
+      cy.deleteRouter(routerName, networkName);
+      cy.deleteAll('network', networkName);
+      cy.deleteAll('fip');
+    });
   });
 });

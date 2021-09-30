@@ -1,0 +1,30 @@
+# For the use case configuration under the network menu
+covarage: true
+baseUrl: http://localhost:8081
+env:
+  switchToAdminProject: false
+  username: e2e
+  password: passW0rdY_
+  usernameAdmin: e2e-admin
+  passwordAdmin: passW0rdY_
+  userIsRegisted: true
+  imageName: cirros-0.5.2-x86_64-disk
+  imageType: Others
+  imageDownloadUrl: http://download.cirros-cloud.net/0.5.1/cirros-0.5.1-x86_64-disk.img
+  imageCanChangePassword: false
+  extensions:
+    - neutron::qos
+    - neutron::vpn
+    - neutron::port-forwarding
+    - octavia
+testFiles:
+  # network
+  - pages/network/router.spec.js
+  - pages/network/network.spec.js
+  - pages/network/virtual-adapter.spec.js
+  - pages/network/qos-policy.spec.js
+  - pages/network/floatingip.spec.js
+  - pages/network/security-group.spec.js
+  - pages/network/vpn.spec.js
+  - pages/network/lb.spec.js
+  - pages/network/topology.spec.js

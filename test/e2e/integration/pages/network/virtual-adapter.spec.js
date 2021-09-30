@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { onlyOn } from '@cypress/skip-test';
 import { virtualAdapterListUrl } from '../../../support/constants';
 
 describe('The Virtual Adapter Page', () => {
@@ -24,13 +25,18 @@ describe('The Virtual Adapter Page', () => {
   const networkName = `e2e-network-for-virtual-adapter-${uuid}`;
   const instanceName = `e2e-instance-for-virtual-adapter-${uuid}`;
   const routerName = `e2e-router-for-virtual-adapter-${uuid}`;
+  const qosServiceEnabled = (Cypress.env('extensions') || []).includes(
+    'neutron::qos'
+  );
 
   beforeEach(() => {
     cy.login(listUrl);
   });
 
-  it('successfully prepair resource by admin', () => {
-    cy.loginAdmin().wait(5000).createNetworkPolicy({ name: policyName });
+  onlyOn(qosServiceEnabled, () => {
+    it('successfully prepair resource by admin', () => {
+      cy.loginAdmin().wait(5000).createNetworkPolicy({ name: policyName });
+    });
   });
 
   it('successfully prepair resource', () => {
@@ -115,15 +121,17 @@ describe('The Virtual Adapter Page', () => {
     cy.tableSearchText(name).clickConfirmActionInMore('Detach');
   });
 
-  it('successfully modify qos', () => {
-    cy.tableSearchText(name)
-      .clickActionInMore('Modify QoS')
-      .wait(5000)
-      .formSwitch('enableQosPolicy')
-      .formTabClick('qos_policy_id', 1)
-      .wait(2000)
-      .formTableSelectBySearch('qos_policy_id', policyName)
-      .clickModalActionSubmitButton();
+  onlyOn(qosServiceEnabled, () => {
+    it('successfully modify qos', () => {
+      cy.tableSearchText(name)
+        .clickActionInMore('Modify QoS')
+        .wait(5000)
+        .formSwitch('enableQosPolicy')
+        .formTabClick('qos_policy_id', 1)
+        .wait(2000)
+        .formTableSelectBySearch('qos_policy_id', policyName)
+        .clickModalActionSubmitButton();
+    });
   });
 
   it('successfully manage security group', () => {
@@ -180,6 +188,8 @@ describe('The Virtual Adapter Page', () => {
     cy.deleteAll('network', networkName);
     cy.deleteAll('fip');
     cy.loginAdmin().wait(5000);
-    cy.deleteAll('networkQosPolicy', policyName);
+    onlyOn(qosServiceEnabled, () => {
+      cy.deleteAll('networkQosPolicy', policyName);
+    });
   });
 });

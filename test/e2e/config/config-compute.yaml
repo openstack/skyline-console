@@ -1,0 +1,27 @@
+# For the use case configuration under the compute menu
+covarage: true
+baseUrl: http://localhost:8081
+env:
+  switchToAdminProject: false
+  username: e2e
+  password: passW0rdY_
+  usernameAdmin: e2e-admin
+  passwordAdmin: passW0rdY_
+  userIsRegisted: true
+  imageName: cirros-0.5.2-x86_64-disk
+  imageType: Others
+  imageDownloadUrl: http://download.cirros-cloud.net/0.5.1/cirros-0.5.1-x86_64-disk.img
+  imageCanChangePassword: false
+  extensions:
+    - ironic
+testFiles:
+  # compute
+  - pages/compute/image.spec.js
+  - pages/compute/flavor.spec.js
+  - pages/compute/server-group.spec.js
+  - pages/compute/keypair.spec.js
+  - pages/compute/instance.spec.js
+  - pages/compute/ironic.spec.js
+  - pages/compute/aggregate.spec.js
+  - pages/compute/hypervisor.spec.js
+  - pages/compute/baremetal.spec.js
