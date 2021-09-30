@@ -52,5 +52,8 @@ describe('The Keypair Page', () => {
 
   it('successfully delete', () => {
     cy.tableSearchText(name).clickConfirmActionInFirst().checkEmptyTable();
+    cy.tableSearchText(nameByFile)
+      .clickConfirmActionInFirst()
+      .checkEmptyTable();
   });
 });

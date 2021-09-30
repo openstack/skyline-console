@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { onlyOn } from '@cypress/skip-test';
 import {
   imageListUrl,
   volumeListUrl,
@@ -24,16 +25,20 @@ describe('The Image Page', () => {
   const name = `e2e-image-${uuid}`;
   const sharedImage = `e2e-image-shared-${uuid}`;
   const newname = `${name}-1`;
-  const filename = `cirros-disk-${uuid}.qcow2`;
   const volumeName = `e2e-volume-by-image-${uuid}`;
   const downloadUrl = Cypress.env('imageDownloadUrl');
+  const imageFile = Cypress.env('imageFile');
+  const filename = imageFile || `cirros-disk-${uuid}.qcow2`;
 
   beforeEach(() => {
     cy.login(listUrl);
   });
 
-  it('successfully download image', () => {
-    cy.downloadFile(downloadUrl, 'test/e2e/fixtures', filename);
+  onlyOn(!imageFile, () => {
+    it('successfully download image', () => {
+      cy.downloadFile(downloadUrl, 'test/e2e/fixtures', filename);
+      cy.wait(120000);
+    });
   });
 
   it('successfully list', () => {
@@ -46,9 +51,9 @@ describe('The Image Page', () => {
       .should('include', `${listUrl}/create`)
       .formInput('name', name)
       .formAttachFile('file', filename)
-      .formSelect('disk_format', 'QCOW2 - QEMU Emulator')
+      .formSelect('disk_format', 'QCOW2 - QEMU image format')
       .formSelect('os_distro', 'Others')
-      .formInput('os_version', 'cirros-0.4.0-x86_64')
+      .formInput('os_version', 'cirros')
       .formInput('os_admin_user', 'root')
       .formSelect('usage_type', 'Common Server')
       .formText('description', name)
@@ -68,9 +73,9 @@ describe('The Image Page', () => {
       .formInput('name', sharedImage)
       .formTableSelectBySearch('owner', 'e2e')
       .formAttachFile('file', filename)
-      .formSelect('disk_format', 'QCOW2 - QEMU Emulator')
+      .formSelect('disk_format', 'QCOW2 - QEMU image format')
       .formSelect('os_distro', 'Others')
-      .formInput('os_version', 'cirros-0.4.0-x86_64')
+      .formInput('os_version', 'cirros')
       .formInput('os_admin_user', 'root')
       .formSelect('usage_type', 'Common Server')
       .formText('description', sharedImage)

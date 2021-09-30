@@ -90,17 +90,17 @@ describe('The Floating IP Page', () => {
       .clickConfirmActionInMore('Disassociate');
   });
 
-  onlyOn(!qosServiceEnabled, () => {
-    it('successfully edit with qos', () => {
-      cy.clickFirstActionButton()
-        .formText('description', 'description')
-        .clickModalActionSubmitButton()
-        .wait(2000);
-    });
-  });
+  // onlyOn(!qosServiceEnabled, () => {
+  //   it('successfully edit', () => {
+  //     cy.clickFirstActionButton()
+  //       .formText('description', 'description')
+  //       .clickModalActionSubmitButton()
+  //       .wait(2000);
+  //   });
+  // });
 
   onlyOn(qosServiceEnabled, () => {
-    it('successfully edit with qos', () => {
+    it('successfully edit', () => {
       cy.clickFirstActionButton()
         .formText('description', 'description')
         .formTabClick('qos_policy_id', 1)

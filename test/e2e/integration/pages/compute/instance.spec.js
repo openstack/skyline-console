@@ -198,7 +198,7 @@ describe('The Instance Page', () => {
       .wait(5000)
       .formTableSelectBySearch('volume', volumeName)
       .clickModalActionSubmitButton()
-      .wait(5000);
+      .wait(30000);
 
     // check attach successful
     cy.tableSearchText(name)
@@ -214,9 +214,6 @@ describe('The Instance Page', () => {
       .wait(5000)
       .formTableSelectBySearch('volumes', volumeName)
       .clickModalActionSubmitButton();
-
-    // delete volume
-    cy.deleteAll('volume', volumeName);
   });
 
   it('successfully associate floating IP', () => {
@@ -296,6 +293,5 @@ describe('The Instance Page', () => {
     cy.deleteRouter(routerName, networkName);
     cy.deleteAll('network', networkName);
     cy.deleteAll('volume', volumeName);
-    cy.deleteAllAvailableVolume();
   });
 });

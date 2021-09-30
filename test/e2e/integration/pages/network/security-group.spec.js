@@ -40,6 +40,7 @@ describe('The Security Group Page', () => {
       .goToDetail()
       .wait(5000)
       .clickHeaderButton(1)
+      .formSelect('ethertype')
       .formInput('sourcePort', 80)
       .formInput('remote_ip_prefix', '192.168.0.0/24')
       .clickModalActionSubmitButton();
@@ -58,6 +59,6 @@ describe('The Security Group Page', () => {
   });
 
   it('successfully delete', () => {
-    cy.tableSearchText(newname).clickConfirmActionButton('Delete');
+    cy.tableSearchText(newname).clickConfirmActionInMore('Delete');
   });
 });

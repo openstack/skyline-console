@@ -230,7 +230,7 @@ Cypress.Commands.add('createProject', ({ name }) => {
     .clickModalActionSubmitButton();
 });
 
-Cypress.Commands.add('createIronicFlavor', (name) => {
+Cypress.Commands.add('setAllFlavorType', () => {
   const filename = 'flavor-family.json';
   const settingName = 'flavor_families';
   cy.fixture(filename).then((data) => {
@@ -240,16 +240,19 @@ Cypress.Commands.add('createIronicFlavor', (name) => {
       .formJsonInput('value', data)
       .wait(2000)
       .clickModalActionSubmitButton();
-
-    cy.visitPage(flavorListUrl)
-      .clickTab('Bare Metal', 'bare_metal')
-      .clickHeaderButton(1)
-      .formRadioChoose('category', 0)
-      .formInput('name', name)
-      .clickStepActionNextButton()
-      .wait(2000)
-      .clickStepActionNextButton();
   });
+});
+
+Cypress.Commands.add('createIronicFlavor', (name) => {
+  cy.setAllFlavorType();
+  cy.visitPage(flavorListUrl)
+    .clickTab('Bare Metal', 'bare_metal')
+    .clickHeaderButton(1)
+    .formRadioChoose('category', 0)
+    .formInput('name', name)
+    .clickStepActionNextButton()
+    .wait(2000)
+    .clickStepActionNextButton();
 });
 
 Cypress.Commands.add('createIronicImage', ({ name }) => {

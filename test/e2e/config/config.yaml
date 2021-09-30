@@ -9,6 +9,7 @@ env:
   userIsRegisted: true
   imageName: cirros-0.5.2-x86_64-disk
   imageType: Others
+  imageFile: null
   imageDownloadUrl: http://download.cirros-cloud.net/0.5.1/cirros-0.5.1-x86_64-disk.img
   imageCanChangePassword: false
   extensions:

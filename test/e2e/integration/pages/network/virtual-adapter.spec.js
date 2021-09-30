@@ -98,12 +98,14 @@ describe('The Virtual Adapter Page', () => {
       .formTableSelect('fixed_ip')
       .wait(5000)
       .formTableSelect('fip')
-      .clickModalActionSubmitButton();
+      .clickModalActionSubmitButton()
+      .wait(10000);
   });
 
   it('successfully disassociate floating IP', () => {
     cy.tableSearchText(name)
-      .clickActionInMore('Disassociate Floating IP')
+      .goToDetail()
+      .clickDetailActionInMore('Disassociate Floating IP')
       .wait(5000)
       .formTableSelect('floating_ip')
       .clickModalActionSubmitButton();

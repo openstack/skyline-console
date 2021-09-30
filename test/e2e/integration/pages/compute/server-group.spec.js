@@ -80,7 +80,7 @@ describe('The Server Group Page', () => {
   it('successfully delete', () => {
     cy.tableSearchText(name).clickFirstActionDisabled();
     cy.forceDeleteInstance(instanceName);
-    cy.wait(10000);
+    cy.wait(60000);
     cy.visitPage(listUrl)
       .tableSearchText(name)
       .clickConfirmActionInFirst()

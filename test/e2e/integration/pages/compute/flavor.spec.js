@@ -22,6 +22,10 @@ describe('The Flavor Page', () => {
     cy.loginAdmin(listUrl);
   });
 
+  it('successfully prepair flavor types', () => {
+    cy.setAllFlavorType();
+  });
+
   it('successfully list', () => {
     cy.clickTab('Custom', 'custom')
       .clickTab('Heterogeneous Computing', 'heterogeneous_computing')
