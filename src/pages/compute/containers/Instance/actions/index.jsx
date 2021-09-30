@@ -46,6 +46,8 @@ import LiveMigrate from './LiveMigrate';
 import AssociateFip from './AssociateFip';
 import ManageSecurityGroup from './ManageSecurityGroup';
 import DeleteIronic from './DeleteIronic';
+import ConfirmResize from './ConfirmResize';
+import RevertResize from './RevertResize';
 
 const statusActions = [
   StartAction,
@@ -72,7 +74,14 @@ const resourceActions = [
   ManageSecurityGroup,
 ];
 
-const configActions = [Resize, ResizeOnline, ChangePassword, Rebuild];
+const configActions = [
+  ConfirmResize,
+  RevertResize,
+  Resize,
+  ResizeOnline,
+  ChangePassword,
+  Rebuild,
+];
 
 const batchActions = [
   StartAction,
