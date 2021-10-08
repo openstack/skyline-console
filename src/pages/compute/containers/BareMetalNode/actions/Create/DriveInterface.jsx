@@ -19,7 +19,11 @@ import Base from 'components/Form';
 @observer
 export default class NodeInterface extends Base {
   get bootInterfaces() {
-    return [{ value: 'pxe', label: t('PXE') }];
+    return [
+      { value: 'pxe', label: t('PXE') },
+      { value: 'ipxe', label: t('IPXE') },
+      { value: 'fake', label: t('FAKE') },
+    ];
   }
 
   get consoleInterfaces() {
