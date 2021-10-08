@@ -67,6 +67,7 @@ export const octaviaBase = () => getOpenstackEndpoint('octavia');
 export const ironicOriginEndpoint = () => getOriginEndpoint('ironic');
 export const vpnEndpoint = () => getOriginEndpoint('neutron_vpn');
 export const lbEndpoint = () => getOriginEndpoint('octavia');
+export const qosEndpoint = () => getOriginEndpoint('neutron_qos');
 
 export const apiVersionMaps = {
   nova: {

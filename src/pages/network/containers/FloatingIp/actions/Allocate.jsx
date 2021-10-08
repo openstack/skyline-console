@@ -21,6 +21,7 @@ import globalProjectStore from 'stores/keystone/project';
 import globalSubnetStore from 'stores/neutron/subnet';
 import { QoSPolicyStore } from 'stores/neutron/qos-policy';
 import { getQoSPolicyTabs } from 'resources/qos-policy';
+import { qosEndpoint } from 'client/client/constants';
 
 export class Allocate extends ModalAction {
   static id = 'allocate';
@@ -32,11 +33,15 @@ export class Allocate extends ModalAction {
   }
 
   static get modalSize() {
-    return 'large';
+    return qosEndpoint() ? 'large' : 'small';
   }
 
   getModalSize() {
-    return 'large';
+    return qosEndpoint() ? 'large' : 'small';
+  }
+
+  get qosEndpoint() {
+    return qosEndpoint();
   }
 
   init() {
@@ -221,6 +226,7 @@ export class Allocate extends ModalAction {
         isMulti: false,
         tip: t('Choosing a QoS policy can limit bandwidth and DSCP'),
         onChange: this.onQosChange,
+        display: !!this.qosEndpoint,
       },
     ];
   }

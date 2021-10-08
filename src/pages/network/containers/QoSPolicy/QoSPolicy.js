@@ -16,6 +16,7 @@ import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { QoSPolicyStore } from 'stores/neutron/qos-policy';
 import { getQosPolicyColumns, getQosPolicyFilters } from 'resources/qos-policy';
+import { qosEndpoint } from 'client/client/constants';
 import actionConfigs from './actions';
 
 export class QoSPolicy extends Base {
@@ -28,6 +29,14 @@ export class QoSPolicy extends Base {
     ...params,
     all_projects: this.tabKey === 'allQoSPolicy' || this.isAdminPage,
   });
+
+  get checkEndpoint() {
+    return true;
+  }
+
+  get endpoint() {
+    return qosEndpoint();
+  }
 
   get policy() {
     return 'get_policy';

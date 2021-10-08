@@ -21,6 +21,7 @@ import { Link } from 'react-router-dom';
 import { emptyActionConfig } from 'utils/constants';
 import { Col, Popover, Row } from 'antd';
 import { FileTextOutlined } from '@ant-design/icons';
+import { qosEndpoint } from 'client/client/constants';
 import styles from './styles.less';
 import actionConfigs from './actions';
 
@@ -28,6 +29,10 @@ export class FloatingIps extends Base {
   init() {
     this.store = new FloatingIpStore();
     this.downloadStore = new FloatingIpStore();
+  }
+
+  get qosEndpoint() {
+    return qosEndpoint();
   }
 
   get isFilterByBackend() {
@@ -128,6 +133,7 @@ export class FloatingIps extends Base {
             {value}
           </Link>
         ),
+        hidden: !this.qosEndpoint,
       },
       {
         title: t('Project ID/Name'),
