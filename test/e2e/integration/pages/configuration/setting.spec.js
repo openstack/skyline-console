@@ -34,7 +34,7 @@ describe('The Setting Page', () => {
       cy.tableSimpleSearchText(name)
         .clickActionInMore('Edit')
         .formJsonInput('value', data)
-        .wait(2000)
+        .wait(10000)
         .clickModalActionSubmitButton();
 
       cy.visitPage(flavorListUrl)

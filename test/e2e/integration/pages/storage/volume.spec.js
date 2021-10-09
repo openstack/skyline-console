@@ -136,9 +136,9 @@ describe('The Volume Page', () => {
       .clickActionInMore('Attach')
       .wait(5000)
       .formTableSelectBySearch('instance', instanceName)
-      .clickModalActionSubmitButton();
-
-    cy.wait(10000).tableSearchText(name).checkColumnValue(3, 'In-use');
+      .clickModalActionSubmitButton()
+      .tableSearchText(name)
+      .waitStatusTextByFresh('In-use');
   });
 
   it('successfully detach', () => {
@@ -189,7 +189,7 @@ describe('The Volume Page', () => {
     cy.deleteAll('volume', cloneVolumeName);
     cy.forceDeleteInstance(instanceName).wait(30000);
     cy.deleteAll('network', networkName);
-    cy.loginAdmin().wait(5000);
+    cy.loginAdmin().wait(10000);
     cy.deleteAll('volumeType', volumeTypeName);
   });
 });

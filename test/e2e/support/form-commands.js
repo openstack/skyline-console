@@ -141,7 +141,7 @@ Cypress.Commands.add('formJsonInput', (formItemName, content) => {
   cy.get(getId(formItemName))
     .find('textarea')
     .clear({ force: true })
-    .wait(1000)
+    .wait(2000)
     .type(value, { force: true, parseSpecialCharSequences: false });
 });
 
@@ -174,7 +174,7 @@ Cypress.Commands.add('formTableSelect', (formItemName, value) => {
       .find('.ant-table-row')
       .first()
       .find('.ant-table-selection-column')
-      .click();
+      .click({ force: true });
     return;
   }
   cy.get(getId(formItemName))

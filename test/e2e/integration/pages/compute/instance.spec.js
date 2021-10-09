@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { instanceListUrl } from '../../../support/constants';
+import { instanceListUrl, volumeListUrl } from '../../../support/constants';
 
 describe('The Instance Page', () => {
   const listUrl = instanceListUrl;
@@ -106,6 +106,7 @@ describe('The Instance Page', () => {
       .clickConfirmActionInMoreSub('Stop', 'Instance Status')
       .tableSearchText(name)
       .waitStatusTextByFresh('Shutoff')
+      .tableSearchText(name)
       .selectFirst()
       .clickHeaderButtonByTitle('Stop')
       .checkDisableAction(2000);
@@ -197,15 +198,12 @@ describe('The Instance Page', () => {
       .clickActionInMoreSub('Attach Volume', 'Related Resources')
       .wait(5000)
       .formTableSelectBySearch('volume', volumeName)
-      .clickModalActionSubmitButton()
-      .wait(30000);
+      .clickModalActionSubmitButton();
 
     // check attach successful
-    cy.tableSearchText(name)
-      .goToDetail()
-      .clickDetailTab('Volume')
+    cy.visitPage(volumeListUrl)
       .tableSearchText(volumeName)
-      .checkColumnValue(2, 'In-use');
+      .waitStatusTextByFresh('In-use');
   });
 
   it('successfully detach volume', () => {
@@ -265,16 +263,20 @@ describe('The Instance Page', () => {
       .waitStatusActiveByRefresh();
   });
 
-  // todo: need a confirm resize button
-  // it('successfully resize', () => {
-  //   cy.tableSearchText(name)
-  //     .clickActionInMoreSub('Resize', 'Configuration Update')
-  //     .wait(5000)
-  //     .formTableSelect('newFlavor')
-  //     .formCheckboxClick('option')
-  //     .clickModalActionSubmitButton()
-  //     .waitStatusActiveByRefresh();
-  // });
+  it('successfully resize', () => {
+    cy.tableSearchText(name)
+      .clickActionInMoreSub('Resize', 'Configuration Update')
+      .wait(5000)
+      .formTableSelect('newFlavor')
+      .formCheckboxClick('option')
+      .clickModalActionSubmitButton()
+      .wait(120000);
+    cy.visitPage(instanceListUrl)
+      .tableSearchText(name)
+      .clickConfirmActionInMoreSub('Confirm Resize', 'Configuration Update')
+      .tableSearchText(name)
+      .waitStatusActiveByRefresh();
+  });
 
   it('successfully edit', () => {
     cy.tableSearchText(name)

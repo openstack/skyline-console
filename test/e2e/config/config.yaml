@@ -48,7 +48,6 @@ testFiles:
   - pages/network/topology.spec.js
   # compute
   - pages/compute/image.spec.js
-  - pages/compute/flavor.spec.js
   - pages/compute/server-group.spec.js
   - pages/compute/keypair.spec.js
   - pages/compute/instance.spec.js
@@ -56,6 +55,7 @@ testFiles:
   - pages/compute/aggregate.spec.js
   - pages/compute/hypervisor.spec.js
   - pages/compute/baremetal.spec.js
+  - pages/compute/flavor.spec.js
   # - pages/management/recycle-bin.spec.js
   # configuration
   - pages/configuration/metadata.spec.js

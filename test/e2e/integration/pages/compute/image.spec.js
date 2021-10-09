@@ -29,9 +29,15 @@ describe('The Image Page', () => {
   const downloadUrl = Cypress.env('imageDownloadUrl');
   const imageFile = Cypress.env('imageFile');
   const filename = imageFile || `cirros-disk-${uuid}.qcow2`;
+  const projectName = `e2e-project-for-image-${uuid}`;
 
   beforeEach(() => {
     cy.login(listUrl);
+  });
+
+  it('successfully prepair resource', () => {
+    cy.loginAdmin();
+    cy.createProject({ name: projectName });
   });
 
   onlyOn(!imageFile, () => {
@@ -71,7 +77,7 @@ describe('The Image Page', () => {
       .clickHeaderButton(1)
       .wait(5000)
       .formInput('name', sharedImage)
-      .formTableSelectBySearch('owner', 'e2e')
+      .formTableSelectBySearch('owner', projectName)
       .formAttachFile('file', filename)
       .formSelect('disk_format', 'QCOW2 - QEMU image format')
       .formSelect('os_distro', 'Others')
@@ -147,5 +153,9 @@ describe('The Image Page', () => {
       .visitPage(imageListUrlAdmin)
       .tableSearchText(sharedImage)
       .clickConfirmActionInMore('Delete');
+  });
+
+  it('successfully delete related resources', () => {
+    cy.loginAdmin().deleteAll('project', projectName);
   });
 });
