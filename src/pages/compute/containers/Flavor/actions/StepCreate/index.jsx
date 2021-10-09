@@ -126,7 +126,8 @@ class StepCreate extends StepAction {
       ram: memoryGb * 1024,
       disk: 0,
     };
-    body['os-flavor-access:is_public'] = accessType === 'public';
+    const isPublic = accessType === 'public'
+    body['os-flavor-access:is_public'] = isPublic;
     if (categoryHasEphemeral) {
       body['OS-FLV-EXT-DATA:ephemeral'] = ephemeral;
     }
@@ -182,7 +183,7 @@ class StepCreate extends StepAction {
     return this.store.create(
       body,
       extraSpecs,
-      accessControl.selectedRowKeys || []
+      !isPublic && (accessControl.selectedRowKeys || [])
     );
   };
 }
