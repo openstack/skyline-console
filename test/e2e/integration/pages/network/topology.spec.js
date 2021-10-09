@@ -31,6 +31,7 @@ describe('The Netowrk Topology Page', () => {
   });
 
   it('successfully page', () => {
+    cy.wait(5000);
     cy.get('canvas').should('exist');
   });
 
