@@ -15,7 +15,7 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import { VpnIPSecPolicyStore } from 'stores/neutron/vpn-ipsec-policy';
+import { VpnIPsecPolicyStore } from 'stores/neutron/vpn-ipsec-policy';
 import {
   authAlgorithmOptions,
   encryptionAlgorithmOptions,
@@ -29,8 +29,8 @@ import { actionConfigs, adminConfigs } from './actions';
 @observer
 export default class Index extends Base {
   init() {
-    this.store = new VpnIPSecPolicyStore();
-    this.downloadStore = new VpnIPSecPolicyStore();
+    this.store = new VpnIPsecPolicyStore();
+    this.downloadStore = new VpnIPsecPolicyStore();
   }
 
   get isFilterByBackend() {

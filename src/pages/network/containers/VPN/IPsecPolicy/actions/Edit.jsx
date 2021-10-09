@@ -15,7 +15,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import globalVpnIPSecPolicyStore from 'stores/neutron/vpn-ipsec-policy';
+import globalVpnIPsecPolicyStore from 'stores/neutron/vpn-ipsec-policy';
 import globalVpnIPsecConnectionStore from 'stores/neutron/vpn-ipsec-connection';
 
 @inject('rootStore')
@@ -64,7 +64,7 @@ export default class Edit extends ModalAction {
       },
       ...rest,
     };
-    return globalVpnIPSecPolicyStore.update({ id: this.item.id }, data);
+    return globalVpnIPsecPolicyStore.update({ id: this.item.id }, data);
   };
 
   get formItems() {

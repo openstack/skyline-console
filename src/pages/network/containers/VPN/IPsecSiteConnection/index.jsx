@@ -40,7 +40,7 @@ export default class Index extends Base {
   }
 
   get name() {
-    return t('vpn tunnel');
+    return t('ipsec site connection');
   }
 
   get adminPageHasProjectFilter() {
@@ -59,7 +59,7 @@ export default class Index extends Base {
       title: t('ID/Name'),
       dataIndex: 'name',
       isName: true,
-      linkPrefix: `/network/${this.getUrl('vpn-tunnel')}/detail`,
+      linkPrefix: `/network/${this.getUrl('ipsec-site-connection')}/detail`,
     },
     {
       title: t('Project ID/Name'),

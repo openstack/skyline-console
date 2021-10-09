@@ -15,7 +15,7 @@
 import client from 'client';
 import Base from 'stores/base';
 
-export class VpnIPSecPolicyStore extends Base {
+export class VpnIPsecPolicyStore extends Base {
   get client() {
     return client.neutron.ipsecPolicies;
   }
@@ -29,5 +29,5 @@ export class VpnIPSecPolicyStore extends Base {
   }
 }
 
-const globalVpnIPSecPolicyStore = new VpnIPSecPolicyStore();
-export default globalVpnIPSecPolicyStore;
+const globalVpnIPsecPolicyStore = new VpnIPsecPolicyStore();
+export default globalVpnIPsecPolicyStore;
