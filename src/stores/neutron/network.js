@@ -40,6 +40,10 @@ export class NetworkStore extends Base {
     return client.neutron.subnets;
   }
 
+  get skylineExtensionClient() {
+    return client.skyline.extension;
+  }
+
   get extensionClient() {
     return client.neutron.extensions;
   }
@@ -222,7 +226,7 @@ export class NetworkStore extends Base {
     };
     await Promise.all([
       this.routerClient.list(params),
-      this.extensionClient.servers(),
+      this.skylineExtensionClient.servers(),
       this.portClient.list(params),
     ]).then(([routersRes, serversRes, portRes]) => {
       const resData = this.topology;
