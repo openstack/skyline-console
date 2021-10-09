@@ -182,7 +182,7 @@ Cypress.Commands.add('formTableSelect', (formItemName, value) => {
     .contains(value)
     .find('.ant-table-selection-column')
     .first()
-    .click();
+    .click({ force: true });
 });
 
 Cypress.Commands.add('formTableClearSelect', (formItemName) => {
@@ -203,7 +203,7 @@ Cypress.Commands.add(
       .find('.ant-table-row')
       .first()
       .find('.ant-table-selection-column')
-      .click();
+      .click({ force: true });
   }
 );
 
@@ -229,7 +229,7 @@ Cypress.Commands.add(
       .find('.ant-table-row')
       .first()
       .find('.ant-table-selection-column')
-      .click();
+      .click({ force: true });
   }
 );
 
