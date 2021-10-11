@@ -203,6 +203,7 @@ Cypress.Commands.add(
       .find('.ant-table-row')
       .first()
       .find('.ant-table-selection-column')
+      .find('input')
       .click({ force: true });
   }
 );
