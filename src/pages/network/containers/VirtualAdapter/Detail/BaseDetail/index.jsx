@@ -17,12 +17,17 @@ import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
 import { bindingTypes } from 'resources/port';
+import { qosEndpoint } from 'client/client/constants';
 
 @inject('rootStore')
 @observer
 export default class BaseDetail extends Base {
   get leftCards() {
     return [this.baseInfoCard];
+  }
+
+  get qosEndpoint() {
+    return qosEndpoint();
   }
 
   get baseInfoCard() {
@@ -57,7 +62,9 @@ export default class BaseDetail extends Base {
         dataIndex: 'binding:vnic_type',
         render: (value) => bindingTypes[value] || '-',
       },
-      {
+    ];
+    if (this.qosEndpoint) {
+      options.push({
         label: t('QoS Policy'),
         dataIndex: 'qos_policy_id',
         copyable: false,
@@ -67,8 +74,8 @@ export default class BaseDetail extends Base {
           ) : (
             '-'
           ),
-      },
-    ];
+      });
+    }
     return {
       title: t('Base Info'),
       options,

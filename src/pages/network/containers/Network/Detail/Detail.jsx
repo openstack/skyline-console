@@ -14,6 +14,7 @@
 
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
+import { qosEndpoint } from 'client/client/constants';
 
 @inject('rootStore')
 @observer
@@ -21,6 +22,10 @@ export default class BaseDetail extends Base {
   get leftCards() {
     const cards = [this.baseInfoCard];
     return cards;
+  }
+
+  get qosEndpoint() {
+    return qosEndpoint();
   }
 
   get baseInfoCard() {
@@ -56,16 +61,18 @@ export default class BaseDetail extends Base {
         dataIndex: 'provider:segmentation_id',
       },
       {
-        label: t('QoS Policy'),
-        dataIndex: 'qos_policy_id',
-        render: (data) => data || '-',
-      },
-      {
         label: t('Port Security Enabled'),
         dataIndex: 'port_security_enabled',
         valueRender: 'yesNo',
       },
     ];
+    if (this.qosEndpoint) {
+      options.push({
+        label: t('QoS Policy'),
+        dataIndex: 'qos_policy_id',
+        render: (data) => data || '-',
+      });
+    }
     return {
       title: t('Base Info'),
       options,

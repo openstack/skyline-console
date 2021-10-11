@@ -14,11 +14,20 @@
 
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/TabList';
+import { qosEndpoint } from 'client/client/constants';
 import QoSPolicyComponent from './QoSPolicy';
 
 @inject('rootStore')
 @observer
 export default class QoSPolicy extends Base {
+  get checkEndpoint() {
+    return true;
+  }
+
+  get endpoint() {
+    return qosEndpoint();
+  }
+
   get tabs() {
     const tabs = [
       {

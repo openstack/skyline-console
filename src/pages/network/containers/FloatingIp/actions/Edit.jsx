@@ -17,6 +17,7 @@ import { ModalAction } from 'containers/Action';
 import globalFloatingIpsStore from 'stores/neutron/floatingIp';
 import { getQoSPolicyTabs } from 'resources/qos-policy';
 import { QoSPolicyStore } from 'stores/neutron/qos-policy';
+import { qosEndpoint } from 'client/client/constants';
 
 export class Edit extends ModalAction {
   static id = 'edit-floating-ip';
@@ -24,11 +25,15 @@ export class Edit extends ModalAction {
   static policy = 'update_floatingip';
 
   static get modalSize() {
-    return 'large';
+    return qosEndpoint() ? 'large' : 'small';
   }
 
   getModalSize() {
-    return 'large';
+    return qosEndpoint() ? 'large' : 'small';
+  }
+
+  get qosEndpoint() {
+    return qosEndpoint();
   }
 
   init() {
@@ -39,17 +44,21 @@ export class Edit extends ModalAction {
     const { item } = this.props;
     return {
       description: this.item.description,
-      qos_policy_id: {
-        selectedRowKeys: item.qos_policy_id ? [item.qos_policy_id] : [],
-        selectedRows: item.qos_policy_id
-          ? [
-              {
-                id: item.qos_policy_id,
-                name: item.qos_policy_id,
-              },
-            ]
-          : [],
-      },
+      ...(this.qosEndpoint
+        ? {
+            qos_policy_id: {
+              selectedRowKeys: item.qos_policy_id ? [item.qos_policy_id] : [],
+              selectedRows: item.qos_policy_id
+                ? [
+                    {
+                      id: item.qos_policy_id,
+                      name: item.qos_policy_id,
+                    },
+                  ]
+                : [],
+            },
+          }
+        : {}),
     };
   }
 
@@ -86,6 +95,7 @@ export class Edit extends ModalAction {
         tabs: getQoSPolicyTabs.call(this),
         isMulti: false,
         tip: t('Choosing a QoS policy can limit bandwidth and DSCP'),
+        display: !!this.qosEndpoint,
       },
     ];
   }

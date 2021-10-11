@@ -18,6 +18,7 @@ import { ModalAction } from 'containers/Action';
 import { QoSPolicyStore } from 'stores/neutron/qos-policy';
 import globalVirtualAdapterStore from 'stores/neutron/virtual-adapter';
 import { getQoSPolicyTabs } from 'resources/qos-policy';
+import { qosEndpoint } from 'client/client/constants';
 
 export class ModifyQoS extends ModalAction {
   static id = 'modify_qos';
@@ -87,7 +88,7 @@ export class ModifyQoS extends ModalAction {
 
   static policy = 'update_port';
 
-  static allowed = () => Promise.resolve(true);
+  static allowed = () => Promise.resolve(!!qosEndpoint());
 
   onSubmit = (values) => {
     const { id } = this.item;

@@ -24,6 +24,7 @@ import globalVirtualAdapterStore from 'stores/neutron/virtual-adapter';
 import globalProjectStore from 'stores/keystone/project';
 import { SubnetStore } from 'stores/neutron/subnet';
 import { getQoSPolicyTabs } from 'resources/qos-policy';
+import { qosEndpoint } from 'client/client/constants';
 
 const portTypes =
   'normal,macvtap,direct,baremetal,direct-physical,virtio-forwarder,smart-nic';
@@ -32,6 +33,10 @@ export class CreateAction extends ModalAction {
   static id = 'create-virtual-adapter';
 
   static title = t('Create Virtual Adapter');
+
+  get qosEndpoint() {
+    return qosEndpoint();
+  }
 
   init() {
     this.networkStore = new NetworkStore();
@@ -312,6 +317,7 @@ export class CreateAction extends ModalAction {
           });
         },
         hidden: !more,
+        display: !!this.qosEndpoint,
       },
       {
         name: 'qos_policy_id',
@@ -322,6 +328,7 @@ export class CreateAction extends ModalAction {
         required: enableQosPolicy,
         tip: t('Choosing a QoS policy can limit bandwidth and DSCP'),
         hidden: !(more && enableQosPolicy),
+        display: !!this.qosEndpoint,
       },
       {
         name: 'bindingProfile',
