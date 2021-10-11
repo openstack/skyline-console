@@ -18,8 +18,8 @@ import { vpnEndpoint } from 'client/client/constants';
 import VPNGateway from './VPNGateway';
 import EndPointGroup from './EndpointGroup';
 import IKEPolicy from './IKEPolicy';
-import IPsecPolicy from './IPSecPolicy';
-import VPNTunnel from './VPNTunnel';
+import IPsecPolicy from './IPsecPolicy';
+import IPsecSiteConnection from './IPsecSiteConnection';
 
 @inject('rootStore')
 @observer
@@ -59,9 +59,9 @@ export default class VPN extends Base {
         component: IPsecPolicy,
       },
       {
-        title: t('VPN Tunnel'),
-        key: 'ipsec_connections',
-        component: VPNTunnel,
+        title: t('IPsec Site Connections'),
+        key: 'ipsec_site_connections',
+        component: IPsecSiteConnection,
       },
     ];
   }

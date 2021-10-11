@@ -21,9 +21,9 @@ const canEditStatus = ['ACTIVE', 'DOWN'];
 @inject('rootStore')
 @observer
 export default class Edit extends ModalAction {
-  static id = 'edit-vpn-tunnel';
+  static id = 'edit-ipsec-site-connection';
 
-  static title = t('Edit VPN Tunnel');
+  static title = t('Edit IPsec Site Connection');
 
   static buttonText = t('Edit');
 

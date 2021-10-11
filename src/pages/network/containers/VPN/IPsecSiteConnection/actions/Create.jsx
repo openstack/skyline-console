@@ -18,7 +18,7 @@ import { ModalAction } from 'containers/Action';
 import { getPasswordOtherRule, ipValidate } from 'utils/validate';
 import globalVpnServicesStore from 'stores/neutron/vpn-service';
 import globalVpnIKEPolicyStore from 'stores/neutron/vpn-ike-policy';
-import globalVpnIPSecPolicyStore from 'stores/neutron/vpn-ipsec-policy';
+import globalVpnIPsecPolicyStore from 'stores/neutron/vpn-ipsec-policy';
 import globalVPNEndPointGroupStore from 'stores/neutron/vpn-endpoint-group';
 import { Col, Empty, Row } from 'antd';
 import { merge } from 'lodash';
@@ -30,12 +30,12 @@ const { isIPv4, isIpv6 } = ipValidate;
 @inject('rootStore')
 @observer
 export default class Create extends ModalAction {
-  static id = 'create-vpn-tunnel';
+  static id = 'create-ipsec-site-connection';
 
-  static title = t('Create VPN Tunnel');
+  static title = t('Create IPsec Site Connection');
 
   get name() {
-    return t('create vpn tunnel');
+    return t('create ipsec site connection');
   }
 
   static buttonText = t('Create');
@@ -47,7 +47,7 @@ export default class Create extends ModalAction {
   init() {
     this.vpnServiceStore = globalVpnServicesStore;
     this.ikePolicyStore = globalVpnIKEPolicyStore;
-    this.ipsecPolicyStore = globalVpnIPSecPolicyStore;
+    this.ipsecPolicyStore = globalVpnIPsecPolicyStore;
     this.endpointGroupStore = globalVPNEndPointGroupStore;
 
     this.fetchData();
@@ -179,7 +179,7 @@ export default class Create extends ModalAction {
         name: 'peer_address',
         type: 'input',
         label: t('Peer Gateway Public Address'),
-        extra: t('Peer gateway public address for the VPN tunnel'),
+        extra: t('Peer gateway public address for the IPsec site connection'),
         validator: (rule, value) => {
           if (!isIPv4(value) && !isIpv6(value)) {
             return Promise.reject(

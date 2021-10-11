@@ -20,13 +20,13 @@ import { actionConfigs, adminConfigs } from '../actions';
 
 @inject('rootStore')
 @observer
-export default class VPNTunnelDetail extends Base {
+export default class IPsecSiteConnection extends Base {
   init() {
     this.store = new VpnIPsecConnectionStore();
   }
 
   get name() {
-    return t('vpn tunnel');
+    return t('IPsec Site Connection');
   }
 
   get policy() {
@@ -34,7 +34,7 @@ export default class VPNTunnelDetail extends Base {
   }
 
   get listUrl() {
-    return `${this.getUrl('/network/vpn')}?tab=ipsec_connections`;
+    return `${this.getUrl('/network/vpn')}?tab=ipsec_site_connections`;
   }
 
   get actionConfigs() {

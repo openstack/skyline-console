@@ -34,7 +34,7 @@ onlyOn(vpnServiceEnabled, () => {
     const endpointPeer = `e2e-endpoint-peer-${uuid}`;
     const ikePolicy = `e2e-ike-policy-${uuid}`;
     const ipsecPolicy = `e2e-ipsec-policy-${uuid}`;
-    const tunnel = `e2e-tunnel-${uuid}`;
+    const ipsecSiteConnection = `e2e-ipsec-site-connection-${uuid}`;
 
     const cidr = '192.168.0.0/24';
 
@@ -98,12 +98,12 @@ onlyOn(vpnServiceEnabled, () => {
         .clickModalActionSubmitButton();
     });
 
-    it('successfully create vpn tunnel', () => {
-      cy.clickTab('VPN Tunnel', 'ipsec_connections')
+    it('successfully create ipsec site connection', () => {
+      cy.clickTab('IPsec Site Connections', 'ipsec_site_connections')
         .clickHeaderButton(1)
         .wait(5000)
-        .formInput('name', tunnel)
-        .formText('description', tunnel)
+        .formInput('name', ipsecSiteConnection)
+        .formText('description', ipsecSiteConnection)
         .formSelect('vpnservice_id', gateway)
         .formSelect('ikepolicy_id', ikePolicy)
         .formSelect('ipsecpolicy_id', ipsecPolicy)
@@ -117,23 +117,23 @@ onlyOn(vpnServiceEnabled, () => {
         .clickModalActionSubmitButton();
     });
 
-    it('successfully detail vpn tunnel', () => {
-      cy.clickTab('VPN Tunnel', 'ipsec_connections').tableSearchText(tunnel);
+    it('successfully detail ipsec site connection', () => {
+      cy.clickTab('IPsec Site Connections', 'ipsec_site_connections').tableSearchText(ipsecSiteConnection);
       cy.goToDetail().wait(30000);
       cy.goBackToList(listUrl);
     });
 
-    it('successfully edit tunnel', () => {
-      cy.clickTab('VPN Tunnel')
-        .tableSearchText(tunnel)
+    it('successfully edit ipsec site connection', () => {
+      cy.clickTab('IPsec Site Connections')
+        .tableSearchText(ipsecSiteConnection)
         .clickFirstActionButton()
         .formText('description', 'description')
         .clickModalActionSubmitButton();
     });
 
-    it('successfully delete tunnel', () => {
-      cy.clickTab('VPN Tunnel')
-        .tableSearchText(tunnel)
+    it('successfully delete ipsec site connection', () => {
+      cy.clickTab('IPsec Site Connections')
+        .tableSearchText(ipsecSiteConnection)
         .clickConfirmActionButton('Delete');
     });
 

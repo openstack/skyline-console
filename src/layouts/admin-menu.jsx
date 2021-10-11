@@ -347,9 +347,9 @@ const renderMenu = (t) => {
           level: 1,
           children: [
             {
-              path: /^\/network\/vpn-tunnel-admin\/detail\/.[^/]+$/,
-              name: t('VPN Tunnel Detail'),
-              key: 'vpn-tunnel-detail',
+              path: /^\/network\/ipsec-site-connection-admin\/detail\/.[^/]+$/,
+              name: t('IPsec site connection Detail'),
+              key: 'ipsec-site-connection-detail',
               level: 2,
             },
           ],

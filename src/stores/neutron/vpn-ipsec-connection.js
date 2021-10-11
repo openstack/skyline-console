@@ -15,7 +15,7 @@
 import { action } from 'mobx';
 import { get } from 'lodash';
 import globalVpnIKEPolicyStore from 'stores/neutron/vpn-ike-policy';
-import globalVpnIPSecPolicyStore from 'stores/neutron/vpn-ipsec-policy';
+import globalVpnIPsecPolicyStore from 'stores/neutron/vpn-ipsec-policy';
 import client from 'client';
 import Base from 'stores/base';
 
@@ -43,7 +43,7 @@ export class VpnIPsecConnectionStore extends Base {
     const ikePolicy = await globalVpnIKEPolicyStore.fetchDetail({
       id: ikePolicyID,
     });
-    const ipsecPolicy = await globalVpnIPSecPolicyStore.fetchDetail({
+    const ipsecPolicy = await globalVpnIPsecPolicyStore.fetchDetail({
       id: ipsecPolicyID,
     });
     const originData = get(result, this.responseKey) || result;

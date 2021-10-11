@@ -14,7 +14,7 @@
 
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import globalVpnIPSecPolicyStore from 'stores/neutron/vpn-ipsec-policy';
+import globalVpnIPsecPolicyStore from 'stores/neutron/vpn-ipsec-policy';
 import {
   authAlgorithmOptions,
   encryptionAlgorithmOptions,
@@ -60,7 +60,7 @@ export default class Create extends ModalAction {
       },
       ...rest,
     };
-    return globalVpnIPSecPolicyStore.create(data);
+    return globalVpnIPsecPolicyStore.create(data);
   };
 
   get formItems() {

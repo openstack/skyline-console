@@ -33,7 +33,7 @@ import StepCreateLoadBalancer from '../containers/LoadBalancers/LoadBalancerInst
 import LoadBalancerDetail from '../containers/LoadBalancers/LoadBalancerInstance/Detail';
 import ListenerDetail from '../containers/LoadBalancers/Listener/Detail';
 import VPN from '../containers/VPN';
-import VPNTunnelDetail from '../containers/VPN/VPNTunnel/Detail';
+import IPsecSiteConnectionDetail from '../containers/VPN/IPsecSiteConnection/Detail';
 import SecurityGroups from '../containers/SecurityGroup';
 import SecurityGroupDetail from '../containers/SecurityGroup/Detail';
 
@@ -159,13 +159,13 @@ export default [
       },
       { path: `${PATH}/vpn`, component: VPN, exact: true },
       {
-        path: `${PATH}/vpn-tunnel/detail/:id`,
-        component: VPNTunnelDetail,
+        path: `${PATH}/ipsec-site-connection/detail/:id`,
+        component: IPsecSiteConnectionDetail,
         exact: true,
       },
       {
-        path: `${PATH}/vpn-tunnel-admin/detail/:id`,
-        component: VPNTunnelDetail,
+        path: `${PATH}/ipsec-site-connection-admin/detail/:id`,
+        component: IPsecSiteConnectionDetail,
         exact: true,
       },
       { path: `${PATH}/vpn-admin`, component: VPN, exact: true },

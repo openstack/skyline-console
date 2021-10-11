@@ -14,17 +14,16 @@
 
 import { ConfirmAction } from 'containers/Action';
 import { checkPolicyRule } from 'resources/policy';
-import globalVpnIPSecPolicyStore from 'stores/neutron/vpn-ipsec-policy';
 import globalVpnIPsecConnectionStore from 'stores/neutron/vpn-ipsec-connection';
 import globalRootStore from 'stores/root';
 
 export default class DeleteAction extends ConfirmAction {
   get id() {
-    return 'delete-vpn-ipsec-policy';
+    return 'delete-ipsec-site-connection';
   }
 
   get title() {
-    return t('Delete VPN IPsec Policy');
+    return t('Delete IPsec Site Connection');
   }
 
   get buttonType() {
@@ -36,10 +35,10 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   get actionName() {
-    return t('delete vpn IPsec policy');
+    return t('delete ipsec site connection');
   }
 
-  policy = 'delete_ipsecpolicy';
+  policy = 'delete_ipsec_site_connection';
 
   allowedCheckFunc = (item) => {
     if (!item) {
@@ -59,27 +58,5 @@ export default class DeleteAction extends ConfirmAction {
     return true;
   }
 
-  onSubmit = async (data) => {
-    const connections = await globalVpnIPsecConnectionStore.fetchList({
-      ipsecpolicy_id: data.id,
-    });
-    if (connections.length > 0) {
-      this.showConfirmErrorBeforeSubmit = true;
-      this.confirmErrorMessageBeforeSubmit = `${t(
-        'Unable to {action}, because : {reason}, instance: {name}.',
-        {
-          action: this.actionName || this.title,
-          name: data.name,
-          reason: t('the policy is in use'),
-        }
-      )}\n
-        ${t('Used by tunnel(s): {names}. ID(s): {ids}', {
-          names: connections.map((i) => i.name).join(', '),
-          ids: connections.map((i) => i.id).join(', '),
-        })}`;
-      // eslint-disable-next-line prefer-promise-reject-errors
-      return Promise.reject({ errorMsg: this.confirmErrorMessageBeforeSubmit });
-    }
-    return globalVpnIPSecPolicyStore.delete(data);
-  };
+  onSubmit = (data) => globalVpnIPsecConnectionStore.delete(data);
 }
