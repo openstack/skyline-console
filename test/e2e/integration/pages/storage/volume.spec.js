@@ -187,9 +187,10 @@ describe('The Volume Page', () => {
   it('successfully delete related resources', () => {
     cy.deleteAll('image', imageName);
     cy.deleteAll('volume', cloneVolumeName);
-    cy.forceDeleteInstance(instanceName).wait(300000);
+    cy.forceDeleteInstance(instanceName).wait(120000);
     cy.deleteAll('network', networkName);
-    cy.loginAdmin().wait(10000);
-    cy.deleteAll('volumeType', volumeTypeName);
+    // TODO: delete volume type created for this case
+    // cy.loginAdmin().wait(10000);
+    // cy.deleteAll('volumeType', volumeTypeName);
   });
 });
