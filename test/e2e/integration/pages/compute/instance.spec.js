@@ -179,7 +179,7 @@ describe('The Instance Page', () => {
     cy.tableSearchText(name)
       .clickActionInMoreSub('Attach Interface', 'Related Resources')
       .wait(5000)
-      .formTableSelect('network')
+      .formTableSelectBySearch('network', networkName, 5000)
       .clickModalActionSubmitButton();
   });
 
