@@ -765,6 +765,7 @@
   "If an instance is using this flavor, deleting it will cause the instance's flavor data to be missing. Are you sure to delete {name}?": "若有云主机正在使用此 flavor，删除会导致云主机的 flavor 数据缺失，确定删除 {name} ？",
   "If checked, the network will be enable.": "如果选中，那么网络将被启用。",
   "If no gateway is specified, the first IP address will be defaulted.": "如果不指定网关IP，默认是第一个地址。",
+  "If not provided, the roles assigned to the application credential will be the same as the roles in the current token.": "如果不选择，那么分配给应用凭证的角色将与当前用户的角色相同。",
   "If nova-compute on the host is disabled, it will be forbidden to be selected as the target host.": "如果计算节点上的nova-compute被禁用，将禁止其作为目标节点。",
   "If the capacity of the disk is large,the type modify operation may takes several hours. Please be cautious.": "如果云硬盘容量较大，修改云硬盘类型可能需要花费几个小时，请您谨慎操作。",
   "If the volume associated with the snapshot has changed the volume type, please modify this option manually; if the volume associated with the snapshot keeps the volume type unchanged, please ignore this option. (no need to change).": "若快照关联的云硬盘修改过云硬盘类型，请手动修改此选项；若快照关联的云硬盘保持云硬盘类型不变，请忽略此选项（不需要做变更）。",
