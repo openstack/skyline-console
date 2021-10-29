@@ -1637,6 +1637,7 @@
   "Unable to {title}, please go back to ": "无法{title}，请访问",
   "Unattached": "未挂载",
   "Unavailable": "不可用",
+  "Unbootable": "不可启动",
   "Unknown": "未知",
   "Unless you know clearly which AZ to create the volume in, you don not need to fill in here.": "除非很明确知道应该在哪个 AZ 中创建 Volume，否则此处不用填",
   "Unlimit": "无限制",

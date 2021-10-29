@@ -30,6 +30,7 @@ import AcceptVolumeTransfer from './AcceptVolumeTransfer';
 import CreateTransfer from './CreateTransfer';
 import CancelTransfer from './CancelTransfer';
 import CreateInstance from './CreateInstance';
+import Bootable from './Bootable';
 
 const actionConfigs = {
   rowActions: {
@@ -37,6 +38,9 @@ const actionConfigs = {
     moreActions: [
       {
         action: Edit,
+      },
+      {
+        action: Bootable,
       },
       {
         action: CreateInstance,
