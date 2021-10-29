@@ -65,7 +65,8 @@ export const isOsDisk = (item) => {
     item.bootable === 'true' &&
     item.attachments &&
     item.attachments.length !== 0 &&
-    item.attachments[0].device === '/dev/vda'
+    (item.attachments[0].device === '/dev/vda' ||
+      item.attachments[0].device === '/dev/sda')
   ) {
     return true;
   }
