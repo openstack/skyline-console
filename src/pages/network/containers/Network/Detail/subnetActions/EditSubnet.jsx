@@ -77,9 +77,7 @@ export default class EditSubnet extends ModalAction {
       ...rest
     } = values;
 
-    const allocationPools = getAllocationPools(
-      allocation_pools || this.defaultValue.allocation_pools
-    );
+    const allocationPools = getAllocationPools(allocation_pools);
 
     const hostRouters = getHostRouters(
       host_routes || this.defaultValue.host_routes
