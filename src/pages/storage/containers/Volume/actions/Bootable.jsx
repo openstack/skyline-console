@@ -14,7 +14,7 @@
 
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import globalVolumeStore from '@/stores/cinder/volume';
+import globalVolumeStore from 'stores/cinder/volume';
 
 @inject('rootStore')
 @observer

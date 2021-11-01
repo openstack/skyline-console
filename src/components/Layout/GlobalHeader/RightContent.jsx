@@ -13,10 +13,13 @@
 // limitations under the License.
 
 import React, { PureComponent } from 'react';
+import { inject, observer } from 'mobx-react';
 import { Button, Col, Row } from 'antd';
 import Avatar from './AvatarDropdown';
 import styles from './index.less';
 
+@inject('rootStore')
+@observer
 export class GlobalHeaderRight extends PureComponent {
   get isAdminPage() {
     const { isAdminPage = false } = this.props;
