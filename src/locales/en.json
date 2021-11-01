@@ -1637,6 +1637,7 @@
   "Unable to {title}, please go back to ": "Unable to {title}, please go back to ",
   "Unattached": "Unattached",
   "Unavailable": "Unavailable",
+  "Unbootable": "Unbootable",
   "Unknown": "Unknown",
   "Unless you know clearly which AZ to create the volume in, you don not need to fill in here.": "Unless you know clearly which AZ to create the volume in, you don not need to fill in here.",
   "Unlimit": "Unlimit",

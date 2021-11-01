@@ -166,6 +166,11 @@ export class VolumeStore extends Base {
   }
 
   @action
+  changeBootable(id, data) {
+    return this.operation(id, data, 'os-set_bootable');
+  }
+
+  @action
   update(id, data) {
     const body = { [this.responseKey]: data };
     return this.submitting(this.client.update(id, body));
