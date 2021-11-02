@@ -58,6 +58,7 @@ import NetworkSelectTable from './NetworkSelectTable';
 import VolumeSelectTable from './VolumeSelectTable';
 import TabSelectTable from './TabSelectTable';
 import TreeSelect from './TreeSelect';
+import SelectWithInput from './SelectWithInput'
 // import styles from './index.less';
 
 export const type2component = {
@@ -103,6 +104,7 @@ export const type2component = {
   aceEditor: AceEditor,
   'input-json': JsonInput,
   'tree-select': TreeSelect,
+  'select-input': SelectWithInput,
 };
 
 export default class FormItem extends React.Component {

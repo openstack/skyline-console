@@ -1162,6 +1162,7 @@
   "Please input name": "请输入名称",
   "Please input port range": "请输入端口范围",
   "Please input prefix": "请输入前缀",
+  "Please input protocol number if it absent in select list.": "如果选择列表中没有，请输入协议号。",
   "Please input provider": "请输入提供者",
   "Please input snapshot name": "请输入快照名称",
   "Please input transfer id": "请输入转让Id",

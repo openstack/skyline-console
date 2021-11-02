@@ -220,10 +220,11 @@ export default class Create extends ModalAction {
       {
         name: 'ipProtocol',
         label: t('IP Protocol'),
-        type: 'select',
+        type: 'select-input',
         options: ipProtocols,
         required: isCustomProtocol,
         hidden: !isCustomProtocol,
+        help: t('Please input protocol number if it absent in select list.'),
       },
       {
         name: 'icmpType',
@@ -305,14 +306,14 @@ export default class Create extends ModalAction {
         protocol === 'custom_icmp'
           ? icmpType
           : range
-          ? parseInt(ports[0], 10)
-          : null,
+            ? parseInt(ports[0], 10)
+            : null,
       port_range_max:
         protocol === 'custom_icmp'
           ? icmpCode
           : range
-          ? parseInt(ports[1] || ports[0], 10)
-          : null,
+            ? parseInt(ports[1] || ports[0], 10)
+            : null,
       protocol: newProtocol,
       ...rest,
     };

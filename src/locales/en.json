@@ -1162,6 +1162,7 @@
   "Please input name": "Please input name",
   "Please input port range": "Please input port range",
   "Please input prefix": "Please input prefix",
+  "Please input protocol number if it absent in select list.": "Please input protocol number if it absent in select list.",
   "Please input provider": "Please input provider",
   "Please input snapshot name": "Please input snapshot name",
   "Please input transfer id": "Please input transfer id",
