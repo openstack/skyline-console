@@ -53,6 +53,7 @@ const instanceNameRegex =
   /^[a-zA-Z\u4e00-\u9fa5][\u4e00-\u9fa5\w"'._-]{0,127}$/;
 const ipv6CidrOnly =
   /^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9-]*[A-Za-z0-9])$|^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*\/(1[01][0-9]|12[0-8]|[0-9]{1,2})$/;
+const asciiRegex = /^[\x00-\x7f]*$/; // eslint-disable-line
 
 export const regex = {
   cidr,
@@ -71,6 +72,7 @@ export const regex = {
   imageNameRegex,
   instanceNameRegex,
   ipv6CidrOnly,
+  asciiRegex,
 };
 
 export const isPhoneNumber = (value) => phone(value).isValid;
@@ -335,6 +337,8 @@ export const macAddressMessage = t(
   'Invalid Mac Address. Please Use ":" as separator.'
 );
 
+const asciiMessage = t('Please enter a valid ASCII code');
+
 export const phoneNumberValidate = (rule, value) => {
   if (!rule.required && !value) {
     return Promise.resolve(true);
@@ -587,4 +591,11 @@ export const jsonValidator = (item, value) => {
     }
   }
   return Promise.resolve(true);
+};
+
+export const asciiValidator = (rule, value) => {
+  if (asciiRegex.test(value)) {
+    return Promise.resolve(true);
+  }
+  return Promise.reject(new Error(`${t('Invalid: ')}${asciiMessage}`));
 };

@@ -19,7 +19,7 @@ import globalHypervisorStore from 'stores/nova/hypervisor';
 import globalServerGroupStore from 'stores/nova/server-group';
 import policyType from 'resources/server-group';
 import Base from 'components/Form';
-import { getPasswordOtherRule } from 'utils/validate';
+import { getPasswordOtherRule, asciiValidator } from 'utils/validate';
 import { hypervisorColumns, hypervisorFilters } from 'resources/hypervisor';
 import { physicalNodeTypes } from 'resources/instance';
 
@@ -330,6 +330,7 @@ export class SystemStep extends Base {
         name: 'userData',
         label: t('User Data'),
         type: 'textarea-from-file',
+        validator: asciiValidator,
         hidden: !more,
         extra: t(
           'The user needs to ensure that the input is a shell script that can run completely and normally.'
