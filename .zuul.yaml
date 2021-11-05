@@ -528,16 +528,124 @@
         - skyline-nodejs14-run-lint-src
         - skyline-nodejs14-run-lint-test
         - skyline-nodejs14-run-unit-test
-        - skyline-console-devstack-e2etests-compute
-        - skyline-console-devstack-e2etests-network
-        - skyline-console-devstack-e2etests-other
-        - skyline-console-devstack-e2etests-storage
+        - skyline-console-devstack-e2etests-compute:
+            irrelevant-files: &e2etests-compute-irrelevant-files
+              # network
+              - ^src/pages/network/.*$
+              - ^src/stores/neutron/.*$
+              - ^src/stores/octavia/.*$
+              # storage
+              - ^src/pages/storage/.*$
+              - ^src/stores/cinder/.*$
+              # other
+              - ^src/pages/auth/.*$
+              - ^src/pages/base/.*$
+              - ^src/pages/basic/.*$
+              - ^src/pages/configuration/.*$
+              - ^src/pages/heat/.*$
+              - ^src/pages/identity/.*$
+              - ^src/pages/management/.*$
+              - ^src/pages/user-center/.*$
+              - ^src/stores/heat/.*$
+              - ^src/stores/keystone/.*$
+              # no run
+              - ^src/resources/.*$
+              - ^src/styles/.*$
+              - ^src/locales/.*$
+              - ^src/asset/.*$
+              # .zuul.yaml
+              - ^.zuul.yaml$
+        - skyline-console-devstack-e2etests-network:
+            irrelevant-files: &e2etests-network-irrelevant-files
+              # compute
+              - ^src/pages/compute/.*$
+              - ^src/stores/glance/.*$
+              - ^src/stores/ironic/.*$
+              - ^src/stores/nova/.*$
+              - ^src/stores/skyline/.*$
+              # storage
+              - ^src/pages/storage/.*$
+              - ^src/stores/cinder/.*$
+              # other
+              - ^src/pages/auth/.*$
+              - ^src/pages/base/.*$
+              - ^src/pages/basic/.*$
+              - ^src/pages/configuration/.*$
+              - ^src/pages/heat/.*$
+              - ^src/pages/identity/.*$
+              - ^src/pages/management/.*$
+              - ^src/pages/user-center/.*$
+              - ^src/stores/heat/.*$
+              - ^src/stores/keystone/.*$
+              # no run
+              - ^src/resources/.*$
+              - ^src/styles/.*$
+              - ^src/locales/.*$
+              - ^src/asset/.*$
+              # .zuul.yaml
+              - ^.zuul.yaml$
+        - skyline-console-devstack-e2etests-other:
+            irrelevant-files: &e2etests-other-irrelevant-files
+              # compute
+              - ^src/pages/compute/.*$
+              - ^src/stores/glance/.*$
+              - ^src/stores/ironic/.*$
+              - ^src/stores/nova/.*$
+              - ^src/stores/skyline/.*$
+              # network
+              - ^src/pages/network/.*$
+              - ^src/stores/neutron/.*$
+              - ^src/stores/octavia/.*$
+              # storage
+              - ^src/pages/storage/.*$
+              - ^src/stores/cinder/.*$
+              # no run
+              - ^src/resources/.*$
+              - ^src/styles/.*$
+              - ^src/locales/.*$
+              - ^src/asset/.*$
+              # .zuul.yaml
+              - ^.zuul.yaml$
+        - skyline-console-devstack-e2etests-storage:
+            irrelevant-files: &e2etests-storage-irrelevant-files
+              # compute
+              - ^src/pages/compute/.*$
+              - ^src/stores/glance/.*$
+              - ^src/stores/ironic/.*$
+              - ^src/stores/nova/.*$
+              - ^src/stores/skyline/.*$
+              # network
+              - ^src/pages/network/.*$
+              - ^src/stores/neutron/.*$
+              - ^src/stores/octavia/.*$
+              # other
+              - ^src/pages/auth/.*$
+              - ^src/pages/base/.*$
+              - ^src/pages/basic/.*$
+              - ^src/pages/configuration/.*$
+              - ^src/pages/heat/.*$
+              - ^src/pages/identity/.*$
+              - ^src/pages/management/.*$
+              - ^src/pages/user-center/.*$
+              - ^src/stores/heat/.*$
+              - ^src/stores/keystone/.*$
+              # no run
+              - ^src/resources/.*$
+              - ^src/styles/.*$
+              - ^src/locales/.*$
+              - ^src/asset/.*$
+              # .zuul.yaml
+              - ^.zuul.yaml$
     gate:
       jobs:
         - skyline-nodejs14-run-lint-src
         - skyline-nodejs14-run-lint-test
         - skyline-nodejs14-run-unit-test
-        - skyline-console-devstack-e2etests-compute
-        - skyline-console-devstack-e2etests-network
-        - skyline-console-devstack-e2etests-other
-        - skyline-console-devstack-e2etests-storage
+        - skyline-console-devstack-e2etests-compute:
+            irrelevant-files: *e2etests-compute-irrelevant-files
+        - skyline-console-devstack-e2etests-network:
+            irrelevant-files: *e2etests-network-irrelevant-files
+        - skyline-console-devstack-e2etests-other:
+            irrelevant-files: *e2etests-other-irrelevant-files
+        - skyline-console-devstack-e2etests-storage:
+            irrelevant-files: *e2etests-storage-irrelevant-files
