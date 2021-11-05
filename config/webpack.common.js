@@ -133,7 +133,7 @@ module.exports = {
   plugins: [
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new HappyPack({
-      threads: os.cpus().length - 1,
+      threads: os.cpus().length - 1 || 1,
       id: 'jsx',
       loaders: ['babel-loader?cacheDirectory'],
     }),
