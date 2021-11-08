@@ -23,7 +23,7 @@ export class PortStore extends Base {
   }
 
   get networkClient() {
-    return client.neutron.ports;
+    return client.neutron.networks;
   }
 
   get routerClient() {
@@ -81,10 +81,12 @@ export class PortStore extends Base {
         ...(this.list.silent ? {} : { selectedRowKeys: [] }),
       });
     }
-    const params = {
-      device_owner: 'network:ha_router_replicated_interface',
-    };
-    const result = await this.client.list(params);
+    const routerInterfaceOwners = [
+      'network:router_interface',
+      'network:ha_router_replicated_interface',
+      'network:router_interface_distributed'
+    ]
+    const result = await client.skyline.extension.ports({ device_owner: routerInterfaceOwners });
     let data = get(result, this.listResponseKey, []);
     data = data.filter((it) => ports.indexOf(it.id) >= 0);
     const items = data.map(this.mapper);
