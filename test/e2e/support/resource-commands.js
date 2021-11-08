@@ -207,6 +207,7 @@ Cypress.Commands.add('createUserGroup', ({ name }) => {
 
 Cypress.Commands.add('createUser', ({ name }) => {
   const email = `${name}@example.com`;
+  const prefix = '+86';
   const phone = '18500000000';
   const password = 'passW0rd_';
   cy.visitPage(userListUrl)
@@ -216,7 +217,8 @@ Cypress.Commands.add('createUser', ({ name }) => {
     .formInput('email', email)
     .formInput('password', password)
     .formInput('confirmPassword', password)
-    .formInput('phone', phone)
+    .formSelect('phone', prefix)
+    .formInput('phone', phone, '.ant-input')
     .formInput('real_name', name)
     .clickFormActionSubmitButton()
     .tableSearchText(name)

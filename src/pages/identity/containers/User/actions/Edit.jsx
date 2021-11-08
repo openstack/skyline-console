@@ -17,6 +17,7 @@ import { ModalAction } from 'containers/Action';
 import globalUserStore from 'stores/keystone/user';
 import globalDomainStore from 'stores/keystone/domain';
 import { phoneNumberValidate, emailValidate } from 'utils/validate';
+import parsePhoneNumberFromString from 'libphonenumber-js';
 
 export class EditForm extends ModalAction {
   init() {
@@ -93,12 +94,17 @@ export class EditForm extends ModalAction {
     const domain = domains.filter((it) => it.id === domain_id)[0];
     const project = projects.filter((it) => it.id === default_project_id)[0];
     if (name && this.formRef.current) {
+      const formatedPhone = parsePhoneNumberFromString(phone || '', 'CN') || {
+        country: 'CN',
+        nationalNumber: '',
+      };
+      const { countryCallingCode, nationalNumber } = formatedPhone;
       this.formRef.current.setFieldsValue({
         name,
         domain_id: domain ? domain.name : '',
         default_project_id: project ? project.name : '',
         email,
-        phone,
+        phone: `+${countryCallingCode} ${nationalNumber}`,
         real_name,
         description,
       });
@@ -142,7 +148,7 @@ export class EditForm extends ModalAction {
       {
         name: 'phone',
         label: t('Phone'),
-        type: 'input',
+        type: 'phone',
         required: true,
         validator: phoneNumberValidate,
       },

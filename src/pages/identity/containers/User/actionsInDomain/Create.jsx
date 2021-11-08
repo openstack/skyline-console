@@ -183,7 +183,7 @@ export class CreateForm extends ModalAction {
         name: 'phone',
         label: t('Phone'),
         validator: phoneNumberValidate,
-        type: 'input',
+        type: 'phone',
         required: true,
       },
       {

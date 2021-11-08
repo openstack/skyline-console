@@ -20,6 +20,7 @@ describe('The User Page', () => {
   const name = `e2e-user-${uuid}`;
   const newname = `${name}-1`;
   const email = `${name}@example.com`;
+  const prefix = '+86';
   const phone = '18500000000';
   const password = 'passW0rd_';
   const tmpPassword = `${password}1`;
@@ -47,7 +48,8 @@ describe('The User Page', () => {
       .formInput('email', email)
       .formInput('password', tmpPassword)
       .formInput('confirmPassword', tmpPassword)
-      .formInput('phone', phone)
+      .formSelect('phone', prefix)
+      .formInput('phone', phone, '.ant-input')
       .formInput('real_name', name)
       .formButtonClick('more')
       .wait(2000)
