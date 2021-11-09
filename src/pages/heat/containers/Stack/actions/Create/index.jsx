@@ -37,7 +37,7 @@ export class StepCreate extends StepAction {
   }
 
   get listUrl() {
-    return this.getUrl('/heat/stack');
+    return this.getRoutePath('stack');
   }
 
   get name() {

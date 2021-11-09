@@ -12,10 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
-import { Link } from 'react-router-dom';
 
 @inject('rootStore')
 @observer
@@ -33,11 +31,8 @@ export default class BaseDetail extends Base {
         copyable: {
           text: this.detailData.volume_id,
         },
-        render: (value) => (
-          <Link to={`${this.getUrl('/storage/volume')}/detail/${value}`}>
-            {value}
-          </Link>
-        ),
+        render: (value) =>
+          this.getLinkRender('volumeDetail', value, { id: value }),
       },
       {
         label: t('Volume'),

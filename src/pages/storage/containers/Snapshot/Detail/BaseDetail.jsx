@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
-import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
 
@@ -32,13 +30,13 @@ export class BaseDetail extends Base {
             return '-';
           }
           const { id, name } = value;
-          return (
-            <Link
-              to={`${this.getUrl('/storage/volume')}/detail/${id}?tab=snapshot`}
-            >
-              {name || id}
-            </Link>
+          const link = this.getLinkRender(
+            'volumeDetail',
+            name || id,
+            { id },
+            { tab: 'snapshot' }
           );
+          return link;
         },
       },
     ];

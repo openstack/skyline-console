@@ -100,7 +100,9 @@ export class Create extends ModalAction {
         label: t('Roles'),
         type: 'check-group',
         options: this.roleOptions,
-        extra: t('If not provided, the roles assigned to the application credential will be the same as the roles in the current token.'),
+        extra: t(
+          'If not provided, the roles assigned to the application credential will be the same as the roles in the current token.'
+        ),
         span: 12,
       },
       {

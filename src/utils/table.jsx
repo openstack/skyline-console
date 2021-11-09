@@ -13,9 +13,31 @@
 // limitations under the License.
 
 import React from 'react';
-import { isArray, get, isString } from 'lodash';
+import { Link } from 'react-router-dom';
+import { isArray, get, isString, isBoolean, isNil, isObjectLike } from 'lodash';
 import Status from 'components/Status';
 import { renderFilterMap } from 'utils/index';
+import { getLinkRender } from 'utils/route-map';
+
+export function getStringValue(value) {
+  if (
+    isNil(value) ||
+    (isObjectLike(value) && Object.keys(value).length === 0)
+  ) {
+    return '-';
+  }
+  if (isBoolean(value)) {
+    return value.toString();
+  }
+  return value;
+}
+
+export function columnRender(render, value, record) {
+  if (render) {
+    return getStringValue(render(value, record));
+  }
+  return getStringValue(value);
+}
 
 export const getDefaultSorter = (dataIndex) => (a, b) => {
   const dIndex = isArray(dataIndex) ? dataIndex.join('.') : dataIndex;
@@ -106,3 +128,97 @@ export const projectRender = (value, record) => (
     <div>{value || '-'}</div>
   </>
 );
+
+const getLinkUrl = (prefix, id) => {
+  if (!prefix) {
+    return null;
+  }
+  if (prefix[prefix.length - 1] === '/') {
+    return `${prefix}${id}`;
+  }
+  return `${prefix}/${id}`;
+};
+
+export const getNameRender = (render, column) => {
+  if (render) {
+    return render;
+  }
+  const {
+    linkPrefix,
+    dataIndex,
+    idKey,
+    linkPrefixFunc,
+    linkFunc,
+    hasNoDetail = false,
+  } = column;
+  const { rowKey } = this.props;
+  return (value, record) => {
+    const idValue = get(record, idKey || rowKey);
+    let url = null;
+    if (linkFunc) {
+      url = linkFunc(value, record);
+    } else {
+      const linkValue = linkPrefixFunc
+        ? linkPrefixFunc(value, record)
+        : linkPrefix;
+      url = getLinkUrl(linkValue, idValue);
+    }
+    const nameValue = value || get(record, dataIndex) || '-';
+    if (hasNoDetail) {
+      return (
+        <div>
+          <div>{idValue}</div>
+          <div>{nameValue}</div>
+        </div>
+      );
+    }
+    if (!url && !hasNoDetail) {
+      return nameValue;
+    }
+    return (
+      <div>
+        <div>
+          <Link to={url}>{idValue}</Link>
+        </div>
+        <div>{nameValue}</div>
+      </div>
+    );
+  };
+};
+
+export const getNameRenderByRouter = (render, column, rowKey) => {
+  if (render) {
+    return render;
+  }
+  const {
+    dataIndex,
+    idKey,
+    routeName,
+    routeParamsKey = 'id',
+    routeQuery = {},
+    routeParamsFunc,
+  } = column;
+  return (value, record) => {
+    const nameValue = value || get(record, dataIndex) || '-';
+    if (!routeName) {
+      return nameValue;
+    }
+    const idValue = get(record, idKey || rowKey);
+    const params = routeParamsFunc
+      ? routeParamsFunc(record)
+      : { [routeParamsKey]: idValue };
+    const query = routeQuery;
+    const link = getLinkRender({
+      key: routeName,
+      params,
+      query,
+      value: idValue,
+    });
+    return (
+      <div>
+        <div>{link}</div>
+        <div>{nameValue}</div>
+      </div>
+    );
+  };
+};

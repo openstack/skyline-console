@@ -30,7 +30,7 @@ export default class MetadataDetail extends Base {
   }
 
   get listUrl() {
-    return '/configuration-admin/metadata';
+    return this.getRoutePath('metadata');
   }
 
   get actionConfigs() {

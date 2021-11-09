@@ -31,7 +31,7 @@ export class FloatingIpDetail extends Base {
   }
 
   get listUrl() {
-    return this.getUrl('/network/floatingip');
+    return this.getRoutePath('floatingip');
   }
 
   get actionConfigs() {

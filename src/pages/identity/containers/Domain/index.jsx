@@ -43,8 +43,7 @@ export default class Domains extends Base {
     {
       title: t('Domain ID/Name'),
       dataIndex: 'name',
-      // isHideable: true,
-      linkPrefix: '/identity/domain-admin/detail',
+      routeName: 'domainDetailAdmin',
     },
     {
       title: t('Member Num'),

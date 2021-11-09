@@ -108,10 +108,7 @@ export function getPortFormItem(device_owner) {
         {
           title: t('ID/Name'),
           dataIndex: 'name',
-          linkPrefix: `/network/${this.getUrl(
-            'virtual_adapter',
-            '_admin'
-          )}/detail`,
+          routeName: this.getRouteName('virtualAdapterDetail'),
         },
         {
           title: t('Description'),

@@ -165,7 +165,8 @@ export default class Create extends ModalAction {
           {
             title: t('Name'),
             dataIndex: 'name',
-            isName: true,
+            // todo: what?
+            isLink: true,
           },
           {
             title: t('CIDR'),

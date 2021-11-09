@@ -15,7 +15,6 @@
 import React from 'react';
 import { yesNoOptions } from 'utils/constants';
 import { toLocalTimeFilter } from 'utils/index';
-import { Link } from 'react-router-dom';
 
 export const volumeStatus = {
   available: t('Available'),
@@ -236,7 +235,7 @@ export const getVolumnColumnsList = (self) => {
     {
       title: t('ID/Name'),
       dataIndex: 'name',
-      linkPrefix: `/storage/${self.getUrl('volume')}/detail`,
+      routeName: self.getRouteName('volumeDetail'),
       stringify: (name, record) => name || record.id,
       sortKey: 'name',
     },
@@ -289,13 +288,12 @@ export const getVolumnColumnsList = (self) => {
           return value.map((it) => (
             <div key={it.server_id}>
               {it.device} on{' '}
-              <Link
-                to={`${self.getUrl('/compute/instance')}/detail/${
-                  it.server_id
-                }?tab=volumes`}
-              >
-                {it.server_name}
-              </Link>
+              {self.getLinkRender(
+                'instanceDetail',
+                it.server_name,
+                { id: it.server_id },
+                { tab: 'volumes' }
+              )}
             </div>
           ));
         }

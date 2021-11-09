@@ -27,7 +27,7 @@ export default class Edit extends Create {
   static path = (item) => `/compute/baremetal-node-admin/edit/${item.uuid}`;
 
   get listUrl() {
-    return '/compute/baremetal-node-admin';
+    return this.getRoutePath('baremetalNode');
   }
 
   get name() {

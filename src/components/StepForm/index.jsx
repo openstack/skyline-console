@@ -20,6 +20,7 @@ import classnames from 'classnames';
 import { firstUpperCase, unescapeHtml } from 'utils/index';
 import { parse } from 'qs';
 import NotFound from 'components/Cards/NotFound';
+import { getPath, getLinkRender } from 'utils/route-map';
 import styles from './index.less';
 
 export default class BaseStepForm extends React.Component {
@@ -92,7 +93,7 @@ export default class BaseStepForm extends React.Component {
   }
 
   get listUrl() {
-    return '/base/tmp';
+    return '';
   }
 
   get checkEndpoint() {
@@ -210,6 +211,20 @@ export default class BaseStepForm extends React.Component {
 
   getUrl(path, adminStr) {
     return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
+  }
+
+  getRouteName(routeName) {
+    return this.isAdminPage ? `${routeName}Admin` : routeName;
+  }
+
+  getRoutePath(routeName, params = {}, query = {}) {
+    const realName = this.getRouteName(routeName);
+    return getPath({ key: realName, params, query });
+  }
+
+  getLinkRender(routeName, value, params = {}, query = {}) {
+    const realName = this.getRouteName(routeName);
+    return getLinkRender({ key: realName, params, query, value });
   }
 
   getPrevBtn() {

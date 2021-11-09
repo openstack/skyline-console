@@ -42,7 +42,7 @@ export default class Create extends StepAction {
   }
 
   get listUrl() {
-    return '/compute/baremetal-node-admin';
+    return this.getRoutePath('baremetalNode');
   }
 
   get name() {

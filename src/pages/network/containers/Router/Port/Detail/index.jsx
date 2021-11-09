@@ -29,9 +29,11 @@ export class PortDetail extends Base {
 
   get listUrl() {
     const { routerId } = this.params;
-    return `/network/${this.getUrl(
-      'router'
-    )}/detail/${routerId}?tab=interfaces`;
+    return this.getRoutePath(
+      'routerDetail',
+      { id: routerId },
+      { tab: 'interfaces' }
+    );
   }
 
   get detailInfos() {

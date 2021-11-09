@@ -20,6 +20,7 @@ import classnames from 'classnames';
 import renderRoutes from 'utils/RouterConfig';
 import NotFound from 'components/Cards/NotFound';
 import PageLoading from 'components/PageLoading';
+import { getPath } from 'utils/route-map';
 import styles from './index.less';
 
 const { Content } = Layout;
@@ -57,6 +58,15 @@ class Right extends Component {
 
   getUrl(path, adminStr) {
     return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
+  }
+
+  getRouteName(routeName) {
+    return this.isAdminPage ? `${routeName}Admin` : routeName;
+  }
+
+  getRoutePath(routeName, params = {}, query = {}) {
+    const realName = this.getRouteName(routeName);
+    return getPath({ key: realName, params, query });
   }
 
   checkHasTab = () => {
@@ -123,21 +133,12 @@ class Right extends Component {
       return (
         <NotFound
           title={t('data')}
-          link={this.getUrl('/base/overview')}
+          link={this.getRoutePath('overview')}
           codeError
         />
       );
     }
     try {
-      // const { currentRoutes = [] } = this.props;
-      // if (currentRoutes.length === 0) {
-      //   return (
-      //     <NotFound
-      //       title={t('data')}
-      //       link={this.getUrl('/base/overview')}
-      //     />
-      //   );
-      // }
       const children = (
         <div className={`${styles.main} ${mainBreadcrubClass} ${mainTabClass}`}>
           {renderRoutes(this.routes, extraProps)}
@@ -147,13 +148,8 @@ class Right extends Component {
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log(e);
-      return (
-        <NotFound
-          title={t('data')}
-          link={this.getUrl('/base/overview')}
-          codeError
-        />
-      );
+      const path = this.getRoutePath('overview');
+      return <NotFound title={t('data')} link={path} codeError />;
     }
   };
 

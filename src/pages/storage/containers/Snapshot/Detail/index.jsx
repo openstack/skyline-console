@@ -29,7 +29,7 @@ export class Detail extends Base {
   }
 
   get listUrl() {
-    return this.getUrl('/storage/snapshot');
+    return this.getRoutePath('snapshot');
   }
 
   get actionConfigs() {

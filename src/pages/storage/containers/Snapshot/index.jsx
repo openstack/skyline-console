@@ -83,7 +83,7 @@ export class Snapshots extends Base {
     {
       title: t('ID/Name'),
       dataIndex: 'name',
-      linkPrefix: `/storage/${this.getUrl('snapshot')}/detail`,
+      routeName: this.getRouteName('snapshotDetail'),
     },
     {
       title: t('Project ID/Name'),
@@ -114,12 +114,10 @@ export class Snapshots extends Base {
     {
       title: t('Volume ID/Name'),
       dataIndex: 'volume_name',
-      isName: true,
+      isLink: true,
       idKey: 'volume_id',
-      linkFunc: (_, record) =>
-        `${this.getUrl('/storage/volume')}/detail/${
-          record.volume_id
-        }?tab=snapshot`,
+      routeName: this.getRouteName('volumeDetail'),
+      routeQuery: { tab: 'snapshot' },
       isHideable: true,
       sorter: false,
     },

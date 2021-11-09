@@ -131,7 +131,7 @@ English | [Chinese](../../zh/develop/3-4-BaseDetailInfo-introduction.md)
   - `id` in routing information
 - `isAdminPage`
   - Is the current page a "management platform" page
-- `getUrl`
+- `getRoutePath`
   - Function to generate page URL
   - For example, it is necessary to provide a jump function to the associated resource. Using this function, you can jump to the corresponding address of the console in the console, and jump to the corresponding address of the management platform in the management platform.
 - `routing`

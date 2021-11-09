@@ -88,15 +88,15 @@ export class CreateIronic extends StepAction {
   get listUrl() {
     const { image, volume, servergroup } = this.locationParams;
     if (image) {
-      return '/compute/image';
+      return this.getRoutePath('image');
     }
     if (volume) {
-      return '/storage/volume';
+      return this.getRoutePath('volume');
     }
     if (servergroup) {
-      return `/compute/server-group/detail/${servergroup}`;
+      return this.getRoutePath('serverGroupDetail', { id: servergroup });
     }
-    return '/compute/instance';
+    return this.getRoutePath('instance');
   }
 
   get checkEndpoint() {

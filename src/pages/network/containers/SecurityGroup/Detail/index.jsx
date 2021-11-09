@@ -29,7 +29,7 @@ export class SecurityGroupDetail extends Base {
   }
 
   get listUrl() {
-    return this.getUrl('/network/security-group');
+    return this.getRoutePath('securityGroup');
   }
 
   get actionConfigs() {

@@ -48,8 +48,8 @@ export default class NeutronAgent extends Base {
     {
       title: t('ID/Name'),
       dataIndex: 'binary',
-      isName: true,
-      linkPrefix: '/configuration-admin/neutron/detail',
+      isLink: true,
+      routeName: 'neutronAgentDetailAdmin',
     },
     {
       title: t('Type'),

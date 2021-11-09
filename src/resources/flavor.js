@@ -137,7 +137,7 @@ export const getBaseColumns = (self) => [
   {
     title: t('ID/Name'),
     dataIndex: 'name',
-    linkPrefix: self ? `/compute/${self.getUrl('flavor')}/detail` : '',
+    routeName: self ? self.getRouteName('flavorDetail') : '',
   },
   {
     title: t('Category'),

@@ -44,7 +44,7 @@ export default class ServerGroup extends Base {
     {
       title: t('ID/Name'),
       dataIndex: 'name',
-      linkPrefix: `/compute/${this.getUrl('server-group')}/detail`,
+      routeName: this.getRouteName('serverGroupDetail'),
     },
     {
       title: t('Project ID/Name'),

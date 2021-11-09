@@ -36,7 +36,7 @@ export default class KeypairDetail extends Base {
   }
 
   get listUrl() {
-    return '/configuration-admin/info?tab=neutronAgent';
+    return this.getRoutePath('systemInfo', null, { tab: 'neutronAgent' });
   }
 
   get actionConfigs() {

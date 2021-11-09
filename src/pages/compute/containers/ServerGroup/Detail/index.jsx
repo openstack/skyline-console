@@ -31,7 +31,7 @@ export default class ServerGroupDetail extends Base {
   }
 
   get listUrl() {
-    return this.getUrl('/compute/server-group');
+    return this.getRoutePath('serverGroup');
   }
 
   get actionConfigs() {

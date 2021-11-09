@@ -60,15 +60,11 @@ export class SecurityGroups extends Base {
     return true;
   }
 
-  get detailLink() {
-    return `/network/${this.getUrl('security-group')}/detail`;
-  }
-
   getColumns = () => [
     {
       title: t('ID/Name'),
       dataIndex: 'name',
-      linkPrefix: this.detailLink,
+      routeName: this.getRouteName('securityGroupDetail'),
     },
     {
       title: t('Project ID/Name'),

@@ -66,7 +66,7 @@ export class Projects extends Base {
       {
         title: t('Project ID/Name'),
         dataIndex: 'name',
-        linkPrefix: `/identity/${this.getUrl('project')}/detail`,
+        routeName: 'projectDetailAdmin',
       },
       {
         title: t('Role'),

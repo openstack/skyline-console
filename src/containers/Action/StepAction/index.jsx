@@ -32,12 +32,4 @@ export default class StepAction extends StepForm {
   get hasConfirmStep() {
     return true;
   }
-
-  // get isAdminPage() {
-  //   return this.props.isAdminPage || false;
-  // }
-
-  // getUrl(path, adminStr) {
-  //   return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
-  // }
 }

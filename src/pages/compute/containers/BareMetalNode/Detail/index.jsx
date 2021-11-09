@@ -34,7 +34,7 @@ export default class Detail extends Base {
   }
 
   get listUrl() {
-    return '/compute/baremetal-node-admin';
+    return this.getRoutePath('baremetalNode');
   }
 
   get actionConfigs() {

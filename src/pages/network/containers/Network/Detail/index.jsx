@@ -32,7 +32,7 @@ export class NetworkDetail extends Base {
   }
 
   get listUrl() {
-    return this.getUrl('/network/networks');
+    return this.getRoutePath('network');
   }
 
   get actionConfigs() {

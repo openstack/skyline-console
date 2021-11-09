@@ -50,10 +50,8 @@ class StepCreate extends StepAction {
 
   get listUrl() {
     const { architecture } = this.values || {};
-    if (architecture) {
-      return `/compute/flavor-admin?tab=${architecture}`;
-    }
-    return `/compute/flavor-admin?tab=${this.tab}`;
+    const tab = architecture || this.tab;
+    return this.getRoutePath('flavor', null, { tab });
   }
 
   get name() {
@@ -126,7 +124,7 @@ class StepCreate extends StepAction {
       ram: memoryGb * 1024,
       disk: 0,
     };
-    const isPublic = accessType === 'public'
+    const isPublic = accessType === 'public';
     body['os-flavor-access:is_public'] = isPublic;
     if (categoryHasEphemeral) {
       body['OS-FLV-EXT-DATA:ephemeral'] = ephemeral;

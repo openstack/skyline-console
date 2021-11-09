@@ -54,8 +54,7 @@ export default class BareMetalNode extends Base {
     {
       title: t('Node ID/Name'),
       dataIndex: 'name',
-      idKey: 'uuid',
-      linkPrefix: '/compute/baremetal-node-admin/detail',
+      routerName: 'baremetalNodeDetail',
     },
     {
       title: t('Ironic Instance Name'),

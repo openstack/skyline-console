@@ -31,7 +31,7 @@ export default class Detail extends Base {
   }
 
   get listUrl() {
-    return '/storage/volume-type-admin?tab=qos';
+    return this.getRoutePath('volumeType', null, { tab: 'qos' });
   }
 
   get actionConfigs() {

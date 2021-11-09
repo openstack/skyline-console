@@ -25,6 +25,7 @@ import PrimaryActionButtons from 'components/Tables/Base/PrimaryActionButtons';
 import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
 import { getSelfColumns } from 'resources/security-group-rule';
 import { isAdminPage } from 'utils/index';
+import { getPath } from 'utils/route-map';
 import Detach from './actions/Detach';
 import styles from './index.less';
 
@@ -40,12 +41,11 @@ export class SecurityGroup extends React.Component {
     this.refreshSecurityGroup();
   }
 
-  getUrl(path, adminStr) {
-    return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
-  }
-
   getDetailUrl(id) {
-    return `${this.getUrl('/network/security-group')}/detail/${id}`;
+    const key = this.isAdminPage
+      ? 'securityGroupDetailAdmin'
+      : 'securityGroupDetail';
+    return getPath({ key, params: { id } });
   }
 
   get portId() {

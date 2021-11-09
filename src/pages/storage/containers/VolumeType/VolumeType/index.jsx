@@ -72,7 +72,7 @@ export default class VolumeType extends Base {
     {
       title: t('ID/Name'),
       dataIndex: 'name',
-      linkPrefix: '/storage/volume-type-admin/detail',
+      routeName: 'volumeTypeDetailAdmin',
     },
     {
       title: t('Description'),
@@ -83,8 +83,8 @@ export default class VolumeType extends Base {
     {
       title: t('Associated QoS Spec'),
       dataIndex: 'qos_specs_name',
-      isName: true,
-      linkPrefix: '/storage/volume-type-admin/qos/detail/',
+      isLink: true,
+      routeName: 'volumeTypeQosDetailAdmin',
       idKey: 'qos_specs_id',
     },
     {

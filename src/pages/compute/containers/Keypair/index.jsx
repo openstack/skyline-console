@@ -12,11 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import keypairStore from 'stores/nova/keypair';
-import { Link } from 'react-router-dom';
 import actionConfigs from './actions';
 
 @inject('rootStore')
@@ -50,14 +48,8 @@ export default class Keypair extends Base {
     {
       title: t('Name'),
       dataIndex: 'name',
-      render: (name, record) => {
-        if (name) {
-          return (
-            <Link to={`/compute/keypair/detail/${record.name}`}>{name}</Link>
-          );
-        }
-        return '-';
-      },
+      idKey: 'name',
+      routeName: this.getRouteName('keypairDetail'),
     },
     {
       title: t('Fingerprint'),

@@ -1,6 +1,6 @@
-import { columnRender } from './render';
+import { columnRender } from './table';
 
-describe('render test', () => {
+describe('column render test', () => {
   it('column render', () => {
     expect(columnRender(undefined, 'normal')).toBe('normal');
     expect(columnRender(undefined, 0)).toBe(0);

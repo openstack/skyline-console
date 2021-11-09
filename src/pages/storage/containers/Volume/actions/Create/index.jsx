@@ -64,7 +64,7 @@ export class Create extends FormAction {
   static path = '/storage/volume/create';
 
   get listUrl() {
-    return '/storage/volume';
+    return this.getRoutePath('volume');
   }
 
   get name() {

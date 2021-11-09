@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
 
@@ -41,13 +40,12 @@ export class BaseDetail extends Base {
           return value.map((it) => (
             <div key={it.server_id}>
               {it.device} on{' '}
-              <Link
-                to={`${this.getUrl('/compute/instance')}/detail/${
-                  it.server_id
-                }?tab=volumes`}
-              >
-                {it.server_name}
-              </Link>
+              {this.getLinkRender(
+                'instanceDetail',
+                it.server_name,
+                { id: it.server_id },
+                { tab: 'volumes' }
+              )}
             </div>
           ));
         },
@@ -67,11 +65,8 @@ export class BaseDetail extends Base {
       {
         label: t('Image'),
         dataIndex: 'volume_image_metadata.image_name',
-        render: () => (
-          <Link to={`${this.getUrl('/compute/image')}/detail/${image_id}`}>
-            {image_name}
-          </Link>
-        ),
+        render: () =>
+          this.getLinkRender('imageDetail', image_name, { id: image_id }, null),
       },
     ];
 

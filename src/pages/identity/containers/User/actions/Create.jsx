@@ -93,7 +93,7 @@ export class CreateForm extends FormAction {
   }
 
   get listUrl() {
-    return '/identity/user-admin';
+    return this.getRoutePath('user');
   }
 
   get defaultValue() {

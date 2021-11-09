@@ -32,7 +32,7 @@ export class Detail extends Base {
   }
 
   get listUrl() {
-    return this.getUrl('/compute/flavor');
+    return this.getRoutePath('flavor');
   }
 
   get actionConfigs() {

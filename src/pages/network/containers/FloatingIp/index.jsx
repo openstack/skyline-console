@@ -17,7 +17,6 @@ import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { floatingIpStatus, transitionStatuses } from 'resources/floatingip';
 import { FloatingIpStore } from 'stores/neutron/floatingIp';
-import { Link } from 'react-router-dom';
 import { emptyActionConfig } from 'utils/constants';
 import { Col, Popover, Row } from 'antd';
 import { FileTextOutlined } from '@ant-design/icons';
@@ -122,17 +121,15 @@ export class FloatingIps extends Base {
       {
         title: t('ID/Floating IP'),
         dataIndex: 'floating_ip_address',
-        isName: true,
-        linkPrefix: `/network/${this.getUrl('floatingip')}/detail`,
+        isLink: true,
+        routeName: this.getRouteName('fipDetail'),
       },
       {
         title: t('QoS Policy'),
         dataIndex: 'qos_policy_id',
-        render: (value) => (
-          <Link to={`/network/${this.getUrl('qos-policy')}/detail/${value}`}>
-            {value}
-          </Link>
-        ),
+        isLink: true,
+        routeName: 'qosPolicyDetail',
+        idKey: 'qos_policy_id',
         hidden: !this.qosEndpoint,
       },
       {

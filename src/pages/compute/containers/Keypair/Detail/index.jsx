@@ -30,7 +30,7 @@ export default class KeypairDetail extends Base {
   }
 
   get listUrl() {
-    return '/compute/keypair';
+    return this.getRoutePath('keypair');
   }
 
   get actionConfigs() {

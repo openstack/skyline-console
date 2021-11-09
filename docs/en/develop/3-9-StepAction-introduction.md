@@ -286,7 +286,7 @@ English | [简体中文](../../zh/develop/3-9-StepAction-introduction.md)
 - `isAdminPage`
   - Whether current page is a "management platform" page
 
-- `getUrl`
+- `getRoutePath`
   - Generate function of page URL
   - Such as: need to provide a ability of jump to the associated resource, use this function, you can jump to the corresponding address of the `console platform` in the `console platform`, and jump to the corresponding address of the `management platform` in the `management platform`.
 

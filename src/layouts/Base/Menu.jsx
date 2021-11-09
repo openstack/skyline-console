@@ -21,6 +21,7 @@ import { toJS } from 'mobx';
 import classnames from 'classnames';
 import logoSmall from 'asset/image/logo-small.svg';
 import logoExtend from 'asset/image/logo-extend.svg';
+import { getPath } from 'utils/route-map';
 import styles from './index.less';
 
 const { SubMenu } = Menu;
@@ -45,6 +46,15 @@ export class LayoutMenu extends Component {
 
   getUrl(path, adminStr) {
     return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
+  }
+
+  getRouteName(routeName) {
+    return this.isAdminPage ? `${routeName}Admin` : routeName;
+  }
+
+  getRoutePath(routeName, params = {}, query = {}) {
+    const realName = this.getRouteName(routeName);
+    return getPath({ key: realName, params, query });
   }
 
   get rootStore() {
@@ -217,7 +227,7 @@ export class LayoutMenu extends Component {
     const { collapsed, hover } = this.state;
     const isExtend = !collapsed || hover;
     const imageSvg = this.getImage(isExtend);
-    const homeUrl = this.getUrl('/base/overview');
+    const homeUrl = this.getRoutePath('overview');
     return (
       <div
         className={classnames(

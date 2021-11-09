@@ -29,7 +29,7 @@ export class HypervisorDetail extends Base {
   }
 
   get listUrl() {
-    return '/compute/hypervisors-admin';
+    return this.getRoutePath('hypervisor');
   }
 
   get detailInfos() {

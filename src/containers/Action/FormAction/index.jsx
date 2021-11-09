@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import BaseForm from 'components/Form';
+import { getPath } from 'utils/route-map';
 
 export default class FormAction extends BaseForm {
   static id = 'formAction';
@@ -35,5 +36,14 @@ export default class FormAction extends BaseForm {
 
   getUrl(path, adminStr) {
     return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
+  }
+
+  getRouteName(routeName) {
+    return this.isAdminPage ? `${routeName}Admin` : routeName;
+  }
+
+  getRoutePath(routeName, params = {}, query = {}) {
+    const realName = this.getRouteName(routeName);
+    return getPath({ key: realName, params, query });
   }
 }

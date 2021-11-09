@@ -72,7 +72,7 @@
 
     ```javascript
     get listUrl() {
-      return this.getUrl('/storage/volume');
+      return this.getRoutePath('volume');
     }
     ```
 
@@ -241,7 +241,7 @@
   - 路由信息中的`id`
 - `isAdminPage`
   - 当前页面是否是“管理平台”的页面
-- `getUrl`
+- `getRoutePath`
   - 生成页面 Url 的函数
   - 如：需要给关联资源提供跳转功能，使用该函数，可以在控制台跳转到控制台的相应地址，在管理平台跳转到管理平台的相应地址
 - `routing`

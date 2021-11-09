@@ -16,6 +16,7 @@ import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalSecurityGroupRuleStore from 'stores/neutron/security-rule';
 import { filterParams, getSelfColumns } from 'resources/security-group-rule';
+import { getPath } from 'utils/route-map';
 import actionConfigs from './actions';
 
 export class Rule extends Base {
@@ -32,7 +33,10 @@ export class Rule extends Base {
   }
 
   getDetailUrl(id) {
-    return `${this.getUrl('/network/security-group')}/detail/${id}`;
+    const key = this.isAdminPage
+      ? 'securityGroupDetailAdmin'
+      : 'securityGroupDetail';
+    return getPath({ key, params: { id } });
   }
 
   getColumns = () => getSelfColumns(this);

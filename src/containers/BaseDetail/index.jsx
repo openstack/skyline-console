@@ -18,6 +18,7 @@ import Card from 'components/DetailCard';
 import { toJS } from 'mobx';
 import { has } from 'lodash';
 import { isAdminPage } from 'utils/index';
+import { getPath, getLinkRender } from 'utils/route-map';
 import styles from './index.less';
 
 export default class BaseDetail extends React.Component {
@@ -84,6 +85,20 @@ export default class BaseDetail extends React.Component {
 
   getUrl(path, adminStr) {
     return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
+  }
+
+  getRouteName(routeName) {
+    return this.isAdminPage ? `${routeName}Admin` : routeName;
+  }
+
+  getRoutePath(routeName, params = {}, query = {}) {
+    const realName = this.getRouteName(routeName);
+    return getPath({ key: realName, params, query });
+  }
+
+  getLinkRender(routeName, value, params = {}, query = {}) {
+    const realName = this.getRouteName(routeName);
+    return getLinkRender({ key: realName, params, query, value });
   }
 
   fetchData = (params) => {

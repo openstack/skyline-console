@@ -30,7 +30,7 @@ export default class QoSPolicyDetail extends Base {
   }
 
   get listUrl() {
-    return this.getUrl('/network/qos-policy');
+    return this.getRoutePath('qosPolicy');
   }
 
   get actionConfigs() {

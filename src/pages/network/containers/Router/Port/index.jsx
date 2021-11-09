@@ -51,8 +51,12 @@ export default class Ports extends Base {
     {
       title: t('ID/Name'),
       dataIndex: 'name',
-      linkPrefix: `/network/${this.getUrl('router')}/${this.id}/port`,
       stringify: (name, record) => name || record.id,
+      routeName: this.getRouteName('routerPortDetail'),
+      routeParamsFunc: (data) => ({
+        routeId: this.id,
+        id: data.id,
+      }),
     },
     {
       title: t('IP Address'),

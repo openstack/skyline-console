@@ -34,6 +34,7 @@ import { checkTimeIn } from 'utils/time';
 import checkItemPolicy from 'resources/policy';
 import NotFound from 'components/Cards/NotFound';
 import { getTags } from 'components/MagicInput';
+import { getPath, getLinkRender } from 'utils/route-map';
 import styles from './index.less';
 
 const tabOtherHeight = 326;
@@ -167,6 +168,20 @@ export default class BaseList extends React.Component {
 
   getUrl(path, adminStr) {
     return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
+  }
+
+  getRouteName(routeName) {
+    return this.isAdminPage ? `${routeName}Admin` : routeName;
+  }
+
+  getRoutePath(routeName, params = {}, query = {}) {
+    const realName = this.getRouteName(routeName);
+    return getPath({ key: realName, params, query });
+  }
+
+  getLinkRender(routeName, value, params = {}, query = {}) {
+    const realName = this.getRouteName(routeName);
+    return getLinkRender({ key: realName, params, query, value });
   }
 
   get prefix() {
@@ -1064,7 +1079,7 @@ export default class BaseList extends React.Component {
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log(e);
-      const link = this.getUrl('/base/overview');
+      const link = this.getRoutePath('overview');
       return <NotFound title={this.name} link={link} codeError />;
     }
   }
@@ -1155,7 +1170,7 @@ export default class BaseList extends React.Component {
 
   render() {
     if (this.endpointError) {
-      const link = this.getUrl('/base/overview');
+      const link = this.getRoutePath('overview');
       return <NotFound title={this.name} link={link} endpointError />;
     }
     const table = this.renderTable();

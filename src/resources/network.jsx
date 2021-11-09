@@ -33,7 +33,7 @@ export const networkColumns = (self) => [
   {
     title: t('ID/Name'),
     dataIndex: 'name',
-    linkPrefix: `/network/${self.getUrl('networks')}/detail`,
+    routeName: self.getRouteName('networkDetail'),
   },
   {
     title: t('Is Current Project'),

@@ -12,13 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
 import { toJS } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import { imageProperties, imageVisibility, imageOS } from 'resources/image';
 import Base from 'containers/BaseDetail';
 import { isObject, isArray } from 'lodash';
-import { Link } from 'react-router-dom';
 
 export class BaseDetail extends Base {
   get isImageDetail() {
@@ -122,15 +120,14 @@ export class BaseDetail extends Base {
             return '-';
           }
           if (value.server_name) {
-            return (
-              <Link
-                to={`${this.getUrl('/compute/instance')}/detail/${
-                  value.server_id
-                }?tab=snapshots`}
-              >
-                {value.server_name}
-              </Link>
+            const { server_id, server_name } = value;
+            const link = this.getLinkRender(
+              'instanceDetail',
+              server_name,
+              { id: server_id },
+              { tab: 'snapshots' }
             );
+            return link;
           }
           return value.server_id;
         },

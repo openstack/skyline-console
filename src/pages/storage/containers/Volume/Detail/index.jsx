@@ -31,7 +31,7 @@ export class VolumeDetail extends Base {
   }
 
   get listUrl() {
-    return this.getUrl('/storage/volume');
+    return this.getRoutePath('volume');
   }
 
   getActionData() {

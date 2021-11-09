@@ -46,9 +46,9 @@ export class InstanceDetail extends Base {
 
   get listUrl() {
     if (this.isRecycleBinDetail) {
-      return this.getUrl('/management/recycle-bin');
+      return this.getRoutePath('recycleBin');
     }
-    return this.getUrl('/compute/instance');
+    return this.getRoutePath('instance');
   }
 
   get actionConfigs() {
@@ -63,9 +63,8 @@ export class InstanceDetail extends Base {
   get detailData() {
     const { id, status } = this.store.detail;
     if (id && status === 'soft_deleted' && !this.isRecycleBinDetail) {
-      this.routing.push(
-        `${this.getUrl('/management/recycle-bin')}/detail/${id}`
-      );
+      const path = this.getRoutePath('recycleBinDetail', { id });
+      this.routing.push(path);
     }
     return toJS(this.store.detail) || {};
   }

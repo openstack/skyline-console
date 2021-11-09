@@ -175,7 +175,7 @@
       {
         title: t('ID/Name'),
         dataIndex: 'name',
-        linkPrefix: `/compute/${this.getUrl('image')}/detail`,
+        routeName: this.getRouteName('imageDetail'),
       },
       {
         title: t('Project ID/Name'),
@@ -526,7 +526,7 @@
   - 当前页面是否是“管理平台”的页面
 - `hasAdminRole`
   - 登录的用户角色是否具有管理员角色
-- `getUrl`
+- `getRoutePath`
   - 生成页面 Url 的函数
   - 如：需要给列表页的关联资源提供跳转功能，使用该函数，可以在控制台跳转到控制台的相应地址，在管理平台跳转到管理平台的相应地址
 - `params`

@@ -17,6 +17,7 @@ import { parse } from 'qs';
 import classnames from 'classnames';
 import { Tabs } from 'antd';
 import { isAdminPage } from 'utils/index';
+import { getPath, getLinkRender } from 'utils/route-map';
 import NotFound from 'components/Cards/NotFound';
 import styles from './index.less';
 
@@ -65,6 +66,20 @@ export default class TabList extends Component {
 
   getUrl(path, adminStr) {
     return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
+  }
+
+  getRouteName(routeName) {
+    return this.isAdminPage ? `${routeName}Admin` : routeName;
+  }
+
+  getRoutePath(routeName, params = {}, query = {}) {
+    const realName = this.getRouteName(routeName);
+    return getPath({ key: realName, params, query });
+  }
+
+  getLinkRender(routeName, value, params = {}, query = {}) {
+    const realName = this.getRouteName(routeName);
+    return getLinkRender({ key: realName, params, query, value });
   }
 
   get tabs() {
@@ -137,7 +152,7 @@ export default class TabList extends Component {
       return null;
     }
     if (this.endpointError) {
-      const link = this.getUrl('/base/overview');
+      const link = this.getRoutePath('overview');
       return <NotFound title={this.name} link={link} endpointError />;
     }
     // if (this.tabs.length === 1) {

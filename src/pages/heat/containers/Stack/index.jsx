@@ -59,9 +59,14 @@ export class Stack extends Base {
     {
       title: t('ID/Name'),
       dataIndex: 'stack_name',
-      linkFunc: (value, record) =>
-        `/heat/${this.getUrl('stack')}/detail/${record.id}/${value}`,
-      isName: true,
+      routeName: this.getRouteName('stackDetail'),
+      routeParamsFunc: (data) => {
+        return {
+          id: data.id,
+          name: data.stack_name,
+        };
+      },
+      isLink: true,
     },
     {
       title: t('Project ID/Name'),

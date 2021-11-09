@@ -46,7 +46,7 @@ export class CreateForm extends FormAction {
   };
 
   get listUrl() {
-    return this.getUrl('/compute/image');
+    return this.getRoutePath('image');
   }
 
   get name() {

@@ -19,6 +19,7 @@ import { NetworkStore } from 'stores/neutron/network';
 import { yesNoOptions } from 'utils/constants';
 import { networkColumns, networkSortProps } from 'resources/network';
 import { isAdminPage } from 'utils/index';
+import { getPath } from 'utils/route-map';
 
 export class NetworkSelectTable extends Component {
   constructor(props) {
@@ -87,8 +88,13 @@ export class NetworkSelectTable extends Component {
     ...networkSortProps,
   });
 
-  getUrl(path, adminStr) {
-    return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
+  getRouteName(routeName) {
+    return this.isAdminPage ? `${routeName}Admin` : routeName;
+  }
+
+  getRoutePath(routeName, params = {}, query = {}) {
+    const realName = this.getRouteName(routeName);
+    return getPath({ key: realName, params, query });
   }
 
   getColumns = (tab) => {

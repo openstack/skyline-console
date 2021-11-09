@@ -43,15 +43,14 @@ export default class BaseDetail extends Base {
           const { itemInList: { device_id, device_owner, server_name } = {} } =
             record;
           if (device_id && device_owner === 'compute:nova') {
-            return (
-              <Link
-                to={`${this.getUrl(
-                  '/compute/instance'
-                )}/detail/${device_id}?tab=interface`}
-              >
-                {`${device_id}`}
-                {server_name && `(${server_name})`}
-              </Link>
+            const value = server_name
+              ? `${device_id} (${server_name})`
+              : device_id;
+            return this.getLinkRender(
+              'instanceDetail',
+              value,
+              { id: device_id },
+              { tab: 'interface' }
             );
           }
           return data || '-';

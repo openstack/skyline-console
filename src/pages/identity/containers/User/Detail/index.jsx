@@ -33,7 +33,7 @@ export class UserDetail extends Base {
   }
 
   get listUrl() {
-    return '/identity/user-admin';
+    return this.getRoutePath('user');
   }
 
   get actionConfigs() {

@@ -175,7 +175,7 @@ English | [Chinese](../../zh/develop/3-1-BaseList-introduction.md)
       {
         title: t('ID/Name'),
         dataIndex: 'name',
-        linkPrefix: `/compute/${this.getUrl('image')}/detail`,
+        routeName: this.getRouteName('imageDetail'),
       },
       {
         title: t('Project ID/Name'),
@@ -526,7 +526,7 @@ English | [Chinese](../../zh/develop/3-1-BaseList-introduction.md)
   - Is the current page a "management platform" page
 - `hasAdminRole`
   - Whether the logged-in user role has an administrator role
-- `getUrl`
+- `getRoutePath`
   - Function to generate page URL
   - For example, it is necessary to provide a jump function to the associated resources of the list page. Using this function, you can jump to the corresponding address of the console in the console, and jump to the corresponding address of the management platform in the management platform.
 - `params`

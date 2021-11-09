@@ -58,8 +58,7 @@ export default class Index extends Base {
     {
       title: t('ID/Name'),
       dataIndex: 'name',
-      isName: true,
-      linkPrefix: `/network/${this.getUrl('ipsec-site-connection')}/detail`,
+      routeName: this.getRouteName('ipsecDetail'),
     },
     {
       title: t('Project ID/Name'),

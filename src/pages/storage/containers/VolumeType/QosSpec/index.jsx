@@ -46,7 +46,7 @@ export default class QosSpecs extends Base {
     {
       title: t('ID/Name'),
       dataIndex: 'name',
-      linkPrefix: '/storage/volume-type-admin/qos/detail',
+      routeName: 'volumeTypeQosDetailAdmin',
     },
     {
       title: t('Consumer'),

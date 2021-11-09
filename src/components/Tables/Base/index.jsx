@@ -17,7 +17,6 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import isEqual from 'react-fast-compare';
 import { toJS } from 'mobx';
-import { Link } from 'react-router-dom';
 import { includes, get, isArray, isString } from 'lodash';
 import { Button, Table, Dropdown, Input, Typography, Tooltip } from 'antd';
 import MagicInput from 'components/MagicInput';
@@ -39,10 +38,13 @@ import {
   getStatusRender,
   getRender,
   getValueRenderFunc,
+  getNameRenderByRouter,
+  getNameRender,
+  columnRender,
 } from 'utils/table';
 import { getNoValue } from 'utils/index';
-import { columnRender } from 'utils/render';
 import { getLocalStorageItem, setLocalStorageItem } from 'utils/local-storage';
+import { getLinkRender } from 'utils/route-map';
 import { inject } from 'mobx-react';
 import globalRootStore from 'stores/root';
 import CustomColumns from './CustomColumns';
@@ -50,6 +52,7 @@ import ItemActionButtons from './ItemActionButtons';
 import PrimaryActionButtons from './PrimaryActionButtons';
 import BatchActionButtons from './BatchActionButtons';
 import Download from './Download';
+
 import styles from './index.less';
 
 @inject('rootStore')
@@ -330,16 +333,14 @@ export default class BaseTable extends React.Component {
       if (!projectId) {
         return '-';
       }
-      const url = `/identity/project-admin/detail/${projectId}`;
+      const link = getLinkRender({
+        key: 'projectDetailAdmin',
+        params: { id: projectId },
+        value: projectId,
+      });
       return (
         <>
-          <div>
-            {globalRootStore.hasAdminRole ? (
-              <Link to={url}>{projectId}</Link>
-            ) : (
-              projectId
-            )}
-          </div>
+          <div>{globalRootStore.hasAdminRole ? link : projectId}</div>
           <div>{value || '-'}</div>
         </>
       );
@@ -351,63 +352,6 @@ export default class BaseTable extends React.Component {
       return render;
     }
     return (value) => getNoValue(value);
-  };
-
-  getLinkUrl = (prefix, id) => {
-    if (!prefix) {
-      return null;
-    }
-    if (prefix[prefix.length - 1] === '/') {
-      return `${prefix}${id}`;
-    }
-    return `${prefix}/${id}`;
-  };
-
-  getNameRender = (render, column) => {
-    if (render) {
-      return render;
-    }
-    const {
-      linkPrefix,
-      dataIndex,
-      idKey,
-      linkPrefixFunc,
-      linkFunc,
-      hasNoDetail = false,
-    } = column;
-    const { rowKey } = this.props;
-    return (value, record) => {
-      const idValue = get(record, idKey || rowKey);
-      let url = null;
-      if (linkFunc) {
-        url = linkFunc(value, record);
-      } else {
-        const linkValue = linkPrefixFunc
-          ? linkPrefixFunc(value, record)
-          : linkPrefix;
-        url = this.getLinkUrl(linkValue, idValue);
-      }
-      const nameValue = value || get(record, dataIndex) || '-';
-      if (hasNoDetail) {
-        return (
-          <div>
-            <div>{idValue}</div>
-            <div>{nameValue}</div>
-          </div>
-        );
-      }
-      if (!url && !hasNoDetail) {
-        return nameValue;
-      }
-      return (
-        <div>
-          <div>
-            <Link to={url}>{idValue}</Link>
-          </div>
-          <div>{nameValue}</div>
-        </div>
-      );
-    };
   };
 
   // eslint-disable-next-line no-unused-vars
@@ -469,6 +413,9 @@ export default class BaseTable extends React.Component {
         tip,
         isStatus,
         isName,
+        isLink,
+        routeName,
+        linkPrefix,
         isPrice,
         ...rest
       } = column;
@@ -485,8 +432,12 @@ export default class BaseTable extends React.Component {
       if (dataIndex === 'project_name') {
         newRender = this.getProjectRender(newRender);
       }
-      if (dataIndex === 'name' || isName) {
-        newRender = this.getNameRender(newRender, column);
+      if ((dataIndex === 'name' && routeName) || isLink) {
+        const { rowKey } = this.props;
+        newRender = getNameRenderByRouter(newRender, column, rowKey);
+      }
+      if ((dataIndex === 'name' && linkPrefix) || isName) {
+        newRender = getNameRender(newRender, column);
       }
       if (dataIndex === 'cost' || isPrice) {
         newRender = this.getPriceRender(newRender, column);

@@ -120,7 +120,7 @@ export class Image extends Base {
     {
       title: t('ID/Name'),
       dataIndex: 'name',
-      linkPrefix: `/compute/${this.getUrl('image')}/detail`,
+      routeName: this.getRouteName('imageDetail'),
     },
     {
       title: t('Project ID/Name'),

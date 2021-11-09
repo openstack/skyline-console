@@ -89,9 +89,7 @@ export default class LoadBalancerInstance extends Base {
       {
         title: t('ID/Name'),
         dataIndex: 'name',
-        isName: true,
-        linkPrefix: `/network/${this.getUrl('load-balancers')}/detail/`,
-        idKey: 'id',
+        routeName: this.getRouteName('lbDetail'),
       },
       {
         title: t('Project ID/Name'),

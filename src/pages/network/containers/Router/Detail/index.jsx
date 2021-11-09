@@ -33,7 +33,7 @@ export class RouterDetail extends Base {
   }
 
   get listUrl() {
-    return this.getUrl('/network/router');
+    return this.getRoutePath('router');
   }
 
   get actionConfigs() {

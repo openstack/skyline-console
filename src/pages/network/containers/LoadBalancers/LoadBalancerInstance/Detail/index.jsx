@@ -42,7 +42,7 @@ export default class LoadBalancerDetail extends Base {
   };
 
   get listUrl() {
-    return this.getUrl('/network/load-balancers');
+    return this.getRoutePath('lb');
   }
 
   get actionConfigs() {

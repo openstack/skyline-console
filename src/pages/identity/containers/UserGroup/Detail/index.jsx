@@ -36,7 +36,7 @@ export default class Detail extends Base {
   }
 
   get listUrl() {
-    return '/identity/user-group-admin';
+    return this.getRoutePath('userGroup');
   }
 
   get actionConfigs() {

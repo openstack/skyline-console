@@ -131,7 +131,7 @@ export class Instance extends Base {
       {
         title: t('ID/Name'),
         dataIndex: 'name',
-        linkPrefix: `/compute/${this.getUrl('instance')}/detail`,
+        routeName: this.getRouteName('instanceDetail'),
         sortKey: 'display_name',
       },
       {

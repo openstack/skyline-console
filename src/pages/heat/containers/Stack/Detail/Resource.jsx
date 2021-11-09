@@ -12,12 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { StackResourceStore } from 'stores/heat/resource';
 import { stackStatus } from 'resources/stack';
-import { Link } from 'react-router-dom';
 
 export class Resource extends Base {
   init() {
@@ -41,138 +39,112 @@ export class Resource extends Base {
       {
         key: 'OS::Cinder::EncryptedVolumeType',
         isAdmin: true,
-        getUrl: (value) =>
-          `${this.getUrl('/storage/volume-type')}/detail/${value}`,
+        routeName: 'volumeTypeDetail',
       },
       {
         key: 'OS::Cinder::QoSAssociation',
         isAdmin: true,
-        getUrl: (value) =>
-          `${this.getUrl('/storage/volume-type')}/qos/detail/${value}`,
+        routeName: 'volumeTypeQosDetail',
       },
       {
         key: 'OS::Cinder::QoSSpecs',
         isAdmin: true,
-        getUrl: (value) =>
-          `${this.getUrl('/storage/volume-type')}/qos/detail/${value}`,
+        routeName: 'volumeTypeQosDetail',
       },
       {
         key: 'OS::Cinder::Volume',
-        getUrl: (value) => `${this.getUrl('/storage/volume')}/detail/${value}`,
+        routeName: 'volumeDetail',
       },
       {
         key: 'OS::Cinder::VolumeType',
         isAdmin: true,
-        getUrl: (value) =>
-          `${this.getUrl('/storage/volume-type')}/detail/${value}`,
+        routeName: 'volumeTypeDetail',
       },
       {
         key: 'OS::Glance::WebImage',
-        getUrl: (value) => `${this.getUrl('/compute/image')}/detail/${value}`,
-      },
-      {
-        key: 'OS::Glance::WebImage',
-        getUrl: (value) => `${this.getUrl('/compute/image')}/detail/${value}`,
+        routeName: 'imageDetail',
       },
       {
         key: 'OS::Heat::Stack',
-        getUrl: (value) => `${this.getUrl('/heat/stack')}/detail/${value}`,
+        routeName: 'stackDetail',
       },
       {
         key: 'OS::Ironic::Port',
-        getUrl: (value) =>
-          `${this.getUrl(
-            '/network/virtual_adapter',
-            '_admin'
-          )}/detail/${value}`,
+        routeName: 'virtualAdapterDetail',
       },
       {
         key: 'OS::Keystone::Domain',
+        routeName: 'domainDetail',
         isAdmin: true,
-        getUrl: (value) => `${this.getUrl('/identity/domain')}/detail/${value}`,
       },
       {
         key: 'OS::Keystone::Group',
+        routeName: 'userGroupDetail',
         isAdmin: true,
-        getUrl: (value) =>
-          `${this.getUrl('/identity/user-group')}/detail/${value}`,
       },
       {
         key: 'OS::Keystone::Project',
+        routeName: 'projectDetail',
         isAdmin: true,
-        getUrl: (value) =>
-          `${this.getUrl('/identity/project')}/detail/${value}`,
       },
       {
         key: 'OS::Keystone::Role',
+        routeName: 'roleDetail',
         isAdmin: true,
-        getUrl: (value) => `${this.getUrl('/identity/role')}/detail/${value}`,
       },
       {
         key: 'OS::Keystone::User',
+        routeName: 'userDetail',
         isAdmin: true,
-        getUrl: (value) => `${this.getUrl('/identity/user')}/detail/${value}`,
       },
       {
         key: 'OS::Neutron::FloatingIP',
-        getUrl: (value) =>
-          `${this.getUrl('/network/floatingip')}/detail/${value}`,
+        routeName: 'fipDetail',
       },
       {
         key: 'OS::Neutron::LBaaS::LoadBalancer',
-        getUrl: (value) =>
-          `${this.getUrl('/network/load-balancers')}/detail/${value}`,
+        routeName: 'lbDetail',
       },
       {
         key: 'OS::Neutron::Net',
-        getUrl: (value) =>
-          `${this.getUrl('/network/networks')}/detail/${value}`,
+        routeName: 'networkDetail',
       },
       {
         key: 'OS::Neutron::Port',
-        getUrl: (value) =>
-          `${this.getUrl(
-            '/network/virtual_adapter',
-            '_admin'
-          )}/detail/${value}`,
+        routeName: 'virtualAdapterDetail',
       },
       {
         key: 'OS::Neutron::QoSPolicy',
-        getUrl: (value) =>
-          `${this.getUrl('/network/qos-policy')}/detail/${value}`,
+        routeName: 'networkQosDetail',
       },
       {
         key: 'OS::Neutron::Router',
-        getUrl: (value) => `${this.getUrl('/network/router')}/detail/${value}`,
+        routeName: 'routerDetail',
       },
       {
         key: 'OS::Neutron::SecurityGroup',
-        getUrl: (value) =>
-          `${this.getUrl('/network/security-group')}/detail/${value}`,
+        routeName: 'securityGroupDetail',
       },
       {
         key: 'OS::Nova::Flavor',
         isAdmin: true,
-        getUrl: (value) => `${this.getUrl('/compute/flavor')}/detail/${value}`,
+        routeName: 'flavorDetail',
       },
       {
         key: 'OS::Nova::KeyPair',
-        getUrl: (value) => `/compute/keypair/detail/${value}`,
+        routeName: 'keypairDetail',
       },
       {
         key: 'OS::Nova::Server',
-        getUrl: (value) =>
-          `${this.getUrl('/compute/instance')}/detail/${value}`,
+        routeName: 'instanceDetail',
       },
       {
         key: 'OS::Nova::ServerGroup',
-        getUrl: (value) =>
-          `${this.getUrl('/compute/server-group')}/detail/${value}`,
+        routeName: 'serverGroupDetail',
       },
       {
         key: 'OS::Octavia::LoadBalancer',
-        getUrl: (value) =>
-          `${this.getUrl('/network/load-balancers')}/detail/${value}`,
+        routeName: 'lbDetail',
       },
     ];
   }
@@ -186,16 +158,13 @@ export class Resource extends Base {
     if (!item) {
       return value;
     }
-    const { isAdmin, getUrl } = item;
+    const { isAdmin, routeName } = item;
+    const link = this.getLinkRender(routeName, value, { id: value });
     if (isAdmin) {
-      return this.isAdminPage ? (
-        <Link to={getUrl(value, record)}>{value}</Link>
-      ) : (
-        value
-      );
+      return this.isAdminPage ? link : value;
     }
-    if (getUrl) {
-      return <Link to={getUrl(value, record)}>{value}</Link>;
+    if (routeName) {
+      return link;
     }
     return value;
   };

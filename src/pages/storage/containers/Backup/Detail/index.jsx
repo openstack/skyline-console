@@ -31,7 +31,7 @@ export default class Detail extends Base {
   }
 
   get listUrl() {
-    return this.getUrl('/storage/backup');
+    return this.getRoutePath('backup');
   }
 
   get actionConfigs() {

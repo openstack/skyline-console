@@ -29,7 +29,7 @@ export class RoleDetail extends Base {
   }
 
   get listUrl() {
-    return '/identity/role-admin';
+    return this.getRoutePath('role');
   }
 
   init() {

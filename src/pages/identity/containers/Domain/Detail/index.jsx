@@ -31,7 +31,7 @@ export default class DomainDetail extends Base {
   }
 
   get listUrl() {
-    return '/identity/domain-admin';
+    return this.getRoutePath('domain');
   }
 
   get detailInfos() {

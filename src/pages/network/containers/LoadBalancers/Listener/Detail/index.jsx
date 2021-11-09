@@ -32,8 +32,8 @@ export default class ListenerDetail extends Base {
   }
 
   get listUrl() {
-    const { loadBalancerId } = this.params;
-    return `/network/${this.getUrl('load-balancers')}/detail/${loadBalancerId}`;
+    const { loadBalancerId: id } = this.params;
+    return this.getRoutePath('lbDetail', { id });
   }
 
   get actionConfigs() {

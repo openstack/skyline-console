@@ -81,7 +81,7 @@ export class User extends Base {
       {
         title: t('User ID/Name'),
         dataIndex: 'name',
-        linkPrefix: `/identity/${this.getUrl('user')}/detail`,
+        routeName: 'userDetailAdmin',
       },
       {
         title: t('Project Scope'),

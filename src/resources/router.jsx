@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 import globalRouterStore from 'stores/neutron/router';
 import { getPortsWithFixedIPs, getSubnetToRouter } from 'resources/floatingip';
 
@@ -33,7 +32,7 @@ export const getRouterColumns = (self) => [
   {
     title: t('ID/Name'),
     dataIndex: 'name',
-    linkPrefix: `/network/${self.getUrl('router')}/detail`,
+    routeName: self.getRouteName('routerDetail'),
   },
   {
     title: t('Project ID/Name'),
@@ -59,11 +58,8 @@ export const getRouterColumns = (self) => [
     dataIndex: 'externalNetworkId',
     isHideable: true,
     sorter: false,
-    render: (value) => (
-      <Link to={`/network/${self.getUrl('networks')}/detail/${value}`}>
-        {value}
-      </Link>
-    ),
+    render: (value) =>
+      self.getLinkRender('networkDetail', value, { id: value }),
   },
   {
     title: t('External Fixed IP'),

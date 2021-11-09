@@ -46,7 +46,7 @@ class StepCreate extends StepAction {
   }
 
   get listUrl() {
-    return '/network/load-balancers';
+    return this.getRoutePath('lb');
   }
 
   get hasConfirmStep() {

@@ -34,7 +34,7 @@ export default class IPsecSiteConnection extends Base {
   }
 
   get listUrl() {
-    return `${this.getUrl('/network/vpn')}?tab=ipsec_site_connections`;
+    return this.getRoutePath('vpn', null, { tab: 'ipsec_site_connections' });
   }
 
   get actionConfigs() {

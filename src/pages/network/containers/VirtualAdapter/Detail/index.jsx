@@ -32,7 +32,7 @@ export class VirtualAdapterDetail extends Base {
   }
 
   get listUrl() {
-    return this.getUrl('/network/virtual_adapter', '_admin');
+    return this.getRoutePath('virtualAdapter');
   }
 
   get actionConfigs() {

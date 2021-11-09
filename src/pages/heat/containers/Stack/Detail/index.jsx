@@ -32,7 +32,7 @@ export class StackDetail extends Base {
   }
 
   get listUrl() {
-    return this.getUrl('/heat/stack');
+    return this.getRoutePath('stack');
   }
 
   init() {

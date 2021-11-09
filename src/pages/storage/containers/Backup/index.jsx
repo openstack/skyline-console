@@ -71,7 +71,7 @@ export default class Backup extends Base {
       {
         title: t('ID/Name'),
         dataIndex: 'name',
-        linkPrefix: `/storage/${this.getUrl('backup')}/detail`,
+        routeName: this.getRouteName('backupDetail'),
         sortKey: 'id',
       },
       {
@@ -83,11 +83,9 @@ export default class Backup extends Base {
       {
         title: t('Volume ID/Name'),
         dataIndex: 'volume_name',
-        isName: true,
-        linkFunc: (value, record) =>
-          `/storage/${this.getUrl('volume')}/detail/${
-            record.volume_id
-          }?tab=backup`,
+        isLink: true,
+        routeQuery: { tab: 'backup' },
+        routeName: this.getRouteName('volumeDetail'),
         idKey: 'volume_id',
         sortKey: 'volume_id',
       },

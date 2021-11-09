@@ -61,11 +61,13 @@ export default class Listeners extends Base {
     {
       title: t('ID/Name'),
       dataIndex: 'name',
-      isName: true,
-      linkPrefix: `/network/${this.getUrl('load-balancers')}/${
-        this.id
-      }/listener/`,
-      idKey: 'id',
+      routeName: this.getRouteName('lbDetail'),
+      routeParamsFunc: (data) => {
+        return {
+          loadBalancerId: this.id,
+          id: data.id,
+        };
+      },
     },
     {
       title: t('Status'),

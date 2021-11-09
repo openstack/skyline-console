@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { VirtualAdapterStore } from 'stores/neutron/virtual-adapter';
@@ -120,10 +119,7 @@ export class VirtualAdapter extends Base {
       {
         title: t('ID/Name'),
         dataIndex: 'name',
-        linkPrefix: `/network/${this.getUrl(
-          'virtual_adapter',
-          '_admin'
-        )}/detail`,
+        routeName: this.getRouteName('virtualAdapterDetail'),
       },
       {
         title: t('Project ID/Name'),
@@ -145,18 +141,22 @@ export class VirtualAdapter extends Base {
           `;
         },
         render: (server_name, item) => {
-          if (item.device_id && item.device_owner === 'compute:nova') {
+          const { device_id, device_owner } = item;
+          if (device_id && device_owner === 'compute:nova') {
+            const value = server_name
+              ? `${device_id} (${server_name})`
+              : device_id;
+            const link = this.getLinkRender(
+              'instanceDetail',
+              value,
+              { id: item.device_id },
+              { tab: 'interface' }
+            );
             return (
               <>
                 {item.device_owner}
                 <br />
-                <Link
-                  to={`${this.getUrl('/compute/instance')}/detail/${item.device_id
-                    }?tab=interface`}
-                >
-                  {`${item.device_id}`}
-                  {server_name && `(${server_name})`}
-                </Link>
+                {link}
               </>
             );
           }
@@ -174,8 +174,8 @@ export class VirtualAdapter extends Base {
       {
         title: t('Owned Network'),
         dataIndex: 'network_name',
-        isName: true,
-        linkPrefix: `/network/${this.getUrl('networks')}/detail`,
+        isLink: true,
+        routeName: this.getRouteName('networkDetail'),
         idKey: 'network_id',
         sorter: false,
       },

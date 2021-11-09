@@ -35,7 +35,7 @@ export const getQosPolicyColumns = ({ self, all = false }) => {
     {
       title: t('ID/Name'),
       dataIndex: 'name',
-      linkPrefix: `/network/${self.getUrl('qos-policy')}/detail`,
+      routeName: self.getRouteName('networkQosDetail'),
     },
     {
       title: t('Description'),

@@ -51,7 +51,7 @@ export default class UserGroups extends Base {
       {
         title: t('User Group ID/Name'),
         dataIndex: 'name',
-        linkPrefix: '/identity/user-group-admin/detail',
+        routeName: 'userGroupDetailAdmin',
       },
       {
         title: t('Project Scope'),

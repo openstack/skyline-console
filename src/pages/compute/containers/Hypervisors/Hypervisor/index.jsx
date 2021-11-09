@@ -47,8 +47,8 @@ export class Hypervisors extends Base {
     columns[0] = {
       title: t('ID/Name'),
       dataIndex: 'hypervisor_hostname',
-      linkPrefix: '/compute/hypervisors-admin/detail',
-      isName: true,
+      routeName: 'hypervisorDetailAdmin',
+      isLink: true,
     };
     return columns;
   };

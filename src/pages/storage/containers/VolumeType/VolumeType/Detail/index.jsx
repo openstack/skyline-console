@@ -32,7 +32,7 @@ export default class Detail extends Base {
   }
 
   get listUrl() {
-    return '/storage/volume-type-admin';
+    return this.getRoutePath('volumeType');
   }
 
   get actionConfigs() {

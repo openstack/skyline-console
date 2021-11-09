@@ -146,7 +146,7 @@ export class BaseDetail extends Base {
   get imageCard() {
     const item = this.detailData.itemInList || {};
     const { image, image_name } = item;
-    const url = `${this.getUrl('/compute/image')}/detail/${image}`;
+    const url = this.getRoutePath('imageDetail', { id: image });
     const options = [
       {
         label: t('Name'),

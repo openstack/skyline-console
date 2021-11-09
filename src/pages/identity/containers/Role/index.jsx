@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
-import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalRoleStore from 'stores/keystone/role';
@@ -45,15 +43,7 @@ export default class Role extends Base {
     {
       title: t('Role Name'),
       dataIndex: 'name',
-      linkPrefix: '/identity/role-admin/detail',
-      render: (name, record) => {
-        if (name) {
-          return (
-            <Link to={`/identity/role-admin/detail/${record.id}`}>{name}</Link>
-          );
-        }
-        return '-';
-      },
+      routeName: 'roleDetailAdmin',
     },
     {
       title: t('ID'),

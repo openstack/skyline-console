@@ -12,10 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { FloatingIpStore } from 'stores/neutron/floatingIp';
-import { Link } from 'react-router-dom';
 import Base from 'containers/BaseDetail';
 
 export class BaseDetail extends Base {
@@ -70,12 +68,11 @@ export class BaseDetail extends Base {
             if (router_name === '-' && network_name === '-') {
               return data;
             }
-            return (
-              <Link to={`${this.getUrl('/network/router')}/detail/${data}`}>
-                {`${data}`}
-                {router_name && `(${router_name})`}
-              </Link>
-            );
+            const value = router_name ? `${data} (${router_name})` : data;
+            const link = this.getLinkRender('routerDetail', value, {
+              id: data,
+            });
+            return link;
           }
           return '-';
         },

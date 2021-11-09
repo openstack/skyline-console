@@ -15,6 +15,7 @@
 import React, { Component } from 'react';
 import TableButton from 'components/TableButton';
 import { getSelfColumns } from 'resources/security-group-rule';
+import { getPath } from 'utils/route-map';
 
 export default class RuleButton extends Component {
   getUrl(path, adminStr) {
@@ -22,7 +23,10 @@ export default class RuleButton extends Component {
   }
 
   getDetailUrl(id) {
-    return `${this.getUrl('/network/security-group')}/detail/${id}`;
+    const key = this.isAdminPage
+      ? 'securityGroupDetailAdmin'
+      : 'securityGroupDetail';
+    return getPath({ key, params: { id } });
   }
 
   render() {

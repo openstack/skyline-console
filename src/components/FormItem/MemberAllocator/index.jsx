@@ -18,8 +18,8 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import SelectTable from 'components/FormItem/SelectTable';
 import { ipValidate } from 'utils/validate';
 import { isAdminPage } from 'utils/index';
-import { Link } from 'react-router-dom';
 import { Address4, Address6 } from 'ip-address';
+import { getLinkRender } from 'utils/route-map';
 import Item from './Item';
 
 const { isIPv4, isIpv6 } = ipValidate;
@@ -34,9 +34,11 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
     onChange && onChange(data);
   };
 
-  function getUrl(path, adminStr) {
+  function getLink(routerName, item) {
     const { pathname } = window.location;
-    return isAdminPage(pathname) ? `${path}${adminStr || '-admin'}` : path;
+    const key = isAdminPage(pathname) ? `${routerName}Admin` : routerName;
+    const { id } = item;
+    return getLinkRender({ key, params: { id }, value: id });
   }
 
   let addOuter = () => {};
@@ -60,16 +62,7 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
               dataIndex: 'name',
               render: (n, record) => (
                 <div>
-                  <div>
-                    <Link
-                      to={`/network/${getUrl(
-                        'virtual_adapter',
-                        '_admin'
-                      )}/detail/${record.id}`}
-                    >
-                      {record.id}
-                    </Link>
-                  </div>
+                  <div>{getLink('virtualAdapterDetail', record)}</div>
                   <div>{n || '-'}</div>
                 </div>
               ),

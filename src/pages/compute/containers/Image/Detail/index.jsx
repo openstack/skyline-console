@@ -34,7 +34,7 @@ export class ImageDetail extends Base {
   }
 
   get listUrl() {
-    return this.getUrl('/compute/image');
+    return this.getRoutePath('image');
   }
 
   get actionConfigs() {

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { inject, observer } from 'mobx-react';
+import { getPath } from 'utils/route-map';
 import Create from './Create';
 
 @inject('rootStore')
@@ -24,14 +25,13 @@ export default class Edit extends Create {
 
   static path = (item, containerProp) => {
     const { isAdminPage } = containerProp;
-    const prefix = isAdminPage
-      ? '/heat/stack-admin/edit/'
-      : '/heat/stack/edit/';
-    return `${prefix}${item.id}/${item.stack_name}`;
+    const key = isAdminPage ? 'stackEditAdmin' : 'stackEdit';
+    const { id, stack_name: name } = item;
+    return getPath({ key, params: { id, name } });
   };
 
   get listUrl() {
-    return this.getUrl('/heat/stack');
+    return this.getRoutePath('stack');
   }
 
   get name() {

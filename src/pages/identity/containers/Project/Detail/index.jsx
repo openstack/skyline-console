@@ -32,7 +32,7 @@ export class Detail extends Base {
   }
 
   get listUrl() {
-    return this.getUrl('/identity/project');
+    return this.getRoutePath('project');
   }
 
   get actionConfigs() {

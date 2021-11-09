@@ -21,6 +21,7 @@ import { BellOutlined } from '@ant-design/icons';
 import checkItemPolicy from 'resources/policy';
 import { Layout } from 'antd';
 import GlobalHeader from 'components/Layout/GlobalHeader';
+import { setRouteMap, getPath } from 'utils/route-map';
 import renderAdminMenu from '../admin-menu';
 import renderMenu from '../menu';
 import renderUserMenu from '../user-menu';
@@ -98,6 +99,15 @@ export class BaseLayout extends Component {
 
   getUrl(path, adminStr) {
     return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
+  }
+
+  getRouteName(routeName) {
+    return this.isAdminPage ? `${routeName}Admin` : routeName;
+  }
+
+  getRoutePath(routeName, params = {}, query = {}) {
+    const realName = this.getRouteName(routeName);
+    return getPath({ key: realName, params, query });
   }
 
   filterMenuByHidden = (menu = []) => {
@@ -208,6 +218,7 @@ export class BaseLayout extends Component {
       window.location.href = '/base/overview';
     }
     this.routes = this.props.route.routes;
+    setRouteMap(this.menu);
   }
 
   renderNotice() {

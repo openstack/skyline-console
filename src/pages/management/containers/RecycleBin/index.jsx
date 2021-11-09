@@ -60,7 +60,7 @@ export default class RecycleBin extends Base {
     {
       title: t('ID/Name'),
       dataIndex: 'name',
-      linkPrefix: `/management/${this.getUrl('recycle-bin')}/detail`,
+      routeName: this.getRouteName('recycleBinDetail'),
       sortKey: 'display_name',
     },
     {

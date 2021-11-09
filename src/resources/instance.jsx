@@ -18,7 +18,6 @@ import { getLocalTimeStr } from 'utils/time';
 import { Table, Popover } from 'antd';
 import globalActionLogStore from 'stores/nova/action-log';
 import { ironicOriginEndpoint } from 'client/client/constants';
-import { Link } from 'react-router-dom';
 
 import lockSvg from 'asset/image/lock.svg';
 import unlockSvg from 'asset/image/unlock.svg';
@@ -607,11 +606,8 @@ export const actionColumn = (self) => {
       dataIndex: 'user_id',
       isHideable: true,
       hidden: !self.isAdminPage,
-      render: (value) => (
-        <Link to={`${self.getUrl('/identity/user')}/detail/${value}`}>
-          {value}
-        </Link>
-      ),
+      render: (value) =>
+        self.getLinkRender('userDetail', value, { id: value }, null),
     },
   ];
 };

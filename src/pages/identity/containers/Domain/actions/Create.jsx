@@ -37,7 +37,7 @@ class CreateForm extends FormAction {
   }
 
   get listUrl() {
-    return '/identity/domain-admin';
+    return this.getRoutePath('domain');
   }
 
   get name() {

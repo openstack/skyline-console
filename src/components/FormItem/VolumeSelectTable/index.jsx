@@ -67,8 +67,6 @@ export default class VolumeSelectTable extends Component {
     ...volumeSortProps,
   });
 
-  getUrl = () => {};
-
   getColumns = (tab) => {
     const columns = volumeColumns;
     const { key } = tab;
