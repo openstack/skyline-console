@@ -125,8 +125,8 @@ Cypress.Commands.add('clickStepActionCancelButton', (waitTime = 2000) => {
     .wait(waitTime);
 });
 
-Cypress.Commands.add('formInput', (formItemName, value) => {
-  cy.get(getId(formItemName)).find('input').clear().type(value);
+Cypress.Commands.add('formInput', (formItemName, value, selector = 'input') => {
+  cy.get(getId(formItemName)).find(selector).clear().type(value);
 });
 
 Cypress.Commands.add('formText', (formItemName, value) => {

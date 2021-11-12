@@ -275,7 +275,7 @@ export class CreateForm extends FormAction {
       {
         name: 'phone',
         label: t('Phone'),
-        type: 'input',
+        type: 'phone',
         required: true,
         validator: phoneNumberValidate,
         labelCol,

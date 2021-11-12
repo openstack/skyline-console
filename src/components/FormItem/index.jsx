@@ -58,7 +58,8 @@ import NetworkSelectTable from './NetworkSelectTable';
 import VolumeSelectTable from './VolumeSelectTable';
 import TabSelectTable from './TabSelectTable';
 import TreeSelect from './TreeSelect';
-import SelectWithInput from './SelectWithInput'
+import SelectWithInput from './SelectWithInput';
+import InternationPhoneNumberInput from './InternationalPhoneNumberInput';
 // import styles from './index.less';
 
 export const type2component = {
@@ -105,6 +106,7 @@ export const type2component = {
   'input-json': JsonInput,
   'tree-select': TreeSelect,
   'select-input': SelectWithInput,
+  phone: InternationPhoneNumberInput,
 };
 
 export default class FormItem extends React.Component {

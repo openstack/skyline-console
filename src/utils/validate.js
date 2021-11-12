@@ -15,7 +15,7 @@
 import { isString, isNil } from 'lodash';
 import { Address4, Address6 } from 'ip-address';
 import cidrRegex from 'cidr-regex';
-import { phone } from 'phone';
+import { isValidPhoneNumber } from 'libphonenumber-js';
 
 const { v4, v6 } = cidrRegex;
 
@@ -75,7 +75,7 @@ export const regex = {
   asciiRegex,
 };
 
-export const isPhoneNumber = (value) => phone(value).isValid;
+export const isPhoneNumber = (value) => isValidPhoneNumber(value);
 
 export const isEmailNumber = (value) => emailRegex.test(value);
 
