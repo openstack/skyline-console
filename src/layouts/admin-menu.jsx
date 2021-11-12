@@ -147,7 +147,7 @@ const renderMenu = (t) => {
             {
               path: /^\/compute\/baremetal-node-admin\/detail\/.[^/]+$/,
               name: t('Bare Metal Node Detail'),
-              key: 'baremetaNodeDetailAdmin',
+              key: 'baremetalNodeDetailAdmin',
               routePath: '/compute/baremetal-node-admin/detail/:id',
               level: 2,
             },

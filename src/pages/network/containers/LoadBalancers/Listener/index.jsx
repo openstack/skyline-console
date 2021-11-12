@@ -61,7 +61,7 @@ export default class Listeners extends Base {
     {
       title: t('ID/Name'),
       dataIndex: 'name',
-      routeName: this.getRouteName('lbDetail'),
+      routeName: this.getRouteName('lbListenerDetail'),
       routeParamsFunc: (data) => {
         return {
           loadBalancerId: this.id,

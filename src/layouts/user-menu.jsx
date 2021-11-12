@@ -23,7 +23,7 @@ const renderMenu = (t) => {
     {
       path: '/user/center',
       name: t('User Center'),
-      key: '/user',
+      key: 'userCenter',
       icon: <HomeOutlined />,
       level: 0,
       hasBreadcrumb: false,
@@ -32,7 +32,7 @@ const renderMenu = (t) => {
     {
       path: '/user/application-credentials',
       name: t('Application Credentials'),
-      key: '/user/application-credentials',
+      key: 'applicationCredential',
       level: 0,
       icon: <UserOutlined />,
       children: [],
