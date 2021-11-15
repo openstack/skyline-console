@@ -95,7 +95,7 @@ export class EditForm extends ModalAction {
     const project = projects.filter((it) => it.id === default_project_id)[0];
     if (name && this.formRef.current) {
       const formatedPhone = parsePhoneNumberFromString(phone || '', 'CN') || {
-        country: 'CN',
+        countryCallingCode: '86',
         nationalNumber: '',
       };
       const { countryCallingCode, nationalNumber } = formatedPhone;
