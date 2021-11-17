@@ -272,7 +272,7 @@ const renderMenu = (t) => {
         {
           path: '/network/floatingip',
           name: t('Floating IPs'),
-          key: 'floatingip',
+          key: 'fip',
           level: 1,
           children: [
             {
