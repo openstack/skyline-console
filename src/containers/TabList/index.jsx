@@ -64,10 +64,6 @@ export default class TabList extends Component {
     return this.checkEndpoint && !this.endpoint;
   }
 
-  getUrl(path, adminStr) {
-    return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
-  }
-
   getRouteName(routeName) {
     return this.isAdminPage ? `${routeName}Admin` : routeName;
   }

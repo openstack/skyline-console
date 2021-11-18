@@ -34,10 +34,6 @@ export default class FormAction extends BaseForm {
     return this.props.isAdminPage || false;
   }
 
-  getUrl(path, adminStr) {
-    return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
-  }
-
   getRouteName(routeName) {
     return this.isAdminPage ? `${routeName}Admin` : routeName;
   }

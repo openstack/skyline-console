@@ -97,10 +97,6 @@ export class BaseLayout extends Component {
     return this.getMenuByLicense(this.originMenu);
   }
 
-  getUrl(path, adminStr) {
-    return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
-  }
-
   getRouteName(routeName) {
     return this.isAdminPage ? `${routeName}Admin` : routeName;
   }

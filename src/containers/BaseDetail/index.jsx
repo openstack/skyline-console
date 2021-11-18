@@ -83,10 +83,6 @@ export default class BaseDetail extends React.Component {
     return false;
   }
 
-  getUrl(path, adminStr) {
-    return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
-  }
-
   getRouteName(routeName) {
     return this.isAdminPage ? `${routeName}Admin` : routeName;
   }

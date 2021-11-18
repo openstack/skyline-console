@@ -166,10 +166,6 @@ export default class BaseList extends React.Component {
     return this.props.rootStore.hasAdminRole;
   }
 
-  getUrl(path, adminStr) {
-    return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
-  }
-
   getRouteName(routeName) {
     return this.isAdminPage ? `${routeName}Admin` : routeName;
   }

@@ -68,10 +68,6 @@ export default class DetailBase extends React.Component {
     return isAdminPage(pathname);
   }
 
-  getUrl(path, adminStr) {
-    return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
-  }
-
   getRouteName(routeName) {
     return this.isAdminPage ? `${routeName}Admin` : routeName;
   }

@@ -18,10 +18,6 @@ import { getSelfColumns } from 'resources/security-group-rule';
 import { getPath } from 'utils/route-map';
 
 export default class RuleButton extends Component {
-  getUrl(path, adminStr) {
-    return this.isAdminPage ? `${path}${adminStr || '-admin'}` : path;
-  }
-
   getDetailUrl(id) {
     const key = this.isAdminPage
       ? 'securityGroupDetailAdmin'
