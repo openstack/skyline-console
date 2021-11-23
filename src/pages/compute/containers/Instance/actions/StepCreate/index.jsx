@@ -48,6 +48,8 @@ export class StepCreate extends StepAction {
     this.store = globalServerStore;
     this.projectStore = globalProjectStore;
     this.getQuota();
+    this.status = 'success';
+    this.errorMsg = '';
   }
 
   static policy = [
@@ -177,14 +179,129 @@ export class StepCreate extends StepAction {
     });
   };
 
+  getVolumeQuota() {
+    const quotaAll = toJS(this.projectStore.quota) || {};
+    const result = {};
+    Object.keys(quotaAll).forEach((key) => {
+      if (key.includes('volumes') || key.includes('gigabytes')) {
+        result[key] = quotaAll[key];
+      }
+    });
+    return result;
+  }
+
+  getVolumeQuotaMsg(value, quota, name) {
+    if (!quota || quota.limit === -1) {
+      return '';
+    }
+    const left = quota.limit - quota.in_use;
+    if (value > left) {
+      return t(
+        'Insufficient {name} quota to create resources(left { quota }, input { input }).',
+        { name, quota: left, input: value }
+      );
+    }
+    return '';
+  }
+
+  getVolumeInputMap() {
+    const { data } = this.state;
+    const { systemDisk = {}, dataDisk = [] } = data;
+    const newCountMap = {};
+    const newSizeMap = {};
+    let totalNewCount = 0;
+    let totalNewSize = 0;
+    if (systemDisk.type) {
+      const { size } = systemDisk;
+      const { label } = systemDisk.typeOption || {};
+      newCountMap[label] = !newCountMap[label] ? 1 : newCountMap[label] + 1;
+      newSizeMap[label] = !newSizeMap[label] ? size : newSizeMap[label] + size;
+      totalNewCount += 1;
+      totalNewSize += size;
+    }
+    if (dataDisk) {
+      dataDisk.forEach((item) => {
+        if (item.value && item.value.type) {
+          const { size } = item.value;
+          const { label } = item.value.typeOption || {};
+          newCountMap[label] = !newCountMap[label] ? 1 : newCountMap[label] + 1;
+          newSizeMap[label] = !newSizeMap[label]
+            ? size
+            : newSizeMap[label] + size;
+          totalNewCount += 1;
+          totalNewSize += size;
+        }
+      });
+    }
+    return {
+      totalNewCount,
+      totalNewSize,
+      newCountMap,
+      newSizeMap,
+    };
+  }
+
+  checkVolumeQuota() {
+    let msg = '';
+    const { totalNewCount, totalNewSize, newCountMap, newSizeMap } =
+      this.getVolumeInputMap();
+    const quotaAll = this.getVolumeQuota();
+    const totalCountMsg = this.getVolumeQuotaMsg(
+      totalNewCount,
+      quotaAll.volumes,
+      t('volume')
+    );
+    if (totalCountMsg) {
+      return totalCountMsg;
+    }
+    const totalSizeMsg = this.getVolumeQuotaMsg(
+      totalNewSize,
+      quotaAll.gigabytes,
+      t('volume gigabytes')
+    );
+    if (totalSizeMsg) {
+      return totalSizeMsg;
+    }
+    Object.keys(newCountMap).forEach((key) => {
+      const countMsg = this.getVolumeQuotaMsg(
+        newCountMap[key],
+        quotaAll[`volumes_${key}`],
+        t('volume type {type}', { type: key })
+      );
+      if (countMsg) {
+        msg = countMsg;
+      }
+    });
+    if (msg) {
+      return msg;
+    }
+    Object.keys(newSizeMap).forEach((key) => {
+      const sizeMsg = this.getVolumeQuotaMsg(
+        newSizeMap[key],
+        quotaAll[`gigabytes_${key}`],
+        t('volume type {type} gigabytes', { type: key })
+      );
+      if (sizeMsg) {
+        msg = sizeMsg;
+      }
+    });
+    return msg;
+  }
+
   renderBadge() {
     const { status = 'success' } = this.state;
-    if (status === 'success') {
+    const volumeMsg = this.checkVolumeQuota();
+    if (!volumeMsg && status === 'success') {
+      this.status = 'success';
+      this.errorMsg = '';
       return null;
     }
+    this.status = 'error';
+    const msg = status === 'error' ? this.msg : volumeMsg;
+    this.errorMsg = msg;
     return (
       <div style={{ marginTop: 8, marginBottom: 8 }}>
-        <Badge status={status} text={this.msg} />
+        <Badge status="error" text={msg} />
       </div>
     );
   }
@@ -222,8 +339,7 @@ export class StepCreate extends StepAction {
   }
 
   getVolumeAndImageData(values) {
-    const { status } = this.state;
-    if (status === 'error') {
+    if (this.status === 'error') {
       return null;
     }
     /* eslint-disable no-unused-vars */
@@ -294,8 +410,7 @@ export class StepCreate extends StepAction {
   }
 
   getSubmitData(values) {
-    const { status } = this.state;
-    if (status === 'error') {
+    if (this.status === 'error') {
       return null;
     }
     const { volumes, imageRef } = this.getVolumeAndImageData(values);
@@ -374,6 +489,9 @@ export class StepCreate extends StepAction {
 
   onSubmit = (body) => {
     if (!body) {
+      if (this.errorMsg) {
+        Notify.error(this.errorMsg);
+      }
       return Promise.reject();
     }
     return this.store.create(body);
@@ -389,7 +507,10 @@ export class StepCreate extends StepAction {
         Notify.success(this.successText);
       },
       (err) => {
-        const { response: { data: responseData } = {} } = err;
+        if (!err || isEmpty(err)) {
+          return;
+        }
+        const { response: { data: responseData } = {} } = err || {};
         const { forbidden: { message = '' } = {} } = responseData || {};
         if (
           message &&
