@@ -118,25 +118,36 @@ export class BaseDetail extends Base {
   }
 
   get flavorCard() {
-    const privateFlavors = toJS(this.detailData.flavor) || [];
+    const flavor = toJS(this.detailData.flavor) || {};
+    const { extra_specs = {} } = flavor;
     const options = [
       {
         label: t('Flavor Name'),
-        content: privateFlavors.original_name,
+        content: flavor.original_name,
       },
       {
         label: t('RAM'),
-        content: `${privateFlavors.ram / 1024} GB`,
+        content: `${flavor.ram / 1024} GB`,
       },
       {
         label: t('VCPUs'),
-        content: privateFlavors.vcpus,
+        content: flavor.vcpus,
       },
       // {
       //   label: t('Disk'),
-      //   content: `${privateFlavors.disk} GB`,
+      //   content: `${flavor.disk} GB`,
       // },
     ];
+    if (
+      extra_specs[':architecture'] === 'heterogeneous_computing' &&
+      extra_specs[':category'] ===
+        'visualization_compute_optimized_type_with_gpu'
+    ) {
+      options.push({
+        label: t('VGPU'),
+        content: extra_specs['resources:VGPU'],
+      });
+    }
     return {
       title: t('Flavor Info'),
       options,

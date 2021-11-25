@@ -88,16 +88,37 @@ export class HypervisorStore extends Base {
     const result = await this.client.show(id);
     const originData = get(result, this.responseKey) || result;
     const item = this.mapperBeforeFetchProject(originData);
-    const inventoriesReuslt = await this.providerClient.inventories.list(id);
+    const { resource_providers } = await this.providerClient.list({
+      in_tree: id,
+    });
+    const provider = (resource_providers || []).filter((it) => it.uuid !== id);
+    const promiseArr = [this.providerClient.inventories.list(id)];
+    if (provider.length) {
+      // 如果有provider，说明有VGPU
+      promiseArr.push(
+        this.providerClient.inventories.list(provider[0].uuid),
+        this.providerClient.usages.list(provider[0].uuid)
+      );
+    }
+    const [inventoriesBase, inventoriesVGPU, usagesVGPU] = await Promise.all(
+      promiseArr
+    );
     if (item.hypervisor_type !== 'ironic') {
       const {
         inventories: {
           VCPU: { allocation_ratio },
           MEMORY_MB: { allocation_ratio: memory_ratio },
         },
-      } = inventoriesReuslt;
+      } = inventoriesBase;
       item.vcpus *= allocation_ratio;
       item.memory_mb *= memory_ratio;
+    }
+    if (inventoriesVGPU && usagesVGPU) {
+      const { inventories: { VGPU: { allocation_ratio, total } } = {} } =
+        inventoriesVGPU;
+      item.vgpus = allocation_ratio * total;
+      const { usages: { VGPU } = {} } = usagesVGPU;
+      item.vgpus_used = VGPU;
     }
     item.memory_mb_used_gb = getGBValue(item.memory_mb_used);
     item.memory_mb_gb = getGBValue(item.memory_mb);

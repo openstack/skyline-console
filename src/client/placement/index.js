@@ -29,6 +29,9 @@ class PlacementClient extends Base {
           {
             key: 'inventories',
           },
+          {
+            key: 'usages',
+          },
         ],
       },
       {

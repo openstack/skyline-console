@@ -33,7 +33,7 @@ export class HypervisorDetail extends Base {
   }
 
   get detailInfos() {
-    return [
+    const info = [
       {
         title: t('Hostname'),
         dataIndex: 'hypervisor_hostname',
@@ -71,6 +71,15 @@ export class HypervisorDetail extends Base {
           ),
       },
     ];
+    const { vgpus, vgpus_used } = this.store.detail;
+    if (vgpus) {
+      info.push({
+        title: t('VGPU (Core)'),
+        dataIndex: 'vgpus',
+        render: () => `${vgpus_used} / ${vgpus}`,
+      });
+    }
+    return info;
   }
 
   get tabs() {
