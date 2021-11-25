@@ -25,6 +25,8 @@ import VolumeType from '../containers/VolumeType';
 import VolumeTypeDetail from '../containers/VolumeType/VolumeType/Detail';
 import QosDetail from '../containers/VolumeType/QosSpec/Detail';
 import Storage from '../containers/Storage';
+import Container from '../containers/Container';
+import ContainerObject from '../containers/Container/Detail';
 
 const PATH = '/storage';
 export default [
@@ -81,6 +83,17 @@ export default [
         exact: true,
       },
       { path: `${PATH}/storage-admin`, component: Storage, exact: true },
+      { path: `${PATH}/container`, component: Container, exact: true },
+      {
+        path: `${PATH}/container/detail/:container`,
+        component: ContainerObject,
+        exact: true,
+      },
+      {
+        path: `${PATH}/container/detail/:container/:folder`,
+        component: ContainerObject,
+        exact: true,
+      },
       { path: '*', component: E404 },
     ],
   },

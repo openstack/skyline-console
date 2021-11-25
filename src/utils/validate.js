@@ -54,6 +54,8 @@ const instanceNameRegex =
 const ipv6CidrOnly =
   /^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9-]*[A-Za-z0-9])$|^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*\/(1[01][0-9]|12[0-8]|[0-9]{1,2})$/;
 const asciiRegex = /^[\x00-\x7f]*$/; // eslint-disable-line
+const swiftFileNameRegex =
+  /^[A-Za-z\u4e00-\u9fa5]+[A-Za-z\u4e00-\u9fa5\d-.]{2,62}$/;
 
 export const regex = {
   cidr,
@@ -73,6 +75,7 @@ export const regex = {
   instanceNameRegex,
   ipv6CidrOnly,
   asciiRegex,
+  swiftFileNameRegex,
 };
 
 export const isPhoneNumber = (value) => isValidPhoneNumber(value);
@@ -238,6 +241,13 @@ const isFilename = (value) => {
   return false;
 };
 
+const isSwiftFilename = (value) => {
+  if (value && isString(value)) {
+    return swiftFileNameRegex.test(value);
+  }
+  return false;
+};
+
 const isNameWithoutChinese = (value) => {
   if (value && isString(value)) {
     return nameRegexWithoutChinese.test(value) && value.length <= 128;
@@ -292,6 +302,10 @@ const filenameMessage = t(
   'The name should start with upper letter, lower letter, and be a string of 3 to 63, characters can only contain "0-9, a-z, A-Z, -".'
 );
 
+const swiftFilenameMessage = t(
+  'The name should start with upper letter, lower letter or chinese, and be a string of 3 to 63, characters can only contain "0-9, a-z, A-Z, chinese, -, .".'
+);
+
 const keypairNameMessage = t(
   'The name should start with upper letter, lower letter, and be a string of 1 to 128, characters can only contain "0-9, a-z, A-Z, -, _".'
 );
@@ -321,6 +335,7 @@ export const nameMessageInfo = {
   crontabNameMessage,
   imageNameMessage,
   instanceNameMessage,
+  swiftFilenameMessage,
 };
 
 export const portMessage = t('Enter an integer value between 1 and 65535.');
@@ -393,6 +408,16 @@ const fileNameValidate = (rule, value) => {
   return Promise.reject(new Error(`${t('Invalid: ')}${filenameMessage}`));
 };
 
+const swiftFileNameValidate = (rule, value) => {
+  if (!rule.required && value === undefined) {
+    return Promise.resolve(true);
+  }
+  if (isSwiftFilename(value)) {
+    return Promise.resolve(true);
+  }
+  return Promise.reject(new Error(`${t('Invalid: ')}${swiftFilenameMessage}`));
+};
+
 const keypairNameValidate = (rule, value) => {
   if (!rule.required && value === undefined) {
     return Promise.resolve(true);
@@ -452,6 +477,7 @@ export const nameTypeValidate = {
   crontabNameValidate,
   imageNameValidate,
   instanceNameValidate,
+  swiftFileNameValidate,
 };
 
 export const cidrAllValidate = (rule, value) => {

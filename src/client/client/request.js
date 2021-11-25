@@ -14,11 +14,11 @@
 
 import Axios from 'axios';
 import { getLocalStorageItem } from 'utils/local-storage';
-import { isEqual } from 'lodash';
+import { isEmpty } from 'lodash';
 import qs from 'qs';
 import { v4 as uuidv4 } from 'uuid';
 
-const METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD'];
+const METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'COPY'];
 /**
  * @class HttpRequest
  * request with axios
@@ -54,11 +54,12 @@ export class HttpRequest {
           config.headers[apiVersionMap.key] = apiVersionMap.value;
         }
         const { options: { headers, isFormData, ...rest } = {} } = config;
-        if (!isEqual(headers)) {
+        if (!isEmpty(headers)) {
           config.headers = {
             ...config.headers,
             ...headers,
           };
+          console.log('new config headers', config.headers);
         }
         if (isFormData) {
           delete config.headers['Content-Type'];
@@ -77,6 +78,10 @@ export class HttpRequest {
         const { data, status } = response;
         const disposition = response.headers['content-disposition'] || '';
         const contentType = response.headers['content-type'] || '';
+        const { method = 'get' } = response.config || {};
+        if (method.toLowerCase() === 'head') {
+          return response;
+        }
         if (contentType.includes('application/octet-stream')) {
           return response;
         }
@@ -156,7 +161,11 @@ export class HttpRequest {
   generateRequestMap = () => {
     METHODS.forEach((method) => {
       const lowerMethod = method.toLowerCase();
-      if (lowerMethod === 'get' || lowerMethod === 'head') {
+      if (
+        lowerMethod === 'get' ||
+        lowerMethod === 'head' ||
+        lowerMethod === 'copy'
+      ) {
         this.request[lowerMethod] = (url, params = {}, options) => {
           return this.buildRequest({
             method: lowerMethod,
