@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import globalRootStore from 'stores/root';
+
 export const availabilityZoneState = {
   available: t('Available'),
   unavailable: t('Unavailable'),
@@ -21,3 +23,17 @@ export const availabilityZoneResource = {
   router: t('Router'),
   network: t('Network'),
 };
+
+export function enablePFW() {
+  const { neutronExtensions: extensions } = globalRootStore;
+  let enabled = false;
+  let pfwInFip = false;
+  extensions.forEach((i) => {
+    if (i.alias === 'floating-ip-port-forwarding') {
+      enabled = true;
+    } else if (i.alias === 'expose-port-forwarding-in-fip') {
+      pfwInFip = true;
+    }
+  });
+  return enabled && pfwInFip;
+}

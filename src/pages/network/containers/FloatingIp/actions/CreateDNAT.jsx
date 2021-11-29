@@ -22,6 +22,7 @@ import { PortStore } from 'stores/neutron/port';
 import { getPortFormItem, getPortsAndReasons } from 'resources/port';
 import { getInterfaceWithReason } from 'resources/floatingip';
 import globalPortForwardingStore from 'stores/neutron/port-forwarding';
+import { enablePFW } from 'resources/neutron';
 
 @inject('rootStore')
 @observer
@@ -110,7 +111,9 @@ export default class CreateDNAT extends ModalAction {
 
   static policy = 'create_floatingip_port_forwarding';
 
-  static allowed = (item) => Promise.resolve(isNull(item.fixed_ip_address));
+  static allowed = (item) => {
+    return Promise.resolve(isNull(item.fixed_ip_address) && enablePFW());
+  };
 
   onSubmit = (values) => {
     const {

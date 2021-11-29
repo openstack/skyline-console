@@ -81,6 +81,10 @@ class NeutronClient extends Base {
         ],
       },
       {
+        key: 'extensions',
+        responseKey: 'extensions',
+      },
+      {
         key: 'agents',
         responseKey: 'agent',
         subResources: [

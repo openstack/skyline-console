@@ -76,6 +76,9 @@ export class RootStore {
   @observable
   enableBilling = false;
 
+  @observable
+  neutronExtensions = [];
+
   // @observable
   // menu = renderMenu(i18n.t);
 
@@ -179,6 +182,17 @@ export class RootStore {
       this.client.policies.list(),
     ]);
     this.updateUser(profile, policies.policies || []);
+    this.getNeutronExtensions();
+  }
+
+  @action
+  async getNeutronExtensions() {
+    try {
+      const { extensions } = await client.neutron.extensions.list();
+      this.neutronExtensions = extensions;
+    } catch (error) {
+      this.neutronExtensions = [];
+    }
   }
 
   @action
