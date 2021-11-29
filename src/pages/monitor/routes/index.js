@@ -15,6 +15,7 @@
 import BaseLayout from 'layouts/Basic';
 import E404 from 'pages/base/containers/404';
 import PhysicalNode from '../containers/PhysicalNode';
+import StorageCluster from '../containers/StorageCluster';
 import Overview from '../containers/Overview';
 
 const PATH = '/monitor-center';
@@ -27,6 +28,11 @@ export default [
       {
         path: `${PATH}/physical-node-admin`,
         component: PhysicalNode,
+        exact: true,
+      },
+      {
+        path: `${PATH}/storage-cluster-admin`,
+        component: StorageCluster,
         exact: true,
       },
       { path: '*', component: E404 },

@@ -609,6 +609,14 @@ const renderMenu = (t) => {
           children: [],
           hasBreadcrumb: true,
         },
+        {
+          path: '/monitor-center/storage-cluster-admin',
+          name: t('Storage Cluster'),
+          key: 'monitorStorageClusterAdmin',
+          level: 1,
+          children: [],
+          hasBreadcrumb: true,
+        },
       ],
     },
     {
