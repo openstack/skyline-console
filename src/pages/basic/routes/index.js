@@ -41,6 +41,9 @@ const Heat = lazy(() =>
 const UserCenter = lazy(() =>
   import(/* webpackChunkName: "user-center" */ 'pages/user-center/App')
 );
+const MonitorCenter = lazy(() =>
+  import(/* webpackChunkName: "monitor-center" */ 'pages/monitor/App')
+);
 const E404 = lazy(() =>
   import(/* webpackChunkName: "E404" */ 'pages/base/containers/404')
 );
@@ -76,6 +79,10 @@ export default [
       {
         path: `/heat`,
         component: Heat,
+      },
+      {
+        path: `/monitor-center`,
+        component: MonitorCenter,
       },
       {
         path: `/user`,

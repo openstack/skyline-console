@@ -1,0 +1,126 @@
+.container {
+  .card {
+    padding: 16px;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.05),
+      0px 0px 10px 0px rgba(0, 0, 0, 0.05);
+    color: #000000;
+    height: 100%;
+
+    .tabs {
+      :global {
+        .ant-tabs-tab {
+          margin-right: 20px;
+          border-bottom: 1px solid #f0f0f0;
+        }
+
+        .ant-tabs-nav::before {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+
+  .alertCardLine {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .number {
+      font-size: 36px;
+      color: rgb(232, 104, 74);
+    }
+  }
+
+  .alertCardTitle {
+    font-size: 14px;
+    font-weight: 400;
+    color: #000000;
+  }
+
+  .alertInfo {
+    margin-top: 6px;
+
+    .alertNumber {
+      font-size: 40px;
+      font-weight: 600;
+    }
+
+    .alertLevel {
+      font-size: 16px;
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.65);
+      margin-top: 12px;
+    }
+  }
+
+  .alertCardBottom {
+    padding: 0 26px;
+
+    .buttonTitle {
+      font-size: 12px;
+      font-weight: 400;
+      color: #000000;
+      margin-bottom: 15px;
+      height: 20px;
+      line-height: 20px;
+    }
+
+    .alertLineInfo {
+      font-size: 12px;
+      font-weight: 400;
+      height: 100%;
+      color: rgba(0, 0, 0, 0.65);
+    }
+  }
+}
+
+.outer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  font-size: 14px;
+
+  .inner {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+
+  .inner::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.flexColumnAround {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.topContent {
+  font-size: 24px;
+  font-weight: 500;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tabs {
+  :global {
+    .ant-tabs-tab {
+      margin-right: 20px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .ant-tabs-nav::before {
+      border-bottom: none;
+    }
+  }
+}
