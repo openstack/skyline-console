@@ -1,0 +1,58 @@
+.header {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  padding: 20px;
+
+  .range {
+    :global {
+      .ant-radio-button-wrapper {
+        color: rgba(0, 0, 0, 0.65);
+      }
+
+      .ant-radio-button-wrapper-checked {
+        color: #0068ff;
+      }
+    }
+  }
+
+  .download {
+    float: right;
+
+    :global {
+      .ant-btn-icon-only {
+        border-radius: 4px;
+      }
+    }
+  }
+}
+
+.outer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  font-size: 12px;
+
+  .inner {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+
+  .inner::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.topContent {
+  font-size: 24px;
+  font-weight: 500;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

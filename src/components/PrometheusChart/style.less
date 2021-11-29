@@ -1,0 +1,21 @@
+.remove_extra_padding {
+  :global{
+    .ant-card-extra {
+      padding: 0
+    }
+
+    .ant-card-head {
+      border-bottom: none;
+    }
+
+    .ant-card-body {
+      display: flex;
+      justify-content: center;
+      align-items:center;
+
+      .ant-card-loading-content {
+        width: 100%
+      }
+    }
+  }
+}

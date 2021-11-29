@@ -119,6 +119,13 @@ class SkylineClient extends Base {
           },
         ],
       },
+      {
+        key: 'query',
+      },
+      {
+        name: 'queryRange',
+        key: 'query_range',
+      },
     ];
   }
 }
