@@ -601,6 +601,14 @@ const renderMenu = (t) => {
           children: [],
           hasBreadcrumb: true,
         },
+        {
+          path: '/monitor-center/physical-node-admin',
+          name: t('Physical Node'),
+          key: 'monitorPhysicalNodeAdmin',
+          level: 1,
+          children: [],
+          hasBreadcrumb: true,
+        },
       ],
     },
     {
