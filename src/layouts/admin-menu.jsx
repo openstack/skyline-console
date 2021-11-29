@@ -617,6 +617,14 @@ const renderMenu = (t) => {
           children: [],
           hasBreadcrumb: true,
         },
+        {
+          path: '/monitor-center/openstack-service-admin',
+          name: t('OpenStack Service'),
+          key: 'monitorOpenstackServiceAdmin',
+          level: 1,
+          children: [],
+          hasBreadcrumb: true,
+        },
       ],
     },
     {
