@@ -17,6 +17,7 @@ import E404 from 'pages/base/containers/404';
 import PhysicalNode from '../containers/PhysicalNode';
 import StorageCluster from '../containers/StorageCluster';
 import OpenstackService from '../containers/OpenstackService';
+import OtherService from '../containers/OtherService';
 import Overview from '../containers/Overview';
 
 const PATH = '/monitor-center';
@@ -39,6 +40,11 @@ export default [
       {
         path: `${PATH}/openstack-service-admin`,
         component: OpenstackService,
+        exact: true,
+      },
+      {
+        path: `${PATH}/other-service-admin`,
+        component: OtherService,
         exact: true,
       },
       { path: '*', component: E404 },

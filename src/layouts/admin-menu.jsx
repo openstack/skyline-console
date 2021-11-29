@@ -625,6 +625,14 @@ const renderMenu = (t) => {
           children: [],
           hasBreadcrumb: true,
         },
+        {
+          path: '/monitor-center/other-service-admin',
+          name: t('Other Service'),
+          key: 'monitorOtherServiceAdmin',
+          level: 1,
+          children: [],
+          hasBreadcrumb: true,
+        },
       ],
     },
     {

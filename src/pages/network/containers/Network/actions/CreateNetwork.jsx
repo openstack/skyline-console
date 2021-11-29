@@ -455,7 +455,6 @@ export class CreateNetwork extends ModalAction {
           },
         ],
         hidden: ip_version !== 'ipv6',
-        dependencies: ['ipv6_ra_mode'],
         allowClear: true,
       },
       {
