@@ -306,6 +306,8 @@ export class NetworkStore extends Base {
       subnet_name,
       enable_dhcp,
       ip_version,
+      ipv6_address_mode,
+      ipv6_ra_mode,
       gateway_ip,
       cidr,
       disable_gateway,
@@ -323,6 +325,10 @@ export class NetworkStore extends Base {
       gateway_ip: disable_gateway ? null : gateway_ip,
       cidr,
     };
+    if (data.ip_version === 6) {
+      data.ipv6_address_mode = ipv6_address_mode;
+      data.ipv6_ra_mode = ipv6_ra_mode;
+    }
     return this.subnetClient.create({ subnet: data });
   }
 }
