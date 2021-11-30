@@ -21,6 +21,7 @@ import { emptyActionConfig } from 'utils/constants';
 import { Col, Popover, Row } from 'antd';
 import { FileTextOutlined } from '@ant-design/icons';
 import { qosEndpoint } from 'client/client/constants';
+import { enablePFW } from 'resources/neutron';
 import styles from './styles.less';
 import actionConfigs from './actions';
 
@@ -151,7 +152,7 @@ export class FloatingIps extends Base {
         render: (resource_name, record) => {
           if (
             !resource_name &&
-            record.port_forwardings &&
+            enablePFW() &&
             record.port_forwardings.length !== 0
           ) {
             return (
