@@ -12,24 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import BaseLayout from 'layouts/Basic';
-import E404 from 'pages/base/containers/404';
-import PhysicalNode from '../containers/PhysicalNode';
-import Overview from '../containers/Overview';
+import React from 'react';
+import { observer } from 'mobx-react';
+import BaseContent from 'components/PrometheusChart/component/BaseContent';
+import Charts from './Charts';
 
-const PATH = '/monitor-center';
-export default [
-  {
-    path: PATH,
-    component: BaseLayout,
-    routes: [
-      { path: `${PATH}/overview-admin`, component: Overview, exact: true },
-      {
-        path: `${PATH}/physical-node-admin`,
-        component: PhysicalNode,
-        exact: true,
-      },
-      { path: '*', component: E404 },
-    ],
-  },
-];
+const PhysicalNode = () => {
+  function renderChartCards(store) {
+    return <Charts store={store} />;
+  }
+
+  return <BaseContent renderChartCards={renderChartCards} />;
+};
+
+export default observer(PhysicalNode);
