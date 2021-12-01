@@ -120,7 +120,7 @@ export class IronicStore extends Base {
 
   @action
   setBootDevice(id, body) {
-    return this.submitting(this.client.upateManagementBootDevice(id, body));
+    return this.submitting(this.client.updateManagementBootDevice(id, body));
   }
 
   @action
