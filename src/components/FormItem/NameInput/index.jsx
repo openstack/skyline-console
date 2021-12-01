@@ -25,6 +25,7 @@ const {
   crontabNameMessage,
   imageNameMessage,
   instanceNameMessage,
+  swiftFilenameMessage,
 } = nameMessageInfo;
 
 const {
@@ -36,6 +37,7 @@ const {
   crontabNameValidate,
   imageNameValidate,
   instanceNameValidate,
+  swiftFileNameValidate,
 } = nameTypeValidate;
 
 export default class index extends Component {
@@ -51,6 +53,7 @@ export default class index extends Component {
     isCrontab,
     isImage,
     isInstance,
+    isSwiftFile,
   }) {
     const uniqueNameValidate = (rule, value) => {
       if (names && names.length && names.includes(value)) {
@@ -77,6 +80,8 @@ export default class index extends Component {
       validator = instanceNameValidate;
     } else if (isCrontab) {
       validator = crontabNameValidate;
+    } else if (isSwiftFile) {
+      validator = swiftFileNameValidate;
     }
     const newRules = {
       validator,
@@ -95,6 +100,7 @@ export default class index extends Component {
     isCrontab,
     isImage,
     isInstance,
+    isSwiftFile,
   }) {
     if (withoutChinese) {
       return nameMessageWithoutChinese;
@@ -117,6 +123,9 @@ export default class index extends Component {
     if (isInstance) {
       return instanceNameMessage;
     }
+    if (isSwiftFile) {
+      return swiftFilenameMessage;
+    }
     return nameMessage;
   }
 
@@ -126,6 +135,7 @@ export default class index extends Component {
       withoutChinese = false,
       isFile = false,
       isKeypair = false,
+      isSwiftFile = false,
       isStack,
       isCrontab,
       isImage,
@@ -151,6 +161,7 @@ export default class index extends Component {
       isCrontab,
       isImage,
       isInstance,
+      isSwiftFile,
     });
     const message = this.getMessage({
       withoutChinese,
@@ -160,6 +171,7 @@ export default class index extends Component {
       isCrontab,
       isImage,
       isInstance,
+      isSwiftFile,
     });
     const newFormItemProps = {
       ...rest,

@@ -29,6 +29,7 @@ export const endpointVersionMap = {
   ironicInspector: 'v1',
   heat: 'v1',
   octavia: 'v2',
+  swift: 'v1',
 };
 
 export const endpointsDefault = {
@@ -63,11 +64,13 @@ export const ironicInspectorBase = () =>
 export const placementBase = () => getOpenstackEndpoint('placement');
 export const heatBase = () => getOpenstackEndpoint('heat');
 export const octaviaBase = () => getOpenstackEndpoint('octavia');
+export const swiftBase = () => getOpenstackEndpoint('swift');
 
 export const ironicOriginEndpoint = () => getOriginEndpoint('ironic');
 export const vpnEndpoint = () => getOriginEndpoint('neutron_vpn');
 export const lbEndpoint = () => getOriginEndpoint('octavia');
 export const qosEndpoint = () => getOriginEndpoint('neutron_qos');
+export const swiftEndpoint = () => getOriginEndpoint('swift');
 
 export const apiVersionMaps = {
   nova: {

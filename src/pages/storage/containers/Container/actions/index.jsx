@@ -12,32 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import skyline from './skyline';
-import nova from './nova';
-import cinder from './cinder';
-import glance from './glance';
-import neutron from './neutron';
-import keystone from './keystone';
-import heat from './heat';
-import octavia from './octavia';
-import placement from './placement';
-import ironic from './ironic';
-import swift from './swift';
+import Create from './Create';
+import Delete from './Delete';
+import Access from './Access';
 
-const client = {
-  skyline,
-  nova,
-  cinder,
-  glance,
-  neutron,
-  keystone,
-  heat,
-  octavia,
-  placement,
-  ironic,
-  swift,
+const actionConfigs = {
+  rowActions: {
+    firstAction: Access,
+    moreActions: [
+      {
+        action: Delete,
+      },
+    ],
+  },
+  batchActions: [Delete],
+  primaryActions: [Create],
 };
 
-window.client = client;
-
-export default client;
+export default actionConfigs;

@@ -194,6 +194,28 @@ const renderMenu = (t) => {
             },
           ],
         },
+        {
+          path: '/storage/container',
+          name: t('Object Storage'),
+          key: 'container',
+          level: 1,
+          children: [
+            {
+              path: /^\/storage\/container\/detail\/[^/]+$/,
+              name: t('Container Detail'),
+              key: 'containerDetail',
+              level: 2,
+              routePath: '/storage/container/detail/:id',
+            },
+            {
+              path: /^\/storage\/container\/detail\/[^/]+\/.+$/,
+              name: t('Folder Detail'),
+              key: 'folderDetail',
+              level: 2,
+              routePath: '/storage/container/detail/:container/:folder',
+            },
+          ],
+        },
       ],
     },
     {

@@ -21,9 +21,11 @@ export default class BaseClient {
 
   getUrl = (url) => {
     if (this.projectInUrl) {
-      return `${this.baseUrl}/${this.project}/${url}`;
+      return url
+        ? `${this.baseUrl}/${this.project}/${url}`
+        : `${this.baseUrl}/${this.project}`;
     }
-    return `${this.baseUrl}/${url}`;
+    return url ? `${this.baseUrl}/${url}` : `${this.baseUrl}`;
   };
 
   get request() {
@@ -39,6 +41,7 @@ export default class BaseClient {
       patch: (url, data, params, conf) =>
         request.patch(this.getUrl(url), data, params, conf),
       head: (url, params, conf) => request.head(this.getUrl(url), params, conf),
+      copy: (url, params, conf) => request.copy(this.getUrl(url), params, conf),
     };
   }
 
@@ -94,16 +97,19 @@ export default class BaseClient {
     if (!resourceName) {
       return subResourceName;
     }
+    if (!subResourceName) {
+      return resourceName;
+    }
     if (resourceName[resourceName.length - 1] === '/') {
-      return `${resourceName.substr(
-        0,
-        resourceName.length - 1
-      )}/${subResourceName}`;
+      return `${resourceName}${subResourceName}`;
     }
     return `${resourceName}/${subResourceName}`;
   }
 
   getSubResourceUrlById(resourceName, subResourceName, id) {
+    if (!subResourceName) {
+      return this.getDetailUrl(resourceName, id);
+    }
     return `${this.getDetailUrl(resourceName, id)}/${subResourceName}`;
   }
 
@@ -167,6 +173,8 @@ export default class BaseClient {
         this.request.patch(this.getDetailUrl(resourceName, id), data, ...args),
       delete: (id, ...args) =>
         this.request.delete(this.getDetailUrl(resourceName, id), ...args),
+      head: (id, ...args) =>
+        this.request.head(this.getDetailUrl(resourceName, id), ...args),
       responseKey,
       enabled,
     };
@@ -220,6 +228,11 @@ export default class BaseClient {
       ),
     delete: (id, subId, ...args) =>
       this.request.delete(
+        this.getSubResourceUrlBySubId(resourceName, subResourceName, id, subId),
+        ...args
+      ),
+    head: (id, subId, ...args) =>
+      this.request.head(
         this.getSubResourceUrlBySubId(resourceName, subResourceName, id, subId),
         ...args
       ),
@@ -298,6 +311,18 @@ export default class BaseClient {
       ),
     delete: (id, subId, subSubId, ...args) =>
       this.request.delete(
+        this.getSubSubResourceDetailUrl(
+          resourceName,
+          subResourceName,
+          subSubResonseName,
+          id,
+          subId,
+          subSubId
+        ),
+        ...args
+      ),
+    head: (id, subId, subSubId, ...args) =>
+      this.request.head(
         this.getSubSubResourceDetailUrl(
           resourceName,
           subResourceName,
