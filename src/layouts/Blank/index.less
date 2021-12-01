@@ -1,4 +1,4 @@
-@import "~styles/variables";
+@import '~styles/variables';
 
 .main {
   overflow: hidden;
@@ -16,7 +16,7 @@
       border: none;
     }
     .ant-layout-sider {
-      background:@sider-background;
+      background: @sider-background;
     }
     .ant-menu.ant-menu-dark {
       background: @sider-background;
@@ -25,19 +25,23 @@
       background-color: @sider-open-background;
       border-radius: @border-radius;
     }
-    .ant-btn-primary:hover, .ant-btn-primary:focus {
+    .ant-btn-primary:hover,
+    .ant-btn-primary:focus {
       background-color: @hover-color;
       border-color: @hover-color;
     }
     .ant-btn-primary[disabled]:hover {
-      background-color: #F2F2F2;
-      border-color: #D2D2D2;
+      background-color: #f2f2f2;
+      border-color: #d2d2d2;
     }
     .ant-table {
       line-height: 1.5;
     }
     .ant-table-thead > tr > th {
       padding: 0 16px;
+    }
+    .ant-table-thead > tr > th.ant-table-selection-column:first-child {
+      padding-left: 8px;
     }
   }
 }
