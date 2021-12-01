@@ -156,6 +156,7 @@ export default class FormItem extends React.Component {
           optionFilterProp = 'label',
           checkOptions,
           checkBoxInfo,
+          allowClear,
         } = this.props;
         return {
           options,
@@ -169,6 +170,7 @@ export default class FormItem extends React.Component {
           optionFilterProp,
           checkOptions,
           checkBoxInfo,
+          allowClear,
         };
       }
       default: {

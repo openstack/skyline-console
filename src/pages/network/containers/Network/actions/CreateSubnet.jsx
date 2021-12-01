@@ -178,6 +178,42 @@ export default class CreateSubnet extends ModalAction {
         required: true,
       },
       {
+        name: 'ipv6_ra_mode',
+        label: t('Router Advertisements Mode'),
+        type: 'select',
+        options: [
+          {
+            label: 'dhcpv6-stateful',
+            value: 'dhcpv6-stateful',
+          },
+          {
+            label: 'dhcpv6-stateless',
+            value: 'dhcpv6-stateless',
+          },
+          {
+            label: 'slaac',
+            value: 'slaac',
+          },
+        ],
+        hidden: ip_version !== 'ipv6',
+        dependencies: ['ipv6_address_mode'],
+        allowClear: true,
+        validator: (rule, value) => {
+          const ipv6_address_mode =
+            (this.formRef.current &&
+              this.formRef.current.getFieldValue('ipv6_address_mode')) ||
+            undefined;
+          // https://docs.openstack.org/neutron/xena/admin/config-ipv6.html
+          if (!value && ipv6_address_mode) {
+            return Promise.resolve();
+          }
+          if (ipv6_address_mode && ipv6_address_mode !== value) {
+            return Promise.reject(new Error(t('Invalid combination')));
+          }
+          return Promise.resolve();
+        },
+      },
+      {
         name: 'ipv6_address_mode',
         label: t('IP Distribution Mode'),
         type: 'select',
@@ -196,6 +232,7 @@ export default class CreateSubnet extends ModalAction {
           },
         ],
         hidden: ip_version !== 'ipv6',
+        allowClear: true,
       },
       {
         name: 'cidr',
