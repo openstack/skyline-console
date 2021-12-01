@@ -641,11 +641,11 @@
         - skyline-nodejs14-run-lint-src
         - skyline-nodejs14-run-lint-test
         - skyline-nodejs14-run-unit-test
-        - skyline-console-devstack-e2etests-compute:
-            irrelevant-files: *e2etests-compute-irrelevant-files
-        - skyline-console-devstack-e2etests-network:
-            irrelevant-files: *e2etests-network-irrelevant-files
-        - skyline-console-devstack-e2etests-other:
-            irrelevant-files: *e2etests-other-irrelevant-files
-        - skyline-console-devstack-e2etests-storage:
-            irrelevant-files: *e2etests-storage-irrelevant-files
+        # - skyline-console-devstack-e2etests-compute:
+        #     irrelevant-files: *e2etests-compute-irrelevant-files
+        # - skyline-console-devstack-e2etests-network:
+        #     irrelevant-files: *e2etests-network-irrelevant-files
+        # - skyline-console-devstack-e2etests-other:
+        #     irrelevant-files: *e2etests-other-irrelevant-files
+        # - skyline-console-devstack-e2etests-storage:
+        #     irrelevant-files: *e2etests-storage-irrelevant-files
