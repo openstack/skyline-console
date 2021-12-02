@@ -20,6 +20,7 @@ env:
     - octavia
     - heat
     - ironic
+    - swift
 testFiles:
   - pages/login.spec.js
   - pages/error.spec.js
@@ -36,6 +37,7 @@ testFiles:
   - pages/storage/backup.spec.js
   - pages/storage/snapshot.spec.js
   - pages/storage/storage.spec.js
+  - pages/storage/swift.spec.js
   # network
   - pages/network/router.spec.js
   - pages/network/network.spec.js

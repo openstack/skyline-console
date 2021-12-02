@@ -454,3 +454,8 @@ Cypress.Commands.add('clickButtonInColumn', (index) => {
     .find('button')
     .click({ force: true });
 });
+
+Cypress.Commands.add('goToContainerDetail', () => {
+  cy.clickLinkInColumn(1, 2000);
+  cy.waitTableLoading();
+});

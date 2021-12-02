@@ -175,3 +175,7 @@ Cypress.Commands.add('logout', () => {
   cy.clearToken();
   cy.get('.ant-layout-header').find('.anticon-user').click().wait(2000);
 });
+
+Cypress.Commands.add('clickBreadcrumbLink', (index = 0) => {
+  cy.get('.ant-breadcrumb-link').eq(index).click();
+});

@@ -29,6 +29,7 @@ export const volumeSnapshotListUrl = '/storage/snapshot';
 export const backupListUrl = '/storage/backup';
 export const volumeTypeListUrl = '/storage/volume-type-admin';
 export const storageBackendListUrl = '/storage/storage-admin';
+export const containerListUrl = '/storage/container';
 
 // network
 export const networkListUrl = '/network/networks';
