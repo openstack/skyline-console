@@ -17,6 +17,7 @@ import Base from 'containers/TabDetail';
 import { floatingIpStatus } from 'resources/floatingip';
 import { FloatingIpStore } from 'stores/neutron/floatingIp';
 import { isNull } from 'lodash';
+import { enablePFW } from 'resources/neutron';
 import actionConfigs from '../actions';
 import BaseDetail from './BaseDetail';
 import PortForwarding from './PortForwarding';
@@ -76,7 +77,7 @@ export class FloatingIpDetail extends Base {
         component: BaseDetail,
       },
     ];
-    if (isNull(this.detailData.fixed_ip_address)) {
+    if (enablePFW() && isNull(this.detailData.fixed_ip_address)) {
       tabs.push({
         title: t('Port Forwarding Rules'),
         key: 'port_forwarding_rules',
