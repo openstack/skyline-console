@@ -77,64 +77,70 @@ export class OpenstackServiceStore extends MonitorBase {
       isLoading: true,
       data: [],
     });
-    const [currentState, last24State, libvirtdState, libvirtd24State] =
-      await Promise.all(getPromises.call(this, 'openstackService.novaService'));
-    const {
-      data: { result: currentStateResult },
-    } = currentState;
     const tmp = [];
-    currentStateResult.forEach((service) => {
+    try {
+      const [currentState, last24State, libvirtdState, libvirtd24State] =
+        await Promise.all(
+          getPromises.call(this, 'openstackService.novaService')
+        );
       const {
-        metric: {
-          service: serviceName = '',
-          adminState = '',
-          hostname = '',
-        } = {},
-      } = service;
-      tmp.push({
-        hostname,
-        serviceName,
-        state: adminState === 'enabled' ? 'up' : 'down',
+        data: { result: currentStateResult },
+      } = currentState;
+      currentStateResult.forEach((service) => {
+        const {
+          metric: {
+            service: serviceName = '',
+            adminState = '',
+            hostname = '',
+          } = {},
+        } = service;
+        tmp.push({
+          hostname,
+          serviceName,
+          state: adminState === 'enabled' ? 'up' : 'down',
+        });
       });
-    });
-    const {
-      data: { result: last24HResult },
-    } = last24State;
-    last24HResult.forEach((service) => {
-      const { metric: { service: serviceName = '', hostname = '' } = {} } =
-        service;
-      const idx = tmp.findIndex(
-        (item) => item.serviceName === serviceName && item.hostname === hostname
-      );
-      tmp[idx][`${serviceName}24`] = 'down';
-    });
-    const {
-      data: { result: data },
-    } = libvirtdState;
-    data.forEach((item) => {
-      const { metric, value } = item;
-      tmp.push({
-        // hard code
-        serviceName: 'nova_libvirt',
-        hostname: metric.hostname,
-        state: value[1] === 'enabled' ? 'up' : 'down',
+      const {
+        data: { result: last24HResult },
+      } = last24State;
+      last24HResult.forEach((service) => {
+        const { metric: { service: serviceName = '', hostname = '' } = {} } =
+          service;
+        const idx = tmp.findIndex(
+          (item) =>
+            item.serviceName === serviceName && item.hostname === hostname
+        );
+        tmp[idx][`${serviceName}24`] = 'down';
       });
-    });
-    const {
-      data: { result: libvirtd24Result },
-    } = libvirtd24State;
-    libvirtd24Result.forEach((service) => {
-      const { metric: { hostname = '' } = {} } = service;
-      const idx = tmp.findIndex(
-        (item) =>
-          item.serviceName === 'nova_libvirt' && item.hostname === hostname
-      );
-      tmp[idx].nova_libvirt24 = 'down';
-    });
-    set(this.nova_service, {
-      isLoading: false,
-      data: tmp,
-    });
+      const {
+        data: { result: data },
+      } = libvirtdState;
+      data.forEach((item) => {
+        const { metric, value } = item;
+        tmp.push({
+          // hard code
+          serviceName: 'nova_libvirt',
+          hostname: metric.hostname,
+          state: value[1] === 'enabled' ? 'up' : 'down',
+        });
+      });
+      const {
+        data: { result: libvirtd24Result },
+      } = libvirtd24State;
+      libvirtd24Result.forEach((service) => {
+        const { metric: { hostname = '' } = {} } = service;
+        const idx = tmp.findIndex(
+          (item) =>
+            item.serviceName === 'nova_libvirt' && item.hostname === hostname
+        );
+        tmp[idx].nova_libvirt24 = 'down';
+      });
+    } finally {
+      set(this.nova_service, {
+        isLoading: false,
+        data: tmp,
+      });
+    }
   };
 
   @action
@@ -143,42 +149,46 @@ export class OpenstackServiceStore extends MonitorBase {
       isLoading: true,
       data: [],
     });
-    const [currentState, last24State] = await Promise.all(
-      getPromises.call(this, 'openstackService.networkService')
-    );
-    const {
-      data: { result: currentStateResult },
-    } = currentState;
     const tmp = [];
-    currentStateResult.forEach((service) => {
-      const {
-        metric: {
-          service: serviceName = '',
-          adminState = '',
-          hostname = '',
-        } = {},
-      } = service;
-      tmp.push({
-        serviceName,
-        hostname,
-        state: adminState,
-      });
-    });
-    const {
-      data: { result: last24HResult },
-    } = last24State;
-    last24HResult.forEach((service) => {
-      const { metric: { service: serviceName = '', hostname = '' } = {} } =
-        service;
-      const idx = tmp.findIndex(
-        (item) => item.serviceName === serviceName && item.hostname === hostname
+    try {
+      const [currentState, last24State] = await Promise.all(
+        getPromises.call(this, 'openstackService.networkService')
       );
-      tmp[idx][`${serviceName}24`] = 'down';
-    });
-    set(this.network_service, {
-      isLoading: false,
-      data: tmp,
-    });
+      const {
+        data: { result: currentStateResult },
+      } = currentState;
+      currentStateResult.forEach((service) => {
+        const {
+          metric: {
+            service: serviceName = '',
+            adminState = '',
+            hostname = '',
+          } = {},
+        } = service;
+        tmp.push({
+          serviceName,
+          hostname,
+          state: adminState,
+        });
+      });
+      const {
+        data: { result: last24HResult },
+      } = last24State;
+      last24HResult.forEach((service) => {
+        const { metric: { service: serviceName = '', hostname = '' } = {} } =
+          service;
+        const idx = tmp.findIndex(
+          (item) =>
+            item.serviceName === serviceName && item.hostname === hostname
+        );
+        tmp[idx][`${serviceName}24`] = 'down';
+      });
+    } finally {
+      set(this.network_service, {
+        isLoading: false,
+        data: tmp,
+      });
+    }
   };
 
   @action
@@ -187,42 +197,46 @@ export class OpenstackServiceStore extends MonitorBase {
       isLoading: true,
       data: [],
     });
-    const [currentState, last24State] = await Promise.all(
-      getPromises.call(this, 'openstackService.cinderService')
-    );
-    const {
-      data: { result: currentStateResult },
-    } = currentState;
     const tmp = [];
-    currentStateResult.forEach((service) => {
-      const {
-        metric: {
-          service: serviceName = '',
-          adminState = '',
-          hostname = '',
-        } = {},
-      } = service;
-      tmp.push({
-        serviceName,
-        hostname,
-        state: adminState === 'enabled' ? 'up' : 'down',
-      });
-    });
-    const {
-      data: { result: last24HResult },
-    } = last24State;
-    last24HResult.forEach((service) => {
-      const { metric: { service: serviceName = '', hostname = '' } = {} } =
-        service;
-      const idx = tmp.findIndex(
-        (item) => item.serviceName === serviceName && item.hostname === hostname
+    try {
+      const [currentState, last24State] = await Promise.all(
+        getPromises.call(this, 'openstackService.cinderService')
       );
-      tmp[idx][`${serviceName}24`] = 'down';
-    });
-    set(this.cinder_service, {
-      isLoading: false,
-      data: tmp,
-    });
+      const {
+        data: { result: currentStateResult },
+      } = currentState;
+      currentStateResult.forEach((service) => {
+        const {
+          metric: {
+            service: serviceName = '',
+            adminState = '',
+            hostname = '',
+          } = {},
+        } = service;
+        tmp.push({
+          serviceName,
+          hostname,
+          state: adminState === 'enabled' ? 'up' : 'down',
+        });
+      });
+      const {
+        data: { result: last24HResult },
+      } = last24State;
+      last24HResult.forEach((service) => {
+        const { metric: { service: serviceName = '', hostname = '' } = {} } =
+          service;
+        const idx = tmp.findIndex(
+          (item) =>
+            item.serviceName === serviceName && item.hostname === hostname
+        );
+        tmp[idx][`${serviceName}24`] = 'down';
+      });
+    } finally {
+      set(this.cinder_service, {
+        isLoading: false,
+        data: tmp,
+      });
+    }
   };
 
   @action
@@ -232,80 +246,82 @@ export class OpenstackServiceStore extends MonitorBase {
       data: [],
     });
     const tmp = [];
-    let results = await Promise.all(
-      getPromises.call(this, 'openstackService.otherService')
-    );
-    results.forEach((result) => {
-      const {
-        data: { result: data },
-      } = result;
-      data.forEach((d) => {
-        const { metric, value } = d;
-        tmp.push({
-          serviceName: serviceNameMap[metric.__name__],
-          hostname: metric.instance,
-          state: value[1] === '1' ? 'up' : 'down',
+    try {
+      let results = await Promise.all(
+        getPromises.call(this, 'openstackService.otherService')
+      );
+      results.forEach((result) => {
+        const {
+          data: { result: data },
+        } = result;
+        data.forEach((d) => {
+          const { metric, value } = d;
+          tmp.push({
+            serviceName: serviceNameMap[metric.__name__],
+            hostname: metric.instance,
+            state: value[1] === '1' ? 'up' : 'down',
+          });
         });
       });
-    });
-    results = await Promise.all(
-      getPromises.call(this, 'openstackService.otherServiceMinOverTime')
-    );
-    results.forEach((result, index) => {
-      const {
-        data: { result: last24HResult },
-      } = result;
-      last24HResult.forEach((service) => {
-        const { metric: { instance = '' } = {} } = service;
-        const idx = tmp.findIndex(
-          (item) =>
-            item.serviceName === indexToServiceName[index] &&
-            item.hostname === instance
-        );
-        tmp[idx][`${indexToServiceName[index]}24`] = 'down';
+      results = await Promise.all(
+        getPromises.call(this, 'openstackService.otherServiceMinOverTime')
+      );
+      results.forEach((result, index) => {
+        const {
+          data: { result: last24HResult },
+        } = result;
+        last24HResult.forEach((service) => {
+          const { metric: { instance = '' } = {} } = service;
+          const idx = tmp.findIndex(
+            (item) =>
+              item.serviceName === indexToServiceName[index] &&
+              item.hostname === instance
+          );
+          tmp[idx][`${indexToServiceName[index]}24`] = 'down';
+        });
       });
-    });
-    // const [heatResponse, heat24Response] = await Promise.all(
-    //   getPromises.call(this, 'openstackService.heatMinOverTime')
-    // );
-    // const {
-    //   data: { result: heatResults },
-    // } = heatResponse;
-    // heatResults.forEach((item) => {
-    //   const {
-    //     metric: {
-    //       host = '',
-    //       binary = '',
-    //       engine_id = '',
-    //       services_status = '',
-    //     } = {},
-    //   } = item;
-    //   tmp.push({
-    //     serviceName: binary,
-    //     host,
-    //     state: services_status,
-    //     engine_id,
-    //   });
-    // });
-    // const {
-    //   data: { result: heat24Results },
-    // } = heat24Response;
-    // heat24Results.forEach((result) => {
-    //   const { metric: { binary = '', engine_id = '', host = '' } = {} } =
-    //     result;
-    //   const idx = tmp.findIndex(
-    //     (item) =>
-    //       item.serviceName === binary &&
-    //       item.host === host &&
-    //       item.engine_id === engine_id
-    //   );
-    //   tmp[idx][`${binary}24`] = 'down';
-    // });
-
-    set(this.other_service, {
-      isLoading: false,
-      data: tmp,
-    });
+      // const [heatResponse, heat24Response] = await Promise.all(
+      //   getPromises.call(this, 'openstackService.heatMinOverTime')
+      // );
+      // const {
+      //   data: { result: heatResults },
+      // } = heatResponse;
+      // heatResults.forEach((item) => {
+      //   const {
+      //     metric: {
+      //       host = '',
+      //       binary = '',
+      //       engine_id = '',
+      //       services_status = '',
+      //     } = {},
+      //   } = item;
+      //   tmp.push({
+      //     serviceName: binary,
+      //     host,
+      //     state: services_status,
+      //     engine_id,
+      //   });
+      // });
+      // const {
+      //   data: { result: heat24Results },
+      // } = heat24Response;
+      // heat24Results.forEach((result) => {
+      //   const { metric: { binary = '', engine_id = '', host = '' } = {} } =
+      //     result;
+      //   const idx = tmp.findIndex(
+      //     (item) =>
+      //       item.serviceName === binary &&
+      //       item.host === host &&
+      //       item.engine_id === engine_id
+      //   );
+      //   tmp[idx][`${binary}24`] = 'down';
+      // });
+    } finally {
+      set(this.other_service, {
+        isLoading: false,
+        data: tmp,
+      });
+    }
   };
 }
 
