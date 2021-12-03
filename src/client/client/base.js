@@ -87,6 +87,9 @@ export default class BaseClient {
     if (!id) {
       return resourceName;
     }
+    if (!resourceName) {
+      return id;
+    }
     if (resourceName[resourceName.length - 1] === '/') {
       return `${resourceName.substr(0, resourceName.length - 1)}/${id}`;
     }

@@ -20,26 +20,6 @@ class SwiftClient extends Base {
     return swiftBase();
   }
 
-  get checkNameCode() {
-    return {
-      200: 'container exists',
-      401: 'user not login',
-      403: 'not allow to access this container',
-      404: 'not found this container',
-      500: 'other exception',
-    };
-  }
-
-  get checkNameCodeObject() {
-    return {
-      200: 'container exists',
-      401: 'user not login',
-      403: 'not allow to access this container',
-      404: 'not found this container',
-      500: 'other exception',
-    };
-  }
-
   get projectInUrl() {
     return true;
   }

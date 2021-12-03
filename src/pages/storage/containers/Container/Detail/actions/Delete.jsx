@@ -59,8 +59,8 @@ export default class Delete extends ConfirmAction {
       return globalObjectStore.delete(data);
     }
     const store = new ObjectStore();
-    const { container, name: folder } = data;
-    const records = await store.fetchListByPage({ container, folder });
+    const { container, name } = data;
+    const records = await store.fetchList({ container, path: name });
     if (records.length > 0) {
       this.showConfirmErrorBeforeSubmit = true;
       this.confirmErrorMessageBeforeSubmit = t(
