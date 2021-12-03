@@ -16,6 +16,7 @@ import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
 import { PortStore } from 'stores/neutron/port';
 import { VirtualAdapterStore } from 'stores/neutron/virtual-adapter';
+import { get } from 'lodash';
 
 @inject('rootStore')
 @observer
@@ -26,25 +27,14 @@ export default class MemberStep extends Base {
     this.state = {
       ports: [],
     };
-    const network_id = this.props.context.vip_network_id.selectedRowKeys[0];
-    const subnet_id = this.props.context.vip_address[0].subnet;
-    this.store.fetchList({ network_id }).then((ports) => {
+    this.store.fetchList().then((ports) => {
       this.setState({
         ports: ports
           .filter(
             (port) =>
-              port.fixed_ips.some(
-                (fixed_ip) => fixed_ip.subnet_id === subnet_id
-              ) &&
               port.device_owner !== 'network:dhcp' &&
               port.device_owner !== 'network:router_gateway'
           )
-          .map((item) => {
-            item.fixed_ips = item.fixed_ips.filter(
-              (fixed_ip) => fixed_ip.subnet_id === subnet_id
-            );
-            return item;
-          }),
       });
     });
   }
@@ -71,10 +61,12 @@ export default class MemberStep extends Base {
   }
 
   get formItems() {
+    const subnet_id = get(this.props.context, 'vip_address[0].subnet', '');
     return [
       {
         name: 'extMembers',
         type: 'member-allocator',
+        lbSubnetId: subnet_id,
         isLoading: this.store.list.isLoading,
         ports: this.state.ports,
       },

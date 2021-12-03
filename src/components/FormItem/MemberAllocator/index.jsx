@@ -25,7 +25,13 @@ import Item from './Item';
 const { isIPv4, isIpv6 } = ipValidate;
 
 const MemberAllocator = ({ componentProps, formItemProps }) => {
-  const { maxNumber = 10, ports, isLoading, members = [] } = componentProps;
+  const {
+    maxNumber = 10,
+    ports,
+    isLoading,
+    members = [],
+    lbSubnetId,
+  } = componentProps;
   const { name, onChange } = formItemProps;
 
   const [currentFieldsLength, setLength] = useState(0);
@@ -51,6 +57,9 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
           xs: 18,
           xm: 12,
         }}
+        extra={t(
+          'If you choose a port which subnet is different from the subnet of LB, please ensure connectivity between the two.'
+        )}
       >
         <SelectTable
           maxSelectedCount={-1}
@@ -150,6 +159,23 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
               name: 'fixed_ips',
               filterFunc: (record, val) =>
                 record.some((item) => item.ip_address.indexOf(val) > -1),
+            },
+            {
+              label: t('Same subnet with LB'),
+              name: 'origin_data',
+              options: [
+                {
+                  label: t('true'),
+                  key: true,
+                },
+              ],
+              filterFunc: (record, val) => {
+                return val
+                  ? record.fixed_ips.some(
+                      (item) => item.subnet_id === lbSubnetId
+                    )
+                  : true;
+              },
             },
           ]}
         />
@@ -280,7 +306,12 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
         </Form.List>
       </Form.Item>
       {currentFieldsLength < maxNumber && (
-        <Form.Item label={t('Add External Members')}>
+        <Form.Item
+          label={t('Add External Members')}
+          extra={t(
+            'The ip of external members can be any, including the public network ip.'
+          )}
+        >
           <Button
             type="dashed"
             onClick={() => {
