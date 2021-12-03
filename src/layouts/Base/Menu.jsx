@@ -34,6 +34,7 @@ export class LayoutMenu extends Component {
       hover: false,
       openKeys: [],
     };
+    this.maxTitleLength = 17;
   }
 
   get menu() {
@@ -55,6 +56,10 @@ export class LayoutMenu extends Component {
 
   get rootStore() {
     return this.props.rootStore;
+  }
+
+  get routing() {
+    return this.props.rootStore.routing;
   }
 
   onCollapse = (collapsed) => {
@@ -97,6 +102,14 @@ export class LayoutMenu extends Component {
     }
   };
 
+  onClickMenuItem = ({ key }) => {
+    const path = getPath({ key });
+    const { pathname } = this.props;
+    if (pathname !== path) {
+      this.routing.push(path);
+    }
+  };
+
   renderMenuItem = (item) => {
     const { collapsed, hover } = this.state;
     if (collapsed && !hover) {
@@ -112,18 +125,21 @@ export class LayoutMenu extends Component {
     }
     if (!item.children || item.children.length === 0 || item.level) {
       return (
-        <Menu.Item key={item.key} className={styles['menu-item']}>
+        <Menu.Item
+          key={item.key}
+          className={styles['menu-item']}
+          onClick={this.onClickMenuItem}
+        >
+          {/* <Menu.Item key={item.key} className={styles['menu-item-no-child']}> */}
           {item.icon}
-          <span>
-            <Link key={item.key} to={item.path}>
-              {item.name.length >= 14 ? (
-                <Tooltip title={item.name} placement="right">
-                  {item.name}
-                </Tooltip>
-              ) : (
-                item.name
-              )}
-            </Link>
+          <span className={styles['menu-item-title']}>
+            {item.name.length >= this.maxTitleLength ? (
+              <Tooltip title={item.name} placement="right">
+                {item.name}
+              </Tooltip>
+            ) : (
+              item.name
+            )}
           </span>
         </Menu.Item>
       );
@@ -132,7 +148,7 @@ export class LayoutMenu extends Component {
       <span>
         {item.icon}
         <span>
-          {item.name.length >= 14 ? (
+          {item.name.length >= this.maxTitleLength ? (
             <Tooltip title={item.name} placement="right">
               {item.name}
             </Tooltip>
