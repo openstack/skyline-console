@@ -18,7 +18,7 @@ import { ModalAction } from 'containers/Action';
 import { PoolMemberStore } from 'stores/octavia/pool-member';
 import { VirtualAdapterStore } from 'stores/neutron/virtual-adapter';
 import { toJS } from 'mobx';
-import { uniqWith } from 'lodash';
+import { uniqWith, get } from 'lodash';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
 import isEqual from 'react-fast-compare';
 
@@ -43,6 +43,7 @@ export default class CreateAction extends ModalAction {
   init() {
     this.store = new VirtualAdapterStore();
     this.memberStore = new PoolMemberStore();
+    this.lbDetail = {};
     this.state = {
       ports: [],
     };
@@ -56,26 +57,16 @@ export default class CreateAction extends ModalAction {
       })
       .then((lb) => {
         this.lbDetail = lb;
-        return this.store.fetchList({ network_id: lb.vip_network_id });
+        return this.store.fetchList();
       })
       .then((ports) => {
         this.setState({
           ports: ports
             .filter(
               (port) =>
-                port.fixed_ips.some(
-                  (fixed_ip) =>
-                    fixed_ip.subnet_id === this.lbDetail.vip_subnet_id
-                ) &&
                 port.device_owner !== 'network:dhcp' &&
                 port.device_owner !== 'network:router_gateway'
             )
-            .map((item) => {
-              item.fixed_ips = item.fixed_ips.filter(
-                (fixed_ip) => fixed_ip.subnet_id === this.lbDetail.vip_subnet_id
-              );
-              return item;
-            }),
         });
       });
   }
@@ -122,6 +113,7 @@ export default class CreateAction extends ModalAction {
       {
         name: 'extMembers',
         type: 'member-allocator',
+        lbSubnetId: get(this.lbDetail, 'vip_subnet_id', ''),
         isLoading: this.store.list.isLoading,
         ports: this.state.ports,
         members: this.memberStore.list.data,
