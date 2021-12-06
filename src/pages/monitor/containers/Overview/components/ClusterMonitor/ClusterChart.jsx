@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import React from 'react';
-import styles from 'pages/monitor/containers/Overview/index.less';
 import { observer } from 'mobx-react';
 import CircleChart from 'components/PrometheusChart/CircleWithRightLegend';
 import { get } from 'lodash';
@@ -39,7 +38,7 @@ const ClusterChart = observer((props) => {
         ];
         const result = get(responses[0], 'data.result', []);
         result.forEach((sta) => {
-          const idx = sta.metric.services_state === 'up' ? 0 : 1;
+          const idx = sta.metric.adminState === 'enabled' ? 0 : 1;
           status[idx].value += parseInt(sta.value[1], 10);
         });
         return status;
@@ -47,10 +46,8 @@ const ClusterChart = observer((props) => {
       metricKey: 'monitorOverview.computeNodeStatus',
     },
     renderContent: (store) => (
-      <div className={styles.topContent}>
-        <div style={{ height: 218 }}>
-          <CircleChart data={store.data} />
-        </div>
+      <div style={{ height: 218 }}>
+        <CircleChart data={store.data} />
       </div>
     ),
     visibleHeight: 230,

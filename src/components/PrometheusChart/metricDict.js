@@ -52,7 +52,6 @@ const metricDict = {
           service: 'nova-compute',
         },
       ],
-      finalFormatFunc: [(url) => `sum(${url})by(services_state)`],
     },
     topHostCPUUsage: {
       url: ['node_cpu_seconds_total'],

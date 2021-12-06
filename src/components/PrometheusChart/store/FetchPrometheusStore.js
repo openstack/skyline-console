@@ -89,16 +89,21 @@ export default class FetchPrometheusStore {
   }
 
   formatData(data) {
-    this.data = this.formatDataFn(
+    const formatedData = this.formatDataFn(
       data,
       this.typeKey,
       this.deviceKey,
       this.modifyKeys
     );
-    if (isArray(this.data) && this.data.length !== 0 && this.data[0].device) {
+    this.data = [...formatedData];
+    if (
+      isArray(formatedData) &&
+      formatedData.length !== 0 &&
+      formatedData[0].device
+    ) {
       const dv = new DataSet()
         .createView()
-        .source(this.data)
+        .source(formatedData)
         .transform({
           type: 'partition',
           groupBy: ['device'],
