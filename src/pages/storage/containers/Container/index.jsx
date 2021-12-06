@@ -113,6 +113,10 @@ export default class Container extends Base {
     return true;
   }
 
+  get hideDownload() {
+    return true;
+  }
+
   get rowKey() {
     return 'name';
   }
