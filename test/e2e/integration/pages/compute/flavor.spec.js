@@ -22,11 +22,9 @@ describe('The Flavor Page', () => {
     cy.loginAdmin(listUrl);
   });
 
-  it('successfully prepair flavor types', () => {
-    cy.setAllFlavorType();
-  });
-
   it('successfully list', () => {
+    cy.setAllFlavorType();
+    cy.visitPage(listUrl);
     cy.clickTab('Custom', 'custom')
       .clickTab('Heterogeneous Computing', 'heterogeneous_computing')
       .clickTab('Bare Metal', 'bare_metal');
