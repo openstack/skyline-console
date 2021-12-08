@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { observable, action } from 'mobx';
-import { get, isArray } from 'lodash';
+import { clone, get, isArray } from 'lodash';
 import DataSet from '@antv/data-set';
 import {
   getRequestUrl,
@@ -95,7 +95,7 @@ export default class FetchPrometheusStore {
       this.deviceKey,
       this.modifyKeys
     );
-    this.data = [...formatedData];
+    this.data = clone(formatedData);
     if (
       isArray(formatedData) &&
       formatedData.length !== 0 &&

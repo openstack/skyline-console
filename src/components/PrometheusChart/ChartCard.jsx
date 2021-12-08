@@ -77,14 +77,6 @@ const ChartCard = (props) => {
     );
   };
 
-  const getModalCardsParams = (store) => {
-    const pa = {};
-    if (params && Object.keys(params).includes('hostname')) {
-      pa.hostname = store.node.metric.hostname;
-    }
-    return pa;
-  };
-
   const ModalContent = observer(() => (
     <div style={{ height: 520 }}>
       <BaseContent
@@ -93,11 +85,11 @@ const ChartCard = (props) => {
             {...props}
             currentRange={store.currentRange}
             interval={store.interval}
-            params={getModalCardsParams(store)}
             isModal
           />
         )}
         {...BaseContentConfig}
+        renderNodeSelect={false}
       />
     </div>
   ));

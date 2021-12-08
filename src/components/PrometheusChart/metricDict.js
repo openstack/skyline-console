@@ -408,6 +408,7 @@ const metricDict = {
     },
     evictions: {
       url: ['memcached_slab_items_evicted_unfetched_total'],
+      finalFormatFunc: [(url) => `sum(${url})`],
     },
     itemsInCache: {
       url: ['memcached_items_total'],

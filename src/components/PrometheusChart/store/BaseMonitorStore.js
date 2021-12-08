@@ -94,7 +94,7 @@ export default class BaseMonitorStore {
       this.nodes = result;
       this.node = this.nodes[0] || {
         metric: {
-          hostname: '',
+          instance: '',
         },
       };
       this.isLoading = false;
