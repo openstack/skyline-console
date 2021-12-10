@@ -47,7 +47,7 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
     return getLinkRender({ key, params: { id }, value: id });
   }
 
-  let addOuter = () => {};
+  let addOuter = () => { };
 
   return (
     <div style={{ padding: 20 }}>
@@ -93,12 +93,14 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
                   subnet_id: i.subnet_id,
                 }));
                 record.currentOption = options[0].value;
+                record.currentSubnetId = options[0].subnet_id;
                 return (
                   <Select
                     style={{ minWidth: 200 }}
                     options={options}
                     defaultValue={options[0].value}
-                    onChange={(e) => {
+                    onChange={(e, opt) => {
+                      record.currentSubnetId = opt.subnet_id;
                       record.currentOption = e;
                     }}
                   />
@@ -131,6 +133,7 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
                         protocol_port: undefined,
                         weight: 1,
                         name: record.server_name,
+                        subnet_id: record.currentSubnetId,
                       },
                       canEdit: false,
                     });
@@ -172,8 +175,8 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
               filterFunc: (record, val) => {
                 return val
                   ? record.fixed_ips.some(
-                      (item) => item.subnet_id === lbSubnetId
-                    )
+                    (item) => item.subnet_id === lbSubnetId
+                  )
                   : true;
               },
             },
@@ -247,7 +250,7 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
                                 (it) =>
                                   it.address === value1.ip_address.ip &&
                                   it.protocol_port ===
-                                    value1.ip_address.protocol_port
+                                  value1.ip_address.protocol_port
                               );
                               if (!value1 || !value1.ip_address.ip) {
                                 return Promise.reject(

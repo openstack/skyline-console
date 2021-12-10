@@ -17,7 +17,7 @@ import IPAddress from './IPAddress';
 
 const Item = ({ onChange, value }) => {
   value = value || {
-    ip_address: { ip: undefined, protocol_port: undefined, weight: 1 },
+    ip_address: { ip: undefined, protocol_port: undefined, weight: 1, subnet_id: undefined },
     canEdit: true,
   };
   const [ip_address, setIP] = useState(value.ip_address);

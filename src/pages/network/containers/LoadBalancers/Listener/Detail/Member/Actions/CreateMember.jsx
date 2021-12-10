@@ -129,12 +129,13 @@ export default class CreateAction extends ModalAction {
       return { weight, protocol_port, address, name, subnet_id };
     });
     extMembers.forEach((member) => {
-      const { ip, protocol_port, weight, name = null } = member.ip_address;
+      const { ip, protocol_port, weight, name = null, subnet_id } = member.ip_address;
       const addMember = {
         weight,
         protocol_port,
         address: ip,
         name,
+        subnet_id
       };
       members.push(addMember);
     });

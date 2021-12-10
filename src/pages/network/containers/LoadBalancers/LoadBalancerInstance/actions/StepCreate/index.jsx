@@ -141,19 +141,21 @@ class StepCreate extends StepAction {
         memberData.push(addMember);
       });
     });
+
     extMembers.forEach((member) => {
       const {
         ip,
         protocol_port,
         weight,
         name: server_name = null,
+        subnet_id,
       } = member.ip_address;
       const addMember = {
         weight,
         protocol_port,
         address: ip,
         name: server_name,
-        subnet_id: member.subnet,
+        subnet_id,
       };
       memberData.push(addMember);
     });
