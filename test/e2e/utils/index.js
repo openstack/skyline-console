@@ -30,7 +30,7 @@ const loadYaml = (filePath) => {
 };
 
 function getZhJson() {
-  const jsonPath = root('src/locales/zh.json');
+  const jsonPath = root('../src/locales/zh.json');
   try {
     const rawData = fs.readFileSync(jsonPath);
     const translate = JSON.parse(rawData);
