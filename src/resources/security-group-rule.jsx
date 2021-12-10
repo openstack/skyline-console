@@ -81,7 +81,7 @@ export const getSelfColumns = (self) => [
     title: t('Remote IP Prefix'),
     dataIndex: 'remote_ip_prefix',
     render: (value, record) =>
-      value || record.ethertype === 'IPv4' ? '0.0.0.0/0' : '::/0',
+      value || (record.ethertype === 'IPv4' ? '0.0.0.0/0' : '::/0'),
     isHideable: true,
   },
   {
