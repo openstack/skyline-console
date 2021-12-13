@@ -259,7 +259,9 @@ export default class FormItem extends React.Component {
 
   getSelectTableValidator = (rule, value) => {
     if (!value || value.selectedRowKeys.length === 0) {
-      return Promise.reject(t('Please select!'));
+      return Promise.reject(
+        new Error(rule.placeholder || `${t('Please select')}${rule.label}!`)
+      );
     }
     return Promise.resolve();
   };
@@ -288,6 +290,7 @@ export default class FormItem extends React.Component {
       name,
       hidden,
       label,
+      placeholder,
     } = this.props;
     if (hidden) {
       return [];
@@ -299,9 +302,16 @@ export default class FormItem extends React.Component {
     const newRule = {};
     const requiredRule = {};
     if (required) {
-      if (tip && type.indexOf('select-table') < 0) {
+      if (type && type.includes('select-table')) {
         requiredRule.required = true;
-        requiredRule.message = `${t('Please input') + label}!`;
+        requiredRule.validator = (rule, value) =>
+          this.getSelectTableValidator({ ...rule, ...this.props }, value);
+      } else if (type && type.includes('select')) {
+        requiredRule.required = true;
+        requiredRule.message = placeholder || `${t('Please select') + label}!`;
+      } else if (tip) {
+        requiredRule.required = true;
+        requiredRule.message = placeholder || `${t('Please input') + label}!`;
       } else {
         newRule.required = required;
       }
@@ -311,9 +321,7 @@ export default class FormItem extends React.Component {
     }
     if (validator) {
       newRule.validator = validator;
-    } else if (type.indexOf('select-table') >= 0 && required) {
-      newRule.validator = this.getSelectTableValidator;
-    } else if (type.indexOf('textarea') >= 0 && name === 'description') {
+    } else if (type && type.includes('textarea') && name === 'description') {
       newRule.validator = this.getDescriptionValidator;
     }
     if (!isEmpty(newRule)) {
