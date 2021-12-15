@@ -494,6 +494,7 @@
   "Debian": "Debian",
   "Dedicated": "Dedicated",
   "Default Policy": "Default Policy",
+  "Default is slaac, for details, see https://docs.openstack.org/neutron/latest/admin/config-ipv6.html": "Default is slaac, for details, see https://docs.openstack.org/neutron/latest/admin/config-ipv6.html",
   "Degraded": "Degraded",
   "Delay Interval(s)": "Delay Interval(s)",
   "Delete": "Delete",
