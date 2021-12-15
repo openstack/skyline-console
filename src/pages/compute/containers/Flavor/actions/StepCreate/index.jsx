@@ -92,6 +92,10 @@ class StepCreate extends StepAction {
     return obj;
   };
 
+  getPageSizeValue(type, value) {
+    return type === 'custom' ? value : type;
+  }
+
   onSubmit = (values) => {
     const {
       architecture,
@@ -105,6 +109,9 @@ class StepCreate extends StepAction {
       gpuType,
       gpuNumber,
       numaNodesNum,
+      memPageSizeValueMore,
+      memPageSizeValue,
+      memPageSizeMore,
       attachUsb,
       usbType,
       usbNumber,
@@ -163,9 +170,16 @@ class StepCreate extends StepAction {
       });
       extraSpecs['hw:cpu_policy'] = cpuPolicy;
       extraSpecs['hw:cpu_thread_policy'] = cpuThreadPolicy;
-      extraSpecs['hw:mem_page_size'] = memPageSize;
+      extraSpecs['hw:mem_page_size'] = this.getPageSizeValue(
+        memPageSize,
+        memPageSizeValue
+      );
     } else if (architecture !== 'bare_metal') {
       extraSpecs['hw:numa_nodes'] = numaNodesNum;
+      extraSpecs['hw:mem_page_size'] = this.getPageSizeValue(
+        memPageSizeMore,
+        memPageSizeValueMore
+      );
       extraSpecs['hw:live_resize'] = 'True';
     }
     if (isBareMetal(architecture)) {

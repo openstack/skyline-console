@@ -53,6 +53,10 @@ export const pageTypeList = [
     label: t('Any(Random)'),
     value: 'any',
   },
+  {
+    label: t('Custom'),
+    value: 'custom',
+  },
 ];
 
 export const pageTypeMap = {

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Button, Col, Row } from 'antd';
 import Avatar from './AvatarDropdown';
@@ -20,7 +20,7 @@ import styles from './index.less';
 
 @inject('rootStore')
 @observer
-export class GlobalHeaderRight extends PureComponent {
+export class GlobalHeaderRight extends Component {
   get isAdminPage() {
     const { isAdminPage = false } = this.props;
     return isAdminPage;

@@ -216,12 +216,12 @@ const poolsColumns = [
     dataIndex: 'name',
   },
   {
-    title: t('PGs'),
+    title: t('PG Count'),
     dataIndex: 'ceph_pg_total',
     isHideable: true,
   },
   {
-    title: t('Objects'),
+    title: t('Object Count '),
     dataIndex: 'ceph_pool_objects',
     isHideable: true,
   },

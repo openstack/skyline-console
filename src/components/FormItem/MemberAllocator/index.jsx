@@ -47,7 +47,7 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
     return getLinkRender({ key, params: { id }, value: id });
   }
 
-  let addOuter = () => { };
+  let addOuter = () => {};
 
   return (
     <div style={{ padding: 20 }}>
@@ -168,15 +168,15 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
               name: 'origin_data',
               options: [
                 {
-                  label: t('true'),
+                  label: t('True'),
                   key: true,
                 },
               ],
               filterFunc: (record, val) => {
                 return val
                   ? record.fixed_ips.some(
-                    (item) => item.subnet_id === lbSubnetId
-                  )
+                      (item) => item.subnet_id === lbSubnetId
+                    )
                   : true;
               },
             },
@@ -250,7 +250,7 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
                                 (it) =>
                                   it.address === value1.ip_address.ip &&
                                   it.protocol_port ===
-                                  value1.ip_address.protocol_port
+                                    value1.ip_address.protocol_port
                               );
                               if (!value1 || !value1.ip_address.ip) {
                                 return Promise.reject(

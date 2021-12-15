@@ -156,6 +156,8 @@ export class ParamSetting extends Base {
       attachUsb: false,
       resourceProps: this.getDefaultResourcePropValues(),
       traitProps: [],
+      memPageSizeMore: 'any',
+      memPageSize: 'large',
     };
     return data;
   }
@@ -168,7 +170,14 @@ export class ParamSetting extends Base {
   }
 
   get nameForStateUpdate() {
-    return ['architecture', 'category', 'attachUsb'];
+    return [
+      'architecture',
+      'category',
+      'attachUsb',
+      'memPageSizeMore',
+      'more',
+      'memPageSize',
+    ];
   }
 
   allowed = () => Promise.resolve();
@@ -218,6 +227,15 @@ export class ParamSetting extends Base {
     },
   });
 
+  pageSizeValueValidate = (rule, value) => {
+    const r =
+      /^[1-9]\d*(Kb\(it\)|Kib\(it\)|Mb\(it\)|Mib\(it\)|Gb\(it\)|Gib\(it\)|Tb\(it\)|Tib\(it\)|KB|KiB|MB|MiB|GB|GiB|TB|TiB)?$/;
+    if (r.test(value)) {
+      return Promise.resolve();
+    }
+    return Promise.reject(t('Please enter right format memory page value!'));
+  };
+
   checkResourceProps = (values) => {
     const item = values.find((it, index) => {
       const { key, value } = it.value || {};
@@ -244,7 +262,14 @@ export class ParamSetting extends Base {
   };
 
   get formItems() {
-    const { architecture, category, attachUsb } = this.state;
+    const {
+      architecture,
+      category,
+      attachUsb,
+      memPageSizeMore,
+      more = false,
+      memPageSize,
+    } = this.state;
     const isBareMetal = architecture === 'bare_metal';
     const hasIOPS = categoryHasIOPS(category);
     const hasEphemeral = categoryHasEphemeral(category);
@@ -253,6 +278,13 @@ export class ParamSetting extends Base {
     const isGpuComputeType = isGPUType && !isGpuVisualType;
     const typeIsComputeOptimized = isComputeOptimized(category);
     const instanceType = flavorCategoryList[category] || category;
+    const showNumaInput = !typeIsComputeOptimized && !isBareMetal;
+    const showMemPageMore = more && showNumaInput;
+    const showPageSizeInputMore =
+      showMemPageMore && memPageSizeMore === 'custom';
+    const showPageSizeInput =
+      typeIsComputeOptimized && memPageSize === 'custom';
+
     const NUMATip = t(
       'It is recommended that { instanceType } instance simultaneously set NUMA affinity policy for PCIE device to force or priority matching. This configuration can further improve PCIE computing performance.',
       { instanceType }
@@ -268,6 +300,12 @@ export class ParamSetting extends Base {
     const largePageTip = t(
       'It is recommended that the { instanceType } instance simultaneously set large page memory to large. { instanceType } instances also require faster memory addressing capabilities.',
       { instanceType }
+    );
+    const largePageValueTip = t(
+      'The unit suffix must be one of the following: Kb(it), Kib(it), Mb(it), Mib(it), Gb(it), Gib(it), Tb(it), Tib(it), KB, KiB, MB, MiB, GB, GiB, TB, TiB. If the unit suffix is not provided, it is assumed to be KB.'
+    );
+    const pageSizePlaceholder = t(
+      'Please enter a memory page size, such as: 1024, 1024MB'
     );
 
     return [
@@ -357,7 +395,32 @@ export class ParamSetting extends Base {
         type: 'input-int',
         min: 1,
         required: true,
-        hidden: typeIsComputeOptimized || isBareMetal,
+        hidden: !showNumaInput,
+      },
+      {
+        name: 'more',
+        label: t('Advanced Options'),
+        type: 'more',
+        hidden: !showNumaInput,
+      },
+      {
+        name: 'memPageSizeMore',
+        label: t('Memory Page'),
+        type: 'select',
+        options: pageTypeList,
+        hidden: !showMemPageMore,
+        required: showMemPageMore,
+        tip: largePageTip,
+      },
+      {
+        name: 'memPageSizeValueMore',
+        label: t('Memory Page Value'),
+        type: 'input',
+        hidden: !showPageSizeInputMore,
+        required: showPageSizeInputMore,
+        extra: largePageValueTip,
+        validator: this.pageSizeValueValidate,
+        placeholder: pageSizePlaceholder,
       },
       {
         name: 'gpu-type',
@@ -433,6 +496,16 @@ export class ParamSetting extends Base {
         hidden: !typeIsComputeOptimized,
         required: typeIsComputeOptimized,
         tip: largePageTip,
+      },
+      {
+        name: 'memPageSizeValue',
+        label: t('Memory Page Value'),
+        type: 'input',
+        hidden: !showPageSizeInput,
+        required: showPageSizeInput,
+        extra: largePageValueTip,
+        validator: this.pageSizeValueValidate,
+        placeholder: pageSizePlaceholder,
       },
       {
         name: 'usb-type',
