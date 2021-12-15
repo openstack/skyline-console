@@ -129,7 +129,7 @@ export class FloatingIps extends Base {
         title: t('QoS Policy'),
         dataIndex: 'qos_policy_id',
         isLink: true,
-        routeName: 'qosPolicyDetail',
+        routeName: this.getRouteName('networkQosDetail'),
         idKey: 'qos_policy_id',
         hidden: !this.qosEndpoint,
       },
