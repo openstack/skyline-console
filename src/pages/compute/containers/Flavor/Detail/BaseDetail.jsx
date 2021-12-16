@@ -100,6 +100,7 @@ export default class BaseDetail extends Base {
     const { category, architecture } = this.detailData;
     const hasIOPS = categoryHasIOPS(category);
     const hasEphemeral = categoryHasEphemeral(category);
+    const typeIsComputeOptimized = isComputeOptimized(category);
     if (isBareMetal(architecture)) {
       return this.getBareMetalCard();
     }
@@ -132,6 +133,18 @@ export default class BaseDetail extends Base {
           return value;
         },
       });
+    }
+    if (!typeIsComputeOptimized) {
+      const numaItem = {
+        label: t('NUMA Node Count'),
+        dataIndex: 'hw:numa_nodes',
+      };
+      const memPageItem = {
+        label: t('Memory Page Size'),
+        dataIndex: 'hw:mem_page_size',
+        render: (value) => (value && pageTypeMap[value]) || value || '-',
+      };
+      options.push(...[numaItem, memPageItem]);
     }
 
     return {
@@ -224,7 +237,7 @@ export default class BaseDetail extends Base {
         render: (value) => cpuThreadPolicyMap[value] || '-',
       },
       {
-        label: t('Memory Page'),
+        label: t('Memory Page Size'),
         dataIndex: 'hw:mem_page_size',
         render: (value) => pageTypeMap[value] || '-',
       },

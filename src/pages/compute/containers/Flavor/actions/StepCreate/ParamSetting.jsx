@@ -414,7 +414,7 @@ export class ParamSetting extends Base {
       },
       {
         name: 'memPageSizeValueMore',
-        label: t('Memory Page Value'),
+        label: t('Memory Page Size'),
         type: 'input',
         hidden: !showPageSizeInputMore,
         required: showPageSizeInputMore,
@@ -499,7 +499,7 @@ export class ParamSetting extends Base {
       },
       {
         name: 'memPageSizeValue',
-        label: t('Memory Page Value'),
+        label: t('Memory Page Size'),
         type: 'input',
         hidden: !showPageSizeInput,
         required: showPageSizeInput,
