@@ -24,6 +24,8 @@ import {
   checkIsStatusColumn,
   getStatusRender,
   getRender,
+  getNameRender,
+  getNameRenderByRouter,
 } from 'utils/table';
 import { Link } from 'react-router-dom';
 import { getNoValue } from 'utils/index';
@@ -80,6 +82,9 @@ export default class SimpleTable extends React.Component {
         isStatus,
         isName,
         isPrice,
+        isLink,
+        routeName,
+        linkPrefix,
         ...rest
       } = column;
       if (column.key === 'operation') {
@@ -98,8 +103,12 @@ export default class SimpleTable extends React.Component {
       if (dataIndex === 'project_name') {
         newRender = this.getProjectRender(newRender);
       }
-      if (dataIndex === 'name' || isName) {
-        newRender = this.getNameRender(newRender, column);
+      if ((dataIndex === 'name' && routeName) || isLink) {
+        const { rowKey } = this.props;
+        newRender = getNameRenderByRouter(newRender, column, rowKey);
+      }
+      if ((dataIndex === 'name' && linkPrefix) || isName) {
+        newRender = getNameRender(newRender, column);
       }
       if (dataIndex === 'cost' || isPrice) {
         newRender = this.getPriceRender(newRender, column);
@@ -151,38 +160,6 @@ export default class SimpleTable extends React.Component {
       return render;
     }
     return (value) => getNoValue(value);
-  };
-
-  getNameRender = (render, column) => {
-    if (render) {
-      return render;
-    }
-    const { linkPrefix, dataIndex, idKey, linkPrefixFunc, linkFunc } = column;
-    const { rowKey } = this.props;
-    return (value, record) => {
-      const idValue = get(record, idKey || rowKey);
-      let url = null;
-      if (linkFunc) {
-        url = linkFunc(value, record);
-      } else {
-        const linkValue = linkPrefixFunc
-          ? linkPrefixFunc(value, record)
-          : linkPrefix;
-        url = this.getLinkUrl(linkValue, idValue);
-      }
-      const nameValue = value || get(record, dataIndex) || '-';
-      if (!url) {
-        return nameValue;
-      }
-      return (
-        <div>
-          <div>
-            <Link to={url}>{idValue}</Link>
-          </div>
-          <div>{nameValue}</div>
-        </div>
-      );
-    };
   };
 
   getLinkUrl = (prefix, id) => {
