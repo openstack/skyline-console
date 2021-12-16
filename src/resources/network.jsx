@@ -144,3 +144,7 @@ function PopUpSubnet({ subnetIds }) {
     ))
   );
 }
+
+export const subnetIpv6Tip = t(
+  'Default is slaac, for details, see https://docs.openstack.org/neutron/latest/admin/config-ipv6.html'
+);

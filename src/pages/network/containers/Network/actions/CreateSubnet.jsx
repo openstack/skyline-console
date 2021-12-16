@@ -20,6 +20,7 @@ import { isEmpty } from 'lodash';
 import { checkPolicyRule } from 'resources/policy';
 import globalProjectStore from 'stores/keystone/project';
 import globalRootStore from 'stores/root';
+import { subnetIpv6Tip } from 'resources/network';
 import networkUtil from './networkUtil';
 
 const {
@@ -60,6 +61,8 @@ export default class CreateSubnet extends ModalAction {
       project_id: this.currentProjectId,
       disable_gateway: false,
       more: false,
+      ipv6_ra_mode: 'slaac',
+      ipv6_address_mode: 'slaac',
     };
   }
 
@@ -195,6 +198,7 @@ export default class CreateSubnet extends ModalAction {
             value: 'slaac',
           },
         ],
+        tip: subnetIpv6Tip,
         hidden: ip_version !== 'ipv6',
         dependencies: ['ipv6_address_mode'],
         allowClear: true,
@@ -231,6 +235,7 @@ export default class CreateSubnet extends ModalAction {
             value: 'slaac',
           },
         ],
+        tip: subnetIpv6Tip,
         hidden: ip_version !== 'ipv6',
         allowClear: true,
       },

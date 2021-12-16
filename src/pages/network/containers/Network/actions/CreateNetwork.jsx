@@ -21,6 +21,7 @@ import { isEmpty, isFunction } from 'lodash';
 import Notify from 'components/Notify';
 import { checkPolicyRule } from 'resources/policy';
 import globalNeutronStore from 'stores/neutron/neutron';
+import { subnetIpv6Tip } from 'resources/network';
 import networkUtil from './networkUtil';
 
 const {
@@ -68,6 +69,8 @@ export class CreateNetwork extends ModalAction {
       disable_gateway: false,
       more: false,
       port_security_enabled: true,
+      ipv6_ra_mode: 'slaac',
+      ipv6_address_mode: 'slaac',
     };
   }
 
@@ -418,6 +421,7 @@ export class CreateNetwork extends ModalAction {
             value: 'slaac',
           },
         ],
+        tip: subnetIpv6Tip,
         hidden: ip_version !== 'ipv6',
         dependencies: ['ipv6_address_mode'],
         allowClear: true,
@@ -454,6 +458,7 @@ export class CreateNetwork extends ModalAction {
             value: 'slaac',
           },
         ],
+        tip: subnetIpv6Tip,
         hidden: ip_version !== 'ipv6',
         allowClear: true,
       },
