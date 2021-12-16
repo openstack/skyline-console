@@ -28,6 +28,8 @@ const root = (path) => resolve(__dirname, `../${path}`);
 
 const { version, ...restConfig } = common;
 
+const outputPath = 'skyline_console/static';
+
 module.exports = (env) => {
   const API = (env || {}).API || 'mock';
 
@@ -37,7 +39,7 @@ module.exports = (env) => {
     },
     output: {
       filename: '[name].js',
-      path: root('skyline_console/static'),
+      path: root(outputPath),
       publicPath: '/',
       chunkFilename: `[name].bundle.${version}.js`,
     },
@@ -124,7 +126,7 @@ module.exports = (env) => {
         template: root('src/asset/template/index.html'),
         favicon: root('src/asset/image/favicon.ico'),
       }),
-      new CleanWebpackPlugin(['dist'], {
+      new CleanWebpackPlugin([outputPath], {
         root: resolve(__dirname, `../`),
       }),
       new CompressionWebpackPlugin({
