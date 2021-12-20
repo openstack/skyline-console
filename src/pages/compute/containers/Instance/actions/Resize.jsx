@@ -110,6 +110,7 @@ export class Resize extends ModalAction {
       {
         name: 'newFlavor',
         label: t('Flavor'),
+        type: 'select-table',
         component: (
           <FlavorSelectTable flavor={flavor} onChange={this.onFlavorChange} />
         ),

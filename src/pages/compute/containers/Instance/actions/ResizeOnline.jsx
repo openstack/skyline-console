@@ -109,6 +109,7 @@ export class ResizeOnline extends ModalAction {
       {
         name: 'newFlavor',
         label: t('Flavor'),
+        type: 'select-table',
         component: (
           <FlavorSelectTable
             flavor={flavor}
