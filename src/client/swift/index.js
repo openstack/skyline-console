@@ -29,6 +29,11 @@ class SwiftClient extends Base {
     return url ? `${prefix}/${url}` : prefix;
   };
 
+  getEncodeUrl = (url) => {
+    const tmp = url.split('/');
+    return tmp.map((t) => encodeURIComponent(t)).join('/');
+  };
+
   get resources() {
     return [
       {
@@ -44,19 +49,19 @@ class SwiftClient extends Base {
           {
             key: 'create',
             generate: (name) => {
-              return this.request.put(encodeURIComponent(name));
+              return this.request.put(this.getEncodeUrl(name));
             },
           },
           {
             key: 'showMetadata',
             generate: (name) => {
-              return this.request.head(encodeURIComponent(name));
+              return this.request.head(this.getEncodeUrl(name));
             },
           },
           {
             key: 'updateMetadata',
             generate: (name, headers) => {
-              return this.request.post(encodeURIComponent(name), null, null, {
+              return this.request.post(this.getEncodeUrl(name), null, null, {
                 headers,
               });
             },
@@ -64,27 +69,21 @@ class SwiftClient extends Base {
           {
             key: 'uploadFile',
             generate: (container, name, content, conf) => {
-              const url = `${encodeURIComponent(
-                container
-              )}/${encodeURIComponent(name)}`;
+              const url = this.getEncodeUrl(`${container}/${name}`);
               return this.request.put(url, content, null, conf);
             },
           },
           {
             key: 'createFolder',
             generate: (container, name) => {
-              const url = `${encodeURIComponent(
-                container
-              )}/${encodeURIComponent(name)}`;
+              const url = this.getEncodeUrl(`${container}/${name}`);
               return this.request.put(url);
             },
           },
           {
             key: 'showObjectMetadata',
             generate: (container, objectName) => {
-              const url = `${encodeURIComponent(
-                container
-              )}/${encodeURIComponent(objectName)}`;
+              const url = this.getEncodeUrl(`${container}/${objectName}`);
               return this.request.head(url);
             },
           },
@@ -93,7 +92,7 @@ class SwiftClient extends Base {
             generate: (fromContaier, fromName, toContainer, toName) => {
               const url = `${fromContaier}/${fromName}`;
               const headers = {
-                Destination: encodeURIComponent(`${toContainer}/${toName}`),
+                Destination: this.getEncodeUrl(`${toContainer}/${toName}`),
               };
               return this.request.copy(url, null, { headers });
             },

@@ -25,6 +25,15 @@ export class ContainerStore extends Base {
     return '';
   }
 
+  get paramsFunc() {
+    return (params) => {
+      return {
+        ...params,
+        format: 'json',
+      };
+    };
+  }
+
   get mapper() {
     return (data) => ({
       ...data,

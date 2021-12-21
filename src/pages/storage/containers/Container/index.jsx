@@ -17,7 +17,7 @@ import { observer, inject } from 'mobx-react';
 import { Popover, Col, Row, Skeleton } from 'antd';
 import Base from 'containers/List';
 import globalContainerStore, { ContainerStore } from 'stores/swift/container';
-import { toLocalTimeFilter, bytesFitler } from 'utils/index';
+import { bytesFitler } from 'utils/index';
 import { allCanChangePolicy } from 'resources/policy';
 import { getStrFromTimestamp } from 'utils/time';
 import { swiftEndpoint } from 'client/client/constants';
@@ -130,7 +130,6 @@ export default class Container extends Base {
           this.getLinkRender('containerDetail', name || record.id, {
             id: record.id,
           }),
-        stringify: (name, record) => name || record.id,
       },
       {
         title: t('Size'),
@@ -142,7 +141,6 @@ export default class Container extends Base {
         dataIndex: 'last_modified',
         isHideable: true,
         valueRender: 'sinceTime',
-        stringify: (value) => toLocalTimeFilter(value),
       },
       {
         title: t('Detail Info'),
