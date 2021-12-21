@@ -50,6 +50,10 @@ export default class Listeners extends Base {
     return true;
   }
 
+  get forceRefreshTopDetailWhenListRefresh() {
+    return true;
+  }
+
   get actionConfigs() {
     if (this.isAdminPage) {
       return adminActions;

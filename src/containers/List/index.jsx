@@ -407,6 +407,10 @@ export default class BaseList extends React.Component {
     return 'all_projects';
   }
 
+  get forceRefreshTopDetailWhenListRefresh() {
+    return false;
+  }
+
   setRefreshdataTimerTransition = () => {
     this.stopRefreshAuto();
     if (this.dataTimerTransition) {
@@ -904,7 +908,11 @@ export default class BaseList extends React.Component {
       silent: !force,
     };
     this.handleFetch(params, true);
-    if (this.inDetailPage && force && this.shouldRefreshDetail) {
+    if (
+      this.inDetailPage &&
+      (force || this.forceRefreshTopDetailWhenListRefresh) &&
+      this.shouldRefreshDetail
+    ) {
       this.refreshDetailData();
     }
   };
