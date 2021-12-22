@@ -17,7 +17,7 @@ import { observer, inject } from 'mobx-react';
 import { Popover, Col, Row, Skeleton } from 'antd';
 import Base from 'containers/List';
 import globalObjectStore, { ObjectStore } from 'stores/swift/object';
-import { toLocalTimeFilter, bytesFitler } from 'utils/index';
+import { bytesFitler } from 'utils/index';
 import { allCanReadPolicy } from 'resources/policy';
 import { toJS } from 'mobx';
 import { isEqual } from 'lodash';
@@ -182,7 +182,6 @@ export default class ContainerObject extends Base {
     {
       title: t('Name'),
       dataIndex: 'shortName',
-      stringify: (name, record) => name || record.id,
       render: (name, record) => {
         const { type, container } = record;
         if (type === 'folder') {
@@ -212,7 +211,6 @@ export default class ContainerObject extends Base {
       dataIndex: 'last_modified',
       isHideable: true,
       valueRender: 'sinceTime',
-      stringify: (value) => toLocalTimeFilter(value),
     },
     {
       title: t('Detail Info'),

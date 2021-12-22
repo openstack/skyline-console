@@ -67,50 +67,38 @@ export class ObjectStore extends Base {
 
   get paramsFunc() {
     return (params) => {
-      const { current, container, folder, search = '', ...rest } = params;
-      return {
-        path: `${folder}${search}`,
-        delimiter: `/`,
+      const { current, container, folder, search = '', path, ...rest } = params;
+      const realPath = path || (folder || search ? `${folder}${search}` : '');
+      const newParams = {
+        format: 'json',
         ...rest,
       };
+      if (realPath) {
+        newParams.path = realPath;
+      } else {
+        newParams.delimiter = '/';
+      }
+      return newParams;
     };
   }
 
-  getShortName = (name, folder) => name.substring((folder || '').length);
-
-  getItemType = (it) => {
-    if (it.subdir) {
-      return 'folder';
-    }
-    const { name } = it;
-    if (name[name.length - 1] === '/') {
-      return 'folder';
-    }
-    return 'file';
+  getShortName = (item, folder) => {
+    const { name, subdir } = item;
+    const lName = subdir || name;
+    return lName.substring((folder || '').length) || lName;
   };
 
-  async listDidFetch(items, _, filters) {
+  isFolder = (item) => item.subdir || item.name.slice(-1) === '/';
+
+  getItemType = (it) => {
+    return this.isFolder(it) ? 'folder' : 'file';
+  };
+
+  async listDidFetch(items) {
     if (items.length === 0) {
       return items;
     }
-
-    const { container } = filters;
-    const needFetch = items.some((it) => it.subdir);
-    if (!needFetch) {
-      return this.updateData(items);
-    }
-    const result = await this.client.list(container);
-    const newItems = items.map((it) => {
-      if (it.subdir) {
-        const item = result.find((r) => r.name === it.subdir) || {};
-        return {
-          ...it,
-          ...item,
-        };
-      }
-      return { ...it };
-    });
-    return this.updateData(newItems);
+    return this.updateData(items);
   }
 
   async detailFetchByClient(resourceParams) {
@@ -141,7 +129,8 @@ export class ObjectStore extends Base {
         folder,
         type: this.getItemType(it),
         hasCopy,
-        shortName: it.name && this.getShortName(it.name, folder),
+        shortName: this.getShortName(it, folder),
+        name: it.subdir || it.name,
       };
     });
   };
