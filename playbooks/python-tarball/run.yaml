@@ -1,0 +1,38 @@
+- hosts: all
+  tasks:
+    - name: Install tox, nvm, nodejs and yarn
+      shell:
+        executable: /bin/bash
+        cmd: |
+          # nvm
+          wget -P $HOME --tries=10 --retry-connrefused --waitretry=60 --no-dns-cache --no-cache  https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh
+          bash $HOME/install.sh
+          . $HOME/.nvm/nvm.sh
+          # nodejs
+          NODE_VERSION=erbium
+          nvm install --lts=$NODE_VERSION
+          nvm alias default lts/$NODE_VERSION
+          nvm use default
+          # yarn
+          npm install -g yarn
+          # tox
+          pip3 install tox
+
+    - name: Build tarball and wheel
+      shell:
+        executable: /bin/bash
+        cmd: |
+          . $HOME/.nvm/nvm.sh
+          $HOME/.local/bin/tox -e package
+      args:
+        chdir: "src/{{ zuul.project.canonical_name }}"
+
+    - name: Rename whl files to branch specific name
+      shell: "mv skyline_console*.whl skyline_console-{{ zuul.branch | replace('/', '-') }}.whl"
+      args:
+        chdir: "src/{{ zuul.project.canonical_name }}/dist"
+
+    - name: Rename tar.gz files to branch specific name
+      shell: "mv skyline-console*.tar.gz skyline-console-{{ zuul.branch | replace('/', '-') }}.tar.gz"
+      args:
+        chdir: "src/{{ zuul.project.canonical_name }}/dist"

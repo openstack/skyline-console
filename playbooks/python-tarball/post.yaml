@@ -1,0 +1,35 @@
+- hosts: all
+  tasks:
+    - name: Find tarballs and wheels in dist folder
+      find:
+        file_type: file
+        paths: "src/{{ zuul.project.canonical_name }}/dist"
+        patterns: "*.tar.gz,*.whl"
+      register: result
+
+    - name: Display stat for tarballs and wheels
+      stat:
+        path: "{{ zj_tarball_wheel.path }}"
+      with_items: "{{ result.files }}"
+      loop_control:
+        loop_var: zj_tarball_wheel
+
+    - name: Ensure artifacts directory exists
+      file:
+        path: "{{ zuul.executor.work_root }}/artifacts"
+        state: directory
+        mode: 0755
+      delegate_to: localhost
+
+    - name: Collect artifacts
+      synchronize:
+        dest: "{{ zuul.executor.work_root }}/artifacts/"
+        mode: pull
+        src: "{{ zj_artifact.path }}"
+        verify_host: true
+        owner: no
+        group: no
+      with_items: "{{ result.files }}"
+      loop_control:
+        loop_var: zj_artifact
+

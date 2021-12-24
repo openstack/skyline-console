@@ -522,6 +522,17 @@
       node_version: 14
       js_build_command: test:unit
 
+- job:
+    name: publish-skyline-console-python-branch-tarball
+    parent: publish-openstack-artifacts
+    description: |
+            Publish the results tar.gz and whl packages to tarballs.openstack.org.
+    pre-run: playbooks/python-tarball/pre.yaml
+    run: playbooks/python-tarball/run.yaml
+    post-run: playbooks/python-tarball/post.yaml
+    vars:
+      release_python: python3
+
 - project:
     check:
       jobs:
@@ -649,3 +660,6 @@
             irrelevant-files: *e2etests-other-irrelevant-files
         - skyline-console-devstack-e2etests-storage:
             irrelevant-files: *e2etests-storage-irrelevant-files
+    post:
+      jobs:
+        - publish-skyline-console-python-branch-tarball
