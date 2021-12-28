@@ -111,8 +111,10 @@ export class LbaasStore extends Base {
   }
 
   @action
-  async fetchDetailWithFip({ id, all_projects }) {
-    this.isLoading = true;
+  async fetchDetailWithFip({ id, all_projects, silent }) {
+    if (!silent) {
+      this.isLoading = true;
+    }
     const result = await this.client.show(
       id,
       this.getDetailParams({ all_projects })

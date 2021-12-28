@@ -35,6 +35,7 @@ export default class LoadBalancerDetail extends Base {
       const newParams = {
         ...this.params,
         ...(params || {}),
+        silent: true,
         all_projects: this.isAdminPage,
       };
       this.store.fetchDetailWithFip(newParams).catch(this.catch);

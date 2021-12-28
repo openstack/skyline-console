@@ -52,6 +52,10 @@ export default class Members extends Base {
     return this.params.id;
   }
 
+  get forceRefreshTopDetailWhenListRefresh() {
+    return true;
+  }
+
   get actionConfigs() {
     if (this.isAdminPage) {
       return adminActions;
