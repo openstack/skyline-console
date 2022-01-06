@@ -409,16 +409,43 @@ export class StepCreate extends StepAction {
     };
   }
 
+  getNetworkData(values) {
+    const { networks = [], ports = {} } = values;
+    let hasIp = false;
+    const data = [];
+    networks.forEach((it) => {
+      const net = {
+        uuid: it.value.network,
+      };
+      if (it.value.ipType === 1 && it.value.ip) {
+        net.fixed_ip = it.value.ip;
+        hasIp = true;
+      }
+      data.push(net);
+    });
+    const { selectedRowKeys = [] } = ports || {};
+    selectedRowKeys.forEach((it) => {
+      const net = {
+        port: it,
+      };
+      data.push(net);
+    });
+    return {
+      data,
+      hasIp,
+    };
+  }
+
   getSubmitData(values) {
     if (this.status === 'error') {
       return null;
     }
     const { volumes, imageRef } = this.getVolumeAndImageData(values);
+    const { data: networks, hasIp } = this.getNetworkData(values);
     const {
       availableZone,
       keypair,
       loginType,
-      networks,
       password,
       physicalNode,
       physicalNodeType,
@@ -429,7 +456,10 @@ export class StepCreate extends StepAction {
       name,
       count = 1,
     } = values;
-    let hasIp = false;
+    if (hasIp && count > 1) {
+      this.ipBatchError = true;
+      return null;
+    }
     const { selectedRows: securityGroupSelectedRows = [] } =
       securityGroup || {};
     const server = {
@@ -440,21 +470,8 @@ export class StepCreate extends StepAction {
       flavorRef: flavor.selectedRowKeys[0],
       availability_zone: availableZone.value,
       block_device_mapping_v2: volumes,
-      networks: networks.map((it) => {
-        const net = {
-          uuid: it.value.network,
-        };
-        if (it.value.ipType === 1 && it.value.ip) {
-          net.fixed_ip = it.value.ip;
-          hasIp = true;
-        }
-        return net;
-      }),
+      networks,
     };
-    if (hasIp && count > 1) {
-      this.ipBatchError = true;
-      return Promise.reject();
-    }
     if (imageRef) {
       server.imageRef = imageRef;
     }
@@ -501,6 +518,10 @@ export class StepCreate extends StepAction {
     const { data } = this.state;
     this.values = data;
     const submitData = this.getSubmitData(data);
+    if (!submitData) {
+      Notify.errorWithDetail(null, this.errorText);
+      return;
+    }
     this.onSubmit(submitData).then(
       () => {
         this.routing.push(this.listUrl);

@@ -258,7 +258,8 @@ export default class FormItem extends React.Component {
   }
 
   getSelectTableValidator = (rule, value) => {
-    if (!value || value.selectedRowKeys.length === 0) {
+    const { selectedRowKeys = [] } = value || {};
+    if (selectedRowKeys.length === 0) {
       return Promise.reject(
         new Error(rule.placeholder || `${t('Please select')}${rule.label}!`)
       );

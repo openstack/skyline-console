@@ -15,12 +15,11 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import { Button } from 'antd';
-import { FormOutlined } from '@ant-design/icons';
 import { isEmpty, isArray } from 'lodash';
 import { NetworkStore } from 'stores/neutron/network';
 import { SubnetStore } from 'stores/neutron/subnet';
 import { SecurityGroupStore } from 'stores/neutron/security-group';
+import { VirtualAdapterStore } from 'stores/neutron/virtual-adapter';
 import { ipValidate } from 'utils/validate';
 import Base from 'components/Form';
 import NetworkSelect from 'components/FormItem/NetworkSelect';
@@ -29,6 +28,7 @@ import {
   securityGroupColumns,
   securityGroupFilter,
 } from 'resources/security-group';
+import { portColumns, portFilters } from 'resources/port';
 
 // import EditYamlModal from 'components/Modals/EditYaml';
 const { isIPv4, isIpv6 } = ipValidate;
@@ -38,6 +38,7 @@ export class NetworkStep extends Base {
     this.networkStore = new NetworkStore();
     this.subnetStore = new SubnetStore();
     this.securityGroupStore = new SecurityGroupStore();
+    this.portStore = new VirtualAdapterStore();
     this.subnetMap = {};
   }
 
@@ -153,16 +154,43 @@ export class NetworkStep extends Base {
     });
   };
 
+  checkNetworkAndPort = ({ getFieldValue }) => ({
+    validator() {
+      const networkSelect = getFieldValue('networkSelect');
+      const ports = getFieldValue('ports');
+      const { selectedRowKeys: networkSelected = [] } = networkSelect || {};
+      const { selectedRowKeys: portsSelected = [] } = ports || {};
+      if (networkSelected.length === 0 && portsSelected === 0) {
+        return Promise.reject(t('Please select'));
+      }
+      return Promise.resolve();
+    },
+  });
+
+  onPortChange = (value) => {
+    const { selectedRows = [] } = value || {};
+    this.updateContext({
+      portSelectRows: selectedRows,
+    });
+  };
+
   get nameForStateUpdate() {
-    return ['networkSelect', 'networks'];
+    return ['networkSelect', 'networks', 'ports'];
   }
 
   get formItems() {
-    const { networkSelectRows = [], subnets, initValue = [] } = this.state;
+    const {
+      networkSelectRows = [],
+      subnets,
+      initValue = [],
+      ports = [],
+    } = this.state;
     const showNetworks = networkSelectRows.length > 0;
     const showSecurityGroups =
       networkSelectRows.length &&
       networkSelectRows.every((it) => it.port_security_enabled);
+    const networkRequired = ports.length === 0;
+    const portRequired = networkSelectRows.length === 0;
     return [
       {
         name: 'networkSelect',
@@ -172,7 +200,9 @@ export class NetworkStep extends Base {
         onChange: this.onNetworkChange,
         showExternal: true,
         isMulti: true,
-        required: true,
+        required: networkRequired,
+        otherRule: this.checkNetworkAndPort,
+        dependencies: ['ports'],
         header: (
           <div>
             {t(
@@ -208,20 +238,29 @@ export class NetworkStep extends Base {
         },
       },
       {
-        name: 'ipv6',
-        label: 'IPv6',
-        type: 'label',
-        hidden: true,
-        content: (
-          <span>
-            {t('The selected VPC/ subnet does not have IPv6 enabled.')}{' '}
-            <Button type="link">
-              {t('To open')} <FormOutlined />
-            </Button>{' '}
-          </span>
-        ),
+        name: 'divider1',
+        type: 'divider',
       },
       {
+        name: 'ports',
+        type: 'select-table',
+        // type: 'input',
+        label: t('Ports'),
+        extraParams: { project_id: this.currentProjectId, status: 'DOWN' },
+        backendPageStore: this.portStore,
+        isMulti: true,
+        header: t(
+          'Ports provide extra communication channels to your instances. You can select ports instead of networks or a mix of both (The port executes its own security group rules by default).'
+        ),
+        filterParams: portFilters,
+        columns: portColumns,
+        dependencies: ['networkSelect'],
+        otherRule: this.checkNetworkAndPort,
+        required: portRequired,
+        onChange: this.onPortChange,
+      },
+      {
+        name: 'divider2',
         type: 'divider',
       },
       {

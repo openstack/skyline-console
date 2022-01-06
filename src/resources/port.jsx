@@ -174,3 +174,54 @@ export function getPortFormItem(device_owner) {
     },
   ];
 }
+
+export const portColumns = [
+  {
+    title: t('ID/Name'),
+    dataIndex: 'name',
+    sorter: false,
+    render: (value, record) => (
+      <div>
+        <div>{record.id}</div>
+        <div>{value || '-'}</div>
+      </div>
+    ),
+  },
+  {
+    title: t('Owned Network'),
+    dataIndex: 'network_name',
+    isLink: true,
+    idKey: 'network_id',
+    sorter: false,
+  },
+  {
+    title: t('IPv4 Address'),
+    dataIndex: 'ipv4',
+    render: (value) => value.map((it) => <div key={it}>{it}</div>),
+    sorter: false,
+  },
+  {
+    title: t('IPv6 Address'),
+    dataIndex: 'ipv6',
+    render: (value) => value.map((it) => <div key={it}>{it}</div>),
+    sorter: false,
+  },
+  {
+    title: t('Mac Address'),
+    dataIndex: 'mac_address',
+    sorter: false,
+  },
+  {
+    title: t('Status'),
+    dataIndex: 'status',
+    render: (value) => portStatus[value] || value,
+    sorter: false,
+  },
+];
+
+export const portFilters = [
+  {
+    label: t('Name'),
+    name: 'name',
+  },
+];

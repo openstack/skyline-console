@@ -74,7 +74,7 @@ export class ConfirmStep extends Base {
 
   getVirtualLANs() {
     const { context } = this.props;
-    const { networks } = context;
+    const { networks = [] } = context;
     const values = networks.map((it) => {
       const { networkOption, subnetOption, ipTypeOption, ip } = it.value;
       const subnet =
@@ -86,19 +86,42 @@ export class ConfirmStep extends Base {
     return (
       <Row>
         {values.map((i) => (
-          <Col span={24}>{i}</Col>
+          <Col span={24} key={i}>
+            {i}
+          </Col>
         ))}
       </Row>
     );
-    // return values.join(<br />);
+  }
+
+  getPorts() {
+    const { context } = this.props;
+    const { ports: { selectedRows = [] } = {} } = context;
+    const values = selectedRows.map((it) => it.name || it.id);
+    return (
+      <Row>
+        {values.map((i) => (
+          <Col span={24} key={i}>
+            {i}
+          </Col>
+        ))}
+      </Row>
+    );
   }
 
   getSecurityGroups() {
     const { context } = this.props;
     const { securityGroup: { selectedRows = [] } = {} } = context;
     const values = selectedRows.map((it) => it.name);
-    return values;
-    // return values.join(<br />);
+    return (
+      <Row>
+        {values.map((i) => (
+          <Col span={24} key={i}>
+            {i}
+          </Col>
+        ))}
+      </Row>
+    );
   }
 
   getLoginType() {
@@ -215,8 +238,13 @@ export class ConfirmStep extends Base {
         },
         items: [
           {
-            label: t('Virtual LAN'),
+            label: `${t('Virtual LAN')}(${t('New')})`,
             value: this.getVirtualLANs(),
+            span: 1,
+          },
+          {
+            label: `${t('Virtual LAN')}(${t('Created')})`,
+            value: this.getPorts(),
             span: 1,
           },
           {
