@@ -23,9 +23,7 @@ import i18n from 'core/i18n';
 import { isEmpty } from 'lodash';
 import styles from './index.less';
 
-@inject('rootStore')
-@observer
-export default class Login extends Component {
+export class Login extends Component {
   constructor(props) {
     super(props);
     this.init();
@@ -275,6 +273,10 @@ export default class Login extends Component {
     this.formRef = React.createRef();
   }
 
+  renderExtra() {
+    return null;
+  }
+
   render() {
     return (
       <>
@@ -290,7 +292,10 @@ export default class Login extends Component {
           formRef={this.formRef}
           size="large"
         />
+        {this.renderExtra()}
       </>
     );
   }
 }
+
+export default inject('rootStore')(observer(Login));

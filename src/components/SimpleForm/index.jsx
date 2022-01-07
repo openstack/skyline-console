@@ -65,7 +65,7 @@ export default class index extends Component {
     const { formItems } = this.props;
     // eslint-disable-next-line no-shadow
     return formItems.map((it, index) => {
-      const { name, hidden, dependencies = [], className } = it;
+      const { name, hidden, dependencies = [], className, onChange } = it;
       const options = {
         name,
         rules: this.getFormItemRules(it),
@@ -73,6 +73,9 @@ export default class index extends Component {
         dependencies,
         className,
       };
+      if (onChange) {
+        options.onChange = onChange;
+      }
       return (
         <Form.Item {...options} key={`${name}-${index}`}>
           {this.renderFormItem(it)}
