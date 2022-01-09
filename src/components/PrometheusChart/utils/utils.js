@@ -12,60 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { get, isArray } from 'lodash';
-import moment from 'moment';
 import { getStrFromTimestamp, getTimestamp } from 'utils/time';
-import client from 'client';
-import metricDict from '../metricDict';
-
-// 给query串增加数据，如hostname等。
-export function getRequestUrl(url, params, finalFormatFunc, baseParams) {
-  const totalParams = { ...params, ...baseParams };
-  return finalFormatFunc(
-    Object.keys(totalParams).length === 0 ? url : addParams(url, totalParams)
-  );
-}
-
-export function addParams(query, params) {
-  let addStr = '';
-  Object.keys(params).forEach((key) => {
-    if (isArray(params[key])) {
-      addStr += `${key}=~"${params[key].join('|')}",`;
-    } else {
-      addStr += `${key}="${params[key]}",`;
-    }
-  });
-  return `${query}{${addStr.substring(0, addStr.length - 1)}}`;
-}
-
-export function fetchPrometheus(
-  query,
-  getRangeType = 'range',
-  currentRange,
-  interval
-) {
-  if (getRangeType === 'current') {
-    return client.skyline.query.list({
-      query,
-    });
-  }
-  if (getRangeType === 'range') {
-    return client.skyline.queryRange.list({
-      query,
-      start: getTimestamp(currentRange[0]),
-      end: getTimestamp(currentRange[1]),
-      step: interval,
-    });
-  }
-}
-
-export function getBaseQuery(metricKey) {
-  let query = metricDict;
-  metricKey.split('.').forEach((key) => {
-    query = query[key];
-  });
-  return query;
-}
+import moment from 'moment';
+import client from 'src/client';
+import { get, isArray } from 'lodash';
 
 export const ChartType = {
   ONELINE: 'oneline',
@@ -95,18 +45,78 @@ export const getXScale = (timeRange) => {
 
 export const baseReturnFunc = (d) => d;
 
-export const getPromises = (metricKey) => {
-  const queries = get(metricDict, metricKey);
-  return queries.url.map((u, idx) => {
-    // 按顺序取聚合函数
-    const finalFormatFunc =
-      (queries.finalFormatFunc || [])[idx] || baseReturnFunc;
-    // 按顺序获取基础参数
-    const baseParams = (queries.baseParams || [])[idx] || {};
-    const finalUrl = getRequestUrl(u, {}, finalFormatFunc, baseParams);
-    return fetchPrometheus(finalUrl, 'current');
+export function fetchPrometheus(
+  query,
+  getRangeType = 'range',
+  currentRange = [],
+  interval = 10
+) {
+  if (getRangeType === 'current') {
+    return client.skyline.query.list({
+      query,
+    });
+  }
+  if (getRangeType === 'range') {
+    return client.skyline.queryRange.list({
+      query,
+      start: getTimestamp(currentRange[0]),
+      end: getTimestamp(currentRange[1]),
+      step: interval,
+    });
+  }
+  return Promise.resolve();
+}
+
+// 给query串增加数据，如hostname等。
+export function getRequestUrl(url, params, finalFormatFunc, baseParams) {
+  const totalParams = { ...params, ...baseParams };
+  return finalFormatFunc(
+    Object.keys(totalParams).length === 0 ? url : addParams(url, totalParams)
+  );
+}
+
+export function addParams(query, params) {
+  let addStr = '';
+  Object.keys(params).forEach((key) => {
+    if (isArray(params[key])) {
+      addStr += `${key}=~"${params[key].join('|')}",`;
+    } else {
+      addStr += `${key}="${params[key]}",`;
+    }
   });
-};
+  return `${query}{${addStr.substring(0, addStr.length - 1)}}`;
+}
+
+// 1 hour ago - now
+export const defaultOneHourAgo = () => [
+  moment().subtract(1, 'hours'),
+  moment(),
+];
+
+export const getRange = (type) =>
+  ({
+    // last 2 weeks
+    3: [moment().subtract(2, 'weeks'), moment()],
+    // last 7 days
+    2: [moment().subtract(1, 'weeks'), moment()],
+    // last day
+    1: [moment().subtract(1, 'days'), moment()],
+    // last hour
+    0: [moment().subtract(1, 'hours'), moment()],
+  }[type] || [moment().subtract(1, 'hours'), moment()]);
+
+export function getInterval(currentRange) {
+  const start = (currentRange || getRange(0))[0];
+  const end = (currentRange || getRange(0))[1];
+  const rangeMinutes = end.diff(start, 'minutes');
+  const index =
+    (rangeMinutes > 44640 && 3) ||
+    (rangeMinutes > 1440 && rangeMinutes <= 44640 && 2) ||
+    (rangeMinutes > 60 && rangeMinutes <= 1440 && 1) ||
+    (rangeMinutes > 0 && rangeMinutes <= 60 && 0) ||
+    0;
+  return range2IntervalsDict[index];
+}
 
 const maskAndTicketCountDict = [
   {
@@ -188,30 +198,15 @@ export const range2IntervalsDict = [
   ],
 ];
 
-export const getRange = (type) =>
-  ({
-    // last 2 weeks
-    3: [moment().subtract(2, 'weeks'), moment()],
-    // last 7 days
-    2: [moment().subtract(1, 'weeks'), moment()],
-    // last day
-    1: [moment().subtract(1, 'days'), moment()],
-    // last hour
-    0: [moment().subtract(1, 'hours'), moment()],
-  }[type] || [moment().subtract(1, 'hours'), moment()]);
-
-export function getInterval(currentRange) {
-  const start = (currentRange || getRange(0))[0];
-  const end = (currentRange || getRange(0))[1];
-  const rangeMinutes = end.diff(start, 'minutes');
-  const index =
-    (rangeMinutes > 44640 && 3) ||
-    (rangeMinutes > 1440 && rangeMinutes <= 44640 && 2) ||
-    (rangeMinutes > 60 && rangeMinutes <= 1440 && 1) ||
-    (rangeMinutes > 0 && rangeMinutes <= 60 && 0) ||
-    0;
-  return range2IntervalsDict[index];
-}
-
-// 1 hour ago - now
-export const defaultOneHourAgo = [moment().subtract(1, 'hours'), moment()];
+export const getPromises = (metricKey) => {
+  const queries = get(METRICDICT, metricKey);
+  return queries.url.map((u, idx) => {
+    // 按顺序取聚合函数
+    const finalFormatFunc =
+      (queries.finalFormatFunc || [])[idx] || baseReturnFunc;
+    // 按顺序获取基础参数
+    const baseParams = (queries.baseParams || [])[idx] || {};
+    const finalUrl = getRequestUrl(u, {}, finalFormatFunc, baseParams);
+    return fetchPrometheus(finalUrl, 'current');
+  });
+};

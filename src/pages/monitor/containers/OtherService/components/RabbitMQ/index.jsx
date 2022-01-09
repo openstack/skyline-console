@@ -13,29 +13,121 @@
 // limitations under the License.
 
 import React from 'react';
-import { observer } from 'mobx-react';
+import { get } from 'lodash';
+import { Col, Row } from 'antd';
+
 import BaseContent from 'components/PrometheusChart/component/BaseContent';
-import Charts from './Charts';
-import { getRabbitMQNodes } from '../util';
+import { getRabbitMQNodes } from 'components/PrometheusChart/utils/fetchNodes';
+import { ChartType } from 'components/PrometheusChart/utils/utils';
 
-const RabbitMQ = () => {
-  function renderChartCards(store) {
-    return (
-      <Charts
-        store={store}
-        BaseContentConfig={{
-          fetchNodesFunc: getRabbitMQNodes,
-        }}
-      />
-    );
-  }
+import styles from 'components/PrometheusChart/component/styles.less';
 
-  return (
-    <BaseContent
-      renderChartCards={renderChartCards}
-      fetchNodesFunc={getRabbitMQNodes}
-    />
-  );
+const topCardList = [
+  {
+    title: t('Server Status'),
+    createFetchParams: {
+      metricKey: 'rabbitMQService.serviceStatus',
+    },
+    handleDataParams: {
+      formatDataFn: (resps) => {
+        const tmp = {
+          up: 0,
+          down: 0,
+        };
+        const result = get(resps[0], 'data.result', []);
+        result.forEach((r) => {
+          parseInt(r.value[1], 10) === 1 ? (tmp.up += 1) : (tmp.down += 1);
+        });
+        return tmp;
+      },
+    },
+    renderContent: ({ data }) => {
+      return (
+        <div className={styles.topContent}>
+          <Row style={{ width: '100%', textAlign: 'center' }}>
+            <Col span={12}>{data.up + t('Up')}</Col>
+            <Col span={12}>{data.down + t('Down')}</Col>
+          </Row>
+        </div>
+      );
+    },
+  },
+  {
+    title: t('Connected Threads'),
+    createFetchParams: {
+      metricKey: 'rabbitMQService.totalConnections',
+    },
+  },
+  {
+    title: t('Total Queues'),
+    createFetchParams: {
+      metricKey: 'rabbitMQService.totalQueues',
+    },
+  },
+  {
+    title: t('Total Exchanges'),
+    createFetchParams: {
+      metricKey: 'rabbitMQService.totalExchanges',
+    },
+  },
+  {
+    title: t('Total Consumers'),
+    createFetchParams: {
+      metricKey: 'rabbitMQService.totalConsumers',
+    },
+  },
+];
+
+const chartCardList = [
+  {
+    title: t('Published Out'),
+    createFetchParams: {
+      metricKey: 'rabbitMQService.publishedOut',
+    },
+    chartProps: {
+      chartType: ChartType.ONELINE,
+      scale: {
+        y: {
+          alias: t('Published Out'),
+        },
+      },
+    },
+  },
+  {
+    title: t('Published In'),
+    createFetchParams: {
+      metricKey: 'rabbitMQService.publishedIn',
+    },
+    chartProps: {
+      chartType: ChartType.ONELINE,
+      scale: {
+        y: {
+          alias: t('Published In'),
+        },
+      },
+    },
+  },
+  {
+    title: t('Channel'),
+    createFetchParams: {
+      metricKey: 'rabbitMQService.channel',
+    },
+    chartProps: {
+      chartType: ChartType.ONELINE,
+      scale: {
+        y: {
+          alias: t('Channel'),
+        },
+      },
+    },
+  },
+];
+
+export const chartConfig = {
+  topCardList,
+  chartCardList,
 };
 
-export default observer(RabbitMQ);
+export default () => (
+  <BaseContent chartConfig={chartConfig} fetchNodesFunc={getRabbitMQNodes} />
+);

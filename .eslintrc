@@ -74,6 +74,7 @@
   "globals": {
     "t": true,
     "globals": true,
-    "request": true
+    "request": true,
+    "METRICDICT": true
   }
 }

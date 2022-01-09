@@ -1,113 +1,149 @@
-// Copyright 2021 99cloud
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-import React, { Component } from 'react';
 import { Card, Select } from 'antd';
-import VisibleObserver from 'components/VisibleObserver';
-import PropTypes from 'prop-types';
-import { observer } from 'mobx-react';
-import isEqual from 'react-fast-compare';
-import FetchPrometheusStore from './store/FetchPrometheusStore';
+import React, { createContext, useEffect, useState } from 'react';
+import VisibleObserver from '../VisibleObserver';
+import { createFetchPrometheusClient, createDataHandler } from './utils';
 import style from './style.less';
 
-@observer
-class BaseFetch extends Component {
-  static propTypes = {
-    constructorParams: PropTypes.shape({
-      requestType: PropTypes.oneOf(['current', 'range']).isRequired,
-      metricKey: PropTypes.string.isRequired,
-      formatDataFn: PropTypes.func.isRequired,
-      typeKey: PropTypes.string,
-      deviceKey: PropTypes.string,
-    }).isRequired,
-    params: PropTypes.object,
-    currentRange: PropTypes.array.isRequired,
-    interval: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-    extra: PropTypes.func,
-    renderContent: PropTypes.func.isRequired,
-    visibleHeight: PropTypes.number,
+export const PrometheusContext = createContext({
+  data: [],
+  device: '',
+  devices: [],
+});
+
+function getChartData(data, device, devices) {
+  if (device && devices.length !== 0) {
+    return data.filter((d) => d.device === device);
+  }
+  return data;
+}
+
+const BaseCard = (props) => {
+  const {
+    createFetchParams,
+    handleDataParams,
+    fetchDataParams,
+    title,
+    visibleHeight,
+    extra,
+    renderContent,
+  } = props;
+
+  const [initData, setInitData] = useState([]);
+
+  const [chartData, setChartData] = useState([]);
+
+  const [device, setDevice] = useState('');
+
+  const [devices, setDevices] = useState([]);
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchData = createFetchPrometheusClient(createFetchParams);
+
+  const dataHandler = createDataHandler(handleDataParams);
+
+  const passedContext = {
+    data: chartData,
+    device,
+    devices,
+    modifyKeys: handleDataParams.modifyKeys,
   };
 
-  static defaultProps = {
-    // src/pages/monitor/containers/PhysicalNode/index.less:91
-    // 为了不在视区范围内的时候，仍然撑开元素。防止出现在视区的时候挤开下面的元素。（由下往上翻）
-    visibleHeight: 100,
+  useEffect(() => {
+    (async () => {
+      setIsLoading(true);
+      const data = await fetchData(fetchDataParams);
+      const {
+        retData: handledData,
+        device: newDevice,
+        devices: newDevices,
+      } = dataHandler(data);
+      // save base response
+      setInitData(handledData);
+
+      // save device information
+      setDevice(newDevice);
+      setDevices(newDevices);
+
+      // refresh component
+      const newChartData = getChartData(handledData, newDevice, newDevices);
+      setChartData(newChartData);
+
+      // setLoading
+      setIsLoading(false);
+    })();
+  }, []);
+
+  const handleDeviceChange = (newDevice) => {
+    setIsLoading(true);
+    // refresh component
+    const newChartData = getChartData(initData, newDevice, devices);
+    setDevice(newDevice);
+    setChartData(newChartData);
+    setIsLoading(false);
   };
 
-  constructor(props) {
-    super(props);
-    const { constructorParams } = this.props;
+  const filterChartData = (filt) => {
+    setIsLoading(true);
+    // refresh component
+    const newChartData = initData.filter(filt);
+    setChartData(newChartData);
+    setIsLoading(false);
+  };
 
-    this.store = new FetchPrometheusStore(constructorParams);
-  }
+  const extraRender = (
+    <>
+      {!isLoading && device && devices.length !== 0 && (
+        <Select
+          defaultValue={device}
+          style={{ width: 150, marginRight: 16 }}
+          options={devices.map((i) => ({
+            label: i,
+            value: i,
+          }))}
+          onChange={handleDeviceChange}
+        />
+      )}
+      {extra &&
+        extra({
+          initData,
+          chartData,
+          device,
+          devices,
+          modifyKeys: handleDataParams.modifyKeys,
+          filterChartData,
+        })}
+    </>
+  );
 
-  componentDidMount() {
-    this.getData();
-  }
-
-  componentDidUpdate(prevProps) {
-    if (!isEqual(prevProps, this.props)) {
-      this.getData();
-    }
-  }
-
-  getData() {
-    const { params, currentRange, interval } = this.props;
-    this.store.fetchData({ params, currentRange, interval });
-  }
-
-  renderExtra() {
-    const { extra } = this.props;
-    return (
-      <>
-        {this.store.device && this.store.devices.length !== 0 && (
-          <Select
-            defaultValue={this.store.device}
-            style={{ width: 150, marginRight: 16 }}
-            options={this.store.devices.map((i) => ({
-              label: i,
-              value: i,
-            }))}
-            onChange={(e) => this.store.handleDeviceChange.call(this.store, e)}
-          />
-        )}
-        {extra && extra(this.store)}
-      </>
-    );
-  }
-
-  render() {
-    const { isLoading } = this.store;
-    const { visibleHeight } = this.props;
-    return (
+  return (
+    <PrometheusContext.Provider value={passedContext}>
       <Card
         className={style.remove_extra_padding}
         bodyStyle={{
           // padding 24
           minHeight: visibleHeight + 48,
         }}
-        title={this.props.title}
-        extra={this.renderExtra()}
+        title={title}
+        extra={extraRender}
         loading={isLoading}
       >
         <VisibleObserver style={{ width: '100%', height: visibleHeight }}>
-          {(visible) => (visible ? this.props.renderContent(this.store) : null)}
+          {(visible) =>
+            visible ? (
+              <PrometheusContext.Consumer>
+                {(v) => renderContent(v)}
+              </PrometheusContext.Consumer>
+            ) : null
+          }
         </VisibleObserver>
       </Card>
-    );
-  }
-}
+    </PrometheusContext.Provider>
+  );
+};
 
-export default BaseFetch;
+BaseCard.defaultProps = {
+  visibleHeight: 100,
+};
+
+export default BaseCard;

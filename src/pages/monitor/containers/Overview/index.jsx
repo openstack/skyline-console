@@ -15,13 +15,17 @@
 import React from 'react';
 import BaseContent from 'components/PrometheusChart/component/BaseContent';
 import { Col, Row } from 'antd';
+import Charts from 'components/PrometheusChart/component/Charts';
+import { handleResponses } from 'components/PrometheusChart/utils/dataHandler';
 import styles from './index.less';
 import AlertInfo from './components/AlertInfo';
-import ClusterCard from './components/ClusterMonitor/ClusterCard';
-import ClusterChart from './components/ClusterMonitor/ClusterChart';
-import TopCard from './components/Tops/TopCard';
-import StorageClusterCard from './components/StorageClusterMonitor/StorageClusterCard';
-import StorageClusterChart from './components/StorageClusterMonitor/StorageClusterChart';
+import {
+  physicalNodeLeftTopCardList,
+  physicalNodeRightTopCardList,
+  storageLeftCardList,
+  storageRightChartList,
+  topCardList,
+} from './config';
 
 const BaseContentConfig = {
   renderNodeSelect: false,
@@ -30,42 +34,51 @@ const BaseContentConfig = {
 
 const Index = () => {
   return (
-    <BaseContent
-      {...BaseContentConfig}
-      renderChartCards={(store) => (
-        <Row gutter={[16, 16]} className={styles.container}>
-          <Col span={24}>
-            <AlertInfo />
-          </Col>
-          <Col span={24}>
-            <Row gutter={[16, 16]}>
-              <Col span={12}>
-                <ClusterCard store={store} />
-              </Col>
-              <Col span={12}>
-                <ClusterChart store={store} />
-              </Col>
-            </Row>
-          </Col>
-          <Col span={24}>
-            <TopCard store={store} />
-          </Col>
-          <Col span={24}>
-            <Row gutter={[16, 16]}>
-              <Col span={12}>
-                <StorageClusterCard store={store} />
-              </Col>
-              <Col span={12}>
-                <StorageClusterChart
-                  store={store}
-                  BaseContentConfig={BaseContentConfig}
-                />
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      )}
-    />
+    <BaseContent {...BaseContentConfig}>
+      <Row gutter={[16, 16]} className={styles.container}>
+        <Col span={24}>
+          <AlertInfo />
+        </Col>
+        <Col span={24}>
+          <Row gutter={[16, 16]}>
+            <Col span={12}>
+              <Charts topCardList={physicalNodeLeftTopCardList} />
+            </Col>
+            <Col span={12}>
+              <Charts topCardList={physicalNodeRightTopCardList} />
+            </Col>
+          </Row>
+        </Col>
+        <Col span={24}>
+          <Charts
+            baseTopCardProps={{
+              span: 12,
+              createFetchParams: {
+                requestType: 'current',
+              },
+              handleDataParams: {
+                formatDataFn: handleResponses,
+              },
+              visibleHeight: 200,
+              renderContent: (store) => (
+                <div className={styles.topContent}>{store.data}</div>
+              ),
+            }}
+            topCardList={topCardList}
+          />
+        </Col>
+        <Col span={24}>
+          <Row gutter={[16, 16]}>
+            <Col span={12}>
+              <Charts topCardList={storageLeftCardList} />
+            </Col>
+            <Col span={12}>
+              <Charts chartCardList={storageRightChartList} />
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    </BaseContent>
   );
 };
 

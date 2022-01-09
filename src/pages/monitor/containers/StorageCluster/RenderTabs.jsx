@@ -1,81 +1,73 @@
-// Copyright 2021 99cloud
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-import React, { Component } from 'react';
-import { Spin, Tabs } from 'antd';
-import { observer } from 'mobx-react';
-import { formatSize } from 'utils/index';
-import FetchPrometheusStore from 'components/PrometheusChart/store/FetchPrometheusStore';
+import React, { useContext, useEffect, useState } from 'react';
 import { get } from 'lodash';
-import metricDict from 'components/PrometheusChart/metricDict';
-import { fetchPrometheus } from 'components/PrometheusChart/utils/utils';
+import { Tabs } from 'antd';
+
+import {
+  createDataHandler,
+  createFetchPrometheusClient,
+} from 'components/PrometheusChart/utils';
 import BaseTable from 'components/Tables/Base';
+import { fetchPrometheus } from 'components/PrometheusChart/utils/utils';
+import { formatSize } from 'src/utils';
 import List from 'stores/base-list';
-import styles from './index.less';
+import BaseContentContext from 'components/PrometheusChart/component/context';
 
 const { TabPane } = Tabs;
 
-@observer
-class RenderTabs extends Component {
-  constructor(props) {
-    super(props);
-    this.store = new FetchPrometheusStore({
-      requestType: 'current',
-      metricKey: 'storageCluster.tabs',
-      modifyKeys: ['pools', 'osds'],
-      formatDataFn: this.formatDataFn,
-    });
-    this.state = {
-      filters: {},
-    };
-  }
+const RenderTabs = () => {
+  const [filters, setFilters] = useState({});
+  const [initData, setInitData] = useState([]);
+  const [listData, setListData] = useState([]);
+  const [tab, setTab] = useState('pool');
+  const [isLoading, setIsLoading] = useState(true);
 
-  componentDidMount() {
-    this.getData();
-  }
+  const ctx = useContext(BaseContentContext);
+  const fetchData = createFetchPrometheusClient({
+    requestType: 'current',
+    metricKey: 'storageCluster.tabs',
+  });
 
-  async getData() {
-    await this.store
-      .fetchData({
-        currentRange: this.props.store.currentRange,
-        interval: this.props.store.interval,
-      })
-      .then(() => {
-        this.getListData();
+  const dataHandler = createDataHandler({
+    modifyKeys: ['pools', 'osds'],
+    formatDataFn: (resps) => {
+      const retData = [];
+      const [pool, osd] = resps;
+      get(pool, 'data.result', []).forEach((r) => {
+        const { metric, value } = r;
+        retData.push({
+          type: 'pool',
+          ...metric,
+          value: parseFloat(value[1]) || 0,
+        });
       });
+      get(osd, 'data.result', []).forEach((r) => {
+        const { metric, value } = r;
+        retData.push({
+          type: 'osd',
+          ...metric,
+          value: parseFloat(value[1]) || 0,
+        });
+      });
+      return retData;
+    },
+  });
+
+  function getListData(data) {
+    let originData = data.filter((d) => d.type === tab);
+    Object.keys(filters).forEach((key) => {
+      originData = originData.filter((i) => i[key] === filters[key]);
+    });
+    setListData(originData);
   }
 
-  async getListData() {
-    const { data } = this.store;
+  async function handleInitData(data) {
     const newData = [...data];
-    const poolPromises = get(metricDict, 'storageCluster.poolTab.url', []).map(
+    const poolPromises = get(METRICDICT, 'storageCluster.poolTab.url', []).map(
       (item) => fetchPrometheus(item, 'current')
     );
-    const osdPromises = get(metricDict, 'storageCluster.osdTab.url', []).map(
+    const osdPromises = get(METRICDICT, 'storageCluster.osdTab.url', []).map(
       (item) => fetchPrometheus(item, 'current')
     );
-
-    const poolRets = await Promise.all(poolPromises);
-    poolRets.forEach((ret, index) => {
-      handler(ret, index, 'pool_id');
-    });
-
-    const osdRets = await Promise.all(osdPromises);
-    osdRets.forEach((ret, index) => {
-      handler(ret, index, 'ceph_daemon');
-    });
-    this.store.updateData(newData);
 
     function handler(ret, index, primaryKey) {
       ret.data.result.forEach((item) => {
@@ -107,106 +99,96 @@ class RenderTabs extends Component {
         }
       });
     }
+
+    const poolRets = await Promise.all(poolPromises);
+    poolRets.forEach((ret, index) => {
+      handler(ret, index, 'pool_id');
+    });
+
+    const osdRets = await Promise.all(osdPromises);
+    osdRets.forEach((ret, index) => {
+      handler(ret, index, 'ceph_daemon');
+    });
+
+    return newData;
   }
 
-  get tableData() {
-    const { filters } = this.state;
-    let originData = this.store.data.filter(
-      (d) => d.type === (this.store.device || this.store.data[0].type)
-    );
-    Object.keys(filters).forEach((key) => {
-      originData = originData.filter((i) => i[key] === filters[key]);
+  async function getData() {
+    setIsLoading(true);
+    const d = await fetchData({
+      currentRange: ctx.range,
+      interval: ctx.interval,
     });
-    return originData;
+    const { retData } = dataHandler(d);
+    const newInitData = await handleInitData(retData);
+    setInitData(newInitData);
+    getListData(newInitData);
+    setIsLoading(false);
   }
 
-  formatDataFn(resps) {
-    const retData = [];
-    const [pool, osd] = resps;
-    get(pool, 'data.result', []).forEach((r) => {
-      const { metric, value } = r;
-      retData.push({
-        type: 'pool',
-        ...metric,
-        value: parseFloat(value[1]) || 0,
-      });
-    });
-    get(osd, 'data.result', []).forEach((r) => {
-      const { metric, value } = r;
-      retData.push({
-        type: 'osd',
-        ...metric,
-        value: parseFloat(value[1]) || 0,
-      });
-    });
-    return retData;
-  }
+  useEffect(() => {
+    getData();
+  }, []);
 
-  render() {
-    const { device = 'pool' } = this.store;
-    const columns = device === 'pool' ? poolsColumns : osdsColumns;
-    return (
-      <>
-        <Tabs
-          defaultActiveKey="pool"
-          onChange={(e) => {
-            this.setState(
-              {
-                filters: {},
-              },
-              () => {
-                this.store.handleDeviceChange(e);
-              }
-            );
-          }}
-        >
-          <TabPane tab="Pools" key="pool" />
-          <TabPane tab="OSDs" key="osd" />
-        </Tabs>
-        {this.store.isLoading ? (
-          <div className={styles.spinContainer}>
-            <Spin />
-          </div>
-        ) : (
-          <BaseTable
-            resourceName={this.store.device === 'pool' ? t('Pools') : t('OSDs')}
-            rowKey={this.store.device === 'pool' ? 'pool_id' : 'name'}
-            columns={columns}
-            data={this.tableData}
-            pagination={{
-              ...new List(),
-              total: this.tableData.length,
-            }}
-            hideRefresh
-            searchFilters={
-              this.store.device === 'pool'
-                ? [
-                    {
-                      label: t('Pool Name'),
-                      name: 'name',
-                    },
-                  ]
-                : [
-                    {
-                      label: t('Name'),
-                      name: 'ceph_daemon',
-                    },
-                  ]
-            }
-            itemActions={[]}
-            onFilterChange={(filters) => {
-              const { limit, page, sortKey, sortOrder, ...rest } = filters;
-              this.setState({
-                filters: rest,
-              });
-            }}
-            onFetchBySort={() => {}}
-          />
-        )}
-      </>
-    );
-  }
-}
+  useEffect(() => {
+    getListData(initData);
+  }, [tab, filters]);
+
+  const columns = tab === 'pool' ? poolsColumns : osdsColumns;
+
+  return (
+    <>
+      <Tabs
+        defaultActiveKey="pool"
+        onChange={(e) => {
+          setFilters({});
+          setTab(e);
+        }}
+      >
+        <TabPane tab="Pools" key="pool" />
+        <TabPane tab="OSDs" key="osd" />
+      </Tabs>
+      {/* {isLoading ? (
+        <div className={styles.spinContainer}>
+          <Spin />
+        </div>
+      ) : ( */}
+      <BaseTable
+        isLoading={isLoading}
+        resourceName={tab === 'pool' ? t('Pools') : t('OSDs')}
+        rowKey={tab === 'pool' ? 'pool_id' : 'name'}
+        columns={columns}
+        data={listData}
+        pagination={{
+          ...new List(),
+          total: listData.length,
+        }}
+        hideRefresh
+        searchFilters={
+          tab === 'pool'
+            ? [
+                {
+                  label: t('Pool Name'),
+                  name: 'name',
+                },
+              ]
+            : [
+                {
+                  label: t('Name'),
+                  name: 'ceph_daemon',
+                },
+              ]
+        }
+        itemActions={[]}
+        onFilterChange={(newFilters) => {
+          const { limit, page, sortKey, sortOrder, ...rest } = newFilters;
+          setFilters(rest);
+        }}
+      />
+      {/* )} */}
+    </>
+  );
+};
 
 export default RenderTabs;
 

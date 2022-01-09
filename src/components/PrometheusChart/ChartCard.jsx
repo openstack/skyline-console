@@ -12,63 +12,52 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Chart, Line, Tooltip } from 'bizcharts';
-import BaseCard from 'components/PrometheusChart/BaseCard';
 import React from 'react';
-import { ChartType, getXScale } from 'components/PrometheusChart/utils/utils';
+import { merge } from 'lodash';
+import { Button, Modal } from 'antd';
+import { Chart, Line, Tooltip } from 'bizcharts';
+import ArrowsAltOutlined from '@ant-design/icons/ArrowsAltOutlined';
+
+import { ChartType, getXScale } from './utils/utils';
 import {
   baseLineProps,
   baseToolTipProps,
   multilineProps,
-} from 'components/PrometheusChart/utils/baseProps';
-import { toJS } from 'mobx';
-import { observer } from 'mobx-react';
-
-import { merge } from 'lodash';
-import ArrowsAltOutlined from '@ant-design/icons/lib/icons/ArrowsAltOutlined';
-import { Button, Modal } from 'antd';
-import BaseContent from 'components/PrometheusChart/component/BaseContent';
+} from './utils/baseProps';
+import BaseCard from './BaseCard';
 
 const ChartCard = (props) => {
-  const {
-    constructorParams,
-    params,
-    currentRange,
-    interval,
-    chartProps,
-    title,
-    extra,
-    isModal = false,
-    BaseContentConfig = {},
-  } = props;
+  const { chartProps } = props;
+  const renderContent = (contextValue) => {
+    const {
+      height,
+      scale,
+      chartType,
+      toolTipProps = baseToolTipProps,
+    } = chartProps;
 
-  const {
-    height,
-    scale,
-    chartType,
-    toolTipProps = baseToolTipProps,
-  } = chartProps;
+    const { data } = contextValue;
 
-  let lineProps;
-  switch (chartType) {
-    case ChartType.ONELINE:
-    case ChartType.ONELINEDEVICES:
-      lineProps = baseLineProps;
-      break;
-    case ChartType.MULTILINE:
-    case ChartType.MULTILINEDEVICES:
-      lineProps = multilineProps;
-      break;
-    default:
-      lineProps = baseLineProps;
-  }
+    scale.x = merge(
+      {},
+      getXScale(props.fetchDataParams.currentRange),
+      scale.x || {}
+    );
 
-  const renderContent = (store) => {
-    let data = toJS(store.data);
-    if (store.device) {
-      data = data.filter((d) => d.device === store.device);
+    let lineProps;
+    switch (chartType) {
+      case ChartType.ONELINE:
+      case ChartType.ONELINEDEVICES:
+        lineProps = baseLineProps;
+        break;
+      case ChartType.MULTILINE:
+      case ChartType.MULTILINEDEVICES:
+        lineProps = multilineProps;
+        break;
+      default:
+        lineProps = baseLineProps;
     }
-    scale.x = merge({}, getXScale(props.currentRange), scale.x || {});
+
     return (
       <Chart autoFit padding="auto" data={data} height={height} scale={scale}>
         <Line {...lineProps} />
@@ -77,53 +66,81 @@ const ChartCard = (props) => {
     );
   };
 
-  const ModalContent = observer(() => (
-    <div style={{ height: 520 }}>
-      <BaseContent
-        renderChartCards={(store) => (
-          <ChartCard
-            {...props}
-            currentRange={store.currentRange}
-            interval={store.interval}
-            isModal
+  const extra = () => {
+    const {
+      title,
+      createFetchParams,
+      handleDataParams,
+      fetchDataParams,
+      isModal = false,
+    } = props;
+    let defaultNode = {};
+    const { params: fParams = {} } = fetchDataParams;
+    const { instance, hostname, ...rest } = fParams;
+    if (fParams) {
+      if (instance) {
+        defaultNode.instance = instance;
+      } else if (hostname) {
+        defaultNode.hostname = hostname;
+      }
+    }
+
+    return (
+      <>
+        {props.extra && props.extra()}
+        {!isModal && (
+          <Button
+            type="text"
+            icon={<ArrowsAltOutlined />}
+            onClick={() => {
+              Modal.info({
+                icon: null,
+                content: (function () {
+                  const BaseContent =
+                    require('./component/BaseContent').default;
+                  return (
+                    <BaseContent
+                      renderNodeSelect={false}
+                      defaultNode={{
+                        metric: defaultNode,
+                      }}
+                      visibleHeight={props.chartProps.height}
+                      chartConfig={{
+                        chartCardList: [
+                          {
+                            title,
+                            createFetchParams,
+                            handleDataParams,
+                            fetchDataParams: {
+                              params: rest,
+                            },
+                            chartProps,
+                            span: 24,
+                            isModal: true,
+                          },
+                        ],
+                      }}
+                    />
+                  );
+                })(),
+                width: 1200,
+                okText: t('OK'),
+              });
+            }}
           />
         )}
-        {...BaseContentConfig}
-        renderNodeSelect={false}
-      />
-    </div>
-  ));
+      </>
+    );
+  };
 
   return (
     <BaseCard
-      constructorParams={constructorParams}
-      params={params}
-      currentRange={currentRange}
-      interval={interval}
-      title={title}
-      extra={(s) => (
-        <>
-          {extra && extra(s)}
-          {!isModal && (
-            <Button
-              type="text"
-              icon={<ArrowsAltOutlined />}
-              onClick={() => {
-                Modal.info({
-                  icon: null,
-                  content: <ModalContent />,
-                  width: 1200,
-                  okText: t('OK'),
-                });
-              }}
-            />
-          )}
-        </>
-      )}
+      {...props}
       renderContent={renderContent}
-      visibleHeight={height}
+      visibleHeight={props.chartProps.height}
+      extra={extra}
     />
   );
 };
 
-export default observer(ChartCard);
+export default ChartCard;

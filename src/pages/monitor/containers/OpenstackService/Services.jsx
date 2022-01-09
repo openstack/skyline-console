@@ -61,7 +61,7 @@ const Services = (props) => {
                   )}
                 </Col>
                 <Col className={styles.title} span={6}>
-                  {it.hostname}
+                  {it.hostname || it.host}
                 </Col>
                 <Col className={styles.status} span={6}>
                   <span>{t('Current Status')}</span>

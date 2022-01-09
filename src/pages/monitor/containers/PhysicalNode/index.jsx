@@ -13,16 +13,274 @@
 // limitations under the License.
 
 import React from 'react';
-import { observer } from 'mobx-react';
+import { get } from 'lodash';
+import moment from 'moment';
+import { Progress } from 'antd';
+
 import BaseContent from 'components/PrometheusChart/component/BaseContent';
-import Charts from './Charts';
+import { getSuitableValue } from 'resources/monitoring';
+import { ChartType } from 'components/PrometheusChart/utils/utils';
+import { computePercentage, formatSize, formatUsedTime } from 'src/utils';
 
-const PhysicalNode = () => {
-  function renderChartCards(store) {
-    return <Charts store={store} />;
-  }
+import styles from 'components/PrometheusChart/component/styles.less';
 
-  return <BaseContent renderChartCards={renderChartCards} />;
+export const topCardList = [
+  {
+    title: t('CPU Cores'),
+    span: 5,
+    createFetchParams: {
+      metricKey: 'physicalNode.cpuCores',
+    },
+    renderContent: (value) => (
+      <div className={styles.topContent}>{get(value.data, 'length', 0)}</div>
+    ),
+  },
+  {
+    title: t('Total Ram'),
+    span: 5,
+    createFetchParams: {
+      metricKey: 'physicalNode.totalMem',
+    },
+    renderContent: (value) => (
+      <div className={styles.topContent}>
+        {getSuitableValue(get(value.data[0], 'y', 0), 'memory')}
+      </div>
+    ),
+  },
+  {
+    title: t('System Running Time'),
+    span: 5,
+    createFetchParams: {
+      metricKey: 'physicalNode.systemRunningTime',
+    },
+    renderContent: (value) => (
+      <div className={styles.topContent}>
+        {formatUsedTime(
+          (moment().unix() -
+            parseInt(get(value.data[0], 'y', moment().unix()), 10)) *
+            1000
+        )}
+      </div>
+    ),
+  },
+  {
+    title: t('File System Free Space'),
+    span: 9,
+    createFetchParams: {
+      metricKey: 'physicalNode.fileSystemFreeSpace',
+    },
+    handleDataParams: {
+      formatDataFn: (...rest) => {
+        const [data, typeKey, deviceKey] = rest;
+        const [avail, size] = data;
+        const { data: { result } = { result: [] } } = avail;
+        const temp = [];
+        result.forEach((item, index) => {
+          temp.push({
+            mountpoint:
+              get(item, `metric.${deviceKey}`) + get(item, `metric.${typeKey}`),
+            avail: parseFloat(get(item, 'value[1]', 0)),
+            total: parseFloat(get(size, `data.result[${index}].value[1]`, 0)),
+          });
+        });
+        return temp;
+      },
+      typeKey: 'mountpoint',
+      deviceKey: 'device',
+    },
+    renderContent: (value) => (
+      <div
+        style={{
+          height: 100,
+          overflow: 'auto',
+        }}
+      >
+        {(value.data || []).map((item, index) => {
+          const percentage = computePercentage(item.avail, item.total);
+          const percentageColor = percentage > 80 ? '#FAAD14' : '#1890FF';
+          return (
+            <div
+              key={item.mountpoint}
+              style={{ marginTop: index > 0 ? 16 : 0 }}
+            >
+              <div>
+                <div style={{ float: 'left' }}>{item.mountpoint}</div>
+                <div style={{ float: 'right' }}>
+                  {`${formatSize(parseInt(item.avail, 10))} / ${formatSize(
+                    parseInt(item.total, 10)
+                  )}`}
+                </div>
+              </div>
+              <Progress
+                style={{ width: '95%' }}
+                percent={Number(
+                  (
+                    (parseInt(item.avail, 10) / parseInt(item.total, 10)) *
+                    100
+                  ).toFixed(3)
+                )}
+                strokeColor={percentageColor}
+              />
+            </div>
+          );
+        })}
+      </div>
+    ),
+  },
+];
+
+export const chartCardList = [
+  {
+    title: t('CPU Usage(%)'),
+    createFetchParams: {
+      metricKey: 'physicalNode.cpuUsage',
+    },
+    handleDataParams: {
+      typeKey: 'mode',
+    },
+    chartProps: {
+      chartType: ChartType.MULTILINE,
+    },
+  },
+  {
+    title: t('Memory Usage'),
+    createFetchParams: {
+      metricKey: 'physicalNode.memUsage',
+    },
+    handleDataParams: {
+      modifyKeys: [t('Used'), t('Free')],
+    },
+    chartProps: {
+      scale: {
+        y: {
+          formatter: (d) => getSuitableValue(d, 'memory', 0),
+        },
+      },
+      chartType: ChartType.MULTILINE,
+    },
+  },
+  {
+    title: t('DISK IOPS'),
+    createFetchParams: {
+      metricKey: 'physicalNode.diskIOPS',
+    },
+    handleDataParams: {
+      modifyKeys: [t('read'), t('write')],
+      deviceKey: 'device',
+    },
+    chartProps: {
+      chartType: ChartType.MULTILINEDEVICES,
+    },
+  },
+  {
+    title: t('DISK Usage(%)'),
+    createFetchParams: {
+      metricKey: 'physicalNode.diskUsage',
+    },
+    handleDataParams: {
+      typeKey: 'hostname',
+      deviceKey: 'device',
+    },
+    chartProps: {
+      scale: {
+        y: {
+          alias: t('DISK Usage(%)'),
+        },
+      },
+      chartType: ChartType.ONELINEDEVICES,
+    },
+  },
+  {
+    title: t('System Load'),
+    span: 24,
+    createFetchParams: {
+      metricKey: 'physicalNode.systemLoad',
+    },
+    handleDataParams: {
+      typeKey: '__name__',
+    },
+    chartProps: {
+      chartType: ChartType.MULTILINE,
+    },
+  },
+  {
+    title: t('Network Traffic'),
+    span: 12,
+    createFetchParams: {
+      metricKey: 'physicalNode.networkTraffic',
+    },
+    handleDataParams: {
+      modifyKeys: [t('receive'), t('transmit')],
+      deviceKey: 'device',
+    },
+    chartProps: {
+      chartType: ChartType.MULTILINEDEVICES,
+      scale: {
+        y: {
+          formatter: (d) => getSuitableValue(d, 'traffic', 0),
+        },
+      },
+    },
+  },
+  {
+    title: t('TCP Connections'),
+    span: 12,
+    createFetchParams: {
+      metricKey: 'physicalNode.tcpConnections',
+    },
+    chartProps: {
+      scale: {
+        y: {
+          alias: t('TCP Connections'),
+        },
+      },
+      chartType: ChartType.ONELINE,
+    },
+  },
+  {
+    title: t('Network Errors'),
+    span: 12,
+    createFetchParams: {
+      metricKey: 'physicalNode.networkErrors',
+    },
+    handleDataParams: {
+      typeKey: '__name__',
+      deviceKey: 'device',
+    },
+    chartProps: {
+      scale: {
+        y: {
+          alias: t('Network Errors'),
+        },
+      },
+      chartType: ChartType.ONELINE,
+    },
+  },
+  {
+    title: t('Network Dropped Packets'),
+    span: 12,
+    createFetchParams: {
+      metricKey: 'physicalNode.networkDroppedPackets',
+    },
+    handleDataParams: {
+      modifyKeys: [t('receive'), t('transmit')],
+      deviceKey: 'device',
+    },
+    chartProps: {
+      scale: {
+        y: {
+          alias: t('Network Dropped Packets'),
+        },
+      },
+      chartType: ChartType.MULTILINEDEVICES,
+    },
+  },
+];
+
+export const chartConfig = {
+  chartCardList,
+  topCardList,
 };
+const PhysicalNode = () => <BaseContent chartConfig={chartConfig} />;
 
-export default observer(PhysicalNode);
+export default PhysicalNode;

@@ -18,13 +18,14 @@ import { OpenstackServiceStore } from 'stores/prometheus/openstack-service';
 import { SyncOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import Services from './Services';
-import styles from '../PhysicalNode/index.less';
+import styles from './index.less';
 
 @observer
 class OpenstackService extends Component {
   constructor(props) {
     super(props);
-    this.store = new OpenstackServiceStore();
+    const { Store = OpenstackServiceStore } = props;
+    this.store = new Store();
   }
 
   componentDidMount() {
@@ -67,18 +68,14 @@ class OpenstackService extends Component {
     ];
 
     return (
-      <div className={styles.outer}>
-        <div className={styles.inner}>
-          <div className={styles.header}>
-            <Button
-              type="default"
-              icon={<SyncOutlined />}
-              onClick={this.handleRefresh}
-            />
-            {/* <NodeSelect style={{ display: 'inline', marginLeft: 20 }} store={this.store} /> */}
-            <Services serviceMap={serviceMap} />
-          </div>
-        </div>
+      <div className={styles.container}>
+        <Button
+          type="default"
+          icon={<SyncOutlined />}
+          onClick={this.handleRefresh}
+        />
+        {/* <NodeSelect style={{ display: 'inline', marginLeft: 20 }} store={this.store} /> */}
+        <Services serviceMap={serviceMap} />
       </div>
     );
   }

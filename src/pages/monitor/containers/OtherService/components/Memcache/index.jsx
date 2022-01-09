@@ -13,29 +13,91 @@
 // limitations under the License.
 
 import React from 'react';
-import { observer } from 'mobx-react';
 import BaseContent from 'components/PrometheusChart/component/BaseContent';
-import { getMemcacheNodes } from '../util';
-import Charts from './Charts';
+import { getMemcacheNodes } from 'components/PrometheusChart/utils/fetchNodes';
+import { ChartType } from 'components/PrometheusChart/utils/utils';
+import { getSuitableValue } from 'resources/monitoring';
 
-const Memcache = () => {
-  function renderChartCards(store) {
-    return (
-      <Charts
-        store={store}
-        BaseContentConfig={{
-          fetchNodesFunc: getMemcacheNodes,
-        }}
-      />
-    );
-  }
+const chartCardList = [
+  {
+    title: t('Current Connections'),
+    createFetchParams: {
+      metricKey: 'memcacheService.currentConnections',
+    },
+    chartProps: {
+      chartType: ChartType.ONELINE,
+      scale: {
+        y: {
+          alias: t('Current Connections'),
+        },
+      },
+    },
+  },
+  {
+    title: t('Total Connections'),
+    createFetchParams: {
+      metricKey: 'memcacheService.totalConnections',
+    },
+    chartProps: {
+      chartType: ChartType.ONELINE,
+      scale: {
+        y: {
+          alias: t('Total Connections'),
+        },
+      },
+    },
+  },
+  {
+    title: t('Read And Write'),
+    createFetchParams: {
+      metricKey: 'memcacheService.readWriteBytesTotal',
+    },
+    handleDataParams: {
+      modifyKeys: [t('read'), t('write')],
+    },
+    chartProps: {
+      chartType: ChartType.MULTILINE,
+      scale: {
+        y: {
+          formatter: (d) => getSuitableValue(d, 'traffic', 0),
+        },
+      },
+    },
+  },
+  {
+    title: t('Evictions'),
+    createFetchParams: {
+      metricKey: 'memcacheService.evictions',
+    },
+    chartProps: {
+      chartType: ChartType.ONELINE,
+      scale: {
+        y: {
+          alias: t('Evictions'),
+        },
+      },
+    },
+  },
+  {
+    title: t('Items in Cache'),
+    createFetchParams: {
+      metricKey: 'memcacheService.itemsInCache',
+    },
+    chartProps: {
+      chartType: ChartType.ONELINE,
+      scale: {
+        y: {
+          alias: t('Items in Cache'),
+        },
+      },
+    },
+  },
+];
 
-  return (
-    <BaseContent
-      renderChartCards={renderChartCards}
-      fetchNodesFunc={getMemcacheNodes}
-    />
-  );
+export const chartConfig = {
+  chartCardList,
 };
 
-export default observer(Memcache);
+export default () => (
+  <BaseContent chartConfig={chartConfig} fetchNodesFunc={getMemcacheNodes} />
+);

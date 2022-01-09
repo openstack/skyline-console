@@ -80,9 +80,7 @@ export class OpenstackServiceStore extends MonitorBase {
     const tmp = [];
     try {
       const [currentState, last24State, libvirtdState, libvirtd24State] =
-        await Promise.all(
-          getPromises.call(this, 'openstackService.novaService')
-        );
+        await Promise.all(getPromises('openstackService.novaService'));
       const {
         data: { result: currentStateResult },
       } = currentState;

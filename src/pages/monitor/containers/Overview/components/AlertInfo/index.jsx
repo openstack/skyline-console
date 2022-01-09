@@ -13,19 +13,25 @@
 // limitations under the License.
 
 import React, { useState, useEffect } from 'react';
-import { Col, Row, Spin } from 'antd';
+import { Col, Empty, Row, Spin } from 'antd';
 import styles from 'pages/monitor/containers/Overview/index.less';
-import FetchPrometheusStore from 'components/PrometheusChart/store/FetchPrometheusStore';
 import { handleResponse } from 'components/PrometheusChart/utils/dataHandler';
 import moment from 'moment';
-import AlertChart from './components/AlertChart';
+import {
+  createDataHandler,
+  createFetchPrometheusClient,
+} from 'components/PrometheusChart/utils';
+import { Chart, Line, Tooltip } from 'bizcharts';
 
 const STEP = 15;
 
 const Index = function () {
-  const store = new FetchPrometheusStore({
+  const fetchData = createFetchPrometheusClient({
     requestType: 'range',
     metricKey: 'monitorOverview.alertInfo',
+  });
+
+  const dataHandler = createDataHandler({
     formatDataFn: (responses, typeKey, deviceKey, modifyKeys) => {
       const ret = [];
       responses.forEach((response, idx) => {
@@ -45,13 +51,12 @@ const Index = function () {
     const end = moment();
     const start = moment().startOf('day');
     setIsLoading(true);
-    store
-      .fetchData({
-        interval: STEP,
-        currentRange: [start, end],
-      })
+    fetchData({
+      interval: STEP,
+      currentRange: [start, end],
+    })
       .then((d) => {
-        const [cpuData, memoryData] = d;
+        const [cpuData, memoryData] = dataHandler(d).retData;
         const newCpuCount = cpuData.reduce(
           (pre, cur, idx) =>
             idx > 0 && cur.x - cpuData[idx - 1].x > STEP ? pre + 1 : pre,
@@ -107,6 +112,42 @@ function build7DaysData() {
     });
   }
   return ret;
+}
+
+function AlertChart({ data }) {
+  return (
+    <div className={styles.card}>
+      <Row justify="space-between">
+        <span>{t('Last week alarm trend')}</span>
+        <span>{t('time / 24h')}</span>
+      </Row>
+      <Row
+        justify="center"
+        align="middle"
+        style={{ height: 272, paddingTop: 10 }}
+      >
+        {data.length === 0 ? <Empty /> : <Charts data={data} />}
+      </Row>
+    </div>
+  );
+}
+
+function Charts({ data }) {
+  return (
+    <Chart
+      padding={[10, 20, 50, 50]}
+      autoFit
+      data={data}
+      scale={{
+        count: {
+          nice: true,
+        },
+      }}
+    >
+      <Line position="date*count" />
+      <Tooltip showCrosshairs lock />
+    </Chart>
+  );
 }
 
 export default Index;
