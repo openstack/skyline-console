@@ -12,63 +12,123 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { observer } from 'mobx-react';
-import NodeSelect from 'components/PrometheusChart/component/NodeSelect';
-import TimeRangeSelect from 'components/PrometheusChart/component/TimeRangeSelect';
-import styles from './index.less';
-import BaseMonitorStore from '../store/BaseMonitorStore';
+import React, { useState, useEffect } from 'react';
+import { Button, Spin } from 'antd';
+import { SyncOutlined } from '@ant-design/icons';
 
-@observer
-class BaseContent extends Component {
-  static propTypes = {
-    renderChartCards: PropTypes.func.isRequired,
-    renderTimeRangeSelect: PropTypes.bool,
-    renderNodeSelect: PropTypes.bool,
-    fetchNodesFunc: PropTypes.func,
-  };
+import {
+  defaultOneHourAgo,
+  getRange,
+} from 'components/PrometheusChart/utils/utils';
+import Charts from './Charts';
+import useIntervals from './hooks/useIntervals';
+import useRangeSelect from './hooks/useRangeSelect';
+import useNodeSelect from './hooks/useNodeSelect';
+import styles from '../style.less';
+import { defaultGetNodes } from '../utils/fetchNodes';
+import BaseContentContext from './context';
 
-  static defaultProps = {
-    renderTimeRangeSelect: true,
-    renderNodeSelect: true,
-  };
+const BaseContent = (props) => {
+  const {
+    renderTimeRangeSelect,
+    chartConfig,
+    renderNodeSelect,
+    fetchNodesFunc,
+    defaultNode,
+    children,
+  } = props;
 
-  constructor(props) {
-    super(props);
-    this.store = new BaseMonitorStore({
-      fetchNodesFunc: this.props.fetchNodesFunc,
-    });
-  }
+  const [node, Nodes, setNode, setNodes] = useNodeSelect(defaultNode);
 
-  componentDidMount() {
-    const { renderNodeSelect } = this.props;
+  const [range, Selector, groupIndex, setRange] = useRangeSelect(
+    defaultOneHourAgo()
+  );
+
+  const [interval, Intervals] = useIntervals(range);
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [isFetchingNodes, setIsFetchingNodes] = useState(true);
+
+  const handleRefresh = async (refresh = false) => {
+    setIsLoading(true);
     if (renderNodeSelect) {
-      this.store.getNodes();
+      setIsFetchingNodes(true);
+      const ret = await fetchNodesFunc();
+      setNodes(ret);
+      if (!node) {
+        setNode(ret[0]);
+      }
+      // 非自选时间段刷新时间
+      if (refresh && groupIndex !== 4) {
+        setRange(getRange(groupIndex));
+      }
+      setIsFetchingNodes(false);
+      setIsLoading(false);
     } else {
-      this.store.setLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 300);
+      return;
     }
-  }
+  };
 
-  render() {
-    const { renderChartCards, renderTimeRangeSelect, renderNodeSelect } =
-      this.props;
-    return (
-      <div className={styles.header}>
-        {renderTimeRangeSelect && (
-          <TimeRangeSelect
-            style={{ marginBottom: 24 }}
-            store={this.store}
-            renderNodeSelect={renderNodeSelect}
+  const passedContextValue = {
+    interval,
+    range,
+    node,
+  };
+
+  useEffect(() => {
+    handleRefresh();
+  }, [interval, range]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 300);
+  }, [node]);
+
+  return (
+    <div className={styles.base_content_container}>
+      <BaseContentContext.Provider value={passedContextValue}>
+        {(renderTimeRangeSelect || renderNodeSelect) && (
+          <Button
+            type="default"
+            icon={<SyncOutlined />}
+            onClick={() => handleRefresh(true)}
+            className={styles.refresh}
           />
         )}
-        {renderNodeSelect && (
-          <NodeSelect style={{ marginBottom: 24 }} store={this.store} />
+        {renderTimeRangeSelect && (
+          <div className={styles.header}>
+            <Selector />
+            <Intervals />
+          </div>
         )}
-        {renderChartCards(this.store)}
-      </div>
-    );
-  }
-}
+        {renderNodeSelect && (isFetchingNodes ? <Spin /> : <Nodes />)}
+        {(renderNodeSelect && isFetchingNodes) ||
+        (isLoading &&
+          chartConfig?.chartCardList?.length !== 0 &&
+          chartConfig?.topCardList?.length !== 0) ? null : (
+          <Charts {...chartConfig} />
+        )}
+        {(renderNodeSelect && isFetchingNodes) || isLoading ? (
+          <Spin />
+        ) : (
+          children
+        )}
+      </BaseContentContext.Provider>
+    </div>
+  );
+};
+
+BaseContent.defaultProps = {
+  renderNodeSelect: true,
+  renderTimeRangeSelect: true,
+  fetchNodesFunc: defaultGetNodes,
+  defaultNode: undefined,
+};
 
 export default BaseContent;

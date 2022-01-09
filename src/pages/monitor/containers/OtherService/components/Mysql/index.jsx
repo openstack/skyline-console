@@ -13,29 +13,104 @@
 // limitations under the License.
 
 import React from 'react';
-import { observer } from 'mobx-react';
+import { get } from 'lodash';
+
 import BaseContent from 'components/PrometheusChart/component/BaseContent';
-import { getMysqlNodes } from '../util';
-import Charts from './Charts';
+import { getMysqlNodes } from 'components/PrometheusChart/utils/fetchNodes';
+import { formatUsedTime } from 'src/utils';
+import styles from 'components/PrometheusChart/component/styles.less';
+import { ChartType } from 'components/PrometheusChart/utils/utils';
 
-const Mysql = () => {
-  function renderChartCards(store) {
-    return (
-      <Charts
-        store={store}
-        BaseContentConfig={{
-          fetchNodesFunc: getMysqlNodes,
-        }}
-      />
-    );
-  }
+const topCardList = [
+  {
+    title: t('Running Time'),
+    span: 6,
+    createFetchParams: {
+      metricKey: 'mysqlService.runningTime',
+    },
+    renderContent: ({ data }) => (
+      <div className={styles.topContent}>
+        {/* 转化为毫秒 */}
+        {formatUsedTime(get(data, '[0].y', 0) * 1000)}
+      </div>
+    ),
+  },
+  {
+    title: t('Connected Threads'),
+    span: 6,
+    createFetchParams: {
+      metricKey: 'mysqlService.connectedThreads',
+    },
+  },
+  {
+    title: t('Running Threads'),
+    span: 6,
+    createFetchParams: {
+      metricKey: 'mysqlService.runningThreads',
+    },
+  },
+  {
+    title: t('Slow Query'),
+    span: 6,
+    createFetchParams: {
+      metricKey: 'mysqlService.slowQuery',
+    },
+  },
+];
 
-  return (
-    <BaseContent
-      renderChartCards={renderChartCards}
-      fetchNodesFunc={getMysqlNodes}
-    />
-  );
+const chartCardList = [
+  {
+    title: t('Threads Activity Trends'),
+    createFetchParams: {
+      metricKey: 'mysqlService.threadsActivityTrends_connected',
+    },
+    chartProps: {
+      chartType: ChartType.ONELINE,
+      scale: {
+        y: {
+          alias: t('Threads Activity Trends'),
+        },
+      },
+    },
+  },
+  {
+    title: t('MySQL Actions'),
+    createFetchParams: {
+      metricKey: 'mysqlService.mysqlActions',
+    },
+    handleDataParams: {
+      modifyKeys: [t('delete'), t('insert'), t('update')],
+    },
+    chartProps: {
+      chartType: ChartType.MULTILINE,
+      scale: {
+        y: {
+          alias: t('MySQL Actions'),
+        },
+      },
+    },
+  },
+  {
+    title: t('Slow Query'),
+    createFetchParams: {
+      metricKey: 'mysqlService.slowQueryChart',
+    },
+    chartProps: {
+      chartType: ChartType.ONELINE,
+      scale: {
+        y: {
+          alias: t('Slow Query'),
+        },
+      },
+    },
+  },
+];
+
+export const chartConfig = {
+  topCardList,
+  chartCardList,
 };
 
-export default observer(Mysql);
+export default () => (
+  <BaseContent chartConfig={chartConfig} fetchNodesFunc={getMysqlNodes} />
+);

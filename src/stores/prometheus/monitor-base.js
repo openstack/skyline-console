@@ -27,7 +27,7 @@ export default class MonitorBase extends Base {
   }
 
   @observable
-  currentRange = defaultOneHourAgo;
+  currentRange = defaultOneHourAgo();
 
   @observable
   interval = 10;

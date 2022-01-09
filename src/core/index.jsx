@@ -22,10 +22,12 @@ import zhCN from 'antd/es/locale/zh_CN';
 import enUS from 'antd/es/locale/en_US';
 import globalRootStore from 'stores/root';
 import PageLoading from 'components/PageLoading';
+import metricDict from 'resources/metricDict';
 import i18n from './i18n';
 import App from './App';
 
 window.t = i18n.t;
+window.METRICDICT = metricDict;
 
 const store = globalRootStore;
 const browserHistory = createBrowserHistory();

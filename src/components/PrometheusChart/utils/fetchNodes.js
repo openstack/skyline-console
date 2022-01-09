@@ -13,13 +13,36 @@
 // limitations under the License.
 
 import { fetchPrometheus } from 'components/PrometheusChart/utils/utils';
-import metricDict from 'components/PrometheusChart/metricDict';
 import { get } from 'lodash';
 import isEqual from 'react-fast-compare';
 
+export const defaultGetNodes = async () => {
+  const ret = await fetchPrometheus(
+    get(METRICDICT, 'physicalNode.systemLoad.url[0]'),
+    'current'
+  );
+  const {
+    data: { result: results = [] },
+  } = ret;
+  if (results.length === 0) {
+    return [
+      {
+        metric: {
+          instance: '',
+        },
+      },
+    ];
+  }
+  return results.map((result) => ({
+    metric: {
+      instance: result.metric.instance,
+    },
+  }));
+};
+
 export const getMemcacheNodes = async () => {
   const ret = await fetchPrometheus(
-    get(metricDict, 'memcacheService.currentConnections.url[0]'),
+    get(METRICDICT, 'memcacheService.currentConnections.url[0]'),
     'current'
   );
   const {
@@ -43,7 +66,7 @@ export const getMemcacheNodes = async () => {
 
 export const getRabbitMQNodes = async () => {
   const response = await fetchPrometheus(
-    get(metricDict, 'rabbitMQService.serviceStatus.url[0]'),
+    get(METRICDICT, 'rabbitMQService.serviceStatus.url[0]'),
     'current'
   );
 
@@ -75,7 +98,7 @@ export const getRabbitMQNodes = async () => {
 
 export const getMysqlNodes = async () => {
   const ret = await fetchPrometheus(
-    get(metricDict, 'mysqlService.runningTime.url[0]'),
+    get(METRICDICT, 'mysqlService.runningTime.url[0]'),
     'current'
   );
   const {
