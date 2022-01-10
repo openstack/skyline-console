@@ -14,7 +14,6 @@
 
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { Link } from 'react-router-dom';
 import { isEmpty, isArray } from 'lodash';
 import { NetworkStore } from 'stores/neutron/network';
 import { SubnetStore } from 'stores/neutron/subnet';
@@ -29,6 +28,7 @@ import {
   securityGroupFilter,
 } from 'resources/security-group';
 import { portColumns, portFilters } from 'resources/port';
+import { getLinkRender } from 'utils/route-map';
 
 // import EditYamlModal from 'components/Modals/EditYaml';
 const { isIPv4, isIpv6 } = ipValidate;
@@ -209,9 +209,10 @@ export class NetworkStep extends Base {
               'Please reasonably plan the network and subnet to which the virtual network card belongs.'
             )}
             {t(' You can go to the console to ')}
-            <Link to="/network/networks">
-              {t('create a new network/subnet')}&gt;{' '}
-            </Link>
+            {getLinkRender({
+              key: 'network',
+              value: `${t('create a new network/subnet')} > `,
+            })}
           </div>
         ),
       },
@@ -281,9 +282,10 @@ export class NetworkStep extends Base {
               'The security group is similar to the firewall function and is used to set up network access control. '
             )}
             {t(' You can go to the console to ')}
-            <Link to="/network/security-group">
-              {t('create a new security group')}&gt;{' '}
-            </Link>
+            {getLinkRender({
+              key: 'securityGroup',
+              value: `${t('create a new security group')}> `,
+            })}
             {t(
               'Note: The security group you use will act on all virtual adapters of the instance.'
             )}
