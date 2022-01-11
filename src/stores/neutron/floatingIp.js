@@ -107,26 +107,31 @@ export class FloatingIpStore extends Base {
         promises.push(Promise.resolve({}));
       }
     });
-    const results = await Promise.all(promises);
-    results.forEach((result, index) => {
-      let resource_name = '';
-      if (
-        allData[index].port_details &&
-        allData[index].port_details.device_owner === 'compute:nova'
-      ) {
-        resource_name = `${result.name}: ${allData[index].fixed_ip_address}`;
-      } else if (
-        allData[index].port_details &&
-        (allData[index].port_details.device_owner ===
-          'network:router_gateway' ||
-          allData[index].port_details.device_owner === '')
-      ) {
-        resource_name = `${result.name}: ${allData[index].fixed_ip_address}`;
-      } else if (
-        allData[index].port_details &&
-        allData[index].port_details.device_owner === 'Octavia'
-      ) {
-        resource_name = `${result.name}: ${allData[index].fixed_ip_address}`;
+    const results = await Promise.allSettled(promises);
+    results.forEach(({ status, value: result }, index) => {
+      let resource_name = '-';
+      if (status === 'fulfilled') {
+        if (
+          allData[index].port_details &&
+          allData[index].port_details.device_owner === 'compute:nova'
+        ) {
+          resource_name = `${result.name}: ${allData[index].fixed_ip_address}`;
+        } else if (
+          allData[index].port_details &&
+          (allData[index].port_details.device_owner ===
+            'network:router_gateway' ||
+            allData[index].port_details.device_owner === '')
+        ) {
+          resource_name = `${result.name}: ${allData[index].fixed_ip_address}`;
+        } else if (
+          allData[index].port_details &&
+          allData[index].port_details.device_owner === 'Octavia'
+        ) {
+          resource_name = `${result.name}: ${allData[index].fixed_ip_address}`;
+        }
+      } else {
+        // deal with resources from other projects
+        resource_name = `${t('Resource Id')}: ${allData[index].port_details.device_id} `;
       }
       allData[index].resource_name = resource_name;
     });
