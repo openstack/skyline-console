@@ -2,6 +2,22 @@
 
 简体中文 | [English](./README.md)
 
+**目录**
+
+- [使用说明](#使用说明)
+  - [资源](#资源)
+  - [环境依赖](#环境依赖)
+  - [本地环境搭建](#本地环境搭建)
+  - [开发使用方法](#开发使用方法)
+  - [文档](#文档)
+    - [如何开发](#如何开发)
+    - [如何测试](#如何测试)
+
+## 资源
+
+- [Wiki](https://wiki.openstack.org/wiki/Skyline)
+- [Bug 跟踪器](https://launchpad.net/skyline-apiserver)
+
 ## 环境依赖
 
 - `node`: lts/erbium (v12.\*)
@@ -84,7 +100,7 @@
 - [Route 介绍](docs/zh/develop/3-13-Route-introduction.md)
 - [I18n 介绍](docs/zh/develop/3-14-I18n-introduction.md)
 
-### How to test
+### 如何测试
 
 - [两种不同的测试方式](docs/zh/test/1-ready-to-work.md)
 - [目录结构](docs/zh/test/2-catalog-introduction.md)

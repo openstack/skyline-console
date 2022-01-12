@@ -2,6 +2,22 @@
 
 [简体中文](./README-zh_CN.md)| English
 
+**Table of contents**
+
+- [Instructions](#instructions)
+  - [Resources](#resources)
+  - [Prerequisites](#prerequisites)
+  - [Local Environment](#local-environment)
+  - [Usage](#usage)
+  - [Docs](#docs)
+    - [How to develop](#how-to-develop)
+    - [How to test](#how-to-test)
+
+## Resources
+
+- [Wiki](https://wiki.openstack.org/wiki/Skyline)
+- [Bug Tracker](https://launchpad.net/skyline-apiserver)
+
 ## Prerequisites
 
 - `node`: lts/erbium (v12.\*)
