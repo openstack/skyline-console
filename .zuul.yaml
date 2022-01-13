@@ -564,6 +564,7 @@
               - ^src/styles/.*$
               - ^src/locales/.*$
               - ^src/asset/.*$
+              - ^src/layouts/.*$
               # .zuul.yaml
               - ^.zuul.yaml$
         - skyline-console-devstack-e2etests-network:
@@ -593,6 +594,7 @@
               - ^src/styles/.*$
               - ^src/locales/.*$
               - ^src/asset/.*$
+              - ^src/layouts/.*$
               # .zuul.yaml
               - ^.zuul.yaml$
         - skyline-console-devstack-e2etests-other:
@@ -615,6 +617,7 @@
               - ^src/styles/.*$
               - ^src/locales/.*$
               - ^src/asset/.*$
+              - ^src/layouts/.*$
               # .zuul.yaml
               - ^.zuul.yaml$
         - skyline-console-devstack-e2etests-storage:
@@ -645,6 +648,7 @@
               - ^src/styles/.*$
               - ^src/locales/.*$
               - ^src/asset/.*$
+              - ^src/layouts/.*$
               # .zuul.yaml
               - ^.zuul.yaml$
     gate:

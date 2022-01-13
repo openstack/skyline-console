@@ -63,7 +63,7 @@ export class Login extends Component {
       product_name: { zh = t('Cloud Platform'), en = 'Cloud Platform' } = {},
     } = this.info;
     const { isLocaleZh } = i18n;
-    return isLocaleZh ? zh : en;
+    return t('Welcome, {name}', { name: isLocaleZh ? zh : en });
   }
 
   get domains() {
@@ -280,9 +280,7 @@ export class Login extends Component {
   render() {
     return (
       <>
-        <h1 className={styles.welcome}>
-          {t('Welcome, {name}', { name: this.productName })}
-        </h1>
+        <h1 className={styles.welcome}>{this.productName}</h1>
         <SimpleForm
           formItems={this.formItems}
           name="normal_login"
