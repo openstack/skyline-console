@@ -31,7 +31,6 @@
     "@babel/plugin-proposal-throw-expressions",
     "@babel/plugin-syntax-dynamic-import",
     "@babel/plugin-syntax-import-meta",
-    "react-hot-loader/babel",
     [
       "import",
       {

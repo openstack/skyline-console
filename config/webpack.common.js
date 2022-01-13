@@ -16,8 +16,6 @@ const webpack = require('webpack');
 const { normalize, resolve } = require('path');
 // const path = require("path");
 // const CleanWebpackPlugin = require('clean-webpack-plugin');
-const HappyPack = require('happypack');
-const os = require('os');
 const moment = require('moment');
 
 const root = (path) => resolve(__dirname, `../${path}`);
@@ -28,20 +26,8 @@ module.exports = {
     rules: [
       {
         test: /\.jsx?$/,
-        include: [root('src'), root('common')],
-        use: 'happypack/loader?id=jsx',
-      },
-      {
-        test: /\.jsx?$/,
         include: root('node_modules'),
-        use: 'cache-loader',
-      },
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-        },
+        use: ['thread-loader', 'cache-loader'],
       },
       {
         test: /\.(png|gif|jpg)$/,
@@ -129,14 +115,7 @@ module.exports = {
       client: root('src/client'),
     },
   },
-  plugins: [
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    new HappyPack({
-      threads: os.cpus().length - 1 || 1,
-      id: 'jsx',
-      loaders: ['babel-loader?cacheDirectory'],
-    }),
-  ],
+  plugins: [new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)],
 };
 
 module.exports.version = version;

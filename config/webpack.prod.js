@@ -48,6 +48,11 @@ module.exports = (env) => {
     module: {
       rules: [
         {
+          test: /\.jsx?$/,
+          exclude: /node_modules/,
+          use: ['babel-loader'],
+        },
+        {
           test: /\.css$/,
           use: [
             {
