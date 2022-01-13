@@ -22,13 +22,29 @@ import loginFullImage from 'asset/image/login-full.png';
 import loginRightLogo from 'asset/image/loginRightLogo.png';
 import styles from './index.less';
 
-@inject('rootStore')
-@observer
-class AuthLayout extends Component {
+export class AuthLayout extends Component {
   constructor(props) {
     super(props);
 
     this.routes = props.route.routes;
+  }
+
+  renderRight() {
+    return (
+      <div className={styles.right}>
+        <img
+          alt=""
+          className={styles['login-full-image']}
+          src={loginFullImage}
+        />
+        <div className={styles['full-image-front']} />
+        <img
+          src={loginRightLogo}
+          alt=""
+          className={styles['login-right-logo']}
+        />
+      </div>
+    );
   }
 
   render() {
@@ -47,22 +63,10 @@ class AuthLayout extends Component {
             {renderRoutes(this.routes)}
           </div>
         </div>
-        <div className={styles.right}>
-          <img
-            alt=""
-            className={styles['login-full-image']}
-            src={loginFullImage}
-          />
-          <div className={styles['full-image-front']} />
-          <img
-            src={loginRightLogo}
-            alt=""
-            className={styles['login-right-logo']}
-          />
-        </div>
+        {this.renderRight()}
       </div>
     );
   }
 }
 
-export default AuthLayout;
+export default inject('rootStore')(observer(AuthLayout));

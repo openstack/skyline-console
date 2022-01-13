@@ -564,6 +564,7 @@
               - ^src/styles/.*$
               - ^src/locales/.*$
               - ^src/asset/.*$
+              - ^src/layouts/.*$
               # .zuul.yaml
               - ^.zuul.yaml$
               # markdown
@@ -595,6 +596,7 @@
               - ^src/styles/.*$
               - ^src/locales/.*$
               - ^src/asset/.*$
+              - ^src/layouts/.*$
               # .zuul.yaml
               - ^.zuul.yaml$
               # markdown
@@ -619,6 +621,7 @@
               - ^src/styles/.*$
               - ^src/locales/.*$
               - ^src/asset/.*$
+              - ^src/layouts/.*$
               # .zuul.yaml
               - ^.zuul.yaml$
               # markdown
@@ -651,6 +654,7 @@
               - ^src/styles/.*$
               - ^src/locales/.*$
               - ^src/asset/.*$
+              - ^src/layouts/.*$
               # .zuul.yaml
               - ^.zuul.yaml$
               # markdown
