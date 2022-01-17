@@ -25,18 +25,18 @@ export function createDataHandler(params) {
   const { formatDataFn, typeKey, deviceKey, modifyKeys } = params;
 
   return (data) => {
-    const formatedData = formatDataFn(data, typeKey, deviceKey, modifyKeys);
-    const retData = clone(formatedData);
+    const formattedData = formatDataFn(data, typeKey, deviceKey, modifyKeys);
+    const retData = clone(formattedData);
     let device = '';
     let devices = [];
     if (
-      isArray(formatedData) &&
-      formatedData.length !== 0 &&
-      formatedData[0].device
+      isArray(formattedData) &&
+      formattedData.length !== 0 &&
+      formattedData[0].device
     ) {
       const dv = new DataSet()
         .createView()
-        .source(formatedData)
+        .source(formattedData)
         .transform({
           type: 'partition',
           groupBy: ['device'],

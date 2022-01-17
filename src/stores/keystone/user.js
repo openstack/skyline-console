@@ -122,8 +122,8 @@ export class UserStore extends Base {
 
   @action
   async fetchDomain() {
-    const doaminsResult = await this.domainClient.list();
-    this.domains = doaminsResult.domains;
+    const domainsResult = await this.domainClient.list();
+    this.domains = domainsResult.domains;
   }
 
   get mapper() {
@@ -212,7 +212,7 @@ export class UserStore extends Base {
   } = {}) {
     this.list.isLoading = true;
     // todo: no page, no limit, fetch all
-    const [roleAssignmentsReault, usersResult, roleResult, projectResult] =
+    const [roleAssignmentsResult, usersResult, roleResult, projectResult] =
       await Promise.all([
         this.roleAssignmentClient.list(),
         this.client.list(),
@@ -230,7 +230,7 @@ export class UserStore extends Base {
     users.map((user) => {
       const projectMapRole = {}; // { project_id: [roles_id] }
       const projectMapSystemRole = {}; // { project_id: [systemRoles_id] }
-      roleAssignmentsReault.role_assignments.forEach((roleAssignment) => {
+      roleAssignmentsResult.role_assignments.forEach((roleAssignment) => {
         this.getUserProjectRole(user, roleAssignment, projectMapRole);
       });
       this.getUsersSystemRole(
@@ -270,7 +270,7 @@ export class UserStore extends Base {
     if (!silent) {
       this.isLoading = true;
     }
-    const [roleAssignmentsReault, usersResult, roleResult] = await Promise.all([
+    const [roleAssignmentsResult, usersResult, roleResult] = await Promise.all([
       this.roleAssignmentClient.list(),
       this.client.show(id),
       this.roleClient.list(),
@@ -285,7 +285,7 @@ export class UserStore extends Base {
     const { user } = usersResult;
     const projectMapRole = {};
     const projectMapSystemRole = {};
-    roleAssignmentsReault.role_assignments.forEach((roleAssignment) => {
+    roleAssignmentsResult.role_assignments.forEach((roleAssignment) => {
       this.getUserProjectRole(user, roleAssignment, projectMapRole);
     });
     this.getUsersSystemRole(projectMapRole, systemRoleId, projectMapSystemRole);
@@ -462,14 +462,14 @@ export class UserStore extends Base {
     this.list.isLoading = true;
     const { projectId } = filters;
     const params = {};
-    const [roleAssignmentsReault, roleResult, result] = await Promise.all([
+    const [roleAssignmentsResult, roleResult, result] = await Promise.all([
       this.roleAssignmentClient.list(),
       this.roleClient.list(),
       this.client.list(params),
     ]);
     const projectUserIds = [];
     const userMapRole = {};
-    roleAssignmentsReault.role_assignments.forEach((roleAssignment) => {
+    roleAssignmentsResult.role_assignments.forEach((roleAssignment) => {
       if (roleAssignment.user) {
         const {
           user: { id: user_id },
@@ -571,14 +571,14 @@ export class UserStore extends Base {
     this.list.isLoading = true;
     const { roleId } = filters;
     const params = {};
-    const [roleAssignmentsReault, projectResult, result] = await Promise.all([
+    const [roleAssignmentsResult, projectResult, result] = await Promise.all([
       this.roleAssignmentClient.list(),
       this.projectClient.list(),
       this.client.list(params),
     ]);
     const projectRoleUsers = {};
     const systemRoleUsers = {};
-    roleAssignmentsReault.role_assignments.forEach((roleAssignment) => {
+    roleAssignmentsResult.role_assignments.forEach((roleAssignment) => {
       if (roleAssignment.user) {
         const {
           user: { id: user_id },

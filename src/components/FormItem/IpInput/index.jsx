@@ -147,7 +147,7 @@ export default class index extends Component {
     }
     // eslint-disable-next-line no-shadow
     const inputs = value.map((it, index) => (
-      <div className={styles['item-wrapper']} key={`ipinput-${index}`}>
+      <div className={styles['item-wrapper']} key={`ip-input-${index}`}>
         <Input
           className={styles.item}
           value={value[index]}

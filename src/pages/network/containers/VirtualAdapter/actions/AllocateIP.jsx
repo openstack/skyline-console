@@ -103,8 +103,8 @@ export default class AllocateIP extends ModalAction {
       {
         name: 'fixed_ips',
         label: t('Owned Subnet'),
-        // component: <IPDistributer subnets={subnetDetails} />,
-        type: 'ip-distributer',
+        // component: <IPDistributor subnets={subnetDetails} />,
+        type: 'ip-distributor',
         subnets: subnetDetails,
         required: true,
       },

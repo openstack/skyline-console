@@ -478,11 +478,11 @@ export default class SelectTable extends React.Component {
     }
     const addKeys = selectedRowKeys.filter((it) => keysInState.indexOf(it) < 0);
     const delKeys = keysInState.filter((it) => selectedRowKeys.indexOf(it) < 0);
-    const oldLefRows = rowsInState.filter(
+    const oldLeftRows = rowsInState.filter(
       (it) => delKeys.indexOf(getItemKey(it)) < 0
     );
     const newRows = data.filter((it) => addKeys.indexOf(getItemKey(it)) >= 0);
-    return [...oldLefRows, ...newRows];
+    return [...oldLeftRows, ...newRows];
   };
 
   getSelectedRows = (selectedRowKeys) => {

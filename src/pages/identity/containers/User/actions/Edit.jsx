@@ -94,11 +94,11 @@ export class EditForm extends ModalAction {
     const domain = domains.filter((it) => it.id === domain_id)[0];
     const project = projects.filter((it) => it.id === default_project_id)[0];
     if (name && this.formRef.current) {
-      const formatedPhone = parsePhoneNumberFromString(phone || '', 'CN') || {
+      const formattedPhone = parsePhoneNumberFromString(phone || '', 'CN') || {
         countryCallingCode: '86',
         nationalNumber: '',
       };
-      const { countryCallingCode, nationalNumber } = formatedPhone;
+      const { countryCallingCode, nationalNumber } = formattedPhone;
       this.formRef.current.setFieldsValue({
         name,
         domain_id: domain ? domain.name : '',

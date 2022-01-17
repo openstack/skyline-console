@@ -13,7 +13,7 @@
       3. 创建挂载了网络`networkName`上的网卡的云主机`instanceName`
 
     ```javascript
-    it('successfully prepair resource', () => {
+    it('successfully prepare resource', () => {
       cy.createNetwork({ name: networkName });
       cy.createRouter({ name: routerName, network: networkName });
       cy.createInstance({ name: instanceName, networkName });
@@ -28,7 +28,7 @@
     - 创建了名称为`networkName`的网络，为连接子网做准备
 
     ```javascript
-    it('successfully prepair resource', () => {
+    it('successfully prepare resource', () => {
       cy.createNetwork({ name: networkName });
     });
     ```
@@ -40,7 +40,7 @@
     - 创建了名称为`policyName`的策略，为修改QoS做准备
 
     ```javascript
-    it('successfully prepair resource by admin', () => {
+    it('successfully prepare resource by admin', () => {
       cy.loginAdmin().wait(5000).createNetworkPolicy({ name: policyName });
     });
     ```
@@ -57,7 +57,7 @@
       3. 创建挂载了网络`networkName`上的网卡的云主机`instanceName`
 
     ```javascript
-    it('successfully prepair resource', () => {
+    it('successfully prepare resource', () => {
       cy.createNetwork({ name: networkName });
       cy.createRouter({ name: routerName, network: networkName });
       cy.createInstance({ name: instanceName, networkName });
@@ -109,23 +109,23 @@
     - 创建云硬盘的备份，需要先准备好云硬盘
 
     ```javascript
-    it('successfully prepair resource', () => {
+    it('successfully prepare resource', () => {
       cy.createVolume(volumeName);
       cy.createNetwork({ name: networkName });
       cy.createInstance({ name: instanceName, networkName });
     });
     ```
 
-- `createSecurityGrouop`
+- `createSecurityGroup`
   - 创建安全组
   - 参数`name`，安全组的名称
   - 以虚拟网卡`test/e2e/integration/pages/network/virtual-adapter.spec.js`为例
     - 测试管理安全组，需要先准备好安全组
 
     ```javascript
-    it('successfully prepair resource', () => {
+    it('successfully prepare resource', () => {
       cy.createFip();
-      cy.createSecurityGrouop({ name: securityGroupName });
+      cy.createSecurityGroup({ name: securityGroupName });
       cy.createNetwork({ name: networkName });
       cy.createRouter({ name: routerName, network: networkName });
       cy.createInstance({ name: instanceName, networkName });
@@ -138,7 +138,7 @@
     - 测试绑定浮动IP，需要准备好可达的浮动IP
 
     ```javascript
-    it('successfully prepair resource', () => {
+    it('successfully prepare resource', () => {
       cy.createNetwork({ name: networkName });
       cy.createRouter({ name: routerName, network: networkName });
       cy.createFip();
@@ -153,7 +153,7 @@
     - 测试管理用户组操作，需要准备好用户组
 
     ```javascript
-    it('successfully prepair resource', () => {
+    it('successfully prepare resource', () => {
       cy.createUser({ name: username });
       cy.createUserGroup({ name: userGroupName });
     });
@@ -166,7 +166,7 @@
     - 测试管理用户操作，需要准备好用户
 
     ```javascript
-    it('successfully prepair resource', () => {
+    it('successfully prepare resource', () => {
       cy.createUser({ name: username });
       cy.createUserGroup({ name: userGroupName });
     });
@@ -180,7 +180,7 @@
     - 测试管理项目权限，需要准备项目
 
     ```javascript
-    it('successfully prepair resource', () => {
+    it('successfully prepare resource', () => {
       cy.createProject({ name: projectName });
       cy.createProject({ name: projectName2 });
       cy.createUserGroup({ name: userGroupName });
@@ -194,7 +194,7 @@
     - 创建裸机，需要能创建裸机的镜像
 
     ```javascript
-    it('successfully prepair resource', () => {
+    it('successfully prepare resource', () => {
       cy.createNetwork({ name: networkName });
       cy.createRouter({ name: routerName, network: networkName });
       cy.createFip();
@@ -232,7 +232,7 @@
   - 删除符合条件的资源
   - 参数`resourceName`，资源名称，支持
 
-    ```javacript
+    ```javascript
     export default {
       // compute
       instance: instanceListUrl,

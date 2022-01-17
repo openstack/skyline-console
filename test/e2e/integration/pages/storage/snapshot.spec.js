@@ -29,7 +29,7 @@ describe('The Volume Snapshot Page', () => {
     cy.login(listUrl);
   });
 
-  it('successfully prepair resource', () => {
+  it('successfully prepare resource', () => {
     cy.createVolume(volumeName);
   });
 

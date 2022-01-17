@@ -246,7 +246,7 @@ export default class BaseClient {
   generateSubSonResource = (
     resourceName,
     subResourceName,
-    subSubResonseName,
+    subSubResourceName,
     responseKey
   ) => ({
     list: (id, subId, params, ...args) =>
@@ -254,7 +254,7 @@ export default class BaseClient {
         this.getSubSubResourceListUrl(
           resourceName,
           subResourceName,
-          subSubResonseName,
+          subSubResourceName,
           id,
           subId
         ),
@@ -266,7 +266,7 @@ export default class BaseClient {
         this.getSubSubResourceDetailUrl(
           resourceName,
           subResourceName,
-          subSubResonseName,
+          subSubResourceName,
           id,
           subId,
           subSubId
@@ -279,7 +279,7 @@ export default class BaseClient {
         this.getSubSubResourceListUrl(
           resourceName,
           subResourceName,
-          subSubResonseName,
+          subSubResourceName,
           id,
           subId
         ),
@@ -291,7 +291,7 @@ export default class BaseClient {
         this.getSubSubResourceDetailUrl(
           resourceName,
           subResourceName,
-          subSubResonseName,
+          subSubResourceName,
           id,
           subId,
           subSubId
@@ -304,7 +304,7 @@ export default class BaseClient {
         this.getSubSubResourceDetailUrl(
           resourceName,
           subResourceName,
-          subSubResonseName,
+          subSubResourceName,
           id,
           subId,
           subSubId
@@ -317,7 +317,7 @@ export default class BaseClient {
         this.getSubSubResourceDetailUrl(
           resourceName,
           subResourceName,
-          subSubResonseName,
+          subSubResourceName,
           id,
           subId,
           subSubId
@@ -329,7 +329,7 @@ export default class BaseClient {
         this.getSubSubResourceDetailUrl(
           resourceName,
           subResourceName,
-          subSubResonseName,
+          subSubResourceName,
           id,
           subId,
           subSubId

@@ -25,7 +25,7 @@ describe('The Router Page', () => {
     cy.login(listUrl);
   });
 
-  it('successfully prepair resource', () => {
+  it('successfully prepare resource', () => {
     cy.createNetwork({ name: networkName });
   });
 
@@ -34,7 +34,7 @@ describe('The Router Page', () => {
       .formInput('name', name)
       .formText('description', name)
       .formTableSelect('hints')
-      .formCheckboxClick('openExterlNet')
+      .formCheckboxClick('openExternalNetwork')
       .wait(2000)
       .formTableSelect('externalNetwork')
       .clickModalActionSubmitButton();

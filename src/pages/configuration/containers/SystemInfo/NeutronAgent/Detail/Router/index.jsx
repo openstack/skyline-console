@@ -14,7 +14,7 @@
 
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import { getRouterColumns, routerFitlers } from 'resources/router';
+import { getRouterColumns, routerFilters } from 'resources/router';
 import { NeutronAgentRouterStore } from 'stores/neutron/agent-router';
 import actionConfigs from './actions';
 
@@ -44,7 +44,7 @@ export default class Router extends Base {
   getColumns = () => getRouterColumns(this);
 
   get searchFilters() {
-    return routerFitlers;
+    return routerFilters;
   }
 
   get adminPageHasProjectFilter() {

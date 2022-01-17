@@ -88,7 +88,7 @@ export default class EnumSelect extends Component {
     const options = this.getOptions();
     const enumOptions = this.getEnumOptions();
     const defaultOperator = this.getDefaultOperator();
-    const deaultEnums = this.getDefaultEnums();
+    const defaultEnums = this.getDefaultEnums();
     return (
       <div>
         <Select
@@ -100,7 +100,7 @@ export default class EnumSelect extends Component {
         <Select
           options={enumOptions}
           mode="tags"
-          defaultValue={deaultEnums}
+          defaultValue={defaultEnums}
           onChange={this.onChangeEnum}
           placeholder={t('Please select')}
         />

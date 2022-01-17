@@ -29,7 +29,7 @@ export class VpnIPsecConnectionStore extends Base {
   }
 
   @action
-  async fetChDetailWithPolicyDetail({
+  async fetchDetailWithPolicyDetail({
     id,
     ikePolicyID,
     ipsecPolicyID,

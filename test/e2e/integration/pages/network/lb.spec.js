@@ -44,7 +44,7 @@ onlyOn(lbServiceEnabled, () => {
       cy.login(listUrl);
     });
 
-    it('successfully prepair resource', () => {
+    it('successfully prepare resource', () => {
       cy.createNetwork({ name: networkName });
       cy.createRouter({ name: routerName, network: networkName });
       cy.createFip();

@@ -32,7 +32,7 @@ describe('The User Page', () => {
     cy.loginAdmin(listUrl);
   });
 
-  it('successfully prepair resource', () => {
+  it('successfully prepare resource', () => {
     cy.createProject({ name: projectName });
     cy.createProject({ name: projectName2 });
     cy.createUserGroup({ name: userGroupName });

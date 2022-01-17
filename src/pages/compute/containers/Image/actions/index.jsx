@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import CreatAction from './Create';
+import CreateAction from './Create';
 import EditAction from './Edit';
 import DeleteAction from './Delete';
 // import CreateInstance from 'pages/compute/containers/Instance/actions/StepCreate';
@@ -41,7 +41,7 @@ const actionConfigs = {
     ],
   },
   batchActions: [DeleteAction],
-  primaryActions: [CreatAction],
+  primaryActions: [CreateAction],
 };
 
 const actionConfigsAdmin = {
@@ -60,7 +60,7 @@ const actionConfigsAdmin = {
     ],
   },
   batchActions: [DeleteAction],
-  primaryActions: [CreatAction],
+  primaryActions: [CreateAction],
 };
 
 export default { actionConfigs, actionConfigsAdmin };

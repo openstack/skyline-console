@@ -411,7 +411,7 @@ export default class BaseList extends React.Component {
     return false;
   }
 
-  setRefreshdataTimerTransition = () => {
+  setRefreshDataTimerTransition = () => {
     this.stopRefreshAuto();
     if (this.dataTimerTransition) {
       return;
@@ -422,7 +422,7 @@ export default class BaseList extends React.Component {
     }, this.dataDurationTransition * 1000);
   };
 
-  setRefreshdataTimerAuto = () => {
+  setRefreshDataTimerAuto = () => {
     this.stopRefreshTransition();
     if (!this.ableAutoFresh) {
       return;
@@ -511,7 +511,7 @@ export default class BaseList extends React.Component {
       containerProps: this.props,
       expandable: this.expandable,
       showTimeFilter: !!this.filterTimeKey,
-      filterTimeDefalutValue: this.filterTimeDefalutValue,
+      filterTimeDefaultValue: this.filterTimeDefaultValue,
       isPageByBack: this.isFilterByBackend,
       isSortByBack: this.isSortByBackend,
       isCourier: this.isCourier,
@@ -558,7 +558,7 @@ export default class BaseList extends React.Component {
   handleInputFocus = (value) => {
     this.inAction = value;
     if (!value) {
-      this.setRefreshdataTimerAuto();
+      this.setRefreshDataTimerAuto();
     }
   };
 
@@ -658,10 +658,10 @@ export default class BaseList extends React.Component {
         const title = t('The session has expired, please log in again.');
         Notify.errorWithDetail(null, title);
       } else if (status === 500) {
-        const sysErr = t('System is error, please try again later.');
+        const systemErr = t('System is error, please try again later.');
         const title = `${t('Get {name} error.', {
           name: this.name.toLowerCase(),
-        })} ${sysErr}`;
+        })} ${systemErr}`;
         Notify.errorWithDetail(null, title);
       } else {
         const error = {
@@ -707,7 +707,7 @@ export default class BaseList extends React.Component {
   };
 
   getDownloadData = async ({ ...params } = {}) => {
-    // only used for donwload all and pagination by backend
+    // only used for download all and pagination by backend
     const { filters } = this.state;
     const newParams = {
       ...this.props.match.params,
@@ -855,9 +855,9 @@ export default class BaseList extends React.Component {
       this.itemInTransitionFunction(item)
     );
     if (hasTransData) {
-      this.setRefreshdataTimerTransition();
+      this.setRefreshDataTimerTransition();
     } else {
-      this.setRefreshdataTimerAuto();
+      this.setRefreshDataTimerAuto();
     }
     this.updateHintsByData(items);
     this.setTableHeight();

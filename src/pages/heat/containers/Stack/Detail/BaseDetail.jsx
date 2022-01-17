@@ -68,7 +68,7 @@ export default class BaseDetail extends Base {
   get startCard() {
     const options = [
       {
-        label: t('Timeout(Mininte)'),
+        label: t('Timeout(Minute)'),
         dataIndex: 'timeout_mins',
       },
       {

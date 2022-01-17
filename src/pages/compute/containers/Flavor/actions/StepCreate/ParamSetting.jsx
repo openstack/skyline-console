@@ -28,7 +28,7 @@ import {
   isComputeOptimized,
   pageTypeList,
   getAllArchitecture,
-  getfamiliItemValue,
+  getFamilyItemValue,
   isGpuVisual,
 } from 'resources/flavor';
 import globalSettingStore from 'stores/skyline/setting';
@@ -48,8 +48,8 @@ export class ParamSetting extends Base {
     this.updateDefaultValue();
   }
 
-  get familiItemValue() {
-    return getfamiliItemValue(this.settingStore.list.data);
+  get familyItemValue() {
+    return getFamilyItemValue(this.settingStore.list.data);
   }
 
   get tab() {
@@ -70,7 +70,7 @@ export class ParamSetting extends Base {
     if (!architecture) {
       return [];
     }
-    const familyItem = this.familiItemValue.find(
+    const familyItem = this.familyItemValue.find(
       (it) => it.architecture === architecture
     );
     if (!familyItem) {
@@ -517,7 +517,7 @@ export class ParamSetting extends Base {
         name: 'attachUsb',
         label: t('Attach USB'),
         type: 'radio',
-        optionTyoe: 'default',
+        optionType: 'default',
         hidden: !this.usbTypes[0],
         options: [
           {

@@ -230,7 +230,7 @@ export const snapshotTypeTip = (
   </>
 );
 
-export const getVolumnColumnsList = (self) => {
+export const getVolumeColumnsList = (self) => {
   const columns = [
     {
       title: t('ID/Name'),

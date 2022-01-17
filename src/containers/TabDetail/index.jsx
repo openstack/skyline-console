@@ -104,7 +104,7 @@ export default class DetailBase extends React.Component {
     return [];
   }
 
-  onCollapedCallback = () => {};
+  onCollapsedCallback = () => {};
 
   handleChangeTab = (tab) => {
     // this.setState({
@@ -204,7 +204,7 @@ export default class DetailBase extends React.Component {
         collapsed: !collapsed,
       },
       () => {
-        this.onCollapedCallback(!collapsed);
+        this.onCollapsedCallback(!collapsed);
       }
     );
   };

@@ -2,7 +2,7 @@ import moment from 'moment';
 import { timeFormatStr } from 'utils/time';
 import {
   groupArray,
-  bytesFitler,
+  bytesFilter,
   computePercentage,
   firstUpperCase,
   formatSize,
@@ -12,7 +12,7 @@ import {
   getGBValue,
   getNoValue,
   getOptions,
-  getOptionsWithNoset,
+  getOptionsWithNoSet,
   getQueryString,
   getYesNo,
   getYesNoList,
@@ -106,18 +106,18 @@ describe('test utils index.js', () => {
     expect(firstUpperCase(0)).toBe(0);
   });
 
-  it('bytesFitler', () => {
-    expect(bytesFitler(-1)).toBe('');
-    expect(bytesFitler(NaN)).toBe('');
-    expect(bytesFitler(100)).toBe(t('{ size } bytes', { size: '100' }));
-    expect(bytesFitler(1024)).toBe(t('{ size } KB', { size: '1.00' }));
-    expect(bytesFitler(10 * 1024 ** 2)).toBe(
+  it('bytesFilter', () => {
+    expect(bytesFilter(-1)).toBe('');
+    expect(bytesFilter(NaN)).toBe('');
+    expect(bytesFilter(100)).toBe(t('{ size } bytes', { size: '100' }));
+    expect(bytesFilter(1024)).toBe(t('{ size } KB', { size: '1.00' }));
+    expect(bytesFilter(10 * 1024 ** 2)).toBe(
       t('{ size } MB', { size: '10.00' })
     );
-    expect(bytesFitler(1024 ** 2)).toBe(t('{ size } MB', { size: '1.00' }));
-    expect(bytesFitler(1024 ** 3)).toBe(t('{ size } GB', { size: '1.00' }));
-    expect(bytesFitler(1024 ** 4)).toBe(t('{ size } TB', { size: '1.00' }));
-    expect(bytesFitler(3.15 * 1024 ** 4)).toBe(
+    expect(bytesFilter(1024 ** 2)).toBe(t('{ size } MB', { size: '1.00' }));
+    expect(bytesFilter(1024 ** 3)).toBe(t('{ size } GB', { size: '1.00' }));
+    expect(bytesFilter(1024 ** 4)).toBe(t('{ size } TB', { size: '1.00' }));
+    expect(bytesFilter(3.15 * 1024 ** 4)).toBe(
       t('{ size } TB', { size: '3.15' })
     );
   });
@@ -182,9 +182,9 @@ describe('test utils index.js', () => {
     expect(generateArray(-2, 2)).toEqual([-2, -1, 0, 1]);
   });
 
-  it('getOptionsWithNoset', () => {
+  it('getOptionsWithNoSet', () => {
     expect(
-      getOptionsWithNoset({
+      getOptionsWithNoSet({
         key1: 'Key1',
         key2: 'Key2',
       })

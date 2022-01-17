@@ -20,26 +20,28 @@ export default class Index extends Component {
     super(props);
     this.state = {
       value: undefined,
-      inputVal: undefined
+      inputVal: undefined,
     };
   }
 
   onChange = (val) => {
-    this.setState({
-      value: val,
-      inputVal: undefined
-    }, () => {
-      const { formRef, onChange, name } = this.props;
-      formRef.current &&
-        formRef.current.setFieldsValue({ [name]: val });
-      onChange && onChange(val);
-    });
+    this.setState(
+      {
+        value: val,
+        inputVal: undefined,
+      },
+      () => {
+        const { formRef, onChange, name } = this.props;
+        formRef.current && formRef.current.setFieldsValue({ [name]: val });
+        onChange && onChange(val);
+      }
+    );
   };
 
   onSearch = (value) => {
     !!value &&
       this.setState({
-        inputVal: value
+        inputVal: value,
       });
   };
 
@@ -55,7 +57,7 @@ export default class Index extends Component {
       <Select
         showSearch
         value={value}
-        style={{ width: "100%", height: '100%' }}
+        style={{ width: '100%', height: '100%' }}
         onChange={this.onChange}
         onSearch={this.onSearch}
         onBlur={this.onBlur}

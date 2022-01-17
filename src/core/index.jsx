@@ -53,7 +53,7 @@ const getUser = async (callback) => {
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log(e);
-      store.gotoLoginPage(currentPath);
+      store.goToLoginPage(currentPath);
     } finally {
       callback && callback();
     }

@@ -18,7 +18,6 @@ import Base from 'containers/List';
 import { provisioningStatusCodes } from 'resources/lb';
 import globalPoolMemberStore from 'stores/octavia/pool-member';
 import { actionConfigs, adminActions } from './Actions';
-// import { toJS } from 'mobx';
 
 @inject('rootStore')
 @observer

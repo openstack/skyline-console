@@ -331,7 +331,7 @@ export class BaseDetail extends Base {
     const {
       match: { url },
     } = this.props;
-    const attachedVoluems = (this.volumeStore.list.data || []).map((item) => {
+    const attachedVolumes = (this.volumeStore.list.data || []).map((item) => {
       const volumeInfos = [
         {
           label: item.disk_tag === 'os_disk' ? t('Root Disk') : t('Data Disk'),
@@ -386,7 +386,7 @@ export class BaseDetail extends Base {
       <Row className={styles['vm-volume']}>
         <div className={styles['volume-inline']} />
         <div className={styles['volume-content']}>
-          {attachedVoluems}
+          {attachedVolumes}
           <div>
             <div className={styles['attach-action-line']} />
             {/* <a onClick={this.info}>{t('Attach volume')}</a> */}

@@ -17,7 +17,7 @@ import { observer, inject } from 'mobx-react';
 import { Popover, Col, Row, Skeleton } from 'antd';
 import Base from 'containers/List';
 import globalObjectStore, { ObjectStore } from 'stores/swift/object';
-import { bytesFitler } from 'utils/index';
+import { bytesFilter } from 'utils/index';
 import { allCanReadPolicy } from 'resources/policy';
 import { toJS } from 'mobx';
 import { isEqual } from 'lodash';
@@ -29,15 +29,15 @@ import actionConfigs from './actions';
 function PopUpContent({ item }) {
   const { container, name, shortName } = item;
   const [data, setData] = useState([]);
-  const [loading, setLoaidng] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let timeout = null;
     (async function () {
-      setLoaidng(true);
+      setLoading(true);
       const cb = await new ObjectStore().fetchDetail({ container, name });
       timeout = setTimeout(() => {
-        setLoaidng(false);
+        setLoading(false);
         setData(cb);
       }, 200);
     })();
@@ -73,7 +73,7 @@ function PopUpContent({ item }) {
       </Row>
       <Row>
         <Col span={8}>{t('Size')}</Col>
-        <Col span={12}>{bytesFitler(data.size || item.bytes)}</Col>
+        <Col span={12}>{bytesFilter(data.size || item.bytes)}</Col>
       </Row>
       {!isFolder(item) && (
         <Row>
@@ -203,7 +203,7 @@ export default class ContainerObject extends Base {
         if (data.type === 'folder') {
           return '-';
         }
-        return bytesFitler(value);
+        return bytesFilter(value);
       },
     },
     {

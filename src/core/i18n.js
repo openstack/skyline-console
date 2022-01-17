@@ -20,7 +20,7 @@ import SLI18n from 'utils/translate';
 import { setLocalStorageItem } from 'utils/local-storage';
 import locales from '../locales';
 
-const SUPPOER_LOCALES = [
+const SUPPORT_LOCALES = [
   {
     name: 'English',
     value: 'en',
@@ -52,7 +52,7 @@ const getLocale = () => {
   });
 
   // 如果没找到，则默认为汉语
-  if (!_.find(SUPPOER_LOCALES, { value: currentLocale })) {
+  if (!_.find(SUPPORT_LOCALES, { value: currentLocale })) {
     currentLocale = 'zh-cn';
     // currentLocale = 'en';
   }

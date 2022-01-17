@@ -157,7 +157,7 @@ class CreateForm extends ModalAction {
         title: t('Name'),
       },
       {
-        title: t('Select Projct Role'),
+        title: t('Select Project Role'),
         dataIndex: 'id',
         render: (id) => {
           return (

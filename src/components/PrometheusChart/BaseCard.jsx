@@ -83,10 +83,10 @@ const BaseCard = (props) => {
     setIsLoading(false);
   };
 
-  const filterChartData = (filt) => {
+  const filterChartData = (filter) => {
     setIsLoading(true);
     // refresh component
-    const newChartData = initData.filter(filt);
+    const newChartData = initData.filter(filter);
     setChartData(newChartData);
     setIsLoading(false);
   };

@@ -6,7 +6,7 @@ English | [简体中文](../../zh/develop/3-8-ConfirmAction-introduction.md)
 
 - After click the action button, the confirm modal will display.
 - After click the `Confirm` button, the `loading` status will be displayed according to the status of request.
-- After click the `Cancle` button, the modal form will disappear.
+- After click the `Cancel` button, the modal form will disappear.
 - If the request is sent successfully, a prompt message of successful action will be displayed in the upper right corner, and it will automatically disappear after a few seconds.
 - If the request fails, an error message will be displayed in the upper right corner of the form page, which can only disappear after clicking the close button.
 - Support batch action, after selecting multiple items in the table, you can click the action button above the table to perform batch action.

@@ -187,7 +187,7 @@ English | [Chinese](../../zh/develop/2-catalog-introduction.md)
 │   │   │   │   │   ├── Hypervisor  (Hypervisor manager)
 │   │   │   │   │   └── index.jsx
 │   │   │   │   ├── Image   (Image)
-│   │   │   │   ├── Instance    (Intance)
+│   │   │   │   ├── Instance    (Instance)
 │   │   │   │   │   ├── Detail  (Detail page)
 │   │   │   │   │   │   ├── BaseDetail  (Base info)
 │   │   │   │   │   │   ├── SecurityGroup   (Security group)
@@ -279,7 +279,7 @@ English | [Chinese](../../zh/develop/2-catalog-introduction.md)
 │   │   ├── identity    (Identity management)
 │   │   │   ├── App.jsx
 │   │   │   ├── containers
-│   │   │   │   ├── Domain  (Domian)
+│   │   │   │   ├── Domain  (Domain)
 │   │   │   │   ├── Project (Project)
 │   │   │   │   ├── Role    (Role)
 │   │   │   │   ├── User    (User)

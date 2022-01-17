@@ -250,8 +250,8 @@ export const getAreaChartOps = ({
   };
 };
 
-export const getXAxisTickFormatter = (chartValus = []) => {
-  const timeList = chartValus.map(({ time }) => +new Date(time));
+export const getXAxisTickFormatter = (chartValues = []) => {
+  const timeList = chartValues.map(({ time }) => +new Date(time));
   const minTime = min(timeList);
   const maxTime = max(timeList);
 

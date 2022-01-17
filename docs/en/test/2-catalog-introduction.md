@@ -24,7 +24,7 @@ test
 │   │       │   ├── keypair.spec.js (keypair)
 │   │       │   └── server-group.spec.js    (server group)
 │   │       ├── configuration   (Platform configuration)
-│   │       │   ├── metadata.spec.js   (metedata)
+│   │       │   ├── metadata.spec.js   (metadata)
 │   │       │   └── system.spec.js  (system info)
 │   │       ├── error.spec.js   (error page)
 │   │       ├── heat    (heat)

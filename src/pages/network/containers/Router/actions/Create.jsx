@@ -62,7 +62,7 @@ export class Create extends ModalAction {
 
   get defaultValue() {
     return {
-      openExterlNet: false,
+      openExternalNetwork: false,
     };
   }
 
@@ -71,16 +71,21 @@ export class Create extends ModalAction {
   static allowed = () => Promise.resolve(true);
 
   onValuesChange = (changedFields) => {
-    if (has(changedFields, 'openExterlNet')) {
+    if (has(changedFields, 'openExternalNetwork')) {
       this.setState({
-        openExterlNet: changedFields.openExterlNet,
+        openExternalNetwork: changedFields.openExternalNetwork,
       });
     }
   };
 
   onSubmit = (values) => {
-    const { openExterlNet, externalNetwork, hints = {}, ...others } = values;
-    const extGateway = openExterlNet
+    const {
+      openExternalNetwork,
+      externalNetwork,
+      hints = {},
+      ...others
+    } = values;
+    const extGateway = openExternalNetwork
       ? {
           external_gateway_info: {
             network_id: externalNetwork.selectedRows[0].id,
@@ -96,7 +101,7 @@ export class Create extends ModalAction {
   };
 
   get formItems() {
-    const { openExterlNet } = this.state;
+    const { openExternalNetwork } = this.state;
     return [
       {
         name: 'name',
@@ -142,7 +147,7 @@ export class Create extends ModalAction {
         ],
       },
       {
-        name: 'openExterlNet',
+        name: 'openExternalNetwork',
         label: t('Options'),
         type: 'check',
         content: t('Open External Gateway'),
@@ -153,8 +158,8 @@ export class Create extends ModalAction {
         type: 'select-table',
         backendPageStore: this.networkStore,
         extraParams: { 'router:external': true },
-        required: openExterlNet,
-        hidden: !openExterlNet,
+        required: openExternalNetwork,
+        hidden: !openExternalNetwork,
         filterParams: [
           {
             label: t('Name'),

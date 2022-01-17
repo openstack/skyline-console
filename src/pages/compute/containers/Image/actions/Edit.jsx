@@ -18,7 +18,7 @@ import globalImageStore from 'stores/glance/image';
 import { imageOS, isOwner } from 'resources/image';
 import { has, get } from 'lodash';
 import { isActive } from 'resources/instance';
-import { NoSetValue, getOptionsWithNoset } from 'utils/index';
+import { NoSetValue, getOptionsWithNoSet } from 'utils/index';
 import { cpuPolicyList, cpuThreadPolicyList } from 'resources/flavor';
 
 @inject('rootStore')
@@ -174,14 +174,14 @@ class Edit extends ModalAction {
         name: 'hw_cpu_policy',
         label: t('CPU Policy'),
         type: 'select',
-        options: getOptionsWithNoset(cpuPolicyList),
+        options: getOptionsWithNoSet(cpuPolicyList),
         hidden: !more,
       },
       {
         name: 'hw_cpu_thread_policy',
         label: t('CPU Thread Policy'),
         type: 'select',
-        options: getOptionsWithNoset(cpuThreadPolicyList),
+        options: getOptionsWithNoSet(cpuThreadPolicyList),
         hidden: !more,
       },
     ];

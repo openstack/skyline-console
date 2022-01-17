@@ -19,7 +19,7 @@ import globalRoleStore from 'stores/keystone/role';
 
 @inject('rootStore')
 @observer
-export default class SystemPermisson extends ModalAction {
+export default class SystemPermission extends ModalAction {
   init() {
     this.store = globalGroupStore;
     this.roleStore = globalRoleStore;

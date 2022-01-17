@@ -45,9 +45,9 @@ export default class Create extends ModalAction {
         label: t('Consumer'),
         type: 'select',
         options: [
-          { value: 'front-end', label: t('Fontend') },
+          { value: 'front-end', label: t('Frontend') },
           { value: 'back-end', label: t('Backend') },
-          { value: 'both', label: t('Both of Fontend and Backend') },
+          { value: 'both', label: t('Both of Frontend and Backend') },
         ],
         required: true,
       },

@@ -17,7 +17,7 @@ import Base from 'containers/List';
 import {
   volumeTransitionStatuses,
   volumeFilters,
-  getVolumnColumnsList,
+  getVolumeColumnsList,
 } from 'resources/volume';
 import globalVolumeStore, { VolumeStore } from 'stores/cinder/volume';
 import { InstanceVolumeStore } from 'stores/nova/instance-volume';
@@ -83,7 +83,7 @@ export class Volume extends Base {
   }
 
   getColumns = () => {
-    return getVolumnColumnsList(this);
+    return getVolumeColumnsList(this);
   };
 
   get searchFilters() {

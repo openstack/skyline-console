@@ -28,9 +28,9 @@ export class HttpRequest {
     this.request = {};
   }
 
-  gotoLoginPage(path) {
+  goToLoginPage(path) {
     const globalRootStore = require('stores/root').default;
-    globalRootStore.gotoLoginPage(path);
+    globalRootStore.goToLoginPage(path);
   }
 
   /**
@@ -102,7 +102,7 @@ export class HttpRequest {
           if (status === 401) {
             const currentPath = window.location.pathname;
             if (currentPath.indexOf('login') < 0) {
-              this.gotoLoginPage(currentPath);
+              this.goToLoginPage(currentPath);
             }
           }
         }

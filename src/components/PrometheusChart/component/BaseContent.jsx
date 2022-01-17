@@ -69,7 +69,6 @@ const BaseContent = (props) => {
       setTimeout(() => {
         setIsLoading(false);
       }, 300);
-      return;
     }
   };
 

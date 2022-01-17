@@ -27,7 +27,7 @@ export const floatingIpStatus = {
   DOWN: t('Down'),
 };
 
-export const resouceType = {
+export const resourceType = {
   compute: t('Instance'),
   Octavia: t('Load Balancer'),
   'network:router_gateway': t('Router'),
@@ -72,43 +72,6 @@ export function getSubnetToRouter(
   return canReachSubnetIdsWithRouterId;
 }
 
-//
-// example:
-// [
-//   [],
-//   [],
-//   [
-//     {
-//       "fixed_ips": [
-//         {
-//           "subnet_id": "7dc1ac8a-656a-4fad-b0ae-55904698224a",
-//           "ip_address": "192.168.68.1"
-//         }
-//       ],
-//       "device_id": "0ff37d0e-3c07-4c7f-852d-087c512af5b8"
-//     }
-//   ]
-// ]
-/**
- * get all ports with fixed_ips information
- * @returns {Promise<[*, *, *, *, *, *, *, *, *, *]>}
- * @example
- * // returns [
- *        [],
- *        [],
- *        [
- *          {
- *            "fixed_ips": [
- *              {
- *                "subnet_id": "7dc1ac8a-656a-4fad-b0ae-55904698224a",
- *                "ip_address": "192.168.68.1"
- *              }
- *            ],
- *            "device_id": "0ff37d0e-3c07-4c7f-852d-087c512af5b8"
- *          }
- *        ]
- *      ]
- */
 export async function getPortsWithFixedIPs() {
   const deviceOwnerList = [
     'network:router_interface_distributed',

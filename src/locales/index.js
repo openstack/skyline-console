@@ -12,14 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// import zhModules from './zh-cn';
-// import enModules from './en';
 import zhData from './zh.json';
 import enData from './en.json';
 
 export default {
-  // zh: Object.assign({}, ...zhModules.map(item => item.default)),
-  // en: Object.assign({}, ...enModules.map(item => item.default)),
   'zh-cn': zhData,
   en: enData,
 };

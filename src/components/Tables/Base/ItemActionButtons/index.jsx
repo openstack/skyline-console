@@ -44,7 +44,7 @@ function getIsAllowedValue(alloweds, index) {
   return result;
 }
 
-// 第一个action一定保留， aciton | 更多
+// 第一个action一定保留， action | 更多
 function DropdownActionButton({
   firstAction = null,
   moreActions = [],

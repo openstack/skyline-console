@@ -26,7 +26,7 @@ export class ProjectInfo extends Component {
     };
   }
 
-  onCollapedCallback = () => {};
+  onCollapsedCallback = () => {};
 
   handleDetailInfo = () => {
     const { collapsed } = this.state;
@@ -35,7 +35,7 @@ export class ProjectInfo extends Component {
         collapsed: !collapsed,
       },
       () => {
-        this.onCollapedCallback(!collapsed);
+        this.onCollapsedCallback(!collapsed);
       }
     );
   };

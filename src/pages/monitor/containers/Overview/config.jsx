@@ -167,9 +167,9 @@ export const physicalNodeRightTopCardList = [
           },
         ];
         const result = get(responses[0], 'data.result', []);
-        result.forEach((sta) => {
-          const idx = sta.metric.adminState === 'enabled' ? 0 : 1;
-          status[idx].value += parseInt(sta.value[1], 10);
+        result.forEach((r) => {
+          const idx = r.metric.adminState === 'enabled' ? 0 : 1;
+          status[idx].value += parseInt(r.value[1], 10);
         });
         return status;
       },

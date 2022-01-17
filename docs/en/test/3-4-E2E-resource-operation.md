@@ -7,13 +7,13 @@ In the E2E process, when creating a resource, it is often necessary to create th
   - Parameter `name`, the name of the instance
   - Parameter `networkName`, the network name selected when the instance was created
   - Take the floating IP associated instance as an example: `test/e2e/integration/pages/network/floatingip.spec.js`
-    - In order to successfully associate with the instance, the router connected to the subnet where the instance's interfae is located must have a public network gateway turned on
+    - In order to successfully associate with the instance, the router connected to the subnet where the instance's interface is located must have a public network gateway turned on
       1. Create a network `networkName` with subnet
       2. Create a router `routerName` with the public network gateway turned on and connected to the network `networkName` subnet
-      3. Create a instance `instanceName` with a interfae on the network `networkName`
+      3. Create a instance `instanceName` with a interface on the network `networkName`
 
     ```javascript
-    it('successfully prepair resource', () => {
+    it('successfully prepare resource', () => {
       cy.createNetwork({ name: networkName });
       cy.createRouter({ name: routerName, network: networkName });
       cy.createInstance({ name: instanceName, networkName });
@@ -28,7 +28,7 @@ In the E2E process, when creating a resource, it is often necessary to create th
     - Created a network named `networkName` in preparation for connecting to subnets
 
     ```javascript
-    it('successfully prepair resource', () => {
+    it('successfully prepare resource', () => {
       cy.createNetwork({ name: networkName });
     });
     ```
@@ -40,7 +40,7 @@ In the E2E process, when creating a resource, it is often necessary to create th
     - Created a policy named `policyName` in preparation for modifying QoS
 
     ```javascript
-    it('successfully prepair resource by admin', () => {
+    it('successfully prepare resource by admin', () => {
       cy.loginAdmin().wait(5000).createNetworkPolicy({ name: policyName });
     });
     ```
@@ -51,13 +51,13 @@ In the E2E process, when creating a resource, it is often necessary to create th
   - Parameter `network`
     - If set, the router will connect to the subnet of the `network` network
   - Take the floating IP associated instance as an example: `test/e2e/integration/pages/network/floatingip.spec.js`
-    - In order to successfully associate with the instance, the router connected to the subnet where the instance's interfae is located must have a public network gateway turned on
+    - In order to successfully associate with the instance, the router connected to the subnet where the instance's interface is located must have a public network gateway turned on
       1. Create a network `networkName` with subnets
       2. Create a router `routerName` with the public network gateway turned on and connected to the network `networkName` subnet
-      3. Create a instance `instanceName` with a interfae on the network `networkName` 
+      3. Create a instance `instanceName` with a interface on the network `networkName` 
 
     ```javascript
-    it('successfully prepair resource', () => {
+    it('successfully prepare resource', () => {
       cy.createNetwork({ name: networkName });
       cy.createRouter({ name: routerName, network: networkName });
       cy.createInstance({ name: instanceName, networkName });
@@ -71,7 +71,7 @@ In the E2E process, when creating a resource, it is often necessary to create th
   - Parameter `name`, the name of the router
 
   - Take the floating IP to delete the associated resource as an example: `test/e2e/integration/pages/network/floatingip.spec.js`
-    - In order to successfully associate with the instance, the router connected to the subnet where the instance's interfae is located must have a public network gateway turned on
+    - In order to successfully associate with the instance, the router connected to the subnet where the instance's interface is located must have a public network gateway turned on
 
     ```javascript
     it('successfully delete related resources', () => {
@@ -109,23 +109,23 @@ In the E2E process, when creating a resource, it is often necessary to create th
     - To create a volume backup, you need to prepare the volume first
 
     ```javascript
-    it('successfully prepair resource', () => {
+    it('successfully prepare resource', () => {
       cy.createVolume(volumeName);
       cy.createNetwork({ name: networkName });
       cy.createInstance({ name: instanceName, networkName });
     });
     ```
 
-- `createSecurityGrouop`
+- `createSecurityGroup`
   - Create a security group
   - Parameter `name`, the name of the security group
   - Take the virtual adapter card as an example: `test/e2e/integration/pages/network/virtual-adapter.spec.js`
      -To test management security group, you need to prepare the security group first
 
     ```javascript
-    it('successfully prepair resource', () => {
+    it('successfully prepare resource', () => {
       cy.createFip();
-      cy.createSecurityGrouop({ name: securityGroupName });
+      cy.createSecurityGroup({ name: securityGroupName });
       cy.createNetwork({ name: networkName });
       cy.createRouter({ name: routerName, network: networkName });
       cy.createInstance({ name: instanceName, networkName });
@@ -138,7 +138,7 @@ In the E2E process, when creating a resource, it is often necessary to create th
     - Test associate floating IP, you need to prepare reachable floating IP
 
     ```javascript
-    it('successfully prepair resource', () => {
+    it('successfully prepare resource', () => {
       cy.createNetwork({ name: networkName });
       cy.createRouter({ name: routerName, network: networkName });
       cy.createFip();
@@ -153,7 +153,7 @@ In the E2E process, when creating a resource, it is often necessary to create th
     - To test management user group, you need to prepare the user group
 
     ```javascript
-    it('successfully prepair resource', () => {
+    it('successfully prepare resource', () => {
       cy.createUser({ name: username });
       cy.createUserGroup({ name: userGroupName });
     });
@@ -166,7 +166,7 @@ In the E2E process, when creating a resource, it is often necessary to create th
     - To test management user,  you need to prepare user
 
     ```javascript
-    it('successfully prepair resource', () => {
+    it('successfully prepare resource', () => {
       cy.createUser({ name: username });
       cy.createUserGroup({ name: userGroupName });
     });
@@ -180,7 +180,7 @@ In the E2E process, when creating a resource, it is often necessary to create th
     - To test management project permission， need to prepare project
 
     ```javascript
-    it('successfully prepair resource', () => {
+    it('successfully prepare resource', () => {
       cy.createProject({ name: projectName });
       cy.createProject({ name: projectName2 });
       cy.createUserGroup({ name: userGroupName });
@@ -194,7 +194,7 @@ In the E2E process, when creating a resource, it is often necessary to create th
      - Create a ironic, image need to be able to create a ironic
 
     ```javascript
-    it('successfully prepair resource', () => {
+    it('successfully prepare resource', () => {
       cy.createNetwork({ name: networkName });
       cy.createRouter({ name: routerName, network: networkName });
       cy.createFip();
@@ -232,7 +232,7 @@ In the E2E process, when creating a resource, it is often necessary to create th
   - Delete qualified resources
   - Parameter `resourceName`, resource name
 
-    ```javacript
+    ```javascript
     export default {
       // compute
       instance: instanceListUrl,

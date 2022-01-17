@@ -6,7 +6,7 @@ English | [简体中文](../../zh/develop/3-7-ModalAction-introduction.md)
 
 - After click the action button, the form modal will display.
 - After click the `Confirm` button, the `loading` status will be displayed according to the status of request.
-- After click the `Cancle` button, the modal form will disappear.
+- After click the `Cancel` button, the modal form will disappear.
 - If the request is sent successfully, a prompt message of successful action will be displayed in the upper right corner, and it will automatically disappear after a few seconds.
 - If the request fails, an error message will be displayed in the upper right corner of the form page, which can only disappear after clicking the close button.
 - Support batch action, after selecting multiple items in the table, you can click the action button above the table to perform batch action.
@@ -214,7 +214,7 @@ English | [简体中文](../../zh/develop/3-7-ModalAction-introduction.md)
     - Such as the `required` attribute change of some form items
   - By default, the change of form item which `type` is `radio` or `more` will automaticly save to `this.state`
   - Take attach interface to instance as an example `src/pages/compute/containers/Instance/actions/AttachInterface.jsx` :
-    - After selecte network in the form, the content of the subnet list will be updated
+    - After select network in the form, the content of the subnet list will be updated
     - However, after select the subnet in the form, the judgment of the input IP will be updated, etc.
 
     ```javascript

@@ -15,9 +15,9 @@
 import { multiTip } from './volume';
 
 export const consumerTypes = {
-  'front-end': t('Fontend'),
+  'front-end': t('Frontend'),
   'back-end': t('Backend'),
-  both: t('Both of Fontend and Backend'),
+  both: t('Both of Frontend and Backend'),
 };
 
 export const creationMethod = {

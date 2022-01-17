@@ -26,7 +26,7 @@ English | [简体中文](../../zh/develop/3-13-Route-introduction.md)
     - `component`, layout components
       - Pages about `auth`, for example `login`, use `src/layouts/User/index.jsx`
       - Pages show after login, for example `instance`, use `src/layouts/Base/index.jsx`
-        - The layout automatically handles the display of the `menu item`, the right side of the content `header`, `breadcrumber`, etc.
+        - The layout automatically handles the display of the `menu item`, the right side of the content `header`, `breadcrumb`, etc.
     - `routes`, The main content of the configuration is an array.
       - Take compute route as an example `src/pages/compute/routes/index.js` :
 
@@ -38,7 +38,7 @@ English | [简体中文](../../zh/develop/3-13-Route-introduction.md)
       - `component`, the component corresponding to page, such as component under `containers`
 
 - For resource-type pages, generally configured
-  - List page, details page, complex creat page in console platform (simple creation generally uses modal)
+  - List page, details page, complex create page in console platform (simple creation generally uses modal)
   - List page, detail page in management platform (with `-admin`/`_admin` in path)
   - For detail page, we recommend using `id`
   - Take instance as an example `src/pages/compute/routes/index.js`

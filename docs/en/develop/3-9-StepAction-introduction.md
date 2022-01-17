@@ -8,7 +8,7 @@ English | [简体中文](../../zh/develop/3-9-StepAction-introduction.md)
 - Has it own route to visit
 - Generally used to create resources, or form with lots of form items
 - Support `Next Step`, `Previous Step` action button
-- After click the `Cancle` button, will automatically jump to the corresponding resource list page
+- After click the `Cancel` button, will automatically jump to the corresponding resource list page
 - If the request is sent successfully, a prompt message of successful action will be displayed in the upper right corner, and it will automatically disappear after a few seconds.
 
   ![FormOneStep](../../zh/develop/images/form/create-success.png)

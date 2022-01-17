@@ -67,7 +67,7 @@ export default class InstanceVolume extends React.Component {
     if (!type) {
       this.setState(
         {
-          errorMsg: t('Pleasse select a type!'),
+          errorMsg: t('Please select a type!'),
           validateStatus: 'error',
         },
         callback

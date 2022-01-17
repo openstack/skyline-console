@@ -14,7 +14,7 @@
 
 import React, { useState } from 'react';
 import { Col, Row, Select } from 'antd';
-import IPAddress from 'components/FormItem/IPDistributer/IPAddress';
+import IPAddress from 'components/FormItem/IPDistributor/IPAddress';
 
 const Item = ({ subnetsAvailable, onChange, value }) => {
   value = value || {

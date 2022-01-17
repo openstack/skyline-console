@@ -60,10 +60,10 @@ export default class ManageMetadata extends ModalAction {
   static allowed = () => Promise.resolve(true);
 
   async getMetadata() {
-    const resouceType = 'OS::Nova::Flavor';
+    const resourceType = 'OS::Nova::Flavor';
     await this.metadataStore.fetchList({
       manage: true,
-      resource_types: resouceType,
+      resource_types: resourceType,
     });
     this.updateDefaultValue();
   }
@@ -173,7 +173,7 @@ export default class ManageMetadata extends ModalAction {
   }
 
   onSubmit = (values) => {
-    const { customs: oldCumtoms, systems: oldSystems } =
+    const { customs: oldCustoms, systems: oldSystems } =
       this.parseExistMetadata();
     const { customs, systems } = values;
     const adds = [];
@@ -181,7 +181,7 @@ export default class ManageMetadata extends ModalAction {
     const replaces = [];
     customs.forEach((it) => {
       const { key, value } = it.value || {};
-      const oldItem = oldCumtoms.find((c) => c.value.key === key);
+      const oldItem = oldCustoms.find((c) => c.value.key === key);
       if (!oldItem) {
         adds.push(it.value);
       } else if (oldItem.value.value !== value) {
@@ -199,7 +199,7 @@ export default class ManageMetadata extends ModalAction {
         replaces.push(item);
       }
     });
-    oldCumtoms.forEach((it) => {
+    oldCustoms.forEach((it) => {
       const item = customs.find((custom) => custom.value.key === it.value.key);
       if (!item) {
         removes.push(it.value.key);

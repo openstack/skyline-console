@@ -46,8 +46,9 @@ export default class BaseDetail extends Base {
   }
 
   get resourceCard() {
-    const { resource_type_associations: resouces = [] } = this.detailData || {};
-    const options = resouces.map((item) => {
+    const { resource_type_associations: resources = [] } =
+      this.detailData || {};
+    const options = resources.map((item) => {
       const { name, prefix } = item;
       const label = name;
       const content = `${t('Prefix')}: ${prefix || '-'}`;

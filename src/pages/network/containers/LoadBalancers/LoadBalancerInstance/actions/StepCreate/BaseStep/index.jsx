@@ -105,7 +105,7 @@ export default class BaseStep extends Base {
       {
         name: 'vip_address',
         label: t('Owned Subnet'),
-        type: 'ip-distributer',
+        type: 'ip-distributor',
         subnets: subnetDetails,
         formRef: this.formRef,
         maxNumber: 1,

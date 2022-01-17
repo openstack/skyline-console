@@ -84,9 +84,11 @@ export class PortStore extends Base {
     const routerInterfaceOwners = [
       'network:router_interface',
       'network:ha_router_replicated_interface',
-      'network:router_interface_distributed'
-    ]
-    const result = await client.skyline.extension.ports({ device_owner: routerInterfaceOwners });
+      'network:router_interface_distributed',
+    ];
+    const result = await client.skyline.extension.ports({
+      device_owner: routerInterfaceOwners,
+    });
     let data = get(result, this.listResponseKey, []);
     data = data.filter((it) => ports.indexOf(it.id) >= 0);
     const items = data.map(this.mapper);

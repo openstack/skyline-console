@@ -56,10 +56,10 @@ export default class ManageMetadata extends ModalAction {
   static allowed = () => Promise.resolve(true);
 
   async getMetadata() {
-    const resouceType = 'OS::Nova::Aggregate';
+    const resourceType = 'OS::Nova::Aggregate';
     await this.metadataStore.fetchList({
       manage: true,
-      resource_types: resouceType,
+      resource_types: resourceType,
     });
     this.updateDefaultValue();
   }

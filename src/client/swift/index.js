@@ -89,8 +89,8 @@ class SwiftClient extends Base {
           },
           {
             key: 'copy',
-            generate: (fromContaier, fromName, toContainer, toName) => {
-              const url = `${fromContaier}/${fromName}`;
+            generate: (fromContainer, fromName, toContainer, toName) => {
+              const url = `${fromContainer}/${fromName}`;
               const headers = {
                 Destination: this.getEncodeUrl(`${toContainer}/${toName}`),
               };

@@ -28,7 +28,7 @@ export default class Manage extends ModalAction {
 
   init() {
     this.store = new MetadataStore();
-    this.getRecourceTypes();
+    this.getResourceTypes();
   }
 
   get name() {
@@ -43,7 +43,7 @@ export default class Manage extends ModalAction {
     return 'large';
   }
 
-  getRecourceTypes() {
+  getResourceTypes() {
     this.store.fetchResourceTypes(this.item);
   }
 

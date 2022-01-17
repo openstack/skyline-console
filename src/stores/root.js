@@ -207,11 +207,11 @@ export class RootStore {
     this.license = null;
     this.version = '';
     this.noticeCount = 0;
-    this.gotoLoginPage();
+    this.goToLoginPage();
   }
 
   @action
-  gotoLoginPage(currentPath, refresh) {
+  goToLoginPage(currentPath, refresh) {
     if (currentPath) {
       this.routing.push(`/auth/login?referer=${currentPath}`);
     } else {

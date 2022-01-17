@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import CreatAction from './Create';
+import CreateAction from './Create';
 // import EditAction from './Edit';
 import DeleteAction from '../../actions/Delete';
 import ManageAccess from '../../actions/ManageAccess';
@@ -28,7 +28,7 @@ const actionConfigs = {
     ],
   },
   batchActions: [DeleteAction],
-  primaryActions: [CreatAction],
+  primaryActions: [CreateAction],
 };
 
 export default actionConfigs;

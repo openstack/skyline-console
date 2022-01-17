@@ -119,6 +119,7 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-spellcheck": "^0.0.19",
     "file-loader": "^6.0.0",
     "grunt": "^1.2.1",
     "happypack": "^5.0.1",

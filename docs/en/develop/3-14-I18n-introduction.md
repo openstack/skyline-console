@@ -36,7 +36,7 @@ English | [简体中文](../../zh/develop/3-14-I18n-introduction.md)
   yarn run i18n
   ```
 
-  - After colleced, `en.json` and `zh.json` will automatically update.
+  - After collect, `en.json` and `zh.json` will automatically update.
 
 - Update Chinese
-  - After colleced, just update directly in `zh.json`.
+  - After collect, just update directly in `zh.json`.

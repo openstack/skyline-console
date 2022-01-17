@@ -35,9 +35,9 @@ Cypress.Commands.add('visitPage', (url = '') => {
 
 Cypress.Commands.add(
   'login',
-  (visitUrl = '', swithToAdmin = false, isAdmin = false) => {
+  (visitUrl = '', switchToAdmin = false, isAdmin = false) => {
     cy.setLanguage();
-    const switchProject = swithToAdmin;
+    const switchProject = switchToAdmin;
     if (isAdmin) {
       if (Cypress.config('adminToken')) {
         cy.setCookie('session', Cypress.config('adminSession'));
@@ -108,8 +108,8 @@ Cypress.Commands.add('clearToken', () => {
   Cypress.config('adminToken', null);
 });
 
-Cypress.Commands.add('loginAdmin', (visitUrl = '', swithToAdmin = false) => {
-  const switchProject = swithToAdmin || Cypress.env('switchToAdminProject');
+Cypress.Commands.add('loginAdmin', (visitUrl = '', switchToAdmin = false) => {
+  const switchProject = switchToAdmin || Cypress.env('switchToAdminProject');
   cy.login(visitUrl || '/base/overview-admin', switchProject, true);
 });
 

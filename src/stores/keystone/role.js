@@ -22,7 +22,7 @@ export class RoleStore extends Base {
   }
 
   @observable
-  implieRoles = {};
+  implyRoles = {};
 
   @action
   async fetchImpliedRoles({ id }) {
@@ -51,7 +51,7 @@ export class RoleStore extends Base {
       sourceRole[source] = roles;
     });
     this.isLoading = false;
-    this.implieRoles = sourceRole;
+    this.implyRoles = sourceRole;
   }
 }
 

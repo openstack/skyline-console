@@ -232,11 +232,11 @@ export class NetworkStore extends Base {
       const resData = this.topology;
       routersRes.routers.map((it) => {
         const routerSubnets = [];
-        const portforwardings = portRes.ports.filter(
+        const portForwardings = portRes.ports.filter(
           (port) => port.device_id === it.id
         );
-        portforwardings.forEach((portforwarding) => {
-          const { fixed_ips } = portforwarding;
+        portForwardings.forEach((portForwarding) => {
+          const { fixed_ips } = portForwarding;
           if (
             fixed_ips[0] &&
             routerSubnets.indexOf(fixed_ips[0].subnet_id) === -1

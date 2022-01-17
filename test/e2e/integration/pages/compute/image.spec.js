@@ -35,7 +35,7 @@ describe('The Image Page', () => {
     cy.login(listUrl);
   });
 
-  it('successfully prepair resource', () => {
+  it('successfully prepare resource', () => {
     cy.loginAdmin();
     cy.createProject({ name: projectName });
   });

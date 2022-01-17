@@ -48,13 +48,13 @@ Generally, when testing the corresponding functions of a resource, follow the fo
      cy.createRouter({ name: routerName, network: networkName });
      ```
 
-   - Create floating ip`cy.createFip`，Used to test associat floating ip
+   - Create floating ip`cy.createFip`，Used to test associate floating ip
 
      ```javascript
      cy.createFip();
      ```
 
-   - Create volumr `cy.createVolume`(Used to test attach volume)
+   - Create volume `cy.createVolume`(Used to test attach volume)
 
      ```javascript
      cy.createVolume(volumeName);

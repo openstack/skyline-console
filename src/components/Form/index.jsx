@@ -269,7 +269,7 @@ export default class BaseForm extends React.Component {
   // eslint-disable-next-line no-unused-vars
   onSubmit = (values) => Promise.resolve();
 
-  updateSumbitting = (value) => {
+  updateSubmitting = (value) => {
     this.setState({
       isSubmitting: value || false,
     });
@@ -282,14 +282,14 @@ export default class BaseForm extends React.Component {
     if (this.codeError) {
       return;
     }
-    this.updateSumbitting(true);
+    this.updateSubmitting(true);
     if (!this.onSubmit) {
       return callback(true, false);
     }
     const submitData = this.getSubmitData(values);
     return this.onSubmit(submitData, containerProps).then(
       (response) => {
-        this.updateSumbitting(false);
+        this.updateSubmitting(false);
         !this.isModal && this.routing.push(this.listUrl);
         this.response = response;
         if (callback && isFunction(callback)) {
@@ -330,7 +330,7 @@ export default class BaseForm extends React.Component {
         }
       },
       (err = {}) => {
-        this.updateSumbitting(false);
+        this.updateSubmitting(false);
         this.responseError = err;
         const { response: { data } = {} } = err;
         this.showNotice && Notify.errorWithDetail(data, this.errorText);

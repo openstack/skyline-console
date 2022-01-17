@@ -13,7 +13,7 @@ env:
   imageDownloadUrl: http://download.cirros-cloud.net/0.5.1/cirros-0.5.1-x86_64-disk.img
   imageCanChangePassword: false
   extensions:
-    - cinder::buckup
+    - cinder::backup
     - neutron::qos
     - neutron::vpn
     - neutron::port-forwarding

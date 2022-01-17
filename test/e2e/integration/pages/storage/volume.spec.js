@@ -34,14 +34,14 @@ describe('The Volume Page', () => {
   const instanceName = `e2e-instance-for-volume-${uuid}`;
 
   const backupServiceEnabled = (Cypress.env('extensions') || []).includes(
-    'cinder::buckup'
+    'cinder::backup'
   );
 
   beforeEach(() => {
     cy.login(listUrl);
   });
 
-  it('successfully prepair resource by admin', () => {
+  it('successfully prepare resource by admin', () => {
     cy.loginAdmin(volumeTypeListUrl)
       .clickHeaderButton(1)
       .formInput('name', volumeTypeName)
@@ -49,7 +49,7 @@ describe('The Volume Page', () => {
       .waitTableLoading();
   });
 
-  it('successfully prepair resource', () => {
+  it('successfully prepare resource', () => {
     cy.createNetwork({ name: networkName });
     cy.createInstance({ name: instanceName, networkName });
   });

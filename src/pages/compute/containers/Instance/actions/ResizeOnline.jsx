@@ -78,13 +78,13 @@ export class ResizeOnline extends ModalAction {
 
   static policy = 'os_compute_api:servers:resize';
 
-  static isAtive = (item) => checkStatus(['active'], item);
+  static isActive = (item) => checkStatus(['active'], item);
 
   static allowed = (item, containerProps) => {
     const { isAdminPage } = containerProps;
     return Promise.resolve(
       !this.isAdminPage &&
-        this.isAtive(item) &&
+        this.isActive(item) &&
         isNotLockedOrAdmin(item, isAdminPage) &&
         !isIronicInstance(item) &&
         hasOnlineResizeFlavor(item)

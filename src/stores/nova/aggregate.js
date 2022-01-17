@@ -23,25 +23,25 @@ export class AggregateStore extends Base {
 
   @action
   manageHost({ adds, dels, id }) {
-    const bodys = [];
+    const items = [];
     adds.forEach((it) => {
-      const body = {
+      const item = {
         add_host: {
           host: it,
         },
       };
-      bodys.push(body);
+      items.push(item);
     });
     dels.forEach((it) => {
-      const body = {
+      const item = {
         remove_host: {
           host: it,
         },
       };
-      bodys.push(body);
+      items.push(item);
     });
     return this.submitting(
-      Promise.all(bodys.map((it) => this.client.action(id, it)))
+      Promise.all(items.map((it) => this.client.action(id, it)))
     );
   }
 

@@ -44,7 +44,7 @@ export class Create extends FormAction {
     this.imageStore = globalImageStore;
     this.volumeStore = globalVolumeStore;
     this.volumeTypeStore = globalVolumeTypeStore;
-    this.backupstore = globalBackupStore;
+    this.backupStore = globalBackupStore;
     this.getQuota();
     this.getAvailZones();
     this.getImages();
@@ -147,7 +147,7 @@ export class Create extends FormAction {
   }
 
   get backups() {
-    return (this.backupstore.list.data || []).map((it) => ({
+    return (this.backupStore.list.data || []).map((it) => ({
       ...it,
       key: it.id,
     }));

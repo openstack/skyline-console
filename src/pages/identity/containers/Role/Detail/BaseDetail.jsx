@@ -36,7 +36,7 @@ export default class BaseDetail extends Base {
   };
 
   get detailData() {
-    return toJS(this.store.implieRoles);
+    return toJS(this.store.implyRoles);
   }
 
   get leftCards() {

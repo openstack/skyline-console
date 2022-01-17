@@ -135,7 +135,7 @@ export default class BaseStore {
   }
 
   get listFilterByProject() {
-    // use it for nuetron apois
+    // use it for neutron api
     return false;
   }
 

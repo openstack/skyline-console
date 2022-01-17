@@ -24,7 +24,7 @@ describe('The Recycle Bin Page', () => {
     cy.login(listUrl);
   });
 
-  it('successfully prepair resource', () => {
+  it('successfully prepare resource', () => {
     cy.createNetwork({ name: networkName });
     cy.createInstance({ name: instanceName, networkName });
   });

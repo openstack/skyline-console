@@ -80,13 +80,13 @@ export class Resize extends ModalAction {
 
   static policy = 'os_compute_api:servers:resize';
 
-  static isAtiveOrShutOff = (item) => checkStatus(['active', 'shutoff'], item);
+  static isActiveOrShutOff = (item) => checkStatus(['active', 'shutoff'], item);
 
   static allowed = (item, containerProps) => {
     const { isAdminPage } = containerProps;
     return Promise.resolve(
       !this.isAdminPage &&
-        this.isAtiveOrShutOff(item) &&
+        this.isActiveOrShutOff(item) &&
         isNotLockedOrAdmin(item, isAdminPage) &&
         !isIronicInstance(item)
     );

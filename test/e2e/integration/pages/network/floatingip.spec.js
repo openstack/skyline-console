@@ -31,12 +31,12 @@ describe('The Floating IP Page', () => {
   });
 
   onlyOn(qosServiceEnabled, () => {
-    it('successfully prepair resource by admin', () => {
+    it('successfully prepare resource by admin', () => {
       cy.loginAdmin().wait(5000).createNetworkPolicy({ name: policyName });
     });
   });
 
-  it('successfully prepair resource', () => {
+  it('successfully prepare resource', () => {
     cy.createNetwork({ name: networkName });
     cy.createRouter({ name: routerName, network: networkName });
     cy.createInstance({ name: instanceName, networkName });

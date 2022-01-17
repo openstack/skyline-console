@@ -1,7 +1,13 @@
 {
-  "extends": ["airbnb", "plugin:prettier/recommended"],
+  "extends": [
+    "airbnb",
+    "plugin:prettier/recommended"
+  ],
   "parser": "babel-eslint",
-  "plugins": ["cypress"],
+  "plugins": [
+    "cypress",
+    "spellcheck"
+  ],
   "parserOptions": {
     "sourceType": "module",
     "ecmaFeatures": {
@@ -21,21 +27,63 @@
     "import/resolver": {
       "alias": {
         "map": [
-          ["@", "./src"],
-          ["src", "./src"],
-          ["image", "./src/asset/image"],
-          ["components", "./src/components"],
-          ["utils", "./src/utils"],
-          ["stores", "./src/stores"],
-          ["pages", "./src/pages"],
-          ["containers", "./src/containers"],
-          ["layouts", "./src/layouts"],
-          ["client", "./src/client"],
-          ["resources", "./src/resources"],
-          ["core", "./src/core"],
-          ["asset", "./src/asset"]
+          [
+            "@",
+            "./src"
+          ],
+          [
+            "src",
+            "./src"
+          ],
+          [
+            "image",
+            "./src/asset/image"
+          ],
+          [
+            "components",
+            "./src/components"
+          ],
+          [
+            "utils",
+            "./src/utils"
+          ],
+          [
+            "stores",
+            "./src/stores"
+          ],
+          [
+            "pages",
+            "./src/pages"
+          ],
+          [
+            "containers",
+            "./src/containers"
+          ],
+          [
+            "layouts",
+            "./src/layouts"
+          ],
+          [
+            "client",
+            "./src/client"
+          ],
+          [
+            "resources",
+            "./src/resources"
+          ],
+          [
+            "core",
+            "./src/core"
+          ],
+          [
+            "asset",
+            "./src/asset"
+          ]
         ],
-        "extensions": [".js", ".jsx"]
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
       }
     }
   },
@@ -69,7 +117,21 @@
     "import/prefer-default-export": "off",
     "no-nested-ternary": "warn",
     "import/no-named-as-default": "warn",
-    "global-require": "off"
+    "global-require": "off",
+    "spellcheck/spell-checker": [
+      "warn",
+      {
+        "comments": true,
+        "strings": true,
+        "identifiers": true,
+        "templates": true,
+        "lang": "en_US",
+        "skipWords": [],
+        "skipIfMatch": [],
+        "skipWordIfMatch": [],
+        "minLength": 3
+      }
+    ]
   },
   "globals": {
     "t": true,

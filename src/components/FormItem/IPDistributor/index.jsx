@@ -15,12 +15,12 @@
 import React from 'react';
 import { Form, Button, Row, Col } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import Item from 'components/FormItem/IPDistributer/Item';
+import Item from 'components/FormItem/IPDistributor/Item';
 import { ipValidate } from 'utils/validate';
 
 const { isIPv4, isIpv6 } = ipValidate;
 
-const IPDistributer = ({ componentProps, formItemProps }) => {
+const IPDistributor = ({ componentProps, formItemProps }) => {
   const { subnets, maxNumber = 10, formRef } = componentProps;
   const { name, value = [], onChange } = formItemProps;
   const subnetsAvailable = subnets
@@ -116,6 +116,6 @@ const IPDistributer = ({ componentProps, formItemProps }) => {
   );
 };
 
-IPDistributer.isFormItem = true;
+IPDistributor.isFormItem = true;
 
-export default IPDistributer;
+export default IPDistributor;

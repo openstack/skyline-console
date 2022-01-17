@@ -99,8 +99,8 @@ export class DomainStore extends Base {
 
   @action
   async fetchDomain() {
-    const doaminsResult = await this.client.list();
-    this.domains = doaminsResult.domains;
+    const domainsResult = await this.client.list();
+    this.domains = domainsResult.domains;
   }
 
   @action

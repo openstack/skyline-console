@@ -155,14 +155,14 @@ export class SystemRole extends ModalAction {
     if (!users[projectId]) {
       roles[projectId] = [this.systemRoleList[0].id];
     } else {
-      const userssystemRole = users[projectId].filter((it) => {
+      const usersSystemRole = users[projectId].filter((it) => {
         const systemRole = this.systemRoleList.filter((role) => role.id === it);
         if (systemRole[0]) {
           return true;
         }
         return false;
       });
-      return userssystemRole;
+      return usersSystemRole;
     }
     return roles[projectId];
   };

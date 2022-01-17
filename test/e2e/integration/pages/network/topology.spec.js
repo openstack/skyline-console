@@ -14,7 +14,7 @@
 
 import { topologyUrl } from '../../../support/constants';
 
-describe('The Netowrk Topology Page', () => {
+describe('The Network Topology Page', () => {
   const uuid = Cypress._.random(0, 1e6);
   const networkName = `e2e-network-for-topo-${uuid}`;
   const instanceName = `e2e-instance-for-topo-${uuid}`;
@@ -24,7 +24,7 @@ describe('The Netowrk Topology Page', () => {
     cy.login().wait(2000).visit(topologyUrl);
   });
 
-  it('successfully prepair resource', () => {
+  it('successfully prepare resource', () => {
     cy.createNetwork({ name: networkName });
     cy.createRouter({ name: routerName, network: networkName });
     cy.createInstance({ name: instanceName, networkName });

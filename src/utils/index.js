@@ -109,7 +109,7 @@ export const firstUpperCase = (str) => {
   return first.toUpperCase() + rest.join('');
 };
 
-export const bytesFitler = (input) => {
+export const bytesFilter = (input) => {
   const { kb, mb, gb, tb } = SIZE_VALUE;
   if (isNaN(input) || isUndefined(input) || input === null || input < 0) {
     return '';
@@ -183,7 +183,7 @@ export const renderFilterMap = {
   yesNo: getYesNo,
   GBValue: getGBValue,
   noValue: getNoValue,
-  bytes: bytesFitler,
+  bytes: bytesFilter,
   uppercase: uppercaseFilter,
   formatSize,
   toLocalTime: toLocalTimeFilter,
@@ -214,7 +214,7 @@ export const generateArray = (start, end) => {
 
 export const NoSetValue = 'noSelect';
 
-export const getOptionsWithNoset = (options) => {
+export const getOptionsWithNoSet = (options) => {
   const newOptions = isArray(options) ? options : getOptions(options);
   const noSet = {
     value: NoSetValue,

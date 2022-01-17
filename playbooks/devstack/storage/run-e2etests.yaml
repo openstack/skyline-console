@@ -14,7 +14,7 @@
           config_file="test/e2e/config/local_config.yaml"
           cp test/e2e/config/config-storage.yaml $config_file
           sed -i "s#baseUrl.*#baseUrl: https://127.0.0.1:9999#" $config_file
-          sed -i "s/- cinder::buckup/# - cinder::buckup/" $config_file
+          sed -i "s/- cinder::backup/# - cinder::backup/" $config_file
           sed -i "s/- swift/# - swift/" $config_file
           sed -i "s#username:.*#username: admin#" $config_file
           sed -i "s#password:.*#password: secretadmin#" $config_file

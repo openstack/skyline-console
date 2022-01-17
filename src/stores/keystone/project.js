@@ -65,7 +65,7 @@ export class ProjectStore extends Base {
   async fetchProjects(filters) {
     const { tags } = filters;
 
-    const [roleAssignmentsReault, projectsResult, roleResult] =
+    const [roleAssignmentsResult, projectsResult, roleResult] =
       await Promise.all([
         this.roleAssignmentClient.list(),
         this.client.list(tags ? { tags } : {}),
@@ -84,7 +84,7 @@ export class ProjectStore extends Base {
       const userMapRole = {}; // all user include system role and project role: { user_id: [roles_id] }
       const projectGroups = {};
       const userMapProjectRoles = {}; // { user_id: [projectRoles_id] }
-      roleAssignmentsReault.role_assignments.forEach((roleAssignment) => {
+      roleAssignmentsResult.role_assignments.forEach((roleAssignment) => {
         this.getUsersAndGroups(
           project,
           roleAssignment,
@@ -203,8 +203,8 @@ export class ProjectStore extends Base {
 
   @action
   async fetchDomain() {
-    const doaminsResult = await this.skylineClient.domains();
-    this.domains = doaminsResult.domains;
+    const domainsResult = await this.skylineClient.domains();
+    this.domains = domainsResult.domains;
   }
 
   @action
@@ -216,7 +216,7 @@ export class ProjectStore extends Base {
   }
 
   async fetchProject(id) {
-    const [roleAssignmentsReault, projectResult, roleResult] =
+    const [roleAssignmentsResult, projectResult, roleResult] =
       await Promise.all([
         this.roleAssignmentClient.list(),
         this.client.show(id),
@@ -234,7 +234,7 @@ export class ProjectStore extends Base {
     const userMapRole = {};
     const projectGroups = {};
     const userMapProjectRoles = {};
-    roleAssignmentsReault.role_assignments.forEach((roleAssignment) => {
+    roleAssignmentsResult.role_assignments.forEach((roleAssignment) => {
       this.getUsersAndGroups(
         project,
         roleAssignment,
@@ -462,7 +462,7 @@ export class ProjectStore extends Base {
   } = {}) {
     this.list.isLoading = true;
     const { userId } = filters;
-    const [roleAssignmentsReault, projectsResult, roleResult, groupResult] =
+    const [roleAssignmentsResult, projectsResult, roleResult, groupResult] =
       await Promise.all([
         this.roleAssignmentClient.list(),
         this.userClient.projects.list(userId),
@@ -473,7 +473,7 @@ export class ProjectStore extends Base {
     projects.map((project) => {
       const userMapRole = {};
       const projectGroups = {};
-      roleAssignmentsReault.role_assignments.forEach((roleAssignment) => {
+      roleAssignmentsResult.role_assignments.forEach((roleAssignment) => {
         this.getUsersAndGroups(
           project,
           roleAssignment,
@@ -529,7 +529,7 @@ export class ProjectStore extends Base {
   } = {}) {
     this.list.isLoading = true;
     const { groupId } = filters;
-    const [roleAssignmentsReault, projectsResult, roleResult] =
+    const [roleAssignmentsResult, projectsResult, roleResult] =
       await Promise.all([
         this.roleAssignmentClient.list(),
         this.client.list(),
@@ -539,7 +539,7 @@ export class ProjectStore extends Base {
     projects.map((project) => {
       const userMapRole = {};
       const projectGroups = {};
-      roleAssignmentsReault.role_assignments.forEach((roleAssignment) => {
+      roleAssignmentsResult.role_assignments.forEach((roleAssignment) => {
         this.getUsersAndGroups(
           project,
           roleAssignment,

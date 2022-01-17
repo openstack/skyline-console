@@ -106,11 +106,11 @@ export class Instance extends Base {
 
   get batchActions() {
     const { selectedRowKeys = [], data = [] } = this.store.list;
-    const slectedRows = selectedRowKeys.map((key) => {
+    const selectedRows = selectedRowKeys.map((key) => {
       return data.find((it) => it.id === key);
     });
-    const allIronic = slectedRows.every((it) => isIronicInstance(it));
-    const noIronic = slectedRows.every((it) => !isIronicInstance(it));
+    const allIronic = selectedRows.every((it) => isIronicInstance(it));
+    const noIronic = selectedRows.every((it) => !isIronicInstance(it));
     if (allIronic) {
       return actionConfigs.batchActionsForIronic;
     }

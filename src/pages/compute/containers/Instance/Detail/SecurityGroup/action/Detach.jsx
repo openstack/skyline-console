@@ -21,7 +21,7 @@ export default class DetachAction extends ConfirmAction {
   }
 
   get title() {
-    return t('Detach Securiry Group');
+    return t('Detach Security Group');
   }
 
   get buttonType() {

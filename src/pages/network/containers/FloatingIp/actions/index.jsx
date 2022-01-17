@@ -19,7 +19,6 @@ import Release from './Release';
 import Disassociate from './Disassociate';
 import Edit from './Edit';
 import CreateDNAT from './CreateDNAT';
-// import updateBwActionConfig from './UpdateBw';
 
 const actionConfigs = {
   rowActions: {

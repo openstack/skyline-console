@@ -74,7 +74,7 @@ const ChartCard = (props) => {
       fetchDataParams,
       isModal = false,
     } = props;
-    let defaultNode = {};
+    const defaultNode = {};
     const { params: fParams = {} } = fetchDataParams;
     const { instance, hostname, ...rest } = fParams;
     if (fParams) {

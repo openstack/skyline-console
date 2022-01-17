@@ -306,14 +306,14 @@ export default class Create extends ModalAction {
         protocol === 'custom_icmp'
           ? icmpType
           : range
-            ? parseInt(ports[0], 10)
-            : null,
+          ? parseInt(ports[0], 10)
+          : null,
       port_range_max:
         protocol === 'custom_icmp'
           ? icmpCode
           : range
-            ? parseInt(ports[1] || ports[0], 10)
-            : null,
+          ? parseInt(ports[1] || ports[0], 10)
+          : null,
       protocol: newProtocol,
       ...rest,
     };

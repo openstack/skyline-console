@@ -3,7 +3,7 @@ import { Input, Select } from 'antd';
 
 import { defaultCountries } from './countries';
 
-export default function InternationPhoneNumberInput({
+export default function InternationalPhoneNumberInput({
   value,
   options,
   onChange,
@@ -57,7 +57,7 @@ export default function InternationPhoneNumberInput({
   );
 }
 
-InternationPhoneNumberInput.defaultProps = {
+InternationalPhoneNumberInput.defaultProps = {
   value: '+86 ',
   options: defaultCountries,
 };

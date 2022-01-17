@@ -26,7 +26,7 @@ describe('The Project Page', () => {
     cy.loginAdmin(listUrl);
   });
 
-  it('successfully prepair resource', () => {
+  it('successfully prepare resource', () => {
     cy.createUser({ name: username });
     cy.createUserGroup({ name: userGroupName });
   });

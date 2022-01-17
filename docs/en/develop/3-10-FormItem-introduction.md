@@ -5,7 +5,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
 - Configuration of each form item in the form
 - Generally only need to configure a little amount of parameters such as `type`
 - `Form` component will verify the input value base on `formItem` configuration
-- When verify faild, `Form` will not allowed to click `confirm` or `next`
+- When verify failed, `Form` will not allowed to click `confirm` or `next`
 
 # How to use
 
@@ -199,7 +199,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
       };
       ```
 
-      - Take attach volumn as an example `src/pages/compute/containers/Instance/actions/AttachVolume.jsx` :
+      - Take attach volume as an example `src/pages/compute/containers/Instance/actions/AttachVolume.jsx` :
 
         ```javascript
         {
@@ -392,7 +392,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
 
       ![select-table](../../zh/develop/images/form/select-table.png)
 
-    - Take create volumn as an example `src/pages/storage/containers/Volume/actions/Create/index.jsx` :
+    - Take create volume as an example `src/pages/storage/containers/Volume/actions/Create/index.jsx` :
       - This is a table with tab, default to show the first tab, when switching tab, data source will change
       - Data is acquired by the front end paging, just directly configure the `data`
       - Not multi selected
@@ -464,8 +464,8 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
 
   - `instance-volume`
     - Insatnce volume configuration component
-    - `options`, volumn types options
-    - `minSize`, volumn size input min
+    - `options`, volume types options
+    - `minSize`, volume size input min
     - Take configure system disk when create instance as an example `src/pages/compute/containers/Instance/actions/StepCreate/BaseStep/index.jsx` :
 
       ```javascript
@@ -517,8 +517,8 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
     - `isFile`, verify name in file format
     - `isKeypair`, verify name with key-pair support
     - `isStack`, verify name with stack supported
-    - `isImage`, verify name with image suppport
-    - `isInstance`, verify name with instance suppport
+    - `isImage`, verify name with image support
+    - `isInstance`, verify name with instance support
     - Take set name when create instance as an example `src/pages/compute/containers/Instance/actions/StepCreate/SystemStep/index.jsx` :
 
       ```javascript
@@ -566,7 +566,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
 
   - `textarea`
     - textarea
-    - Take set description when edit volumn as an example `src/pages/storage/containers/Volume/actions/Edit.jsx` :
+    - Take set description when edit volume as an example `src/pages/storage/containers/Volume/actions/Edit.jsx` :
 
       ```javascript
       {
@@ -602,7 +602,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
     - `addText`, the text on the right side of add item button component
     - `addTextTips`, if has `maxCount`, the text will update with count
     - Take set data disk when create instance as an example `src/pages/compute/containers/Instance/actions/StepCreate/BaseStep/index.jsx` :
-      - can set unlimit number of data disk
+      - can set unlimited number of data disk
 
       ```javascript
       {
@@ -719,7 +719,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
     - `min`, min value
     - `max`, max value
     - `description`, description under slider
-    - Take set size when create volumn as an example `src/pages/storage/containers/Volume/actions/Create/index.jsx` :
+    - Take set size when create volume as an example `src/pages/storage/containers/Volume/actions/Create/index.jsx` :
 
       ```javascript
       {
@@ -775,7 +775,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
   - `check`
     - checkbox
     - `content`, words on the right side of the box
-    - Take whether to force shutodown instancen when resizing instance as an example `src/pages/compute/containers/Instance/actions/Resize.jsx` :
+    - Take whether to force shutdown instance when resizing instance as an example `src/pages/compute/containers/Instance/actions/Resize.jsx` :
 
       ```javascript
       {
@@ -796,7 +796,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
     - `dataSource`, data source for choose
     - `showSearch`, whether to show search input
     - `oriTargetKeys`, default selected
-    - `disabled`, whether to disable selecte data in left table, default is `false`
+    - `disabled`, whether to disable select data in left table, default is `false`
     - Take edit system role as an example `src/pages/identity/containers/User/actions/SystemRole.jsx` :
       - Left is the project name list
       - Right is the project name and role list of project
@@ -897,7 +897,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
 
   - `network-select-table`
     - network selector
-    - Display current project network, shared networ, admin network(if is admin) in tabs.
+    - Display current project network, shared network, admin network(if is admin) in tabs.
     - Take set network when create port as an example `src/pages/network/containers/VirtualAdapter/actions/Create.jsx` :
 
       ```javascript
@@ -916,7 +916,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
     - volume selector
     - Display volumes that can be used or is shared in tabs.
     - `disabledFunc`, which volume can not be selected
-    - Take attach volumn as an example `src/pages/compute/containers/Instance/actions/AttachVolume.jsx` :
+    - Take attach volume as an example `src/pages/compute/containers/Instance/actions/AttachVolume.jsx` :
 
       ```javascript
       {

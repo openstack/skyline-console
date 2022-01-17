@@ -92,17 +92,8 @@ export default class Create extends ModalAction {
     }));
   }
 
-  get vms() {
-    // todo: filter vms
-    return [
-      {
-        label: 'ins-ww<192.168.1.9/32>',
-        value: JSON.stringify({
-          deviceId: '293fb643-8546-4b6f-be16-1eed69803d1e',
-          cidr: '192.168.1.9',
-        }),
-      },
-    ];
+  get instances() {
+    return [];
   }
 
   get formItems() {
@@ -137,7 +128,7 @@ export default class Create extends ModalAction {
         name: 'vm',
         label: t('SNAT Source'),
         type: 'select',
-        options: this.vms,
+        options: this.instances,
         placeholder: t('Please select instance'),
         required: !isSubnet,
         hidden: isSubnet,

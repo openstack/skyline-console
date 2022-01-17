@@ -131,7 +131,9 @@ export class FloatingIpStore extends Base {
         }
       } else {
         // deal with resources from other projects
-        resource_name = `${t('Resource Id')}: ${allData[index].port_details.device_id} `;
+        resource_name = `${t('Resource Id')}: ${
+          allData[index].port_details.device_id
+        } `;
       }
       allData[index].resource_name = resource_name;
     });

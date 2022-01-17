@@ -622,7 +622,7 @@ export default class BaseTable extends React.Component {
   );
 
   renderTimeFilter() {
-    const { showTimeFilter, filterTimeDefalutValue } = this.props;
+    const { showTimeFilter, filterTimeDefaultValue } = this.props;
     if (!showTimeFilter) {
       return null;
     }
@@ -630,8 +630,8 @@ export default class BaseTable extends React.Component {
       onChange: this.handleTimeChange,
       className: styles.timer,
     };
-    if (filterTimeDefalutValue !== undefined) {
-      props.defaultValue = filterTimeDefalutValue;
+    if (filterTimeDefaultValue !== undefined) {
+      props.defaultValue = filterTimeDefaultValue;
     }
     return <TimeFilter {...props} />;
   }

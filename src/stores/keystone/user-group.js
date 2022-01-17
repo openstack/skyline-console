@@ -98,8 +98,8 @@ export class GroupStore extends Base {
 
   @action
   async fetchDomain() {
-    const doaminsResult = await this.domainClient.list();
-    this.domains = doaminsResult.domains;
+    const domainsResult = await this.domainClient.list();
+    this.domains = domainsResult.domains;
   }
 
   get mapper() {
@@ -172,12 +172,12 @@ export class GroupStore extends Base {
     this.list.isLoading = true;
     const { projectId } = filters;
     const params = {};
-    const [roleAssignmentsReault, result] = await Promise.all([
+    const [roleAssignmentsResult, result] = await Promise.all([
       this.roleAssignmentClient.list(),
       this.client.list(params),
     ]);
     const projectGroupIds = [];
-    roleAssignmentsReault.role_assignments.forEach((roleAssignment) => {
+    roleAssignmentsResult.role_assignments.forEach((roleAssignment) => {
       if (roleAssignment.group) {
         const {
           group: { id: group_id },
@@ -207,7 +207,7 @@ export class GroupStore extends Base {
           return it;
         });
         const items = addUserItem.map((item) =>
-          this.mapperProject(roleAssignmentsReault, item)
+          this.mapperProject(roleAssignmentsResult, item)
         );
         this.list.update({
           data: items,
@@ -238,12 +238,12 @@ export class GroupStore extends Base {
     this.list.isLoading = true;
     const { userId } = filters;
     const params = {};
-    const [roleAssignmentsReault, result] = await Promise.all([
+    const [roleAssignmentsResult, result] = await Promise.all([
       this.roleAssignmentClient.list(),
       this.userClient.groups.list(userId, params),
     ]);
     const projectGroupIds = [];
-    roleAssignmentsReault.role_assignments.forEach((roleAssignment) => {
+    roleAssignmentsResult.role_assignments.forEach((roleAssignment) => {
       if (roleAssignment.group) {
         const {
           group: { id: group_id },
@@ -256,7 +256,7 @@ export class GroupStore extends Base {
     });
     const data = get(result, this.listResponseKey, []);
     const items = data.map((item) =>
-      this.mapperProject(roleAssignmentsReault, item)
+      this.mapperProject(roleAssignmentsResult, item)
     );
     this.list.update({
       data: items,
@@ -291,8 +291,8 @@ export class GroupStore extends Base {
     return this.client.users.update(id, user_id);
   }
 
-  mapperProject = (roleAssignmentsReault, item) => {
-    const projects = roleAssignmentsReault.role_assignments.filter(
+  mapperProject = (roleAssignmentsResult, item) => {
+    const projects = roleAssignmentsResult.role_assignments.filter(
       (it) =>
         it.group &&
         it.group.id === item.id &&
@@ -319,7 +319,7 @@ export class GroupStore extends Base {
     const params = { ...filters };
 
     const result = await this.client.list(params);
-    const roleAssignmentsReault = await this.roleAssignmentClient.list();
+    const roleAssignmentsResult = await this.roleAssignmentClient.list();
     const data = get(result, this.listResponseKey, []);
     Promise.all(
       data.map(
@@ -341,7 +341,7 @@ export class GroupStore extends Base {
         return it;
       });
       const items = addUserItem.map((item) =>
-        this.mapperProject(roleAssignmentsReault, item)
+        this.mapperProject(roleAssignmentsResult, item)
       );
       // const items = addUserItem.map(this.mapperProject);
       this.list.update({
@@ -365,7 +365,7 @@ export class GroupStore extends Base {
     if (!silent) {
       this.isLoading = true;
     }
-    const [roleAssignmentsReault, groupResult, usersInGroup] =
+    const [roleAssignmentsResult, groupResult, usersInGroup] =
       await Promise.all([
         this.roleAssignmentClient.list(),
         this.client.show(id),
@@ -380,7 +380,7 @@ export class GroupStore extends Base {
       id: user.id,
       name: user.name,
     }));
-    const group = this.mapperProject(roleAssignmentsReault, originData);
+    const group = this.mapperProject(roleAssignmentsResult, originData);
     this.detail = group;
     this.isLoading = false;
     return this.detail;
@@ -405,14 +405,14 @@ export class GroupStore extends Base {
     this.list.isLoading = true;
     const { roleId } = filters;
     const params = {};
-    const [roleAssignmentsReault, projectResult, result] = await Promise.all([
+    const [roleAssignmentsResult, projectResult, result] = await Promise.all([
       this.roleAssignmentClient.list(),
       this.projectClient.list(),
       this.client.list(params),
     ]);
     const projectRoleUsers = {};
     const systemRoleUsers = {};
-    roleAssignmentsReault.role_assignments.forEach((roleAssignment) => {
+    roleAssignmentsResult.role_assignments.forEach((roleAssignment) => {
       if (roleAssignment.group) {
         const {
           group: { id: group_id },

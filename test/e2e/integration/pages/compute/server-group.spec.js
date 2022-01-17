@@ -27,7 +27,7 @@ describe('The Server Group Page', () => {
     cy.login(listUrl);
   });
 
-  it('successfully prepair resource', () => {
+  it('successfully prepare resource', () => {
     cy.createNetwork({ name: networkName });
   });
 

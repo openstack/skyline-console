@@ -17,7 +17,7 @@ import { observer, inject } from 'mobx-react';
 import { Popover, Col, Row, Skeleton } from 'antd';
 import Base from 'containers/List';
 import globalContainerStore, { ContainerStore } from 'stores/swift/container';
-import { bytesFitler } from 'utils/index';
+import { bytesFilter } from 'utils/index';
 import { allCanChangePolicy } from 'resources/policy';
 import { getStrFromTimestamp } from 'utils/time';
 import { swiftEndpoint } from 'client/client/constants';
@@ -25,15 +25,15 @@ import actionConfigs from './actions';
 
 function PopUpContent({ name }) {
   const [data, setData] = useState([]);
-  const [loading, setLoaidng] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let timeout = null;
     (async function () {
-      setLoaidng(true);
+      setLoading(true);
       const cb = await new ContainerStore().fetchDetail({ name });
       timeout = setTimeout(() => {
-        setLoaidng(false);
+        setLoading(false);
         setData(cb);
       }, 200);
     })();
@@ -51,7 +51,7 @@ function PopUpContent({ name }) {
       </Row>
       <Row>
         <Col span={8}>{t('Size')}</Col>
-        <Col span={12}>{bytesFitler(data.used)}</Col>
+        <Col span={12}>{bytesFilter(data.used)}</Col>
       </Row>
       <Row>
         <Col span={8}>{t('Created At')}</Col>

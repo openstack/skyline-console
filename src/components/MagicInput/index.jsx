@@ -296,13 +296,13 @@ class MagicInput extends PureComponent {
     const correlateTag = tags.filter(
       (it) => it.filter.name === correlateOption
     );
-    let suboptions = [];
+    let subOptions = [];
     if (correlateOption && correlateTag[0]) {
-      suboptions = options.filter(
+      subOptions = options.filter(
         (it) => it.correlateValue.indexOf(correlateTag[0].value) > -1
       );
     }
-    const menuItems = (suboptions[0] ? suboptions : options).map((it) => (
+    const menuItems = (subOptions[0] ? subOptions : options).map((it) => (
       <Menu.Item key={it.key}>{it.label}</Menu.Item>
     ));
     return (

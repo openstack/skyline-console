@@ -37,7 +37,7 @@ export default class Create extends ModalAction {
   static allowed = () => Promise.resolve(true);
 
   get name() {
-    return t('create cpn endpoint group');
+    return t('create vpn endpoint group');
   }
 
   static get modalSize() {

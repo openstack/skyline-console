@@ -50,7 +50,7 @@ import Transfer from './Transfer';
 import NUMAInput from './NUMAInput';
 import CheckboxGroup from './CheckboxGroup';
 import TextareaFromFile from './TextareaFromFile';
-import IPDistributer from './IPDistributer';
+import IPDistributor from './IPDistributor';
 import MacAddressInput from './MacAddressInput';
 import InputInt from './InputInt';
 import MetadataTransfer from './MetadataTransfer';
@@ -59,7 +59,7 @@ import VolumeSelectTable from './VolumeSelectTable';
 import TabSelectTable from './TabSelectTable';
 import TreeSelect from './TreeSelect';
 import SelectWithInput from './SelectWithInput';
-import InternationPhoneNumberInput from './InternationalPhoneNumberInput';
+import InternationalPhoneNumberInput from './InternationalPhoneNumberInput';
 // import styles from './index.less';
 
 export const type2component = {
@@ -96,7 +96,7 @@ export const type2component = {
   'check-group': CheckboxGroup,
   'textarea-from-file': TextareaFromFile,
   'range-picker': DatePicker.RangePicker,
-  'ip-distributer': IPDistributer,
+  'ip-distributor': IPDistributor,
   'mac-address': MacAddressInput,
   'network-select-table': NetworkSelectTable,
   'volume-select-table': VolumeSelectTable,
@@ -106,7 +106,7 @@ export const type2component = {
   'input-json': JsonInput,
   'tree-select': TreeSelect,
   'select-input': SelectWithInput,
-  phone: InternationPhoneNumberInput,
+  phone: InternationalPhoneNumberInput,
 };
 
 export default class FormItem extends React.Component {

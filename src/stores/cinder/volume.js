@@ -24,7 +24,7 @@ export class VolumeStore extends Base {
   volumeTypes = [];
 
   @observable
-  originalvolumeTypes = [];
+  originalVolumeTypes = [];
 
   @observable
   cinderServiceOptions = [];
@@ -212,7 +212,7 @@ export class VolumeStore extends Base {
       label: it.name,
       value: it.id,
     }));
-    this.originalvolumeTypes = data || [];
+    this.originalVolumeTypes = data || [];
   }
 }
 

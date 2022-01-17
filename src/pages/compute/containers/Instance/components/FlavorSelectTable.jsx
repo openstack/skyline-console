@@ -18,7 +18,7 @@ import { toJS } from 'mobx';
 import SelectTable from 'components/FormItem/SelectTable';
 import { Radio } from 'antd';
 import globalSettingStore from 'stores/skyline/setting';
-import globaFlavorStore from 'stores/nova/flavor';
+import globalFlavorStore from 'stores/nova/flavor';
 import {
   flavorArchitectures,
   flavorCategoryList,
@@ -246,7 +246,7 @@ export class FlavorSelectTable extends Component {
 
   init() {
     this.settingStore = globalSettingStore;
-    this.flavorStore = globaFlavorStore;
+    this.flavorStore = globalFlavorStore;
     this.getSettings();
     this.getFlavors();
   }
@@ -319,7 +319,7 @@ export class FlavorSelectTable extends Component {
     );
   }
 
-  renderTableHeander() {
+  renderTableHeader() {
     return (
       <div>
         {this.renderArchSelect()}
@@ -335,7 +335,7 @@ export class FlavorSelectTable extends Component {
     const props = {
       columns: this.columns,
       data: this.flavors,
-      tableHeader: this.renderTableHeander(),
+      tableHeader: this.renderTableHeader(),
       isLoading,
       filterParams: [
         {

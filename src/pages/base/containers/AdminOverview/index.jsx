@@ -33,7 +33,7 @@ export class Overview extends Component {
     return <PlatformInfo store={this.adminStore} />;
   }
 
-  renderVirutalResource() {
+  renderVirtualResource() {
     return <VirtualResource store={this.adminStore} />;
   }
 
@@ -56,7 +56,7 @@ export class Overview extends Component {
           <Col span={24}>{this.renderPlatformInfo()}</Col>
         </Row>
         <Row gutter={16} style={{ marginBottom: 22 }}>
-          <Col span={24}>{this.renderVirutalResource()}</Col>
+          <Col span={24}>{this.renderVirtualResource()}</Col>
         </Row>
         <Row gutter={16} style={{ marginBottom: 22 }}>
           <Col span={24}>{this.renderResourceOverview()}</Col>

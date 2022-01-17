@@ -79,7 +79,7 @@ export const getRouterColumns = (self) => [
   },
 ];
 
-export const routerFitlers = [
+export const routerFilters = [
   {
     label: t('Name'),
     name: 'name',
@@ -103,7 +103,7 @@ export const routerSortProps = {
 export const getRouterSelectTablePropsBackend = (self) => ({
   ...routerSortProps,
   columns: getRouterColumns(self),
-  filterParams: routerFitlers,
+  filterParams: routerFilters,
 });
 
 /**

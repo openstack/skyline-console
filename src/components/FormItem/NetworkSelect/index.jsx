@@ -163,7 +163,7 @@ export default class NetworkSelect extends React.Component {
     if (!network) {
       this.setState(
         {
-          errorMsg: t('Pleasse select a network!'),
+          errorMsg: t('Please select a network!'),
           validateStatus: 'error',
         },
         callback
@@ -172,7 +172,7 @@ export default class NetworkSelect extends React.Component {
     }
     // if (!subnet) {
     //   this.setState({
-    //     errorMsg: t('Pleasse select a subnet!'),
+    //     errorMsg: t('Please select a subnet!'),
     //     validateStatus: 'error',
     //   }, callback);
     //   return;
@@ -180,7 +180,7 @@ export default class NetworkSelect extends React.Component {
     if (ipType === 1 && !isIPv4(ip) && !isIpv6(ip)) {
       this.setState(
         {
-          errorMsg: t('Pleasse input a valid ip!'),
+          errorMsg: t('Please input a valid ip!'),
           validateStatus: 'error',
         },
         callback

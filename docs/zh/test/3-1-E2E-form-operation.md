@@ -248,7 +248,7 @@
 
     ```javascript
     it('successfully attach volume', () => {
-      // prepair volume
+      // prepare volume
       cy.visitPage(listUrl)
         .tableSearchText(name)
         .clickActionInMoreSub('Attach Volume', 'Related Resources')
@@ -279,7 +279,7 @@
     - 选择状态为使用中的云硬盘
 
     ```javascript
-    it('successfully create full bakcup', () => {
+    it('successfully create full backup', () => {
       cy.clickHeaderButton(1, 5000)
         .formInput('name', name)
         .formTableSelectBySearch('volume', volumeName)

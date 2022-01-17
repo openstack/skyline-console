@@ -18,7 +18,7 @@ import globalNeutronAgentRouterStore from 'stores/neutron/agent-router';
 import { ModalAction } from 'containers/Action';
 import {
   getRouterColumns,
-  routerFitlers,
+  routerFilters,
   routerSortProps,
 } from 'resources/router';
 import { projectRender } from 'utils/table';
@@ -100,7 +100,7 @@ export default class AddRouter extends ModalAction {
 
   getFilters() {
     return [
-      ...routerFitlers,
+      ...routerFilters,
       {
         label: t('Project ID'),
         name: 'project_id',

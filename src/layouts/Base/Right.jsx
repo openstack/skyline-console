@@ -123,7 +123,7 @@ class Right extends Component {
     );
   };
 
-  renderChildren = (mainBreadcrubClass, mainTabClass, extraProps) => {
+  renderChildren = (mainBreadcrumbClass, mainTabClass, extraProps) => {
     const { hasError } = this.state;
     if (hasError) {
       return (
@@ -136,7 +136,9 @@ class Right extends Component {
     }
     try {
       const children = (
-        <div className={`${styles.main} ${mainBreadcrubClass} ${mainTabClass}`}>
+        <div
+          className={`${styles.main} ${mainBreadcrumbClass} ${mainTabClass}`}
+        >
           {renderRoutes(this.routes, extraProps)}
         </div>
       );
@@ -157,7 +159,7 @@ class Right extends Component {
     const hasBreadcrumb = breadcrumb !== null;
     const { user } = this.props.rootStore;
     const hasTab = this.checkHasTab(pathname);
-    const mainBreadcrubClass = hasBreadcrumb
+    const mainBreadcrumbClass = hasBreadcrumb
       ? ''
       : styles['main-no-breadcrumb'];
     const mainTabClass = hasTab ? styles['main-has-tab'] : '';
@@ -167,7 +169,7 @@ class Right extends Component {
       isAdminPage,
     };
     const children = user
-      ? this.renderChildren(mainBreadcrubClass, mainTabClass, extraProps)
+      ? this.renderChildren(mainBreadcrumbClass, mainTabClass, extraProps)
       : null;
     return (
       <Layout

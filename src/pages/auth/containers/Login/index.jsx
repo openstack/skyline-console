@@ -232,15 +232,6 @@ export class Login extends Component {
     );
   };
 
-  onGetCaptcha = () => {
-    if (this.formRef) {
-      return this.formRef.current.validateFields(['username']);
-      // const values = this.formRef.current.getFieldsValue();
-      // console.log(values);
-    }
-    return Promise.resolve();
-  };
-
   getErrorMessage() {
     const { message } = this.state;
     if (message.includes('The account is locked for user')) {

@@ -112,19 +112,19 @@ export default class OverviewStore {
       activeServers,
       errorServers,
       shutoffServers,
-      allvolumes,
+      allVolumes,
       attachVolumes,
       errorVolumes,
-      availableVoloumes,
+      availableVolumes,
     ] = await Promise.all(promiseArray);
     const { count: allServersCount } = allServers;
     const { count: activeServersCount } = activeServers;
     const { count: errorServersCount } = errorServers;
     const { count: shutoffServersCount } = shutoffServers;
-    const { count: allVolumesCount } = allvolumes;
+    const { count: allVolumesCount } = allVolumes;
     const { count: attachVolumesCount } = attachVolumes;
     const { count: errorVolumesCount } = errorVolumes;
-    const { count: availableVoloumesCount } = availableVoloumes;
+    const { count: availableVolumesCount } = availableVolumes;
     const serviceNum = {
       all: allServersCount,
       active: activeServersCount,
@@ -138,10 +138,10 @@ export default class OverviewStore {
       all: allVolumesCount,
       active: attachVolumesCount,
       error: errorVolumesCount,
-      unattache: availableVoloumesCount,
+      available: availableVolumesCount,
       other:
         allVolumesCount -
-        (attachVolumesCount + errorVolumesCount + availableVoloumesCount),
+        (attachVolumesCount + errorVolumesCount + availableVolumesCount),
     };
     this.virtualResource = { serviceNum, volumeNum };
     this.virtualResourceLoading = false;

@@ -25,7 +25,7 @@ describe('The User Group Page', () => {
     cy.loginAdmin(listUrl);
   });
 
-  it('successfully prepair resource', () => {
+  it('successfully prepare resource', () => {
     cy.createUser({ name: username });
   });
 

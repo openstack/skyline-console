@@ -89,7 +89,7 @@ Cypress.Commands.add('createRouter', ({ name, network }) => {
   cy.visitPage(routerListUrl)
     .clickHeaderButton(1, 5000)
     .formInput('name', name)
-    .formCheckboxClick('openExterlNet')
+    .formCheckboxClick('openExternalNetwork')
     .wait(2000)
     .formTableSelect('externalNetwork')
     .clickModalActionSubmitButton();
@@ -181,7 +181,7 @@ Cypress.Commands.add('createVolume', (name) => {
     .waitStatusActiveByRefresh();
 });
 
-Cypress.Commands.add('createSecurityGrouop', ({ name }) => {
+Cypress.Commands.add('createSecurityGroup', ({ name }) => {
   cy.visitPage(securityGroupListUrl)
     .clickHeaderButton(1)
     .formInput('name', name)

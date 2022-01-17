@@ -296,7 +296,7 @@ The buttons above the table generally include: refresh, create, batch operation 
   - Parameter `buttonIndex`, the subscript of the button above the table
   - Parameter `waitTime`, the waiting time after clicking, the default is 2 seconds
   - Generally, the subscript of the created button is 1
-  - Take the creat key pair as an example: `test/e2e/integration/pages/compute/keypair.spec.js`
+  - Take the create key pair as an example: `test/e2e/integration/pages/compute/keypair.spec.js`
 
   ```javascript
   it('successfully create', () => {
@@ -517,7 +517,7 @@ The buttons above the table generally include: refresh, create, batch operation 
     2. Click the `Confirm` button, and wait for the request to complete, close the prompt message that the request is successful
   - Parameter `title`, specify the name of the operation
   - Parameter `waitTime`, the waiting time after closing the operation prompt successfully
-  - Take delet VPN IPsec policy `test/e2e/integration/pages/compute/server-group.spec.js` as an example
+  - Take delete VPN IPsec policy `test/e2e/integration/pages/compute/server-group.spec.js` as an example
 
     ```javascript
     it('successfully delete ipsec policy', () => {

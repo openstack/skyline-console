@@ -14,7 +14,7 @@
 
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import { getRouterColumns, routerFitlers } from 'resources/router';
+import { getRouterColumns, routerFilters } from 'resources/router';
 import globalRouterStore, { RouterStore } from 'stores/neutron/router';
 import actionConfigs from './actions';
 
@@ -57,7 +57,7 @@ export class Routes extends Base {
   getColumns = () => getRouterColumns(this);
 
   get searchFilters() {
-    return routerFitlers;
+    return routerFilters;
   }
 }
 

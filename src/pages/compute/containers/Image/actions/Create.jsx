@@ -23,7 +23,7 @@ import {
   imageVisibility,
 } from 'resources/image';
 import { cpuPolicyList, cpuThreadPolicyList } from 'resources/flavor';
-import { NoSetValue, getOptionsWithNoset, getOptions } from 'utils/index';
+import { NoSetValue, getOptionsWithNoSet, getOptions } from 'utils/index';
 import { ProjectStore } from 'stores/keystone/project';
 import { projectTableOptions } from 'resources/project';
 
@@ -282,14 +282,14 @@ export class CreateForm extends FormAction {
         name: 'hw_cpu_policy',
         label: t('CPU Policy'),
         type: 'select',
-        options: getOptionsWithNoset(cpuPolicyList),
+        options: getOptionsWithNoSet(cpuPolicyList),
         hidden: !more,
       },
       {
         name: 'hw_cpu_thread_policy',
         label: t('CPU Thread Policy'),
         type: 'select',
-        options: getOptionsWithNoset(cpuThreadPolicyList),
+        options: getOptionsWithNoSet(cpuThreadPolicyList),
         hidden: !more,
       },
     ];

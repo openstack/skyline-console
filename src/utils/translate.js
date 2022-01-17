@@ -195,13 +195,13 @@ class SLI18n {
 
     return new Promise((resolve) => {
       // init() will not load external common locale data anymore.
-      // But, it still return a Promise for abckward compatibility.
+      // But, it still return a Promise for backward compatibility.
       resolve();
     });
   }
 
   /**
-   * Get the inital options
+   * Get the initial options
    */
   getInitOptions() {
     return this.options;

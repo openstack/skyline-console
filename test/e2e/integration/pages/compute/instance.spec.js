@@ -31,7 +31,7 @@ describe('The Instance Page', () => {
     cy.login(listUrl);
   });
 
-  it('successfully prepair resource', () => {
+  it('successfully prepare resource', () => {
     cy.createNetwork({ name: networkName });
     cy.createRouter({ name: routerName, network: networkName });
     cy.createFip();
@@ -192,7 +192,7 @@ describe('The Instance Page', () => {
   });
 
   it('successfully attach volume', () => {
-    // prepair volume
+    // prepare volume
     cy.visitPage(listUrl)
       .tableSearchText(name)
       .clickActionInMoreSub('Attach Volume', 'Related Resources')

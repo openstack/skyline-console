@@ -508,16 +508,16 @@ export const actionEvent = {
 
 function PopUpContent({ id, requestId }) {
   const [event, setEvent] = useState([]);
-  const [loading, setLoaidng] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let timeout = null;
     (async function () {
-      setLoaidng(true);
+      setLoading(true);
       const cb = await globalActionLogStore.fetchDetail({ id, requestId });
       const { events = [] } = cb;
       timeout = setTimeout(() => {
-        setLoaidng(false);
+        setLoading(false);
         setEvent(events.slice().reverse());
       }, 200);
     })();

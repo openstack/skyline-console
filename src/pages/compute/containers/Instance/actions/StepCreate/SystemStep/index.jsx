@@ -93,10 +93,10 @@ export class SystemStep extends Base {
     }
     if (source.value === 'bootableVolume') {
       const { selectedRows = [] } = bootableVolume;
-      // create instace from instance list
+      // create instance from instance list
       const originData =
         (selectedRows.length && selectedRows[0].origin_data) || {};
-      // create instace from volume list
+      // create instance from volume list
       const volumeImageMetadata =
         selectedRows.length && selectedRows[0].volume_image_metadata;
       return originData.volume_image_metadata || volumeImageMetadata;

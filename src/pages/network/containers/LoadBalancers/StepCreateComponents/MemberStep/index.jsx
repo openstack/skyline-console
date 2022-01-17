@@ -29,12 +29,11 @@ export default class MemberStep extends Base {
     };
     this.store.fetchList().then((ports) => {
       this.setState({
-        ports: ports
-          .filter(
-            (port) =>
-              port.device_owner !== 'network:dhcp' &&
-              port.device_owner !== 'network:router_gateway'
-          )
+        ports: ports.filter(
+          (port) =>
+            port.device_owner !== 'network:dhcp' &&
+            port.device_owner !== 'network:router_gateway'
+        ),
       });
     });
   }

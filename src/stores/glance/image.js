@@ -97,8 +97,8 @@ export class ImageStore extends Base {
   }
 
   @action
-  async update({ id }, newbody) {
-    return this.client.patch(id, newbody);
+  async update({ id }, newBody) {
+    return this.client.patch(id, newBody);
   }
 
   @action

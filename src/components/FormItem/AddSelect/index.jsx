@@ -93,15 +93,15 @@ export default class index extends Component {
     this.updateItems([...items, newItem]);
   };
 
-  updateItems = (newIems) => {
+  updateItems = (newItems) => {
     this.setState(
       {
-        items: newIems,
+        items: newItems,
       },
       () => {
         const { onChange } = this.props;
         if (onChange) {
-          onChange(newIems);
+          onChange(newItems);
         }
       }
     );

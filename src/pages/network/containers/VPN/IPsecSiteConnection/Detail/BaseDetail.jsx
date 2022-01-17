@@ -27,7 +27,7 @@ export default class BaseDetail extends Base {
 
   fetchData = async (params) => {
     this.store
-      .fetChDetailWithPolicyDetail({
+      .fetchDetailWithPolicyDetail({
         id: this.id,
         ikePolicyID: this.props.detail.ikepolicy_id,
         ipsecPolicyID: this.props.detail.ipsecpolicy_id,

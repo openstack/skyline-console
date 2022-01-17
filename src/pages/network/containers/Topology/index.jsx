@@ -691,16 +691,16 @@ export default class Topology extends React.Component {
     this.setState({
       showAll: showIns,
     });
-    let updataWidh = width + extendWidth;
+    let updateWidth = width + extendWidth;
     if (!showIns) {
-      updataWidh = width - extendWidth;
+      updateWidth = width - extendWidth;
     }
     graph.clear();
     graph.destroy();
     graph = null;
     graph = new G6.Graph({
       container: 'container',
-      width: updataWidh,
+      width: updateWidth,
       height: Y,
       nodeStateStyles: {
         // 鼠标 hover 上节点，即 hover 状态为 true 时的样式

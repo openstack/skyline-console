@@ -33,7 +33,7 @@ describe('The System Info Page', () => {
     cy.loginAdmin(listUrl);
   });
 
-  it('successfully prepair resource', () => {
+  it('successfully prepare resource', () => {
     cy.login();
     cy.createNetwork({ name: networkName });
     cy.createRouter({ name: routerName });

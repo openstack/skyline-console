@@ -77,7 +77,7 @@ const instanceColors = {
 const volumeColors = {
   active: { color: '#52C41A', text: t('Attaching') },
   error: { color: '#E8684A', text: t('Error') },
-  unattache: { color: '#E6F2E0', text: t('Unattached') },
+  available: { color: '#E6F2E0', text: t('Unattached') },
   other: { color: '#F6B23D', text: t('Others') },
 };
 

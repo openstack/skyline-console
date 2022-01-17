@@ -199,7 +199,7 @@ export class CreateAction extends ModalAction {
       {
         name: 'fixed_ips',
         label: t('Owned Subnet'),
-        type: 'ip-distributer',
+        type: 'ip-distributor',
         subnets: subnetDetails,
         hidden: !network_id,
         // required: true,

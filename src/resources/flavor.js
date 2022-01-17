@@ -259,7 +259,7 @@ export const getAllArchitecture = (data, withCustom = true) => {
   return architectures;
 };
 
-export const getfamiliItemValue = (data) => {
+export const getFamilyItemValue = (data) => {
   const item = (data || []).find((it) => it.key === 'flavor_families');
   return item ? item.value : [];
 };

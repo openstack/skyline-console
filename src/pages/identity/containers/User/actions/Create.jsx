@@ -99,11 +99,11 @@ export class CreateForm extends FormAction {
   get defaultValue() {
     const { domains } = this.store;
     const { domain } = this.state;
-    const domianDefault = (domains || []).filter((it) => it.id === domain)[0];
+    const domainDefault = (domains || []).filter((it) => it.id === domain)[0];
     const data = {
       more: false,
       enabled: statusTypes[0].value,
-      domain_id: domianDefault ? domianDefault.name : 'Default',
+      domain_id: domainDefault ? domainDefault.name : 'Default',
     };
     return data;
   }
@@ -189,7 +189,7 @@ export class CreateForm extends FormAction {
         title: t('Name'),
       },
       {
-        title: t('Select Projct Role'),
+        title: t('Select Project Role'),
         dataIndex: 'id',
         render: (id) => (
           <Select

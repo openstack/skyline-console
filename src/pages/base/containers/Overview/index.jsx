@@ -26,7 +26,7 @@ import ProjectInfo from './components/ProjectInfo';
 
 const actions = [
   {
-    key: 'nstance',
+    key: 'instance',
     label: t('Instance'),
     avatar: overviewInstance,
     to: '/compute/instance',

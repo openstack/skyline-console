@@ -24,7 +24,7 @@ Because of the consistency of the front-end framework, when we write related use
   ![click-form-submit](images/e2e/form/click-form-submit.png)
 
 - `clickModalActionSubmitButton`
-  - Click the confirma button in the pop-up form and wait for the request to complete
+  - Click the confirm button in the pop-up form and wait for the request to complete
 
   ![click-modal-submit](images/e2e/form/click-modal-submit.png)
 
@@ -170,7 +170,7 @@ Looking at the structure and style of the elements through the page, I found tha
   - check `checkbox` in form
   - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
   - Parameter `index`, default `0`
-  - Take instance resize `test/e2e/integration/pages/compute/instance.spec.js` as an enample
+  - Take instance resize `test/e2e/integration/pages/compute/instance.spec.js` as an example
 
     ```javascript
     it('successfully resize', () => {
@@ -248,7 +248,7 @@ Looking at the structure and style of the elements through the page, I found tha
 
     ```javascript
     it('successfully attach volume', () => {
-      // prepair volume
+      // prepare volume
       cy.visitPage(listUrl)
         .tableSearchText(name)
         .clickActionInMoreSub('Attach Volume', 'Related Resources')
@@ -279,7 +279,7 @@ Looking at the structure and style of the elements through the page, I found tha
     - Select Volume that status is in used
 
     ```javascript
-    it('successfully create full bakcup', () => {
+    it('successfully create full backup', () => {
       cy.clickHeaderButton(1, 5000)
         .formInput('name', name)
         .formTableSelectBySearch('volume', volumeName)
@@ -397,7 +397,7 @@ Looking at the structure and style of the elements through the page, I found tha
 - `formAddSelectAdd`
   - Operations on form item of AddSelect type
   - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
-  - Take the Host Aggregates management metedata add custom metadata as an example: `test/e2e/integration/pages/compute/aggregate.spec.js`
+  - Take the Host Aggregates management metadata add custom metadata as an example: `test/e2e/integration/pages/compute/aggregate.spec.js`
 
     ```javascript
     it('successfully manage metadata', () => {
@@ -521,7 +521,7 @@ Looking at the structure and style of the elements through the page, I found tha
   - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
   - Parameter `key`, the content of input on the left
   - Parameter `value`, the content of input on the right
-  - Take the Host Aggregates management metedata add custom metadata as an example: `test/e2e/integration/pages/compute/aggregate.spec.js`
+  - Take the Host Aggregates management metadata add custom metadata as an example: `test/e2e/integration/pages/compute/aggregate.spec.js`
 
     ```javascript
     it('successfully manage metadata', () => {
@@ -543,7 +543,7 @@ Looking at the structure and style of the elements through the page, I found tha
     2. Click the direction button in the middle of the transfer to make the selected content enter the transfer on the right
   - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
   - Parameter `index`, the index of the node
-  - Take the Host Aggregates management metedata add custom metadata as an example: `test/e2e/integration/pages/compute/aggregate.spec.js`
+  - Take the Host Aggregates management metadata add custom metadata as an example: `test/e2e/integration/pages/compute/aggregate.spec.js`
 
     ```javascript
     it('successfully manage metadata', () => {
@@ -560,8 +560,8 @@ Looking at the structure and style of the elements through the page, I found tha
     ![transfer-left-click](images/e2e/form/transfer-left-click.png)
 
 - `formTransferRightCheck`
-  - Operation of the transfer on the rigth
-    1. Select the specified item in the transfer on the rigth
+  - Operation of the transfer on the right
+    1. Select the specified item in the transfer on the right
     2. Click the direction button in the middle of the transfer to make the selected content enter the transfer on the left
   - Parameter `formItemName`, which is the `name` value of `formItem` in the development code
   - Parameter `index`, the index of the transfer table item

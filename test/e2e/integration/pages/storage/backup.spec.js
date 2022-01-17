@@ -16,7 +16,7 @@ import { onlyOn } from '@cypress/skip-test';
 import { backupListUrl, volumeListUrl } from '../../../support/constants';
 
 const backupServiceEnabled = (Cypress.env('extensions') || []).includes(
-  'cinder::buckup'
+  'cinder::backup'
 );
 
 onlyOn(!backupServiceEnabled, () => {
@@ -39,11 +39,11 @@ onlyOn(backupServiceEnabled, () => {
       cy.login(listUrl);
     });
 
-    it('successfully prepair resource', () => {
+    it('successfully prepare resource', () => {
       cy.createVolume(volumeName);
     });
 
-    it('successfully create full bakcup', () => {
+    it('successfully create full backup', () => {
       cy.clickHeaderButton(1, 5000)
         .formInput('name', name)
         .formTableSelectBySearch('volume', volumeName)
@@ -53,7 +53,7 @@ onlyOn(backupServiceEnabled, () => {
       cy.tableSearchText(name).waitStatusTextByFresh('Available');
     });
 
-    it('successfully create increment bakcup', () => {
+    it('successfully create increment backup', () => {
       cy.clickHeaderButton(1, 5000)
         .formInput('name', nameInc)
         .formRadioChoose('incremental', 1)

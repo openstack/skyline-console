@@ -45,8 +45,8 @@ describe('test route map', () => {
   });
 
   it('getPath', () => {
-    const overivewPath = getPath({ key: 'overview' });
-    expect(overivewPath).toBe('/base/overview');
+    const overviewPath = getPath({ key: 'overview' });
+    expect(overviewPath).toBe('/base/overview');
     const detailPath = getPath({ key: 'instanceDetail', params: { id: 1 } });
     expect(detailPath).toBe('/compute/instance/detail/1');
     const queryPath = getPath({ key: 'instance', query: { status: 'stop' } });

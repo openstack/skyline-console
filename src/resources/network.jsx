@@ -118,16 +118,16 @@ export const isExternalNetwork = (network) => !!network['router:external'];
 
 function PopUpSubnet({ subnetIds }) {
   const [subnets, setSubnets] = useState(subnetIds);
-  const [isLoading, setLoaidng] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   useEffect(() => {
-    setLoaidng(true);
+    setLoading(true);
     (async function () {
       const promises = subnets.map((i) =>
         new SubnetStore().fetchDetail({ id: i })
       );
       const ret = await Promise.all(promises);
       setSubnets(ret);
-      setLoaidng(false);
+      setLoading(false);
     })();
   }, []);
   if (isLoading) {

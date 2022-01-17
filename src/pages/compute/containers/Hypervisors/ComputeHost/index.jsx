@@ -28,7 +28,6 @@ export default class ComputeHost extends Base {
 
   get policy() {
     return onlyAdminCanReadPolicy;
-    // return 'os_compute_api:os-services:list';
   }
 
   get name() {

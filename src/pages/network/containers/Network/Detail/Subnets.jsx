@@ -46,9 +46,9 @@ export default class Subnets extends Base {
       this.itemInTransitionFunction(item)
     );
     if (hasTransData) {
-      this.setRefreshdataTimerTransition();
+      this.setRefreshDataTimerTransition();
     } else {
-      this.setRefreshdataTimerAuto();
+      this.setRefreshDataTimerAuto();
     }
     const ret = items.map((item) => {
       const usageDetail = this.subnet_ip_availability.find(

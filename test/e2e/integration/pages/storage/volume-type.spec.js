@@ -26,7 +26,7 @@ describe('The Volume Type Page', () => {
     cy.loginAdmin(listUrl);
   });
 
-  it('successfully prepair resource', () => {
+  it('successfully prepare resource', () => {
     cy.clickTab('QoS')
       .clickHeaderButton(1)
       .formInput('name', qosName)

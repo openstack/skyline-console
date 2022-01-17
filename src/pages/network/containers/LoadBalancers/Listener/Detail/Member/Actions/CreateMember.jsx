@@ -25,7 +25,7 @@ import isEqual from 'react-fast-compare';
 @inject('rootStore')
 @observer
 export default class CreateAction extends ModalAction {
-  static id = 'manage-mamber';
+  static id = 'manage-member';
 
   static title = t('Add Member');
 
@@ -61,12 +61,11 @@ export default class CreateAction extends ModalAction {
       })
       .then((ports) => {
         this.setState({
-          ports: ports
-            .filter(
-              (port) =>
-                port.device_owner !== 'network:dhcp' &&
-                port.device_owner !== 'network:router_gateway'
-            )
+          ports: ports.filter(
+            (port) =>
+              port.device_owner !== 'network:dhcp' &&
+              port.device_owner !== 'network:router_gateway'
+          ),
         });
       });
   }
@@ -129,13 +128,19 @@ export default class CreateAction extends ModalAction {
       return { weight, protocol_port, address, name, subnet_id };
     });
     extMembers.forEach((member) => {
-      const { ip, protocol_port, weight, name = null, subnet_id } = member.ip_address;
+      const {
+        ip,
+        protocol_port,
+        weight,
+        name = null,
+        subnet_id,
+      } = member.ip_address;
       const addMember = {
         weight,
         protocol_port,
         address: ip,
         name,
-        subnet_id
+        subnet_id,
       };
       members.push(addMember);
     });
