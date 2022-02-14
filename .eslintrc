@@ -131,7 +131,8 @@
         "skipWordIfMatch": [],
         "minLength": 3
       }
-    ]
+    ],
+    "linebreak-style": ["error", "unix"]
   },
   "globals": {
     "t": true,

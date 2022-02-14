@@ -71,6 +71,7 @@ export const vpnEndpoint = () => getOriginEndpoint('neutron_vpn');
 export const lbEndpoint = () => getOriginEndpoint('octavia');
 export const qosEndpoint = () => getOriginEndpoint('neutron_qos');
 export const swiftEndpoint = () => getOriginEndpoint('swift');
+export const cinderEndpoint = () => getOriginEndpoint('cinder');
 
 export const apiVersionMaps = {
   nova: {

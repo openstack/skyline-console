@@ -29,6 +29,10 @@ export class ConfirmStep extends Base {
     return 'ConfirmStep';
   }
 
+  get enableCinder() {
+    return this.props.rootStore.checkEndpoint('cinder');
+  }
+
   allowed = () => Promise.resolve();
 
   getDisk(diskInfo) {
@@ -43,6 +47,7 @@ export class ConfirmStep extends Base {
   }
 
   getSystemDisk() {
+    if (!this.enableCinder) return null;
     const { context } = this.props;
     const { systemDisk, source } = context;
     return source.value === 'bootableVolume'
@@ -51,6 +56,7 @@ export class ConfirmStep extends Base {
   }
 
   getDataDisk() {
+    if (!this.enableCinder) return null;
     const { context } = this.props;
     const { dataDisk = [] } = context;
     return dataDisk.map((it) => this.getDisk(it.value));
@@ -175,6 +181,45 @@ export class ConfirmStep extends Base {
 
   get formItems() {
     const { context } = this.props;
+    let baseItems = [
+      // {
+      //   label: t('Resource Pool'),
+      //   value: context.resource,
+      // },
+      {
+        label: t('Start Source'),
+        value: context.source.label,
+      },
+      {
+        label: t('System Disk'),
+        value: this.getSystemDisk(),
+      },
+      {
+        label: t('Available Zone'),
+        value: context.availableZone.label,
+      },
+      {
+        label: t('Start Source Name'),
+        value: this.getSourceValue(),
+      },
+      {
+        label: t('Data Disk'),
+        value: this.getDataDisk(),
+      },
+      {
+        label: t('Project'),
+        value: context.project,
+      },
+      {
+        label: t('Flavor'),
+        value: this.getFlavor(),
+      },
+    ];
+    if (!this.enableCinder) {
+      baseItems = baseItems.filter(
+        (it) => ![t('System Disk'), t('Data Disk')].includes(it.label)
+      );
+    }
     return [
       {
         name: 'confirm-count',
@@ -190,40 +235,7 @@ export class ConfirmStep extends Base {
         onClick: () => {
           this.goStep(0);
         },
-        items: [
-          // {
-          //   label: t('Resource Pool'),
-          //   value: context.resource,
-          // },
-          {
-            label: t('Start Source'),
-            value: context.source.label,
-          },
-          {
-            label: t('System Disk'),
-            value: this.getSystemDisk(),
-          },
-          {
-            label: t('Available Zone'),
-            value: context.availableZone.label,
-          },
-          {
-            label: t('Start Source Name'),
-            value: this.getSourceValue(),
-          },
-          {
-            label: t('Data Disk'),
-            value: this.getDataDisk(),
-          },
-          {
-            label: t('Project'),
-            value: context.project,
-          },
-          {
-            label: t('Flavor'),
-            value: this.getFlavor(),
-          },
-        ],
+        items: baseItems,
       },
       {
         type: 'short-divider',

@@ -38,6 +38,10 @@ class Edit extends ModalAction {
     return t('edit image');
   }
 
+  get enableCinder() {
+    return this.props.rootStore.checkEndpoint('cinder');
+  }
+
   get labelCol() {
     return {
       xs: { span: 8 },
@@ -127,6 +131,7 @@ class Edit extends ModalAction {
         type: 'input-int',
         min: 0,
         max: 500,
+        display: this.enableCinder,
       },
       {
         name: 'min_ram',

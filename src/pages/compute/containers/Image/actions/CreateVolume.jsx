@@ -15,6 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalVolumeStore from 'stores/cinder/volume';
+import globalRootStore from 'stores/root';
 
 export class CreateVolume extends ModalAction {
   static id = 'create';
@@ -30,7 +31,9 @@ export class CreateVolume extends ModalAction {
 
   static allowed = (_, containerProps) => {
     const { isAdminPage } = containerProps;
-    return Promise.resolve(!isAdminPage);
+    return Promise.resolve(
+      globalRootStore.checkEndpoint('cinder') && !isAdminPage
+    );
   };
 
   getVolumeTypes() {

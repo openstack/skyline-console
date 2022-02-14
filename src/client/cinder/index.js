@@ -13,11 +13,15 @@
 // limitations under the License.
 
 import Base from '../client/base';
-import { cinderBase } from '../client/constants';
+import { cinderBase, cinderEndpoint } from '../client/constants';
 
 class CinderClient extends Base {
   get baseUrl() {
     return cinderBase();
+  }
+
+  get enable() {
+    return !!cinderEndpoint();
   }
 
   get projectInUrl() {

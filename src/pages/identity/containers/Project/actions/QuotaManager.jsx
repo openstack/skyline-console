@@ -38,14 +38,21 @@ export class QuotaManager extends ModalAction {
     return t('Edit quota');
   }
 
+  get enableCinder() {
+    return this.props.rootStore.checkEndpoint('cinder');
+  }
+
   async getData() {
     const { id: project_id } = this.item;
-    await Promise.all([
+    const promiseArr = [
       this.projectStore.fetchProjectQuota({
         project_id,
       }),
-      this.volumeTypeStore.fetchProjectVolumeTypes(project_id),
-    ]);
+    ];
+    if (this.enableCinder) {
+      promiseArr.push(this.volumeTypeStore.fetchProjectVolumeTypes(project_id));
+    }
+    await Promise.all(promiseArr);
     this.updateDefaultValue();
   }
 
@@ -164,20 +171,21 @@ export class QuotaManager extends ModalAction {
 
   get formItems() {
     const computeFormItems = this.getComputeFormItems();
-    const cinderFormItems = this.getFormItemsByCards('storage');
     const networkFormItems = this.getFormItemsByCards('networks');
-    const volumeTypeFormItems = this.getVolumeTypeFormItems();
-    const form = [
-      ...computeFormItems,
-      ...cinderFormItems,
-      ...networkFormItems,
-      {
-        name: 'more',
-        label: t('Advanced Options'),
-        type: 'more',
-      },
-      ...volumeTypeFormItems,
-    ];
+    const form = [...computeFormItems, ...networkFormItems];
+    if (this.enableCinder) {
+      const cinderFormItems = this.getFormItemsByCards('storage');
+      const volumeTypeFormItems = this.getVolumeTypeFormItems();
+      form.splice(7, 0, ...cinderFormItems);
+      form.push(
+        {
+          name: 'more',
+          label: t('Advanced Options'),
+          type: 'more',
+        },
+        ...volumeTypeFormItems
+      );
+    }
     return form;
   }
 

@@ -14,6 +14,7 @@
 
 import { extendObservable, action } from 'mobx';
 import client from 'client';
+import globalRootStore from './root';
 
 export default class OverviewStore {
   constructor() {
@@ -90,23 +91,28 @@ export default class OverviewStore {
         all_projects: true,
         status: 'SHUTOFF',
       }),
-      client.skyline.extension.volumes({ limit: 10, all_projects: true }),
-      client.skyline.extension.volumes({
-        limit: 10,
-        all_projects: true,
-        status: 'in-use',
-      }),
-      client.skyline.extension.volumes({
-        limit: 10,
-        all_projects: true,
-        status: 'error',
-      }),
-      client.skyline.extension.volumes({
-        limit: 10,
-        all_projects: true,
-        status: 'available',
-      }),
     ];
+    if (globalRootStore.checkEndpoint('cinder')) {
+      const volumeResource = [
+        client.skyline.extension.volumes({ limit: 10, all_projects: true }),
+        client.skyline.extension.volumes({
+          limit: 10,
+          all_projects: true,
+          status: 'in-use',
+        }),
+        client.skyline.extension.volumes({
+          limit: 10,
+          all_projects: true,
+          status: 'error',
+        }),
+        client.skyline.extension.volumes({
+          limit: 10,
+          all_projects: true,
+          status: 'available',
+        }),
+      ];
+      promiseArray.push(...volumeResource);
+    }
     const [
       allServers,
       activeServers,
@@ -121,10 +127,6 @@ export default class OverviewStore {
     const { count: activeServersCount } = activeServers;
     const { count: errorServersCount } = errorServers;
     const { count: shutoffServersCount } = shutoffServers;
-    const { count: allVolumesCount } = allVolumes;
-    const { count: attachVolumesCount } = attachVolumes;
-    const { count: errorVolumesCount } = errorVolumes;
-    const { count: availableVolumesCount } = availableVolumes;
     const serviceNum = {
       all: allServersCount,
       active: activeServersCount,
@@ -134,16 +136,23 @@ export default class OverviewStore {
         allServersCount -
         (activeServersCount + errorServersCount + shutoffServersCount),
     };
-    const volumeNum = {
-      all: allVolumesCount,
-      active: attachVolumesCount,
-      error: errorVolumesCount,
-      available: availableVolumesCount,
-      other:
-        allVolumesCount -
-        (attachVolumesCount + errorVolumesCount + availableVolumesCount),
-    };
-    this.virtualResource = { serviceNum, volumeNum };
+    this.virtualResource = { serviceNum };
+    if (globalRootStore.checkEndpoint('cinder')) {
+      const { count: allVolumesCount } = allVolumes;
+      const { count: attachVolumesCount } = attachVolumes;
+      const { count: errorVolumesCount } = errorVolumes;
+      const { count: availableVolumesCount } = availableVolumes;
+      const volumeNum = {
+        all: allVolumesCount,
+        active: attachVolumesCount,
+        error: errorVolumesCount,
+        available: availableVolumesCount,
+        other:
+          allVolumesCount -
+          (attachVolumesCount + errorVolumesCount + availableVolumesCount),
+      };
+      this.virtualResource.volumeNum = volumeNum;
+    }
     this.virtualResourceLoading = false;
   }
 

@@ -119,12 +119,17 @@ export class BaseLayout extends Component {
 
   checkLicenseKey = (key) => this.rootStore.checkLicense(key);
 
+  checkItemEndpoints = (key) => this.rootStore.checkEndpoint(key);
+
   updateMenuItemByAllowed = (menuItem) => {
-    const { licenseKey, policy, children = [], ...rest } = menuItem;
+    const { licenseKey, policy, endpoints, children = [], ...rest } = menuItem;
     if (licenseKey && !this.checkLicenseKey(licenseKey)) {
       return null;
     }
     if (policy && !checkItemPolicy({ policy })) {
+      return null;
+    }
+    if (endpoints && !this.checkItemEndpoints(endpoints)) {
       return null;
     }
     if (children.length === 0) {

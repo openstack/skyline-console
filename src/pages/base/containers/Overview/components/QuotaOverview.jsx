@@ -17,6 +17,7 @@ import { Badge, Card, Col, List, Progress, Row, Spin, Tooltip } from 'antd';
 import { inject, observer } from 'mobx-react';
 import globalVolumeTypeStore from 'stores/cinder/volume-type';
 import globalProjectStore from 'stores/keystone/project';
+import globalRootStore from 'stores/root';
 import { isNumber } from 'lodash';
 import styles from '../style.less';
 
@@ -128,14 +129,21 @@ export class QuotaOverview extends Component {
     } else {
       const { user } = this.props.rootStore;
       const { project: { id: projectId = '' } = {} } = user;
-      await Promise.all([
+      const promiseArr = [
         this.projectStore.fetchProjectQuota({ project_id: projectId }),
-        this.volumeTypeStore.fetchList(),
-      ]);
+      ];
+      if (this.enableCinder) {
+        promiseArr.push(this.volumeTypeStore.fetchList());
+      }
+      await Promise.all(promiseArr);
     }
     this.setState({
       isLoading: false,
     });
+  }
+
+  get enableCinder() {
+    return globalRootStore.checkEndpoint('cinder');
   }
 
   get volumeTypeData() {
@@ -148,7 +156,11 @@ export class QuotaOverview extends Component {
   }
 
   get quotaCardList() {
-    return this.props.quotaCardList || quotaCardList;
+    const list = this.props.quotaCardList || quotaCardList;
+    if (!this.enableCinder) {
+      return list.filter((it) => it.type !== 'storage');
+    }
+    return list;
   }
 
   get quotaAction() {
@@ -208,15 +220,21 @@ export class QuotaOverview extends Component {
             </Card>
           </Col>
         ))}
-        <Col className={styles.card} span={24} key={this.volumeTypesQuota.type}>
-          <Card
-            title={this.volumeTypesQuota.text}
-            bordered={false}
-            loading={isLoading}
+        {this.enableCinder ? (
+          <Col
+            className={styles.card}
+            span={24}
+            key={this.volumeTypesQuota.type}
           >
-            {this.renderVolumeTypes()}
-          </Card>
-        </Col>
+            <Card
+              title={this.volumeTypesQuota.text}
+              bordered={false}
+              loading={isLoading}
+            >
+              {this.renderVolumeTypes()}
+            </Card>
+          </Col>
+        ) : null}
       </Row>
     );
   };

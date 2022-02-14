@@ -328,6 +328,7 @@ export class BaseDetail extends Base {
   }
 
   renderVolumeRow() {
+    if (!this.props.rootStore.checkEndpoint('cinder')) return null;
     const {
       match: { url },
     } = this.props;

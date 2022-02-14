@@ -82,6 +82,10 @@ export class StepCreate extends StepAction {
     return t('Create instance');
   }
 
+  get enableCinder() {
+    return this.props.rootStore.checkEndpoint('cinder');
+  }
+
   get listUrl() {
     const { image, volume, servergroup } = this.locationParams;
     if (image) {
@@ -242,6 +246,7 @@ export class StepCreate extends StepAction {
   }
 
   checkVolumeQuota() {
+    if (!this.enableCinder) return '';
     let msg = '';
     const { totalNewCount, totalNewSize, newCountMap, newSizeMap } =
       this.getVolumeInputMap();
@@ -351,15 +356,21 @@ export class StepCreate extends StepAction {
       source,
       systemDisk,
     } = values;
-    let imageRef = null;
-    let rootVolume = {};
     const { value: sourceValue } = source;
+    const imageRef =
+      sourceValue === 'bootableVolume'
+        ? null
+        : sourceValue === 'image'
+        ? image.selectedRowKeys[0]
+        : instanceSnapshot.selectedRowKeys[0];
+    if (!this.enableCinder) {
+      return {
+        imageRef,
+      };
+    }
+    let rootVolume = {};
     if (sourceValue !== 'bootableVolume') {
       const { deleteType, type, size } = systemDisk;
-      imageRef =
-        sourceValue === 'image'
-          ? image.selectedRowKeys[0]
-          : instanceSnapshot.selectedRowKeys[0];
       rootVolume = {
         boot_index: 0,
         uuid: imageRef,
@@ -469,9 +480,11 @@ export class StepCreate extends StepAction {
       name,
       flavorRef: flavor.selectedRowKeys[0],
       availability_zone: availableZone.value,
-      block_device_mapping_v2: volumes,
       networks,
     };
+    if (this.enableCinder) {
+      server.block_device_mapping_v2 = volumes;
+    }
     if (imageRef) {
       server.imageRef = imageRef;
     }

@@ -32,6 +32,9 @@ const Charts = (props) => {
     return (
       <Row gutter={[16, 16]} style={{ width: '100%' }}>
         {topCardList.map((chartProps) => {
+          if (chartProps.hidden) {
+            return null;
+          }
           const config = merge({}, baseTopCardProps, chartProps);
           const { span, fetchDataParams = {}, ...rest } = config;
           const colProps = {

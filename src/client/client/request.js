@@ -186,6 +186,9 @@ export class HttpRequest {
         };
       }
     });
+    this.request.empty = () => {
+      return {};
+    };
   };
 }
 

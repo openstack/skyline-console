@@ -148,6 +148,7 @@ const renderMenu = (t) => {
           name: t('Volume'),
           key: 'volume',
           level: 1,
+          endpoints: 'cinder',
           children: [
             {
               path: '/storage/volume/create',
@@ -169,6 +170,7 @@ const renderMenu = (t) => {
           name: t('Backups'),
           key: 'backup',
           level: 1,
+          endpoints: 'cinder',
           children: [
             {
               path: /^\/storage\/backup\/detail\/.[^/]+$/,
@@ -184,6 +186,7 @@ const renderMenu = (t) => {
           name: t('Volume Snapshot'),
           key: 'snapshot',
           level: 1,
+          endpoints: 'cinder',
           children: [
             {
               path: /^\/storage\/snapshot\/detail\/.[^/]+$/,

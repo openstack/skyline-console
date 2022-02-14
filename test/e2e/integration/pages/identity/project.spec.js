@@ -57,14 +57,14 @@ describe('The Project Page', () => {
       .clickModalActionSubmitButton();
   });
 
-  it('successfully manage user', () => {
-    cy.tableSearchText(name)
-      .clickActionInMore('Manage User')
-      .formTransfer('select_user', username)
-      .formTransferRight('select_user', username)
-      .formSelect('select_user', 'admin')
-      .clickModalActionSubmitButton();
-  });
+  // it('successfully manage user', () => {
+  //   cy.tableSearchText(name)
+  //     .clickActionInMore('Manage User')
+  //     .formTransfer('select_user', username)
+  //     .formTransferRight('select_user', username)
+  //     .formSelect('select_user', 'admin')
+  //     .clickModalActionSubmitButton();
+  // });
 
   it('successfully manage user group', () => {
     cy.tableSearchText(name)

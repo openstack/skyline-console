@@ -15,6 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { VolumeStore } from 'stores/cinder/volume';
 import globalServerStore from 'stores/nova/instance';
+import globalRootStore from 'stores/root';
 import { ModalAction } from 'containers/Action';
 import { volumeStatus, isOsDisk } from 'resources/volume';
 import { allowAttachVolumeInstance } from 'resources/instance';
@@ -63,7 +64,11 @@ export class DetachVolume extends ModalAction {
 
   static allowed = (item, containerProps) => {
     const { isAdminPage } = containerProps;
-    return Promise.resolve(!isAdminPage && allowAttachVolumeInstance(item));
+    return Promise.resolve(
+      globalRootStore.checkEndpoint('cinder') &&
+        !isAdminPage &&
+        allowAttachVolumeInstance(item)
+    );
   };
 
   get formItems() {

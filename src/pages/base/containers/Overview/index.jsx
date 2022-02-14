@@ -20,6 +20,7 @@ import overviewNetwork from 'asset/image/overview-network.svg';
 import overviewRouter from 'asset/image/overview-router.svg';
 import overviewVolume from 'asset/image/overview-volume.svg';
 import { Link } from 'react-router-dom';
+import globalRootStore from 'stores/root';
 import styles from './style.less';
 import QuotaOverview from './components/QuotaOverview';
 import ProjectInfo from './components/ProjectInfo';
@@ -52,6 +53,13 @@ const actions = [
 ];
 
 export class Overview extends Component {
+  get filterActions() {
+    if (!globalRootStore.checkEndpoint('cinder')) {
+      return actions.filter((it) => it.key !== 'volume');
+    }
+    return actions;
+  }
+
   renderAction = (item) => (
     <Row className={styles.actionButton} gutter={[8]}>
       <Col span={8} className={styles.main_icon}>
@@ -64,7 +72,7 @@ export class Overview extends Component {
   );
 
   renderActions() {
-    return actions.map((item) => (
+    return this.filterActions.map((item) => (
       <Col span={6} key={item.key}>
         <Link to={item.to}>{this.renderAction(item)}</Link>
       </Col>

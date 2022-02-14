@@ -28,7 +28,22 @@ export default class BaseClient {
     return url ? `${this.baseUrl}/${url}` : `${this.baseUrl}`;
   };
 
+  get enable() {
+    return true;
+  }
+
   get request() {
+    if (!this.enable) {
+      // const emptyFunc = () => {
+      //   return Promise.resolve({});
+      // };
+      const methods = ['get', 'post', 'put', 'delete', 'patch', 'head', 'copy'];
+      const req = {};
+      methods.forEach((m) => {
+        req[m] = this.originRequest.empty;
+      });
+      return req;
+    }
     const request = this.originRequest;
     return {
       get: (url, params, conf) => request.get(this.getUrl(url), params, conf),

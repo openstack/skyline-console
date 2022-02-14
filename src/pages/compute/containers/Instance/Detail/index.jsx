@@ -35,6 +35,10 @@ export class InstanceDetail extends Base {
     return t('instance');
   }
 
+  get enableCinder() {
+    return this.props.rootStore.checkEndpoint('cinder');
+  }
+
   get policy() {
     return 'os_compute_api:servers:show';
   }
@@ -120,11 +124,6 @@ export class InstanceDetail extends Base {
         component: BaseDetail,
       },
       {
-        title: t('Volume'),
-        key: 'volumes',
-        component: Volumes,
-      },
-      {
         title: t('Interface'),
         key: 'interface',
         component: VirtualAdapter,
@@ -145,6 +144,13 @@ export class InstanceDetail extends Base {
         component: ActionLog,
       },
     ];
+    if (this.enableCinder) {
+      tabs.splice(1, 0, {
+        title: t('Volume'),
+        key: 'volumes',
+        component: Volumes,
+      });
+    }
     if (isIronicInstance(this.detailData)) {
       return tabs.filter(
         (it) =>

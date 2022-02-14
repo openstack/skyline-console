@@ -101,6 +101,10 @@ export class BaseStep extends Base {
     }));
   }
 
+  get enableCinder() {
+    return this.props.rootStore.checkEndpoint('cinder');
+  }
+
   get volumeTypes() {
     return (this.volumeTypeStore.list.data || []).map((it) => ({
       label: it.name,
@@ -134,14 +138,15 @@ export class BaseStep extends Base {
 
   get sourceTypes() {
     const { image, volume } = this.locationParams;
-    return [
-      { label: t('Image'), value: 'image', disabled: volume },
-      {
+    const types = [{ label: t('Image'), value: 'image', disabled: volume }];
+    if (this.enableCinder) {
+      types.push({
         label: t('Bootable Volume'),
         value: 'bootableVolume',
         disabled: image,
-      },
-    ];
+      });
+    }
+    return types;
   }
 
   get imageSourceType() {
@@ -149,7 +154,9 @@ export class BaseStep extends Base {
   }
 
   get volumeSourceType() {
-    return this.sourceTypes.find((it) => it.value === 'bootableVolume');
+    return this.enableCinder
+      ? this.sourceTypes.find((it) => it.value === 'bootableVolume')
+      : {};
   }
 
   allowed = () => Promise.resolve();
@@ -180,12 +187,17 @@ export class BaseStep extends Base {
   }
 
   async getVolumeTypes() {
-    await this.volumeTypeStore.fetchList();
+    if (this.enableCinder) {
+      await this.volumeTypeStore.fetchList();
+    }
   }
 
   async getVolumes() {
     const { image, volume } = this.locationParams;
     if (image) {
+      return;
+    }
+    if (!this.enableCinder) {
       return;
     }
     if (volume) {
@@ -327,7 +339,7 @@ export class BaseStep extends Base {
   }
 
   get showSystemDisk() {
-    return this.sourceTypeIsImage;
+    return this.enableCinder && this.sourceTypeIsImage;
   }
 
   getFlavorComponent() {
@@ -420,7 +432,7 @@ export class BaseStep extends Base {
         isLoading: this.volumeStore.list.isLoading,
         required: this.sourceTypeIsVolume,
         isMulti: false,
-        display: this.sourceTypeIsVolume,
+        display: this.sourceTypeIsVolume && this.enableCinder,
         onChange: this.onBootableVolumeChange,
         filterParams: [
           {
@@ -459,6 +471,7 @@ export class BaseStep extends Base {
           'Too many disks mounted on the instance will affect the read and write performance. It is recommended not to exceed 16 disks.'
         ),
         onChange: this.onDataDiskChange,
+        display: this.enableCinder,
       },
     ];
   }

@@ -14,6 +14,7 @@
 
 import { inject, observer } from 'mobx-react';
 import globalServerStore from 'stores/nova/instance';
+import globalRootStore from 'stores/root';
 import { ModalAction } from 'containers/Action';
 import { allowAttachVolumeInstance } from 'resources/instance';
 import { multiTip } from 'resources/volume';
@@ -56,7 +57,11 @@ export class AttachVolume extends ModalAction {
 
   static allowed = (item, containerProps) => {
     const { isAdminPage } = containerProps;
-    return Promise.resolve(!isAdminPage && allowAttachVolumeInstance(item));
+    return Promise.resolve(
+      globalRootStore.checkEndpoint('cinder') &&
+        !isAdminPage &&
+        allowAttachVolumeInstance(item)
+    );
   };
 
   get formItems() {

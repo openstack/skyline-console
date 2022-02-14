@@ -1,0 +1,16 @@
+---
+fixes:
+  - |
+    `Bug #1939984 <https://bugs.launchpad.net/skyline-apiserver/+bug/1939984>`_:
+
+    Add support for no-cinder scenaio
+
+    1.Update base client to support service disable
+
+    2.Remove volume in create instance if no-cinder
+
+    3.Remove volume and other cinder services in overview page if no-cinder
+
+    4.Remove some storage services if no-cinder
+
+    5.Remove volume in monitor centers if no-cinder

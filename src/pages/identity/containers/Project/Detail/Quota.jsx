@@ -26,18 +26,26 @@ export class Quota extends Component {
     this.volumeTypeStore = new VolumeTypeStore();
   }
 
+  get enableCinder() {
+    return this.props.rootStore.checkEndpoint('cinder');
+  }
+
   get volumeTypeData() {
+    if (!this.enableCinder) return [];
     return this.volumeTypeStore.projectVolumeTypes;
   }
 
   getData = async () => {
     const { id: project_id } = this.props.match.params;
-    return Promise.all([
+    const promiseArr = [
       this.projectStore.fetchProjectQuota({
         project_id,
       }),
-      this.volumeTypeStore.fetchProjectVolumeTypes(project_id),
-    ]);
+    ];
+    if (this.enableCinder) {
+      promiseArr.push(this.volumeTypeStore.fetchProjectVolumeTypes(project_id));
+    }
+    return Promise.all(promiseArr);
   };
 
   render() {

@@ -23,6 +23,10 @@ import HeatService from './HeatService';
 @inject('rootStore')
 @observer
 export default class Service extends Base {
+  get enableCinder() {
+    return this.props.rootStore.checkEndpoint('cinder');
+  }
+
   get tabs() {
     const tabs = [
       {
@@ -36,11 +40,6 @@ export default class Service extends Base {
         component: ComputeService,
       },
       {
-        title: t('Block Storage Services'),
-        key: 'cinderService',
-        component: CinderService,
-      },
-      {
         title: t('Neutron Agents'),
         key: 'neutronAgent',
         component: NeutronAgent,
@@ -51,6 +50,13 @@ export default class Service extends Base {
         component: HeatService,
       },
     ];
+    if (this.enableCinder) {
+      tabs.splice(3, 0, {
+        title: t('Block Storage Services'),
+        key: 'cinderService',
+        component: CinderService,
+      });
+    }
     return tabs;
   }
 }

@@ -17,6 +17,7 @@ import { getGBValue } from 'utils/index';
 import { get, isNil, isEmpty } from 'lodash';
 import client from 'client';
 import Base from 'stores/base';
+import globalRootStore from '../root';
 
 export class ProjectStore extends Base {
   @observable
@@ -185,6 +186,10 @@ export class ProjectStore extends Base {
     };
   }
 
+  get enableCinder() {
+    return globalRootStore.checkEndpoint('cinder');
+  }
+
   @action
   async enable({ id }) {
     const reqBody = {
@@ -274,15 +279,22 @@ export class ProjectStore extends Base {
 
   @action
   async fetchProjectQuota({ project_id }) {
-    const [novaResult, cinderResult, neutronResult] = await Promise.all([
+    const promiseArr = [
       this.novaQuotaClient.detail(project_id),
-      this.cinderQuotaClient.show(project_id, { usage: 'True' }),
       this.neutronQuotaClient.details(project_id),
-    ]);
+    ];
+    if (this.enableCinder) {
+      promiseArr.push(
+        this.cinderQuotaClient.show(project_id, { usage: 'True' })
+      );
+    }
+    const [novaResult, neutronResult, cinderResult = {}] = await Promise.all(
+      promiseArr
+    );
     this.isSubmitting = false;
     const { quota_set: novaQuota } = novaResult;
     const { ram } = novaQuota;
-    const { quota_set: cinderQuota } = cinderResult;
+    const { quota_set: cinderQuota = {} } = cinderResult;
     const { quota: neutronQuota } = neutronResult;
     novaQuota.ram = {
       in_use: getGBValue(ram.in_use),
@@ -335,6 +347,7 @@ export class ProjectStore extends Base {
   }
 
   getCinderQuotaBody(data) {
+    if (!this.enableCinder) return {};
     const { backups, ...others } = data;
     const rest = {};
     Object.keys(others).forEach((key) => {

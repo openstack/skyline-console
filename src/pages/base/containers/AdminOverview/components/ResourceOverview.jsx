@@ -87,7 +87,11 @@ export class virtualResourceInfo extends Component {
   }
 
   get card() {
-    return this.props.card || card;
+    const list = this.props.card || card;
+    if (!this.props.rootStore.checkEndpoint('cinder')) {
+      return list.filter((it) => it.key !== 'volumeNum');
+    }
+    return list;
   }
 
   get smallCard() {

@@ -179,6 +179,7 @@ const renderMenu = (t) => {
           name: t('Volume'),
           key: 'volumeAdmin',
           level: 1,
+          endpoints: 'cinder',
           children: [
             {
               path: /^\/storage\/volume-admin\/detail\/.[^/]+$/,
@@ -194,6 +195,7 @@ const renderMenu = (t) => {
           name: t('Backups'),
           key: 'backupAdmin',
           level: 1,
+          endpoints: 'cinder',
           children: [
             {
               path: /^\/storage\/backup-admin\/detail\/.[^/]+$/,
@@ -209,6 +211,7 @@ const renderMenu = (t) => {
           name: t('Volume Snapshot'),
           key: 'snapshotAdmin',
           level: 1,
+          endpoints: 'cinder',
           children: [
             {
               path: /^\/storage\/snapshot-admin\/detail\/.[^/]+$/,
@@ -224,6 +227,7 @@ const renderMenu = (t) => {
           name: t('Volume Type'),
           key: 'volumeTypeAdmin',
           level: 1,
+          endpoints: 'cinder',
           children: [
             {
               path: /^\/storage\/volume-type-admin\/detail\/.[^/]+$/,
@@ -246,6 +250,7 @@ const renderMenu = (t) => {
           name: t('Storage Backend'),
           key: 'storageBackendAdmin',
           level: 1,
+          endpoints: 'cinder',
           children: [],
         },
       ],

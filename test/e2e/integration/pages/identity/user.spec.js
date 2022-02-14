@@ -75,14 +75,14 @@ describe('The User Page', () => {
     cy.goBackToList(listUrl);
   });
 
-  it('successfully edit system permission', () => {
-    cy.tableSearchText(name)
-      .clickActionInMore('Edit System Permission')
-      .formTransfer('select_project', projectName2)
-      .formTransferRight('select_project', projectName2)
-      .formSelect('select_project', 'admin')
-      .clickModalActionSubmitButton();
-  });
+  // it('successfully edit system permission', () => {
+  //   cy.tableSearchText(name)
+  //     .clickActionInMore('Edit System Permission')
+  //     .formTransfer('select_project', projectName2)
+  //     .formTransferRight('select_project', projectName2)
+  //     .formSelect('select_project', 'admin')
+  //     .clickModalActionSubmitButton();
+  // });
 
   it('successfully forbidden user', () => {
     cy.tableSearchText(name).clickConfirmActionInMore('Forbidden');

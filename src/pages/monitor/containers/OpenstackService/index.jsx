@@ -17,6 +17,7 @@ import { observer } from 'mobx-react';
 import { OpenstackServiceStore } from 'stores/prometheus/openstack-service';
 import { SyncOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
+import globalRootStore from 'stores/root';
 import Services from './Services';
 import styles from './index.less';
 
@@ -30,6 +31,10 @@ class OpenstackService extends Component {
 
   componentDidMount() {
     this.getData();
+  }
+
+  get enableCinder() {
+    return globalRootStore.checkEndpoint('cinder');
   }
 
   getData = async () => {
@@ -56,16 +61,18 @@ class OpenstackService extends Component {
         ...network_service,
       },
       {
-        key: 'cinder_service',
-        title: t('Cinder Service'),
-        ...cinder_service,
-      },
-      {
         key: 'other_service',
         title: t('Other Service'),
         ...other_service,
       },
     ];
+    if (this.enableCinder) {
+      serviceMap.splice(2, 0, {
+        key: 'cinder_service',
+        title: t('Cinder Service'),
+        ...cinder_service,
+      });
+    }
 
     return (
       <div className={styles.container}>

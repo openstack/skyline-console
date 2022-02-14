@@ -10,6 +10,7 @@ import {
 import CircleChart from 'components/PrometheusChart/CircleWithRightLegend';
 import { handleResponses } from 'components/PrometheusChart/utils/dataHandler';
 import { ChartType } from 'components/PrometheusChart/utils/utils';
+import globalRootStore from 'stores/root';
 import {
   renderTopColumnChart,
   renderTopColumnExtra,
@@ -372,6 +373,7 @@ export const storageLeftCardList = [
         </div>
       );
     },
+    hidden: !globalRootStore.checkEndpoint('cinder'),
   },
 ];
 
