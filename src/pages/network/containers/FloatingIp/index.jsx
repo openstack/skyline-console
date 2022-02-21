@@ -22,6 +22,7 @@ import { Col, Popover, Row } from 'antd';
 import { FileTextOutlined } from '@ant-design/icons';
 import { qosEndpoint } from 'client/client/constants';
 import { enablePFW } from 'resources/neutron';
+import { getOptions } from 'utils';
 import styles from './styles.less';
 import actionConfigs from './actions';
 
@@ -222,10 +223,7 @@ export class FloatingIps extends Base {
       {
         label: t('Status'),
         name: 'status',
-        options: Object.keys(floatingIpStatus).map((key) => ({
-          label: floatingIpStatus[key],
-          key,
-        })),
+        options: getOptions(floatingIpStatus),
       },
     ];
     return filters;

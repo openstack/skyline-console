@@ -16,6 +16,7 @@ import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalServerGroupStore from 'stores/nova/server-group';
 import policyType from 'resources/server-group';
+import { getOptions } from 'utils';
 import actionConfigs from './actions';
 
 @inject('rootStore')
@@ -80,10 +81,7 @@ export default class ServerGroup extends Base {
       {
         label: t('Policy'),
         name: 'policy',
-        options: Object.keys(policyType).map((key) => ({
-          key,
-          label: policyType[key],
-        })),
+        options: getOptions(policyType),
       },
     ];
   }

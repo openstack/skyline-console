@@ -14,6 +14,7 @@
 import React from 'react';
 import { isNumber } from 'lodash';
 import { Link } from 'react-router-dom';
+import { getOptions } from 'utils';
 
 export const ipProtocols = [
   { value: 'ah', label: t('AH') },
@@ -114,10 +115,7 @@ export const filterParams = [
   {
     label: t('Direction'),
     name: 'direction',
-    options: Object.keys(directions).map((key) => ({
-      label: directions[key],
-      key,
-    })),
+    options: getOptions(directions),
   },
   {
     label: t('Ether Type'),

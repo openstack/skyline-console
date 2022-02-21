@@ -16,6 +16,7 @@ import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { serviceStatus, serviceState } from 'resources/service';
 import globalServiceStore from 'stores/cinder/service';
+import { getOptions } from 'utils';
 import actionConfigs from './actions';
 
 @inject('rootStore')
@@ -93,18 +94,12 @@ export default class CinderService extends Base {
       {
         label: t('Service Status'),
         name: 'status',
-        options: Object.keys(serviceStatus).map((key) => ({
-          label: serviceStatus[key],
-          key,
-        })),
+        options: getOptions(serviceStatus),
       },
       {
         label: t('Service State'),
         name: 'state',
-        options: Object.keys(serviceState).map((key) => ({
-          label: serviceState[key],
-          key,
-        })),
+        options: getOptions(serviceState),
       },
     ];
   }

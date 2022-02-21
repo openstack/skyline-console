@@ -15,7 +15,7 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { serviceState } from 'resources/service';
-
+import { getOptions } from 'utils';
 import globalHeatServiceStore from 'stores/heat/service';
 
 @inject('rootStore')
@@ -74,10 +74,7 @@ export default class HeatService extends Base {
       {
         label: t('Status'),
         name: 'status',
-        options: Object.keys(serviceState).map((key) => ({
-          label: serviceState[key],
-          key,
-        })),
+        options: getOptions(serviceState),
       },
     ];
   }

@@ -22,6 +22,7 @@ import Base from 'components/Form';
 import { getPasswordOtherRule, asciiValidator } from 'utils/validate';
 import { hypervisorColumns, hypervisorFilters } from 'resources/hypervisor';
 import { physicalNodeTypes } from 'resources/instance';
+import { getOptions } from 'utils';
 
 export class SystemStep extends Base {
   init() {
@@ -319,10 +320,7 @@ export class SystemStep extends Base {
           {
             label: t('Policy'),
             name: 'policy',
-            options: Object.keys(policyType).map((key) => ({
-              key,
-              label: policyType[key],
-            })),
+            options: getOptions(policyType),
           },
         ],
       },

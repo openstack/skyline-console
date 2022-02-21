@@ -17,6 +17,7 @@ import Base from 'containers/List';
 import { serviceStatus, serviceState } from 'resources/service';
 import globalComputeHostStore from 'stores/nova/compute-host';
 import { onlyAdminCanReadPolicy } from 'resources/policy';
+import { getOptions } from 'utils';
 import actionConfigs from './actions';
 
 @inject('rootStore')
@@ -94,18 +95,12 @@ export default class ComputeHost extends Base {
       {
         label: t('Service Status'),
         name: 'status',
-        options: Object.keys(serviceStatus).map((key) => ({
-          key,
-          label: serviceStatus[key],
-        })),
+        options: getOptions(serviceStatus),
       },
       {
         label: t('Service State'),
         name: 'state',
-        options: Object.keys(serviceState).map((key) => ({
-          key,
-          label: serviceState[key],
-        })),
+        options: getOptions(serviceState),
       },
     ];
   }

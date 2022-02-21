@@ -17,6 +17,7 @@ import Base from 'containers/List';
 import globalIronicStore from 'stores/ironic/ironic';
 import { powerState, provisioningState } from 'resources/ironic';
 import { ironicOriginEndpoint } from 'client/client/constants';
+import { getOptions } from 'utils';
 import actionConfigs from './actions';
 
 @inject('rootStore')
@@ -99,7 +100,22 @@ export default class BareMetalNode extends Base {
   ];
 
   get searchFilters() {
-    return [];
+    return [
+      {
+        label: t('Name'),
+        name: 'name',
+      },
+      {
+        label: t('Power State'),
+        name: 'power_state',
+        options: getOptions(powerState),
+      },
+      {
+        label: t('Provision State'),
+        name: 'provision_state',
+        options: getOptions(provisioningState),
+      },
+    ];
   }
 
   updateFetchParams = (params) => {

@@ -17,6 +17,7 @@ import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { portStatus } from 'resources/port';
 import { PortStore } from 'stores/neutron/port';
+import { getOptions } from 'utils';
 
 @inject('rootStore')
 @observer
@@ -109,10 +110,7 @@ export default class Ports extends Base {
       {
         label: t('Status'),
         name: 'status',
-        options: Object.keys(portStatus).map((key) => ({
-          label: portStatus[key],
-          key,
-        })),
+        options: getOptions(portStatus),
       },
     ];
   }

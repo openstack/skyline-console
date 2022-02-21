@@ -15,6 +15,7 @@
 import React from 'react';
 import globalRouterStore from 'stores/neutron/router';
 import { getPortsWithFixedIPs, getSubnetToRouter } from 'resources/floatingip';
+import { getOptions } from 'utils';
 
 export const routerStatus = {
   ACTIVE: t('Active'),
@@ -87,10 +88,7 @@ export const routerFilters = [
   {
     label: t('Status'),
     name: 'status',
-    options: Object.keys(routerStatus).map((key) => ({
-      label: routerStatus[key],
-      key,
-    })),
+    options: getOptions(routerStatus),
   },
 ];
 

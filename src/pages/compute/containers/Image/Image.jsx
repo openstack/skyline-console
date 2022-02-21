@@ -189,10 +189,7 @@ export class Image extends Base {
       {
         label: t('Status'),
         name: 'status',
-        options: Object.keys(imageStatus).map((key) => ({
-          key,
-          label: imageStatus[key],
-        })),
+        options: getOptions(imageStatus),
       },
     ];
     const values = ['public', 'shared'];
