@@ -1924,6 +1924,7 @@
   "The user has been disabled, please contact the administrator": "用户已被禁用，请联系管理员",
   "The user needs to ensure that the input is a shell script that can run completely and normally.": "请确保输入的是能完整正常运行的 shell 脚本。",
   "The volume associated with the backup is not available, unable to restore.": "云硬盘不处于可用状态，不支持恢复备份操作。",
+  "The volume status can be reset to in-use only when the previous status is in-use.": "只有当之前的状态为使用中时，才将云硬盘状态重置为使用中。",
   "The volume type needs to be consistent with the volume type when the snapshot is created.": "创建云硬盘的云硬盘类型需要和创建快照时间点的云硬盘类型保持一致。",
   "The volume type needs to set \"multiattach\" in the metadata to support shared volume attributes.": "云硬盘类型需在元数据中设置\"multiattach\"，才可支持共享盘属性。",
   "The {action} instruction has been issued, instance: {name}. \n You can wait for a few seconds to follow the changes of the list data or manually refresh the data to get the final display result.": "{action}指令已下发，实例名称：{name}。 \n 您可等待几秒关注列表数据的变更或是手动刷新数据，以获取最终展示结果。",

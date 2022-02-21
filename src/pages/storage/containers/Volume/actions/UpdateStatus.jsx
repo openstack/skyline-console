@@ -47,10 +47,12 @@ export default class UpdateStatus extends ModalAction {
   }
 
   get formItems() {
+    const { status } = this.state;
     const statusList = [
       { value: 'available', label: t('Available') },
       { value: 'maintenance', label: t('Maintained') },
       { value: 'error', label: t('Error') },
+      { value: 'in-use', label: t('In Use') },
     ];
     return [
       {
@@ -64,9 +66,22 @@ export default class UpdateStatus extends ModalAction {
         label: t('Status'),
         type: 'select',
         options: statusList,
+        onChange: this.handleStatusChange,
+        extra:
+          status === 'in-use'
+            ? t(
+                'The volume status can be reset to in-use only when the previous status is in-use.'
+              )
+            : '',
       },
     ];
   }
+
+  handleStatusChange = (status) => {
+    this.setState({
+      status,
+    });
+  };
 
   init() {
     this.store = globalVolumeStore;

@@ -1924,6 +1924,7 @@
   "The user has been disabled, please contact the administrator": "The user has been disabled, please contact the administrator",
   "The user needs to ensure that the input is a shell script that can run completely and normally.": "The user needs to ensure that the input is a shell script that can run completely and normally.",
   "The volume associated with the backup is not available, unable to restore.": "The volume associated with the backup is not available, unable to restore.",
+  "The volume status can be reset to in-use only when the previous status is in-use.": "The volume status can be reset to in-use only when the previous status is in-use.",
   "The volume type needs to be consistent with the volume type when the snapshot is created.": "The volume type needs to be consistent with the volume type when the snapshot is created.",
   "The volume type needs to set \"multiattach\" in the metadata to support shared volume attributes.": "The volume type needs to set \"multiattach\" in the metadata to support shared volume attributes.",
   "The {action} instruction has been issued, instance: {name}. \n You can wait for a few seconds to follow the changes of the list data or manually refresh the data to get the final display result.": "The {action} instruction has been issued, instance: {name}. \n You can wait for a few seconds to follow the changes of the list data or manually refresh the data to get the final display result.",
