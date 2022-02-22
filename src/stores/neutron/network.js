@@ -322,7 +322,7 @@ export class NetworkStore extends Base {
       allocation_pools,
       host_routes,
       ip_version: ip_version === 'ipv4' ? 4 : 6,
-      gateway_ip: disable_gateway ? null : gateway_ip,
+      gateway_ip: disable_gateway || gateway_ip === '' ? null : gateway_ip,
       cidr,
     };
     if (data.ip_version === 6) {
