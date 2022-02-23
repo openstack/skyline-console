@@ -101,9 +101,12 @@ export class CreateNetwork extends ModalAction {
       name,
       description,
       availability_zone_hints: [availableZone],
-      mtu,
       port_security_enabled,
     };
+
+    if (mtu) {
+      networkCommonData.mtu = mtu;
+    }
 
     const networkAdminPageData = {
       'router:external': external_network,
