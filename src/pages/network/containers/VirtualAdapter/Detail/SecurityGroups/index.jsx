@@ -68,7 +68,7 @@ export class SecurityGroup extends React.Component {
     const {
       security_groups: { data },
     } = this.store;
-    const detailUrl = this.getDetailUrl(item);
+    const detailUrl = this.getDetailUrl(item.id);
     return (
       <Row>
         <Col span={18}>

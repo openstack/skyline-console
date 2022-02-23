@@ -21,6 +21,7 @@ import {
   securityGroupFilter,
 } from 'resources/security-group';
 import { toJS } from 'mobx';
+import { get as _get } from 'lodash';
 
 @inject('rootStore')
 @observer
@@ -36,7 +37,9 @@ export default class ManageSecurityGroup extends ModalAction {
   static policy = 'update_port:port_security_enabled';
 
   static allowed = (item) =>
-    Promise.resolve(item.origin_data.allowed_address_pairs.length === 0);
+    Promise.resolve(
+      _get(item, 'origin_data.allowed_address_pairs', []).length === 0
+    );
 
   init() {
     this.securityGroupStore = new SecurityGroupStore();
