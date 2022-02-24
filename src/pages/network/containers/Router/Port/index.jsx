@@ -54,7 +54,7 @@ export default class Ports extends Base {
       dataIndex: 'name',
       routeName: this.getRouteName('routerPortDetail'),
       routeParamsFunc: (data) => ({
-        routeId: this.id,
+        routerId: this.id,
         id: data.id,
       }),
     },
