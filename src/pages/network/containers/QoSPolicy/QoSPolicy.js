@@ -25,10 +25,22 @@ export class QoSPolicy extends Base {
     this.downloadStore = new QoSPolicyStore();
   }
 
-  updateFetchParamsByPage = (params) => ({
-    ...params,
-    all_projects: this.tabKey === 'allQoSPolicy' || this.isAdminPage,
-  });
+  updateFetchParamsByPage = (params) => {
+    switch (this.tabKey) {
+      case 'projectQoSPolicy':
+        return {
+          ...params,
+          project_id: this.currentProjectId,
+        };
+      case 'sharedQoSPolicy':
+        return {
+          ...params,
+          shared: true,
+        };
+      default:
+        return params;
+    }
+  };
 
   get checkEndpoint() {
     return true;
