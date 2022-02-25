@@ -104,7 +104,7 @@ export class User extends Base {
         isHideable: true,
         render: (project_roles) => {
           if (project_roles && project_roles[0]) {
-            return project_roles.map((it) => <div>{it}</div>);
+            return project_roles.map((it, idx) => <div key={idx}>{it}</div>);
           }
         },
       },

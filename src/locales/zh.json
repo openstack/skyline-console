@@ -1863,7 +1863,7 @@
   "Thailand": "泰国",
   "That is, after how many consecutive failures of the health check, the health check status of the back-end cloud server is changed from normal to abnormal": "即健康检查连续失败多少次后，将后端云服务器的健康检查状态由正常改为不正常",
   "The Federation of Saint Kitts and Nevis": "圣基茨和尼维斯",
-  "The Provider is the encryption provider format (e.g. \"lucks\")": "提供者是提供者加密格式（例如\"lucks\"）",
+  "The Provider is the encryption provider format (e.g. \"luks\")": "提供者是提供者加密格式（例如\"luks\"）",
   "The Republic of Macedonia": "马其顿",
   "The Republic of South Sudan": "南苏丹共和国",
   "The SSH key is a way to remotely log in to the instance. The cloud platform only helps to keep the public key. Please keep your private key properly.": "SSH 密钥是一种远程登录云主机的方式，云平台只帮助保管公钥，请妥善保管自己的私钥。",

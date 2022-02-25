@@ -1863,7 +1863,7 @@
   "Thailand": "Thailand",
   "That is, after how many consecutive failures of the health check, the health check status of the back-end cloud server is changed from normal to abnormal": "That is, after how many consecutive failures of the health check, the health check status of the back-end cloud server is changed from normal to abnormal",
   "The Federation of Saint Kitts and Nevis": "The Federation of Saint Kitts and Nevis",
-  "The Provider is the encryption provider format (e.g. \"lucks\")": "The Provider is the encryption provider format (e.g. \"lucks\")",
+  "The Provider is the encryption provider format (e.g. \"luks\")": "The Provider is the encryption provider format (e.g. \"luks\")",
   "The Republic of Macedonia": "The Republic of Macedonia",
   "The Republic of South Sudan": "The Republic of South Sudan",
   "The SSH key is a way to remotely log in to the instance. The cloud platform only helps to keep the public key. Please keep your private key properly.": "The SSH key is a way to remotely log in to the instance. The cloud platform only helps to keep the public key. Please keep your private key properly.",

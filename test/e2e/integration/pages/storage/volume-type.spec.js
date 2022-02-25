@@ -105,7 +105,7 @@ describe('The Volume Type Page', () => {
   it('successfully create encryption', () => {
     cy.tableSearchText(name)
       .clickActionInMore('Create Encryption')
-      .formInput('provider', 'lucks')
+      .formInput('provider', 'luks')
       .formSelect('control_location')
       .clickModalActionSubmitButton();
 

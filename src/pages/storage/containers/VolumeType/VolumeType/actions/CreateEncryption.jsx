@@ -54,7 +54,7 @@ export default class CreateEncryption extends ModalAction {
         type: 'input',
         placeholder: t('Please input provider'),
         extra: t(
-          'The Provider is the encryption provider format (e.g. "lucks")'
+          'The Provider is the encryption provider format (e.g. "luks")'
         ),
         required: true,
         style: {
