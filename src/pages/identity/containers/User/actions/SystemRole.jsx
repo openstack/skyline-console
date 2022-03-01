@@ -22,20 +22,6 @@ import { ModalAction } from 'containers/Action';
 import globalDomainStore from 'stores/keystone/domain';
 
 export class SystemRole extends ModalAction {
-  constructor(props) {
-    super(props);
-    const systemRole = JSON.stringify(this.item.projectMapSystemRole);
-    this.state = {
-      domainDefault: this.item.domain_id,
-      projectRoles: JSON.parse(systemRole),
-      projectList: [],
-    };
-  }
-
-  // componentDidMount() {
-  //   this.setState({ projectRoles: this.defaultSystemRoles });
-  // }
-
   static id = 'edit-system-permission';
 
   static title = t('Edit System Permission');
@@ -45,6 +31,9 @@ export class SystemRole extends ModalAction {
   }
 
   init() {
+    const systemRole = JSON.stringify(this.item.projectMapSystemRole);
+    this.state.domainDefault = this.item.domain_id;
+    this.state.projectRoles = JSON.parse(systemRole);
     this.store = globalRoleStore;
     this.domainStore = globalDomainStore;
     this.userStore = globalUserStore;
@@ -103,6 +92,7 @@ export class SystemRole extends ModalAction {
     return domainList.map((it) => ({
       label: it.name,
       value: it.id,
+      key: it.id,
     }));
   }
 
@@ -110,6 +100,10 @@ export class SystemRole extends ModalAction {
     const { item } = this.props;
     item.roles = {};
     return item;
+  }
+
+  get multipleMode() {
+    return 'multiple';
   }
 
   get projectList() {
@@ -138,6 +132,7 @@ export class SystemRole extends ModalAction {
     return adminRole.map((it) => ({
       label: it.name,
       value: it.id,
+      key: it.id,
       project_id,
     }));
   };
@@ -146,23 +141,25 @@ export class SystemRole extends ModalAction {
     this.systemRoleList.map((it) => ({
       label: it.name,
       value: it.id,
+      key: it.id,
       project_id,
     }));
 
   defaultRoles = (projectId) => {
-    const { roles } = this.item;
-    const { projectRoles: users } = this.state;
-    if (!users[projectId]) {
+    const { roles, projects } = this.item;
+    const { projectRoles } = this.state;
+    const filterRoles = this.multipleMode ? projects : projectRoles;
+    if (!filterRoles[projectId]) {
       roles[projectId] = [this.systemRoleList[0].id];
     } else {
-      const usersSystemRole = users[projectId].filter((it) => {
+      const usersSystemRole = filterRoles[projectId].filter((it) => {
         const systemRole = this.systemRoleList.filter((role) => role.id === it);
         if (systemRole[0]) {
           return true;
         }
         return false;
       });
-      return usersSystemRole;
+      return this.multipleMode ? usersSystemRole : usersSystemRole.slice(0, 1);
     }
     return roles[projectId];
   };
@@ -205,6 +202,7 @@ export class SystemRole extends ModalAction {
     return (
       <Select
         size="small"
+        mode={this.multipleMode}
         options={disable ? this.adminRoleList(id) : this.projectRolesList(id)}
         defaultValue={disable ? this.adminRoleId : this.defaultRoles(id)}
         onChange={this.onSubChange}
@@ -214,10 +212,17 @@ export class SystemRole extends ModalAction {
   };
 
   onSubChange = (value, option) => {
-    const { projectRoles } = this.state;
-    const { project_id } = option;
-    projectRoles[project_id] = [value];
-    this.setState({ projectRoles });
+    if (
+      (this.multipleMode && value.length && option.length) ||
+      (!this.multipleMode && value && option)
+    ) {
+      const { projectRoles } = this.state;
+      const { project_id } = this.multipleMode ? option[0] : option;
+      projectRoles[project_id] = this.multipleMode ? value : [value];
+      this.setState({ projectRoles });
+    } else {
+      this.setState({ projectRoles: {} });
+    }
   };
 
   get checkedList() {
@@ -225,6 +230,7 @@ export class SystemRole extends ModalAction {
     return (domains || []).map((it) => ({
       label: it.name,
       value: it.id,
+      key: it.id,
     }));
   }
 
@@ -237,8 +243,8 @@ export class SystemRole extends ModalAction {
   }
 
   get formItems() {
-    // const { users } = this.item;
-    const { domainDefault, projectRoles } = this.state;
+    const { projects } = this.item;
+    const { domainDefault } = this.state;
     return [
       {
         name: 'domain_id',
@@ -265,19 +271,25 @@ export class SystemRole extends ModalAction {
           : [],
         disabled: false,
         showSearch: true,
-        oriTargetKeys: projectRoles ? Object.keys(projectRoles) : [],
+        oriTargetKeys: projects ? Object.keys(projects) : [],
       },
     ];
   }
 
   onSubmit = async (values) => {
     const { projectRoles } = this.state;
-    const { id: user_id } = this.item;
-    const oldProjectRoles = this.item.projectMapSystemRole;
+    if (!this.multipleMode) {
+      // If it is not multiple choices, role only takes the first item of the array
+      Object.keys(projectRoles).forEach((key) => {
+        projectRoles[key] = projectRoles[key].slice(0, 1);
+      });
+    }
+    const { id: user_id, projects } = this.item;
+    const oldProjectRoles = projects;
     const defaultProjects = Object.keys(oldProjectRoles);
     const promiseList = [];
     defaultProjects.forEach((id) => {
-      if (values.select_project.indexOf(id) === -1) {
+      if (!values.select_project.includes(id)) {
         (oldProjectRoles[id] || []).forEach((role_id) => {
           promiseList.push(
             globalProjectStore.removeUserRole({ id, user_id, role_id })
@@ -285,7 +297,7 @@ export class SystemRole extends ModalAction {
         });
       } else {
         (oldProjectRoles[id] || []).forEach((role_id) => {
-          if (projectRoles[id].indexOf(role_id) === -1) {
+          if (projectRoles[id] && !projectRoles[id].includes(role_id)) {
             promiseList.push(
               globalProjectStore.removeUserRole({ id, user_id, role_id })
             );
@@ -294,22 +306,33 @@ export class SystemRole extends ModalAction {
       }
     });
     values.select_project.forEach((id) => {
-      if (defaultProjects.indexOf(id) === -1) {
-        const role_id =
-          (projectRoles[id] || [])[0] || this.systemRoleList[0].id;
-        promiseList.push(
-          globalProjectStore.assignUserRole({ id, user_id, role_id })
-        );
-      } else {
-        const role_id = projectRoles[id][0];
-        if (
-          (oldProjectRoles[id] && oldProjectRoles[id][0] !== role_id) ||
-          !oldProjectRoles[id]
-        ) {
+      if (!defaultProjects.includes(id)) {
+        if (projectRoles[id]) {
+          projectRoles[id].forEach((role_id) => {
+            promiseList.push(
+              globalProjectStore.assignUserRole({ id, user_id, role_id })
+            );
+          });
+        } else {
           promiseList.push(
-            globalProjectStore.assignUserRole({ id, user_id, role_id })
+            globalProjectStore.assignUserRole({
+              id,
+              user_id,
+              role_id: this.systemRoleList[0].id,
+            })
           );
         }
+      } else {
+        (projectRoles[id] || []).forEach((role_id) => {
+          if (
+            (oldProjectRoles[id] && !oldProjectRoles[id].includes(role_id)) ||
+            !oldProjectRoles[id]
+          ) {
+            promiseList.push(
+              globalProjectStore.assignUserRole({ id, user_id, role_id })
+            );
+          }
+        });
       }
     });
     const results = await Promise.all(promiseList);

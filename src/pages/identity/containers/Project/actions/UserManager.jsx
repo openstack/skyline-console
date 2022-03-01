@@ -22,20 +22,6 @@ import { ModalAction } from 'containers/Action';
 import globalDomainStore from 'stores/keystone/domain';
 
 export class UserManager extends ModalAction {
-  constructor(props) {
-    super(props);
-    const projectRole = JSON.stringify(this.item.userMapProjectRoles);
-    this.state = {
-      domainDefault: this.item.domain_id,
-      userRoles: JSON.parse(projectRole),
-      userList: [],
-    };
-  }
-
-  // componentDidMount() {
-  //   this.setState({ userRoles: this.defaultUserRoles });
-  // }
-
   static id = 'management-user';
 
   static title = t('Manage User');
@@ -45,6 +31,9 @@ export class UserManager extends ModalAction {
   }
 
   init() {
+    const projectRole = JSON.stringify(this.item.userMapProjectRoles);
+    this.state.domainDefault = this.item.domain_id;
+    this.state.userRoles = JSON.parse(projectRole);
     this.store = globalRoleStore;
     this.domainStore = globalDomainStore;
     this.userStore = new UserStore();
@@ -71,6 +60,10 @@ export class UserManager extends ModalAction {
 
   getModalSize() {
     return 'large';
+  }
+
+  get multipleMode() {
+    return 'multiple';
   }
 
   // get defaultUserRoles() {
@@ -103,6 +96,7 @@ export class UserManager extends ModalAction {
     return domainList.map((it) => ({
       label: it.name,
       value: it.id,
+      key: it.id,
     }));
   }
 
@@ -111,6 +105,7 @@ export class UserManager extends ModalAction {
     return (domains || []).map((it) => ({
       label: it.name,
       value: it.id,
+      key: it.id,
     }));
   }
 
@@ -146,6 +141,7 @@ export class UserManager extends ModalAction {
     return adminRole.map((it) => ({
       label: it.name,
       value: it.id,
+      key: it.id,
       user_id,
     }));
   };
@@ -154,20 +150,24 @@ export class UserManager extends ModalAction {
     this.projectRoleList.map((it) => ({
       label: it.name,
       value: it.id,
+      key: it.id,
       user_id,
     }));
 
   defaultRoles = (userId) => {
-    const { roles } = this.item;
-    const { userRoles: users } = this.state;
-    if (!users[userId]) {
+    const { roles, users } = this.item;
+    const { userRoles: projectUsers } = this.state;
+    const filterUsers = this.multipleMode ? users : projectUsers;
+    if (!filterUsers[userId]) {
       roles[userId] = [this.projectRoleList[0].id];
     } else {
-      const usersProjectRole = users[userId].filter((it) => {
+      const usersProjectRole = filterUsers[userId].filter((it) => {
         const projectRole = this.projectRoleList.find((role) => role.id === it);
         return !!projectRole;
       });
-      return usersProjectRole;
+      return this.multipleMode
+        ? usersProjectRole
+        : usersProjectRole.slice(0, 1);
     }
     return roles[userId];
   };
@@ -208,6 +208,7 @@ export class UserManager extends ModalAction {
     return (
       <Select
         size="small"
+        mode={this.multipleMode}
         options={disable ? this.adminRoleList(id) : this.userRolesList(id)}
         defaultValue={disable ? this.adminRoleId : this.defaultRoles(id)}
         onChange={this.onSubChange}
@@ -217,10 +218,17 @@ export class UserManager extends ModalAction {
   };
 
   onSubChange = (value, option) => {
-    const { userRoles } = this.state;
-    const { user_id } = option;
-    userRoles[user_id] = [value];
-    this.setState({ userRoles });
+    if (
+      (this.multipleMode && value.length && option.length) ||
+      (!this.multipleMode && value && option)
+    ) {
+      const { userRoles } = this.state;
+      const { user_id } = this.multipleMode ? option[0] : option;
+      userRoles[user_id] = this.multipleMode ? value : [value];
+      this.setState({ userRoles });
+    } else {
+      this.setState({ userRoles: {} });
+    }
   };
 
   get defaultValue() {
@@ -232,8 +240,8 @@ export class UserManager extends ModalAction {
   }
 
   get formItems() {
-    // const { users } = this.item;
-    const { domainDefault, userRoles } = this.state;
+    const { users } = this.item;
+    const { domainDefault } = this.state;
     return [
       {
         name: 'domain_id',
@@ -260,19 +268,25 @@ export class UserManager extends ModalAction {
           : [],
         disabled: false,
         showSearch: true,
-        oriTargetKeys: userRoles ? Object.keys(userRoles) : [],
+        oriTargetKeys: users ? Object.keys(users) : [],
       },
     ];
   }
 
   onSubmit = async (values) => {
     const { userRoles } = this.state;
-    const { id } = this.item;
-    const oldUserRoles = this.item.userMapProjectRoles;
+    if (!this.multipleMode) {
+      // If it is not multiple choices, role only takes the first item of the array
+      Object.keys(userRoles).forEach((key) => {
+        userRoles[key] = userRoles[key].slice(0, 1);
+      });
+    }
+    const { id, users } = this.item;
+    const oldUserRoles = users;
     const defaultUsers = Object.keys(oldUserRoles);
     const promiseList = [];
     defaultUsers.forEach((user_id) => {
-      if (values.select_user.indexOf(user_id) === -1) {
+      if (!values.select_user.includes(user_id)) {
         (oldUserRoles[user_id] || []).forEach((role_id) => {
           promiseList.push(
             globalProjectStore.removeUserRole({ id, user_id, role_id })
@@ -280,7 +294,7 @@ export class UserManager extends ModalAction {
         });
       } else {
         (oldUserRoles[user_id] || []).forEach((role_id) => {
-          if (userRoles[user_id].indexOf(role_id) === -1) {
+          if (!userRoles[user_id].includes(role_id)) {
             promiseList.push(
               globalProjectStore.removeUserRole({ id, user_id, role_id })
             );
@@ -289,22 +303,34 @@ export class UserManager extends ModalAction {
       }
     });
     values.select_user.forEach((user_id) => {
-      if (defaultUsers.indexOf(user_id) === -1) {
-        const role_id =
-          (userRoles[user_id] || [])[0] || this.projectRoleList[0].id;
-        promiseList.push(
-          globalProjectStore.assignUserRole({ id, user_id, role_id })
-        );
-      } else {
-        const role_id = userRoles[user_id][0];
-        if (
-          (oldUserRoles[user_id] && oldUserRoles[user_id][0] !== role_id) ||
-          !oldUserRoles[user_id]
-        ) {
+      if (!defaultUsers.includes(user_id)) {
+        if (userRoles[user_id]) {
+          userRoles[user_id].forEach((role_id) => {
+            promiseList.push(
+              globalProjectStore.assignUserRole({ id, user_id, role_id })
+            );
+          });
+        } else {
           promiseList.push(
-            globalProjectStore.assignUserRole({ id, user_id, role_id })
+            globalProjectStore.assignUserRole({
+              id,
+              user_id,
+              role_id: this.projectRoleList[0].id,
+            })
           );
         }
+      } else {
+        (userRoles[user_id] || []).forEach((role_id) => {
+          if (
+            (oldUserRoles[user_id] &&
+              !oldUserRoles[user_id].includes(role_id)) ||
+            !oldUserRoles[user_id]
+          ) {
+            promiseList.push(
+              globalProjectStore.assignUserRole({ id, user_id, role_id })
+            );
+          }
+        });
       }
     });
     const results = await Promise.all(promiseList);

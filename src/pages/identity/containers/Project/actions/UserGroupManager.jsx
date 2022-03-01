@@ -16,47 +16,31 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { Select } from 'antd';
 import globalProjectStore from 'stores/keystone/project';
-import globalGroupStore from 'stores/keystone/user-group';
+import { GroupStore } from 'stores/keystone/user-group';
 import globalRoleStore from 'stores/keystone/role';
 import { ModalAction } from 'containers/Action';
 
 export class UserGroupManager extends ModalAction {
-  constructor(props) {
-    super(props);
-    this.state = {
-      groupRoles: {},
-      groupList: [],
-    };
-  }
-
-  componentDidMount() {
-    const { groups } = this.item;
-    globalGroupStore.fetchGroupData().then((res) => {
-      const domainUsers = res.filter(
-        (it) => it.domain_id === this.item.domain_id
-      );
-      const groupList = domainUsers.map((it) => ({
-        ...it,
-        key: it.id,
-      }));
-      this.setState({ groupList });
-    });
-    this.setState({ groupRoles: { ...groups } });
-  }
-
   static id = 'management-user-group';
 
   static title = t('Manage User Group');
 
   init() {
-    // this.userGroupStore = globalGroupStore;
+    const roles = JSON.stringify(this.item.groups);
+    this.state.domainDefault = this.item.domain_id;
+    this.state.groupRoles = JSON.parse(roles);
+    this.userGroupStore = new GroupStore();
     this.store = globalRoleStore;
-    // this.getUserGroup();
+    this.getUserGroup();
     this.getRoleList();
   }
 
   get name() {
     return t('Manager user group');
+  }
+
+  get multipleMode() {
+    return 'multiple';
   }
 
   getUserGroup() {
@@ -68,13 +52,24 @@ export class UserGroupManager extends ModalAction {
   }
 
   static get modalSize() {
-    return 'middle';
+    return 'large';
+  }
+
+  getModalSize() {
+    return 'large';
   }
 
   get item() {
     const { item } = this.props;
     item.roles = {};
     return item;
+  }
+
+  get groupList() {
+    return (this.userGroupStore.list.data || []).map((it) => ({
+      ...it,
+      key: it.id,
+    }));
   }
 
   get projectRoleList() {
@@ -86,16 +81,26 @@ export class UserGroupManager extends ModalAction {
     this.projectRoleList.map((it) => ({
       label: it.name,
       value: it.id,
+      key: it.id,
       groupId,
     }));
 
   defaultRoles = (groupId) => {
     const { groups, roles } = this.item;
-    // const oldUserRoles = groups;
-    if (!groups[groupId]) {
+    const { groupRoles: projectGroups } = this.state;
+    const filterGroups = this.multipleMode ? groups : projectGroups;
+    if (!filterGroups[groupId]) {
       roles[groupId] = [this.projectRoleList[0].id];
+    } else {
+      const usersProjectRole = filterGroups[groupId].filter((it) => {
+        const projectRole = this.projectRoleList.find((role) => role.id === it);
+        return !!projectRole;
+      });
+      return this.multipleMode
+        ? usersProjectRole
+        : usersProjectRole.slice(0, 1);
     }
-    return roles[groupId] || groups[groupId];
+    return roles[groupId];
   };
 
   static policy = 'identity:update_project';
@@ -111,14 +116,17 @@ export class UserGroupManager extends ModalAction {
     ];
   }
 
-  renderSelect = (groupId) => (
-    <Select
-      size="small"
-      options={this.groupRolesList(groupId)}
-      defaultValue={this.defaultRoles(groupId)}
-      onChange={this.onSubChange}
-    />
-  );
+  renderSelect = (groupId) => {
+    return (
+      <Select
+        size="small"
+        mode={this.multipleMode}
+        options={this.groupRolesList(groupId)}
+        defaultValue={this.defaultRoles(groupId)}
+        onChange={this.onSubChange}
+      />
+    );
+  };
 
   get rightUserGroupTable() {
     return [
@@ -135,22 +143,31 @@ export class UserGroupManager extends ModalAction {
   }
 
   onSubChange = (value, option) => {
-    const { groupRoles } = this.state;
-    const { groupId } = option;
-    groupRoles[groupId] = [value];
-    this.setState({ groupRoles });
+    if (
+      (this.multipleMode && value.length && option.length) ||
+      (!this.multipleMode && value && option)
+    ) {
+      const { groupRoles } = this.state;
+      const { groupId } = this.multipleMode ? option[0] : option;
+      groupRoles[groupId] = this.multipleMode ? value : [value];
+      this.setState({ groupRoles });
+    } else {
+      this.setState({ groupRoles: {} });
+    }
   };
 
   get formItems() {
     const { groups } = this.item;
-    const { groupList } = this.state;
+    const { domainDefault } = this.state;
     return [
       {
         name: 'select_group',
         type: 'transfer',
         leftTableColumns: this.leftUserGroupTable,
         rightTableColumns: this.rightUserGroupTable,
-        dataSource: groupList,
+        dataSource: this.groupList
+          ? this.groupList.filter((it) => it.domain_id === domainDefault)
+          : [],
         disabled: false,
         showSearch: true,
         oriTargetKeys: groups ? Object.keys(groups) : [],
@@ -160,11 +177,17 @@ export class UserGroupManager extends ModalAction {
 
   onSubmit = async (values) => {
     const { groupRoles } = this.state;
+    if (!this.multipleMode) {
+      // If it is not multiple choices, role only takes the first item of the array
+      Object.keys(groupRoles).forEach((key) => {
+        groupRoles[key] = groupRoles[key].slice(0, 1);
+      });
+    }
     const { groups: oldGroupRoles, id } = this.item;
     const defaultGroups = Object.keys(groupRoles);
     const promiseList = [];
     defaultGroups.forEach((group_id) => {
-      if (values.select_group.indexOf(group_id) === -1) {
+      if (!values.select_group.includes(group_id)) {
         (oldGroupRoles[group_id] || []).forEach((role_id) => {
           promiseList.push(
             globalProjectStore.removeGroupRole({ id, group_id, role_id })
@@ -172,7 +195,7 @@ export class UserGroupManager extends ModalAction {
         });
       } else {
         (oldGroupRoles[group_id] || []).forEach((role_id) => {
-          if (groupRoles[group_id].indexOf(role_id) === -1) {
+          if (!groupRoles[group_id].includes(role_id)) {
             promiseList.push(
               globalProjectStore.removeGroupRole({ id, group_id, role_id })
             );
@@ -181,21 +204,34 @@ export class UserGroupManager extends ModalAction {
       }
     });
     values.select_group.forEach((group_id) => {
-      if (defaultGroups.indexOf(group_id) === -1) {
-        const role_id = this.projectRoleList[0].id;
-        promiseList.push(
-          globalProjectStore.assignGroupRole({ id, group_id, role_id })
-        );
-      } else {
-        const role_id = groupRoles[group_id][0];
-        if (
-          (oldGroupRoles[group_id] && oldGroupRoles[group_id][0] !== role_id) ||
-          !oldGroupRoles[group_id]
-        ) {
+      if (!defaultGroups.includes(group_id)) {
+        if (groupRoles[group_id]) {
+          groupRoles[group_id].forEach((role_id) => {
+            promiseList.push(
+              globalProjectStore.assignGroupRole({ id, group_id, role_id })
+            );
+          });
+        } else {
           promiseList.push(
-            globalProjectStore.assignGroupRole({ id, group_id, role_id })
+            globalProjectStore.assignGroupRole({
+              id,
+              group_id,
+              role_id: this.projectRoleList[0].id,
+            })
           );
         }
+      } else {
+        (groupRoles[group_id] || []).forEach((role_id) => {
+          if (
+            (oldGroupRoles[group_id] &&
+              !oldGroupRoles[group_id].includes(role_id)) ||
+            !oldGroupRoles[group_id]
+          ) {
+            promiseList.push(
+              globalProjectStore.assignGroupRole({ id, group_id, role_id })
+            );
+          }
+        });
       }
     });
     const results = await Promise.all(promiseList);
