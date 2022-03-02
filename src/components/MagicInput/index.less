@@ -5,29 +5,29 @@
 }
 
 .magic-input-wrapper {
+  position: relative;
   align-items: center;
   width: 100%;
   min-width: 200px;
-  border: 1px solid rgb(217, 217, 217);
-  border-radius: @border-radius;
   padding: 3px 0 3px 8px;
   background-color: #fff;
-  position: relative;
+  border: 1px solid rgb(217, 217, 217);
+  border-radius: @border-radius;
 
   :global {
     .ant-tag {
-      background-color: @primary-color;
+      height: 24px;
+      margin-right: 4px;
+      padding: 0 4px;
       color: #fff;
       font-size: 10px;
-      height: 24px;
       line-height: 24px;
+      background-color: @primary-color;
       border: none;
-      padding: 0 4px;
-      margin-right: 4px;
 
       .anticon-close {
-        color: #fff;
         margin-left: 16px;
+        color: #fff;
       }
     }
 
@@ -44,7 +44,7 @@
 
 .magic-input-wrapper-active {
   border-color: @primary-color;
-  box-shadow: 0 0 0 2px rgba(0, 104, 255, 0.2);
+  box-shadow: 0 0 0 2px rgba(0, 104, 255, 20%);
 }
 
 .input-wrapper {
@@ -55,10 +55,10 @@
 
   :global {
     .ant-input {
-      border: none;
-      box-shadow: none;
       padding: 0;
       background: none;
+      border: none;
+      box-shadow: none;
     }
 
     .ant-input:focus {
@@ -76,33 +76,26 @@
     }
 
     .ant-menu-vertical .ant-menu-item {
-      font-size: 10px;
-      margin-top: 0px;
+      margin-top: 0;
       margin-bottom: 0;
+      font-size: 10px;
     }
   }
 }
 
-.tagItem {
-  margin-bottom: 5px;
-}
-
-.input {
-}
-
 .menu {
-  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.09) !important;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 9%) !important;
 }
 
 .menu,
 .option-menu {
   position: absolute;
-  z-index: 100;
   top: 34px;
-  border-radius: @border-radius;
-  overflow-y: auto;
-  overflow-x: hidden;
+  z-index: 100;
   max-height: 310px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-radius: @border-radius;
 }
 
 .key {
@@ -112,8 +105,8 @@
   :global {
     .ant-divider,
     .ant-divider-vertical {
-      margin-left: 4px;
       margin-right: 4px;
+      margin-left: 4px;
     }
   }
 }
@@ -132,15 +125,15 @@
   .magic-input-wrapper .ant-tag {
     display: inline-block;
     height: 24px;
-    line-height: 24px;
     margin: 0 5px 0 0;
+    line-height: 24px;
   }
 }
 
 .search-icon {
   position: absolute;
-  right: 8px;
   top: 0;
+  right: 8px;
   color: @color-text-body;
   font-size: 12px;
   line-height: 32px;
@@ -151,19 +144,19 @@
   line-height: 24px;
 
   .close-btn {
-    border: none;
     height: 24px !important;
     padding: 0;
+    border: none;
   }
 }
 
 .close-option-btn {
-  height: 24px !important;
   top: 3px;
+  height: 24px !important;
 }
 
 .magic-input-checks {
-  line-height: 32px;
-  margin-left: 8px;
   min-width: 120px;
+  margin-left: 8px;
+  line-height: 32px;
 }

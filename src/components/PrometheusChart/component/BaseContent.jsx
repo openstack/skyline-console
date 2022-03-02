@@ -90,7 +90,7 @@ const BaseContent = (props) => {
   }, [node]);
 
   return (
-    <div className={styles.base_content_container}>
+    <div className={styles['base-content-container']}>
       <BaseContentContext.Provider value={passedContextValue}>
         {(renderTimeRangeSelect || renderNodeSelect) && (
           <Button

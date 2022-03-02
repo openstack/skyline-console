@@ -186,7 +186,7 @@ export class virtualResourceInfo extends Component {
     return (
       <Card
         loading={virtualResourceLoading}
-        className={styles.resourceOverview}
+        className={styles['resource-overview']}
         title={t('Virtual Resource Overview')}
         bordered={false}
       >

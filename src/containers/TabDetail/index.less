@@ -31,21 +31,21 @@
   display: flex;
   align-items: center;
   height: 48px;
-  padding: 0 14px;
-  border-radius: @border-radius;
-  background-color: @dark;
   margin: 0 0 12px;
+  padding: 0 14px;
+  background-color: @dark;
+  border-radius: @border-radius;
 
   &Item {
     min-width: 96px;
     height: 32px;
-    line-height: 32px;
     margin: 0 6px;
     padding: 0 14px;
-    font-weight: 500;
     color: @white;
-    border: 1px solid transparent;
+    font-weight: 500;
+    line-height: 32px;
     text-align: center;
+    border: 1px solid transparent;
     transition: all @trans-speed;
 
     &:first-child {
@@ -53,10 +53,10 @@
     }
 
     &.active {
-      border-radius: @border-radius;
-      box-shadow: @btn-primary-shadow;
       background-color: @primary;
       border-color: @primary;
+      border-radius: @border-radius;
+      box-shadow: @btn-primary-shadow;
 
       &:hover {
         color: @white;
@@ -66,15 +66,15 @@
 }
 
 .loading {
-  text-align: center;
   padding: 30px 0;
+  text-align: center;
 }
 
 .header {
-  background-color: #fff;
-  padding-left: @body-padding;
   padding-right: @body-padding;
   padding-bottom: 30px;
+  padding-left: @body-padding;
+  background-color: #fff;
 
   :global {
     .ant-descriptions-title {
@@ -88,8 +88,8 @@
 }
 
 .title-label {
-  font-style: italic;
   margin-right: 8px;
+  font-style: italic;
 }
 
 .header-button {
@@ -97,9 +97,9 @@
 }
 
 .header-divider {
+  width: 2px;
   margin: 0 14px 0 24px;
   background-color: @color-text-caption;
-  width: 2px;
 }
 
 .tabs {
@@ -107,8 +107,8 @@
 
   :global {
     .ant-tabs-bar {
-      padding-left: @body-padding;
       padding-right: @body-padding;
+      padding-left: @body-padding;
     }
 
     .ant-tabs-nav-wrap {
@@ -133,8 +133,8 @@
 
   :global {
     .ant-btn-link {
-      border-color: #0068FF;
       padding: 5.6px 15px !important;
+      border-color: #0068ff;
     }
 
     .ant-divider-vertical {
@@ -151,7 +151,7 @@
     .ant-btn-link[disabled]:hover,
     .ant-btn-link[disabled]:focus,
     .ant-btn-link[disabled]:active {
-      border-color: rgba(0, 0, 0, 0.25);
+      border-color: rgba(0, 0, 0, 25%);
     }
 
     .ant-btn-dangerous.ant-btn-link:active {

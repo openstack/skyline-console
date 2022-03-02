@@ -30,7 +30,7 @@ class NetworkService extends Component {
   }
 
   renderAction = (item, index) => (
-    <Row className={styles.sider_card} key={`${item.binary}-${index}`}>
+    <Row className={styles['sider-card']} key={`${item.binary}-${index}`}>
       <Col
         span={8}
         style={{ textAlign: 'left', whiteSpace: 'nowrap', overflow: 'hidden' }}

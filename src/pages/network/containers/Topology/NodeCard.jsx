@@ -183,7 +183,9 @@ export default class NodeCard extends React.Component {
   }
 
   renderTitle(type, name) {
-    return <div className={styles.nodeCardTitle}>{`${type}: ${name}`}</div>;
+    return (
+      <div className={styles['node-card-title']}>{`${type}: ${name}`}</div>
+    );
   }
 
   render() {
@@ -196,7 +198,7 @@ export default class NodeCard extends React.Component {
     const detailData = routers[infoIndex];
     return (
       <div
-        className={styles.nodeTooltips}
+        className={styles['node-tooltips']}
         style={{ top: `${y}px`, left: `${x}px` }}
       >
         <Popover

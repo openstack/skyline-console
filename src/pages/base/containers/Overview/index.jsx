@@ -53,9 +53,9 @@ const actions = [
 
 export class Overview extends Component {
   renderAction = (item) => (
-    <Row className={styles.actionButton} gutter={[8]}>
-      <Col span={8} className={styles.main_icon}>
-        <img alt="avatar" src={item.avatar} className={styles.actionIcon} />
+    <Row className={styles['action-button']} gutter={[8]}>
+      <Col span={8} className={styles['main-icon']}>
+        <img alt="avatar" src={item.avatar} className={styles['action-icon']} />
       </Col>
       <Col span={16} style={{ textAlign: 'center' }}>
         {item.label}

@@ -1,4 +1,4 @@
-@import "~styles/variables";
+@import '~styles/variables';
 
 .menu {
   :global(.anticon) {
@@ -22,8 +22,8 @@
     line-height: 40px;
 
     .user-label {
-      font-weight: "bold";
       margin-right: 8px;
+      font-weight: 'bold';
     }
 
     span {
@@ -54,24 +54,6 @@
   .action {
     display: inline-block;
   }
-
-  .right_message {
-
-    .message_avatar {
-      background-color: #fff;
-      color: rgba(0, 0, 0, 0.65);
-      margin-top: -4px;
-    }
-
-    :global {
-      .ant-badge-dot {
-        transform: translate(-55%, 10%);
-      }
-      .ant-avatar-square {
-        border-radius: 3px !important;
-      }
-    }
-  }
 }
 
 .project-menu {
@@ -80,7 +62,6 @@
   }
 
   :global {
-
     .ant-dropdown-menu-item:hover,
     .ant-dropdown-menu-submenu-title:hover {
       cursor: pointer;
@@ -103,16 +84,17 @@
 
 .project {
   float: left;
-  cursor: pointer;
   font-size: 14px;
   line-height: @header-height;
+  cursor: pointer;
 
   :global {
     .ant-divider {
-      background-color: #d2d2d2;
-      margin-left: 24px;
       margin-right: 24px;
+      margin-left: 24px;
+      background-color: #d2d2d2;
     }
+
     .ant-btn-link {
       position: absolute;
       min-width: 280px;
@@ -122,23 +104,23 @@
 }
 
 .header {
+  position: relative;
+  z-index: 200;
+  flex-grow: 1;
+  height: 100%;
   padding-left: 36px;
   overflow: hidden;
-  background-color: #fff;
-  height: 100%;
   color: @title-color;
-  position: relative;
-  flex-grow: 1;
-  z-index: 200;
-  box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.09);
+  background-color: #fff;
+  box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 9%);
 }
 
 .avatar {
-  box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.09);
-  border: none;
   width: 30px;
   height: 30px;
   color: #bfbfbf;
+  border: none;
+  box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 9%);
 }
 
 .domain {
@@ -146,14 +128,14 @@
 }
 
 .links {
-  margin-right: 20px;
   display: inline-block;
+  margin-right: 20px;
 
   :global {
     .ant-divider {
-      background-color: #d2d2d2;
-      margin-left: 24px;
       margin-right: 24px;
+      margin-left: 24px;
+      background-color: #d2d2d2;
     }
   }
 
@@ -179,17 +161,17 @@
 }
 
 .single-link {
-  color: @primary-color;
   margin-right: 5px;
+  color: @primary-color;
 }
 
 .token {
   pre {
-    padding: .4em .6em;
+    padding: 0.4em 0.6em;
     white-space: pre-wrap;
     word-wrap: break-word;
-    background: hsla(0, 0%, 58.8%, .1);
-    border: 1px solid hsla(0, 0%, 39.2%, .2);
+    background: hsla(0%, 0%, 58.8%, 10%);
+    border: 1px solid hsla(0%, 0%, 39.2%, 20%);
     border-radius: 3px;
   }
 }

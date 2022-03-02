@@ -119,7 +119,7 @@ Charts.defaultProps = {
       formatDataFn: handleResponses,
     },
     renderContent: ({ data }) => (
-      <div className={styles.topContent}>{get(data, '[0].y', 0)}</div>
+      <div className={styles['top-content']}>{get(data, '[0].y', 0)}</div>
     ),
   },
   baseChartProps: {

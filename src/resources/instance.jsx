@@ -594,7 +594,7 @@ export const actionColumn = (self) => {
           <>
             {value && (
               <Popover content={content} destroyTooltipOnHide trigger="click">
-                <span className="linkClass">{value}</span>
+                <span className="link-class">{value}</span>
               </Popover>
             )}
           </>

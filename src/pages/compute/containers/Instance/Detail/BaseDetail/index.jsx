@@ -472,14 +472,14 @@ export class BaseDetail extends Base {
     if (globalRootStore.hasAdminRole) {
       options.splice(1, 0, {
         label: t('Details'),
-        content: <pre className={styles.preWrap}>{fault.details}</pre>,
+        content: <pre className={styles['pre-wrap']}>{fault.details}</pre>,
       });
     }
     return {
       labelCol: 4,
       title: t('Error'),
       options,
-      className: styles.errorCard,
+      className: styles['error-card'],
     };
   }
 }

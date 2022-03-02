@@ -12,6 +12,7 @@
 
   .vm-interface:first-child {
     border-left: @topo-line;
+
     .interface-line {
       border-left: none;
     }
@@ -23,12 +24,13 @@
     padding-bottom: 20px;
 
     .interface-line {
+      display: inline-block;
       width: 8px;
       height: 60px;
-      border-left: @topo-line;
       border-bottom: @topo-line;
-      display: inline-block;
+      border-left: @topo-line;
     }
+
     .interface-item {
       display: inline-block;
     }
@@ -37,8 +39,8 @@
   .vm {
     padding: @mid-space;
     background-color: @resource-box-bg;
-    border-radius: 4px;
     border: @resource-box-border;
+    border-radius: 4px;
 
     .vm-icon {
       display: inline;
@@ -50,9 +52,9 @@
       display: inline-block;
       width: 6px;
       height: 6px;
-      border-radius: 6px;
       margin-right: 13px;
       margin-left: 5px;
+      border-radius: 6px;
     }
 
     .vm-info {
@@ -60,6 +62,7 @@
 
       .info-item {
         padding-bottom: @min-space;
+
         .info-item-icon {
           display: inline;
           height: 16px;
@@ -78,30 +81,30 @@
 
     .volume-inline {
       width: 36px;
-      border-right: @topo-line;
       margin-bottom: 12px;
+      border-right: @topo-line;
     }
 
     .volume-content {
       flex: 1;
 
       .attached-volume {
-        padding: @min-space 0;
         display: flex;
+        padding: @min-space 0;
 
         .attached-volume-line {
-          border-bottom: @topo-line;
           width: 60px;
           height: 52px;
+          border-bottom: @topo-line;
         }
 
         .attached-volume-content {
-          flex: 1;
           display: flex;
+          flex: 1;
           padding: @mid-space;
           background-color: @resource-box-bg;
-          border-radius: 4px;
           border: @resource-box-border;
+          border-radius: 4px;
 
           .volume-icon {
             padding-right: @lg-space;
@@ -110,6 +113,7 @@
 
           .volume-info {
             flex: 1;
+
             .volume-info-item {
               padding-bottom: @min-space;
 
@@ -117,6 +121,7 @@
                 margin-right: @min-space;
               }
             }
+
             :last-child {
               padding-bottom: 0;
             }
@@ -126,27 +131,29 @@
 
       .attach-action-line {
         display: inline-block;
-        border-bottom: @topo-line;
         width: 60px;
         height: @lg-space;
         margin-right: 10px;
+        border-bottom: @topo-line;
       }
     }
   }
 }
+
 .attach-btn {
   max-width: 100px;
+
   span {
     max-width: 80px;
   }
 }
 
-.errorCard {
+.error-card {
   flex-grow: 0;
 
-  .preWrap {
+  .pre-wrap {
+    font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;
     white-space: pre-wrap;
     word-wrap: break-word;
-    font-family: Monaco, Menlo, Consolas, Courier New, monospace;
   }
 }

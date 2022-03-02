@@ -1,15 +1,17 @@
-@import "~styles/variables";
+@import '~styles/variables';
 
 .only-radio {
   :global {
     .ant-radio-button-wrapper {
       margin-left: 8px;
-      border-radius: @border-radius;
       border-left-width: 1px;
+      border-radius: @border-radius;
     }
-    .ant-radio-button-wrapper:before {
+
+    .ant-radio-button-wrapper::before {
       display: none;
     }
+
     .ant-radio-button-wrapper:first-child {
       margin-left: 0;
       border-radius: @border-radius;

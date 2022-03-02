@@ -149,7 +149,7 @@ const RenderTabs = () => {
         <TabPane tab="OSDs" key="osd" />
       </Tabs>
       {/* {isLoading ? (
-        <div className={styles.spinContainer}>
+        <div className={styles['spin-container']}>
           <Spin />
         </div>
       ) : ( */}

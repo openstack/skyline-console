@@ -607,12 +607,12 @@ export default class BaseTable extends React.Component {
   }
 
   renderSelectedTitle = () => (
-    <div className={styles.selectTitle}>
+    <div className={styles['select-title']}>
       <div>{this.renderBatchActions()}</div>
       <div>
         <Button
           type="flat"
-          className={styles.cancelSelect}
+          className={styles['cancel-select']}
           onClick={this.handleCancelSelect}
         >
           {t('Cancel Select')}
@@ -826,7 +826,7 @@ export default class BaseTable extends React.Component {
 
     return (
       <CustomColumns
-        className={styles.columnMenu}
+        className={styles['column-menu']}
         options={this.hideableRow}
         value={getHideColKeys(hideRow)}
         onChange={this.handleRowHide}

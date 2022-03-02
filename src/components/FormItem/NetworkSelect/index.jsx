@@ -235,7 +235,7 @@ export default class NetworkSelect extends React.Component {
         label: (
           <div>
             <span>{it.name}</span>
-            <span className={styles.subnet_options_cidr}>{it.cidr}</span>
+            <span className={styles['subnet-options-cidr']}>{it.cidr}</span>
           </div>
         ),
         name: it.name,

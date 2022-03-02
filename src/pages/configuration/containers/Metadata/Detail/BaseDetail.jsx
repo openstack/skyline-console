@@ -66,7 +66,7 @@ export default class BaseDetail extends Base {
 
   get jsonCard() {
     const content = (
-      <pre className={styles.json_data}>
+      <pre className={styles['json-data']}>
         {JSON.stringify(this.detailData, null, 4)}
       </pre>
     );

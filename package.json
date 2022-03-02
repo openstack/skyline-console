@@ -13,6 +13,7 @@
     "i18n": "grunt",
     "lint": "eslint src --fix --quiet --ext .js,.jsx",
     "lint:test": "eslint test --fix --quiet --ext .js",
+    "lint:style": "stylelint --fix \"src/**/*.less\" --custom-syntax postcss-less",
     "report:delete-json": "rm -rf test/e2e/results/* || true",
     "report:delete-html": "rm -rf test/e2e/report || true",
     "report:pre": "npm run report:delete-json && npm run report:delete-html && mkdir test/e2e/report",
@@ -31,11 +32,15 @@
     }
   },
   "lint-staged": {
+    "*.{css,less}": [
+      "stylelint --fix",
+      "git add"
+    ],
     "*.{js,jsx}": [
       "eslint --fix",
       "git add"
     ],
-    "*.{html,css,scss,md,json}": [
+    "*.{html,css,scss,less,md,json}": [
       "prettier --write",
       "git add"
     ]
@@ -103,7 +108,7 @@
     "clean-webpack-plugin": "^1.0.0",
     "compression-webpack-plugin": "5.0.1",
     "cross-env": "^7.0.3",
-    "css-loader": "^0.28.11",
+    "css-loader": "1.0.1",
     "cypress": "6.8.0",
     "cypress-downloadfile": "^1.2.1",
     "cypress-file-upload": "^5.0.6",
@@ -130,18 +135,24 @@
     "istanbul-lib-coverage": "^3.0.0",
     "jest": "^26.6.3",
     "jest-enzyme": "^7.1.2",
-    "less": "^3.8.1",
-    "less-loader": "^4.1.0",
+    "less": "3.13.0",
+    "less-loader": "5.0.0",
     "lint-staged": "^11.0.0",
     "mochawesome": "^6.2.2",
     "mochawesome-merge": "^4.2.0",
     "mochawesome-report-generator": "^5.2.0",
-    "postcss-less": "^2.0.0",
-    "postcss-loader": "^3.0.0",
+    "postcss-less": "2.0.0",
+    "postcss-loader": "3.0.0",
     "prettier": "^2.3.0",
     "react-css-modules": "^4.7.7",
     "react-hot-loader": "^4.12.20",
     "style-loader": "^0.20.3",
+    "stylelint": "^14.2.0",
+    "stylelint-config-css-modules": "^2.3.0",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-rational-order": "^0.1.2",
+    "stylelint-config-standard": "^24.0.0",
+    "stylelint-order": "^5.0.0",
     "terser-webpack-plugin": "4.2.3",
     "url-loader": "^4.1.1",
     "webpack": "^4.42.1",

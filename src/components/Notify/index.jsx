@@ -150,7 +150,7 @@ const errorWithDetail = (err, title) => {
         buttonText={t('Click to show detail')}
         component={
           <CodeEditor
-            className={styles.codeEditor}
+            className={styles['code-editor']}
             value={err}
             mode="json"
             options={{

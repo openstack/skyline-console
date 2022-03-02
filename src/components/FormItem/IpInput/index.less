@@ -3,43 +3,49 @@
   overflow: hidden;
   border-radius: 4px;
 }
+
 .item-wrapper {
-  width: 44px;
   position: relative;
   display: inline-block;
+  width: 44px;
 }
+
 .item-wrapper:last-child {
   width: 40px;
 }
-.item-wrapper:after {
-  content: " ";
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background-color: #484848;
+
+.item-wrapper::after {
   position: absolute;
   top: 13px;
+  width: 4px;
+  height: 4px;
+  background-color: #484848;
+  border-radius: 50%;
+  content: ' ';
 }
-.item-wrapper:last-child:after {
+
+.item-wrapper:last-child::after {
   display: none;
 }
+
 .item {
   width: 40px;
-  padding-left: 8px;
   padding-right: 8px;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-radius: 0;
+  padding-left: 8px;
   text-align: center;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-radius: 0;
 }
 
 .item:focus {
   border-top: none;
-  border-left: none;
   border-right: none;
+  border-left: none;
   box-shadow: none;
 }
+
 .ipv6 {
   width: 120px;
 }

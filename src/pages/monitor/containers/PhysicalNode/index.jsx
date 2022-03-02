@@ -32,7 +32,9 @@ export const topCardList = [
       metricKey: 'physicalNode.cpuCores',
     },
     renderContent: (value) => (
-      <div className={styles.topContent}>{get(value.data, 'length', 0)}</div>
+      <div className={styles['top-content']}>
+        {get(value.data, 'length', 0)}
+      </div>
     ),
   },
   {
@@ -42,7 +44,7 @@ export const topCardList = [
       metricKey: 'physicalNode.totalMem',
     },
     renderContent: (value) => (
-      <div className={styles.topContent}>
+      <div className={styles['top-content']}>
         {getSuitableValue(get(value.data[0], 'y', 0), 'memory')}
       </div>
     ),
@@ -54,7 +56,7 @@ export const topCardList = [
       metricKey: 'physicalNode.systemRunningTime',
     },
     renderContent: (value) => (
-      <div className={styles.topContent}>
+      <div className={styles['top-content']}>
         {formatUsedTime(
           (moment().unix() -
             parseInt(get(value.data[0], 'y', moment().unix()), 10)) *
