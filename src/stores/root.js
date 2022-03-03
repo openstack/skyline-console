@@ -17,7 +17,6 @@ import { RouterStore } from 'mobx-react-router';
 import { parse } from 'qs';
 import client from 'client';
 import { getQueryString } from 'utils/index';
-import { getLocalTime } from 'utils/time';
 import { setLocalStorageItem } from 'utils/local-storage';
 import { isEmpty, values } from 'lodash';
 
@@ -135,7 +134,6 @@ export class RootStore {
     this.policies = policies;
     const {
       keystone_token,
-      keystone_token_exp,
       endpoints = {},
       license = {},
       version = '',
@@ -146,8 +144,7 @@ export class RootStore {
     this.license = license || {};
     this.version = version;
     this.updateUserRoles(user);
-    const exp = getLocalTime(keystone_token_exp).valueOf();
-    setLocalStorageItem('keystone_token', keystone_token, 0, exp);
+    setLocalStorageItem('keystone_token', keystone_token);
     this.endpoints = endpoints;
   }
 

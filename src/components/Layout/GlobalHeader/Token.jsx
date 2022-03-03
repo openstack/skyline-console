@@ -17,6 +17,7 @@ import { inject, observer } from 'mobx-react';
 import { Typography } from 'antd';
 import { ModalAction } from 'containers/Action';
 import { allCanReadPolicy } from 'resources/policy';
+import { getLocalTime } from 'utils/time';
 import styles from './index.less';
 
 const { Paragraph } = Typography;
@@ -50,9 +51,10 @@ export default class Token extends ModalAction {
     return this.token.value || '';
   }
 
-  get tokenExpiry() {
-    const { expires } = this.token;
-    return expires || 0;
+  get keystoneTokenExp() {
+    const { keystone_token_exp } = this.props.rootStore.user || {};
+    const exp = getLocalTime(keystone_token_exp).valueOf();
+    return exp;
   }
 
   getLeftStr = (value) => {
@@ -79,9 +81,17 @@ export default class Token extends ModalAction {
   };
 
   get tips() {
+    const now = Date.now();
+    if (now > this.keystoneTokenExp) {
+      return (
+        <span style={{ color: 'rgb(232, 104, 74)' }}>
+          {t('Keystone token is expired.')}
+        </span>
+      );
+    }
     return t(
       'Please save your token properly and it will be valid for {left}.',
-      { left: this.getLeftStr(this.tokenExpiry) }
+      { left: this.getLeftStr(this.keystoneTokenExp) }
     );
   }
 

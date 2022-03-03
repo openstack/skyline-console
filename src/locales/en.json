@@ -1062,6 +1062,7 @@
   "Keypair": "Keypair",
   "Keypair Detail": "Keypair Detail",
   "Keypair Info": "Keypair Info",
+  "Keystone token is expired.": "token has expired, please check whether the server time is correct and confirm whether the token is valid",
   "Killed": "Killed",
   "Kuwait": "Kuwait",
   "Kyrgyzstan": "Kyrgyzstan",

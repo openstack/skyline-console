@@ -1062,6 +1062,7 @@
   "Keypair": "SSH密钥对",
   "Keypair Detail": "密钥详情",
   "Keypair Info": "密钥信息",
+  "Keystone token is expired.": "token已过期，请检查服务器时间是否正确，确认token是否有效",
   "Killed": "终止",
   "Kuwait": "科威特",
   "Kyrgyzstan": "吉尔吉斯",
