@@ -59,7 +59,7 @@ export default class UserGroups extends Base {
         isHideable: true,
         render: (projectScope) => {
           if (projectScope && projectScope[0]) {
-            return projectScope.map((it) => <div>{it}</div>);
+            return projectScope.map((it, idx) => <div key={idx}>{it}</div>);
           }
         },
       },

@@ -74,7 +74,7 @@ export class Projects extends Base {
         render: (roles, value) => {
           const { groupProjectRole = [] } = value;
           const rolesAll = [...(roles || []), ...(groupProjectRole || [])];
-          return (rolesAll || []).map((it) => <div>{it}</div>);
+          return (rolesAll || []).map((it, idx) => <div key={idx}>{it}</div>);
         },
         stringify: (roles, value) => {
           const { groupProjectRole = [] } = value;
