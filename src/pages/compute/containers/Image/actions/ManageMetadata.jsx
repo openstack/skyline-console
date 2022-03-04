@@ -93,10 +93,9 @@ export default class ManageMetadata extends ModalAction {
       size,
       image_type,
       self,
-      project_name,
       virtual_size,
       ...rest
-    } = this.item;
+    } = this.item.originData;
     return rest;
   }
 

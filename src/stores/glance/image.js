@@ -54,11 +54,13 @@ export class ImageStore extends Base {
     return (data, filters, isDetail) => {
       if (isDetail) {
         return {
+          originData: { ...data },
           ...data,
           project_id: data.owner,
         };
       }
       return {
+        originData: { ...data },
         ...data,
         project_id: data.owner,
         project_name: data.owner_project_name || data.project_name,
