@@ -23,8 +23,8 @@
       - openstack/placement
       - openstack/requirements
       - openstack/virtualbmc
-      - skyline/skyline-apiserver
-      - skyline/skyline-console
+      - openstack/skyline-apiserver
+      - openstack/skyline-console
     timeout: 10800
     vars:
       devstack_services:
@@ -209,8 +209,8 @@
       - openstack/placement
       - openstack/python-octaviaclient
       - openstack/requirements
-      - skyline/skyline-apiserver
-      - skyline/skyline-console
+      - openstack/skyline-apiserver
+      - openstack/skyline-console
     timeout: 10800
     vars:
       devstack_services:
@@ -316,8 +316,8 @@
       - openstack/nova
       - openstack/placement
       - openstack/requirements
-      - skyline/skyline-apiserver
-      - skyline/skyline-console
+      - openstack/skyline-apiserver
+      - openstack/skyline-console
     timeout: 10800
     vars:
       devstack_services:
@@ -413,8 +413,8 @@
       - openstack/placement
       - openstack/requirements
       - openstack/swift
-      - skyline/skyline-apiserver
-      - skyline/skyline-console
+      - openstack/skyline-apiserver
+      - openstack/skyline-console
     timeout: 10800
     vars:
       devstack_services:

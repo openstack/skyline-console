@@ -10,8 +10,8 @@
     - name: Copy skyline-apiserver repos into devstack working directory
       command: rsync -a {{ item }} {{ devstack_base_dir }}
       with_items:
-        - src/opendev.org/skyline/skyline-apiserver
-        - src/opendev.org/skyline/skyline-console
+        - src/opendev.org/openstack/skyline-apiserver
+        - src/opendev.org/openstack/skyline-console
       become: yes
 
     - name: Remove the old skyline-console in skyline-apiserver/libs
