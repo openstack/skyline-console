@@ -22,7 +22,6 @@ import {
   isStopped,
 } from 'resources/instance';
 import globalHypervisorStore from 'stores/nova/hypervisor';
-import globalComputeHostStore from 'stores/nova/compute-host';
 import { hypervisorColumns, hypervisorFilters } from 'resources/hypervisor';
 
 @inject('rootStore')
@@ -36,7 +35,6 @@ export default class LiveMigrate extends ModalAction {
     this.store = globalServerStore;
     this.hypervisorStore = globalHypervisorStore;
     this.getHypervisors();
-    this.getComputeHosts();
   }
 
   get name() {
@@ -61,24 +59,11 @@ export default class LiveMigrate extends ModalAction {
         return it.hypervisor_type !== 'ironic';
       })
       .map((it) => {
-        const computeHost = this.computeHosts.find(
-          (host) => host.host === it.hypervisor_hostname
-        );
         return {
           ...it,
           key: it.id,
-          name: it.hypervisor_hostname,
-          computeHost,
         };
       });
-  }
-
-  getComputeHosts() {
-    globalComputeHostStore.fetchList({ binary: 'nova-compute' });
-  }
-
-  get computeHosts() {
-    return globalComputeHostStore.list.data || [];
   }
 
   get tips() {
@@ -125,9 +110,7 @@ export default class LiveMigrate extends ModalAction {
         label: t('Target Compute Host'),
         type: 'select-table',
         data: this.hypervisors,
-        isLoading:
-          this.hypervisorStore.list.isLoading &&
-          globalComputeHostStore.list.isLoading,
+        isLoading: this.hypervisorStore.list.isLoading,
         isMulti: false,
         extra: t(
           'If nova-compute on the host is disabled, it will be forbidden to be selected as the target host.'
@@ -135,8 +118,7 @@ export default class LiveMigrate extends ModalAction {
         filterParams: hypervisorFilters,
         columns: hypervisorColumns,
         disabledFunc: (record) =>
-          record.name === host ||
-          (record.computeHost && record.computeHost.status === 'disabled'),
+          record.service_host === host || record.status !== 'enabled',
       },
     ];
   }
@@ -147,7 +129,7 @@ export default class LiveMigrate extends ModalAction {
     let body = null;
     if (selectedRows.length > 0) {
       body = {
-        host: selectedRows[0].name,
+        host: selectedRows[0]?.service_host,
       };
     }
     return this.store.migrate({ id, body });

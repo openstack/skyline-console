@@ -35,6 +35,24 @@ export class SystemStep extends Base {
     this.getServerGroups();
   }
 
+  get hypervisorColumns() {
+    const columns = [...hypervisorColumns];
+    columns[0] = {
+      title: t('Hostname'),
+      dataIndex: 'hypervisor_hostname',
+    };
+    return columns;
+  }
+
+  get hypervisorFilters() {
+    const columns = [...hypervisorFilters];
+    columns[0] = {
+      label: t('Hostname'),
+      name: 'hypervisor_hostname',
+    };
+    return columns;
+  }
+
   get title() {
     return 'SystemStep';
   }
@@ -283,8 +301,8 @@ export class SystemStep extends Base {
         extra: t(
           'You can manually specify a physical node to create an instance.'
         ),
-        columns: hypervisorColumns,
-        filterParams: hypervisorFilters,
+        columns: this.hypervisorColumns,
+        filterParams: this.hypervisorFilters,
       },
       {
         name: 'serverGroup',

@@ -46,7 +46,7 @@ export class Hypervisors extends Base {
     const columns = [...hypervisorColumns];
     columns[0] = {
       title: t('ID/Name'),
-      dataIndex: 'hypervisor_hostname',
+      dataIndex: 'service_host',
       routeName: 'hypervisorDetailAdmin',
       isLink: true,
     };

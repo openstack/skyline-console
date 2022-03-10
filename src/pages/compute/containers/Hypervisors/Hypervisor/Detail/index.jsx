@@ -36,7 +36,7 @@ export class HypervisorDetail extends Base {
     const info = [
       {
         title: t('Hostname'),
-        dataIndex: 'hypervisor_hostname',
+        dataIndex: 'service_host',
       },
       {
         title: t('Type'),

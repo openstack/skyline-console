@@ -34,6 +34,15 @@ export class HypervisorStore extends Base {
     return true;
   }
 
+  get mapper() {
+    return (data) => {
+      return {
+        ...data,
+        service_host: data?.service?.host || '',
+      };
+    };
+  }
+
   // get mapper() {
   //   return (item) => {
   //     item.vcpus_used_percent = ((item.vcpus_used / item.vcpus) * 100).toFixed(2);

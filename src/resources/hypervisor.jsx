@@ -19,7 +19,7 @@ import { Tooltip } from 'antd';
 export const hypervisorColumns = [
   {
     title: t('Hostname'),
-    dataIndex: 'hypervisor_hostname',
+    dataIndex: 'service_host',
   },
   {
     title: t('Type'),
@@ -84,7 +84,7 @@ export const hypervisorColumns = [
 export const hypervisorFilters = [
   {
     label: t('Hostname'),
-    name: 'hypervisor_hostname',
+    name: 'service_host',
   },
   {
     label: t('Type'),
