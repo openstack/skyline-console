@@ -22,6 +22,7 @@ import {
   lockRender,
   instanceStatusFilter,
   isIronicInstance,
+  SimpleTag,
 } from 'resources/instance';
 import globalServerStore, { ServerStore } from 'stores/nova/instance';
 import { ServerGroupInstanceStore } from 'stores/skyline/server-group-instance';
@@ -206,6 +207,12 @@ export class Instance extends Base {
         render: (value) => instanceStatus[value && value.toLowerCase()] || '-',
       },
       {
+        title: t('Tags'),
+        dataIndex: 'tags',
+        render: (tags) => tags.map((tag, index) => SimpleTag({ tag, index })),
+        isHideable: true,
+      },
+      {
         title: t('Locked'),
         dataIndex: 'locked',
         isHideable: true,
@@ -273,6 +280,10 @@ export class Instance extends Base {
           ]
         : []),
       instanceStatusFilter,
+      {
+        label: t('Tags'),
+        name: 'tags',
+      },
     ];
   }
 

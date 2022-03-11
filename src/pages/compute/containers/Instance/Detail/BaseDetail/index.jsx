@@ -31,7 +31,11 @@ import instanceIcon from 'asset/image/instance.svg';
 import interfaceIcon from 'asset/image/interface.svg';
 import classnames from 'classnames';
 import ImageType from 'components/ImageType';
-import { instanceStatus, isIronicInstance } from 'resources/instance';
+import {
+  instanceStatus,
+  isIronicInstance,
+  SimpleTag,
+} from 'resources/instance';
 import { generateId } from 'utils/index';
 import { getSinceTime, getLocalTimeStr } from 'utils/time';
 import AttachVolume from 'pages/compute/containers/Instance/actions/AttachVolume';
@@ -60,6 +64,7 @@ export class BaseDetail extends Base {
       this.flavorCard,
       this.imageCard,
       this.securityGroupCard,
+      this.tagsCard,
     ];
     if (!isIronicInstance(this.detailData)) {
       cards.push(this.serverGroupCard);
@@ -76,6 +81,23 @@ export class BaseDetail extends Base {
       ret.splice(0, 0, this.errorCard);
     }
     return ret;
+  }
+
+  get tagsCard() {
+    const tags = toJS(this.detailData.tags) || [];
+    const content = !tags.length
+      ? '-'
+      : tags.map((tag, index) => SimpleTag({ tag, index }));
+    const options = [
+      {
+        label: t('Tags'),
+        content,
+      },
+    ];
+    return {
+      title: t('Tags Info'),
+      options,
+    };
   }
 
   get networkCard() {

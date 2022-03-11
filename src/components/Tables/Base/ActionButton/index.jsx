@@ -406,18 +406,27 @@ class ActionButton extends Component {
   };
 
   onClickModalActionCancel = (finish) => {
-    if (!isBoolean(finish)) {
-      this.formRef.current.wrappedInstance.onClickCancel();
-    }
-    const { onCancelAction } = this.props;
-    this.setState(
-      {
-        visible: false,
-      },
-      () => {
-        onCancelAction && onCancelAction();
+    const callback = () => {
+      if (!isBoolean(finish)) {
+        this.formRef.current.wrappedInstance.onClickCancel();
       }
-    );
+      const { onCancelAction } = this.props;
+      this.setState(
+        {
+          visible: false,
+        },
+        () => {
+          onCancelAction && onCancelAction();
+        }
+      );
+    };
+    const {
+      action: { beforeCancel },
+    } = this.props;
+    if (beforeCancel) {
+      return beforeCancel(callback);
+    }
+    callback();
   };
 
   getModalWidth = (size) => {

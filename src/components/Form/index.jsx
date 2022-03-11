@@ -602,6 +602,7 @@ export default class BaseForm extends React.Component {
         onValuesChange={this.onValuesChangeForm}
         scrollToFirstError
       >
+        <input type="password" hidden autoComplete="new-password" />
         <Row>{this.renderFormItems()}</Row>
       </Form>
     );

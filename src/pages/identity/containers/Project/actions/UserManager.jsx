@@ -17,7 +17,7 @@ import { inject, observer } from 'mobx-react';
 import { Select } from 'antd';
 import globalProjectStore from 'stores/keystone/project';
 import { UserStore } from 'stores/keystone/user';
-import globalRoleStore from 'stores/keystone/role';
+import { RoleStore } from 'stores/keystone/role';
 import { ModalAction } from 'containers/Action';
 import globalDomainStore from 'stores/keystone/domain';
 
@@ -34,7 +34,7 @@ export class UserManager extends ModalAction {
     const projectRole = JSON.stringify(this.item.userMapProjectRoles);
     this.state.domainDefault = this.item.domain_id;
     this.state.userRoles = JSON.parse(projectRole);
-    this.store = globalRoleStore;
+    this.store = new RoleStore();
     this.domainStore = globalDomainStore;
     this.userStore = new UserStore();
     this.getRoleList();

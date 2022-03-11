@@ -127,6 +127,7 @@
         /opt/stack/skyline-console/test/e2e/report: logs
         /opt/stack/skyline-console/test/e2e/screenshots: logs
         /opt/stack/skyline-console/test/e2e/config: logs
+        /opt/stack/skyline-console/test/e2e/videos: logs
     group-vars:
       subnode:
         devstack_services:
@@ -290,6 +291,7 @@
         /opt/stack/skyline-console/test/e2e/report: logs
         /opt/stack/skyline-console/test/e2e/screenshots: logs
         /opt/stack/skyline-console/test/e2e/config: logs
+        /opt/stack/skyline-console/test/e2e/videos: logs
         # octavia
         /var/log/dib-build/: logs
         /var/log/octavia-tenant-traffic.log: logs
@@ -391,6 +393,7 @@
         /opt/stack/skyline-console/test/e2e/report: logs
         /opt/stack/skyline-console/test/e2e/screenshots: logs
         /opt/stack/skyline-console/test/e2e/config: logs
+        /opt/stack/skyline-console/test/e2e/videos: logs
 
 - job:
     name: skyline-console-devstack-e2etests-storage
@@ -494,6 +497,7 @@
         /opt/stack/skyline-console/test/e2e/report: logs
         /opt/stack/skyline-console/test/e2e/screenshots: logs
         /opt/stack/skyline-console/test/e2e/config: logs
+        /opt/stack/skyline-console/test/e2e/videos: logs
 
 - job:
     name: skyline-nodejs14-run-lint-src

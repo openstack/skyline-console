@@ -16,35 +16,33 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import Tags from 'components/Tags';
-import globalTagStore from 'stores/keystone/tag';
+import globalTagStore from 'stores/nova/tag';
 import { isEqual } from 'lodash';
 
 @inject('rootStore')
 @observer
 export default class ModifyTags extends ModalAction {
-  static id = 'modify-project-tags';
+  static id = 'modify-instance-tags';
 
-  static title = t('Modify Project Tags');
+  static title = t('Modify Instance Tags');
 
-  static buttonText = t('Modify Project Tags');
+  static buttonText = t('Modify Instance Tags');
 
-  static policy = 'identity:update_project_tags';
+  static policy = 'os_compute_api:os-server-tags:update_all';
 
   static allowed = () => Promise.resolve(true);
 
   get name() {
-    return t('modify project tags');
+    return t('modify instance tags');
   }
 
   init() {
-    this.state = {
-      // tags: ,
-      tags: this.props.item.tags,
-    };
+    this.state.tags = this.props.item.tags || [];
   }
 
-  onSubmit = (values) =>
-    globalTagStore.update({ project_id: this.props.item.id }, values);
+  onSubmit = (values) => {
+    return globalTagStore.update({ serverId: this.props.item.id }, values);
+  };
 
   get formItems() {
     const { tags } = this.state;
@@ -52,7 +50,7 @@ export default class ModifyTags extends ModalAction {
       {
         name: 'tags',
         label: t('Tags'),
-        component: <Tags tags={tags} />,
+        component: <Tags tags={tags} maxLength={60} maxCount={50} />,
         validator: (rule, val) => {
           const initialTags = this.props.item.tags || [];
 
@@ -95,12 +93,14 @@ export default class ModifyTags extends ModalAction {
         },
         extra: (
           <div>
-            <div>1. {t('Tags are not case sensitive')}</div>
+            <div>1. {t('Each server can have up to 50 tags')}</div>
+            <div>2. {t('Tags are not case sensitive')}</div>
+            <div>3. {t('Tag is no longer than 60 characters')}</div>
             <div>
-              2. {t('Forward Slash ‘/’ is not allowed to be in a tag name')}
+              4. {t('Forward Slash ‘/’ is not allowed to be in a tag name')}
             </div>
             <div>
-              3.{' '}
+              5.{' '}
               {t(
                 'Commas ‘,’ are not allowed to be in a tag name in order to simplify requests that specify lists of tags'
               )}

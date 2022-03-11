@@ -39,7 +39,7 @@ import 'cypress-file-upload';
 require('cypress-downloadfile/lib/downloadFileCommand');
 
 Cypress.Cookies.defaults({
-  preserve: ['session', 'X-Auth-Token'],
+  preserve: ['session', 'X-Auth-Token', 'shouldSkip'],
 });
 
 Cypress.on(

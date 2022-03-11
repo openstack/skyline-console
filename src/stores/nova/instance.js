@@ -148,7 +148,10 @@ export class ServerStore extends Base {
     if (host) {
       return newData.filter((it) => it.host === host);
     }
-    return newData;
+    return newData.map((it) => ({
+      ...it,
+      tags: (it.origin_data || {}).tags || [],
+    }));
   }
 
   @action

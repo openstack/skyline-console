@@ -15,9 +15,10 @@
 import React, { useEffect, useState } from 'react';
 import ImageType from 'components/ImageType';
 import { getLocalTimeStr } from 'utils/time';
-import { Table, Popover } from 'antd';
+import { Table, Popover, Tag, Tooltip } from 'antd';
 import globalActionLogStore from 'stores/nova/action-log';
 import { ironicOriginEndpoint } from 'client/client/constants';
+import { projectTagsColors } from 'src/utils/constants';
 
 import lockSvg from 'asset/image/lock.svg';
 import unlockSvg from 'asset/image/unlock.svg';
@@ -610,6 +611,30 @@ export const actionColumn = (self) => {
         self.getLinkRender('userDetail', value, { id: value }, null),
     },
   ];
+};
+
+export const SimpleTag = ({ tag, index }) => {
+  const isLongTag = tag.length > 20;
+  const tagText = isLongTag ? `${tag.slice(0, 20)}...` : tag;
+  const tagEl = (
+    <Tag
+      key={tag}
+      color={projectTagsColors[index % 10]}
+      style={{ marginTop: 2, marginBottom: 2 }}
+    >
+      <span style={{ whiteSpace: 'pre-wrap' }}>{tagText}</span>
+    </Tag>
+  );
+  return isLongTag ? (
+    <Tooltip
+      key={tag}
+      title={<span style={{ whiteSpace: 'pre-wrap' }}>{tag}</span>}
+    >
+      {tagEl}
+    </Tooltip>
+  ) : (
+    tagEl
+  );
 };
 
 export const allowAttachInterfaceStatus = ['active', 'paused', 'stopped'];

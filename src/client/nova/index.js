@@ -40,6 +40,11 @@ class NovaClient extends Base {
             key: 'os-instance-actions',
             responseKey: 'instanceAction',
           },
+          {
+            name: 'tags',
+            key: 'tags',
+            responseKey: 'tag',
+          },
         ],
         extendOperations: [
           {
@@ -50,6 +55,11 @@ class NovaClient extends Base {
           {
             key: 'action',
             method: 'post',
+          },
+          {
+            name: 'updateTags',
+            key: 'tags',
+            method: 'put',
           },
         ],
       },

@@ -17,7 +17,7 @@ import { inject, observer } from 'mobx-react';
 import { Select } from 'antd';
 import globalProjectStore from 'stores/keystone/project';
 import globalUserStore from 'stores/keystone/user';
-import globalRoleStore from 'stores/keystone/role';
+import { RoleStore } from 'stores/keystone/role';
 import { ModalAction } from 'containers/Action';
 import globalDomainStore from 'stores/keystone/domain';
 
@@ -34,7 +34,7 @@ export class SystemRole extends ModalAction {
     const systemRole = JSON.stringify(this.item.projectMapSystemRole);
     this.state.domainDefault = this.item.domain_id;
     this.state.projectRoles = JSON.parse(systemRole);
-    this.store = globalRoleStore;
+    this.store = new RoleStore();
     this.domainStore = globalDomainStore;
     this.userStore = globalUserStore;
     this.getRoleList();
@@ -199,6 +199,10 @@ export class SystemRole extends ModalAction {
         (it) => it === this.adminRoleId
       )[0];
     }
+    // for test e2e, will delete by next patch
+    localStorage.setItem('test-project-role', this.projectRolesList(id));
+    localStorage.setItem('test-total-role', this.systemRoleList);
+    localStorage.setItem('test-actual', 'can get localstorage');
     return (
       <Select
         size="small"

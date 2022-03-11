@@ -49,6 +49,16 @@ export class ServerGroupInstanceStore extends Base {
     });
     return servers;
   }
+
+  async listDidFetch(items) {
+    if (items.length === 0) {
+      return items;
+    }
+    return items.map((it) => ({
+      ...it,
+      tags: (it.origin_data || {}).tags || [],
+    }));
+  }
 }
 
 const globalServerGroupInstanceStore = new ServerGroupInstanceStore();

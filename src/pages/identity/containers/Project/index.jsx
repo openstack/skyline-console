@@ -14,14 +14,11 @@
 
 import React from 'react';
 import { observer, inject } from 'mobx-react';
-import { Divider, Badge, Tag, Tooltip } from 'antd';
+import { Divider, Badge } from 'antd';
 import Base from 'containers/List';
 import globalProjectStore, { ProjectStore } from 'stores/keystone/project';
-import {
-  yesNoOptions,
-  projectTagsColors,
-  emptyActionConfig,
-} from 'utils/constants';
+import { yesNoOptions, emptyActionConfig } from 'utils/constants';
+import { SimpleTag } from 'resources/instance';
 import actionConfigs from './actions';
 import styles from './index.less';
 
@@ -124,31 +121,7 @@ export class Projects extends Base {
       {
         title: t('Tags'),
         dataIndex: 'tags',
-        render: (tags) =>
-          tags.map((tag, index) => {
-            const isLongTag = tag.length > 20;
-            const tagEl = (
-              <Tag
-                key={tag}
-                color={projectTagsColors[index % 10]}
-                style={{ marginTop: 8 }}
-              >
-                <span style={{ whiteSpace: 'pre-wrap' }}>
-                  {isLongTag ? `${tag.slice(0, 20)}...` : tag}
-                </span>
-              </Tag>
-            );
-            return isLongTag ? (
-              <Tooltip
-                key={tag}
-                title={<span style={{ whiteSpace: 'pre-wrap' }}>{tag}</span>}
-              >
-                {tagEl}
-              </Tooltip>
-            ) : (
-              tagEl
-            );
-          }),
+        render: (tags) => tags.map((tag, index) => SimpleTag({ tag, index })),
         isHideable: true,
       },
       {

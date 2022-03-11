@@ -120,7 +120,7 @@ describe('The System Info Page', () => {
       .goToDetail(0)
       .clickDetailTab('Router')
       .clickHeaderButton(1)
-      .wait(5000)
+      .wait(10000)
       .formTableSelectBySearch('router', routerName)
       .clickModalActionSubmitButton();
   });

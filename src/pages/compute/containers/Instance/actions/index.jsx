@@ -48,6 +48,7 @@ import ManageSecurityGroup from './ManageSecurityGroup';
 import DeleteIronic from './DeleteIronic';
 import ConfirmResize from './ConfirmResize';
 import RevertResize from './RevertResize';
+import ModifyTags from './ModifyTags';
 
 const statusActions = [
   StartAction,
@@ -129,6 +130,9 @@ const actionConfigs = {
       },
       {
         action: DeleteIronic,
+      },
+      {
+        action: ModifyTags,
       },
     ],
   },

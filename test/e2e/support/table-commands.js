@@ -344,15 +344,17 @@ Cypress.Commands.add('selectAll', () => {
 
 Cypress.Commands.add(
   'getStatusLength',
-  (hasLengthCallback, noLengthCallback) => {
+  (hasLengthCallback, noLengthCallback, timeoutCallback, index) => {
+    cy.log(`Current index is: ${index}`);
     if (
       Cypress.$('.ant-badge-status-success').length > 0 ||
       Cypress.$('.ant-badge-status-error').length > 0
     ) {
       hasLengthCallback();
+    } else if (index >= 100) {
+      timeoutCallback();
     } else {
       noLengthCallback();
-      cy.getStatusLength(hasLengthCallback, noLengthCallback);
     }
   }
 );
@@ -369,8 +371,23 @@ Cypress.Commands.add('waitStatusActiveByRefresh', () => {
     cy.freshTable();
     index += 1;
     cy.wait(5000);
+    cy.getStatusLength(
+      hasLengthCallback,
+      noLengthCallback,
+      timeoutCallback,
+      index
+    );
   };
-  cy.getStatusLength(hasLengthCallback, noLengthCallback);
+  const timeoutCallback = () => {
+    // eslint-disable-next-line no-console
+    console.log('not active and timeout', index);
+  };
+  cy.getStatusLength(
+    hasLengthCallback,
+    noLengthCallback,
+    timeoutCallback,
+    index
+  );
 });
 
 Cypress.Commands.add('waitStatusActive', (index) => {
