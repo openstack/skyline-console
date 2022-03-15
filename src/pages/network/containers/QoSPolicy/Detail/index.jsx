@@ -15,6 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/TabDetail';
 import { QoSPolicyStore } from 'stores/neutron/qos-policy';
+import FloatingIp from 'pages/network/containers/FloatingIp';
 import BaseDetail from './BaseDetail';
 import actionConfigs from '../actions';
 
@@ -86,6 +87,11 @@ export default class QoSPolicyDetail extends Base {
         title: t('BaseDetail'),
         key: 'BaseDetail',
         component: BaseDetail,
+      },
+      {
+        title: t('Floating IP'),
+        key: 'fip',
+        component: FloatingIp,
       },
     ];
     return tabs;

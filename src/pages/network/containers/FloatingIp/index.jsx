@@ -37,19 +37,34 @@ export class FloatingIps extends Base {
   }
 
   get isFilterByBackend() {
-    return true;
+    return !this.inQosDetail;
   }
 
   get isSortByBackend() {
-    return true;
+    return !this.inQosDetail;
   }
 
   get defaultSortKey() {
     return 'status';
   }
 
+  get inQosDetail() {
+    const { pathname } = this.props.location;
+    return this.inDetailPage && pathname.includes('qos');
+  }
+
+  get isRecycleBinDetail() {
+    const { pathname } = this.props.location;
+    return this.inDetailPage && pathname.includes('recycle-bin');
+  }
+
+  get inInstanceDetail() {
+    const { pathname } = this.props.location;
+    return this.inDetailPage && pathname.includes('instance');
+  }
+
   async getData({ silent, ...params } = {}) {
-    if (this.inDetailPage) {
+    if (this.inDetailPage && !this.inQosDetail) {
       silent && (this.list.silent = true);
       const { detail: { addresses = [] } = {} } = this.props;
       const ips = [];
@@ -78,6 +93,18 @@ export class FloatingIps extends Base {
     return true;
   }
 
+  updateFetchParams = (params) => {
+    if (this.inQosDetail) {
+      console.log('params', params);
+      const { id, ...rest } = params;
+      return {
+        qos_policy_id: id,
+        ...rest,
+      };
+    }
+    return params;
+  };
+
   fetchDataByPage = async (params) => {
     await this.store.fetchListWithResourceName(params);
     this.list.silent = false;
@@ -91,19 +118,19 @@ export class FloatingIps extends Base {
     return t('floating ips');
   }
 
-  get isRecycleBinDetail() {
-    const { pathname } = this.props.location;
-    return pathname.indexOf('recycle-bin') >= 0;
-  }
-
   get actionConfigs() {
     if (this.isRecycleBinDetail) {
       return emptyActionConfig;
     }
-    if (this.inDetailPage) {
+    if (this.inInstanceDetail) {
       return this.isAdminPage
         ? actionConfigs.instanceDetailAdminConfigs
         : actionConfigs.instanceDetailConfigs;
+    }
+    if (this.inQosDetail) {
+      return this.isAdminPage
+        ? actionConfigs.qosDetailAdminConfigs
+        : actionConfigs.qosDetailConfigs;
     }
     return this.isAdminPage
       ? actionConfigs.adminConfigs
@@ -132,7 +159,7 @@ export class FloatingIps extends Base {
         isLink: true,
         routeName: this.getRouteName('networkQosDetail'),
         idKey: 'qos_policy_id',
-        hidden: !this.qosEndpoint,
+        hidden: !this.qosEndpoint || this.inQosDetail,
       },
       {
         title: t('Project ID/Name'),

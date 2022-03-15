@@ -20,24 +20,26 @@ import Disassociate from './Disassociate';
 import Edit from './Edit';
 import CreateDNAT from './CreateDNAT';
 
+const rowActions = {
+  firstAction: Edit,
+  moreActions: [
+    {
+      action: Associate,
+    },
+    {
+      action: Disassociate,
+    },
+    {
+      action: CreateDNAT,
+    },
+    {
+      action: Release,
+    },
+  ],
+};
+
 const actionConfigs = {
-  rowActions: {
-    firstAction: Edit,
-    moreActions: [
-      {
-        action: Associate,
-      },
-      {
-        action: Disassociate,
-      },
-      {
-        action: CreateDNAT,
-      },
-      {
-        action: Release,
-      },
-    ],
-  },
+  rowActions,
   batchActions: [Release],
   primaryActions: [Allocate],
 };
@@ -58,9 +60,21 @@ const instanceDetailConfigs = {
 
 const instanceDetailAdminConfigs = emptyActionConfig;
 
+const qosDetailConfigs = {
+  rowActions,
+};
+
+const qosDetailAdminConfigs = {
+  rowActions: {
+    firstAction: Release,
+  },
+};
+
 export default {
   actionConfigs,
   adminConfigs,
   instanceDetailConfigs,
   instanceDetailAdminConfigs,
+  qosDetailConfigs,
+  qosDetailAdminConfigs,
 };
