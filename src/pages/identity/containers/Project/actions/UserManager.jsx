@@ -286,7 +286,7 @@ export class UserManager extends ModalAction {
     const defaultUsers = Object.keys(oldUserRoles);
     const promiseList = [];
     defaultUsers.forEach((user_id) => {
-      if (!values.select_user.includes(user_id)) {
+      if (values.select_user && !values.select_user.includes(user_id)) {
         (oldUserRoles[user_id] || []).forEach((role_id) => {
           promiseList.push(
             globalProjectStore.removeUserRole({ id, user_id, role_id })
@@ -294,7 +294,7 @@ export class UserManager extends ModalAction {
         });
       } else {
         (oldUserRoles[user_id] || []).forEach((role_id) => {
-          if (!userRoles[user_id].includes(role_id)) {
+          if (userRoles[user_id] && !userRoles[user_id].includes(role_id)) {
             promiseList.push(
               globalProjectStore.removeUserRole({ id, user_id, role_id })
             );
@@ -302,8 +302,8 @@ export class UserManager extends ModalAction {
         });
       }
     });
-    values.select_user.forEach((user_id) => {
-      if (!defaultUsers.includes(user_id)) {
+    (values.select_user || []).forEach((user_id) => {
+      if (defaultUsers && !defaultUsers.includes(user_id)) {
         if (userRoles[user_id]) {
           userRoles[user_id].forEach((role_id) => {
             promiseList.push(

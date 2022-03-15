@@ -289,7 +289,7 @@ export class SystemRole extends ModalAction {
     const defaultProjects = Object.keys(oldProjectRoles);
     const promiseList = [];
     defaultProjects.forEach((id) => {
-      if (!values.select_project.includes(id)) {
+      if (values.select_project && !values.select_project.includes(id)) {
         (oldProjectRoles[id] || []).forEach((role_id) => {
           promiseList.push(
             globalProjectStore.removeUserRole({ id, user_id, role_id })
@@ -305,8 +305,8 @@ export class SystemRole extends ModalAction {
         });
       }
     });
-    values.select_project.forEach((id) => {
-      if (!defaultProjects.includes(id)) {
+    (values.select_project || []).forEach((id) => {
+      if (defaultProjects && !defaultProjects.includes(id)) {
         if (projectRoles[id]) {
           projectRoles[id].forEach((role_id) => {
             promiseList.push(

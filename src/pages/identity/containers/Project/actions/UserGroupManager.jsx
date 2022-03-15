@@ -187,7 +187,7 @@ export class UserGroupManager extends ModalAction {
     const defaultGroups = Object.keys(groupRoles);
     const promiseList = [];
     defaultGroups.forEach((group_id) => {
-      if (!values.select_group.includes(group_id)) {
+      if (values.select_group && !values.select_group.includes(group_id)) {
         (oldGroupRoles[group_id] || []).forEach((role_id) => {
           promiseList.push(
             globalProjectStore.removeGroupRole({ id, group_id, role_id })
@@ -195,7 +195,7 @@ export class UserGroupManager extends ModalAction {
         });
       } else {
         (oldGroupRoles[group_id] || []).forEach((role_id) => {
-          if (!groupRoles[group_id].includes(role_id)) {
+          if (groupRoles[group_id] && !groupRoles[group_id].includes(role_id)) {
             promiseList.push(
               globalProjectStore.removeGroupRole({ id, group_id, role_id })
             );
@@ -203,8 +203,8 @@ export class UserGroupManager extends ModalAction {
         });
       }
     });
-    values.select_group.forEach((group_id) => {
-      if (!defaultGroups.includes(group_id)) {
+    (values.select_group || []).forEach((group_id) => {
+      if (defaultGroups && !defaultGroups.includes(group_id)) {
         if (groupRoles[group_id]) {
           groupRoles[group_id].forEach((role_id) => {
             promiseList.push(
