@@ -51,6 +51,14 @@ export class FloatingIpStore extends Base {
     externalNetworkName: '-',
   };
 
+  async listDidFetch(items, allProjects, filters) {
+    const { qos_policy_id } = filters;
+    if (!qos_policy_id) {
+      return items;
+    }
+    return items.filter((it) => it.qos_policy_id === qos_policy_id);
+  }
+
   @action
   async fetchListWithResourceName({
     limit,
