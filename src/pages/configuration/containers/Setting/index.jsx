@@ -18,9 +18,7 @@ import globalSettingStore from 'stores/skyline/setting';
 import { onlyAdminCanReadPolicy } from 'resources/policy';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class Setting extends Base {
+export class Setting extends Base {
   init() {
     this.store = globalSettingStore;
   }
@@ -63,3 +61,5 @@ export default class Setting extends Base {
     return [];
   }
 }
+
+export default inject('rootStore')(observer(Setting));

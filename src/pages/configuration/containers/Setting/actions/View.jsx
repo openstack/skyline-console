@@ -18,9 +18,7 @@ import { inject, observer } from 'mobx-react';
 import { onlyAdminCanReadPolicy } from 'resources/policy';
 import CodeEditor from 'components/CodeEditor';
 
-@inject('rootStore')
-@observer
-export default class View extends ModalAction {
+export class View extends ModalAction {
   get id() {
     return 'view';
   }
@@ -97,3 +95,5 @@ export default class View extends ModalAction {
 
   onSubmit = null;
 }
+
+export default inject('rootStore')(observer(View));

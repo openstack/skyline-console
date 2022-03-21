@@ -18,9 +18,7 @@ import globalSettingStore from 'stores/skyline/setting';
 import CodeEditor from 'components/CodeEditor';
 import { inject, observer } from 'mobx-react';
 
-@inject('rootStore')
-@observer
-export default class Edit extends ModalAction {
+export class Edit extends ModalAction {
   get id() {
     return 'edit';
   }
@@ -39,6 +37,7 @@ export default class Edit extends ModalAction {
 
   init() {
     this.state.value = this.item.value;
+    this.state.inputValue = JSON.stringify(this.item.value);
   }
 
   get defaultValue() {
@@ -57,6 +56,7 @@ export default class Edit extends ModalAction {
     }
     this.setState({
       value: realValue,
+      inputValue: value,
     });
   };
 
@@ -83,6 +83,17 @@ export default class Edit extends ModalAction {
     };
   }
 
+  checkKeyValues = () => {
+    const { inputValue } = this.state;
+    try {
+      JSON.parse(inputValue);
+      return true;
+    } catch (e) {
+      console.log(inputValue, e);
+      return false;
+    }
+  };
+
   get formItems() {
     return [
       {
@@ -95,6 +106,14 @@ export default class Edit extends ModalAction {
         type: 'other',
         label: t('Value'),
         content: this.renderContent(),
+        validator: () => {
+          if (!this.checkKeyValues()) {
+            return Promise.reject(
+              t('Please enter JSON in the correct format!')
+            );
+          }
+          return Promise.resolve();
+        },
       },
     ];
   }
@@ -109,3 +128,5 @@ export default class Edit extends ModalAction {
     return globalSettingStore.update(body);
   };
 }
+
+export default inject('rootStore')(observer(Edit));
