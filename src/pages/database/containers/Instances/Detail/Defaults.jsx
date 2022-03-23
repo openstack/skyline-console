@@ -12,34 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import skyline from './skyline';
-import nova from './nova';
-import cinder from './cinder';
-import glance from './glance';
-import neutron from './neutron';
-import keystone from './keystone';
-import heat from './heat';
-import octavia from './octavia';
-import placement from './placement';
-import ironic from './ironic';
-import swift from './swift';
-import trove from './trove';
+import Base from "containers/BaseDetail"
+import { inject, observer } from "mobx-react";
 
-const client = {
-  skyline,
-  nova,
-  cinder,
-  glance,
-  neutron,
-  keystone,
-  heat,
-  octavia,
-  placement,
-  ironic,
-  swift,
-  trove
-};
+@inject("rootStore")
+@observer
+export default class Defaults extends Base {
 
-window.client = client;
+  get leftCards() {
+    return [this.baseInfoCard]
+  }
 
-export default client;
+  get baseInfoCard() {
+    const options = [
+      {
+        label: t("Number of Nodes"),
+        dataIndex: "node_groups[0].count"
+      }
+    ];
+
+    return {
+      title: t("Defaults"),
+      options
+    };
+  }
+}

@@ -12,34 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import skyline from './skyline';
-import nova from './nova';
-import cinder from './cinder';
-import glance from './glance';
-import neutron from './neutron';
-import keystone from './keystone';
-import heat from './heat';
-import octavia from './octavia';
-import placement from './placement';
-import ironic from './ironic';
-import swift from './swift';
-import trove from './trove';
+import renderRoutes from 'utils/RouterConfig';
 
-const client = {
-  skyline,
-  nova,
-  cinder,
-  glance,
-  neutron,
-  keystone,
-  heat,
-  octavia,
-  placement,
-  ironic,
-  swift,
-  trove
-};
+import routes from './routes';
 
-window.client = client;
+const App = (props) => renderRoutes(routes, props);
 
-export default client;
+export default App;
