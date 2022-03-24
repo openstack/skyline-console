@@ -50,6 +50,9 @@ const Database = lazy(() =>
 const Share = lazy(() =>
   import(/* webpackChunkName: "share" */ 'pages/share/App')
 );
+const ContainerInfra = lazy(() =>
+  import(/* webpackChunkName: "container-infra" */ 'pages/container-infra/App')
+);
 const E404 = lazy(() =>
   import(/* webpackChunkName: "E404" */ 'pages/base/containers/404')
 );
@@ -101,6 +104,10 @@ export default [
       {
         path: `/share`,
         component: Share,
+      },
+      {
+        path: `/container-infra`,
+        component: ContainerInfra,
       },
       { path: '*', component: E404 },
     ],

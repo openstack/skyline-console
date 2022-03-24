@@ -33,6 +33,7 @@ export const endpointVersionMap = {
   trove: 'v1.0',
   manilav2: 'v2',
   barbican: 'v1',
+  magnum : 'v1',
 };
 
 export const endpointsDefault = {
@@ -71,6 +72,7 @@ export const swiftBase = () => getOpenstackEndpoint('swift');
 export const troveBase = () => getOpenstackEndpoint('trove');
 export const manilaBase = () => getOpenstackEndpoint('manilav2');
 export const barbicanBase = () => getOpenstackEndpoint('barbican');
+export const magnumBase = () => getOpenstackEndpoint('magnum');
 
 export const ironicOriginEndpoint = () => getOriginEndpoint('ironic');
 export const vpnEndpoint = () => getOriginEndpoint('neutron_vpn');

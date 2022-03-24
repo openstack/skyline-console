@@ -22,6 +22,7 @@ import {
   DatabaseFilled,
   AppstoreOutlined,
   SwitcherOutlined,
+  ContainerOutlined,
 } from '@ant-design/icons';
 
 const renderMenu = (t) => {
@@ -575,6 +576,63 @@ const renderMenu = (t) => {
               key: 'configurationsDetail',
               level: 2,
               routePath: '/database/configurations/detail/:id',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      path: '/container-infra',
+      name: t('Container Infra'),
+      key: 'containerInfra',
+      icon: <ContainerOutlined />,
+      children: [
+        {
+          path: '/container-infra/clusters',
+          name: t('Clusters'),
+          key: 'containerInfraClusters',
+          level: 1,
+          children: [
+            {
+              path: /^\/container-infra\/clusters\/detail\/.[^/]+$/,
+              name: t('Cluster Detail'),
+              key: 'containerInfraClusterDetail',
+              level: 2,
+              routePath: '/container-infra/clusters/detail/:id',
+            },
+            {
+              path: '/container-infra/clusters/create',
+              name: t('Create Cluster'),
+              key: 'containerInfraCreateCluster',
+              level: 2,
+            },
+          ],
+        },
+        {
+          path: '/container-infra/cluster-template',
+          name: t('Cluster Template'),
+          key: 'clusterTemplate',
+          level: 1,
+          children: [
+            {
+              path: /^\/container-infra\/cluster-template\/detail\/.[^/]+$/,
+              name: t('Cluster Template Detail'),
+              key: 'containerInfraClusterTemplateDetail',
+              level: 2,
+              routePath: '/container-infra/cluster-template/detail/:id',
+            },
+            {
+              path: '/container-infra/cluster-template/create',
+              name: t('Create Cluster Template'),
+              key: 'containerInfraCreateClusterTemplate',
+              level: 2,
+            },
+            {
+              path: /^\/container-infra\/cluster-template\/update\/.[^/]+\/.[^/]+$/,
+              name: t('Update Cluster Template'),
+              key: 'containerInfraUpdateClusterTemplate',
+              level: 2,
+              routePath: '/container-infra/cluster-template/update/:id',
             },
           ],
         },
