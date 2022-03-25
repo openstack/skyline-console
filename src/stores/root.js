@@ -270,6 +270,8 @@ export class RootStore {
     stores.forEach((store) => {
       store.clearData();
     });
+    // clear keystone_token in the local storage
+    localStorage.clear();
   }
 }
 
