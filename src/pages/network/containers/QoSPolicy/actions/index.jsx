@@ -45,10 +45,18 @@ const actionConfigs = {
 
 const consoleActions = {
   rowActions: {
-    firstAction: null,
-    moreActions: [],
+    firstAction: Edit,
+    moreActions: [
+      { action: CreateBandwidthLimitRule },
+      { action: EditBandwidthEgressRule },
+      { action: EditBandwidthIngressRule },
+      { action: DeleteBandwidthEgressRules },
+      { action: DeleteBandwidthIngressRules },
+      { action: DeleteAction },
+    ],
   },
-  batchActions: [],
-  primaryActions: [],
+  batchActions: [DeleteAction],
+  primaryActions: [Create],
 };
+
 export default { actionConfigs, consoleActions };
