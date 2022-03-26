@@ -42,7 +42,7 @@ const StorageCluster = () => {
         const d = get(data, 'y', 0);
         return (
           <div
-            className={styles.topContent}
+            className={styles['top-content']}
             style={{
               fontSize: 28,
               fontWeight: 600,
@@ -139,7 +139,7 @@ const StorageCluster = () => {
       },
       renderContent: ({ data }) => {
         return (
-          <Row className={styles.OSDs}>
+          <Row className={styles.osd}>
             <Col span={8} />
             <Col span={8} style={{ fontSize: 14, opacity: 0.8 }}>
               {t('Up')}
@@ -190,7 +190,7 @@ const StorageCluster = () => {
         const total = getSuitableValue(totalValue, 'disk');
         const progressPercentage = computePercentage(usedValue, totalValue);
         return (
-          <div className={styles.topContent}>
+          <div className={styles['top-content']}>
             <div
               style={{
                 width: '100%',

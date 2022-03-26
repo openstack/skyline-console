@@ -7,17 +7,18 @@
 .header {
   top: 0;
   left: 0;
-  color: @white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   height: @header-height;
   padding: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding-left: 230px;
+  color: @white;
 }
 
 .header-collapsed {
   &:extend(.header);
+
   padding-left: 88px;
 }
 
@@ -43,30 +44,30 @@
 }
 
 .sider {
+  position: relative;
   height: 100vh;
   overflow-y: auto;
-  position: relative;
 
   :global {
     .ant-layout-sider-trigger {
-      background-color: @sider-background;
       position: absolute;
-      width: 32px !important;
-      height: 75px;
-      border-width: 32px;
       right: 0;
       bottom: 48px;
-      border-radius: 4px 0px 0px 4px;
+      width: 32px !important;
+      height: 75px;
       font-size: 16px;
       line-height: 75px;
+      background-color: @sider-background;
+      border-width: 32px;
+      border-radius: 4px 0 0 4px;
     }
   }
 }
 
 .menu {
-  padding-left: 14px;
-  padding-right: 14px;
   max-height: calc(100vh - 64px);
+  padding-right: 14px;
+  padding-left: 14px;
   overflow-y: auto;
 
   &::-webkit-scrollbar {
@@ -74,13 +75,13 @@
   }
 
   &::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 30%);
   }
 
   &::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 50%);
   }
 
   :global {
@@ -97,9 +98,9 @@
     }
 
     .anticon {
-      font-size: @size-normal;
-      margin-right: 20px;
       float: left;
+      margin-right: 20px;
+      font-size: @size-normal;
       line-height: 44px;
     }
 
@@ -117,6 +118,7 @@
     a {
       color: inherit;
     }
+
     a::before {
       width: 5px;
     }
@@ -133,8 +135,8 @@
 
   :global {
     .ant-menu-sub.ant-menu-inline {
-      padding-left: 5px;
       padding-right: 5px;
+      padding-left: 5px;
     }
 
     .ant-menu-item > span::before {
@@ -142,11 +144,11 @@
       top: 18px;
       bottom: 0;
       left: 30px;
-      content: '';
       width: 5px;
       height: 5px;
-      background-color: rgba(255, 255, 255, 0.65);
+      background-color: rgba(255, 255, 255, 65%);
       border-radius: 50%;
+      content: '';
     }
 
     .ant-menu-item-selected > span::before {
@@ -157,11 +159,6 @@
       background-color: @primary-color;
     }
 
-    // .ant-menu-sub {
-    //   .ant-menu-item-selected {
-    //     background-color: transparent !important;
-    //   }
-    // }
     .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal)
       .ant-menu-item-selected {
       background-color: @primary-color;
@@ -172,8 +169,8 @@
 
 .breadcrumb {
   height: @breadcrumb-height;
-  background-color: #fff;
   padding-left: @body-padding-left;
+  background-color: #fff;
 
   .breadcrumb-item {
     line-height: @breadcrumb-height;
@@ -190,9 +187,6 @@
 
 .main {
   height: calc(100vh - @header-height - @breadcrumb-height);
-  // min-width: @content-width;
-  // padding-left: @body-padding-left;
-  // padding-right: @body-padding-right;
   overflow: hidden;
 }
 
@@ -202,44 +196,43 @@
 
 .main-has-tab {
   margin-top: -42px;
-  // max-height: calc(100vh - 58px - 44px);
 }
 
 .trigger-wrapper {
   position: absolute;
-  width: 24px !important;
-  height: 70px;
-  border-width: 24px;
   right: -24px;
   bottom: 48px;
-  border-radius: 4px 0px 0px 4px;
+  width: 24px !important;
+  height: 70px;
   font-size: 16px;
   line-height: 70px;
+  border-width: 24px;
+  border-radius: 4px 0 0 4px;
   cursor: pointer;
 }
 
 .trigger {
-  font-size: 20px;
   position: absolute;
   left: 0;
   color: #fff;
+  font-size: 20px;
 }
 
 .trigger::before {
-  content: '';
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.35);
   z-index: -1;
-  -webkit-transform: scaleX(2.2) perspective(50px) rotateY(50deg);
-  transform: scaleX(2.2) perspective(50px) rotateY(50deg);
-  -webkit-transform-origin: bottom;
-  transform-origin: left;
+  background: rgba(0, 0, 0, 35%);
   border-right: none;
   border-radius: 0 4px 4px 0;
+  transform: scaleX(2.2) perspective(50px) rotateY(50deg);
+  transform: scaleX(2.2) perspective(50px) rotateY(50deg);
+  transform-origin: bottom;
+  transform-origin: left;
+  content: '';
 }
 
 .trigger-icon {
@@ -247,19 +240,19 @@
 }
 
 .base-layout {
+  position: relative;
   width: 100%;
   height: 100vh;
-  position: relative;
 }
 
 .base-layout-sider {
   position: absolute;
   top: 0;
-  left: 0;
   bottom: 0;
+  left: 0;
+  z-index: 999;
   width: 230px;
   background-color: @sider-background;
-  z-index: 999;
   transition: all 0.2s;
 }
 
@@ -274,9 +267,9 @@
 .base-layout-right {
   position: absolute;
   top: 40px;
+  right: 0;
   left: 230px;
   height: calc(100vh - 40px);
-  right: 0;
 }
 
 .base-layout-right-collapsed {
@@ -289,37 +282,35 @@
 }
 
 .notice {
-  z-index: 1100;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  color: #0068ff;
   position: absolute;
   top: 48px;
   right: 0;
-  line-height: 24px;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
   width: 384px;
   max-width: calc(100vw - 48px);
-  margin-bottom: 16px;
   margin: 0 24px 0 0;
+  margin-bottom: 16px;
   padding: 16px 24px;
-  font-size: 18px;
   overflow: hidden;
+  color: #0068ff;
+  font-size: 18px;
+  line-height: 24px;
   word-wrap: break-word;
   background: #fff;
   border-radius: 4px;
-  -webkit-box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12),
-    0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
-  box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12),
-    0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 12%), 0 6px 16px 0 rgba(0, 0, 0, 8%),
+    0 9px 28px 8px rgba(0, 0, 0, 5%);
+  cursor: pointer;
 }
+
 .menu-item-title {
   span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    max-width: 140px;
     display: inline-block;
+    max-width: 140px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }

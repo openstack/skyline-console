@@ -191,7 +191,7 @@ export class FloatingIps extends Base {
                 &nbsp;
                 <Popover
                   content={
-                    <Row className={styles.popover_row} gutter={[8, 8]}>
+                    <Row className={styles['popover-row']} gutter={[8, 8]}>
                       {record.port_forwardings
                         .sort((a, b) => a.external_port - b.external_port)
                         .map((i, idx) => (

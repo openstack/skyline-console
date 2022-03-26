@@ -29,7 +29,7 @@ const topCardList = [
       metricKey: 'mysqlService.runningTime',
     },
     renderContent: ({ data }) => (
-      <div className={styles.topContent}>
+      <div className={styles['top-content']}>
         {/* 转化为毫秒 */}
         {formatUsedTime(get(data, '[0].y', 0) * 1000)}
       </div>

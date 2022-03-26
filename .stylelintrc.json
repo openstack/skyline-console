@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-css-modules",
+    "stylelint-config-rational-order",
+    "stylelint-config-prettier"
+  ],
+  "customSyntax": "postcss-less",
+  "plugins": ["stylelint-order"],
+  "rules": {
+    "no-descending-specificity": null,
+    "at-rule-no-unknown": null,
+    "color-function-notation": "legacy"
+  }
+}

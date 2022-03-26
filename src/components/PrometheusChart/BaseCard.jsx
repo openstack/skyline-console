@@ -119,7 +119,7 @@ const BaseCard = (props) => {
   return (
     <PrometheusContext.Provider value={passedContext}>
       <Card
-        className={style.remove_extra_padding}
+        className={style['remove-extra-padding']}
         bodyStyle={{
           // padding 24
           minHeight: visibleHeight + 48,

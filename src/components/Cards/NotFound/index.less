@@ -2,8 +2,8 @@
 
 .wrapper {
   margin-top: 100px;
-  border-radius: @border-radius;
   text-align: center;
+  border-radius: @border-radius;
 }
 
 .image {
@@ -13,26 +13,26 @@
 
 .text {
   display: inline-block;
-  vertical-align: top;
   width: 600px;
   margin-left: 60px;
+  vertical-align: top;
 
   :global .h1 {
-    opacity: 0.4;
+    color: #abb4be;
     font-size: 120px;
     line-height: 1.4;
-    color: #abb4be;
-    user-select: none;
     text-align: left;
+    opacity: 0.4;
+    user-select: none;
   }
 
   p {
-    text-shadow: 0 4px 8px rgba(36, 46, 66, 0.1);
-    font-size: 20px;
-    font-weight: @font-bold;
-    line-height: 1.4;
     color: @second-title-color;
+    font-weight: @font-bold;
+    font-size: 20px;
+    line-height: 1.4;
     text-align: left;
+    text-shadow: 0 4px 8px rgba(36, 46, 66, 10%);
   }
 
   a {

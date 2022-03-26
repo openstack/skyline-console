@@ -150,7 +150,7 @@ export default class InstanceCard extends NodeCard {
     const detailData = servers[infoIndex];
     return (
       <div
-        className={styles.nodeTooltips}
+        className={styles['node-tooltips']}
         style={{ top: `${y}px`, left: `${x - 8}px` }}
       >
         <Popover

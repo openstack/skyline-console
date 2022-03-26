@@ -29,7 +29,7 @@ export const physicalNodeLeftTopCardList = [
       const used = get(data[0], 'y', 0);
       const total = get(data[1], 'y', 0);
       return (
-        <div className={styles.topContent}>
+        <div className={styles['top-content']}>
           <div>
             <Row
               style={{
@@ -69,7 +69,7 @@ export const physicalNodeLeftTopCardList = [
       const used = getSuitableValue(usedValue, 'memory');
       const total = getSuitableValue(totalValue, 'memory');
       return (
-        <div className={styles.topContent}>
+        <div className={styles['top-content']}>
           <div>
             <Row
               style={{
@@ -111,7 +111,7 @@ export const physicalNodeLeftTopCardList = [
       const total = getSuitableValue(totalValue, 'disk');
       const progressPercentage = computePercentage(usedValue, totalValue);
       return (
-        <div className={styles.topContent}>
+        <div className={styles['top-content']}>
           <div
             style={{
               width: '100%',
@@ -281,7 +281,7 @@ export const storageLeftCardList = [
       const data = get(store.data, 'y', 0);
       return (
         <div
-          className={styles.topContent}
+          className={styles['top-content']}
           style={{
             fontSize: 28,
             fontWeight: 600,
@@ -307,7 +307,7 @@ export const storageLeftCardList = [
       const used = getSuitableValue(usedValue, 'disk');
       const total = getSuitableValue(totalValue, 'disk');
       return (
-        <div className={styles.topContent}>
+        <div className={styles['top-content']}>
           <div>
             <Row
               style={{
@@ -347,7 +347,7 @@ export const storageLeftCardList = [
         (totalValue - get(data[0], 'y', 0)).toFixed(2)
       );
       return (
-        <div className={styles.topContent}>
+        <div className={styles['top-content']}>
           <div>
             <Row
               style={{

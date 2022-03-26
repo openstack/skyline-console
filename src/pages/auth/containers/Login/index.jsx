@@ -275,7 +275,7 @@ export class Login extends Component {
         <SimpleForm
           formItems={this.formItems}
           name="normal_login"
-          className={styles.login_form}
+          className={styles['login-form']}
           initialValues={this.defaultValue}
           onFinish={this.onFinish}
           formRef={this.formRef}

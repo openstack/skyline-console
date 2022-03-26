@@ -43,7 +43,7 @@ const topCardList = [
     },
     renderContent: ({ data }) => {
       return (
-        <div className={styles.topContent}>
+        <div className={styles['top-content']}>
           <Row style={{ width: '100%', textAlign: 'center' }}>
             <Col span={12}>{data.up + t('Up')}</Col>
             <Col span={12}>{data.down + t('Down')}</Col>

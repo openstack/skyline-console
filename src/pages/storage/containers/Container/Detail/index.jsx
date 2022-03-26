@@ -220,7 +220,7 @@ export default class ContainerObject extends Base {
         const content = <PopUpContent item={data} />;
         return (
           <Popover content={content} destroyTooltipOnHide trigger="click">
-            <span className="linkClass">{t('Detail Info')}</span>
+            <span className="link-class">{t('Detail Info')}</span>
           </Popover>
         );
       },

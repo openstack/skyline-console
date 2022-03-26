@@ -197,7 +197,7 @@ export class QuotaOverview extends Component {
     return (
       <>
         <Tooltip title={title}>
-          <div className={styles.progress_title}>{title}</div>
+          <div className={styles['progress-title']}>{title}</div>
         </Tooltip>
         <Progress
           style={{ marginTop: 13, marginBottom: 13 }}

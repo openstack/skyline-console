@@ -3,22 +3,22 @@
 @min-space: 8px;
 @mid-space: 16px;
 @lg-space: 24px;
-@box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.05);
-@topo-line: 1px solid #D2D2D2;
+@box-shadow: 0 0 10px 0 rgba(0, 0, 0, 5%);
+@topo-line: 1px solid #d2d2d2;
 @resource-box-bg: #fbfdff;
 @resource-box-border: 1px solid #cfe1ff;
 
-@success: #57E39B;
-@warning: #FEDF40;
-@error: #EB354D;
-@link: #0068FF;
+@success: #57e39b;
+@warning: #fedf40;
+@error: #eb354d;
+@link: #0068ff;
 
 .card {
+  flex: 1;
   margin-bottom: @mid-space;
-  box-shadow: @box-shadow;
   background-color: #fff;
   border-radius: @border-radius;
-  flex: 1;
+  box-shadow: @box-shadow;
 
   .card-content {
     padding: @mid-space;
@@ -31,9 +31,10 @@
       }
 
       .title-help {
-        line-height: 26px;
         margin-left: @min-space;
+        line-height: 26px;
       }
+
       div {
         word-break: break-all;
       }
@@ -42,6 +43,7 @@
     :last-child {
       margin-bottom: 0;
     }
+
     :global {
       .ant-typography {
         word-break: break-all;

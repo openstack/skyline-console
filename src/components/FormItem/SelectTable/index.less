@@ -1,56 +1,64 @@
-@import "~styles/variables";
+@import '~styles/variables';
 
-.sl-select-table {
-}
 .search-wrapper {
   margin-bottom: 16px;
+
   :global {
     .ant-menu-root.ant-menu-vertical {
-      box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.2) !important;
+      box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 20%) !important;
     }
   }
 }
 
 .image-tabs {
+  display: flex;
   height: 52px;
   margin-bottom: 8px;
-  display: flex;
+
   img {
+    display: block;
     width: 20px;
     height: 20px;
-    display: block;
     margin: 0 auto;
   }
+
   :global {
     .ant-radio-button-wrapper {
-      border: none;
-      color: @color-text-body;
       width: 70px;
       height: 50px;
       overflow: hidden;
+      color: @color-text-body;
       text-align: center;
+      border: none;
     }
+
     .ant-radio-button-wrapper:not(:first-child)::before {
       width: 0;
     }
+
     .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
       color: @primary-color;
       font-weight: bold;
     }
+
     .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):focus-within {
       box-shadow: none;
     }
   }
 }
+
 .image-tab {
   flex: 1 auto;
 }
+
 .image-tab-label {
   font-size: 10px;
 }
+
 .normal-tabs {
   margin-bottom: 8px;
 }
+
 .pagination-footer {
   :global {
     .ant-select {
@@ -59,6 +67,7 @@
     }
   }
 }
+
 .sl-select-table-backend {
   :global {
     .ant-table-footer {

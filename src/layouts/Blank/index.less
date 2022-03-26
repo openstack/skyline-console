@@ -1,42 +1,48 @@
 @import '~styles/variables';
 
 .main {
-  overflow: hidden;
-  height: 100vh;
   width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 
   :global {
     .ant-layout-has-sider {
       width: 100vw;
     }
+
     .ant-table {
       font-size: 12px;
+      line-height: 1.5;
     }
+
     .ant-pagination-item {
       border: none;
     }
+
     .ant-layout-sider {
       background: @sider-background;
     }
+
     .ant-menu.ant-menu-dark {
       background: @sider-background;
     }
+
     .ant-menu-dark .ant-menu-inline.ant-menu-sub {
       background-color: @sider-open-background;
       border-radius: @border-radius;
     }
+
     .ant-btn-primary:hover,
     .ant-btn-primary:focus {
       background-color: @hover-color;
       border-color: @hover-color;
     }
+
     .ant-btn-primary[disabled]:hover {
       background-color: #f2f2f2;
       border-color: #d2d2d2;
     }
-    .ant-table {
-      line-height: 1.5;
-    }
+
     .ant-table-thead > tr > th {
       padding: 0 16px;
     }

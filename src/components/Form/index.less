@@ -1,11 +1,11 @@
-@import "~styles/variables";
+@import '~styles/variables';
 
 .wrapper {
   position: relative;
   height: 100%;
+  padding-top: @body-padding;
   overflow: hidden;
   background-color: #fff;
-  padding-top: @body-padding;
 
   :global {
     .ant-spin-nested-loading {
@@ -23,19 +23,18 @@
 }
 
 .form {
-  margin-left: @body-padding * 2;
-  margin-right: @body-padding * 2;
-  // padding-top: @body-padding;
-  background-color: #fff;
   height: calc(100% - 48px);
+  margin-right: @body-padding * 2;
+  margin-left: @body-padding * 2;
   overflow-y: auto;
+  background-color: #fff;
 
   :global {
-    .ant-form-item-label>label {
+    .ant-form-item-label > label {
       margin-left: 12px;
     }
 
-    .ant-form-item-label>.ant-form-item-required {
+    .ant-form-item-label > .ant-form-item-required {
       margin-left: 0;
     }
 
@@ -47,21 +46,21 @@
 
 .footer {
   position: absolute;
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
-  height: 48px;
-  background-color: #fff;
-  box-shadow: 0px 2px 30px 0px rgba(0, 0, 0, 0.09);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 48px;
+  background-color: #fff;
+  box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 9%);
 }
 
 .btns {
   float: right;
-  margin-right: 32px;
   margin-top: 8px;
+  margin-right: 32px;
 
   :global {
     button {
@@ -78,44 +77,45 @@
   .form-item-divider {
     width: 98% !important;
     min-width: 90% !important;
-    margin-left: auto;
     margin-right: auto;
+    margin-left: auto;
   }
 
   .ant-radio-button-wrapper {
     color: @color-text-body;
   }
+
   .ant-radio-button-wrapper-disabled {
-    color: rgba(0, 0, 0, 0.25);
+    color: rgba(0, 0, 0, 25%);
   }
 }
 
 .tips {
-  padding: 8px 16px;
-  background: rgba(89, 157, 255, 0.15);
   margin-bottom: 16px;
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 15%);
 }
 
 .tips-icon {
   margin-right: 4px;
-  color: #0068FF;
+  color: #0068ff;
 }
 
 .footer-left {
-  height: 48px;
-  float: left;
-  margin-left: 16px;
-  color: rgb(72, 72, 72);
   display: flex;
   align-items: center;
   justify-content: left;
+  float: left;
+  height: 48px;
+  margin-left: 16px;
+  color: rgb(72, 72, 72);
 }
 
 .submit-tip {
-  font-size: 16px;
-  // margin-top: 16px;
   display: inline-block;
+  font-size: 16px;
 }
+
 .progress-wrapper {
   width: 170px;
 }

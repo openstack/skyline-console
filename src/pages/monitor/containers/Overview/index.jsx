@@ -61,7 +61,7 @@ const Index = () => {
               },
               visibleHeight: 200,
               renderContent: (store) => (
-                <div className={styles.topContent}>{store.data}</div>
+                <div className={styles['top-content']}>{store.data}</div>
               ),
             }}
             topCardList={topCardList}

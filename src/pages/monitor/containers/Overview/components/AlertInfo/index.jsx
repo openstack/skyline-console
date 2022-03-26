@@ -84,11 +84,11 @@ const Index = function () {
       <Col flex="1 1">
         <div className={styles.card}>
           <Row style={{ height: '100%' }}>
-            <Col span={12} className={styles.alertCardLine}>
+            <Col span={12} className={styles['alert-card-line']}>
               <div className={styles.number}>{cpuCount}</div>
               <div>{t('Today CPU usage > 80% alert')}</div>
             </Col>
-            <Col span={12} className={styles.alertCardLine}>
+            <Col span={12} className={styles['alert-card-line']}>
               <div className={styles.number}>{memCount}</div>
               <div>{t('Today Memory usage > 80% alert')}</div>
             </Col>

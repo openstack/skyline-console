@@ -120,7 +120,7 @@ export class ProjectInfo extends Component {
         onClick={this.handleDetailInfo}
         icon={icon}
         type="link"
-        className={styles.role_button}
+        className={styles['role-button']}
       />
     );
   }

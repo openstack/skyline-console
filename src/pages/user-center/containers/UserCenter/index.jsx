@@ -17,6 +17,7 @@ import { inject, observer } from 'mobx-react';
 import { Row, Layout, Col, Avatar } from 'antd';
 import globalUserStore from 'stores/keystone/user';
 import ProfileIcon from 'asset/image/profile.svg';
+import classnames from 'classnames';
 import styles from './styles.less';
 
 export class Overview extends Component {
@@ -33,7 +34,7 @@ export class Overview extends Component {
 
   renderInfoItem(item) {
     return (
-      <Row className={styles.user_info_detail_item}>
+      <Row className={styles['user-info-detail-item']}>
         <Col span={6}>{item.label}</Col>
         <Col span={18}>{item.value}</Col>
       </Row>
@@ -51,14 +52,17 @@ export class Overview extends Component {
     };
     return (
       <>
-        <Col span={3} className={styles.user_info_avatar}>
+        <Col
+          span={3}
+          className={classnames(styles.hvc, styles['user-info-avatar'])}
+        >
           <Avatar
             size={{ xs: 33, sm: 44, md: 55, lg: 88, xl: 110, xxl: 138 }}
             src={ProfileIcon}
           />
         </Col>
         <Col span={21}>
-          <Row className={styles.user_info_detail}>
+          <Row className={styles['user-info-detail']}>
             {Object.keys(data).map((item) => {
               return (
                 <Col span={12} key={`user_info_detail_${item}`}>
@@ -82,7 +86,9 @@ export class Overview extends Component {
   render() {
     return (
       <Layout.Content className={styles.content}>
-        <Row className={styles.user_info_card}>{this.renderUserInfo()}</Row>
+        <Row className={classnames(styles.bgc, styles['user-info-card'])}>
+          {this.renderUserInfo()}
+        </Row>
         {this.renderExtra()}
       </Layout.Content>
     );

@@ -3,10 +3,10 @@
   text-align: left;
 
   span {
+    display: block;
     max-width: 48px;
     overflow: hidden;
     white-space: nowrap;
-    display: block;
     text-overflow: ellipsis;
   }
 }
@@ -17,12 +17,15 @@
 
 .action-sub-menu {
   padding: 0;
+
   :global {
     .ant-dropdown-menu-submenu-popup ul {
-      margin-left: 0 !important;
       margin-right: 0 !important;
+      margin-left: 0 !important;
     }
-    .ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title {
+
+    .ant-dropdown-menu-item,
+    .ant-dropdown-menu-submenu-title {
       padding: 0 12px;
     }
   }
@@ -32,6 +35,7 @@
   width: 100%;
   text-align: left;
 }
+
 .single-more-action {
   :global {
     .ant-btn-link {
