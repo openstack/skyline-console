@@ -17,12 +17,21 @@ import Base from 'containers/List';
 import { QoSPolicyStore } from 'stores/neutron/qos-policy';
 import { getQosPolicyColumns, getQosPolicyFilters } from 'resources/qos-policy';
 import { qosEndpoint } from 'client/client/constants';
+import { emptyActionConfig } from 'utils/constants';
 import actionConfigs from './actions';
 
 export class QoSPolicy extends Base {
   init() {
     this.store = new QoSPolicyStore();
     this.downloadStore = new QoSPolicyStore();
+  }
+
+  get isProjectTab() {
+    const tab = this.tabKey;
+    if (this.isAdminPage) {
+      return false;
+    }
+    return !tab || tab === 'projectQoSPolicy';
   }
 
   updateFetchParamsByPage = (params) => {
@@ -62,7 +71,10 @@ export class QoSPolicy extends Base {
     if (this.isAdminPage) {
       return actionConfigs.actionConfigs;
     }
-    return actionConfigs.consoleActions;
+    if (this.isProjectTab) {
+      return actionConfigs.consoleActions;
+    }
+    return emptyActionConfig;
   }
 
   get isFilterByBackend() {
