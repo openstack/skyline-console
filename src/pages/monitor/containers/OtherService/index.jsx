@@ -63,7 +63,7 @@ class OtherService extends Component {
         Cmp = Mysql;
         break;
     }
-    return <Cmp />;
+    return <Cmp type={type} />;
   };
 
   render() {

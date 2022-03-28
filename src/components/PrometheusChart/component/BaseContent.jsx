@@ -36,6 +36,7 @@ const BaseContent = (props) => {
     fetchNodesFunc,
     defaultNode,
     children,
+    type,
   } = props;
 
   const [node, Nodes, setNode, setNodes] = useNodeSelect(defaultNode);
@@ -56,7 +57,7 @@ const BaseContent = (props) => {
       setIsFetchingNodes(true);
       const ret = await fetchNodesFunc();
       setNodes(ret);
-      if (!node) {
+      if (!node || refresh) {
         setNode(ret[0]);
       }
       // 非自选时间段刷新时间
@@ -81,6 +82,10 @@ const BaseContent = (props) => {
   useEffect(() => {
     handleRefresh();
   }, [interval, range]);
+
+  useEffect(() => {
+    handleRefresh(true);
+  }, [type]);
 
   useEffect(() => {
     setIsLoading(true);

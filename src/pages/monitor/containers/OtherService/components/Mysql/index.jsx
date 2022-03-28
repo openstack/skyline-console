@@ -111,6 +111,10 @@ export const chartConfig = {
   chartCardList,
 };
 
-export default () => (
-  <BaseContent chartConfig={chartConfig} fetchNodesFunc={getMysqlNodes} />
+export default ({ type }) => (
+  <BaseContent
+    type={type}
+    chartConfig={chartConfig}
+    fetchNodesFunc={getMysqlNodes}
+  />
 );

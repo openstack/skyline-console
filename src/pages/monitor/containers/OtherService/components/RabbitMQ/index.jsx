@@ -128,6 +128,10 @@ export const chartConfig = {
   chartCardList,
 };
 
-export default () => (
-  <BaseContent chartConfig={chartConfig} fetchNodesFunc={getRabbitMQNodes} />
+export default ({ type }) => (
+  <BaseContent
+    type={type}
+    chartConfig={chartConfig}
+    fetchNodesFunc={getRabbitMQNodes}
+  />
 );
