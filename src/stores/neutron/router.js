@@ -47,9 +47,6 @@ export class RouterStore extends Base {
   @observable
   portForwardings = [];
 
-  @observable
-  snats = [];
-
   updateParamsSortPage = (params, sortKey, sortOrder) => {
     if (sortKey && sortOrder) {
       params.sort_key = sortKey;

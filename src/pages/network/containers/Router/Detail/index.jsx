@@ -19,9 +19,7 @@ import { routerStatus, getRouterState } from 'resources/router';
 import BaseDetail from './BaseDetail';
 import Port from '../Port';
 import StaticRouter from '../StaticRouter';
-// import PortForwarding from '../PortForwarding';
 import actionConfigs from '../actions';
-// import Snat from '../Snat';
 
 export class RouterDetail extends Base {
   get name() {
@@ -97,17 +95,6 @@ export class RouterDetail extends Base {
         key: 'staticRoutes',
         component: StaticRouter,
       },
-      // due to fip change, router cannot bind fip
-      // {
-      //   title: t('DNAT Rules'),
-      //   key: 'dnat',
-      //   component: PortForwarding,
-      // },
-      // {
-      //   title: t('SNAT Rules'),
-      //   key: 'snat',
-      //   component: Snat,
-      // },
     ];
     return tabs;
   }
