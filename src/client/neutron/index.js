@@ -37,9 +37,6 @@ class NeutronClient extends Base {
         responseKey: 'subnet',
       },
       {
-        key: 'extensions',
-      },
-      {
         key: 'ports',
         responseKey: 'port',
       },
