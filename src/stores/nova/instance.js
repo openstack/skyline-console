@@ -139,14 +139,25 @@ export class ServerStore extends Base {
         if (imageId.indexOf(server.image) !== -1) {
           server.iso_server = true;
         }
+        server.tags = (server.origin_data || {}).tags || [];
         return server;
       });
     }
     if (isServerGroup) {
-      return newData.filter((it) => members.indexOf(it.id) >= 0);
+      return newData
+        .filter((it) => members.indexOf(it.id) >= 0)
+        .map((it) => ({
+          ...it,
+          tags: (it.origin_data || {}).tags || [],
+        }));
     }
     if (host) {
-      return newData.filter((it) => it.host === host);
+      return newData
+        .filter((it) => it.host === host)
+        .map((it) => ({
+          ...it,
+          tags: (it.origin_data || {}).tags || [],
+        }));
     }
     return newData.map((it) => ({
       ...it,

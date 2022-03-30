@@ -303,7 +303,7 @@
   "Code": "编码",
   "Cold Migrate": "冷迁移",
   "Colombia": "哥伦比亚",
-  "Commas ‘,’ are not allowed to be in a tag name in order to simplify requests that specify lists of tags": "标记名称中不允许使用逗号“，”，以简化指定标记列表的请求",
+  "Commas ‘,’ are not allowed to be in a tag name in order to simplify requests that specify lists of tags": "标记名称中不允许使用英文逗号“,”，以简化指定标记列表的请求",
   "Commit Latency(ms)": "提交延迟(毫秒)",
   "Common Server": "云主机",
   "Comoros": "科摩罗",
