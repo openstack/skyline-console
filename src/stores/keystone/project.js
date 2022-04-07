@@ -17,7 +17,7 @@ import { getGBValue } from 'utils/index';
 import { get, isNil, isEmpty } from 'lodash';
 import client from 'client';
 import Base from 'stores/base';
-import globalRootStore from '../root';
+import globalRootStore from 'stores/root';
 
 export class ProjectStore extends Base {
   @observable
