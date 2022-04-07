@@ -215,7 +215,15 @@ export default class Create extends ModalAction {
         label: t('Source Port/Port Range'),
         type: 'port-range',
         required: showSourcePort,
-        hidden: !showSourcePort,
+        hidden: !showSourcePort || this.state.direction === 'egress',
+      },
+      {
+        name: 'destination_port',
+        label: t('Destination Port/Port Range'),
+        type: 'input',
+        required: showSourcePort,
+        help: t('Input destination port or port range(example: 80 or 80:160)'),
+        hidden: !showSourcePort || this.state.direction === 'ingress',
       },
       {
         name: 'ipProtocol',
@@ -284,6 +292,8 @@ export default class Create extends ModalAction {
     const { match: { params: { id } = {} } = {} } = containerProps;
     const {
       sourcePort,
+      destination_port,
+      direction,
       protocol,
       ipProtocol,
       icmpType,
@@ -295,7 +305,10 @@ export default class Create extends ModalAction {
     const range =
       ['custom_udp', 'custom_tcp'].includes(protocol) &&
       portOrRange === 'range';
-    const ports = sourcePort.split(':');
+    const ports =
+      values.direction === 'ingress'
+        ? sourcePort.split(':')
+        : destination_port.split(':');
     const newProtocol =
       protocol !== 'custom_protocol'
         ? this.defaultRules[protocol].ip_protocol
@@ -315,6 +328,7 @@ export default class Create extends ModalAction {
           ? parseInt(ports[1] || ports[0], 10)
           : null,
       protocol: newProtocol,
+      direction,
       ...rest,
     };
     if (protocol.includes('all')) {
