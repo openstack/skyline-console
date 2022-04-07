@@ -19,6 +19,7 @@ import {
   GlobalOutlined,
   // ToolOutlined,
   HomeOutlined,
+  DatabaseFilled,
   AppstoreOutlined,
 } from '@ant-design/icons';
 
@@ -430,6 +431,65 @@ const renderMenu = (t) => {
               key: 'stackEdit',
               level: 2,
               routePath: '/heat/stack/edit/:id/:name',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      path: '/database',
+      name: t('Database'),
+      key: 'database',
+      icon: <DatabaseFilled />,
+      children: [
+        {
+          path: '/database/instances',
+          name: t('Instances'),
+          key: 'databaseInstances',
+          level: 1,
+          children: [
+            {
+              path: /^\/database\/instances\/detail\/.[^/]+$/,
+              name: t('Instance Detail'),
+              key: 'databaseInstanceDetail',
+              level: 2,
+              routePath: '/database/instances/detail/:id',
+            },
+            {
+              path: '/database/instances/create',
+              name: t('Create Instance'),
+              key: 'databaseInstanceCreate',
+              level: 2,
+            },
+          ],
+        },
+        {
+          path: '/database/backups',
+          name: t('Backups'),
+          key: 'databaseBackups',
+          level: 1,
+          children: [
+            {
+              path: /^\/database\/backup\/detail\/.[^/]+$/,
+              name: t('Backup Detail'),
+              key: 'databaseBackupDetail',
+              level: 2,
+              routePath: '/database/backups/detail/:id',
+            },
+          ],
+        },
+        {
+          path: '/database/configurations',
+          name: t('Configuration Groups'),
+          key: 'configurations',
+          level: 1,
+          children: [
+            {
+              path: /^\/database\/configuration\/detail\/.[^/]+$/,
+              name: t('Configuration Detail'),
+              key: 'configurationsDetail',
+              level: 2,
+              routePath: '/database/configurations/detail/:id',
             },
           ],
         },

@@ -30,6 +30,7 @@ export const endpointVersionMap = {
   heat: 'v1',
   octavia: 'v2',
   swift: 'v1',
+  trove: 'v1.0'
 };
 
 export const endpointsDefault = {
@@ -65,6 +66,7 @@ export const placementBase = () => getOpenstackEndpoint('placement');
 export const heatBase = () => getOpenstackEndpoint('heat');
 export const octaviaBase = () => getOpenstackEndpoint('octavia');
 export const swiftBase = () => getOpenstackEndpoint('swift');
+export const troveBase = () => getOpenstackEndpoint('trove');
 
 export const ironicOriginEndpoint = () => getOriginEndpoint('ironic');
 export const vpnEndpoint = () => getOriginEndpoint('neutron_vpn');

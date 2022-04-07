@@ -12,34 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import skyline from './skyline';
-import nova from './nova';
-import cinder from './cinder';
-import glance from './glance';
-import neutron from './neutron';
-import keystone from './keystone';
-import heat from './heat';
-import octavia from './octavia';
-import placement from './placement';
-import ironic from './ironic';
-import swift from './swift';
-import trove from './trove';
+import { ConfirmAction } from 'containers/Action';
+import globalInstancesStore from 'stores/trove/instances';
 
-const client = {
-  skyline,
-  nova,
-  cinder,
-  glance,
-  neutron,
-  keystone,
-  heat,
-  octavia,
-  placement,
-  ironic,
-  swift,
-  trove
-};
+export default class Delete extends ConfirmAction {
+  get id() {
+    return 'delete';
+  }
 
-window.client = client;
+  get title() {
+    return t('Delete');
+  }
 
-export default client;
+  get actionName() {
+    return t('Delete');
+  }
+
+  get buttonType() {
+    return 'danger';
+  }
+
+  allowedCheckFunction = () => true;
+
+  policy = 'instance:delete';
+
+  onSubmit = (item) => {
+    return globalInstancesStore.delete({ id: item.id });
+  };
+}

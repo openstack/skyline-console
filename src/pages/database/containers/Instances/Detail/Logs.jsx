@@ -12,34 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import skyline from './skyline';
-import nova from './nova';
-import cinder from './cinder';
-import glance from './glance';
-import neutron from './neutron';
-import keystone from './keystone';
-import heat from './heat';
-import octavia from './octavia';
-import placement from './placement';
-import ironic from './ironic';
-import swift from './swift';
-import trove from './trove';
+import Base from "containers/List"
+import { inject, observer } from "mobx-react";
+import { InstancesLogStore } from "stores/trove/instancesLogs";
 
-const client = {
-  skyline,
-  nova,
-  cinder,
-  glance,
-  neutron,
-  keystone,
-  heat,
-  octavia,
-  placement,
-  ironic,
-  swift,
-  trove
-};
+@inject("rootStore")
+@observer
+export default class Logs extends Base {
 
-window.client = client;
+  init() {
+    this.store = new InstancesLogStore()
+  }
 
-export default client;
+  get name() {
+    return t("Log")
+  }
+
+  get policy() {
+    return "instance:guest_log_list";
+  }
+
+  getColumns = () => {
+    return [
+      {
+        title: t("Name"),
+        dataIndex: "name"
+      }
+    ]
+  }
+}

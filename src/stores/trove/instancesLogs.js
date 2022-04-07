@@ -12,34 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import skyline from './skyline';
-import nova from './nova';
-import cinder from './cinder';
-import glance from './glance';
-import neutron from './neutron';
-import keystone from './keystone';
-import heat from './heat';
-import octavia from './octavia';
-import placement from './placement';
-import ironic from './ironic';
-import swift from './swift';
-import trove from './trove';
+import Base from 'stores/base';
+import client from 'client';
 
-const client = {
-  skyline,
-  nova,
-  cinder,
-  glance,
-  neutron,
-  keystone,
-  heat,
-  octavia,
-  placement,
-  ironic,
-  swift,
-  trove
-};
+export class InstancesLogStore extends Base {
+  get client() {
+    return client.trove.instances.log;
+  }
 
-window.client = client;
+  get responseKey() {
+    return 'logs';
+  }
 
-export default client;
+  get isSubResource() {
+    return true;
+  }
+
+  get paramsFunc() {
+    return () => { };
+  }
+}
+
+const globalInstancesLog = new InstancesLogStore();
+export default globalInstancesLog;
