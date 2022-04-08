@@ -155,7 +155,7 @@ const Tags = ({ tags: source, onChange, maxLength, maxCount }) => {
         )}
         {!inputVisible && (
           <Tag onClick={showInput}>
-            <PlusOutlined /> New Tag
+            <PlusOutlined /> {t('New Tag')}
           </Tag>
         )}
       </Col>

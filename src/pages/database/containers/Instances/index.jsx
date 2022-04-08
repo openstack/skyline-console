@@ -14,8 +14,9 @@
 
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import actions from './actions';
 import globalInstancesStore from '@/stores/trove/instances';
+import { InstanceStatus } from 'resources/database';
+import actions from './actions';
 
 @inject('rootStore')
 @observer
@@ -52,28 +53,29 @@ export default class Instances extends Base {
       routeName: this.getRouteName('databaseInstanceDetail'),
     },
     {
-      title: t("Datastore"),
-      dataIndex: "datastore.type"
+      title: t('Datastore'),
+      dataIndex: 'datastore.type',
     },
     {
-      title: t("Datastore Version"),
-      dataIndex: "datastore.version",
+      title: t('Datastore Version'),
+      dataIndex: 'datastore.version',
       isHideable: true,
     },
     {
-      title: t("Host"),
-      dataIndex: "ip",
+      title: t('Host'),
+      dataIndex: 'ip',
       isHideable: true,
     },
     {
       title: t('Volume Size'),
       dataIndex: 'volume',
       isHideable: true,
-      render: (value) => value ? value.size + "GB" : "-"
+      render: (value) => (value ? `${value.size}GB` : '-'),
     },
     {
       title: t('Status'),
       dataIndex: 'status',
+      render: (value) => InstanceStatus[value],
     },
   ];
 }
