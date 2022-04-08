@@ -25,7 +25,7 @@ const actionConfigs = {
       },
     ],
   },
-  batchActions: [Delete],
+  batchActions: [],
   primaryActions: [Create],
 };
 
@@ -33,7 +33,7 @@ const actionConfigsAdmin = {
   rowActions: {
     firstAction: Delete,
   },
-  batchActions: [Delete],
+  batchActions: [],
   primaryActions: [],
 };
 
