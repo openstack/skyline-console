@@ -14,7 +14,7 @@
 
 import { extendObservable, action } from 'mobx';
 import client from 'client';
-import globalRootStore from './root';
+import globalRootStore from 'stores/root';
 
 export default class OverviewStore {
   constructor() {

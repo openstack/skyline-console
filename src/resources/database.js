@@ -12,15 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Delete from './Delete';
-import StepCreate from './StepCreate';
+import { instanceStatus } from 'resources/instance';
 
-const actionConfigs = {
-  rowActions: {
-    firstAction: Delete,
-  },
-  primaryActions: [StepCreate],
-  batchActions: [Delete],
+export const InstanceStatus = {
+  ...instanceStatus,
+  BUILD: t('Building'),
+  ACTIVE: t('Active'),
+  ERROR: t('Error'),
+  DELETE: t('Delete'),
+  MIGRATE: t('Migrate'),
+  RESIZE: t('Resize'),
+  REBOOT: t('Reboot'),
+  PROMOTE: t('Promote'),
+  EJECT: t('Eject'),
 };
-
-export default actionConfigs;
