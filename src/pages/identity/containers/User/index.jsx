@@ -73,7 +73,7 @@ export class User extends Base {
     return this.inDetailPage && path.includes('identity/role-admin');
   }
 
-  getColumns = () => {
+  getColumns() {
     // const {
     //   match: { path },
     // } = this.props;
@@ -254,7 +254,7 @@ export class User extends Base {
       );
     }
     return columns;
-  };
+  }
 
   get actionConfigs() {
     if (this.inDomainDetail) {

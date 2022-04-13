@@ -20,9 +20,7 @@ import { Badge } from 'antd';
 import { emptyActionConfig } from 'utils/constants';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class UserGroups extends Base {
+export class UserGroups extends Base {
   init() {
     this.store = globalGroupStore;
   }
@@ -43,7 +41,7 @@ export default class UserGroups extends Base {
     return false;
   }
 
-  getColumns = () => {
+  getColumns() {
     const {
       match: { path },
     } = this.props;
@@ -102,7 +100,7 @@ export default class UserGroups extends Base {
       components.splice(2, 1);
     }
     return components;
-  };
+  }
 
   get actionConfigs() {
     const {
@@ -145,3 +143,5 @@ export default class UserGroups extends Base {
     this.list.silent = false;
   }
 }
+
+export default inject('rootStore')(observer(UserGroups));
