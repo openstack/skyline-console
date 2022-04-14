@@ -56,6 +56,11 @@ class GlanceClient extends Base {
                 },
               }),
           },
+          {
+            key: 'import',
+            method: 'post',
+            isDetail: true,
+          },
         ],
         subResources: [
           {
