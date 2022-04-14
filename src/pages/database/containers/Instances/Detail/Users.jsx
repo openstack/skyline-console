@@ -33,7 +33,7 @@ export default class Users extends Base {
   }
 
   get policy() {
-    return 'instance:extension:user:index';
+    return 'trove:instance:extension:user:index';
   }
 
   get hideCustom() {

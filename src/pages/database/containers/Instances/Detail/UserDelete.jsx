@@ -20,7 +20,7 @@ export default class UserDelete extends ConfirmAction {
 
   allowedCheckFunction = () => true;
 
-  policy = 'instance:extension:user:delete';
+  policy = 'trove:instance:extension:user:delete';
 
   onSubmit = (item) => {
     const id = this.containerProps.detail.id;

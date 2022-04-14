@@ -34,7 +34,7 @@ export default class Delete extends ConfirmAction {
 
   allowedCheckFunction = () => true;
 
-  policy = 'instance:delete';
+  policy = 'trove:instance:delete';
 
   onSubmit = (item) => {
     return globalBackupsStore.delete({ id: item.id });

@@ -29,7 +29,7 @@ export default class Databases extends Base {
   }
 
   get policy() {
-    return "instance:detail"
+    return "trove:instance:detail"
   }
 
   get actionConfigs() {

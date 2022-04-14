@@ -34,7 +34,7 @@ export default class Instances extends Base {
   }
 
   get policy() {
-    return 'instance:index';
+    return 'trove:instance:index';
   }
 
   get searchFilters() {

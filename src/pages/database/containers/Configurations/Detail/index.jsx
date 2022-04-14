@@ -35,7 +35,7 @@ export default class ConfigurationsDetail extends Base {
   }
 
   get policy() {
-    return 'configuration:show';
+    return 'trove:configuration:show';
   }
 
   get detailInfos() {

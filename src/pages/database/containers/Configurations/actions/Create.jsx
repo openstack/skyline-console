@@ -44,7 +44,7 @@ export default class Create extends ModalAction {
     return t("Create Configurations");
   }
 
-  static policy = "configuration:create";
+  static policy = "trove:configuration:create";
 
   static allowed() {
     return Promise.resolve(true);

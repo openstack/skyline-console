@@ -35,7 +35,7 @@ export default class Configurations extends Base {
   }
 
   get policy() {
-    return 'configuration:index';
+    return 'trove:configuration:index';
   }
 
   get searchFilters() {
