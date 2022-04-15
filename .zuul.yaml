@@ -212,6 +212,7 @@
       - openstack/requirements
       - openstack/skyline-apiserver
       - openstack/skyline-console
+      - opendev.org/openstack/diskimage-builder
     timeout: 10800
     vars:
       devstack_services:

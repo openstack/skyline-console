@@ -20,8 +20,8 @@ testFiles:
   # identity
   - pages/identity/role.spec.js
   - pages/identity/domain.spec.js
-  # - pages/identity/user.spec.js
-  # - pages/identity/project.spec.js
+  - pages/identity/user.spec.js
+  - pages/identity/project.spec.js
   - pages/identity/user-group.spec.js
   # configuration
   - pages/configuration/metadata.spec.js

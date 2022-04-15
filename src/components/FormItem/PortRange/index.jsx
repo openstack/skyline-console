@@ -33,12 +33,12 @@ export default class index extends Component {
       placeholder,
       ...componentProps,
     };
-    const { rules, ...rest } = formItemProps;
+    const { rules, extra, ...rest } = formItemProps;
     const newRules = this.getRules(rules);
     const newFormItemProps = {
       ...rest,
       rules: newRules,
-      extra: portRangeMessage,
+      extra: extra || portRangeMessage,
     };
     return (
       <Form.Item {...newFormItemProps}>

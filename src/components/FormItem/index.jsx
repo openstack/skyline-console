@@ -157,6 +157,7 @@ export default class FormItem extends React.Component {
           checkOptions,
           checkBoxInfo,
           allowClear,
+          ...rest
         } = this.props;
         return {
           options,
@@ -171,6 +172,7 @@ export default class FormItem extends React.Component {
           checkOptions,
           checkBoxInfo,
           allowClear,
+          ...rest,
         };
       }
       default: {

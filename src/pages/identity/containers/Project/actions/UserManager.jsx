@@ -30,20 +30,20 @@ export class UserManager extends ModalAction {
     return t('Manager user');
   }
 
-  init() {
+  async init() {
     const projectRole = JSON.stringify(this.item.userMapProjectRoles);
     this.state.domainDefault = this.item.domain_id;
     this.state.userRoles = JSON.parse(projectRole);
     this.store = new RoleStore();
     this.domainStore = globalDomainStore;
     this.userStore = new UserStore();
-    this.getRoleList();
+    await this.getRoleList();
     this.getDomains();
     this.getUser();
   }
 
   getRoleList() {
-    this.store.fetchList();
+    return this.store.fetchList();
   }
 
   getDomains() {

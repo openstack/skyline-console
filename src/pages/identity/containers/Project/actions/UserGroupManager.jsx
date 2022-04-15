@@ -25,14 +25,14 @@ export class UserGroupManager extends ModalAction {
 
   static title = t('Manage User Group');
 
-  init() {
+  async init() {
     const roles = JSON.stringify(this.item.groups);
     this.state.domainDefault = this.item.domain_id;
     this.state.groupRoles = JSON.parse(roles);
     this.userGroupStore = new GroupStore();
     this.store = globalRoleStore;
+    await this.getRoleList();
     this.getUserGroup();
-    this.getRoleList();
   }
 
   get name() {
@@ -48,7 +48,11 @@ export class UserGroupManager extends ModalAction {
   }
 
   getRoleList() {
-    this.store.fetchList();
+    return new Promise((resolve) => {
+      this.store.fetchList().finally(() => {
+        resolve();
+      });
+    });
   }
 
   static get modalSize() {

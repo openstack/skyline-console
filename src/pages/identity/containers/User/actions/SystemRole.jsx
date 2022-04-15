@@ -30,20 +30,20 @@ export class SystemRole extends ModalAction {
     return t('edit system permission');
   }
 
-  init() {
+  async init() {
     const systemRole = JSON.stringify(this.item.projectMapSystemRole);
     this.state.domainDefault = this.item.domain_id;
     this.state.projectRoles = JSON.parse(systemRole);
     this.store = new RoleStore();
     this.domainStore = globalDomainStore;
     this.userStore = globalUserStore;
-    this.getRoleList();
+    await this.getRoleList();
     this.getDomains();
     this.getUser();
   }
 
   getRoleList() {
-    this.store.fetchList();
+    return this.store.fetchList();
   }
 
   getDomains() {
