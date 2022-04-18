@@ -33,6 +33,19 @@ export class HttpRequest {
     globalRootStore.goToLoginPage(path);
   }
 
+  handleError(error) {
+    const { response } = error;
+    if (response) {
+      const { status } = response;
+      if (status === 401) {
+        const currentPath = window.location.pathname;
+        if (currentPath.indexOf('login') < 0) {
+          this.goToLoginPage(currentPath);
+        }
+      }
+    }
+  }
+
   /**
    * @param instance instance of axios
    * @param url request url
@@ -97,15 +110,7 @@ export class HttpRequest {
         // request is finished
         // eslint-disable-next-line no-console
         console.log('error.response', error.response, error);
-        if (error.response) {
-          const { status } = error.response;
-          if (status === 401) {
-            const currentPath = window.location.pathname;
-            if (currentPath.indexOf('login') < 0) {
-              this.goToLoginPage(currentPath);
-            }
-          }
-        }
+        this.handleError(error);
         return Promise.reject(error);
       }
     );
