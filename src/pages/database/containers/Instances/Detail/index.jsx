@@ -34,7 +34,7 @@ export default class InstancesDetail extends Base {
   }
 
   get policy() {
-    return 'instance:detail';
+    return 'trove:instance:detail';
   }
 
   get listUrl() {

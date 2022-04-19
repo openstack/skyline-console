@@ -29,7 +29,7 @@ export default class Logs extends Base {
   }
 
   get policy() {
-    return "instance:guest_log_list";
+    return "trove:instance:guest_log_list";
   }
 
   getColumns = () => {

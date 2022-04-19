@@ -33,7 +33,7 @@ export default class BackupsDetail extends Base {
   }
 
   get policy() {
-    return 'backup:show';
+    return 'trove:backup:show';
   }
 
   get detailInfos() {

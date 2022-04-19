@@ -34,7 +34,7 @@ export default class Backups extends Base {
   }
 
   get policy() {
-    return 'backup:index';
+    return 'trove:backup:index';
   }
 
   get searchFilters() {

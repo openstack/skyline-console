@@ -42,7 +42,7 @@ export default class Create extends ModalAction {
     return t("Create Backups");
   }
 
-  static policy = "backup:create";
+  static policy = "trove:backup:create";
 
   static allowed() {
     return Promise.resolve(true);
