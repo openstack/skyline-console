@@ -227,9 +227,10 @@ export class RootStore {
   @action
   async switchProject(projectId, domainId) {
     this.user = null;
-    await this.client.switchProject(projectId, domainId);
-    // this.updateUser(result);
+    const result = await this.client.switchProject(projectId, domainId);
     this.clearData();
+    const { keystone_token } = result;
+    setLocalStorageItem('keystone_token', keystone_token);
     return this.getUserProfileAndPolicy();
   }
 

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import React, { Component, Suspense } from 'react';
-import { Layout, Breadcrumb } from 'antd';
+import { Layout, Breadcrumb, Skeleton } from 'antd';
 import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import classnames from 'classnames';
@@ -168,9 +168,13 @@ class Right extends Component {
       sliderCollapsed: collapsed,
       isAdminPage,
     };
-    const children = user
-      ? this.renderChildren(mainBreadcrumbClass, mainTabClass, extraProps)
-      : null;
+    const children = user ? (
+      this.renderChildren(mainBreadcrumbClass, mainTabClass, extraProps)
+    ) : (
+      <div style={{ margin: '44px' }}>
+        <Skeleton />
+      </div>
+    );
     return (
       <Layout
         className={classnames(

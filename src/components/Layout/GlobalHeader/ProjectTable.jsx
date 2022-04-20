@@ -155,7 +155,13 @@ export default class ProjectSelect extends ModalAction {
     const item = this.projects.find((it) => it.id === key);
     const { domain_id: domainId } = item || {};
     const { rootStore } = this.props;
-    this.routing.push('/base/overview');
-    await rootStore.switchProject(key, domainId);
+    try {
+      await rootStore.switchProject(key, domainId);
+      this.routing.push('/base/overview');
+      return Promise.resolve();
+    } catch (e) {
+      console.log(e);
+      return Promise.reject(e);
+    }
   };
 }
