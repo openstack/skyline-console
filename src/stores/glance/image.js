@@ -16,6 +16,7 @@ import { action, observable } from 'mobx';
 import client from 'client';
 import Base from 'stores/base';
 import { imageOS } from 'resources/image';
+import { isString } from 'lodash';
 
 export class ImageStore extends Base {
   @observable
@@ -85,6 +86,17 @@ export class ImageStore extends Base {
   }
 
   @action
+  async importFileUrl(imageId, uri) {
+    const data = {
+      method: {
+        name: 'web-download',
+        uri,
+      },
+    };
+    return this.client.import(imageId, data);
+  }
+
+  @action
   async create(data, file, members, conf) {
     this.isSubmitting = true;
     const image = await this.client.create(data);
@@ -93,7 +105,11 @@ export class ImageStore extends Base {
     if (members.length > 0) {
       await Promise.all(members.map((it) => this.createMember(id, it)));
     }
-    await this.uploadImage(id, file, conf);
+    if (isString(file)) {
+      await this.importFileUrl(id, file);
+    } else {
+      await this.uploadImage(id, file, conf);
+    }
     this.isSubmitting = false;
     return Promise.resolve();
   }

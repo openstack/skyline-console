@@ -82,6 +82,7 @@ export class CreateForm extends FormAction {
 
   get defaultValue() {
     return {
+      uploadType: 'file',
       hw_qemu_guest_agent: 'yes',
       usage_type: 'common',
       visibility: this.isAdminPage ? 'public' : false,
@@ -133,6 +134,13 @@ export class CreateForm extends FormAction {
       });
   }
 
+  get typeList() {
+    return [
+      { value: 'file', label: t('Upload File') },
+      { value: 'url', label: t('File URL') },
+    ];
+  }
+
   checkFileType = (file) => {
     const types = Object.keys(this.imageFormats);
     const { name } = file;
@@ -155,9 +163,21 @@ export class CreateForm extends FormAction {
     return Promise.resolve();
   };
 
+  validateURL = (rule, value) => {
+    if (!value) return Promise.reject(t('Please enter URL!'));
+    const urlReg = /^https?:\/\/(.*)/;
+    if (!urlReg.test(value)) {
+      return Promise.reject(
+        t('Please enter a file link starting with "http://" or "https://"!')
+      );
+    }
+    return Promise.resolve();
+  };
+
   get formItems() {
-    const { more, visibility } = this.state;
+    const { more, visibility, uploadType } = this.state;
     const isShare = this.isAdminPage && visibility === 'shared';
+    const isUrl = uploadType === 'url';
     return [
       {
         name: 'name',
@@ -177,11 +197,26 @@ export class CreateForm extends FormAction {
         ...projectTableOptions,
       },
       {
+        name: 'uploadType',
+        label: t('Upload Type'),
+        type: 'radio',
+        options: this.typeList,
+      },
+      {
         name: 'file',
         label: t('File'),
         type: 'upload',
-        required: true,
         validator: this.validateFile,
+        required: !isUrl,
+        hidden: isUrl,
+      },
+      {
+        name: 'url',
+        label: t('File URL'),
+        type: 'input',
+        required: isUrl,
+        hidden: !isUrl,
+        validator: this.validateURL,
       },
       {
         name: 'disk_format',
@@ -297,7 +332,9 @@ export class CreateForm extends FormAction {
 
   onSubmit = (values) => {
     const {
+      uploadType,
       file,
+      url,
       visibility,
       more,
       hw_cpu_policy,
@@ -328,7 +365,8 @@ export class CreateForm extends FormAction {
     }
     const mems = visibility === 'shared' ? members.selectedRowKeys : [];
     const config = this.getUploadRequestConf();
-    return this.store.create(body, file, mems, config);
+    const actualFile = uploadType === 'file' ? file : url;
+    return this.store.create(body, actualFile, mems, config);
   };
 }
 
