@@ -294,10 +294,7 @@ export const physicalNodeTypes = [
 
 export const isIronicInstance = (item) => {
   const { flavor_info: { extra_specs: extra = {} } = {} } = item;
-  return (
-    extra[':architecture'] === 'bare_metal' ||
-    extra['trait:CUSTOM_GOLD'] === 'required'
-  );
+  return extra[':architecture'] === 'bare_metal';
 };
 
 export const instanceColumnsBackend = [
