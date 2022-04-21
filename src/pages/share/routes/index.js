@@ -16,6 +16,8 @@ import BaseLayout from 'layouts/Basic';
 import E404 from 'pages/base/containers/404';
 import ShareType from '../containers/ShareType';
 import ShareTypeDetail from '../containers/ShareType/Detail';
+import ShareGroupType from '../containers/ShareGroupType';
+import ShareGroupTypeDetail from '../containers/ShareGroupType/Detail';
 
 const PATH = '/share';
 export default [
@@ -27,6 +29,16 @@ export default [
       {
         path: `${PATH}/share-type-admin/detail/:id`,
         component: ShareTypeDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/share-group-type-admin`,
+        component: ShareGroupType,
+        exact: true,
+      },
+      {
+        path: `${PATH}/share-group-type-admin/detail/:id`,
+        component: ShareGroupTypeDetail,
         exact: true,
       },
       { path: '*', component: E404 },

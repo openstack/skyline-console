@@ -65,6 +65,31 @@ class ManilaClient extends Base {
           },
         ],
       },
+      {
+        name: 'shareGroupTypes',
+        key: 'share-group-types',
+        responseKey: 'share_group_type',
+        extendOperations: [
+          {
+            key: 'action',
+            method: 'post',
+          },
+          {
+            name: 'getAccess',
+            key: 'access',
+          },
+          {
+            key: 'default',
+          },
+        ],
+        subResources: [
+          {
+            name: 'groupSpecs',
+            key: 'group-specs',
+            responseKey: 'group_spec',
+          },
+        ],
+      },
     ];
   }
 }

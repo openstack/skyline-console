@@ -101,7 +101,7 @@ export const apiVersionMaps = {
   },
   manila: {
     key: 'X-OpenStack-Manila-API-Version',
-    value: '2.51',
+    value: '2.55',
   },
 };
 

@@ -421,6 +421,22 @@ const renderMenu = (t) => {
             },
           ],
         },
+        {
+          path: '/share/share-group-type-admin',
+          name: t('Share Group Type'),
+          key: 'shareGroupTypeAdmin',
+          level: 1,
+          endpoints: 'manilav2',
+          children: [
+            {
+              path: /^\/share\/share-group-type-admin\/detail\/.[^/]+$/,
+              name: t('Share Group Type Detail'),
+              key: 'shareGroupTypeDetailAdmin',
+              level: 2,
+              routePath: '/share/share-group-type-admin/detail/:id',
+            },
+          ],
+        },
       ],
     },
     {
