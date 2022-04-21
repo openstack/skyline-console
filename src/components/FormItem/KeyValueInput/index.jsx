@@ -24,6 +24,8 @@ export default class index extends Component {
     value: PropTypes.object,
     keyReadonly: PropTypes.bool,
     valueReadonly: PropTypes.bool,
+    keySpan: PropTypes.number,
+    valueSpan: PropTypes.number,
   };
 
   static defaultProps = {
@@ -78,10 +80,10 @@ export default class index extends Component {
 
   render() {
     const { key, value } = this.state;
-    const { keyReadonly, valueReadonly } = this.props;
+    const { keyReadonly, valueReadonly, keySpan, valueSpan } = this.props;
     return (
       <Row>
-        <Col span={4}>
+        <Col span={keySpan || 4}>
           <Input
             value={key}
             placeholder={t['Please input key']}
@@ -93,7 +95,7 @@ export default class index extends Component {
         <Col span={1} style={{ textAlign: 'center', lineHeight: '30px' }}>
           <PauseOutlined rotate={90} />
         </Col>
-        <Col span={8}>
+        <Col span={valueSpan || 8}>
           <Input
             value={value}
             placeholder={t['Please input key']}

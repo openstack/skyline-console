@@ -47,6 +47,9 @@ const MonitorCenter = lazy(() =>
 const Database = lazy(() =>
   import(/* webpackChunkName: "monitor-center" */ 'pages/database/App')
 );
+const Share = lazy(() =>
+  import(/* webpackChunkName: "share" */ 'pages/share/App')
+);
 const E404 = lazy(() =>
   import(/* webpackChunkName: "E404" */ 'pages/base/containers/404')
 );
@@ -93,7 +96,11 @@ export default [
       },
       {
         path: `/database`,
-        component: Database
+        component: Database,
+      },
+      {
+        path: `/share`,
+        component: Share,
       },
       { path: '*', component: E404 },
     ],

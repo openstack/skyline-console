@@ -22,6 +22,7 @@ import {
   SettingOutlined,
   HomeOutlined,
   AppstoreOutlined,
+  SwitcherOutlined,
 } from '@ant-design/icons';
 
 const renderMenu = (t) => {
@@ -393,6 +394,30 @@ const renderMenu = (t) => {
               key: 'securityGroupDetailAdmin',
               level: 2,
               routePath: '/network/security-group-admin/detail/:id',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      path: '/share',
+      name: t('Share File Storage'),
+      key: 'fileStorageAdmin',
+      icon: <SwitcherOutlined />,
+      children: [
+        {
+          path: '/share/share-type-admin',
+          name: t('Share Type'),
+          key: 'shareTypeAdmin',
+          level: 1,
+          endpoints: 'manilav2',
+          children: [
+            {
+              path: /^\/share\/share-type-admin\/detail\/.[^/]+$/,
+              name: t('Share Type Detail'),
+              key: 'shareTypeDetailAdmin',
+              level: 2,
+              routePath: '/share/share-type-admin/detail/:id',
             },
           ],
         },

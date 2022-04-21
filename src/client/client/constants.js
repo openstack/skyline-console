@@ -30,7 +30,8 @@ export const endpointVersionMap = {
   heat: 'v1',
   octavia: 'v2',
   swift: 'v1',
-  trove: 'v1.0'
+  trove: 'v1.0',
+  manilav2: 'v2',
 };
 
 export const endpointsDefault = {
@@ -67,6 +68,7 @@ export const heatBase = () => getOpenstackEndpoint('heat');
 export const octaviaBase = () => getOpenstackEndpoint('octavia');
 export const swiftBase = () => getOpenstackEndpoint('swift');
 export const troveBase = () => getOpenstackEndpoint('trove');
+export const manilaBase = () => getOpenstackEndpoint('manilav2');
 
 export const ironicOriginEndpoint = () => getOriginEndpoint('ironic');
 export const vpnEndpoint = () => getOriginEndpoint('neutron_vpn');
@@ -74,6 +76,7 @@ export const lbEndpoint = () => getOriginEndpoint('octavia');
 export const qosEndpoint = () => getOriginEndpoint('neutron_qos');
 export const swiftEndpoint = () => getOriginEndpoint('swift');
 export const cinderEndpoint = () => getOriginEndpoint('cinder');
+export const manilaEndpoint = () => getOriginEndpoint('manilav2');
 
 export const apiVersionMaps = {
   nova: {
@@ -95,6 +98,10 @@ export const apiVersionMaps = {
   'ironic-inspect': {
     key: 'X-OpenStack-Ironic-Inspector-API-Version',
     value: '1.15',
+  },
+  manila: {
+    key: 'X-OpenStack-Manila-API-Version',
+    value: '2.51',
   },
 };
 
