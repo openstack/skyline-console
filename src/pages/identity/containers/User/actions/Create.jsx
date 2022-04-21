@@ -388,7 +388,7 @@ export class CreateForm extends FormAction {
     values.defaultRole = this.projectRoleList[0].id;
     values.newProjectRoles = this.state.newProjectRoles;
     values.domain_id = domain;
-    const { confirmPassword, ...rest } = values;
+    const { confirmPassword, more, ...rest } = values;
     return this.store.create(rest);
   };
 }
