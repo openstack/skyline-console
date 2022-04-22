@@ -15,6 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalShareGroupTypeStore from '@/stores/manila/share-group-type';
+import globalShareTypeStore from '@/stores/manila/share-type';
 import { projectTableOptions } from 'resources/project';
 import { ProjectStore } from 'stores/keystone/project';
 import { updateAddSelectValueToObj } from 'utils/index';
@@ -31,8 +32,14 @@ export class Create extends ModalAction {
 
   init() {
     this.store = globalShareGroupTypeStore;
+    this.typeStore = globalShareTypeStore;
     this.projectStore = new ProjectStore();
+    this.getTypes();
     this.getProjects();
+  }
+
+  getTypes() {
+    this.typeStore.fetchList({ is_public: 'all' });
   }
 
   getProjects() {
@@ -56,15 +63,19 @@ export class Create extends ModalAction {
   }
 
   get nameForStateUpdate() {
-    return ['isPublic'];
+    return ['is_public'];
   }
 
   get defaultValue() {
     return { is_public: true };
   }
 
+  get shareTypes() {
+    return globalShareTypeStore.list.data || [];
+  }
+
   get formItems() {
-    const { isPublic } = this.state;
+    const { is_public } = this.state;
     return [
       {
         name: 'name',
@@ -72,6 +83,37 @@ export class Create extends ModalAction {
         type: 'input-name',
         names: this.store.list.data.map((it) => it.name),
         required: true,
+      },
+      {
+        name: 'shareTypes',
+        label: t('Share Types'),
+        type: 'select-table',
+        required: true,
+        isMulti: true,
+        data: this.shareTypes,
+        isLoading: globalShareTypeStore.list.isLoading,
+        filterParams: [
+          {
+            label: t('Name'),
+            name: 'name',
+          },
+        ],
+        columns: [
+          {
+            title: t('Name'),
+            dataIndex: 'name',
+          },
+          {
+            title: t('Description'),
+            dataIndex: 'description',
+            valueRender: 'noValue',
+          },
+          {
+            title: t('Public'),
+            dataIndex: 'is_public',
+            valueRender: 'yesNo',
+          },
+        ],
       },
       {
         name: 'is_public',
@@ -85,7 +127,7 @@ export class Create extends ModalAction {
         label: t('Access Control'),
         type: 'select-table',
         isMulti: true,
-        hidden: isPublic,
+        hidden: is_public,
         data: this.projects,
         isLoading: this.projectStore.list.isLoading,
         ...projectTableOptions,
@@ -95,8 +137,18 @@ export class Create extends ModalAction {
   }
 
   onSubmit = (values) => {
-    const { is_public, accessControl = {}, extra = [], ...rest } = values;
-    const body = { is_public, ...rest };
+    const {
+      is_public,
+      accessControl = {},
+      extra = [],
+      shareTypes,
+      ...rest
+    } = values;
+    const body = {
+      is_public,
+      share_types: shareTypes.selectedRowKeys,
+      ...rest,
+    };
     let projectIds = [];
     const extraSpecs = updateAddSelectValueToObj(extra);
     body.group_specs = extraSpecs;

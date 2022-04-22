@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalShareGroupTypeStore from '@/stores/manila/share-group-type';
@@ -55,6 +56,13 @@ export class ShareGroupType extends Base {
       title: t('Public'),
       dataIndex: 'is_public',
       valueRender: 'yesNo',
+    },
+    {
+      title: t('Share Types'),
+      dataIndex: 'shareTypes',
+      render: (value) => {
+        return (value || []).map((it) => <div key={it.id}>{it.name}</div>);
+      },
     },
   ];
 }

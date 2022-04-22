@@ -24,6 +24,10 @@ export class ShareGroupTypeStore extends Base {
     return client.manila.shareGroupTypes;
   }
 
+  get shareTypeClient() {
+    return client.manila.types;
+  }
+
   get paramsFunc() {
     return (params) => params;
   }
@@ -39,6 +43,23 @@ export class ShareGroupTypeStore extends Base {
     const result = await this.client.create(body);
     const { id } = result[this.responseKey];
     return this.addProjectAccess(id, projectIds);
+  }
+
+  async listDidFetch(items) {
+    if (!items.length) {
+      return items;
+    }
+    const result = await this.shareTypeClient.list({ is_public: 'all' });
+    const { share_types: types = [] } = result;
+    return items.map((it) => {
+      const { share_types = [] } = it;
+      return {
+        ...it,
+        shareTypes: share_types.map((typeId) =>
+          types.find((t) => t.id === typeId)
+        ),
+      };
+    });
   }
 
   @action
