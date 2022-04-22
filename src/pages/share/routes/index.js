@@ -18,6 +18,8 @@ import ShareType from '../containers/ShareType';
 import ShareTypeDetail from '../containers/ShareType/Detail';
 import ShareGroupType from '../containers/ShareGroupType';
 import ShareGroupTypeDetail from '../containers/ShareGroupType/Detail';
+import ShareInstance from '../containers/ShareInstance';
+import ShareInstanceDetail from '../containers/ShareInstance/Detail';
 
 const PATH = '/share';
 export default [
@@ -39,6 +41,16 @@ export default [
       {
         path: `${PATH}/share-group-type-admin/detail/:id`,
         component: ShareGroupTypeDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/share-instance-admin`,
+        component: ShareInstance,
+        exact: true,
+      },
+      {
+        path: `${PATH}/share-instance-admin/detail/:id`,
+        component: ShareInstanceDetail,
         exact: true,
       },
       { path: '*', component: E404 },

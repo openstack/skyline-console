@@ -46,6 +46,52 @@ export class HttpRequest {
     }
   }
 
+  addRequestId(config) {
+    const uuid = uuidv4();
+    config.headers['X-Openstack-Request-Id'] = `req-${uuid}`;
+  }
+
+  addToken(config) {
+    const keystoneToken = getLocalStorageItem('keystone_token') || '';
+    if (keystoneToken) {
+      config.headers['X-Auth-Token'] = keystoneToken;
+    }
+  }
+
+  addVersion(config, url) {
+    const { getOpenstackApiVersion } = require('./constants');
+    const apiVersionMap = getOpenstackApiVersion(url);
+
+    if (apiVersionMap) {
+      config.headers[apiVersionMap.key] = apiVersionMap.value;
+    }
+  }
+
+  updateHeaderByConfig(config) {
+    const { options: { headers, isFormData, ...rest } = {} } = config;
+    if (!isEmpty(headers)) {
+      config.headers = {
+        ...config.headers,
+        ...headers,
+      };
+      console.log('new config headers', config.headers);
+    }
+    if (isFormData) {
+      delete config.headers['Content-Type'];
+    }
+    Object.keys(rest).forEach((key) => {
+      config[key] = rest[key];
+    });
+  }
+
+  updateRequestConfig(config, url) {
+    this.addRequestId(config);
+    this.addToken(config);
+    this.addVersion(config, url);
+    this.updateHeaderByConfig(config);
+    return config;
+  }
+
   /**
    * @param instance instance of axios
    * @param url request url
@@ -55,32 +101,7 @@ export class HttpRequest {
   interceptors(instance, url) {
     instance.interceptors.request.use(
       (config) => {
-        const uuid = uuidv4();
-        config.headers['X-Openstack-Request-Id'] = `req-${uuid}`;
-        const keystoneToken = getLocalStorageItem('keystone_token') || '';
-        const { getOpenstackApiVersion } = require('./constants');
-        const apiVersionMap = getOpenstackApiVersion(url);
-        if (keystoneToken) {
-          config.headers['X-Auth-Token'] = keystoneToken;
-        }
-        if (apiVersionMap) {
-          config.headers[apiVersionMap.key] = apiVersionMap.value;
-        }
-        const { options: { headers, isFormData, ...rest } = {} } = config;
-        if (!isEmpty(headers)) {
-          config.headers = {
-            ...config.headers,
-            ...headers,
-          };
-          console.log('new config headers', config.headers);
-        }
-        if (isFormData) {
-          delete config.headers['Content-Type'];
-        }
-        Object.keys(rest).forEach((key) => {
-          config[key] = rest[key];
-        });
-        return config;
+        return this.updateRequestConfig(config, url);
       },
       (err) => Promise.reject(err)
     );

@@ -90,6 +90,24 @@ class ManilaClient extends Base {
           },
         ],
       },
+      {
+        name: 'shareInstances',
+        key: 'share_instances',
+        responseKey: 'share_instance',
+        extendOperations: [
+          {
+            key: 'action',
+            method: 'post',
+          },
+        ],
+        subResources: [
+          {
+            name: 'exportLocations',
+            key: 'export_locations',
+            responseKey: 'export_location',
+          },
+        ],
+      },
     ];
   }
 }
