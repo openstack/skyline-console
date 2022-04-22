@@ -17,9 +17,7 @@ import { ModalAction } from 'containers/Action';
 import globalDomainStore from 'stores/keystone/domain';
 import globalGroupStore from 'stores/keystone/user-group';
 
-@inject('rootStore')
-@observer
-class EditForm extends ModalAction {
+export class EditForm extends ModalAction {
   init() {
     this.store = globalGroupStore;
     this.domainStore = globalDomainStore;
@@ -94,4 +92,4 @@ class EditForm extends ModalAction {
   };
 }
 
-export default EditForm;
+export default inject('rootStore')(observer(EditForm));

@@ -17,9 +17,7 @@ import { ModalAction } from 'containers/Action';
 import globalGroupStore from 'stores/keystone/user-group';
 import globalRoleStore from 'stores/keystone/role';
 
-@inject('rootStore')
-@observer
-export default class SystemPermission extends ModalAction {
+export class SystemPermission extends ModalAction {
   init() {
     this.store = globalGroupStore;
     this.roleStore = globalRoleStore;
@@ -119,3 +117,5 @@ export default class SystemPermission extends ModalAction {
     return results;
   };
 }
+
+export default inject('rootStore')(observer(SystemPermission));

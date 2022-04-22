@@ -18,9 +18,7 @@ import globalGroupStore from 'stores/keystone/user-group';
 import { ModalAction } from 'containers/Action';
 import globalDomainStore from 'stores/keystone/domain';
 
-@inject('rootStore')
-@observer
-export default class UserManager extends ModalAction {
+export class UserManager extends ModalAction {
   constructor(props) {
     super(props);
     this.state = {
@@ -180,3 +178,5 @@ export default class UserManager extends ModalAction {
     return results;
   };
 }
+
+export default inject('rootStore')(observer(UserManager));

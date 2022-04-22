@@ -24,9 +24,7 @@ import Project from '../../Project';
 import styles from './index.less';
 import actionConfigs from '../actions';
 
-@inject('rootStore')
-@observer
-export default class Detail extends Base {
+export class Detail extends Base {
   get name() {
     return t('user group');
   }
@@ -133,3 +131,5 @@ export default class Detail extends Base {
     );
   }
 }
+
+export default inject('rootStore')(observer(Detail));

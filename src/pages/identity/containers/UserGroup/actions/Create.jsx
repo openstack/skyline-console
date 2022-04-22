@@ -23,9 +23,7 @@ import globalRoleStore from 'stores/keystone/role';
 import globalDomainStore from 'stores/keystone/domain';
 import globalGroupStore from 'stores/keystone/user-group';
 
-@inject('rootStore')
-@observer
-class CreateForm extends ModalAction {
+export class CreateForm extends ModalAction {
   constructor(props) {
     super(props);
     this.state = {
@@ -266,4 +264,4 @@ class CreateForm extends ModalAction {
   };
 }
 
-export default CreateForm;
+export default inject('rootStore')(observer(CreateForm));

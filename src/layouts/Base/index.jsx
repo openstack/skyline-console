@@ -14,7 +14,7 @@
 
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { toJS } from 'mobx';
+import { toJS, reaction } from 'mobx';
 import i18n from 'core/i18n';
 import { isAdminPage, isUserCenterPage } from 'utils/index';
 import { BellOutlined } from '@ant-design/icons';
@@ -32,12 +32,23 @@ import styles from './index.less';
 const { Header } = Layout;
 
 export class BaseLayout extends Component {
+  autoReaction = reaction(
+    () => (this.props.rootStore.user || {}).keystone_token,
+    () => {
+      setRouteMap(this.menu);
+    }
+  );
+
   constructor(props) {
     super(props);
     this.state = {
       collapsed: false,
     };
     this.init();
+  }
+
+  componentWillUnmount() {
+    this.autoReaction();
   }
 
   get isAdminPage() {

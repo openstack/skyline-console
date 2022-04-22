@@ -14,6 +14,7 @@
 
 import React from 'react';
 import ImageType from 'components/ImageType';
+import { formatSize } from 'utils';
 import { get } from 'lodash';
 import globalRootStore from 'stores/root';
 
@@ -194,12 +195,12 @@ export const getImageColumns = (self) => [
   {
     title: t('Min System Disk'),
     dataIndex: 'min_disk',
-    render: (text) => `${text}GB`,
+    render: (text) => formatSize(text * 1024, 2),
   },
   {
     title: t('Min Memory'),
     dataIndex: 'min_ram',
-    render: (text) => `${text / 1024}GB`,
+    render: (text) => formatSize(text, 2),
   },
   {
     title: t('Access Control'),
