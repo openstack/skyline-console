@@ -103,9 +103,15 @@ export class RootStore {
     this.routing.push(`${pathname}?${getQueryString(newParams)}`);
   };
 
+  setKeystoneToken(result) {
+    const { keystone_token } = result || {};
+    setLocalStorageItem('keystone_token', keystone_token);
+  }
+
   @action
   async login(params) {
-    await this.client.login(params);
+    const result = await this.client.login(params);
+    this.setKeystoneToken(result);
     return this.getUserProfileAndPolicy();
   }
 
@@ -133,7 +139,6 @@ export class RootStore {
     this.user = user;
     this.policies = policies;
     const {
-      keystone_token,
       endpoints = {},
       license = {},
       version = '',
@@ -144,7 +149,7 @@ export class RootStore {
     this.license = license || {};
     this.version = version;
     this.updateUserRoles(user);
-    setLocalStorageItem('keystone_token', keystone_token);
+    this.setKeystoneToken(user);
     this.endpoints = endpoints;
   }
 
@@ -179,7 +184,7 @@ export class RootStore {
       this.client.policies.list(),
     ]);
     this.updateUser(profile, policies.policies || []);
-    this.getNeutronExtensions();
+    return this.getNeutronExtensions();
   }
 
   @action
@@ -229,8 +234,7 @@ export class RootStore {
     this.user = null;
     const result = await this.client.switchProject(projectId, domainId);
     this.clearData();
-    const { keystone_token } = result;
-    setLocalStorageItem('keystone_token', keystone_token);
+    this.setKeystoneToken(result);
     return this.getUserProfileAndPolicy();
   }
 
