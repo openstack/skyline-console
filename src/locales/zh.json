@@ -970,6 +970,7 @@
   "Import Keypair": "导入密钥",
   "Import Metadata": "导入元数据",
   "Import metadata": "导入元数据",
+  "Importing": "导入中",
   "In Cluster": "集群中",
   "In Use": "使用中",
   "In general, administrator for Windows,root for Linux, please fill by image uploading.": "一般情况下Windows为administrator，Linux为root，请根据上传的镜像正确填写。",

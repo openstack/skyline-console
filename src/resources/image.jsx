@@ -26,6 +26,7 @@ export const imageStatus = {
   killed: t('Killed'),
   deactivated: t('Deactivated'),
   deleted: t('Deleted'),
+  importing: t('Importing'),
 };
 
 export const imageVisibility = {
