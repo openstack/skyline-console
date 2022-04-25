@@ -12,28 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ModalAction } from "@/containers/Action";
-import { inject, observer } from "mobx-react";
-import globalInstancesStore from "stores/trove/instances";
-import globalConfigurationsStore from "stores/trove/configurations";
+import { ModalAction } from 'containers/Action';
+import { inject, observer } from 'mobx-react';
+import globalInstancesStore from 'stores/trove/instances';
+import globalConfigurationsStore from 'stores/trove/configurations';
 import { toJS } from 'mobx';
 
 @inject('rootStore')
 @observer
 export default class Create extends ModalAction {
-
   init() {
     this.store = globalConfigurationsStore;
     this.getDatastores();
     this.state.datastore_type = null;
   }
 
-  static id = "create-configurations";
+  static id = 'create-configurations';
 
-  static title = t("Create Configurations");
+  static title = t('Create Configurations');
 
   static get modalSize() {
-    return "middle";
+    return 'middle';
   }
 
   getModalSize() {
@@ -41,10 +40,10 @@ export default class Create extends ModalAction {
   }
 
   get name() {
-    return t("Create Configurations");
+    return t('Create Configurations');
   }
 
-  static policy = "trove:configuration:create";
+  static policy = 'trove:configuration:create';
 
   static allowed() {
     return Promise.resolve(true);
@@ -64,53 +63,54 @@ export default class Create extends ModalAction {
 
   onChangeDatastoresTypeChange = (value) => {
     this.setState({
-      datastore_type: value
-    })
+      datastore_type: value,
+    });
     this.resetFormValue(['datastore_version']);
   };
 
   get datastoresVersion() {
-    var dizi = (this.datastores).filter((item) => item.label === this.state.datastoreType)
+    const dizi = this.datastores
+      .filter((item) => item.label === this.state.datastoreType)
       .map((it) => {
         return it.originData.versions.map((e) => ({
           label: e.name,
-          value: e.name
-        }))
-      })
+          value: e.name,
+        }));
+      });
     return dizi[0];
   }
 
   get formItems() {
     return [
       {
-        name: "name",
-        label: t("Name"),
-        type: "input",
-        required: true
+        name: 'name',
+        label: t('Name'),
+        type: 'input',
+        required: true,
       },
       {
-        name: "description",
-        label: t("Description"),
-        type: "input"
+        name: 'description',
+        label: t('Description'),
+        type: 'input',
       },
       {
-        name: "datastore_type",
-        label: t("Datastore Type"),
-        type: "select",
+        name: 'datastore_type',
+        label: t('Datastore Type'),
+        type: 'select',
         options: this.datastores,
         onChange: (value) => {
-          this.onChangeDatastoresTypeChange(value)
+          this.onChangeDatastoresTypeChange(value);
         },
         required: true,
       },
       {
-        name: "datastore_version",
-        label: t("Datastore Version"),
-        type: "select",
+        name: 'datastore_version',
+        label: t('Datastore Version'),
+        type: 'select',
         options: this.datastoresVersion,
         required: true,
       },
-    ]
+    ];
   }
 
   onSubmit = (values) => {
@@ -123,9 +123,9 @@ export default class Create extends ModalAction {
         },
         name: values.name,
         values: {
-          connect_timeout: 200
-        }
-      }
-    })
+          connect_timeout: 200,
+        },
+      },
+    });
   };
 }

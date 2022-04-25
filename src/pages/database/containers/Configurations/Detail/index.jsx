@@ -14,8 +14,8 @@
 
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/TabDetail';
+import globalConfigurationsStore from 'stores/trove/configurations';
 import BaseDetail from './BaseDetail';
-import globalConfigurationsStore from '@/stores/trove/configurations';
 import Values from './Values';
 import Instances from './Instances';
 
@@ -27,7 +27,7 @@ export default class ConfigurationsDetail extends Base {
   }
 
   get name() {
-    return "Configurations Detail"
+    return 'Configurations Detail';
   }
 
   get listUrl() {
@@ -41,27 +41,29 @@ export default class ConfigurationsDetail extends Base {
   get detailInfos() {
     return [
       {
-        title: t("Name"),
-        dataIndex: "name"
-      }
-    ]
+        title: t('Name'),
+        dataIndex: 'name',
+      },
+    ];
   }
 
   get tabs() {
     return [
       {
-        title: t("General Info"),
-        key: "general_info",
-        component: BaseDetail
-      }, {
-        title: t("Values"),
-        key: "values",
-        component: Values
-      }, {
-        title: t("Instances"),
-        key: "instances",
-        component: Instances
-      }
-    ]
+        title: t('General Info'),
+        key: 'general_info',
+        component: BaseDetail,
+      },
+      {
+        title: t('Values'),
+        key: 'values',
+        component: Values,
+      },
+      {
+        title: t('Instances'),
+        key: 'instances',
+        component: Instances,
+      },
+    ];
   }
 }

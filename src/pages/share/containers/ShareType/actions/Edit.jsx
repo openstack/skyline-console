@@ -14,7 +14,7 @@
 
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import globalShareTypeStore from '@/stores/manila/share-type';
+import globalShareTypeStore from 'stores/manila/share-type';
 
 export class Edit extends ModalAction {
   static id = 'edit';

@@ -15,7 +15,7 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import globalShareGroupTypeStore from '@/stores/manila/share-group-type';
+import globalShareGroupTypeStore from 'stores/manila/share-group-type';
 import actionConfigs from './actions';
 
 export class ShareGroupType extends Base {

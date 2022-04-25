@@ -14,7 +14,7 @@
 
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import globalShareTypeStore from '@/stores/manila/share-type';
+import globalShareTypeStore from 'stores/manila/share-type';
 import actionConfigs from './actions';
 
 export class ShareType extends Base {

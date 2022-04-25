@@ -16,9 +16,9 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
 import { toJS } from 'mobx';
-import globalInstancesStore from '@/stores/trove/instances';
+import globalInstancesStore from 'stores/trove/instances';
 import globalAvailabilityZoneStore from 'stores/nova/zone';
-import FlavorSelectTable from '@/pages/compute/containers/Instance/components/FlavorSelectTable';
+import FlavorSelectTable from 'pages/compute/containers/Instance/components/FlavorSelectTable';
 
 @inject('rootStore')
 @observer
@@ -45,7 +45,7 @@ export default class StepDetails extends Base {
 
   get defaultValue() {
     const values = {
-      project: this.currentProjectName
+      project: this.currentProjectName,
     };
     return values;
   }
@@ -77,19 +77,20 @@ export default class StepDetails extends Base {
 
   onChangeDatastoresTypeChange = (value) => {
     this.setState({
-      datastoreType: value
+      datastoreType: value,
     });
-    this.resetFormValue(["datastore_version"]);
-  }
+    this.resetFormValue(['datastore_version']);
+  };
 
   get datastoresVersion() {
-    var dizi = (this.datastores).filter((item) => item.label === this.state.datastore_type)
+    const dizi = this.datastores
+      .filter((item) => item.label === this.state.datastore_type)
       .map((it) => {
         return it.originData.versions.map((e) => ({
           label: e.name,
-          value: e.name
-        }))
-      })
+          value: e.name,
+        }));
+      });
     return dizi[0];
   }
 
@@ -113,7 +114,7 @@ export default class StepDetails extends Base {
 
   getSystemDiskMinSize() {
     const flavorSize = (this.state.flavor || {}).disk || 0;
-    let imageSize = 0;
+    const imageSize = 0;
     return Math.max(flavorSize, imageSize, 1);
   }
 

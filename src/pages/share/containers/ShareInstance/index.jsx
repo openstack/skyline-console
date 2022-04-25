@@ -14,7 +14,7 @@
 
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import globalShareInstanceStore from '@/stores/manila/share-instance';
+import globalShareInstanceStore from 'stores/manila/share-instance';
 import { shareStatus } from 'resources/share';
 
 export class ShareInstance extends Base {

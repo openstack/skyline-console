@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { ConfirmAction } from 'containers/Action';
-import globalShareGroupTypeStore from '@/stores/manila/share-group-type';
+import globalShareGroupTypeStore from 'stores/manila/share-group-type';
 
 export default class Delete extends ConfirmAction {
   get id() {

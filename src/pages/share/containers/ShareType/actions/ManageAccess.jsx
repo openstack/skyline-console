@@ -13,9 +13,7 @@
 // limitations under the License.
 
 import { inject, observer } from 'mobx-react';
-import globalShareTypeStore, {
-  ShareTypeStore,
-} from '@/stores/manila/share-type';
+import globalShareTypeStore, { ShareTypeStore } from 'stores/manila/share-type';
 import { ModalAction } from 'containers/Action';
 import { ProjectStore } from 'stores/keystone/project';
 import { projectTableOptions } from 'resources/project';

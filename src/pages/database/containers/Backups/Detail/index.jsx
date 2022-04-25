@@ -14,8 +14,8 @@
 
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/TabDetail';
+import { BackupsStore } from 'stores/trove/backups';
 import BaseDetail from './BaseDetail';
-import { BackupsStore } from '@/stores/trove/backups';
 
 @inject('rootStore')
 @observer
@@ -25,7 +25,7 @@ export default class BackupsDetail extends Base {
   }
 
   get name() {
-    return "Backup Detail"
+    return 'Backup Detail';
   }
 
   get listUrl() {
@@ -39,23 +39,23 @@ export default class BackupsDetail extends Base {
   get detailInfos() {
     return [
       {
-        title: t("Name"),
-        dataIndex: "name"
+        title: t('Name'),
+        dataIndex: 'name',
       },
       {
-        title: t("Description"),
-        dataIndex: "description"
-      }
-    ]
+        title: t('Description'),
+        dataIndex: 'description',
+      },
+    ];
   }
 
   get tabs() {
     return [
       {
-        title: t("General Info"),
-        key: "general_info",
-        component: BaseDetail
-      }
-    ]
+        title: t('General Info'),
+        key: 'general_info',
+        component: BaseDetail,
+      },
+    ];
   }
 }

@@ -12,26 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ModalAction } from "@/containers/Action";
-import { inject, observer } from "mobx-react";
-import globalInstancesStore from "stores/trove/instances";
-import globalBackupsStore from "stores/trove/backups";
+import { ModalAction } from 'containers/Action';
+import { inject, observer } from 'mobx-react';
+import globalInstancesStore from 'stores/trove/instances';
+import globalBackupsStore from 'stores/trove/backups';
 
 @inject('rootStore')
 @observer
 export default class Create extends ModalAction {
-
   init() {
     this.store = globalBackupsStore;
     this.getDatabaseInstance();
   }
 
-  static id = "create-backups";
+  static id = 'create-backups';
 
-  static title = t("Create Backups");
+  static title = t('Create Backups');
 
   static get modalSize() {
-    return "middle";
+    return 'middle';
   }
 
   getModalSize() {
@@ -39,21 +38,20 @@ export default class Create extends ModalAction {
   }
 
   get name() {
-    return t("Create Backups");
+    return t('Create Backups');
   }
 
-  static policy = "trove:backup:create";
+  static policy = 'trove:backup:create';
 
   static allowed() {
     return Promise.resolve(true);
   }
 
   get listInstanceName() {
-    return (globalInstancesStore.list.data || [])
-      .map((it) => ({
-        value: it.id,
-        label: it.name,
-      }));
+    return (globalInstancesStore.list.data || []).map((it) => ({
+      value: it.id,
+      label: it.name,
+    }));
   }
 
   async getDatabaseInstance() {
@@ -63,24 +61,24 @@ export default class Create extends ModalAction {
   get formItems() {
     return [
       {
-        name: "name",
-        label: t("Backup Name"),
-        type: "input",
-        required: true
+        name: 'name',
+        label: t('Backup Name'),
+        type: 'input',
+        required: true,
       },
       {
-        name: "instance",
-        label: t("Database Instance"),
-        type: "select",
+        name: 'instance',
+        label: t('Database Instance'),
+        type: 'select',
         options: this.listInstanceName,
-        required: true
+        required: true,
       },
       {
-        name: "description",
-        label: t("Description"),
-        type: "input"
-      }
-    ]
+        name: 'description',
+        label: t('Description'),
+        type: 'input',
+      },
+    ];
   }
 
   onSubmit = (values) => {

@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import globalShareGroupTypeStore, {
   ShareGroupTypeStore,
-} from '@/stores/manila/share-group-type';
+} from 'stores/manila/share-group-type';
 import { ModalAction } from 'containers/Action';
 import { ProjectStore } from 'stores/keystone/project';
 import { projectTableOptions } from 'resources/project';

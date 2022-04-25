@@ -14,7 +14,7 @@
 
 import { StepAction } from 'containers/Action';
 import { inject, observer } from 'mobx-react';
-import globalInstancesStore from '@/stores/trove/instances';
+import globalInstancesStore from 'stores/trove/instances';
 import StepDetails from './StepDetails';
 import StepNetworking from './StepNetworking';
 import StepInitializeDatabases from './StepInitializeDatabases';
@@ -23,25 +23,24 @@ import StepAdvanced from './StepAdvanced';
 @inject('rootStore')
 @observer
 export default class StepCreate extends StepAction {
-
   init() {
     this.store = globalInstancesStore;
   }
 
-  static id = "create-instance";
+  static id = 'create-instance';
 
-  static title = t("Create Instance")
+  static title = t('Create Instance');
 
   static path = '/database/instances/create';
 
-  static policy = "trove:instance:create";
+  static policy = 'trove:instance:create';
 
   static allowed() {
     return Promise.resolve(true);
   }
 
   get name() {
-    return t("Create Instance");
+    return t('Create Instance');
   }
 
   get listUrl() {
@@ -74,11 +73,11 @@ export default class StepCreate extends StepAction {
   }
 
   onSubmit = (values) => {
-    let network = []
+    let network = [];
 
     const { selectedRowKeys = [] } = values.network;
-    network = selectedRowKeys.map(it => ({ 'net-id': it }))
-    network = [{ 'net-id': selectedRowKeys[0] }]
+    network = selectedRowKeys.map((it) => ({ 'net-id': it }));
+    network = [{ 'net-id': selectedRowKeys[0] }];
 
     return this.store.create({
       instance: {

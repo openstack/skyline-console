@@ -113,7 +113,6 @@ module.exports = {
     extensions: ['.js', '.jsx'],
     modules: [root('src'), root('src/pages'), 'node_modules'],
     alias: {
-      '@': root('src'),
       src: root('src'),
       asset: root('src/asset'),
       image: root('src/asset/image'),

@@ -14,8 +14,8 @@
 
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/TabDetail';
+import globalInstancesStore from 'stores/trove/instances';
 import BaseDetail from './BaseDetail';
-import globalInstancesStore from '@/stores/trove/instances';
 import Users from './Users';
 import Databases from './Databases';
 import Backups from './Backups';
@@ -30,7 +30,7 @@ export default class InstancesDetail extends Base {
   }
 
   get name() {
-    return t("Backup Detail");
+    return t('Backup Detail');
   }
 
   get policy() {
@@ -44,56 +44,56 @@ export default class InstancesDetail extends Base {
   get detailInfos() {
     return [
       {
-        title: t("ID"),
-        dataIndex: "id"
+        title: t('ID'),
+        dataIndex: 'id',
       },
       {
-        title: t("Name"),
-        dataIndex: "name"
+        title: t('Name'),
+        dataIndex: 'name',
       },
       {
-        title: t("Status"),
-        dataIndex: "status"
+        title: t('Status'),
+        dataIndex: 'status',
       },
       {
-        title: t("Tenant Id"),
-        dataIndex: "tenant_id"
-      }
-    ]
+        title: t('Tenant Id'),
+        dataIndex: 'tenant_id',
+      },
+    ];
   }
 
   get tabs() {
     return [
       {
-        title: t("General Info"),
-        key: "general_info",
-        component: BaseDetail
+        title: t('General Info'),
+        key: 'general_info',
+        component: BaseDetail,
       },
       {
-        title: t("Users"),
-        key: "users",
-        component: Users
+        title: t('Users'),
+        key: 'users',
+        component: Users,
       },
       {
-        title: t("Databases"),
-        key: "databases",
-        component: Databases
+        title: t('Databases'),
+        key: 'databases',
+        component: Databases,
       },
       {
-        title: t("Backups"),
-        key: "backups",
-        component: Backups
+        title: t('Backups'),
+        key: 'backups',
+        component: Backups,
       },
       {
-        title: t("Logs"),
-        key: "logs",
-        component: Logs
+        title: t('Logs'),
+        key: 'logs',
+        component: Logs,
       },
       {
-        title: t("Defaults"),
-        key: "defaults",
-        component: Defaults
-      }
-    ]
+        title: t('Defaults'),
+        key: 'defaults',
+        component: Defaults,
+      },
+    ];
   }
 }
