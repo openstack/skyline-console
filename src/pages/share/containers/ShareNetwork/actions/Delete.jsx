@@ -12,27 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
-import { SubnetStore } from 'stores/neutron/subnet';
-import IPopover from './Popover';
+import { ConfirmAction } from 'containers/Action';
+import globalShareNetworkStore from 'stores/manila/share-network';
 
-export default function PopoverSubnets(props) {
-  const { subnetIds = [] } = props;
-  if (!subnetIds.length) {
-    return null;
+export default class Delete extends ConfirmAction {
+  get id() {
+    return 'delete';
   }
-  const getRequests = () => {
-    return subnetIds.map((i) => new SubnetStore().fetchDetail({ id: i }));
-  };
-  const columns = [
-    {
-      dataIndex: 'name',
-      title: t('Name'),
-    },
-    {
-      dataIndex: 'cidr',
-      title: t('CIDR'),
-    },
-  ];
-  return <IPopover columns={columns} getRequests={getRequests} />;
+
+  get title() {
+    return t('Delete Share Network');
+  }
+
+  get buttonType() {
+    return 'danger';
+  }
+
+  get buttonText() {
+    return t('Delete');
+  }
+
+  get actionName() {
+    return t('Delete Share Network');
+  }
+
+  policy = 'manila:share_network:delete';
+
+  onSubmit = (data) => globalShareNetworkStore.delete(data);
 }

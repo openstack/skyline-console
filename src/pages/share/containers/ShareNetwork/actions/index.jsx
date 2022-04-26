@@ -12,27 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
-import { SubnetStore } from 'stores/neutron/subnet';
-import IPopover from './Popover';
+import Create from './Create';
+import Delete from './Delete';
+import Edit from './Edit';
 
-export default function PopoverSubnets(props) {
-  const { subnetIds = [] } = props;
-  if (!subnetIds.length) {
-    return null;
-  }
-  const getRequests = () => {
-    return subnetIds.map((i) => new SubnetStore().fetchDetail({ id: i }));
-  };
-  const columns = [
-    {
-      dataIndex: 'name',
-      title: t('Name'),
-    },
-    {
-      dataIndex: 'cidr',
-      title: t('CIDR'),
-    },
-  ];
-  return <IPopover columns={columns} getRequests={getRequests} />;
-}
+const actionConfigs = {
+  rowActions: {
+    firstAction: Edit,
+    moreActions: [
+      {
+        action: Delete,
+      },
+    ],
+  },
+  primaryActions: [Create],
+  batchActions: [Delete],
+};
+
+const actionConfigsAdmin = {
+  rowActions: {
+    firstAction: Delete,
+    moreActions: [],
+  },
+  primaryActions: [],
+  batchActions: [],
+};
+
+export default { actionConfigs, actionConfigsAdmin };

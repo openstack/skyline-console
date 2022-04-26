@@ -16,6 +16,16 @@ import React, { useEffect, useState } from 'react';
 import { Popover, Spin, Table } from 'antd';
 import { FileTextOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
+import { getRender } from 'utils/table';
+
+const getColumn = (column) => {
+  const { valueRender, render, ...rest } = column;
+  const newRender = render || getRender(valueRender);
+  return {
+    ...rest,
+    render: newRender,
+  };
+};
 
 function PopupResources({ getRequests, columns }) {
   const [data, setData] = useState([]);
@@ -32,7 +42,10 @@ function PopupResources({ getRequests, columns }) {
   if (isLoading) {
     return <Spin />;
   }
-  return <Table columns={columns} dataSource={data} pagination={false} />;
+  const currentColumns = columns.map((c) => getColumn(c));
+  return (
+    <Table columns={currentColumns} dataSource={data} pagination={false} />
+  );
 }
 
 const IPopoverProps = {

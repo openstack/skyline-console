@@ -31,15 +31,12 @@ class ManilaClient extends Base {
   get resources() {
     return [
       {
+        name: 'azones',
+        key: 'availability-zones',
+      },
+      {
         key: 'shares',
         responseKey: 'share',
-        extendOperations: [
-          {
-            key: 'detail',
-            method: 'get',
-            isDetail: false,
-          },
-        ],
       },
       {
         key: 'types',
@@ -105,6 +102,23 @@ class ManilaClient extends Base {
             name: 'exportLocations',
             key: 'export_locations',
             responseKey: 'export_location',
+          },
+        ],
+      },
+      {
+        name: 'shareNetworks',
+        key: 'share-networks',
+        responseKey: 'share_network',
+        extendOperations: [
+          {
+            key: 'action',
+            method: 'post',
+          },
+        ],
+        subResources: [
+          {
+            key: 'subnets',
+            responseKey: 'subnet',
           },
         ],
       },

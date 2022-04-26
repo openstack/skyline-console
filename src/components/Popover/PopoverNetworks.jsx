@@ -13,16 +13,17 @@
 // limitations under the License.
 
 import React from 'react';
-import { SubnetStore } from 'stores/neutron/subnet';
+import { NetworkStore } from 'stores/neutron/network';
+import { networkStatus } from 'resources/network';
 import IPopover from './Popover';
 
-export default function PopoverSubnets(props) {
-  const { subnetIds = [] } = props;
-  if (!subnetIds.length) {
+export default function PopoverNetworks(props) {
+  const { networkIds = [] } = props;
+  if (!networkIds.length) {
     return null;
   }
   const getRequests = () => {
-    return subnetIds.map((i) => new SubnetStore().fetchDetail({ id: i }));
+    return networkIds.map((i) => new NetworkStore().fetchDetail({ id: i }));
   };
   const columns = [
     {
@@ -30,8 +31,19 @@ export default function PopoverSubnets(props) {
       title: t('Name'),
     },
     {
-      dataIndex: 'cidr',
-      title: t('CIDR'),
+      title: t('External'),
+      dataIndex: 'router:external',
+      valueRender: 'yesNo',
+    },
+    {
+      title: t('Shared'),
+      dataIndex: 'shared',
+      valueRender: 'yesNo',
+    },
+    {
+      title: t('Status'),
+      dataIndex: 'status',
+      render: (value) => networkStatus[value] || '-',
     },
   ];
   return <IPopover columns={columns} getRequests={getRequests} />;
