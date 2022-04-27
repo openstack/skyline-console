@@ -12,10 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React, { useEffect, useState } from 'react';
-import { Col, Empty, Popover, Row, Spin } from 'antd';
-import { FileTextOutlined } from '@ant-design/icons';
-import { SubnetStore } from 'stores/neutron/subnet';
+import React from 'react';
+import PopoverSubnets from 'components/Popover/PopoverSubnets';
 
 export const networkStatus = {
   ACTIVE: t('Active'),
@@ -63,14 +61,11 @@ export const networkColumns = (self) => [
     title: t('Subnet Count'),
     dataIndex: 'subnets',
     render: (value, record) => {
-      const content = <PopUpSubnet subnetIds={record.subnets} />;
       return (
         <>
           {(value && value.length) || 0}{' '}
           {value && value.length !== 0 && (
-            <Popover content={content} destroyTooltipOnHide>
-              <FileTextOutlined />
-            </Popover>
+            <PopoverSubnets subnetIds={record.subnets} />
           )}
         </>
       );
@@ -115,35 +110,6 @@ export const getAnchorData = (num, y) => {
 };
 
 export const isExternalNetwork = (network) => !!network['router:external'];
-
-function PopUpSubnet({ subnetIds }) {
-  const [subnets, setSubnets] = useState(subnetIds);
-  const [isLoading, setLoading] = useState(false);
-  useEffect(() => {
-    setLoading(true);
-    (async function () {
-      const promises = subnets.map((i) =>
-        new SubnetStore().fetchDetail({ id: i })
-      );
-      const ret = await Promise.all(promises);
-      setSubnets(ret);
-      setLoading(false);
-    })();
-  }, []);
-  if (isLoading) {
-    return <Spin />;
-  }
-  return subnets.length === 0 ? (
-    <Empty />
-  ) : (
-    subnets.map((item, index) => (
-      <Row gutter={[24]} key={`${item}_${index}`} style={{ minWidth: 300 }}>
-        <Col span={12}>{item.name}</Col>
-        <Col span={12}>{item.cidr}</Col>
-      </Row>
-    ))
-  );
-}
 
 export const subnetIpv6Tip = t(
   'Default is slaac, for details, see https://docs.openstack.org/neutron/latest/admin/config-ipv6.html'
