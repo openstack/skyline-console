@@ -15,7 +15,7 @@
 import Base from '../client/base';
 import { manilaBase, manilaEndpoint } from '../client/constants';
 
-class ManilaClient extends Base {
+export class ManilaClient extends Base {
   get baseUrl() {
     return manilaBase();
   }
@@ -119,6 +119,17 @@ class ManilaClient extends Base {
           {
             key: 'subnets',
             responseKey: 'subnet',
+          },
+        ],
+      },
+      {
+        name: 'shareGroups',
+        key: 'share-groups',
+        responseKey: 'share_group',
+        extendOperations: [
+          {
+            key: 'action',
+            method: 'post',
           },
         ],
       },

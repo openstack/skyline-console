@@ -12,30 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Create from './Create';
-import Delete from './Delete';
-import Edit from './Edit';
+import { ConfirmAction } from 'containers/Action';
+import globalShareGroupStore from 'stores/manila/share-group';
 
-const actionConfigs = {
-  rowActions: {
-    firstAction: Edit,
-    moreActions: [
-      {
-        action: Delete,
-      },
-    ],
-  },
-  primaryActions: [Create],
-  batchActions: [Delete],
-};
+export default class Delete extends ConfirmAction {
+  get id() {
+    return 'delete';
+  }
 
-const actionConfigsAdmin = {
-  rowActions: {
-    firstAction: Delete,
-    moreActions: [],
-  },
-  primaryActions: [],
-  batchActions: [Delete],
-};
+  get title() {
+    return t('Delete Share Group');
+  }
 
-export default { actionConfigs, actionConfigsAdmin };
+  get buttonType() {
+    return 'danger';
+  }
+
+  get buttonText() {
+    return t('Delete');
+  }
+
+  get actionName() {
+    return t('Delete Share Group');
+  }
+
+  policy = 'manila:share_group:delete';
+
+  onSubmit = (data) => globalShareGroupStore.delete(data);
+}

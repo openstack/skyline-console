@@ -15,7 +15,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
-import { accessRuleStatus } from 'resources/share';
+import { accessRuleStatus } from 'resources/manila/share';
 import { getYesNo } from 'utils/index';
 
 export class BaseDetail extends Base {

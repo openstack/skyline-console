@@ -400,6 +400,22 @@ const renderMenu = (t) => {
             },
           ],
         },
+        {
+          path: '/share/share-group',
+          name: t('Share Group'),
+          key: 'shareGroup',
+          level: 1,
+          endpoints: 'manilav2',
+          children: [
+            {
+              path: /^\/share\/share-group\/detail\/.[^/]+$/,
+              name: t('Share Group Detail'),
+              key: 'shareGroupDetail',
+              level: 2,
+              routePath: '/share/share-group/detail/:id',
+            },
+          ],
+        },
       ],
     },
     // {

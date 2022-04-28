@@ -15,6 +15,7 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalShareTypeStore from 'stores/manila/share-type';
+import { shareTypeColumns } from 'resources/manila/share-type';
 import actionConfigs from './actions';
 
 export class ShareType extends Base {
@@ -45,24 +46,7 @@ export class ShareType extends Base {
     };
   };
 
-  getColumns = () => [
-    {
-      title: t('ID/Name'),
-      dataIndex: 'name',
-      routeName: 'shareTypeDetailAdmin',
-    },
-    {
-      title: t('Description'),
-      dataIndex: 'description',
-      isHideable: true,
-      valueRender: 'noValue',
-    },
-    {
-      title: t('Public'),
-      dataIndex: 'share_type_access:is_public',
-      valueRender: 'yesNo',
-    },
-  ];
+  getColumns = () => shareTypeColumns;
 }
 
 export default inject('rootStore')(observer(ShareType));

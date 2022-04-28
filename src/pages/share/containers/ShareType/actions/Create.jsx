@@ -19,7 +19,7 @@ import { projectTableOptions } from 'resources/project';
 import { ProjectStore } from 'stores/keystone/project';
 import KeyValueInput from 'components/FormItem/KeyValueInput';
 import { isEmpty } from 'lodash';
-import { yesNoOptions } from 'resources/share-type';
+import { yesNoOptions } from 'resources/manila/share-type';
 import { updateAddSelectValueToObj } from 'utils/index';
 
 const checkKeyValue = (values) => {

@@ -13,37 +13,48 @@
 // limitations under the License.
 
 import { inject, observer } from 'mobx-react';
-import { ShareInstanceStore } from 'stores/manila/share-instance';
+import { ShareGroupStore } from 'stores/manila/share-group';
 import Base from 'containers/TabDetail';
-import { shareStatus } from 'resources/manila/share';
+import { shareGroupStatus } from 'resources/manila/share-group';
 import BaseDetail from './BaseDetail';
+import actionConfigs from '../actions';
 
 export class Detail extends Base {
   get name() {
-    return t('share instance');
+    return t('share group');
   }
 
   get policy() {
-    return 'manila:share_instance:show';
+    return 'manila:share_group:get';
   }
 
   get listUrl() {
-    return this.getRoutePath('shareInstance');
+    return this.getRoutePath('shareGroup');
+  }
+
+  get actionConfigs() {
+    return this.isAdminPage
+      ? actionConfigs.actionConfigsAdmin
+      : actionConfigs.actionConfigs;
   }
 
   get detailInfos() {
     return [
       {
-        title: t('Host'),
-        dataIndex: 'host',
+        title: t('Name'),
+        dataIndex: 'name',
+      },
+      {
+        title: t('Description'),
+        dataIndex: 'description',
       },
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (value) => shareStatus[value] || value,
+        render: (value) => shareGroupStatus[value] || value,
       },
       {
-        title: t('Created'),
+        title: t('Created At'),
         dataIndex: 'created_at',
         valueRender: 'toLocalTime',
       },
@@ -66,7 +77,7 @@ export class Detail extends Base {
   }
 
   init() {
-    this.store = new ShareInstanceStore();
+    this.store = new ShareGroupStore();
   }
 }
 
