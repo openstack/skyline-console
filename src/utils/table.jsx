@@ -222,3 +222,16 @@ export const getNameRenderByRouter = (render, column, rowKey) => {
     );
   };
 };
+
+export const idNameColumn = {
+  title: t('ID/Name'),
+  dataIndex: 'name',
+  render: (value, record) => {
+    return (
+      <>
+        <div>{record.id}</div>
+        <div>{value}</div>
+      </>
+    );
+  },
+};

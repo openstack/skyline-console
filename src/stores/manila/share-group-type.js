@@ -45,21 +45,36 @@ export class ShareGroupTypeStore extends Base {
     return this.addProjectAccess(id, projectIds);
   }
 
-  async listDidFetch(items) {
+  async listDidFetch(items, _, filters) {
     if (!items.length) {
       return items;
     }
-    const result = await this.shareTypeClient.list({ is_public: 'all' });
+    const { is_public } = filters;
+    const params = is_public === 'all' ? { is_public } : {};
+    const result = await this.shareTypeClient.list(params);
     const { share_types: types = [] } = result;
     return items.map((it) => {
       const { share_types = [] } = it;
       return {
         ...it,
-        shareTypes: share_types.map((typeId) =>
-          types.find((t) => t.id === typeId)
-        ),
+        shareTypes: share_types
+          .map((typeId) => types.find((t) => t.id === typeId))
+          .filter((t) => !!t), // to filter private type invisible to current project
       };
     });
+  }
+
+  async detailDidFetch(item, all_projects) {
+    const params = all_projects ? { is_public: 'all' } : {};
+    const result = await this.shareTypeClient.list(params);
+    const { share_types: types = [] } = result;
+    const { share_types = [] } = item;
+    return {
+      ...item,
+      shareTypes: share_types
+        .map((typeId) => types.find((t) => t.id === typeId))
+        .filter((t) => !!t), // to filter private type invisible to current project
+    };
   }
 
   @action
