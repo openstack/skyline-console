@@ -212,7 +212,7 @@ export class FloatingIps extends Base {
           return resource_name || '';
         },
         stringify: (resource_name, record) => {
-          if (!resource_name && record.port_forwardings.length !== 0) {
+          if (!resource_name && (record.port_forwardings || []).length !== 0) {
             const ret = record.port_forwardings
               .sort((a, b) => a.external_port - b.external_port)
               .map(
