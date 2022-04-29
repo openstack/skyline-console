@@ -12,53 +12,51 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { inject, observer } from "mobx-react";
+import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
 
-@inject("rootStore")
-@observer
-export default class BaseDetail extends Base {
-
+export class BaseDetail extends Base {
   get leftCards() {
-    return [this.baseInfoCard]
+    return [this.baseInfoCard];
   }
 
   get baseInfoCard() {
     const options = [
       {
-        label: t("Datastore"),
-        dataIndex: "datastore.type"
+        label: t('Datastore'),
+        dataIndex: 'datastore.type',
       },
       {
-        label: t("Datastore Version"),
-        dataIndex: "datastore.version"
+        label: t('Datastore Version'),
+        dataIndex: 'datastore.version',
       },
       {
-        label: t("Backup File Location"),
-        dataIndex: "locationRef",
+        label: t('Backup File Location'),
+        dataIndex: 'locationRef',
       },
       {
-        label: t("Initial Volume Size"),
-        dataIndex: "size",
+        label: t('Initial Volume Size'),
+        dataIndex: 'size',
       },
       {
-        label: t("Created"),
-        dataIndex: "created",
+        label: t('Created'),
+        dataIndex: 'created',
       },
       {
-        label: t("Updated"),
-        dataIndex: "updated",
-      }
-      ,
-      {
-        label: t("Status"),
-        dataIndex: "status"
+        label: t('Updated'),
+        dataIndex: 'updated',
       },
-    ]
+      {
+        label: t('Status'),
+        dataIndex: 'status',
+      },
+    ];
 
     return {
-      title: t("Base Info"),
-      options
-    }
+      title: t('Base Info'),
+      options,
+    };
   }
 }
+
+export default inject('rootStore')(observer(BaseDetail));

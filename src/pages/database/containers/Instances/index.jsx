@@ -16,11 +16,10 @@ import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalInstancesStore from 'stores/trove/instances';
 import { InstanceStatus } from 'resources/database';
+import { get as _get } from 'lodash';
 import actions from './actions';
 
-@inject('rootStore')
-@observer
-export default class Instances extends Base {
+export class Instances extends Base {
   init() {
     this.store = globalInstancesStore;
   }
@@ -54,11 +53,13 @@ export default class Instances extends Base {
     },
     {
       title: t('Datastore'),
-      dataIndex: 'datastore.type',
+      dataIndex: 'datastore',
+      render: (value) => _get(value, 'type', '-'),
     },
     {
       title: t('Datastore Version'),
-      dataIndex: 'datastore.version',
+      dataIndex: 'datastore',
+      render: (value) => _get(value, 'version', '-'),
       isHideable: true,
     },
     {
@@ -79,3 +80,5 @@ export default class Instances extends Base {
     },
   ];
 }
+
+export default inject('rootStore')(observer(Instances));

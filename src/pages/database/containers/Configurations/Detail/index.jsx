@@ -19,9 +19,7 @@ import BaseDetail from './BaseDetail';
 import Values from './Values';
 import Instances from './Instances';
 
-@inject('rootStore')
-@observer
-export default class ConfigurationsDetail extends Base {
+export class ConfigurationsDetail extends Base {
   init() {
     this.store = globalConfigurationsStore;
   }
@@ -67,3 +65,5 @@ export default class ConfigurationsDetail extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(ConfigurationsDetail));

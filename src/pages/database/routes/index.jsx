@@ -31,11 +31,27 @@ export default [
       { path: `${PATH}/instances`, component: Instances, exact: true },
       { path: `${PATH}/instances/create`, component: StepCreate, exact: true },
       { path: `${PATH}/backups`, component: Backups, exact: true },
-      { path: `${PATH}/configurations`, component: Configurations, exact: true },
-      { path: `${PATH}/instances/detail/:id`, component: InstancesDetail, exact: true },
-      { path: `${PATH}/backups/detail/:id`, component: BackupsDetail, exact: true },
-      { path: `${PATH}/configurations/detail/:id`, component: ConfigurationsDetail, exact: true },  
+      {
+        path: `${PATH}/configurations`,
+        component: Configurations,
+        exact: true,
+      },
+      {
+        path: `${PATH}/instances/detail/:id`,
+        component: InstancesDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/backups/detail/:id`,
+        component: BackupsDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/configurations/detail/:id`,
+        component: ConfigurationsDetail,
+        exact: true,
+      },
       { path: '*', component: E404 },
-    ]
-  }
-]
+    ],
+  },
+];

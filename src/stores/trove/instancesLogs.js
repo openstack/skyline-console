@@ -29,7 +29,7 @@ export class InstancesLogStore extends Base {
   }
 
   get paramsFunc() {
-    return () => { };
+    return () => {};
   }
 }
 

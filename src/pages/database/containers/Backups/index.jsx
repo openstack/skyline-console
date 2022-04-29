@@ -15,12 +15,10 @@
 import Base from 'containers/List';
 
 import { inject, observer } from 'mobx-react';
-import actions from './actions';
 import globalBackupsStore from 'stores/trove/backups';
+import actions from './actions';
 
-@inject('rootStore')
-@observer
-export default class Backups extends Base {
+export class Backups extends Base {
   init() {
     this.store = globalBackupsStore;
   }
@@ -50,7 +48,7 @@ export default class Backups extends Base {
     {
       title: t('Backup Name'),
       dataIndex: 'name',
-      routeName: this.getRouteName("databaseBackupDetail")
+      routeName: this.getRouteName('databaseBackupDetail'),
     },
     {
       title: t('Description'),
@@ -59,3 +57,5 @@ export default class Backups extends Base {
     },
   ];
 }
+
+export default inject('rootStore')(observer(Backups));

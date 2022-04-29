@@ -12,49 +12,46 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { inject, observer } from "mobx-react";
+import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
 
-@inject("rootStore")
-@observer
-export default class BaseDetail extends Base {
-
+export class BaseDetail extends Base {
   get leftCards() {
     return [this.baseInfoCard, this.specsCard, this.connectionInfoCard];
   }
 
   get rightCards() {
-    return [this.faultCard]
+    return [this.faultCard];
   }
 
   get baseInfoCard() {
     const options = [
       {
-        label: t("Name"),
-        dataIndex: "name"
+        label: t('Name'),
+        dataIndex: 'name',
       },
       {
-        label: t("Datastore"),
-        dataIndex: "datastore.type"
+        label: t('Datastore'),
+        dataIndex: 'datastore.type',
       },
       {
-        label: t("Datastore Version"),
-        dataIndex: "datastore.version"
+        label: t('Datastore Version'),
+        dataIndex: 'datastore.version',
       },
       {
-        label: t("Status"),
-        dataIndex: "status"
+        label: t('Status'),
+        dataIndex: 'status',
       },
       {
-        label: t("Locality"),
-        dataIndex: "locality"
-      }
+        label: t('Locality'),
+        dataIndex: 'locality',
+      },
     ];
 
     return {
-      title: t("Base Info"),
-      options
-    }
+      title: t('Base Info'),
+      options,
+    };
   }
 
   get specsCard() {
@@ -63,47 +60,52 @@ export default class BaseDetail extends Base {
         label: t('Flavor'),
         dataIndex: 'flavor.id',
         render: (value) => {
-          return this.getLinkRender('flavorDetail', value, {
-            id: value,
-          }, null)
+          return this.getLinkRender(
+            'flavorDetail',
+            value,
+            {
+              id: value,
+            },
+            null
+          );
         },
       },
       {
-        label: t("Volume Size"),
-        dataIndex: "volume.size"
+        label: t('Volume Size'),
+        dataIndex: 'volume.size',
       },
       {
-        label: t("Created"),
-        dataIndex: "created",
-        valueRender: "toLocalTime"
+        label: t('Created'),
+        dataIndex: 'created',
+        valueRender: 'toLocalTime',
       },
       {
-        label: t("Updated"),
-        dataIndex: "updated",
-        valueRender: "toLocalTime"
+        label: t('Updated'),
+        dataIndex: 'updated',
+        valueRender: 'toLocalTime',
       },
       {
-        label: t("Service Status Updated"),
-        dataIndex: "service_status_update"
-      }
+        label: t('Service Status Updated'),
+        dataIndex: 'service_status_update',
+      },
     ];
 
     return {
-      title: t("Specs"),
-      options
-    }
+      title: t('Specs'),
+      options,
+    };
   }
 
   get connectionInfoCard() {
     const options = [
       {
-        label: t("Host"),
-        dataIndex: "ip",
-        render: (value) => value ? value.map(it => it) : "-",
+        label: t('Host'),
+        dataIndex: 'ip',
+        render: (value) => (value ? value.map((it) => it) : '-'),
       },
       {
-        label: t("Database Port"),
-        dataIndex: "datastore.type",
+        label: t('Database Port'),
+        dataIndex: 'datastore.type',
         render: (value) => {
           switch (value) {
             case 'mysql':
@@ -115,41 +117,43 @@ export default class BaseDetail extends Base {
             default:
               break;
           }
-        }
+        },
       },
       {
-        label: t("Connection Examples"),
-        dataIndex: "connection_examples"
-      }
+        label: t('Connection Examples'),
+        dataIndex: 'connection_examples',
+      },
     ];
 
     return {
-      title: t("Connection Information"),
-      options
-    }
+      title: t('Connection Information'),
+      options,
+    };
   }
 
   get faultCard() {
     const options = [
       {
-        label: t("Created"),
-        dataIndex: "created",
-        valueRender: "toLocalTime"
+        label: t('Created'),
+        dataIndex: 'created',
+        valueRender: 'toLocalTime',
       },
       {
-        label: t("Message"),
-        dataIndex: "fault.message"
+        label: t('Message'),
+        dataIndex: 'fault.message',
       },
       {
-        label: t("Message Details"),
-        dataIndex: "fault.details"
-      }
+        label: t('Message Details'),
+        dataIndex: 'fault.details',
+      },
     ];
 
     return {
-      title: t("Fault"),
+      title: t('Fault'),
       labelCol: 2,
-      options
-    }
+      options,
+    };
   }
 }
+
+export default inject('rootStore')(observer(BaseDetail));

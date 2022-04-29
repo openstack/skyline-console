@@ -12,32 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Base from "containers/List"
-import { inject, observer } from "mobx-react";
-import { InstancesLogStore } from "stores/trove/instancesLogs";
+import Base from 'containers/List';
+import { inject, observer } from 'mobx-react';
+import { InstancesLogStore } from 'stores/trove/instancesLogs';
 
-@inject("rootStore")
-@observer
-export default class Logs extends Base {
-
+export class Logs extends Base {
   init() {
-    this.store = new InstancesLogStore()
+    this.store = new InstancesLogStore();
   }
 
   get name() {
-    return t("Log")
+    return t('Log');
   }
 
   get policy() {
-    return "trove:instance:guest_log_list";
+    return 'trove:instance:guest_log_list';
   }
 
   getColumns = () => {
     return [
       {
-        title: t("Name"),
-        dataIndex: "name"
-      }
-    ]
-  }
+        title: t('Name'),
+        dataIndex: 'name',
+      },
+    ];
+  };
 }
+
+export default inject('rootStore')(observer(Logs));

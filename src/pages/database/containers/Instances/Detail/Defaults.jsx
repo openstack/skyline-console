@@ -12,28 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Base from "containers/BaseDetail"
-import { inject, observer } from "mobx-react";
+import Base from 'containers/BaseDetail';
+import { inject, observer } from 'mobx-react';
+import { get as _get } from 'lodash';
 
-@inject("rootStore")
-@observer
-export default class Defaults extends Base {
-
+export class Defaults extends Base {
   get leftCards() {
-    return [this.baseInfoCard]
+    return [this.baseInfoCard];
   }
 
   get baseInfoCard() {
     const options = [
       {
-        label: t("Number of Nodes"),
-        dataIndex: "node_groups[0].count"
-      }
+        label: t('Number of Nodes'),
+        dataIndex: 'node_groups',
+        render: (value) => _get(value, ['0', 'count'], '-'),
+      },
     ];
 
     return {
-      title: t("Defaults"),
-      options
+      title: t('Defaults'),
+      options,
     };
   }
 }
+
+export default inject('rootStore')(observer(Defaults));

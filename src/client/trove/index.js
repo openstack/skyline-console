@@ -46,7 +46,7 @@ class TroveClient extends Base {
           {
             key: 'log',
             responseKey: 'log',
-          }
+          },
         ],
       },
       {

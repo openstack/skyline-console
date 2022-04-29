@@ -15,11 +15,10 @@
 import Base from 'containers/List';
 import { inject, observer } from 'mobx-react';
 import { InstancesUsersStore } from 'stores/trove/instances-user';
+import { get as _get } from 'lodash';
 import actions from './UserAction';
 
-@inject('rootStore')
-@observer
-export default class Users extends Base {
+export class Users extends Base {
   init() {
     this.store = new InstancesUsersStore();
   }
@@ -52,8 +51,11 @@ export default class Users extends Base {
       },
       {
         title: t('Databases'),
-        dataIndex: 'databases.name',
+        dataIndex: 'databases',
+        render: (value) => _get(value, 'name', '-'),
       },
     ];
   };
 }
+
+export default inject('rootStore')(observer(Users));

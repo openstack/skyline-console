@@ -18,9 +18,7 @@ import globalInstancesStore from 'stores/trove/instances';
 import globalConfigurationsStore from 'stores/trove/configurations';
 import { toJS } from 'mobx';
 
-@inject('rootStore')
-@observer
-export default class Create extends ModalAction {
+export class Create extends ModalAction {
   init() {
     this.store = globalConfigurationsStore;
     this.getDatastores();
@@ -129,3 +127,5 @@ export default class Create extends ModalAction {
     });
   };
 }
+
+export default inject('rootStore')(observer(Create));

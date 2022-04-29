@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { ConfirmAction } from 'containers/Action';
-import globalConfigurationsStore from "stores/trove/configurations";
+import globalConfigurationsStore from 'stores/trove/configurations';
 
 export default class Delete extends ConfirmAction {
   get id() {

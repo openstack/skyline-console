@@ -17,9 +17,7 @@ import { inject, observer } from 'mobx-react';
 import globalInstancesStore from 'stores/trove/instances';
 import globalBackupsStore from 'stores/trove/backups';
 
-@inject('rootStore')
-@observer
-export default class Create extends ModalAction {
+export class Create extends ModalAction {
   init() {
     this.store = globalBackupsStore;
     this.getDatabaseInstance();
@@ -91,3 +89,5 @@ export default class Create extends ModalAction {
     });
   };
 }
+
+export default inject('rootStore')(observer(Create));

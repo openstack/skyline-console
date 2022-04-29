@@ -20,9 +20,7 @@ import globalInstancesStore from 'stores/trove/instances';
 import globalAvailabilityZoneStore from 'stores/nova/zone';
 import FlavorSelectTable from 'pages/compute/containers/Instance/components/FlavorSelectTable';
 
-@inject('rootStore')
-@observer
-export default class StepDetails extends Base {
+export class StepDetails extends Base {
   init() {
     this.instancesStore = globalInstancesStore;
     this.getDatastores();
@@ -226,3 +224,5 @@ export default class StepDetails extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(StepDetails));

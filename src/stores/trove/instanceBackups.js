@@ -29,7 +29,7 @@ export class InstanceBackupsStore extends Base {
   }
 
   get paramsFunc() {
-    return () => { };
+    return () => {};
   }
 }
 

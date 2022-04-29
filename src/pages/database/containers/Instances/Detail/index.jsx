@@ -22,9 +22,7 @@ import Backups from './Backups';
 import Logs from './Logs';
 import Defaults from './Defaults';
 
-@inject('rootStore')
-@observer
-export default class InstancesDetail extends Base {
+export class InstancesDetail extends Base {
   init() {
     this.store = globalInstancesStore;
   }
@@ -97,3 +95,5 @@ export default class InstancesDetail extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(InstancesDetail));

@@ -20,9 +20,7 @@ import StepNetworking from './StepNetworking';
 import StepInitializeDatabases from './StepInitializeDatabases';
 import StepAdvanced from './StepAdvanced';
 
-@inject('rootStore')
-@observer
-export default class StepCreate extends StepAction {
+export class StepCreate extends StepAction {
   init() {
     this.store = globalInstancesStore;
   }
@@ -114,3 +112,5 @@ export default class StepCreate extends StepAction {
     });
   };
 }
+
+export default inject('rootStore')(observer(StepCreate));

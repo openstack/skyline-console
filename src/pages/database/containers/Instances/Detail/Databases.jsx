@@ -12,24 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Base from "containers/List"
-import { inject, observer } from "mobx-react";
-import { InstancesDatabasesStore } from "stores/trove/instances-database";
-import actions from "./DatabaseAction";
+import Base from 'containers/List';
+import { inject, observer } from 'mobx-react';
+import { InstancesDatabasesStore } from 'stores/trove/instances-database';
+import actions from './DatabaseAction';
 
-@inject("rootStore")
-@observer
-export default class Databases extends Base {
-
+export class Databases extends Base {
   init() {
-    this.store = new InstancesDatabasesStore()
+    this.store = new InstancesDatabasesStore();
   }
+
   get name() {
-    return "Databases"
+    return 'Databases';
   }
 
   get policy() {
-    return "trove:instance:detail"
+    return 'trove:instance:detail';
   }
 
   get actionConfigs() {
@@ -43,9 +41,11 @@ export default class Databases extends Base {
   getColumns = () => {
     return [
       {
-        title: t("Database Name"),
-        dataIndex: "name"
-      }
-    ]
-  }
+        title: t('Database Name'),
+        dataIndex: 'name',
+      },
+    ];
+  };
 }
+
+export default inject('rootStore')(observer(Databases));

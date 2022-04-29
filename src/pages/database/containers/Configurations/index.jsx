@@ -15,13 +15,10 @@
 import Base from 'containers/List';
 
 import { inject, observer } from 'mobx-react';
-import actions from './actions';
 import globalConfigurationsStore from 'stores/trove/configurations';
+import actions from './actions';
 
-@inject('rootStore')
-@observer
-export default class Configurations extends Base {
-
+export class Configurations extends Base {
   init() {
     this.store = globalConfigurationsStore;
   }
@@ -51,7 +48,7 @@ export default class Configurations extends Base {
     {
       title: t('Configuration Group Name'),
       dataIndex: 'name',
-      routeName: this.getRouteName("configurationsDetail")
+      routeName: this.getRouteName('configurationsDetail'),
     },
     {
       title: t('Description'),
@@ -68,3 +65,5 @@ export default class Configurations extends Base {
     },
   ];
 }
+
+export default inject('rootStore')(observer(Configurations));

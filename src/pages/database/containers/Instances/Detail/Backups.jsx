@@ -12,48 +12,47 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Base from "containers/List"
-import { inject, observer } from "mobx-react";
-import { InstanceBackupsStore } from "stores/trove/instanceBackups";
+import Base from 'containers/List';
+import { inject, observer } from 'mobx-react';
+import { InstanceBackupsStore } from 'stores/trove/instanceBackups';
 
-@inject("rootStore")
-@observer
-export default class Backups extends Base {
-
+export class Backups extends Base {
   init() {
-    this.store = new InstanceBackupsStore()
+    this.store = new InstanceBackupsStore();
   }
 
   get name() {
-    return t("Backups")
+    return t('Backups');
   }
 
   get policy() {
-    return "trove:instance:backups";
+    return 'trove:instance:backups';
   }
 
   getColumns = () => {
     return [
       {
-        title: t("Name"),
-        dataIndex: "name"
+        title: t('Name'),
+        dataIndex: 'name',
       },
       {
-        title: t("Created"),
-        dataIndex: "created"
+        title: t('Created'),
+        dataIndex: 'created',
       },
       {
-        title: t("Backup File"),
-        dataIndex: "locationRef"
+        title: t('Backup File'),
+        dataIndex: 'locationRef',
       },
       {
-        title: t("Incremental"),
-        dataIndex: "incremental"
+        title: t('Incremental'),
+        dataIndex: 'incremental',
       },
       {
-        title: t("Status"),
-        dataIndex: "status"
-      }
-    ]
-  }
+        title: t('Status'),
+        dataIndex: 'status',
+      },
+    ];
+  };
 }
+
+export default inject('rootStore')(observer(Backups));

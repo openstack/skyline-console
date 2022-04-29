@@ -12,13 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Base from "containers/BaseDetail"
-import { inject, observer } from "mobx-react";
+import Base from 'containers/BaseDetail';
+import { inject, observer } from 'mobx-react';
 
-@inject("rootStore")
-@observer
-export default class Instances extends Base {
-
+export class Instances extends Base {
   get leftCards() {
     return [this.baseInfoCard];
   }
@@ -26,14 +23,16 @@ export default class Instances extends Base {
   get baseInfoCard() {
     const options = [
       {
-        label: t("Instances"),
-        dataIndex: "instance_count"
-      }
-    ]
+        label: t('Instances'),
+        dataIndex: 'instance_count',
+      },
+    ];
 
     return {
-      title: t("Defaults"),
-      options
-    }
+      title: t('Defaults'),
+      options,
+    };
   }
 }
+
+export default inject('rootStore')(observer(Instances));

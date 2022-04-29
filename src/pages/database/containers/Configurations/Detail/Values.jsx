@@ -12,13 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Base from "containers/BaseDetail"
-import { inject, observer } from "mobx-react";
+import Base from 'containers/BaseDetail';
+import { inject, observer } from 'mobx-react';
 
-@inject("rootStore")
-@observer
-export default class Values extends Base {
-
+export class Values extends Base {
   get leftCards() {
     return [this.baseInfoCard];
   }
@@ -37,3 +34,5 @@ export default class Values extends Base {
     };
   }
 }
+
+export default inject('rootStore')(observer(Values));

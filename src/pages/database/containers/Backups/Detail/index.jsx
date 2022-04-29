@@ -17,9 +17,7 @@ import Base from 'containers/TabDetail';
 import { BackupsStore } from 'stores/trove/backups';
 import BaseDetail from './BaseDetail';
 
-@inject('rootStore')
-@observer
-export default class BackupsDetail extends Base {
+export class BackupsDetail extends Base {
   init() {
     this.store = new BackupsStore();
   }
@@ -59,3 +57,5 @@ export default class BackupsDetail extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(BackupsDetail));
