@@ -22,7 +22,6 @@ export const ipProtocols = [
   { value: 'egp', label: t('EGP') },
   { value: 'esp', label: t('ESP') },
   { value: 'gre', label: t('GRE') },
-  { value: 'icmpv6', label: t('IPv6-ICMP') },
   { value: 'igmp', label: t('IGMP') },
   { value: 'ipv6-encap', label: t('IPv6') },
   { value: 'ipv6-frag', label: t('IPv6-Frag') },
