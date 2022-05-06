@@ -68,7 +68,7 @@ export class Create extends ModalAction {
 
   get datastoresVersion() {
     const dizi = this.datastores
-      .filter((item) => item.label === this.state.datastoreType)
+      .filter((item) => item.label === this.state.datastore_type)
       .map((it) => {
         return it.originData.versions.map((e) => ({
           label: e.name,

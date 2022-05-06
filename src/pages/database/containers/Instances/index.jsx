@@ -76,7 +76,7 @@ export class Instances extends Base {
     {
       title: t('Status'),
       dataIndex: 'status',
-      render: (value) => InstanceStatus[value],
+      render: (value) => InstanceStatus[value] || value,
     },
   ];
 }

@@ -26,3 +26,5 @@ export const InstanceStatus = {
   PROMOTE: t('Promote'),
   EJECT: t('Eject'),
 };
+
+export { default as policyType } from './server-group';

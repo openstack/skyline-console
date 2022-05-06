@@ -14,6 +14,7 @@
 
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
+import { InstanceStatus, policyType } from 'resources/database';
 
 export class BaseDetail extends Base {
   get leftCards() {
@@ -41,10 +42,12 @@ export class BaseDetail extends Base {
       {
         label: t('Status'),
         dataIndex: 'status',
+        render: (value) => InstanceStatus[value] || value,
       },
       {
         label: t('Locality'),
         dataIndex: 'locality',
+        render: (value) => policyType[value] || value,
       },
     ];
 

@@ -201,7 +201,6 @@ export default class CreateSubnet extends ModalAction {
         tip: subnetIpv6Tip,
         hidden: ip_version !== 'ipv6',
         dependencies: ['ipv6_address_mode'],
-        allowClear: true,
         validator: (rule, value) => {
           const ipv6_address_mode =
             (this.formRef.current &&
@@ -237,7 +236,6 @@ export default class CreateSubnet extends ModalAction {
         ],
         tip: subnetIpv6Tip,
         hidden: ip_version !== 'ipv6',
-        allowClear: true,
       },
       {
         name: 'cidr',

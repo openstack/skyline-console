@@ -61,11 +61,17 @@ export default class index extends Component {
       isWrappedValue,
       checkOptions,
       checkBoxInfo,
+      allowClear = true,
       ...rest
     } = this.props;
     if (isUndefined(value) || isNull(value)) {
       return (
-        <Select {...rest} placeholder={placeholder} onChange={this.onChange} />
+        <Select
+          {...rest}
+          allowClear={allowClear}
+          placeholder={placeholder}
+          onChange={this.onChange}
+        />
       );
     }
     if (checkOptions) {
@@ -81,6 +87,7 @@ export default class index extends Component {
           <Col span={12}>
             <Select
               {...rest}
+              allowClear={allowClear}
               placeholder={placeholder}
               onChange={this.onChange}
               value={this.getValue()}
@@ -96,6 +103,7 @@ export default class index extends Component {
     return (
       <Select
         {...rest}
+        allowClear={allowClear}
         placeholder={placeholder}
         onChange={this.onChange}
         value={this.getValue()}

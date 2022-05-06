@@ -209,11 +209,11 @@ export class StepDetails extends Base {
         type: 'select',
         options: [
           {
-            label: 'Affinity',
+            label: t('Affinity'),
             value: 'affinity',
           },
           {
-            label: 'Anti-affinity',
+            label: t('Anti-Affinity'),
             value: 'anti-affinity',
           },
         ],

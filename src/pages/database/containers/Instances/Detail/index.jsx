@@ -15,6 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/TabDetail';
 import globalInstancesStore from 'stores/trove/instances';
+import { InstanceStatus } from 'resources/database';
 import BaseDetail from './BaseDetail';
 import Users from './Users';
 import Databases from './Databases';
@@ -52,10 +53,12 @@ export class InstancesDetail extends Base {
       {
         title: t('Status'),
         dataIndex: 'status',
+        render: (value) => InstanceStatus[value] || value,
       },
       {
-        title: t('Tenant Id'),
+        title: t('Project ID'),
         dataIndex: 'tenant_id',
+        hidden: !this.isAdminPage,
       },
     ];
   }
