@@ -14,32 +14,32 @@
 
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import globalShareGroupStore, {
-  ShareGroupStore,
-} from 'stores/manila/share-group';
-import {
-  getShareGroupColumns,
-  shareGroupFilters,
-} from 'resources/manila/share-group';
+import { ShareMetadataStore } from 'stores/manila/share-metadata';
 import actionConfigs from './actions';
 
-export class ShareGroup extends Base {
+export class Metadata extends Base {
   init() {
-    this.store = globalShareGroupStore;
-    this.downloadStore = new ShareGroupStore();
+    this.store = new ShareMetadataStore();
   }
 
   get policy() {
-    return 'manila:share_group:get_all';
+    return 'manila:share:get_share_metadata';
   }
 
   get name() {
-    return t('share groups');
+    return t('share metadata');
   }
 
-  get isFilterByBackend() {
-    return true;
-  }
+  getColumns = () => [
+    {
+      title: t('Key'),
+      dataIndex: 'keyName',
+    },
+    {
+      title: t('Value'),
+      dataIndex: 'value',
+    },
+  ];
 
   get actionConfigs() {
     return this.isAdminPage
@@ -47,11 +47,14 @@ export class ShareGroup extends Base {
       : actionConfigs.actionConfigs;
   }
 
-  getColumns = () => getShareGroupColumns(this);
-
   get searchFilters() {
-    return shareGroupFilters;
+    return [
+      {
+        label: t('Key'),
+        name: 'keyName',
+      },
+    ];
   }
 }
 
-export default inject('rootStore')(observer(ShareGroup));
+export default inject('rootStore')(observer(Metadata));

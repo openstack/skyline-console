@@ -25,7 +25,7 @@ export const shareTypeColumns = [
 export const shareTypeFilters = [
   {
     name: 'name',
-    label: 'name',
+    label: t('Name'),
   },
 ];
 

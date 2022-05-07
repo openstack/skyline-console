@@ -36,3 +36,26 @@ export const replicaState = {
   in_sync: t('Syncing'),
   out_of_sync: t('Out of Sync'),
 };
+
+export const shareProtocol = {
+  NFS: t('NFS'),
+  CIFS: t('CIFS'),
+  GlusterFS: t('GlusterFS'),
+  HDFS: t('HDFS'),
+  CephFS: t('CephFS'),
+  MAPRFS: t('MAPRFS'),
+};
+
+export const shareVisibility = {
+  public: t('Public'),
+  private: t('Private'),
+};
+
+export const shareAccessRuleState = {
+  new: t('New'),
+  active: t('Active'),
+  error: t('Error'),
+  queued_to_apply: t('Queued To Apply'),
+  queued_to_deny: t('Queued To Deny'),
+  denying: t('Denying'),
+};

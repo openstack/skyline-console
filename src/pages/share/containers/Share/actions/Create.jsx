@@ -1,0 +1,267 @@
+// Copyright 2021 99cloud
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+import { toJS } from 'mobx';
+import { inject, observer } from 'mobx-react';
+import { FormAction } from 'containers/Action';
+import globalShareStore, { ShareStore } from 'stores/manila/share';
+import { ShareNetworkStore } from 'stores/manila/share-network';
+import { ShareGroupStore } from 'stores/manila/share-group';
+import { ShareTypeStore } from 'stores/manila/share-type';
+import {
+  getShareGroupColumns,
+  shareGroupFilters,
+} from 'src/resources/manila/share-group';
+import {
+  shareTypeColumns,
+  shareTypeFilters,
+  checkShareTypeSupportServer,
+  shareTypeTip,
+} from 'src/resources/manila/share-type';
+import {
+  getShareNetworkColumns,
+  shareNetworkFilters,
+} from 'src/resources/manila/share-network';
+import { shareProtocol } from 'src/resources/manila/share';
+import { cloneDeep } from 'lodash';
+import { idNameColumn } from 'utils/table';
+import { extraFormItem } from 'pages/share/containers/ShareType/actions/Create';
+import { updateAddSelectValueToObj, getOptions } from 'utils/index';
+
+export class Create extends FormAction {
+  static id = 'create';
+
+  static title = t('Create Share');
+
+  static path = '/share/share/create';
+
+  get name() {
+    return t('create share');
+  }
+
+  get listUrl() {
+    return this.getRoutePath('share');
+  }
+
+  init() {
+    this.store = globalShareStore;
+    this.networkStore = new ShareNetworkStore();
+    this.shareTypeStore = new ShareTypeStore();
+    this.shareStore = new ShareStore();
+    this.shareGroupStore = new ShareGroupStore();
+    this.shareStore.fetchQuota();
+    this.shareTypeStore.fetchList();
+    this.networkStore.fetchList();
+    this.shareGroupStore.fetchList();
+    this.shareStore.fetchAvailableZones();
+    this.state.showNetworks = false;
+    this.state.shareGroups = [];
+  }
+
+  static policy = 'manila:share:create';
+
+  static allowed = () => Promise.resolve(true);
+
+  get defaultValue() {
+    const size = this.quotaIsLimit && this.maxSize < 10 ? this.maxSize : 10;
+    const values = {
+      size,
+      project: this.currentProjectName,
+    };
+    return values;
+  }
+
+  onShareTypeChange = (value) => {
+    const { selectedRows = [], selectedRowKeys = [] } = value;
+    if (selectedRows.length === 0) {
+      this.setState({ showNetworks: false, shareGroups: [] });
+      return;
+    }
+    const disabledItem = selectedRows.some((it) => {
+      return !checkShareTypeSupportServer(it);
+    });
+    const shareGroups = (this.shareGroupStore.list.data || []).filter((it) => {
+      return (it.share_types || []).includes(selectedRowKeys[0]);
+    });
+    this.setState({
+      showNetworks: !disabledItem,
+      shareGroups,
+    });
+  };
+
+  get quota() {
+    const { shares: { limit = 10, in_use = 0, reserved = 0 } = {} } =
+      toJS(this.shareStore.quotaSet) || {};
+    if (limit === -1) {
+      return Infinity;
+    }
+    return limit - in_use - reserved;
+  }
+
+  get quotaIsLimit() {
+    const { gigabytes: { limit } = {} } = toJS(this.shareStore.quotaSet) || {};
+    return limit !== -1;
+  }
+
+  get maxSize() {
+    const { gigabytes: { limit = 10, in_use = 0, reserved = 0 } = {} } =
+      toJS(this.shareStore.quotaSet) || {};
+    return limit - in_use - reserved;
+  }
+
+  get shareTypeColumns() {
+    const [, ...rest] = cloneDeep(shareTypeColumns);
+    return [idNameColumn, ...rest];
+  }
+
+  get shareNetworkColumns() {
+    const [, ...rest] = getShareNetworkColumns(this);
+    return [idNameColumn, ...rest];
+  }
+
+  get shareGroupColumns() {
+    const [, ...rest] = getShareGroupColumns(this);
+    return [idNameColumn, ...rest];
+  }
+
+  get formItems() {
+    const { showNetworks = false, shareGroups = [] } = this.state;
+    const minSize = 1;
+    const metadataItem = {
+      ...extraFormItem,
+      name: 'metadata',
+      label: t('Metadata'),
+      addText: t('Add Metadata'),
+    };
+    return [
+      {
+        name: 'project',
+        label: t('Project'),
+        type: 'label',
+      },
+      {
+        name: 'availability_zone',
+        label: t('Availability Zone'),
+        type: 'select',
+        options: this.shareStore.zoneOptions,
+      },
+      {
+        type: 'divider',
+      },
+      {
+        name: 'name',
+        label: t('Name'),
+        type: 'input-name',
+        required: true,
+      },
+      {
+        name: 'description',
+        label: t('Description'),
+        type: 'textarea',
+      },
+      {
+        name: 'share_proto',
+        label: t('Share Protocol'),
+        type: 'select',
+        required: true,
+        options: getOptions(shareProtocol),
+      },
+      {
+        name: 'size',
+        label: t('Capacity (GB)'),
+        type: 'slider-input',
+        max: this.maxSize,
+        min: minSize,
+        description: `${minSize}GB-${this.maxSize}GB`,
+        required: this.quotaIsLimit,
+        display: this.quotaIsLimit,
+      },
+      {
+        name: 'size',
+        label: t('Capacity (GB)'),
+        type: 'input-int',
+        min: minSize,
+        display: !this.quotaIsLimit,
+        required: !this.quotaIsLimit,
+      },
+      {
+        name: 'is_public',
+        label: t('Public'),
+        type: 'check',
+        content: t('Public'),
+        tip: t('If set then all tenants will be able to see this share.'),
+      },
+      {
+        name: 'shareType',
+        label: t('Share Type'),
+        type: 'select-table',
+        required: true,
+        columns: this.shareTypeColumns,
+        filterParams: shareTypeFilters,
+        isLoading: this.shareTypeStore.list.isLoading,
+        data: this.shareTypeStore.list.data || [],
+        onChange: this.onShareTypeChange,
+        extra: shareTypeTip,
+      },
+      {
+        type: 'divider',
+      },
+      {
+        name: 'shareNetwork',
+        label: t('Share Network'),
+        type: 'select-table',
+        columns: this.shareNetworkColumns,
+        filterParams: shareNetworkFilters,
+        isLoading: this.networkStore.list.isLoading,
+        data: this.networkStore.list.data || [],
+        display: showNetworks,
+      },
+      {
+        name: 'shareGroup',
+        label: t('Share Group'),
+        type: 'select-table',
+        columns: this.shareGroupColumns,
+        filterParams: shareGroupFilters,
+        isLoading: this.shareGroupStore.list.isLoading,
+        data: shareGroups,
+      },
+      {
+        type: 'divider',
+      },
+      metadataItem,
+    ];
+  }
+
+  onSubmit = (values) => {
+    const { shareType, shareNetwork, shareGroup, project, metadata, ...rest } =
+      values;
+    const { showNetworks = false } = this.state;
+    const body = {
+      ...rest,
+      share_type: shareType.selectedRowKeys[0],
+      metadata: updateAddSelectValueToObj(metadata),
+    };
+    const { selectedRowKeys: networkKeys = [] } = shareNetwork || {};
+    const { selectedRowKeys: groupKeys = [] } = shareGroup || {};
+    if (showNetworks && networkKeys.length) {
+      body.share_network_id = networkKeys[0];
+    }
+    if (groupKeys.length) {
+      body.share_group_id = groupKeys[0];
+    }
+    return this.store.create(body);
+  };
+}
+
+export default inject('rootStore')(observer(Create));

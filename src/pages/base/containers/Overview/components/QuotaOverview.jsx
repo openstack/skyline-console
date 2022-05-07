@@ -80,6 +80,20 @@ export const quotaCardList = [
   },
 ];
 
+export const shareQuotaCard = {
+  text: t('Share'),
+  type: 'share',
+  value: [
+    { text: t('Share'), key: 'shares' },
+    {
+      text: t('Share Gigabytes(GiB)'),
+      key: 'share_gigabytes',
+    },
+    { text: t('Share Network'), key: 'share_networks' },
+    { text: t('Share Group'), key: 'share_groups' },
+  ],
+};
+
 export const getVolumeTypeCards = (data) => {
   const value = data.map((item, index) => {
     return {
@@ -146,6 +160,10 @@ export class QuotaOverview extends Component {
     return globalRootStore.checkEndpoint('cinder');
   }
 
+  get enableShare() {
+    return globalRootStore.checkEndpoint('manilav2');
+  }
+
   get volumeTypeData() {
     const { volumeTypeData } = this.props;
     return volumeTypeData || this.volumeTypeStore.list.data;
@@ -157,10 +175,14 @@ export class QuotaOverview extends Component {
 
   get quotaCardList() {
     const list = this.props.quotaCardList || quotaCardList;
+    let newList = [...list];
     if (!this.enableCinder) {
-      return list.filter((it) => it.type !== 'storage');
+      newList = newList.filter((it) => it.type !== 'storage');
     }
-    return list;
+    if (this.enableShare) {
+      newList.push(shareQuotaCard);
+    }
+    return newList;
   }
 
   get quotaAction() {
@@ -244,13 +266,13 @@ export class QuotaOverview extends Component {
     if (isLoading) {
       return <Spin />;
     }
-    return this.renderQuotaCart(
+    return this.renderQuotaCard(
       this.projectStore.quota,
       this.getFilteredValue(item.value)
     );
   }
 
-  renderQuotaCart = (data, item = []) =>
+  renderQuotaCard = (data, item = []) =>
     item.map((i) => <div key={i.text}>{this.getItemInfo(data, i)}</div>);
 
   renderVolumeTypes = () => {

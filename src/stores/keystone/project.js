@@ -63,6 +63,10 @@ export class ProjectStore extends Base {
     return client.neutron.quotas;
   }
 
+  get shareQuotaClient() {
+    return client.manila.quotaSets;
+  }
+
   async fetchProjects(filters) {
     const { tags } = filters;
 
@@ -190,6 +194,10 @@ export class ProjectStore extends Base {
     return globalRootStore.checkEndpoint('cinder');
   }
 
+  get enableShare() {
+    return globalRootStore.checkEndpoint('manilav2');
+  }
+
   @action
   async enable({ id }) {
     const reqBody = {
@@ -283,24 +291,40 @@ export class ProjectStore extends Base {
       this.novaQuotaClient.detail(project_id),
       this.neutronQuotaClient.details(project_id),
     ];
-    if (this.enableCinder) {
-      promiseArr.push(
-        this.cinderQuotaClient.show(project_id, { usage: 'True' })
-      );
-    }
-    const [novaResult, neutronResult, cinderResult = {}] = await Promise.all(
-      promiseArr
+    promiseArr.push(
+      this.enableCinder
+        ? this.cinderQuotaClient.show(project_id, { usage: 'True' })
+        : null
     );
+    promiseArr.push(
+      this.enableShare ? this.shareQuotaClient.showDetail(project_id) : null
+    );
+    const [novaResult, neutronResult, cinderResult, shareResult] =
+      await Promise.all(promiseArr);
     this.isSubmitting = false;
     const { quota_set: novaQuota } = novaResult;
     const { ram } = novaQuota;
-    const { quota_set: cinderQuota = {} } = cinderResult;
+    const { quota_set: cinderQuota = {} } = cinderResult || {};
     const { quota: neutronQuota } = neutronResult;
+    const { quota_set: shareQuota = {} } = shareResult || {};
     novaQuota.ram = {
       in_use: getGBValue(ram.in_use),
       limit: ram.limit === -1 ? ram.limit : getGBValue(ram.limit),
     };
-    const quota = { ...novaQuota, ...cinderQuota, ...neutronQuota };
+    const renameShareQuota = Object.keys(shareQuota).reduce((pre, cur) => {
+      if (cur === 'gigabytes') {
+        pre.share_gigabytes = shareQuota[cur];
+      } else {
+        pre[cur] = shareQuota[cur];
+      }
+      return pre;
+    }, {});
+    const quota = {
+      ...novaQuota,
+      ...cinderQuota,
+      ...neutronQuota,
+      ...renameShareQuota,
+    };
     const quotaKey = Object.keys(quota);
     quotaKey.forEach((it) => {
       if (quota[it].in_use !== undefined) {

@@ -413,13 +413,13 @@ export default class BaseStore {
   }
 
   // eslint-disable-next-line no-unused-vars
-  parseMarker(data, result, allData) {
+  parseMarker(data, result, allData, params) {
     return data.length === 0 ? '' : get(data[data.length - 1], this.markerKey);
   }
 
   @action
-  updateMarker(data, page, result, allData) {
-    const marker = this.parseMarker(data, result, allData);
+  updateMarker(data, page, result, allData, params) {
+    const marker = this.parseMarker(data, result, allData, params);
     if (page === 1) {
       this.list.markers = [marker];
     } else {
@@ -457,7 +457,7 @@ export default class BaseStore {
     this.list.isLoading = true;
     // todo: no page, no limit, fetch all
     const { tab, all_projects, ...rest } = filters;
-    const params = { limit, ...rest };
+    const params = { limit, ...rest, current: page };
     this.updateParamsSortPage(params, sortKey, sortOrder);
     if (all_projects) {
       if (!this.listFilterByProject) {
@@ -472,7 +472,7 @@ export default class BaseStore {
     const newParams = this.paramsFuncPage(params, all_projects);
     const result = await this.requestListByPage(newParams, page, filters);
     const allData = this.getListDataFromResult(result);
-    this.updateMarker(allData, page, result, allData);
+    this.updateMarker(allData, page, result, allData, params);
     const allDataNew = allData.map(this.mapperBeforeFetchProject);
     let newData = await this.listDidFetchProject(allDataNew, all_projects);
     newData = await this.listDidFetch(newData, all_projects, filters);

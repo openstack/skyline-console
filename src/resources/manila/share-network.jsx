@@ -18,6 +18,7 @@ export const getShareNetworkColumns = (self) => {
     {
       title: t('Description'),
       dataIndex: 'description',
+      isHideable: true,
     },
     {
       title: t('Neutron Net'),
@@ -74,6 +75,6 @@ export const getShareNetworkColumns = (self) => {
 export const shareNetworkFilters = [
   {
     name: 'name',
-    label: 'name',
+    label: t('Name'),
   },
 ];
