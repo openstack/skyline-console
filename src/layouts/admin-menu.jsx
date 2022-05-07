@@ -406,6 +406,22 @@ const renderMenu = (t) => {
       icon: <SwitcherOutlined />,
       children: [
         {
+          path: '/share/share-admin',
+          name: t('Share'),
+          key: 'shareAdmin',
+          level: 1,
+          endpoints: 'manilav2',
+          children: [
+            {
+              path: /^\/share\/share-admin\/detail\/.[^/]+$/,
+              name: t('Share Detail'),
+              key: 'shareDetailAdmin',
+              level: 2,
+              routePath: '/share/share-admin/detail/:id',
+            },
+          ],
+        },
+        {
           path: '/share/share-type-admin',
           name: t('Share Type'),
           key: 'shareTypeAdmin',

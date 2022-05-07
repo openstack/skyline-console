@@ -448,7 +448,6 @@ export class Create extends FormAction {
         description: `${minSize}GB-${this.maxSize}GB`,
         required: this.quotaIsLimit,
         hidden: !this.quotaIsLimit,
-        onChange: this.onChangeSize,
       },
       {
         name: 'size',
@@ -457,7 +456,6 @@ export class Create extends FormAction {
         min: minSize,
         hidden: this.quotaIsLimit,
         required: !this.quotaIsLimit,
-        onChange: this.onChangeSize,
       },
       {
         type: 'divider',

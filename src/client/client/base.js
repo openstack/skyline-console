@@ -184,6 +184,13 @@ export default class BaseClient {
           conf
         );
       },
+      showDetail: (id, params, conf) => {
+        return this.request.get(
+          `${this.getDetailUrl(resourceName, id)}/detail`,
+          params,
+          conf
+        );
+      },
       create: (data, ...args) => this.request.post(listUrl, data, ...args),
       update: (id, data, ...args) =>
         this.request.put(this.getDetailUrl(resourceName, id), data, ...args),

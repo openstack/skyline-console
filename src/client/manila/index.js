@@ -37,6 +37,23 @@ export class ManilaClient extends Base {
       {
         key: 'shares',
         responseKey: 'share',
+        subResources: [
+          {
+            name: 'exportLocations',
+            key: 'export_locations',
+            responseKey: 'export_location',
+          },
+          {
+            key: 'metadata',
+            responseKey: 'metadata',
+          },
+        ],
+        extendOperations: [
+          {
+            key: 'action',
+            method: 'post',
+          },
+        ],
       },
       {
         key: 'types',
@@ -132,6 +149,29 @@ export class ManilaClient extends Base {
             method: 'post',
           },
         ],
+      },
+      {
+        name: 'shareAccessRules',
+        key: 'share-access-rules',
+        responseKey: 'access_list',
+        extendOperations: [
+          {
+            name: 'updateMetadata',
+            key: 'metadata',
+            method: 'put',
+          },
+        ],
+        subResources: [
+          {
+            key: 'metadata',
+            responseKey: 'metadata',
+          },
+        ],
+      },
+      {
+        name: 'quotaSets',
+        key: 'quota-sets',
+        responseKey: 'quota_set',
       },
     ];
   }

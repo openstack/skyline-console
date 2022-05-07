@@ -23,6 +23,9 @@ export class ShareStore extends Base {
   @observable
   zoneOptions = [];
 
+  @observable
+  quotaSet = {};
+
   get client() {
     return client.manila.shares;
   }
@@ -31,8 +34,47 @@ export class ShareStore extends Base {
     return client.manila.azones;
   }
 
+  get accessClient() {
+    return client.manila.shareAccessRules;
+  }
+
+  get quotaClient() {
+    return client.manila.quotaSets;
+  }
+
+  get shareGroupClient() {
+    return client.manila.shareGroups;
+  }
+
+  get shareNetworkClient() {
+    return client.manila.shareNetworks;
+  }
+
   get listWithDetail() {
     return true;
+  }
+
+  parseMarker() {
+    return '';
+  }
+
+  updateMarkerParams = (limit, marker) => ({
+    limit,
+    offset: marker,
+  });
+
+  get paramsFuncPage() {
+    return (params) => {
+      const { current = 1, all_projects, limit = 10, ...rest } = params;
+      const marker = current === 1 ? '' : (current - 1) * limit;
+      return {
+        ...rest,
+        // with_count: 'True',
+        all_tenants: all_projects ? 1 : 0,
+        offset: marker,
+        limit,
+      };
+    };
   }
 
   @action
@@ -45,6 +87,41 @@ export class ShareStore extends Base {
         label: it.name,
       };
     });
+  }
+
+  async detailDidFetch(item) {
+    const { id, share_group_id, share_network_id } = item || {};
+    const newItem = { ...item };
+    const reqs = [
+      this.client.exportLocations.list(id),
+      this.accessClient.list({ share_id: id }),
+      share_group_id ? this.shareGroupClient.show(share_group_id) : null,
+      share_network_id ? this.shareNetworkClient.show(share_network_id) : null,
+    ];
+    const [exportLocationResult, accessResult, groupResult, networkResult] =
+      await Promise.all(reqs);
+    newItem.exportLocations = exportLocationResult.export_locations;
+    if (share_group_id) {
+      newItem.shareGroup = groupResult.share_group;
+    }
+    if (share_network_id) {
+      newItem.shareNetwork = networkResult.share_network;
+    }
+    newItem.accessList = accessResult.access_list;
+    return newItem;
+  }
+
+  @action
+  async fetchQuota() {
+    const result = await this.quotaClient.showDetail(this.currentProjectId);
+    this.quotaSet = result.quota_set;
+  }
+
+  @action
+  update(id, data) {
+    const body = {};
+    body[this.responseKey] = data;
+    return this.submitting(this.client.update(id, body));
   }
 }
 

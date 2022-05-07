@@ -23,6 +23,6 @@ export const shareGroupTypeColumns = [
 export const shareGroupTypeFilters = [
   {
     name: 'name',
-    label: 'name',
+    label: t('Name'),
   },
 ];

@@ -22,15 +22,17 @@ import { isEmpty } from 'lodash';
 import { yesNoOptions } from 'resources/manila/share-type';
 import { updateAddSelectValueToObj } from 'utils/index';
 
-const checkKeyValue = (values) => {
+export const keyValueValidator = (rule, values) => {
   if (isEmpty(values)) {
-    return true;
+    return Promise.resolve();
   }
   const item = values.find((it) => {
     const { key, value } = it.value || {};
-    return !key || value === undefined || value === null;
+    return !key || !value;
   });
-  return !item;
+  return item
+    ? Promise.reject(t('Please enter complete key value!'))
+    : Promise.resolve();
 };
 
 export const extraFormItem = {
@@ -40,13 +42,7 @@ export const extraFormItem = {
   itemComponent: KeyValueInput,
   addText: t('Add Extra Spec'),
   keySpan: 8,
-  validator: (rule, value) => {
-    if (!checkKeyValue(value)) {
-      // eslint-disable-next-line prefer-promise-reject-errors
-      return Promise.reject(t('Please enter complete key value!'));
-    }
-    return Promise.resolve();
-  },
+  validator: keyValueValidator,
 };
 
 export class Create extends ModalAction {

@@ -24,6 +24,9 @@ import ShareNetwork from '../containers/ShareNetwork';
 import ShareNetworkDetail from '../containers/ShareNetwork/Detail';
 import ShareGroup from '../containers/ShareGroup';
 import ShareGroupDetail from '../containers/ShareGroup/Detail';
+import Share from '../containers/Share';
+import ShareDetail from '../containers/Share/Detail';
+import ShareCreate from '../containers/Share/actions/Create';
 
 const PATH = '/share';
 export default [
@@ -95,6 +98,31 @@ export default [
       {
         path: `${PATH}/share-group-admin/detail/:id`,
         component: ShareGroupDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/share`,
+        component: Share,
+        exact: true,
+      },
+      {
+        path: `${PATH}/share/detail/:id`,
+        component: ShareDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/share/create`,
+        component: ShareCreate,
+        exact: true,
+      },
+      {
+        path: `${PATH}/share-admin`,
+        component: Share,
+        exact: true,
+      },
+      {
+        path: `${PATH}/share-admin/detail/:id`,
+        component: ShareDetail,
         exact: true,
       },
       { path: '*', component: E404 },
