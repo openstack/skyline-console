@@ -18,8 +18,6 @@ import { Button, Col, Row } from 'antd';
 import Avatar from './AvatarDropdown';
 import styles from './index.less';
 
-@inject('rootStore')
-@observer
 export class GlobalHeaderRight extends Component {
   get isAdminPage() {
     const { isAdminPage = false } = this.props;
@@ -66,11 +64,16 @@ export class GlobalHeaderRight extends Component {
     return null;
   }
 
+  renderExtraLink() {
+    return null;
+  }
+
   render() {
     return (
       <div className={styles.right}>
         <Row justify="space-between" align="middle" gutter={10}>
           <Col>
+            {this.renderExtraLink()}
             {this.renderConsole()}
             {this.renderAdministrator()}
           </Col>
@@ -84,4 +87,4 @@ export class GlobalHeaderRight extends Component {
   }
 }
 
-export default GlobalHeaderRight;
+export default inject('rootStore')(observer(GlobalHeaderRight));
