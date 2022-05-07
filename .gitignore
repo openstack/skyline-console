@@ -28,3 +28,5 @@ env/
 venv/
 ENV/
 /skyline_console/static
+build/
+.tox
