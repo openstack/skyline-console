@@ -14,8 +14,22 @@
 
 import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
+import {
+  certificateColumns,
+  listenerProtocols,
+  sslParseMethod,
+} from 'resources/octavia/lb';
+import { ContainersStore } from 'stores/barbican/containers';
+import { SecretsStore } from 'stores/barbican/secrets';
 
 export class ListenerStep extends Base {
+  init() {
+    this.containersStore = new ContainersStore();
+    this.secretsStore = new SecretsStore();
+    this.fetchContainers();
+    this.fetchSecrets();
+  }
+
   get title() {
     return 'Listener Detail';
   }
@@ -28,16 +42,52 @@ export class ListenerStep extends Base {
     return true;
   }
 
+  fetchContainers() {
+    this.containersStore.fetchList();
+  }
+
+  fetchSecrets() {
+    this.secretsStore.fetchList({ mode: 'CA' });
+  }
+
+  get SERVERSecrets() {
+    return this.containersStore.list.data || [];
+  }
+
+  get CASecrets() {
+    return this.secretsStore.list.data || [];
+  }
+
+  get SNISecrets() {
+    return (this.containersStore.list.data || []).filter(
+      (it) => !!it.algorithm
+    );
+  }
+
   get defaultValue() {
     return {
-      pool_protocol: 'TCP',
+      listener_ssl_parsing_method: 'one-way',
+      listener_sni_enabled: false,
       listener_connection_limit: -1,
     };
+  }
+
+  get nameForStateUpdate() {
+    return [
+      'listener_protocol',
+      'listener_ssl_parsing_method',
+      'listener_sni_enabled',
+    ];
   }
 
   allowed = () => Promise.resolve();
 
   get formItems() {
+    const {
+      listener_protocol,
+      listener_ssl_parsing_method,
+      listener_sni_enabled,
+    } = this.state;
     return [
       {
         name: 'listener_name',
@@ -54,13 +104,82 @@ export class ListenerStep extends Base {
         name: 'listener_protocol',
         label: t('Listener Protocol'),
         type: 'select',
-        options: [
+        options: listenerProtocols,
+        onChange: () => {
+          this.updateContext({
+            pool_protocol: '',
+            health_type: '',
+          });
+        },
+        required: true,
+      },
+      {
+        name: 'listener_ssl_parsing_method',
+        label: t('SSL Parsing Method'),
+        type: 'select',
+        options: sslParseMethod,
+        required: true,
+        display: listener_protocol === 'TERMINATED_HTTPS',
+      },
+      {
+        name: 'listener_default_tls_container_ref',
+        label: t('Server Certificate'),
+        type: 'select-table',
+        required: true,
+        data: this.SERVERSecrets,
+        isLoading: false,
+        isMulti: false,
+        filterParams: [
           {
-            label: 'TCP',
-            value: 'TCP',
+            label: t('Name'),
+            name: 'name',
           },
         ],
+        columns: certificateColumns,
+        display: listener_protocol === 'TERMINATED_HTTPS',
+      },
+      {
+        name: 'listener_client_ca_tls_container_ref',
+        label: t('CA Certificate'),
+        type: 'select-table',
         required: true,
+        data: this.CASecrets,
+        isLoading: false,
+        isMulti: false,
+        filterParams: [
+          {
+            label: t('Name'),
+            name: 'name',
+          },
+        ],
+        columns: certificateColumns,
+        display:
+          listener_protocol === 'TERMINATED_HTTPS' &&
+          listener_ssl_parsing_method === 'two-way',
+      },
+      {
+        name: 'listener_sni_enabled',
+        label: t('SNI Enabled'),
+        type: 'switch',
+        display: listener_protocol === 'TERMINATED_HTTPS',
+      },
+      {
+        name: 'listener_sni_container_refs',
+        label: t('SNI Certificate'),
+        type: 'select-table',
+        required: true,
+        data: this.SNISecrets,
+        isLoading: false,
+        isMulti: false,
+        filterParams: [
+          {
+            label: t('Name'),
+            name: 'name',
+          },
+        ],
+        columns: certificateColumns,
+        display:
+          listener_protocol === 'TERMINATED_HTTPS' && listener_sni_enabled,
       },
       {
         name: 'listener_protocol_port',

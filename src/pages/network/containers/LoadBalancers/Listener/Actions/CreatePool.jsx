@@ -17,6 +17,7 @@ import { ModalAction } from 'containers/Action';
 import globalPoolStore from 'stores/octavia/pool';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
 import { Algorithm, algorithmTip } from 'resources/octavia/pool';
+import { poolProtocols } from 'resources/octavia/lb';
 
 export class CreatePool extends ModalAction {
   static id = 'pool-create';
@@ -50,10 +51,9 @@ export class CreatePool extends ModalAction {
     );
   };
 
-  get defaultValue() {
-    return {
-      pool_protocol: 'TCP',
-    };
+  get filterOptions() {
+    const { protocol = '' } = this.item;
+    return poolProtocols.filter((it) => protocol.includes(it.label));
   }
 
   init() {
@@ -95,12 +95,7 @@ export class CreatePool extends ModalAction {
         name: 'protocol',
         label: t('Pool Protocol'),
         type: 'select',
-        options: [
-          {
-            label: 'TCP',
-            value: 'TCP',
-          },
-        ],
+        options: this.filterOptions,
         required: true,
       },
     ];

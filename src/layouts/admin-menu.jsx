@@ -368,6 +368,28 @@ const renderMenu = (t) => {
           ],
         },
         {
+          path: '/network/certificate-admin',
+          name: t('Certificate Management'),
+          key: 'certificateAdmin',
+          level: 1,
+          children: [
+            {
+              path: /^\/network\/certificate-container-admin\/detail\/.[^/]+$/,
+              name: t('Certificate Detail'),
+              key: 'certificateContainerDetailAdmin',
+              level: 2,
+              routePath: '/network/certificate-container-admin/detail/:id',
+            },
+            {
+              path: /^\/network\/certificate-secret-admin\/detail\/.[^/]+$/,
+              name: t('Certificate Detail'),
+              key: 'certificateSecretDetailAdmin',
+              level: 2,
+              routePath: '/network/certificate-secret-admin/detail/:id',
+            },
+          ],
+        },
+        {
           path: '/network/vpn-admin',
           name: t('VPN'),
           key: 'vpnAdmin',

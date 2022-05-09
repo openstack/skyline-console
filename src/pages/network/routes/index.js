@@ -36,6 +36,9 @@ import VPN from '../containers/VPN';
 import IPsecSiteConnectionDetail from '../containers/VPN/IPsecSiteConnection/Detail';
 import SecurityGroups from '../containers/SecurityGroup';
 import SecurityGroupDetail from '../containers/SecurityGroup/Detail';
+import Certificate from '../containers/Certificate';
+import CertificateDetailContainer from '../containers/Certificate/Detail/Container';
+import CertificateDetailSecret from '../containers/Certificate/Detail/Secret';
 
 const PATH = '/network';
 export default [
@@ -155,6 +158,32 @@ export default [
       {
         path: `${PATH}/load-balancers-admin/:loadBalancerId/listener/:id`,
         component: ListenerDetail,
+        exact: true,
+      },
+      { path: `${PATH}/certificate`, component: Certificate, exact: true },
+      {
+        path: `${PATH}/certificate-container/detail/:id`,
+        component: CertificateDetailContainer,
+        exact: true,
+      },
+      {
+        path: `${PATH}/certificate-secret/detail/:id`,
+        component: CertificateDetailSecret,
+        exact: true,
+      },
+      {
+        path: `${PATH}/certificate-admin`,
+        component: Certificate,
+        exact: true,
+      },
+      {
+        path: `${PATH}/certificate-container-admin/detail/:id`,
+        component: CertificateDetailContainer,
+        exact: true,
+      },
+      {
+        path: `${PATH}/certificate-secret-admin/detail/:id`,
+        component: CertificateDetailSecret,
         exact: true,
       },
       { path: `${PATH}/vpn`, component: VPN, exact: true },

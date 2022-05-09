@@ -15,6 +15,13 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import { ListenerStore } from 'stores/octavia/listener';
+import { ContainersStore } from 'stores/barbican/containers';
+import { SecretsStore } from 'stores/barbican/secrets';
+import {
+  certificateColumns,
+  listenerProtocols,
+  sslParseMethod,
+} from 'resources/octavia/lb';
 
 export class Create extends ModalAction {
   static id = 'create_listener';
@@ -29,29 +36,62 @@ export class Create extends ModalAction {
 
   static policy = 'os_load-balancer_api:listener:post';
 
+  static get modalSize() {
+    return 'large';
+  }
+
+  getModalSize() {
+    return 'large';
+  }
+
   static allowed = (item) =>
     Promise.resolve(item.provisioning_status === 'ACTIVE');
 
   init() {
     this.store = new ListenerStore();
+    this.containersStore = new ContainersStore();
+    this.secretsStore = new SecretsStore();
+    this.fetchContainers();
+    this.fetchSecrets();
+  }
+
+  fetchContainers() {
+    this.containersStore.fetchList();
+  }
+
+  fetchSecrets() {
+    this.secretsStore.fetchList({ mode: 'CA' });
+  }
+
+  get ServerCertificate() {
+    return this.containersStore.list.data || [];
+  }
+
+  get CaCertificate() {
+    return this.secretsStore.list.data || [];
+  }
+
+  get SNICertificate() {
+    return (this.containersStore.list.data || []).filter(
+      (it) => !!it.algorithm
+    );
+  }
+
+  get nameForStateUpdate() {
+    return ['protocol', 'ssl_parsing_method', 'sni_enabled'];
   }
 
   get defaultValue() {
     return {
-      protocol: 'TCP',
+      ssl_parsing_method: 'one-way',
+      sni_enabled: false,
       connection_limit: -1,
     };
   }
 
-  onSubmit = (values) => {
-    const data = {
-      ...values,
-      loadbalancer_id: this.containerProps.detail.id,
-    };
-    return this.store.create(data);
-  };
-
   get formItems() {
+    const { protocol, ssl_parsing_method, sni_enabled } = this.state;
+
     return [
       {
         name: 'name',
@@ -68,13 +108,74 @@ export class Create extends ModalAction {
         name: 'protocol',
         label: t('Protocol'),
         type: 'select',
-        options: [
+        options: listenerProtocols,
+        required: true,
+      },
+      {
+        name: 'ssl_parsing_method',
+        label: t('SSL Parsing Method'),
+        type: 'select',
+        options: sslParseMethod,
+        required: true,
+        display: protocol === 'TERMINATED_HTTPS',
+      },
+      {
+        name: 'default_tls_container_ref',
+        label: t('Server Certificate'),
+        type: 'select-table',
+        required: true,
+        data: this.ServerCertificate,
+        isLoading: this.containersStore.list.isLoading,
+        isMulti: false,
+        filterParams: [
           {
-            label: 'TCP',
-            value: 'TCP',
+            label: t('Name'),
+            name: 'name',
           },
         ],
+        columns: certificateColumns,
+        display: protocol === 'TERMINATED_HTTPS',
+      },
+      {
+        name: 'client_ca_tls_container_ref',
+        label: t('CA Certificate'),
+        type: 'select-table',
         required: true,
+        data: this.CaCertificate,
+        isLoading: this.secretsStore.list.isLoading,
+        isMulti: false,
+        filterParams: [
+          {
+            label: t('Name'),
+            name: 'name',
+          },
+        ],
+        columns: certificateColumns,
+        display:
+          protocol === 'TERMINATED_HTTPS' && ssl_parsing_method === 'two-way',
+      },
+      {
+        name: 'sni_enabled',
+        label: t('SNI Enabled'),
+        type: 'switch',
+        display: protocol === 'TERMINATED_HTTPS',
+      },
+      {
+        name: 'sni_container_refs',
+        label: t('SNI Certificate'),
+        type: 'select-table',
+        required: true,
+        data: this.SNICertificate,
+        isLoading: this.containersStore.list.isLoading,
+        isMulti: false,
+        filterParams: [
+          {
+            label: t('Name'),
+            name: 'name',
+          },
+        ],
+        columns: certificateColumns,
+        display: protocol === 'TERMINATED_HTTPS' && sni_enabled,
       },
       {
         name: 'protocol_port',
@@ -92,6 +193,35 @@ export class Create extends ModalAction {
       },
     ];
   }
+
+  onSubmit = (values) => {
+    const {
+      sni_enabled,
+      ssl_parsing_method,
+      default_tls_container_ref,
+      client_ca_tls_container_ref,
+      sni_container_refs,
+      ...rest
+    } = values;
+    const data = {
+      ...rest,
+      loadbalancer_id: this.containerProps.detail.id,
+    };
+    if (default_tls_container_ref) {
+      data.default_tls_container_ref =
+        default_tls_container_ref.selectedRows[0].container_ref;
+    }
+    if (client_ca_tls_container_ref) {
+      data.client_ca_tls_container_ref =
+        client_ca_tls_container_ref.selectedRows[0].secret_ref;
+    }
+    if (sni_container_refs) {
+      data.sni_container_refs = [
+        sni_container_refs.selectedRows[0].container_ref,
+      ];
+    }
+    return this.store.create(data);
+  };
 }
 
 export default inject('rootStore')(observer(Create));

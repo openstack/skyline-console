@@ -15,6 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
 import { Algorithm, algorithmTip } from 'resources/octavia/pool';
+import { poolProtocols } from 'resources/octavia/lb';
 
 export class PoolStep extends Base {
   get title() {
@@ -29,10 +30,9 @@ export class PoolStep extends Base {
     return true;
   }
 
-  get defaultValue() {
-    return {
-      pool_protocol: 'TCP',
-    };
+  get filterOptions() {
+    const { context: { listener_protocol = '' } = {} } = this.props;
+    return poolProtocols.filter((it) => listener_protocol.includes(it.label));
   }
 
   allowed = () => Promise.resolve();
@@ -76,12 +76,12 @@ export class PoolStep extends Base {
         name: 'pool_protocol',
         label: t('Pool Protocol'),
         type: 'select',
-        options: [
-          {
-            label: 'TCP',
-            value: 'TCP',
-          },
-        ],
+        options: this.filterOptions,
+        onChange: () => {
+          this.updateContext({
+            health_type: '',
+          });
+        },
         required: true,
       },
     ];

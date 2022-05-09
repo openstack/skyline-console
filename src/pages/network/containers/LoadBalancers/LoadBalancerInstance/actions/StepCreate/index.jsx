@@ -83,6 +83,12 @@ export class StepCreate extends StepAction {
       vip_address,
       vip_network_id,
       enableHealthMonitor,
+      listener_protocol,
+      listener_ssl_parsing_method,
+      listener_sni_enabled,
+      listener_default_tls_container_ref,
+      listener_client_ca_tls_container_ref,
+      listener_sni_container_refs,
       ...rest
     } = values;
     const data = {
@@ -96,7 +102,29 @@ export class StepCreate extends StepAction {
       data.vip_address = ip_address.ip;
     }
 
-    const listenerData = {};
+    const listenerData = {
+      protocol: listener_protocol,
+    };
+
+    if (listener_protocol === 'TERMINATED_HTTPS') {
+      if (listener_default_tls_container_ref) {
+        listenerData.default_tls_container_ref =
+          listener_default_tls_container_ref.selectedRows[0].container_ref;
+      }
+      if (
+        listener_ssl_parsing_method === 'two-way' &&
+        listener_client_ca_tls_container_ref
+      ) {
+        listenerData.client_ca_tls_container_ref =
+          listener_client_ca_tls_container_ref.selectedRows[0].secret_ref;
+      }
+      if (listener_sni_enabled && listener_sni_container_refs) {
+        listenerData.sni_container_refs = [
+          listener_sni_container_refs.selectedRows[0].container_ref,
+        ];
+      }
+    }
+
     const poolData = {};
     const healthMonitorData = {};
     Object.keys(rest).forEach((i) => {

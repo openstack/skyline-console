@@ -43,6 +43,7 @@ export default class index extends Component {
   handleUpload = async (file) => {
     const value = await getText(file);
     this.onChange(value);
+    return false;
   };
 
   onChangeInput = (value) => {

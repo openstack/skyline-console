@@ -14,6 +14,7 @@
 
 import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
+import { healthProtocols } from 'resources/octavia/lb';
 
 export class HealthMonitorStep extends Base {
   get title() {
@@ -28,8 +29,9 @@ export class HealthMonitorStep extends Base {
     return true;
   }
 
-  get nameForStateUpdate() {
-    return ['enableHealthMonitor'];
+  get filteredProtocolOptions() {
+    const { context: { listener_protocol = '' } = {} } = this.props;
+    return healthProtocols.filter((it) => listener_protocol.includes(it.label));
   }
 
   get defaultValue() {
@@ -38,6 +40,7 @@ export class HealthMonitorStep extends Base {
       health_delay: 5,
       health_timeout: 3,
       health_max_retries: 3,
+      health_type: '',
     };
   }
 
@@ -109,7 +112,7 @@ export class HealthMonitorStep extends Base {
         name: 'health_type',
         label: t('Health Monitor Type'),
         type: 'select',
-        options: ['PING', 'TCP'].map((i) => ({ label: i, value: i })),
+        options: this.filteredProtocolOptions,
         required: true,
         hidden: !enableHealthMonitor,
       },

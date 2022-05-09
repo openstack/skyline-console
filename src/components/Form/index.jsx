@@ -540,7 +540,7 @@ export default class BaseForm extends React.Component {
   renderFormItems() {
     try {
       return this.formItems.map((it, index) => {
-        const { name, display = true } = it;
+        const { name, display = true, ...rest } = it;
         if (!display) {
           return '';
         }
@@ -552,7 +552,8 @@ export default class BaseForm extends React.Component {
             id={`form-item-col-${name}`}
           >
             <FormItem
-              {...it}
+              {...rest}
+              name={name}
               key={`form-item-${index}`}
               formRef={this.formRef}
             />

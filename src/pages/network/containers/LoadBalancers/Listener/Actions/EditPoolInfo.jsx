@@ -15,14 +15,13 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalPoolStore from 'stores/octavia/pool';
-import { BackendProtocol, Algorithm } from 'resources/octavia/pool';
+import { Algorithm } from 'resources/octavia/pool';
+import { poolProtocols } from 'resources/octavia/lb';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
 
 export class EditPoolInfo extends ModalAction {
   init() {
-    this.state = {
-      pool: {},
-    };
+    this.state.pool = {};
     this.store = globalPoolStore;
     this.getPoolDetail();
   }
@@ -42,6 +41,11 @@ export class EditPoolInfo extends ModalAction {
       xs: { span: 8 },
       sm: { span: 8 },
     };
+  }
+
+  get filteredProtocolOptions() {
+    const { pool: { protocol = '' } = {} } = this.state;
+    return poolProtocols.filter((it) => protocol.includes(it.label));
   }
 
   get defaultValue() {
@@ -101,7 +105,7 @@ export class EditPoolInfo extends ModalAction {
         name: 'protocol',
         label: t('Protocol'),
         type: 'select',
-        options: BackendProtocol,
+        options: this.filteredProtocolOptions,
         required: true,
       },
       {

@@ -17,7 +17,7 @@ import { ModalAction } from 'containers/Action';
 import globalHealthMonitorStore, {
   HealthMonitorStore,
 } from 'stores/octavia/health-monitor';
-import { BackendProtocol } from 'resources/octavia/pool';
+import { healthProtocols } from 'resources/octavia/lb';
 import { PoolStore } from 'stores/octavia/pool';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
 
@@ -50,6 +50,11 @@ export class EditHealthMonitor extends ModalAction {
       xs: { span: 8 },
       sm: { span: 8 },
     };
+  }
+
+  get filteredProtocolOptions() {
+    const { protocol = '' } = this.item;
+    return healthProtocols.filter((it) => protocol.includes(it.label));
   }
 
   get defaultValue() {
@@ -141,7 +146,7 @@ export class EditHealthMonitor extends ModalAction {
         name: 'type',
         label: t('HealthMonitor Type'),
         type: 'select',
-        options: BackendProtocol,
+        options: this.filteredProtocolOptions,
         hidden: !admin_state_up && healthmonitor_id,
         required: true,
         disabled: !!healthmonitor_id,
