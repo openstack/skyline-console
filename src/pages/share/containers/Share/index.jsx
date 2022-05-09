@@ -36,94 +36,136 @@ export class Share extends Base {
     return true;
   }
 
+  get inShareGroupDetailPage() {
+    const { pathname } = this.props.location;
+    return this.inDetailPage && pathname.includes('share-group');
+  }
+
+  get inShareTypeDetailPage() {
+    const { pathname } = this.props.location;
+    return this.inDetailPage && pathname.includes('share-type');
+  }
+
+  get inShareNetworkDetailPage() {
+    const { pathname } = this.props.location;
+    return this.inDetailPage && pathname.includes('share-network');
+  }
+
+  updateFetchParamsByPage = (params) => {
+    const { id, ...rest } = params;
+    const newParams = { ...rest };
+    if (this.inShareGroupDetailPage) {
+      newParams.share_group_id = id;
+    }
+    if (this.inShareTypeDetailPage) {
+      newParams.share_type_id = id;
+    }
+    if (this.inShareNetworkDetailPage) {
+      newParams.share_network_id = id;
+    }
+    return newParams;
+  };
+
   get actionConfigs() {
     return this.isAdminPage
       ? actionConfigs.actionConfigsAdmin
       : actionConfigs.actionConfigs;
   }
 
-  getColumns = () => [
-    {
-      title: t('ID/Name'),
-      dataIndex: 'name',
-      routeName: this.getRouteName('shareDetail'),
-    },
-    {
-      title: t('Project ID/Name'),
-      dataIndex: 'project_name',
-      isHideable: true,
-      hidden: !this.isAdminPage,
-    },
-    {
-      title: t('Description'),
-      dataIndex: 'description',
-      isHideable: true,
-    },
-    {
-      title: t('Availability Zone'),
-      dataIndex: 'availability_zone',
-    },
-    {
-      title: t('Share Type'),
-      dataIndex: 'share_type_name',
-      render: (value, record) => value || record.share_type,
-    },
-    {
-      title: t('Size'),
-      dataIndex: 'size',
-      render: (value) => `${value}GiB`,
-    },
-    {
-      title: t('Protocol'),
-      dataIndex: 'share_proto',
-      render: (value) => shareProtocol[value] || value,
-    },
-    {
-      title: t('Public'),
-      dataIndex: 'is_public',
-      isHideable: true,
-      valueRender: 'yesNo',
-    },
-    {
-      title: t('Status'),
-      dataIndex: 'status',
-      render: (value) => shareStatus[value] || value,
-    },
-    {
-      title: t('Share Network'),
-      dataIndex: 'share_network_id',
-      isHideable: true,
-      render: (value) => {
-        if (!value) {
-          return '-';
-        }
-        const link = this.getLinkRender('shareNetworkDetail', value, {
-          id: value,
-        });
-        return link;
+  getColumns = () => {
+    const columns = [
+      {
+        title: t('ID/Name'),
+        dataIndex: 'name',
+        routeName: this.getRouteName('shareDetail'),
       },
-    },
-    {
-      title: t('Share Group'),
-      dataIndex: 'share_group_id',
-      isHideable: true,
-      render: (value) => {
-        if (!value) {
-          return '-';
-        }
-        const link = this.getLinkRender('shareGroupDetail', value, {
-          id: value,
-        });
-        return link;
+      {
+        title: t('Project ID/Name'),
+        dataIndex: 'project_name',
+        isHideable: true,
+        hidden: !this.isAdminPage,
       },
-    },
-    {
-      title: t('Created At'),
-      dataIndex: 'created_at',
-      isHideable: true,
-      valueRender: 'sinceTime',
-    },
-  ];
+      {
+        title: t('Description'),
+        dataIndex: 'description',
+        isHideable: true,
+      },
+      {
+        title: t('Availability Zone'),
+        dataIndex: 'availability_zone',
+      },
+      {
+        title: t('Share Type'),
+        dataIndex: 'share_type_name',
+        render: (value, record) => value || record.share_type,
+      },
+      {
+        title: t('Size'),
+        dataIndex: 'size',
+        render: (value) => `${value}GiB`,
+      },
+      {
+        title: t('Protocol'),
+        dataIndex: 'share_proto',
+        render: (value) => shareProtocol[value] || value,
+      },
+      {
+        title: t('Public'),
+        dataIndex: 'is_public',
+        isHideable: true,
+        valueRender: 'yesNo',
+      },
+      {
+        title: t('Status'),
+        dataIndex: 'status',
+        render: (value) => shareStatus[value] || value,
+      },
+      {
+        title: t('Share Network'),
+        dataIndex: 'share_network_id',
+        isHideable: true,
+        render: (value) => {
+          if (!value) {
+            return '-';
+          }
+          const link = this.getLinkRender('shareNetworkDetail', value, {
+            id: value,
+          });
+          return link;
+        },
+      },
+      {
+        title: t('Share Group'),
+        dataIndex: 'share_group_id',
+        isHideable: true,
+        render: (value) => {
+          if (!value) {
+            return '-';
+          }
+          const link = this.getLinkRender('shareGroupDetail', value, {
+            id: value,
+          });
+          return link;
+        },
+      },
+      {
+        title: t('Created At'),
+        dataIndex: 'created_at',
+        isHideable: true,
+        valueRender: 'sinceTime',
+      },
+    ];
+    if (this.inShareGroupDetailPage) {
+      return columns.filter((it) => it.dataIndex !== 'share_group_id');
+    }
+    if (this.inShareNetworkDetailPage) {
+      return columns.filter((it) => it.dataIndex !== 'share_network_id');
+    }
+    if (this.inShareTypeDetailPage) {
+      return columns.filter((it) => it.dataIndex !== 'share_type_name');
+    }
+    return columns;
+  };
 
   get searchFilters() {
     return [

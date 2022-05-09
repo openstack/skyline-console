@@ -15,6 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { ShareTypeStore } from 'stores/manila/share-type';
 import Base from 'containers/TabDetail';
+import Share from 'pages/share/containers/Share';
 import ExtraSpec from './ExtraSpec';
 import actionConfigs from '../actions';
 
@@ -60,6 +61,11 @@ export class Detail extends Base {
         title: t('Extra Spec'),
         key: 'ExtraSpec',
         component: ExtraSpec,
+      },
+      {
+        title: t('Share'),
+        key: 'share',
+        component: Share,
       },
     ];
   }

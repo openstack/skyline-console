@@ -17,6 +17,7 @@ import Delete from './Delete';
 import Edit from './Edit';
 import ManageMetadata from './ManageMetadata';
 import ManageAccessRule from './ManageAccessRule';
+import Extend from './Extend';
 
 const actionConfigs = {
   rowActions: {
@@ -24,6 +25,9 @@ const actionConfigs = {
     moreActions: [
       {
         action: Delete,
+      },
+      {
+        action: Extend,
       },
       {
         action: ManageMetadata,

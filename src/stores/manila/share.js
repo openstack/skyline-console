@@ -123,6 +123,14 @@ export class ShareStore extends Base {
     body[this.responseKey] = data;
     return this.submitting(this.client.update(id, body));
   }
+
+  @action
+  extendSize(id, data) {
+    const body = {
+      extend: data,
+    };
+    return this.submitting(this.client.action(id, body));
+  }
 }
 
 const globalShareStore = new ShareStore();

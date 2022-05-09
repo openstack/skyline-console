@@ -16,6 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ShareGroupStore } from 'stores/manila/share-group';
 import Base from 'containers/TabDetail';
 import { shareGroupStatus } from 'resources/manila/share-group';
+import Share from 'pages/share/containers/Share';
 import BaseDetail from './BaseDetail';
 import actionConfigs from '../actions';
 
@@ -72,6 +73,11 @@ export class Detail extends Base {
         title: t('Base Info'),
         key: 'baseInfo',
         component: BaseDetail,
+      },
+      {
+        title: t('Share'),
+        key: 'share',
+        component: Share,
       },
     ];
   }

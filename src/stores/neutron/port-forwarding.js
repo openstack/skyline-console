@@ -29,7 +29,7 @@ export class PortForwardingStore extends Base {
 
   get paramsFuncPage() {
     return (params) => {
-      const { fipId, fipInfo, ...rest } = params;
+      const { fipId, fipInfo, current, ...rest } = params;
       return rest;
     };
   }
