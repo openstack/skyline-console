@@ -131,6 +131,14 @@ export class ShareStore extends Base {
     };
     return this.submitting(this.client.action(id, body));
   }
+
+  @action
+  resetStatus(id, data) {
+    const body = {
+      reset_status: data,
+    };
+    return this.submitting(this.client.action(id, body));
+  }
 }
 
 const globalShareStore = new ShareStore();

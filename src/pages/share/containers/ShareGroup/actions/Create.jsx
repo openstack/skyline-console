@@ -174,6 +174,7 @@ export class Create extends ModalAction {
         isLoading: this.networkStore.list.isLoading,
         data: this.networkStore.list.data || [],
         display: showNetworks,
+        required: showNetworks,
       },
     ];
   }

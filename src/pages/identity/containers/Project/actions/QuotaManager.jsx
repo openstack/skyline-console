@@ -20,6 +20,7 @@ import { VolumeTypeStore } from 'stores/cinder/volume-type';
 import {
   quotaCardList,
   getVolumeTypeCards,
+  shareQuotaCard,
 } from 'pages/base/containers/Overview/components/QuotaOverview';
 
 export class QuotaManager extends ModalAction {
@@ -40,6 +41,10 @@ export class QuotaManager extends ModalAction {
 
   get enableCinder() {
     return this.props.rootStore.checkEndpoint('cinder');
+  }
+
+  get enableShare() {
+    return this.props.rootStore.checkEndpoint('manilav2');
   }
 
   async getData() {
@@ -125,6 +130,9 @@ export class QuotaManager extends ModalAction {
   }
 
   get quotaCardList() {
+    if (this.enableShare) {
+      return [...quotaCardList, shareQuotaCard];
+    }
     return quotaCardList;
   }
 
@@ -173,10 +181,13 @@ export class QuotaManager extends ModalAction {
     const computeFormItems = this.getComputeFormItems();
     const networkFormItems = this.getFormItemsByCards('networks');
     const form = [...computeFormItems, ...networkFormItems];
+    if (this.enableShare) {
+      form.push(...this.getFormItemsByCards('share'));
+    }
     if (this.enableCinder) {
       const cinderFormItems = this.getFormItemsByCards('storage');
       const volumeTypeFormItems = this.getVolumeTypeFormItems();
-      form.splice(7, 0, ...cinderFormItems);
+      form.push(...cinderFormItems);
       form.push(
         {
           name: 'more',
@@ -191,7 +202,8 @@ export class QuotaManager extends ModalAction {
 
   getSubmitData(values) {
     const { id: project_id } = this.item;
-    const { more, compute, storage, networks, volumeTypes, ...others } = values;
+    const { more, compute, storage, networks, volumeTypes, share, ...others } =
+      values;
     return {
       project_id,
       data: others,

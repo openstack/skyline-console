@@ -376,9 +376,10 @@ export class ProjectStore extends Base {
     const rest = {};
     Object.keys(others).forEach((key) => {
       if (
-        key.includes('volumes') ||
-        key.includes('gigabytes') ||
-        key.includes('snapshots')
+        (key.includes('volumes') ||
+          key.includes('gigabytes') ||
+          key.includes('snapshots')) &&
+        !key.includes('share')
       ) {
         rest[key] = others[key];
       }
@@ -416,10 +417,27 @@ export class ProjectStore extends Base {
     return neutronReqBody;
   }
 
+  getShareQuotaBody(data) {
+    if (!this.enableShare) {
+      return {};
+    }
+    const { shares, share_gigabytes, share_networks, share_groups } = data;
+    const shareReqBody = {
+      quota_set: this.omitNil({
+        shares,
+        gigabytes: share_gigabytes,
+        share_networks,
+        share_groups,
+      }),
+    };
+    return shareReqBody;
+  }
+
   async updateQuota(project_id, data) {
     const novaReqBody = this.getNovaQuotaBody(data);
     const cinderReqBody = this.getCinderQuotaBody(data);
     const neutronReqBody = this.getNeutronQuotaBody(data);
+    const shareReqBody = this.getShareQuotaBody(data);
     const reqs = [];
     if (!isEmpty(novaReqBody.quota_set)) {
       reqs.push(client.nova.quotaSets.update(project_id, novaReqBody));
@@ -430,7 +448,9 @@ export class ProjectStore extends Base {
     if (!isEmpty(neutronReqBody.quota)) {
       reqs.push(client.neutron.quotas.update(project_id, neutronReqBody));
     }
-
+    if (!isEmpty(shareReqBody.quota_set)) {
+      reqs.push(client.manila.quotaSets.update(project_id, shareReqBody));
+    }
     const result = await Promise.all(reqs);
     return result;
   }

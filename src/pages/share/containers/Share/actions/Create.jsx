@@ -226,6 +226,7 @@ export class Create extends FormAction {
         isLoading: this.networkStore.list.isLoading,
         data: this.networkStore.list.data || [],
         display: showNetworks,
+        required: showNetworks,
       },
       {
         name: 'shareGroup',
@@ -235,6 +236,7 @@ export class Create extends FormAction {
         filterParams: shareGroupFilters,
         isLoading: this.shareGroupStore.list.isLoading,
         data: shareGroups,
+        disabledFunc: (item) => item.status !== 'available',
       },
       {
         type: 'divider',

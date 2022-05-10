@@ -18,6 +18,7 @@ import Edit from './Edit';
 import ManageMetadata from './ManageMetadata';
 import ManageAccessRule from './ManageAccessRule';
 import Extend from './Extend';
+import ResetStatus from './ResetStatus';
 
 const actionConfigs = {
   rowActions: {
@@ -44,7 +45,11 @@ const actionConfigs = {
 const actionConfigsAdmin = {
   rowActions: {
     firstAction: Delete,
-    moreActions: [],
+    moreActions: [
+      {
+        action: ResetStatus,
+      },
+    ],
   },
   primaryActions: [],
   batchActions: [Delete],
