@@ -51,6 +51,11 @@ export class Share extends Base {
     return this.inDetailPage && pathname.includes('share-network');
   }
 
+  get inShareServerDetailPage() {
+    const { pathname } = this.props.location;
+    return this.inDetailPage && pathname.includes('share-server');
+  }
+
   updateFetchParamsByPage = (params) => {
     const { id, ...rest } = params;
     const newParams = { ...rest };
@@ -62,6 +67,9 @@ export class Share extends Base {
     }
     if (this.inShareNetworkDetailPage) {
       newParams.share_network_id = id;
+    }
+    if (this.inShareServerDetailPage) {
+      newParams.share_server_id = id;
     }
     return newParams;
   };

@@ -58,4 +58,5 @@ export const shareAccessRuleState = {
   queued_to_apply: t('Queued To Apply'),
   queued_to_deny: t('Queued To Deny'),
   denying: t('Denying'),
+  applying: t('Applying'),
 };

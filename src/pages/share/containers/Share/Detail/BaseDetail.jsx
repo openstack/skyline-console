@@ -16,7 +16,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
 import { shareProtocol } from 'resources/manila/share';
-import { getYesNo, toLocalTimeFilter } from 'utils/index';
+import { getYesNo } from 'utils/index';
 
 export class BaseDetail extends Base {
   get leftCards() {
@@ -32,7 +32,7 @@ export class BaseDetail extends Base {
   }
 
   get rightCards() {
-    return [this.exportLocationsCard, this.accessCard];
+    return [this.exportLocationsCard];
   }
 
   get baseInfoCard() {
@@ -181,53 +181,6 @@ export class BaseDetail extends Base {
     });
     return {
       title: t('Export Locations'),
-      options,
-      labelCol: 4,
-    };
-  }
-
-  get accessCard() {
-    const { accessList = [] } = this.detailData;
-    const access = accessList[0] || {};
-    const options = [
-      {
-        label: t('Access Type'),
-        dataIndex: 'access_type',
-        render: () => access.access_type,
-      },
-      {
-        label: t('Access To'),
-        dataIndex: 'access_to',
-        render: () => access.access_to,
-      },
-      {
-        label: t('Access Level'),
-        dataIndex: 'access_level',
-        render: () => access.access_level,
-      },
-      {
-        label: t('State'),
-        dataIndex: 'state',
-        render: () => access.state,
-      },
-      {
-        label: t('Access Key'),
-        dataIndex: 'access_key',
-        render: () => access.access_key,
-      },
-      {
-        label: t('Created At'),
-        dataIndex: 'created_at',
-        render: () => toLocalTimeFilter(access.created_at),
-      },
-      {
-        label: t('Updated At'),
-        dataIndex: 'updated_at',
-        render: () => toLocalTimeFilter(access.updated_at),
-      },
-    ];
-    return {
-      title: t('Access Rule'),
       options,
       labelCol: 4,
     };

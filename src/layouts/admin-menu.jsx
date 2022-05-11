@@ -470,6 +470,22 @@ const renderMenu = (t) => {
           ],
         },
         {
+          path: '/share/share-server-admin',
+          name: t('Share Server'),
+          key: 'shareServerAdmin',
+          level: 1,
+          endpoints: 'manilav2',
+          children: [
+            {
+              path: /^\/share\/share-server-admin\/detail\/.[^/]+$/,
+              name: t('Share Server Detail'),
+              key: 'shareServerDetailAdmin',
+              level: 2,
+              routePath: '/share/share-server-admin/detail/:id',
+            },
+          ],
+        },
+        {
           path: '/share/share-instance-admin',
           name: t('Share Instance'),
           key: 'shareInstanceAdmin',

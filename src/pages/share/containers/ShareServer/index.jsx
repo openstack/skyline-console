@@ -14,31 +14,32 @@
 
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import globalShareInstanceStore from 'stores/manila/share-instance';
-import { shareStatus } from 'resources/manila/share';
+import globalShareServerStore from 'stores/manila/share-server';
+import { shareServerStatus } from 'resources/manila/share-server';
+import actionConfigs from './actions';
 
-export class ShareInstance extends Base {
+export class ShareServer extends Base {
   init() {
-    this.store = globalShareInstanceStore;
+    this.store = globalShareServerStore;
   }
 
   get policy() {
-    return 'manila:share_instance:index';
+    return 'manila:share_server:index';
   }
 
   get name() {
-    return t('share instances');
+    return t('share servers');
   }
 
-  get fetchDataByAllProjects() {
-    return false;
+  get actionConfigs() {
+    return actionConfigs;
   }
 
   getColumns = () => [
     {
       title: t('ID'),
       dataIndex: 'id',
-      routeName: 'shareInstanceDetailAdmin',
+      routeName: 'shareServerDetailAdmin',
       isLink: true,
       withoutName: true,
     },
@@ -48,39 +49,23 @@ export class ShareInstance extends Base {
       isHideable: true,
     },
     {
-      title: t('Status'),
-      dataIndex: 'status',
-      render: (value) => shareStatus[value] || value,
+      title: t('Project ID/Name'),
+      dataIndex: 'project_name',
+      isHideable: true,
     },
     {
-      title: t('Availability Zone'),
-      dataIndex: 'availability_zone',
+      title: t('Status'),
+      dataIndex: 'status',
+      render: (value) => shareServerStatus[value] || value,
     },
     {
       title: t('Share Network'),
-      dataIndex: 'share_network_id',
+      dataIndex: 'share_network_name',
       isLink: true,
       routeName: this.getRouteName('shareNetworkDetail'),
       idKey: 'share_network_id',
-      withoutName: true,
-    },
-    {
-      title: t('Share Server'),
-      dataIndex: 'share_server_id',
-      isLink: true,
-      routeName: this.getRouteName('shareServerDetail'),
-      idKey: 'share_server_id',
-      withoutName: true,
-    },
-    {
-      title: t('Share Id'),
-      dataIndex: 'share_id',
-      isLink: true,
-      routeName: this.getRouteName('shareDetail'),
-      idKey: 'share_id',
-      withoutName: true,
     },
   ];
 }
 
-export default inject('rootStore')(observer(ShareInstance));
+export default inject('rootStore')(observer(ShareServer));

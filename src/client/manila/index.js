@@ -173,6 +173,11 @@ export class ManilaClient extends Base {
         key: 'quota-sets',
         responseKey: 'quota_set',
       },
+      {
+        name: 'shareServers',
+        key: 'share-servers',
+        responseKey: 'share_server',
+      },
     ];
   }
 }

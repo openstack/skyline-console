@@ -197,6 +197,7 @@ export const getNameRenderByRouter = (render, column, rowKey) => {
     routeParamsKey = 'id',
     routeQuery = {},
     routeParamsFunc,
+    withoutName = false,
   } = column;
   return (value, record) => {
     const nameValue = value || get(record, dataIndex) || '-';
@@ -217,7 +218,7 @@ export const getNameRenderByRouter = (render, column, rowKey) => {
     return (
       <div>
         <div>{link}</div>
-        <div>{nameValue}</div>
+        {!withoutName && <div>{nameValue}</div>}
       </div>
     );
   };
