@@ -16,6 +16,7 @@ import { action, observable } from 'mobx';
 import { get } from 'lodash';
 import client from 'client';
 import Base from 'stores/base';
+import { mapperRule } from 'resources/security-group-rule';
 import { RecycleBinStore } from '../skyline/recycle-server';
 
 export class ServerStore extends Base {
@@ -58,6 +59,16 @@ export class ServerStore extends Base {
         item.flavor_info = item.flavor;
       }
       return item;
+    };
+  }
+
+  get mapperSecurityGroupRule() {
+    return (data) => {
+      const { security_group_rules = [] } = data;
+      return {
+        ...data,
+        security_group_rules: security_group_rules.map(mapperRule),
+      };
     };
   }
 
@@ -209,7 +220,9 @@ export class ServerStore extends Base {
       const result = await Promise.all(
         sgIds.map((it) => this.sgClient.show(it))
       );
-      sgItems = result.map((it) => it.security_group);
+      sgItems = result.map((it) =>
+        this.mapperSecurityGroupRule(it.security_group)
+      );
     } catch (e) {}
     this.securityGroups = {
       data: sgItems || [],
