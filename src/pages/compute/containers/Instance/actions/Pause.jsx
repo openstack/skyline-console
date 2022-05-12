@@ -14,7 +14,11 @@
 
 import { ConfirmAction } from 'containers/Action';
 import { isArray } from 'lodash';
-import { isNotLocked, checkStatus, isIronicInstance } from 'resources/instance';
+import {
+  isNotLocked,
+  checkStatus,
+  isIronicInstance,
+} from 'resources/nova/instance';
 import globalServerStore from 'stores/nova/instance';
 
 export default class PauseAction extends ConfirmAction {

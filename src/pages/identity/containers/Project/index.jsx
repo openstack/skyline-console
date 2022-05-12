@@ -18,7 +18,7 @@ import { Divider, Badge } from 'antd';
 import Base from 'containers/List';
 import globalProjectStore, { ProjectStore } from 'stores/keystone/project';
 import { yesNoOptions, emptyActionConfig } from 'utils/constants';
-import { SimpleTag } from 'resources/instance';
+import { SimpleTag } from 'resources/nova/instance';
 import actionConfigs from './actions';
 import styles from './index.less';
 

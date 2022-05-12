@@ -17,7 +17,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import { QoSPolicyStore } from 'stores/neutron/qos-policy';
 import globalVirtualAdapterStore from 'stores/neutron/virtual-adapter';
-import { getQoSPolicyTabs } from 'resources/qos-policy';
+import { getQoSPolicyTabs } from 'resources/neutron/qos-policy';
 import { qosEndpoint } from 'client/client/constants';
 
 export class ModifyQoS extends ModalAction {

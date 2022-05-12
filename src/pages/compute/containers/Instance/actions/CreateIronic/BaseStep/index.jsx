@@ -22,7 +22,7 @@ import {
   getImageSystemTabs,
   getImageOS,
   getImageColumns,
-} from 'resources/image';
+} from 'resources/glance/image';
 import Base from 'components/Form';
 import FlavorSelectTable from '../../../components/FlavorSelectTable';
 

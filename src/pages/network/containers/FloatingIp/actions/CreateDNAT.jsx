@@ -17,12 +17,12 @@ import { inject, observer } from 'mobx-react';
 import { DesktopOutlined } from '@ant-design/icons';
 import { ModalAction } from 'containers/Action';
 import { isNull } from 'lodash';
-import { getCanReachSubnetIdsWithRouterIdInComponent } from 'resources/router';
+import { getCanReachSubnetIdsWithRouterIdInComponent } from 'resources/neutron/router';
 import { PortStore } from 'stores/neutron/port';
-import { getPortFormItem, getPortsAndReasons } from 'resources/port';
-import { getInterfaceWithReason } from 'resources/floatingip';
+import { getPortFormItem, getPortsAndReasons } from 'resources/neutron/port';
+import { getInterfaceWithReason } from 'resources/neutron/floatingip';
 import globalPortForwardingStore from 'stores/neutron/port-forwarding';
-import { enablePFW } from 'resources/neutron';
+import { enablePFW } from 'resources/neutron/neutron';
 
 @inject('rootStore')
 @observer

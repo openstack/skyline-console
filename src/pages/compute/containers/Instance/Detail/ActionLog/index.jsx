@@ -1,7 +1,7 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalActionLogStore from 'stores/nova/action-log';
-import { actionColumn } from 'resources/instance';
+import { actionColumn } from 'resources/nova/instance';
 
 @inject('rootStore')
 @observer

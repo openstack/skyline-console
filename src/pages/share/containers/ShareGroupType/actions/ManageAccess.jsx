@@ -18,7 +18,7 @@ import globalShareGroupTypeStore, {
 } from 'stores/manila/share-group-type';
 import { ModalAction } from 'containers/Action';
 import { ProjectStore } from 'stores/keystone/project';
-import { projectTableOptions } from 'resources/project';
+import { projectTableOptions } from 'resources/keystone/project';
 
 export class ManageAccess extends ModalAction {
   static id = 'manage-access';

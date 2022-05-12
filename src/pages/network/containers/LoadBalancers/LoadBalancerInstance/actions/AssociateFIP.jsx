@@ -15,12 +15,12 @@
 import { inject, observer } from 'mobx-react';
 import globalFloatingIpsStore from 'stores/neutron/floatingIp';
 import { ModalAction } from 'containers/Action';
-import { getPortsAndReasons } from 'resources/port';
+import { getPortsAndReasons } from 'resources/neutron/port';
 import {
   getInterfaceWithReason,
   handleFixedIPChange,
-} from 'resources/floatingip';
-import { getCanReachSubnetIdsWithRouterIdInComponent } from 'resources/router';
+} from 'resources/neutron/floatingip';
+import { getCanReachSubnetIdsWithRouterIdInComponent } from 'resources/neutron/router';
 
 @inject('rootStore')
 @observer

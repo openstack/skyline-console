@@ -14,7 +14,7 @@
 
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import { networkColumns } from 'resources/network';
+import { networkColumns } from 'resources/neutron/network';
 import { NetworkStore } from 'stores/neutron/network';
 import { yesNoOptions } from 'utils/constants';
 import actionConfigs from './actions';

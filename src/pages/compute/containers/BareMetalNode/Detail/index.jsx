@@ -16,7 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { IronicStore } from 'stores/ironic/ironic';
 import Base from 'containers/TabDetail';
 // import Members from 'pages/compute/containers/Instance';
-import { powerState, provisioningState } from 'resources/ironic';
+import { powerState, provisioningState } from 'resources/ironic/ironic';
 import BaseDetail from './BaseDetail';
 import Port from './Port';
 import PortGroup from './PortGroup';

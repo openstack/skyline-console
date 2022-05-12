@@ -14,7 +14,7 @@
 
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import { getRouterColumns, routerFilters } from 'resources/router';
+import { getRouterColumns, routerFilters } from 'resources/neutron/router';
 import { NeutronAgentRouterStore } from 'stores/neutron/agent-router';
 import actionConfigs from './actions';
 

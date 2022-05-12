@@ -20,13 +20,13 @@ import {
   isActiveOrShutOff,
   isNotLocked,
   isIsoInstance,
-} from 'resources/instance';
+} from 'resources/nova/instance';
 import {
   getImageOS,
   getImageColumns,
   canImageCreateInstance,
   getImageSystemTabs,
-} from 'resources/image';
+} from 'resources/glance/image';
 
 export class Rebuild extends ModalAction {
   static id = 'rebuild';

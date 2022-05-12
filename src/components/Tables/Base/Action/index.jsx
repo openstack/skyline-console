@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import checkItemPolicy, { systemRoleIsReader } from 'resources/policy';
+import checkItemPolicy, { systemRoleIsReader } from 'resources/keystone/policy';
 
 export async function checkAllowed({
   item,

@@ -15,7 +15,10 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalSecurityGroupRuleStore from 'stores/neutron/security-rule';
-import { filterParams, getSelfColumns } from 'resources/security-group-rule';
+import {
+  filterParams,
+  getSelfColumns,
+} from 'resources/neutron/security-group-rule';
 import { getPath } from 'utils/route-map';
 import actionConfigs from './actions';
 

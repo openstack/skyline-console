@@ -20,7 +20,7 @@ import {
   getRouterColumns,
   routerFilters,
   routerSortProps,
-} from 'resources/router';
+} from 'resources/neutron/router';
 import { projectRender } from 'utils/table';
 
 @inject('rootStore')

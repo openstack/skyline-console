@@ -15,8 +15,8 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalBackupStore from 'stores/cinder/backup';
-import { isAvailableOrInUse, isInUse } from 'resources/volume';
-import { createTip, backupModeList, modeTip } from 'resources/backup';
+import { isAvailableOrInUse, isInUse } from 'resources/cinder/volume';
+import { createTip, backupModeList, modeTip } from 'resources/cinder/backup';
 
 export class CreateBackup extends ModalAction {
   static id = 'create-backup';

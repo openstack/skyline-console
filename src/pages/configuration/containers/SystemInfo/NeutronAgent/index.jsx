@@ -17,7 +17,7 @@ import Base from 'containers/List';
 import {
   getNeutronAgentServiceState,
   getNeutronAgentServiceStatus,
-} from 'resources/service';
+} from 'resources/nova/service';
 import globalNeutronAgentStore from 'stores/neutron/agent';
 import actionConfigs from './actions';
 

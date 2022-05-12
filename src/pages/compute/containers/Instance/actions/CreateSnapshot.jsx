@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import globalServerStore from 'stores/nova/instance';
 import { ModalAction } from 'containers/Action';
-import { checkStatus, isIronicInstance } from 'resources/instance';
+import { checkStatus, isIronicInstance } from 'resources/nova/instance';
 import globalInstanceVolumeStore from 'stores/nova/instance-volume';
 import globalVolumeTypeStore from 'stores/cinder/volume-type';
 

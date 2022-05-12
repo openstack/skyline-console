@@ -22,18 +22,18 @@ import { ShareTypeStore } from 'stores/manila/share-type';
 import {
   getShareGroupColumns,
   shareGroupFilters,
-} from 'src/resources/manila/share-group';
+} from 'resources/manila/share-group';
 import {
   shareTypeColumns,
   shareTypeFilters,
   checkShareTypeSupportServer,
   shareTypeTip,
-} from 'src/resources/manila/share-type';
+} from 'resources/manila/share-type';
 import {
   getShareNetworkColumns,
   shareNetworkFilters,
-} from 'src/resources/manila/share-network';
-import { shareProtocol } from 'src/resources/manila/share';
+} from 'resources/manila/share-network';
+import { shareProtocol } from 'resources/manila/share';
 import { cloneDeep } from 'lodash';
 import { idNameColumn } from 'utils/table';
 import { extraFormItem } from 'pages/share/containers/ShareType/actions/Create';

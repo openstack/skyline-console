@@ -16,7 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalSecurityGroupRuleStore from 'stores/neutron/security-rule';
 import globalSecurityGroupStore from 'stores/neutron/security-group';
-import { ipProtocols } from 'resources/security-group-rule';
+import { ipProtocols } from 'resources/neutron/security-group-rule';
 import { has } from 'lodash';
 import { cidrAllValidate } from 'utils/validate';
 

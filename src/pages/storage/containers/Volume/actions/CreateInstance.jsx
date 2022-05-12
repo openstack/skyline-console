@@ -14,7 +14,7 @@
 
 import { inject, observer } from 'mobx-react';
 import CreateInstance from 'pages/compute/containers/Instance/actions/StepCreate';
-import { canCreateInstance } from 'resources/volume';
+import { canCreateInstance } from 'resources/cinder/volume';
 
 @inject('rootStore')
 @observer

@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import globalBackupStore from 'stores/cinder/backup';
 import Base from 'containers/TabDetail';
-import { backupStatus } from 'resources/backup';
+import { backupStatus } from 'resources/cinder/backup';
 import BaseDetail from './BaseDetail';
 import actionConfigs from '../actions';
 

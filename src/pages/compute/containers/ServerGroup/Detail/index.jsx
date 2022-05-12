@@ -16,7 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ServerGroupStore } from 'stores/nova/server-group';
 import Base from 'containers/TabDetail';
 import Members from 'pages/compute/containers/Instance';
-import policyType from 'resources/server-group';
+import policyType from 'resources/nova/server-group';
 import actionConfigs from '../actions';
 
 @inject('rootStore')

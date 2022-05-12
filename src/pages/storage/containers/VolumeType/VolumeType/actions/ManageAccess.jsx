@@ -18,7 +18,7 @@ import globalVolumeTypeStore, {
 } from 'stores/cinder/volume-type';
 import { ModalAction } from 'containers/Action';
 import { ProjectStore } from 'stores/keystone/project';
-import { projectTableOptions } from 'resources/project';
+import { projectTableOptions } from 'resources/keystone/project';
 
 @inject('rootStore')
 @observer

@@ -15,7 +15,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
-import { bindingTypes } from 'resources/port';
+import { bindingTypes } from 'resources/neutron/port';
 import { isEmpty } from 'lodash';
 
 @inject('rootStore')

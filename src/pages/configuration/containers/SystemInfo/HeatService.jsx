@@ -14,7 +14,7 @@
 
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import { serviceState } from 'resources/service';
+import { serviceState } from 'resources/nova/service';
 import { getOptions } from 'utils';
 import globalHeatServiceStore from 'stores/heat/service';
 

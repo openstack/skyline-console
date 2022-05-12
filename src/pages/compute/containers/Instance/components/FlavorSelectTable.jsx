@@ -29,7 +29,7 @@ import {
   isBareMetalFlavor,
   isBareMetal,
   getFlavorArchInfo,
-} from 'resources/flavor';
+} from 'resources/nova/flavor';
 import styles from './index.less';
 
 export class FlavorSelectTable extends Component {

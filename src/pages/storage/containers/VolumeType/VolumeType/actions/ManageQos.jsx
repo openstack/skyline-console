@@ -15,7 +15,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import { consumerTypes } from 'resources/volume-type';
+import { consumerTypes } from 'resources/cinder/volume-type';
 import globalQosSpecStore from 'stores/cinder/qos-spec';
 
 @inject('rootStore')

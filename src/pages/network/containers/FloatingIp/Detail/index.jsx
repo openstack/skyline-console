@@ -14,10 +14,10 @@
 
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/TabDetail';
-import { floatingIpStatus } from 'resources/floatingip';
+import { floatingIpStatus } from 'resources/neutron/floatingip';
 import { FloatingIpStore } from 'stores/neutron/floatingIp';
 import { isNull } from 'lodash';
-import { enablePFW } from 'resources/neutron';
+import { enablePFW } from 'resources/neutron/neutron';
 import actionConfigs from '../actions';
 import BaseDetail from './BaseDetail';
 import PortForwarding from './PortForwarding';

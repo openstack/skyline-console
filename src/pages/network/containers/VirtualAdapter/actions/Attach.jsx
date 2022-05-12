@@ -18,7 +18,7 @@ import globalServerStore, { ServerStore } from 'stores/nova/instance';
 import {
   instanceSelectTablePropsBackend,
   allowAttachInterfaceStatus,
-} from 'resources/instance';
+} from 'resources/nova/instance';
 
 export class Attach extends ModalAction {
   static id = 'attach_instance';

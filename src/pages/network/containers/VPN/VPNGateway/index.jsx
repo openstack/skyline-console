@@ -15,7 +15,7 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { VpnServicesStore } from 'stores/neutron/vpn-service';
-import { vpnStatus, vpnStatusOptions } from 'resources/vpn';
+import { vpnStatus, vpnStatusOptions } from 'resources/neutron/vpn';
 import React from 'react';
 import { actionConfigs, adminConfigs } from './actions';
 

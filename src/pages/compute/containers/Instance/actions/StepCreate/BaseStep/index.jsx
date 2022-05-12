@@ -15,7 +15,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { toJS } from 'mobx';
-import { volumeStatus, canCreateInstance } from 'resources/volume';
+import { volumeStatus, canCreateInstance } from 'resources/cinder/volume';
 import globalServerStore from 'stores/nova/instance';
 import globalImageStore from 'stores/glance/image';
 import globalVolumeTypeStore from 'stores/cinder/volume-type';
@@ -26,10 +26,10 @@ import {
   getImageSystemTabs,
   getImageOS,
   getImageColumns,
-} from 'resources/image';
+} from 'resources/glance/image';
 import Base from 'components/Form';
 import InstanceVolume from 'components/FormItem/InstanceVolume';
-import { isGpuCategory } from 'resources/flavor';
+import { isGpuCategory } from 'resources/nova/flavor';
 import FlavorSelectTable from '../../../components/FlavorSelectTable';
 
 export class BaseStep extends Base {

@@ -17,7 +17,10 @@ import { inject, observer } from 'mobx-react';
 import Base from 'containers/List';
 import { Col, Row } from 'antd';
 import { LbaasStore } from 'stores/octavia/loadbalancer';
-import { operatingStatusCodes, provisioningStatusCodes } from 'resources/lb';
+import {
+  operatingStatusCodes,
+  provisioningStatusCodes,
+} from 'resources/octavia/lb';
 import { lbEndpoint } from 'client/client/constants';
 import { actionConfigs, adminActions } from './actions';
 

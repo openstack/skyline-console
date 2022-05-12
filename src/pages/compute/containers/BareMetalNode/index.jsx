@@ -15,7 +15,7 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalIronicStore from 'stores/ironic/ironic';
-import { powerState, provisioningState } from 'resources/ironic';
+import { powerState, provisioningState } from 'resources/ironic/ironic';
 import { ironicOriginEndpoint } from 'client/client/constants';
 import { getOptions } from 'utils';
 import actionConfigs from './actions';

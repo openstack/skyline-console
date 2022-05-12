@@ -20,7 +20,7 @@ import {
   isNotLockedOrAdmin,
   checkStatus,
   isIronicInstance,
-} from 'resources/instance';
+} from 'resources/nova/instance';
 
 @inject('rootStore')
 @observer

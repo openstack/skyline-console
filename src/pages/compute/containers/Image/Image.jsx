@@ -22,7 +22,7 @@ import {
   imageUsage,
   imageFormats,
   transitionStatusList,
-} from 'resources/image';
+} from 'resources/glance/image';
 import { ImageStore } from 'stores/glance/image';
 import { getOptions } from 'utils/index';
 import actionConfigs from './actions';

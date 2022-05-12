@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/TabDetail';
 import { StackStore } from 'stores/heat/stack';
-import { stackStatus } from 'resources/stack';
+import { stackStatus } from 'resources/heat/stack';
 import BaseDetail from './BaseDetail';
 import Resource from './Resource';
 import Event from './Event';

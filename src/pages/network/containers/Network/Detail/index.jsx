@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/TabDetail';
 import { NetworkStore } from 'stores/neutron/network';
-import { networkStatus } from 'resources/network';
+import { networkStatus } from 'resources/neutron/network';
 import VirtualAdapter from 'src/pages/network/containers/VirtualAdapter';
 import globalRootStore from 'stores/root';
 import Subnets from './Subnets';

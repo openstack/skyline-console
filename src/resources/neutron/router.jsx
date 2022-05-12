@@ -14,7 +14,10 @@
 
 import React from 'react';
 import globalRouterStore from 'stores/neutron/router';
-import { getPortsWithFixedIPs, getSubnetToRouter } from 'resources/floatingip';
+import {
+  getPortsWithFixedIPs,
+  getSubnetToRouter,
+} from 'resources/neutron/floatingip';
 import { getOptions } from 'utils';
 
 export const routerStatus = {

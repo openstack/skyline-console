@@ -22,7 +22,7 @@ import {
   isActiveOrShutOff,
   isNotLocked,
   isNotDeleting,
-} from 'resources/instance';
+} from 'resources/nova/instance';
 import { ipValidate } from 'utils/validate';
 
 const { isIPv4, isIpv6, isIpInRangeAll } = ipValidate;

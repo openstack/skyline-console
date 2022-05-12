@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalPoolStore from 'stores/octavia/pool';
-import { BackendProtocol, Algorithm } from 'resources/pool';
+import { BackendProtocol, Algorithm } from 'resources/octavia/pool';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
 
 @inject('rootStore')

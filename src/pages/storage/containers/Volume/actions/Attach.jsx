@@ -19,8 +19,8 @@ import globalVolumeStore from 'stores/cinder/volume';
 import {
   allowAttachVolumeInstance,
   instanceSelectTablePropsBackend,
-} from 'resources/instance';
-import { isAvailable, isMultiAttach } from 'resources/volume';
+} from 'resources/nova/instance';
+import { isAvailable, isMultiAttach } from 'resources/cinder/volume';
 
 export class Attach extends ModalAction {
   static id = 'attach';

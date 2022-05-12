@@ -15,9 +15,9 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalVolumeStore from 'stores/cinder/volume';
-import { isAvailableOrInUse } from 'resources/volume';
+import { isAvailableOrInUse } from 'resources/cinder/volume';
 import globalPoolStore from 'stores/cinder/pool';
-import { poolColumns } from 'resources/cinder-pool';
+import { poolColumns } from 'resources/cinder/cinder-pool';
 
 @inject('rootStore')
 @observer

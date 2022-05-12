@@ -15,7 +15,7 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalInstancesStore from 'stores/trove/instances';
-import { InstanceStatus } from 'resources/database';
+import { InstanceStatus } from 'resources/trove/database';
 import { get as _get } from 'lodash';
 import actions from './actions';
 

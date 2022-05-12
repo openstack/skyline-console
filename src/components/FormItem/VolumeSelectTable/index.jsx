@@ -20,7 +20,7 @@ import {
   volumeColumns,
   volumeFilters,
   volumeSortProps,
-} from 'resources/volume';
+} from 'resources/cinder/volume';
 
 @inject('rootStore')
 @observer

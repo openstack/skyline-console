@@ -14,7 +14,11 @@
 
 import { toJS } from 'mobx';
 import { inject, observer } from 'mobx-react';
-import { imageProperties, imageVisibility, imageOS } from 'resources/image';
+import {
+  imageProperties,
+  imageVisibility,
+  imageOS,
+} from 'resources/glance/image';
 import Base from 'containers/BaseDetail';
 import { isObject, isArray } from 'lodash';
 

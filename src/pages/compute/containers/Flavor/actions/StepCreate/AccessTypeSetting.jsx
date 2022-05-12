@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
 import { ProjectStore } from 'stores/keystone/project';
-import { projectTableOptions } from 'resources/project';
+import { projectTableOptions } from 'resources/keystone/project';
 
 @inject('rootStore')
 @observer

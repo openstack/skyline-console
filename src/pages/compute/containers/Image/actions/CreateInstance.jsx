@@ -14,7 +14,7 @@
 
 import { inject, observer } from 'mobx-react';
 import CreateInstance from 'pages/compute/containers/Instance/actions/StepCreate';
-import { canImageCreateInstance } from 'resources/image';
+import { canImageCreateInstance } from 'resources/glance/image';
 
 @inject('rootStore')
 @observer

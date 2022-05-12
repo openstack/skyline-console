@@ -23,7 +23,7 @@ import { QoSPolicyStore } from 'stores/neutron/qos-policy';
 import globalVirtualAdapterStore from 'stores/neutron/virtual-adapter';
 import globalProjectStore from 'stores/keystone/project';
 import { SubnetStore } from 'stores/neutron/subnet';
-import { getQoSPolicyTabs } from 'resources/qos-policy';
+import { getQoSPolicyTabs } from 'resources/neutron/qos-policy';
 import { qosEndpoint } from 'client/client/constants';
 
 const portTypes =

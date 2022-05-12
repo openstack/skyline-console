@@ -20,7 +20,7 @@ import {
   getFormDefaultValues,
   getTemplate,
   rollbackTip,
-} from 'resources/stack';
+} from 'resources/heat/stack';
 
 export class Parameter extends Base {
   get isStep() {

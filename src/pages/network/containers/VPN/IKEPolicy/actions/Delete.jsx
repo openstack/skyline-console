@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { ConfirmAction } from 'containers/Action';
-import { checkPolicyRule } from 'resources/policy';
+import { checkPolicyRule } from 'resources/keystone/policy';
 import globalVpnIKEPolicyStore from 'stores/neutron/vpn-ike-policy';
 import globalVpnIPsecConnectionStore from 'stores/neutron/vpn-ipsec-connection';
 import globalRootStore from 'stores/root';

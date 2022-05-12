@@ -18,7 +18,7 @@ import {
   volumeTransitionStatuses,
   volumeFilters,
   getVolumeColumnsList,
-} from 'resources/volume';
+} from 'resources/cinder/volume';
 import globalVolumeStore, { VolumeStore } from 'stores/cinder/volume';
 import { InstanceVolumeStore } from 'stores/nova/instance-volume';
 import { emptyActionConfig } from 'utils/constants';

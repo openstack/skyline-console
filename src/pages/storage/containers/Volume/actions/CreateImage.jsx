@@ -14,9 +14,9 @@
 
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import { volumeCreateImageTypes, imageOS } from 'resources/image';
+import { volumeCreateImageTypes, imageOS } from 'resources/glance/image';
 import globalVolumeStore from 'stores/cinder/volume';
-import { isAvailable } from 'resources/volume';
+import { isAvailable } from 'resources/cinder/volume';
 
 export class CreateImage extends ModalAction {
   static id = 'create-image';

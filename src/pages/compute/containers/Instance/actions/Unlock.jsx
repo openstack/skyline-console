@@ -14,7 +14,7 @@
 
 import { ConfirmAction } from 'containers/Action';
 import { isArray } from 'lodash';
-import { isLocked } from 'resources/instance';
+import { isLocked } from 'resources/nova/instance';
 import globalServerStore from 'stores/nova/instance';
 
 export default class UnlockAction extends ConfirmAction {

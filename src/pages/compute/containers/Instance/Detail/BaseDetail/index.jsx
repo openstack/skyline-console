@@ -35,7 +35,7 @@ import {
   instanceStatus,
   isIronicInstance,
   SimpleTag,
-} from 'resources/instance';
+} from 'resources/nova/instance';
 import { generateId } from 'utils/index';
 import { getSinceTime, getLocalTimeStr } from 'utils/time';
 import AttachVolume from 'pages/compute/containers/Instance/actions/AttachVolume';

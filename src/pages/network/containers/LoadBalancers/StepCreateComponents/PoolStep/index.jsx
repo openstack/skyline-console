@@ -14,7 +14,7 @@
 
 import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
-import { Algorithm, algorithmTip } from 'resources/pool';
+import { Algorithm, algorithmTip } from 'resources/octavia/pool';
 
 @inject('rootStore')
 @observer

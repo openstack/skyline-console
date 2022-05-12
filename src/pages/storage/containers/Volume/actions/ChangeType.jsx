@@ -16,7 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalVolumeStore from 'stores/cinder/volume';
 import globalVolumeTypeStore from 'stores/cinder/volume-type';
-import { isAvailableOrInUse, isOsDisk } from 'resources/volume';
+import { isAvailableOrInUse, isOsDisk } from 'resources/cinder/volume';
 
 export class ChangeType extends ModalAction {
   static id = 'change-type';

@@ -14,7 +14,7 @@
 
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
-import { controls } from 'resources/volume-type';
+import { controls } from 'resources/cinder/volume-type';
 
 @inject('rootStore')
 @observer

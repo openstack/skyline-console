@@ -17,7 +17,7 @@ import {
   instanceStatus,
   lockRender,
   isIronicInstance,
-} from 'resources/instance';
+} from 'resources/nova/instance';
 import { ServerStore } from 'stores/nova/instance';
 import Base from 'containers/TabDetail';
 import Volumes from 'pages/storage/containers/Volume';

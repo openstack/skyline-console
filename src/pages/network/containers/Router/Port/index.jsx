@@ -15,7 +15,7 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import { portStatus } from 'resources/port';
+import { portStatus } from 'resources/neutron/port';
 import { PortStore } from 'stores/neutron/port';
 import { getOptions } from 'utils';
 

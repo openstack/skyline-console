@@ -22,7 +22,7 @@ import {
   ipsecPolicyEncapsulationModeOptions,
   ipsecPolicyTransformProtocolOptions,
   pfsOptions,
-} from 'resources/vpn';
+} from 'resources/neutron/vpn';
 import { actionConfigs, adminConfigs } from './actions';
 
 @inject('rootStore')

@@ -17,10 +17,10 @@ import { ModalAction } from 'containers/Action';
 import { ipValidate } from 'utils/validate';
 import globalNetworkStore from 'stores/neutron/network';
 import { isEmpty } from 'lodash';
-import { checkPolicyRule } from 'resources/policy';
+import { checkPolicyRule } from 'resources/keystone/policy';
 import globalProjectStore from 'stores/keystone/project';
 import globalRootStore from 'stores/root';
-import { subnetIpv6Tip } from 'resources/network';
+import { subnetIpv6Tip } from 'resources/neutron/network';
 import networkUtil from './networkUtil';
 
 const {

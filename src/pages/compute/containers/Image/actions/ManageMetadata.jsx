@@ -18,7 +18,7 @@ import { ModalAction } from 'containers/Action';
 import KeyValueInput from 'components/FormItem/KeyValueInput';
 import { MetadataStore } from 'stores/glance/metadata';
 import { isEmpty, has } from 'lodash';
-import { isOwner } from 'resources/image';
+import { isOwner } from 'resources/glance/image';
 
 @inject('rootStore')
 @observer

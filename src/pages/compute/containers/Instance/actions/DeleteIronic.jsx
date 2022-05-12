@@ -14,7 +14,7 @@
 
 import { ConfirmAction } from 'containers/Action';
 import globalServerStore from 'stores/nova/instance';
-import { isIronicInstance, isNotLockedOrAdmin } from 'resources/instance';
+import { isIronicInstance, isNotLockedOrAdmin } from 'resources/nova/instance';
 
 export default class Delete extends ConfirmAction {
   get id() {

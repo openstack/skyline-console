@@ -17,11 +17,14 @@ import globalKeyPairStore from 'stores/nova/keypair';
 import globalServerStore from 'stores/nova/instance';
 import globalHypervisorStore from 'stores/nova/hypervisor';
 import globalServerGroupStore from 'stores/nova/server-group';
-import policyType from 'resources/server-group';
+import policyType from 'resources/nova/server-group';
 import Base from 'components/Form';
 import { getPasswordOtherRule, asciiValidator } from 'utils/validate';
-import { hypervisorColumns, hypervisorFilters } from 'resources/hypervisor';
-import { physicalNodeTypes } from 'resources/instance';
+import {
+  hypervisorColumns,
+  hypervisorFilters,
+} from 'resources/nova/hypervisor';
+import { physicalNodeTypes } from 'resources/nova/instance';
 import { getOptions } from 'utils';
 
 export class SystemStep extends Base {

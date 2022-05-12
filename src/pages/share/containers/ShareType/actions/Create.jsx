@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalShareTypeStore from 'stores/manila/share-type';
-import { projectTableOptions } from 'resources/project';
+import { projectTableOptions } from 'resources/keystone/project';
 import { ProjectStore } from 'stores/keystone/project';
 import KeyValueInput from 'components/FormItem/KeyValueInput';
 import { isEmpty } from 'lodash';

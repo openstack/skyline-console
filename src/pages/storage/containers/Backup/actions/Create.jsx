@@ -16,12 +16,12 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalVolumeStore from 'stores/cinder/volume';
 import globalBackupStore from 'stores/cinder/backup';
-import { createTip, backupModeList, modeTip } from 'resources/backup';
+import { createTip, backupModeList, modeTip } from 'resources/cinder/backup';
 import {
   isAvailableOrInUse,
   isInUse,
   volumeSelectTablePropsBackend,
-} from 'resources/volume';
+} from 'resources/cinder/volume';
 
 @inject('rootStore')
 @observer

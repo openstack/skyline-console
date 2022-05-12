@@ -23,11 +23,11 @@ import { SecurityGroupStore } from 'stores/neutron/security-group';
 import { ipValidate } from 'utils/validate';
 import Base from 'components/Form';
 import NetworkSelect from 'components/FormItem/NetworkSelect';
-import { ipTypeOptions } from 'resources/network';
+import { ipTypeOptions } from 'resources/neutron/network';
 import {
   securityGroupColumns,
   securityGroupFilter,
-} from 'resources/security-group';
+} from 'resources/neutron/security-group';
 import { getLinkRender } from 'utils/route-map';
 
 // import EditYamlModal from 'components/Modals/EditYaml';

@@ -14,7 +14,7 @@
 
 import React, { Component } from 'react';
 import TableButton from 'components/TableButton';
-import { getSelfColumns } from 'resources/security-group-rule';
+import { getSelfColumns } from 'resources/neutron/security-group-rule';
 import { getPath } from 'utils/route-map';
 
 export default class RuleButton extends Component {

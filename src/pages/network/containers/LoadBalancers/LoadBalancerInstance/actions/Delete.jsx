@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { ConfirmAction } from 'containers/Action';
-import { checkPolicyRule } from 'resources/policy';
+import { checkPolicyRule } from 'resources/keystone/policy';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
 import globalRootStore from 'stores/root';
 

@@ -22,12 +22,12 @@ import { VirtualAdapterStore } from 'stores/neutron/virtual-adapter';
 import { ipValidate } from 'utils/validate';
 import Base from 'components/Form';
 import NetworkSelect from 'components/FormItem/NetworkSelect';
-import { ipTypeOptions } from 'resources/network';
+import { ipTypeOptions } from 'resources/neutron/network';
 import {
   securityGroupColumns,
   securityGroupFilter,
-} from 'resources/security-group';
-import { portColumns, portFilters } from 'resources/port';
+} from 'resources/neutron/security-group';
+import { portColumns, portFilters } from 'resources/neutron/port';
 import { getLinkRender } from 'utils/route-map';
 
 // import EditYamlModal from 'components/Modals/EditYaml';

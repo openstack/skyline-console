@@ -14,9 +14,12 @@
 
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import { allCanReadPolicy } from 'resources/policy';
+import { allCanReadPolicy } from 'resources/keystone/policy';
 import globalAuthCatalogStore from 'stores/keystone/catalog';
-import { getCredentialOpenRc, getPwdOpenRc } from 'resources/openstack-rc';
+import {
+  getCredentialOpenRc,
+  getPwdOpenRc,
+} from 'resources/keystone/openstack-rc';
 import FileSaver from 'file-saver';
 
 @inject('rootStore')

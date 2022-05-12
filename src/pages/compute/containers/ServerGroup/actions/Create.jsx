@@ -16,7 +16,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import globalServerGroupStore from 'stores/nova/server-group';
 import { ModalAction } from 'containers/Action';
-import policyType from 'resources/server-group';
+import policyType from 'resources/nova/server-group';
 
 @inject('rootStore')
 @observer

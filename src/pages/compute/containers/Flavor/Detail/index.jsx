@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { FlavorStore } from 'stores/nova/flavor';
 import Base from 'containers/TabDetail';
-import { flavorCategoryList, flavorArchitectures } from 'resources/flavor';
+import { flavorCategoryList, flavorArchitectures } from 'resources/nova/flavor';
 import Members from 'pages/compute/containers/Instance';
 import { emptyActionConfig } from 'utils/constants';
 import { formatSize } from 'utils';

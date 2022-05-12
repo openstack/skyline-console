@@ -23,12 +23,12 @@ import { has, isNull } from 'lodash';
 import {
   getRouterSelectTablePropsBackend,
   getCanReachSubnetIdsWithRouterIdInComponent,
-} from 'resources/router';
+} from 'resources/neutron/router';
 import globalFloatingIpsStore from 'stores/neutron/floatingIp';
 import { PortStore } from 'stores/neutron/port';
-import { instanceSelectTablePropsBackend } from 'resources/instance';
-import { getPortFormItem, getPortsAndReasons } from 'resources/port';
-import { getInterfaceWithReason } from 'resources/floatingip';
+import { instanceSelectTablePropsBackend } from 'resources/nova/instance';
+import { getPortFormItem, getPortsAndReasons } from 'resources/neutron/port';
+import { getInterfaceWithReason } from 'resources/neutron/floatingip';
 
 export class Associate extends ModalAction {
   static id = 'associate';

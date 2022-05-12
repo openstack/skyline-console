@@ -21,7 +21,10 @@ import globalServerStore from 'stores/nova/instance';
 import globalProjectStore from 'stores/keystone/project';
 import classnames from 'classnames';
 import { isEmpty, isFinite } from 'lodash';
-import { getUserData, canCreateIronicByEndpoint } from 'resources/instance';
+import {
+  getUserData,
+  canCreateIronicByEndpoint,
+} from 'resources/nova/instance';
 import { ironicOriginEndpoint } from 'client/client/constants';
 import Notify from 'components/Notify';
 import styles from './index.less';

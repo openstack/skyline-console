@@ -20,7 +20,7 @@ import KeyValueInput from 'components/FormItem/KeyValueInput';
 import { isEmpty, has, isEqual, get } from 'lodash';
 import { macAddressValidate } from 'utils/validate';
 import { updateObjToAddSelectArray } from 'utils/index';
-import { getDifFromAddSelectValue } from 'resources/ironic';
+import { getDifFromAddSelectValue } from 'resources/ironic/ironic';
 
 @inject('rootStore')
 @observer

@@ -14,7 +14,10 @@
 
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import { volumeStatus, snapshotTransitionStatuses } from 'resources/volume';
+import {
+  volumeStatus,
+  snapshotTransitionStatuses,
+} from 'resources/cinder/volume';
 import globalSnapshotStore, { SnapshotStore } from 'stores/cinder/snapshot';
 import actionConfigs from './actions';
 

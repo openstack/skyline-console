@@ -16,8 +16,8 @@ import { inject, observer } from 'mobx-react';
 import globalServerStore from 'stores/nova/instance';
 import globalRootStore from 'stores/root';
 import { ModalAction } from 'containers/Action';
-import { allowAttachVolumeInstance } from 'resources/instance';
-import { multiTip } from 'resources/volume';
+import { allowAttachVolumeInstance } from 'resources/nova/instance';
+import { multiTip } from 'resources/cinder/volume';
 import { get as _get } from 'lodash';
 
 export class AttachVolume extends ModalAction {

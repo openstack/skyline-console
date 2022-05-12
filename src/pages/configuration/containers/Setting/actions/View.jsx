@@ -15,7 +15,7 @@
 import React from 'react';
 import { ModalAction } from 'containers/Action';
 import { inject, observer } from 'mobx-react';
-import { onlyAdminCanReadPolicy } from 'resources/policy';
+import { onlyAdminCanReadPolicy } from 'resources/keystone/policy';
 import CodeEditor from 'components/CodeEditor';
 
 export class View extends ModalAction {

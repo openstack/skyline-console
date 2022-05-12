@@ -22,7 +22,7 @@ import {
   checkStatus,
   isIronicInstance,
   hasOnlineResizeFlavor,
-} from 'resources/instance';
+} from 'resources/nova/instance';
 import FlavorSelectTable from '../components/FlavorSelectTable';
 
 export class ResizeOnline extends ModalAction {

@@ -15,7 +15,7 @@
 import { action, observable } from 'mobx';
 import client from 'client';
 import Base from 'stores/base';
-import { imageOS } from 'resources/image';
+import { imageOS } from 'resources/glance/image';
 import { isString } from 'lodash';
 
 export class ImageStore extends Base {

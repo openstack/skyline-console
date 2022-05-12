@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { inject, observer } from 'mobx-react';
-import { imageStatus } from 'resources/image';
+import { imageStatus } from 'resources/glance/image';
 import { ImageStore } from 'stores/glance/image';
 import Base from 'containers/TabDetail';
 import BaseDetail from './BaseDetail';

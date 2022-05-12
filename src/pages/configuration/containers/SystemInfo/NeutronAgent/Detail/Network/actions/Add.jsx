@@ -16,7 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { NetworkStore } from 'stores/neutron/network';
 import globalNeutronAgentNetworkStore from 'stores/neutron/agent-network';
 import { ModalAction } from 'containers/Action';
-import { networkColumns, networkSortProps } from 'resources/network';
+import { networkColumns, networkSortProps } from 'resources/neutron/network';
 import { yesNoOptions } from 'utils/constants';
 import { projectRender } from 'utils/table';
 
