@@ -21,7 +21,7 @@ import globalServerStore from 'stores/nova/instance';
 import globalProjectStore from 'stores/keystone/project';
 import classnames from 'classnames';
 import { isEmpty, isFinite, isString } from 'lodash';
-import { getUserData } from 'resources/instance';
+import { getUserData } from 'resources/nova/instance';
 import Notify from 'components/Notify';
 import styles from './index.less';
 import ConfirmStep from './ConfirmStep';

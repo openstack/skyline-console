@@ -17,7 +17,7 @@ import { VolumeStore } from 'stores/cinder/volume';
 import Base from 'containers/TabDetail';
 import Backup from 'pages/storage/containers/Backup';
 import Snapshot from 'pages/storage/containers/Snapshot';
-import { volumeStatus } from 'resources/volume';
+import { volumeStatus } from 'resources/cinder/volume';
 import BaseDetail from './BaseDetail';
 import actionConfigs from '../actions';
 

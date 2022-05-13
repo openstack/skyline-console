@@ -550,9 +550,12 @@
               - ^src/pages/network/.*$
               - ^src/stores/neutron/.*$
               - ^src/stores/octavia/.*$
+              - ^src/resources/neutron/.*$
+              - ^src/resources/octavia/.*$
               # storage
               - ^src/pages/storage/.*$
               - ^src/stores/cinder/.*$
+              - ^src/resources/cinder/.*$
               # other
               - ^src/pages/auth/.*$
               - ^src/pages/base/.*$
@@ -564,8 +567,9 @@
               - ^src/pages/user-center/.*$
               - ^src/stores/heat/.*$
               - ^src/stores/keystone/.*$
+              - ^src/resources/heat/.*$
+              - ^src/resources/keystone/.*$
               # no run
-              - ^src/resources/.*$
               - ^src/styles/.*$
               - ^src/locales/.*$
               - ^src/asset/.*$
@@ -582,9 +586,13 @@
               - ^src/stores/ironic/.*$
               - ^src/stores/nova/.*$
               - ^src/stores/skyline/.*$
+              - ^src/resources/glance/.*$
+              - ^src/resources/ironic/.*$
+              - ^src/resources/nova/.*$
               # storage
               - ^src/pages/storage/.*$
               - ^src/stores/cinder/.*$
+              - ^src/resources/cinder/.*$
               # other
               - ^src/pages/auth/.*$
               - ^src/pages/base/.*$
@@ -596,8 +604,9 @@
               - ^src/pages/user-center/.*$
               - ^src/stores/heat/.*$
               - ^src/stores/keystone/.*$
+              - ^src/resources/heat/.*$
+              - ^src/resources/keystone/.*$
               # no run
-              - ^src/resources/.*$
               - ^src/styles/.*$
               - ^src/locales/.*$
               - ^src/asset/.*$
@@ -614,15 +623,20 @@
               - ^src/stores/ironic/.*$
               - ^src/stores/nova/.*$
               - ^src/stores/skyline/.*$
+              - ^src/resources/glance/.*$
+              - ^src/resources/ironic/.*$
+              - ^src/resources/nova/.*$
               # network
               - ^src/pages/network/.*$
               - ^src/stores/neutron/.*$
               - ^src/stores/octavia/.*$
+              - ^src/resources/neutron/.*$
+              - ^src/resources/octavia/.*$
               # storage
               - ^src/pages/storage/.*$
               - ^src/stores/cinder/.*$
+              - ^src/resources/cinder/.*$
               # no run
-              - ^src/resources/.*$
               - ^src/styles/.*$
               - ^src/locales/.*$
               - ^src/asset/.*$
@@ -639,10 +653,15 @@
               - ^src/stores/ironic/.*$
               - ^src/stores/nova/.*$
               - ^src/stores/skyline/.*$
+              - ^src/resources/glance/.*$
+              - ^src/resources/ironic/.*$
+              - ^src/resources/nova/.*$
               # network
               - ^src/pages/network/.*$
               - ^src/stores/neutron/.*$
               - ^src/stores/octavia/.*$
+              - ^src/resources/neutron/.*$
+              - ^src/resources/octavia/.*$
               # other
               - ^src/pages/auth/.*$
               - ^src/pages/base/.*$
@@ -654,8 +673,9 @@
               - ^src/pages/user-center/.*$
               - ^src/stores/heat/.*$
               - ^src/stores/keystone/.*$
+              - ^src/resources/heat/.*$
+              - ^src/resources/keystone/.*$
               # no run
-              - ^src/resources/.*$
               - ^src/styles/.*$
               - ^src/locales/.*$
               - ^src/asset/.*$

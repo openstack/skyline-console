@@ -18,7 +18,7 @@ import globalVolumeTypeStore, {
   VolumeTypeStore,
 } from 'stores/cinder/volume-type';
 import { has } from 'lodash';
-import { multiTip } from 'resources/volume';
+import { multiTip } from 'resources/cinder/volume';
 import actionConfigs from './actions';
 
 @inject('rootStore')

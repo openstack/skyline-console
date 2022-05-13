@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { mapperRule } from 'resources/security-group-rule';
+import { mapperRule } from 'resources/neutron/security-group-rule';
 import client from 'client';
 import Base from 'stores/base';
 

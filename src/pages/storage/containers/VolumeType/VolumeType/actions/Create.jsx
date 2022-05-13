@@ -15,10 +15,10 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalVolumeTypeStore from 'stores/cinder/volume-type';
-import { projectTableOptions } from 'resources/project';
+import { projectTableOptions } from 'resources/keystone/project';
 import { ProjectStore } from 'stores/keystone/project';
 import { toJS } from 'mobx';
-import { multiTip } from 'resources/volume';
+import { multiTip } from 'resources/cinder/volume';
 
 @inject('rootStore')
 @observer

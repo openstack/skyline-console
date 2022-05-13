@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalVolumeStore, { VolumeStore } from 'stores/cinder/volume';
-import { isAvailableOrInUse } from 'resources/volume';
+import { isAvailableOrInUse } from 'resources/cinder/volume';
 import { get } from 'lodash';
 import client from 'client';
 import Notify from 'components/Notify';

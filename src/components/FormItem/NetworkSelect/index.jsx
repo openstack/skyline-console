@@ -18,7 +18,7 @@ import Select from 'components/FormItem/Select';
 import PropTypes from 'prop-types';
 import { ipValidate } from 'utils/validate';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { ipTypeOptions } from 'resources/network';
+import { ipTypeOptions } from 'resources/neutron/network';
 // import { getIpInitValue } from 'resources/instance';
 import styles from './index.less';
 

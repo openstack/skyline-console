@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { SnapshotStore } from 'stores/cinder/snapshot';
 import Base from 'containers/TabDetail';
-import { volumeStatus } from 'resources/volume';
+import { volumeStatus } from 'resources/cinder/volume';
 import BaseDetail from './BaseDetail';
 import actionConfigs from '../actions';
 

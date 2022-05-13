@@ -16,9 +16,9 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import globalPortForwardingStore from 'stores/neutron/port-forwarding';
 import globalPortStore, { PortStore } from 'stores/neutron/port';
-import { getCanReachSubnetIdsWithRouterIdInComponent } from 'resources/router';
-import { getInterfaceWithReason } from 'resources/floatingip';
-import { getPortFormItem, getPortsAndReasons } from 'resources/port';
+import { getCanReachSubnetIdsWithRouterIdInComponent } from 'resources/neutron/router';
+import { getInterfaceWithReason } from 'resources/neutron/floatingip';
+import { getPortFormItem, getPortsAndReasons } from 'resources/neutron/port';
 import { DesktopOutlined } from '@ant-design/icons';
 import { ModalAction } from 'containers/Action';
 

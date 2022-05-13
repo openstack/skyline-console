@@ -17,7 +17,7 @@ import { inject, observer } from 'mobx-react';
 import TabSelectTable from 'components/FormItem/TabSelectTable';
 import { NetworkStore } from 'stores/neutron/network';
 import { yesNoOptions } from 'utils/constants';
-import { networkColumns, networkSortProps } from 'resources/network';
+import { networkColumns, networkSortProps } from 'resources/neutron/network';
 import { isAdminPage } from 'utils/index';
 import { getPath } from 'utils/route-map';
 

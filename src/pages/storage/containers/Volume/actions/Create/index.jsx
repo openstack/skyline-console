@@ -16,7 +16,11 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Confirm from 'components/Confirm';
 import { getSinceTime } from 'utils/time';
-import { volumeStatus, multiTip, snapshotTypeTip } from 'resources/volume';
+import {
+  volumeStatus,
+  multiTip,
+  snapshotTypeTip,
+} from 'resources/cinder/volume';
 import globalSnapshotStore from 'stores/cinder/snapshot';
 import globalImageStore from 'stores/glance/image';
 import globalVolumeStore from 'stores/cinder/volume';
@@ -33,8 +37,8 @@ import {
   getImageColumns,
   canImageCreateIronicInstance,
   canImageCreateInstance,
-} from 'resources/image';
-import { volumeTypeSelectProps } from 'resources/volume-type';
+} from 'resources/glance/image';
+import { volumeTypeSelectProps } from 'resources/cinder/volume-type';
 import { allSettled } from 'utils';
 import styles from './index.less';
 

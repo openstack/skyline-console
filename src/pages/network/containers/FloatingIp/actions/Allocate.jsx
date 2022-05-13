@@ -20,7 +20,7 @@ import { NetworkStore } from 'stores/neutron/network';
 import globalProjectStore from 'stores/keystone/project';
 import globalSubnetStore from 'stores/neutron/subnet';
 import { QoSPolicyStore } from 'stores/neutron/qos-policy';
-import { getQoSPolicyTabs } from 'resources/qos-policy';
+import { getQoSPolicyTabs } from 'resources/neutron/qos-policy';
 import { qosEndpoint } from 'client/client/constants';
 
 export class Allocate extends ModalAction {

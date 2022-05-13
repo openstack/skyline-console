@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalObjectStore, { ObjectStore } from 'stores/swift/object';
-import { allCanChangePolicy } from 'resources/policy';
+import { allCanChangePolicy } from 'resources/keystone/policy';
 
 @inject('rootStore')
 @observer

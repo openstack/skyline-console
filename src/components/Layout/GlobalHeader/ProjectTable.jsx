@@ -14,7 +14,7 @@
 
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import { allCanReadPolicy } from 'resources/policy';
+import { allCanReadPolicy } from 'resources/keystone/policy';
 import globalUserStore from 'stores/keystone/user';
 
 @inject('rootStore')

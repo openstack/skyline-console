@@ -14,7 +14,7 @@
 
 import { ConfirmAction } from 'containers/Action';
 import globalImageStore from 'stores/glance/image';
-import { isOwner } from 'resources/image';
+import { isOwner } from 'resources/glance/image';
 
 export default class DeleteAction extends ConfirmAction {
   get id() {

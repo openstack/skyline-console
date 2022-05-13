@@ -14,8 +14,8 @@
 
 import { ConfirmAction } from 'containers/Action';
 import globalObjectStore, { ObjectStore } from 'stores/swift/object';
-import { allCanChangePolicy } from 'resources/policy';
-import { isFile } from 'resources/container';
+import { allCanChangePolicy } from 'resources/keystone/policy';
+import { isFile } from 'resources/swift/container';
 
 export default class Delete extends ConfirmAction {
   get id() {

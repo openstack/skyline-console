@@ -32,7 +32,7 @@ import classnames from 'classnames';
 import interfaceImg from 'asset/image/interface.png';
 import { CaretRightOutlined } from '@ant-design/icons';
 import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
-import { getSelfColumns } from 'resources/security-group-rule';
+import { getSelfColumns } from 'resources/neutron/security-group-rule';
 import { isAdminPage } from 'utils/index';
 import { getPath } from 'utils/route-map';
 import styles from './index.less';

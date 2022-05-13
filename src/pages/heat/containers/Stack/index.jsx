@@ -15,7 +15,7 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalStackStore, { StackStore } from 'stores/heat/stack';
-import { stackStatus } from 'resources/stack';
+import { stackStatus } from 'resources/heat/stack';
 import actionConfigs from './actions';
 
 export class Stack extends Base {

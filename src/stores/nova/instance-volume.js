@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { isOsDisk } from 'resources/volume';
+import { isOsDisk } from 'resources/cinder/volume';
 import client from 'client';
 import Base from 'stores/base';
 

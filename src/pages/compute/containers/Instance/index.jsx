@@ -23,7 +23,7 @@ import {
   instanceStatusFilter,
   isIronicInstance,
   SimpleTag,
-} from 'resources/instance';
+} from 'resources/nova/instance';
 import globalServerStore, { ServerStore } from 'stores/nova/instance';
 import { ServerGroupInstanceStore } from 'stores/skyline/server-group-instance';
 import actionConfigs from './actions';

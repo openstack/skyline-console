@@ -19,11 +19,11 @@ import globalServerStore from 'stores/nova/instance';
 import { VirtualAdapterStore } from 'stores/neutron/virtual-adapter';
 import { PortStore } from 'stores/neutron/port';
 import { SecurityGroupStore } from 'stores/neutron/security-group';
-import { portStatus } from 'resources/port';
+import { portStatus } from 'resources/neutron/port';
 import {
   securityGroupColumns,
   securityGroupFilter,
-} from 'resources/security-group';
+} from 'resources/neutron/security-group';
 import { toJS } from 'mobx';
 
 @inject('rootStore')

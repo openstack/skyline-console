@@ -16,7 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { AggregateStore } from 'stores/nova/aggregate';
 import globalComputeHostStore from 'stores/nova/compute-host';
 import { ModalAction } from 'containers/Action';
-import { serviceStatus, serviceState } from 'resources/service';
+import { serviceStatus, serviceState } from 'resources/nova/service';
 
 @inject('rootStore')
 @observer

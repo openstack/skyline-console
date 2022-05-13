@@ -22,7 +22,7 @@ import {
   extraColumns,
   heterogeneousCategoryList,
   gpuColumns,
-} from 'resources/flavor';
+} from 'resources/nova/flavor';
 import { getOptions } from 'utils/index';
 import actionConfigs from './actions';
 

@@ -14,7 +14,7 @@
 
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
-import { InstanceStatus, policyType } from 'resources/database';
+import { InstanceStatus, policyType } from 'resources/trove/database';
 
 export class BaseDetail extends Base {
   get leftCards() {

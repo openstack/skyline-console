@@ -19,7 +19,7 @@ import { SecurityGroupStore } from 'stores/neutron/security-group';
 import {
   securityGroupFilter,
   securityGroupColumns,
-} from 'resources/security-group';
+} from 'resources/neutron/security-group';
 
 export class ManageSecurityGroup extends ModalAction {
   static id = 'manage-security-group';

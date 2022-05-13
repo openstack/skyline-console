@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import globalFloatingIpsStore from 'stores/neutron/floatingIp';
 import { ModalAction } from 'containers/Action';
-import { isNotError } from 'resources/instance';
+import { isNotError } from 'resources/nova/instance';
 
 @inject('rootStore')
 @observer

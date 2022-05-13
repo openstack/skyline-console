@@ -14,7 +14,7 @@
 
 import React from 'react';
 import { NetworkStore } from 'stores/neutron/network';
-import { networkStatus } from 'resources/network';
+import { networkStatus } from 'resources/neutron/network';
 import IPopover from './Popover';
 
 export default function PopoverNetworks(props) {

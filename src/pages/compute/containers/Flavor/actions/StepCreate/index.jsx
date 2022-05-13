@@ -22,7 +22,7 @@ import {
   isComputeOptimized,
   isGpuVisual,
   isBareMetal,
-} from 'resources/flavor';
+} from 'resources/nova/flavor';
 import { parse } from 'qs';
 import AccessTypeSetting from './AccessTypeSetting';
 import ParamSetting from './ParamSetting';

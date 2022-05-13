@@ -21,7 +21,7 @@ import {
   getBaseColumns,
   extraColumns,
   armCategoryList,
-} from 'resources/flavor';
+} from 'resources/nova/flavor';
 import { getOptions } from 'utils/index';
 import actionConfigs from './actions';
 

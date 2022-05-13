@@ -30,7 +30,7 @@ import {
   getAllArchitecture,
   getFamilyItemValue,
   isGpuVisual,
-} from 'resources/flavor';
+} from 'resources/nova/flavor';
 import globalSettingStore from 'stores/skyline/setting';
 import { getOptions } from 'utils/index';
 import { parse } from 'qs';

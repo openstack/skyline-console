@@ -15,7 +15,7 @@
 import React from 'react';
 import { generateId } from 'utils/index';
 import { getLocalTimeStr } from 'utils/time';
-import { routerStatus } from 'resources/router';
+import { routerStatus } from 'resources/neutron/router';
 import { Descriptions, Popover, Button, Avatar } from 'antd';
 import { Link } from 'react-router-dom';
 import routerImage from 'asset/image/router.png';

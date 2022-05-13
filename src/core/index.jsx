@@ -22,7 +22,7 @@ import zhCN from 'antd/es/locale/zh_CN';
 import enUS from 'antd/es/locale/en_US';
 import globalRootStore from 'stores/root';
 import PageLoading from 'components/PageLoading';
-import metricDict from 'resources/metricDict';
+import metricDict from 'resources/prometheus/metricDict';
 import i18n from './i18n';
 import App from './App';
 

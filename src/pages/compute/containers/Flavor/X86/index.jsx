@@ -21,7 +21,7 @@ import {
   getBaseColumns,
   extraColumns,
   x86CategoryList,
-} from 'resources/flavor';
+} from 'resources/nova/flavor';
 import { getOptions } from 'utils/index';
 import actionConfigs from './actions';
 

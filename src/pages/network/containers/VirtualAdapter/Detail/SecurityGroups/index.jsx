@@ -23,7 +23,7 @@ import { toJS } from 'mobx';
 import { CaretRightOutlined } from '@ant-design/icons';
 import PrimaryActionButtons from 'components/Tables/Base/PrimaryActionButtons';
 import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
-import { getSelfColumns } from 'resources/security-group-rule';
+import { getSelfColumns } from 'resources/neutron/security-group-rule';
 import { isAdminPage } from 'utils/index';
 import { getPath } from 'utils/route-map';
 import Detach from './actions/Detach';

@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { PortStore } from 'stores/neutron/port';
 import Base from 'containers/TabDetail';
-import { portStatus } from 'resources/port';
+import { portStatus } from 'resources/neutron/port';
 import BaseDetail from './BaseDetail';
 
 export class PortDetail extends Base {

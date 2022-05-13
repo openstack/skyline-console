@@ -25,7 +25,7 @@ import CodeEditor from 'components/CodeEditor';
 import ModalButton from 'components/ModalButton';
 import globalRootStore from 'stores/root';
 import { unescapeHtml } from 'utils/index';
-import { statusMap } from 'resources/code';
+import { statusMap } from 'src/utils/code';
 import { isEmpty, isString } from 'lodash';
 import styles from './index.less';
 

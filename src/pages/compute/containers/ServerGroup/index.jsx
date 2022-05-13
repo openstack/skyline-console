@@ -15,7 +15,7 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalServerGroupStore from 'stores/nova/server-group';
-import policyType from 'resources/server-group';
+import policyType from 'resources/nova/server-group';
 import { getOptions } from 'utils';
 import actionConfigs from './actions';
 

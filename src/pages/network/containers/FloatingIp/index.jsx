@@ -15,13 +15,16 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import { floatingIpStatus, transitionStatuses } from 'resources/floatingip';
+import {
+  floatingIpStatus,
+  transitionStatuses,
+} from 'resources/neutron/floatingip';
 import { FloatingIpStore } from 'stores/neutron/floatingIp';
 import { emptyActionConfig } from 'utils/constants';
 import { Col, Popover, Row } from 'antd';
 import { FileTextOutlined } from '@ant-design/icons';
 import { qosEndpoint } from 'client/client/constants';
-import { enablePFW } from 'resources/neutron';
+import { enablePFW } from 'resources/neutron/neutron';
 import { getOptions } from 'utils';
 import styles from './styles.less';
 import actionConfigs from './actions';

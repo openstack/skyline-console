@@ -16,7 +16,7 @@ import React from 'react';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { VirtualAdapterStore } from 'stores/neutron/virtual-adapter';
-import { portStatus } from 'resources/port';
+import { portStatus } from 'resources/neutron/port';
 import { emptyActionConfig } from 'utils/constants';
 import actionConfigs from './actions';
 

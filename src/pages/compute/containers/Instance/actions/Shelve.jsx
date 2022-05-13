@@ -18,7 +18,7 @@ import {
   isNotLockedOrAdmin,
   checkStatus,
   isIronicInstance,
-} from 'resources/instance';
+} from 'resources/nova/instance';
 import globalServerStore from 'stores/nova/instance';
 import styles from './index.less';
 

@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { StepAction } from 'containers/Action';
 import globalStackStore from 'stores/heat/stack';
-import { getYaml } from 'resources/stack';
+import { getYaml } from 'resources/heat/stack';
 import { toJS } from 'mobx';
 import Parameter from './Parameter';
 import Template from './Template';

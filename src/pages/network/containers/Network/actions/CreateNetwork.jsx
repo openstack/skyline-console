@@ -19,9 +19,9 @@ import globalNetworkStore from 'stores/neutron/network';
 import globalProjectStore from 'stores/keystone/project';
 import { isEmpty, isFunction } from 'lodash';
 import Notify from 'components/Notify';
-import { checkPolicyRule } from 'resources/policy';
+import { checkPolicyRule } from 'resources/keystone/policy';
 import globalNeutronStore from 'stores/neutron/neutron';
-import { subnetIpv6Tip } from 'resources/network';
+import { subnetIpv6Tip } from 'resources/neutron/network';
 import networkUtil from './networkUtil';
 
 const {

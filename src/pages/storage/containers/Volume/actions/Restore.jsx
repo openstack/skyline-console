@@ -15,7 +15,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import { VolumeStore } from 'stores/cinder/volume';
 import globalSnapshotStore from 'stores/cinder/snapshot';
-import { volumeStatus } from 'resources/volume';
+import { volumeStatus } from 'resources/cinder/volume';
 import { getSinceTime } from 'utils/time';
 
 export class RestoreAction extends ModalAction {

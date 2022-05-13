@@ -17,7 +17,7 @@ import { ModalAction } from 'containers/Action';
 import globalHealthMonitorStore, {
   HealthMonitorStore,
 } from 'stores/octavia/health-monitor';
-import { BackendProtocol } from 'resources/pool';
+import { BackendProtocol } from 'resources/octavia/pool';
 import { PoolStore } from 'stores/octavia/pool';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
 

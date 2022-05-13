@@ -16,8 +16,8 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { ServerStore } from 'stores/nova/instance';
 import { ModalAction } from 'containers/Action';
-import { portStatus } from 'resources/port';
-import { isActiveOrShutOff, isNotLocked } from 'resources/instance';
+import { portStatus } from 'resources/neutron/port';
+import { isActiveOrShutOff, isNotLocked } from 'resources/nova/instance';
 
 @inject('rootStore')
 @observer

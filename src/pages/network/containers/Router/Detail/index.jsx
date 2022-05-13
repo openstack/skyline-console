@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { RouterStore } from 'stores/neutron/router';
 import Base from 'containers/TabDetail';
-import { routerStatus, getRouterState } from 'resources/router';
+import { routerStatus, getRouterState } from 'resources/neutron/router';
 import BaseDetail from './BaseDetail';
 import Port from '../Port';
 import StaticRouter from '../StaticRouter';

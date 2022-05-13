@@ -15,7 +15,7 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalSettingStore from 'stores/skyline/setting';
-import { onlyAdminCanReadPolicy } from 'resources/policy';
+import { onlyAdminCanReadPolicy } from 'resources/keystone/policy';
 import actionConfigs from './actions';
 
 export class Setting extends Base {

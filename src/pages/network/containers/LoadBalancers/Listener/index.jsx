@@ -14,7 +14,7 @@
 
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import { provisioningStatusCodes } from 'resources/lb';
+import { provisioningStatusCodes } from 'resources/octavia/lb';
 import { ListenerStore } from 'stores/octavia/listener';
 import { actionConfigs, adminActions } from './Actions';
 

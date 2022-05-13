@@ -16,7 +16,7 @@ import { inject, observer } from 'mobx-react';
 import globalRoleStore from 'stores/keystone/role';
 import Base from 'containers/BaseDetail';
 import { toJS } from 'mobx';
-import rolePermission from 'resources/role';
+import rolePermission from 'resources/keystone/role';
 
 @inject('rootStore')
 @observer

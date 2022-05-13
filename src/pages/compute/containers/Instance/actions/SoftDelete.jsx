@@ -15,7 +15,7 @@
 import React from 'react';
 import { ConfirmAction } from 'containers/Action';
 import { isArray } from 'lodash';
-import { isNotLockedOrAdmin, isIronicInstance } from 'resources/instance';
+import { isNotLockedOrAdmin, isIronicInstance } from 'resources/nova/instance';
 import globalServerStore from 'stores/nova/instance';
 import { Checkbox, Tooltip } from 'antd';
 import {

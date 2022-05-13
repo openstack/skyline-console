@@ -20,9 +20,12 @@ import {
   isNotDeleting,
   isIronicInstance,
   isStopped,
-} from 'resources/instance';
+} from 'resources/nova/instance';
 import globalHypervisorStore from 'stores/nova/hypervisor';
-import { hypervisorColumns, hypervisorFilters } from 'resources/hypervisor';
+import {
+  hypervisorColumns,
+  hypervisorFilters,
+} from 'resources/nova/hypervisor';
 
 @inject('rootStore')
 @observer

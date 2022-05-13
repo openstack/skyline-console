@@ -21,7 +21,7 @@ import {
   encryptionAlgorithmOptions,
   ikePolicyIKEVersionOptions,
   pfsOptions,
-} from 'resources/vpn';
+} from 'resources/neutron/vpn';
 import { actionConfigs, adminConfigs } from './actions';
 
 @inject('rootStore')

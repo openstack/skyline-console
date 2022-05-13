@@ -18,8 +18,11 @@ import { ipValidate } from 'utils/validate';
 import { RouterStore } from 'stores/neutron/router';
 import { SubnetStore } from 'stores/neutron/subnet';
 import globalVPNEndPointGroupStore from 'stores/neutron/vpn-endpoint-group';
-import { getRouterSelectTablePropsBackend } from 'resources/router';
-import { getPortsWithFixedIPs, getSubnetToRouter } from 'resources/floatingip';
+import { getRouterSelectTablePropsBackend } from 'resources/neutron/router';
+import {
+  getPortsWithFixedIPs,
+  getSubnetToRouter,
+} from 'resources/neutron/floatingip';
 
 const { isCidr, isIPv6CidrOnly } = ipValidate;
 

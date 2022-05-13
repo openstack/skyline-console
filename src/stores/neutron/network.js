@@ -17,7 +17,7 @@ import networkUtils from 'src/pages/network/containers/Network/actions/networkUt
 import { get } from 'lodash';
 import globalProjectStore from 'stores/keystone/project';
 import client from 'client';
-import { isExternalNetwork } from 'resources/network';
+import { isExternalNetwork } from 'resources/neutron/network';
 import Base from 'stores/base';
 
 const { splitToArray } = networkUtils;

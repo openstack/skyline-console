@@ -19,7 +19,7 @@ import moment from 'moment';
 import globalRootStore from 'stores/root';
 import { toJS } from 'mobx';
 import FileSaver from 'file-saver';
-import rolePermission from 'resources/role';
+import rolePermission from 'resources/keystone/role';
 
 export class Create extends ModalAction {
   static id = 'create-application_credentials';

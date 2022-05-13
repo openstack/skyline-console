@@ -15,7 +15,10 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { QoSPolicyStore } from 'stores/neutron/qos-policy';
-import { getQosPolicyColumns, getQosPolicyFilters } from 'resources/qos-policy';
+import {
+  getQosPolicyColumns,
+  getQosPolicyFilters,
+} from 'resources/neutron/qos-policy';
 import { qosEndpoint } from 'client/client/constants';
 import { emptyActionConfig } from 'utils/constants';
 import actionConfigs from './actions';

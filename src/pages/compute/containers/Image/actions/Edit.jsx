@@ -15,11 +15,11 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalImageStore from 'stores/glance/image';
-import { imageOS, isOwner } from 'resources/image';
+import { imageOS, isOwner } from 'resources/glance/image';
 import { has, get } from 'lodash';
-import { isActive } from 'resources/instance';
+import { isActive } from 'resources/nova/instance';
 import { NoSetValue, getOptionsWithNoSet } from 'utils/index';
-import { cpuPolicyList, cpuThreadPolicyList } from 'resources/flavor';
+import { cpuPolicyList, cpuThreadPolicyList } from 'resources/nova/flavor';
 
 @inject('rootStore')
 @observer

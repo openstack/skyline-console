@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalFloatingIpsStore from 'stores/neutron/floatingIp';
-import { getQoSPolicyTabs } from 'resources/qos-policy';
+import { getQoSPolicyTabs } from 'resources/neutron/qos-policy';
 import { QoSPolicyStore } from 'stores/neutron/qos-policy';
 import { qosEndpoint } from 'client/client/constants';
 

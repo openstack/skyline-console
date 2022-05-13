@@ -19,7 +19,7 @@ import { SecurityGroupStore } from 'stores/neutron/security-group';
 import {
   securityGroupColumns,
   securityGroupFilter,
-} from 'resources/security-group';
+} from 'resources/neutron/security-group';
 import { toJS } from 'mobx';
 import { get as _get } from 'lodash';
 

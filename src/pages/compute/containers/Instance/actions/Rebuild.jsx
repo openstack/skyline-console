@@ -18,7 +18,7 @@ import {
   isActiveOrShutOff,
   isNotLockedOrAdmin,
   isIsoInstance,
-} from 'resources/instance';
+} from 'resources/nova/instance';
 
 export default class Rebuild extends ConfirmAction {
   get id() {

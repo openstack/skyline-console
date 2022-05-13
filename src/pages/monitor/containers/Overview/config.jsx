@@ -6,7 +6,7 @@ import {
   cephStatusColorMap,
   cephStatusMap,
   getSuitableValue,
-} from 'resources/monitoring';
+} from 'resources/prometheus/monitoring';
 import CircleChart from 'components/PrometheusChart/CircleWithRightLegend';
 import { handleResponses } from 'components/PrometheusChart/utils/dataHandler';
 import { ChartType } from 'components/PrometheusChart/utils/utils';

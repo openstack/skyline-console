@@ -18,7 +18,7 @@ import { Row, Col } from 'antd';
 import Base from 'containers/List';
 import { CredentialStore } from 'stores/keystone/credential';
 import globalRootStore from 'stores/root';
-import rolePermission from 'resources/role';
+import rolePermission from 'resources/keystone/role';
 import { actionConfigs, detailConfigs } from './actions';
 
 export class Credentials extends Base {

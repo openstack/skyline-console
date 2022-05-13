@@ -16,7 +16,7 @@ import { inject, observer } from 'mobx-react';
 import globalFlavorStore from 'stores/nova/flavor';
 import { ModalAction } from 'containers/Action';
 import { ProjectStore } from 'stores/keystone/project';
-import { projectTableOptions } from 'resources/project';
+import { projectTableOptions } from 'resources/keystone/project';
 
 @inject('rootStore')
 @observer

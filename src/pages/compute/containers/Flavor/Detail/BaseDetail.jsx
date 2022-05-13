@@ -24,7 +24,7 @@ import {
   cpuThreadPolicyMap,
   pageTypeMap,
   isBareMetal,
-} from 'resources/flavor';
+} from 'resources/nova/flavor';
 
 @inject('rootStore')
 @observer

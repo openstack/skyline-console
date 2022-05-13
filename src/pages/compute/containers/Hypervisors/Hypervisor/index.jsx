@@ -15,7 +15,10 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalHypervisorStore from 'stores/nova/hypervisor';
-import { hypervisorColumns, hypervisorFilters } from 'resources/hypervisor';
+import {
+  hypervisorColumns,
+  hypervisorFilters,
+} from 'resources/nova/hypervisor';
 
 export class Hypervisors extends Base {
   init() {

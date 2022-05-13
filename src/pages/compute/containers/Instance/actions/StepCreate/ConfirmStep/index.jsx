@@ -15,7 +15,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
-import { physicalNodeTypes } from 'resources/instance';
+import { physicalNodeTypes } from 'resources/nova/instance';
 import { Col, Row } from 'antd';
 
 export class ConfirmStep extends Base {

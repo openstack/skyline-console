@@ -15,7 +15,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
-import { rollbackTip } from 'resources/stack';
+import { rollbackTip } from 'resources/heat/stack';
 
 @inject('rootStore')
 @observer

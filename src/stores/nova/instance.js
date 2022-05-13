@@ -16,7 +16,7 @@ import { action, observable } from 'mobx';
 import { get } from 'lodash';
 import client from 'client';
 import Base from 'stores/base';
-import { mapperRule } from 'resources/security-group-rule';
+import { mapperRule } from 'resources/neutron/security-group-rule';
 import { RecycleBinStore } from '../skyline/recycle-server';
 
 export class ServerStore extends Base {

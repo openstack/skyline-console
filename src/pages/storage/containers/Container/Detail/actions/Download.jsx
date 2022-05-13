@@ -13,9 +13,9 @@
 // limitations under the License.
 
 import { ConfirmAction } from 'containers/Action';
-import { isFile } from 'resources/container';
+import { isFile } from 'resources/swift/container';
 import globalObjectStore from 'stores/swift/object';
-import { allCanChangePolicy } from 'resources/policy';
+import { allCanChangePolicy } from 'resources/keystone/policy';
 import FileSaver from 'file-saver';
 
 export default class Download extends ConfirmAction {

@@ -15,8 +15,8 @@
 import React from 'react';
 import { ConfirmAction } from 'containers/Action';
 import globalObjectStore from 'stores/swift/object';
-import { allCanChangePolicy } from 'resources/policy';
-import { isFolder } from 'resources/container';
+import { allCanChangePolicy } from 'resources/keystone/policy';
+import { isFolder } from 'resources/swift/container';
 
 export default class PasteFile extends ConfirmAction {
   get id() {

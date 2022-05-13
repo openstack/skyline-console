@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { instanceStatus } from 'resources/instance';
+import { instanceStatus } from 'resources/nova/instance';
 
 export const InstanceStatus = {
   ...instanceStatus,
@@ -27,4 +27,4 @@ export const InstanceStatus = {
   EJECT: t('Eject'),
 };
 
-export { default as policyType } from './server-group';
+export { default as policyType } from '../nova/server-group';

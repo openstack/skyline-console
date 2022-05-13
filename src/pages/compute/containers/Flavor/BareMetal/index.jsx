@@ -20,7 +20,7 @@ import {
   flavorArchitectures,
   getBaseColumns,
   extraColumns,
-} from 'resources/flavor';
+} from 'resources/nova/flavor';
 import actionConfigs from './actions';
 
 export class Flavor extends Base {

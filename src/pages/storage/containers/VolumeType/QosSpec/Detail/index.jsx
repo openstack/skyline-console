@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { QosSpecStore } from 'stores/cinder/qos-spec';
 import Base from 'containers/TabDetail';
-import { consumerTypes } from 'resources/volume-type';
+import { consumerTypes } from 'resources/cinder/volume-type';
 import ExtraSpec from './ExtraSpec';
 import actionConfigs from '../actions';
 

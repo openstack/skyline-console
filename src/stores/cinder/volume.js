@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { action, observable } from 'mobx';
-import { isOsDisk } from 'resources/volume';
+import { isOsDisk } from 'resources/cinder/volume';
 import { renderFilterMap } from 'utils/index';
 import client from 'client';
 import Base from 'stores/base';

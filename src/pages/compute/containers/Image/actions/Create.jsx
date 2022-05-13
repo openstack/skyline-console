@@ -21,11 +21,11 @@ import {
   imageFormats,
   imageFormatsConsole,
   imageVisibility,
-} from 'resources/image';
-import { cpuPolicyList, cpuThreadPolicyList } from 'resources/flavor';
+} from 'resources/glance/image';
+import { cpuPolicyList, cpuThreadPolicyList } from 'resources/nova/flavor';
 import { NoSetValue, getOptionsWithNoSet, getOptions } from 'utils/index';
 import { ProjectStore } from 'stores/keystone/project';
-import { projectTableOptions } from 'resources/project';
+import { projectTableOptions } from 'resources/keystone/project';
 
 export class CreateForm extends FormAction {
   init() {

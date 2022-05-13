@@ -16,7 +16,7 @@ import { inject, observer } from 'mobx-react';
 import globalRouterStore from 'stores/neutron/router';
 import { NetworkStore } from 'stores/neutron/network';
 import { ModalAction } from 'containers/Action';
-import { networkStatus, networkSortProps } from 'resources/network';
+import { networkStatus, networkSortProps } from 'resources/neutron/network';
 
 export class SetGateway extends ModalAction {
   static id = 'set-gateway';

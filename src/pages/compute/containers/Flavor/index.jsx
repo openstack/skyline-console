@@ -15,7 +15,7 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/TabList';
 import globalSettingStore from 'stores/skyline/setting';
-import { flavorArchitectures, getAllArchitecture } from 'resources/flavor';
+import { flavorArchitectures, getAllArchitecture } from 'resources/nova/flavor';
 import X86 from './X86';
 import Heterogeneous from './Heterogeneous';
 import Arm from './Arm';

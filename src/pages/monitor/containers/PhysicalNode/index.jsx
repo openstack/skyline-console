@@ -18,7 +18,7 @@ import moment from 'moment';
 import { Progress } from 'antd';
 
 import BaseContent from 'components/PrometheusChart/component/BaseContent';
-import { getSuitableValue } from 'resources/monitoring';
+import { getSuitableValue } from 'resources/prometheus/monitoring';
 import { ChartType } from 'components/PrometheusChart/utils/utils';
 import { computePercentage, formatSize, formatUsedTime } from 'src/utils';
 

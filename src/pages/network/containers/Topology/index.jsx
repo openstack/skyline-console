@@ -28,11 +28,11 @@ import {
   combosBackground,
   combosColors,
   subnetsColors,
-} from 'resources/topology-color';
+} from 'resources/neutron/topology-color';
 import PrimaryActionButtons from 'components/Tables/Base/PrimaryActionButtons';
 import { ipValidate } from 'utils/validate';
 import { toJS } from 'mobx';
-import { getAnchorData, isExternalNetwork } from 'resources/network';
+import { getAnchorData, isExternalNetwork } from 'resources/neutron/network';
 import styles from './index.less';
 import CreateRouter from '../Router/actions/Create';
 import CreateNetwork from '../Network/actions/CreateNetwork';

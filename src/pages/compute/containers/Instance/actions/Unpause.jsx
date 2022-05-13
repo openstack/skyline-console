@@ -14,7 +14,7 @@
 
 import { ConfirmAction } from 'containers/Action';
 import { isArray } from 'lodash';
-import { isNotLockedOrAdmin, checkStatus } from 'resources/instance';
+import { isNotLockedOrAdmin, checkStatus } from 'resources/nova/instance';
 import globalServerStore from 'stores/nova/instance';
 
 export default class UnpauseAction extends ConfirmAction {

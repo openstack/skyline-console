@@ -16,7 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import { RouterStore } from 'stores/neutron/router';
 import globalVpnServicesStore from 'stores/neutron/vpn-service';
-import { getRouterSelectTablePropsBackend } from 'resources/router';
+import { getRouterSelectTablePropsBackend } from 'resources/neutron/router';
 
 @inject('rootStore')
 @observer

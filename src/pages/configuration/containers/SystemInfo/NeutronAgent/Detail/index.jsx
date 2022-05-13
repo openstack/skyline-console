@@ -18,7 +18,7 @@ import Base from 'containers/TabDetail';
 import {
   getNeutronAgentServiceState,
   getNeutronAgentServiceStatus,
-} from 'resources/service';
+} from 'resources/nova/service';
 import BaseDetail from './BaseDetail';
 import Router from './Router';
 import Network from './Network';

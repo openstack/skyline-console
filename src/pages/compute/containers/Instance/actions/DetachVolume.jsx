@@ -17,8 +17,8 @@ import { VolumeStore } from 'stores/cinder/volume';
 import globalServerStore from 'stores/nova/instance';
 import globalRootStore from 'stores/root';
 import { ModalAction } from 'containers/Action';
-import { volumeStatus, isOsDisk } from 'resources/volume';
-import { allowAttachVolumeInstance } from 'resources/instance';
+import { volumeStatus, isOsDisk } from 'resources/cinder/volume';
+import { allowAttachVolumeInstance } from 'resources/nova/instance';
 
 export class DetachVolume extends ModalAction {
   static id = 'detach-volume';

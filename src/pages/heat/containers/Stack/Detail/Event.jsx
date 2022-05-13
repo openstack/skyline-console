@@ -16,7 +16,7 @@ import React from 'react';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { StackEventStore } from 'stores/heat/event';
-import { stackStatus } from 'resources/stack';
+import { stackStatus } from 'resources/heat/stack';
 
 @inject('rootStore')
 @observer

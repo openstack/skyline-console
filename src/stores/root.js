@@ -20,8 +20,8 @@ import { getQueryString } from 'utils/index';
 import { setLocalStorageItem } from 'utils/local-storage';
 import { isEmpty, values } from 'lodash';
 
-const checkItemPolicy = require('resources/policy').default;
-const { onlyAdminCanReadPolicy } = require('resources/policy');
+const checkItemPolicy = require('resources/keystone/policy').default;
+const { onlyAdminCanReadPolicy } = require('resources/keystone/policy');
 
 export class RootStore {
   @observable

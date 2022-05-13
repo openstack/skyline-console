@@ -21,7 +21,7 @@ import {
   updateObjToAddSelectArray,
   updateAddSelectValueToObj,
 } from 'utils/index';
-import { getDifFromAddSelectValue, hasValue } from 'resources/ironic';
+import { getDifFromAddSelectValue, hasValue } from 'resources/ironic/ironic';
 import DriveInterface from './DriveInterface';
 import DriveInfo from './DriveInfo';
 import NodeInfo from './NodeInfo';

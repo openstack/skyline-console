@@ -15,7 +15,7 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { VpnIPsecConnectionStore } from 'stores/neutron/vpn-ipsec-connection';
-import { vpnStatus, vpnStatusOptions } from 'resources/vpn';
+import { vpnStatus, vpnStatusOptions } from 'resources/neutron/vpn';
 import { actionConfigs, adminConfigs } from './actions';
 
 @inject('rootStore')

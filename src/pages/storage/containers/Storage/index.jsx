@@ -15,7 +15,7 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalPoolStore from 'stores/cinder/pool';
-import { poolColumns } from 'resources/cinder-pool';
+import { poolColumns } from 'resources/cinder/cinder-pool';
 
 @inject('rootStore')
 @observer

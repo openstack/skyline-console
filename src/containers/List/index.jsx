@@ -31,7 +31,7 @@ import BaseTable from 'components/Tables/Base';
 import { isAdminPage } from 'utils/index';
 import Notify from 'components/Notify';
 import { checkTimeIn } from 'utils/time';
-import checkItemPolicy from 'resources/policy';
+import checkItemPolicy from 'resources/keystone/policy';
 import NotFound from 'components/Cards/NotFound';
 import { getTags } from 'components/MagicInput';
 import { getPath, getLinkRender } from 'utils/route-map';

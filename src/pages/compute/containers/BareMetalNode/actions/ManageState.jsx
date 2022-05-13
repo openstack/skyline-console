@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import globalIronicStore from 'stores/ironic/ironic';
 import { ModalAction } from 'containers/Action';
-import { provisioningState, canChangeStatus } from 'resources/ironic';
+import { provisioningState, canChangeStatus } from 'resources/ironic/ironic';
 import { getOptions } from 'utils/index';
 
 @inject('rootStore')

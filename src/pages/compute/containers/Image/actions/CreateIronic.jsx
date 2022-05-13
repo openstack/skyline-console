@@ -14,8 +14,8 @@
 
 import { inject, observer } from 'mobx-react';
 import CreateInstance from 'pages/compute/containers/Instance/actions/StepCreate';
-import { canImageCreateIronicInstance } from 'resources/image';
-import { canCreateIronicByEndpoint } from 'resources/instance';
+import { canImageCreateIronicInstance } from 'resources/glance/image';
+import { canCreateIronicByEndpoint } from 'resources/nova/instance';
 
 export class CreateIronic extends CreateInstance {
   static id = 'ironic-create';

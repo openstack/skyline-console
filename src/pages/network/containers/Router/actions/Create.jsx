@@ -18,11 +18,11 @@ import { NetworkStore } from 'stores/neutron/network';
 import globalNeutronStore from 'stores/neutron/neutron';
 import { ModalAction } from 'containers/Action';
 import { has } from 'lodash';
-import { networkStatus } from 'resources/network';
+import { networkStatus } from 'resources/neutron/network';
 import {
   availabilityZoneState,
   availabilityZoneResource,
-} from 'resources/neutron';
+} from 'resources/neutron/neutron';
 
 export class Create extends ModalAction {
   static id = 'create';

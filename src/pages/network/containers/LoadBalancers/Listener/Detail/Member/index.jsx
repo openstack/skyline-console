@@ -15,7 +15,7 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import { provisioningStatusCodes } from 'resources/lb';
+import { provisioningStatusCodes } from 'resources/octavia/lb';
 import globalPoolMemberStore from 'stores/octavia/pool-member';
 import { actionConfigs, adminActions } from './Actions';
 

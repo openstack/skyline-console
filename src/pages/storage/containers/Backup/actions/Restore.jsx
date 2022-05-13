@@ -17,9 +17,9 @@ import globalBackupStore from 'stores/cinder/backup';
 import { VolumeStore } from 'stores/cinder/volume';
 import { ServerGroupInstanceStore } from 'stores/skyline/server-group-instance';
 import { inject, observer } from 'mobx-react';
-import { restoreTip } from 'resources/backup';
-import { volumeStatus } from 'resources/volume';
-import { instanceStatus, isShutOff } from 'resources/instance';
+import { restoreTip } from 'resources/cinder/backup';
+import { volumeStatus } from 'resources/cinder/volume';
+import { instanceStatus, isShutOff } from 'resources/nova/instance';
 
 @inject('rootStore')
 @observer

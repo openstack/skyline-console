@@ -14,7 +14,7 @@
 
 import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
-import { yamlTip, validateYaml, paramTip } from 'resources/stack';
+import { yamlTip, validateYaml, paramTip } from 'resources/heat/stack';
 
 export class Template extends Base {
   get isStep() {

@@ -16,7 +16,7 @@ import React from 'react';
 import BaseContent from 'components/PrometheusChart/component/BaseContent';
 import { getMemcacheNodes } from 'components/PrometheusChart/utils/fetchNodes';
 import { ChartType } from 'components/PrometheusChart/utils/utils';
-import { getSuitableValue } from 'resources/monitoring';
+import { getSuitableValue } from 'resources/prometheus/monitoring';
 
 const chartCardList = [
   {

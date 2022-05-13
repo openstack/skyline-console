@@ -14,7 +14,7 @@
 
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import { serviceStatus, serviceState } from 'resources/service';
+import { serviceStatus, serviceState } from 'resources/nova/service';
 import globalServiceStore from 'stores/cinder/service';
 import { getOptions } from 'utils';
 import actionConfigs from './actions';

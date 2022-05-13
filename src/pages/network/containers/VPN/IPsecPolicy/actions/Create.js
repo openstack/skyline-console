@@ -21,7 +21,7 @@ import {
   ipsecPolicyEncapsulationModeOptions,
   ipsecPolicyTransformProtocolOptions,
   pfsOptions,
-} from 'resources/vpn';
+} from 'resources/neutron/vpn';
 
 @inject('rootStore')
 @observer

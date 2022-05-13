@@ -17,11 +17,11 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalServerStore from 'stores/nova/instance';
 import { ServerGroupInstanceStore } from 'stores/skyline/server-group-instance';
-import { isInUse, isOsDisk } from 'resources/volume';
+import { isInUse, isOsDisk } from 'resources/cinder/volume';
 import {
   instanceColumnsBackend,
   allowAttachVolumeInstance,
-} from 'resources/instance';
+} from 'resources/nova/instance';
 
 export class Detach extends ModalAction {
   static id = 'detach';

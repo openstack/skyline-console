@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { VirtualAdapterStore } from 'stores/neutron/virtual-adapter';
 import Base from 'containers/TabDetail';
-import { networkStatus } from 'resources/network';
+import { networkStatus } from 'resources/neutron/network';
 import FixedIPs from './FixedIPs';
 import SecurityGroups from './SecurityGroups';
 import AllowedAddressPair from './AllowedAddressPair';

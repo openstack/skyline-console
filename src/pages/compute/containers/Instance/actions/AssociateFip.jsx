@@ -16,13 +16,13 @@ import { inject, observer } from 'mobx-react';
 import globalServerStore from 'stores/nova/instance';
 import globalFloatingIpsStore from 'stores/neutron/floatingIp';
 import { ModalAction } from 'containers/Action';
-import { isNotError } from 'resources/instance';
-import { getCanReachSubnetIdsWithRouterIdInComponent } from 'resources/router';
+import { isNotError } from 'resources/nova/instance';
+import { getCanReachSubnetIdsWithRouterIdInComponent } from 'resources/neutron/router';
 import {
   getInterfaceWithReason,
   handleFixedIPChange,
-} from 'resources/floatingip';
-import { getPortsAndReasons } from 'resources/port';
+} from 'resources/neutron/floatingip';
+import { getPortsAndReasons } from 'resources/neutron/port';
 
 @inject('rootStore')
 @observer
