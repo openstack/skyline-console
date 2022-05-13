@@ -14,7 +14,7 @@
 
 import { ConfirmAction } from 'containers/Action';
 import globalContainerStore from 'stores/swift/container';
-import { allCanChangePolicy } from 'resources/keystone/policy';
+import { allCanChangePolicy } from 'resources/skyline/policy';
 
 export default class Delete extends ConfirmAction {
   get id() {

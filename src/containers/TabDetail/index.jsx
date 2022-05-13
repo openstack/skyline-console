@@ -23,7 +23,7 @@ import NotFound from 'components/Cards/NotFound';
 import Infos from 'components/Infos';
 import Notify from 'components/Notify';
 import { toJS } from 'mobx';
-import checkItemPolicy from 'resources/keystone/policy';
+import checkItemPolicy from 'resources/skyline/policy';
 import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
 import { emptyActionConfig } from 'utils/constants';
 import { getPath, getLinkRender } from 'utils/route-map';

@@ -14,7 +14,7 @@
 
 import { ConfirmAction } from 'containers/Action';
 import globalObjectStore from 'stores/swift/object';
-import { allCanChangePolicy } from 'resources/keystone/policy';
+import { allCanChangePolicy } from 'resources/skyline/policy';
 import { isFile } from 'resources/swift/container';
 
 export default class CopyFile extends ConfirmAction {

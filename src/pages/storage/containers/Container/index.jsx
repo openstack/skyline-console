@@ -18,7 +18,7 @@ import { Popover, Col, Row, Skeleton } from 'antd';
 import Base from 'containers/List';
 import globalContainerStore, { ContainerStore } from 'stores/swift/container';
 import { bytesFilter } from 'utils/index';
-import { allCanChangePolicy } from 'resources/keystone/policy';
+import { allCanChangePolicy } from 'resources/skyline/policy';
 import { getStrFromTimestamp } from 'utils/time';
 import { swiftEndpoint } from 'client/client/constants';
 import actionConfigs from './actions';

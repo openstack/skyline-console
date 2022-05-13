@@ -16,7 +16,7 @@ import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { serviceStatus, serviceState } from 'resources/nova/service';
 import globalComputeHostStore from 'stores/nova/compute-host';
-import { onlyAdminCanReadPolicy } from 'resources/keystone/policy';
+import { onlyAdminCanReadPolicy } from 'resources/skyline/policy';
 import { getOptions } from 'utils';
 import actionConfigs from './actions';
 

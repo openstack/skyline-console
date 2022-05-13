@@ -18,7 +18,7 @@ import { Popover, Col, Row, Skeleton } from 'antd';
 import Base from 'containers/List';
 import globalObjectStore, { ObjectStore } from 'stores/swift/object';
 import { bytesFilter } from 'utils/index';
-import { allCanReadPolicy } from 'resources/keystone/policy';
+import { allCanReadPolicy } from 'resources/skyline/policy';
 import { toJS } from 'mobx';
 import { isEqual } from 'lodash';
 import { isFolder } from 'resources/swift/container';
