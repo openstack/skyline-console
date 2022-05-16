@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalNetworkStore from 'stores/neutron/network';
-import { checkPolicyRule } from 'resources/keystone/policy';
+import { checkPolicyRule } from 'resources/skyline/policy';
 import globalRootStore from 'stores/root';
 import { getYesNoList } from 'utils/index';
 

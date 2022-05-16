@@ -14,7 +14,7 @@
 
 import { ConfirmAction } from 'containers/Action';
 import globalNetworkStore from 'stores/neutron/network';
-import { checkPolicyRule } from 'resources/keystone/policy';
+import { checkPolicyRule } from 'resources/skyline/policy';
 import globalRootStore from 'stores/root';
 
 export default class DeleteAction extends ConfirmAction {

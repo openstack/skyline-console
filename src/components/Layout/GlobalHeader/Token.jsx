@@ -16,7 +16,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { Typography } from 'antd';
 import { ModalAction } from 'containers/Action';
-import { allCanReadPolicy } from 'resources/keystone/policy';
+import { allCanReadPolicy } from 'resources/skyline/policy';
 import { getLocalTime } from 'utils/time';
 import styles from './index.less';
 

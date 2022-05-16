@@ -18,7 +18,7 @@ import { toJS, reaction } from 'mobx';
 import i18n from 'core/i18n';
 import { isAdminPage, isUserCenterPage } from 'utils/index';
 import { BellOutlined } from '@ant-design/icons';
-import checkItemPolicy from 'resources/keystone/policy';
+import checkItemPolicy from 'resources/skyline/policy';
 import { Layout } from 'antd';
 import GlobalHeader from 'components/Layout/GlobalHeader';
 import { setRouteMap, getPath } from 'utils/route-map';

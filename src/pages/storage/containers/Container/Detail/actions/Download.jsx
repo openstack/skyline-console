@@ -15,7 +15,7 @@
 import { ConfirmAction } from 'containers/Action';
 import { isFile } from 'resources/swift/container';
 import globalObjectStore from 'stores/swift/object';
-import { allCanChangePolicy } from 'resources/keystone/policy';
+import { allCanChangePolicy } from 'resources/skyline/policy';
 import FileSaver from 'file-saver';
 
 export default class Download extends ConfirmAction {
