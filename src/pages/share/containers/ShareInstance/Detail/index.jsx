@@ -17,6 +17,7 @@ import { ShareInstanceStore } from 'stores/manila/share-instance';
 import Base from 'containers/TabDetail';
 import { shareStatus } from 'resources/manila/share';
 import BaseDetail from './BaseDetail';
+import actionConfigs from '../actions';
 
 export class Detail extends Base {
   get name() {
@@ -29,6 +30,10 @@ export class Detail extends Base {
 
   get listUrl() {
     return this.getRoutePath('shareInstance');
+  }
+
+  get actionConfigs() {
+    return actionConfigs;
   }
 
   get detailInfos() {

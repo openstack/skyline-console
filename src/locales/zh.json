@@ -836,6 +836,8 @@
   "Forbidden Project": "禁用项目",
   "Forbidden User": "禁用用户",
   "Forbidden the domain will have a negative impact, all project and user in domain will be forbidden": "禁用域后，该域下面的项目和用户都会被禁止，用户将无法登陆",
+  "Force Delete": "强制删除",
+  "Force Delete Share Instance": "强制删除共享实例",
   "Force release": "强制释放",
   "Forced Shutdown": "强制关机",
   "Forced shutdown may result in data loss or file system damage. You can also take the initiative to shut down and perform operations.": "强制关机可能会导致数据丢失或文件系统损坏，您也可以主动关机后再进行操作。",
