@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { action } from 'mobx';
 import client from 'client';
 import Base from 'stores/base';
 
@@ -31,6 +32,22 @@ export class ShareInstanceStore extends Base {
     );
     item.exportLocations = export_locations;
     return item;
+  }
+
+  @action
+  forceDelete = ({ id }) => {
+    const body = {
+      force_delete: null,
+    };
+    return this.submitting(this.client.action(id, body));
+  };
+
+  @action
+  resetStatus(id, data) {
+    const body = {
+      reset_status: data,
+    };
+    return this.submitting(this.client.action(id, body));
   }
 }
 

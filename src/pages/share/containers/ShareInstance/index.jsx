@@ -16,6 +16,7 @@ import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalShareInstanceStore from 'stores/manila/share-instance';
 import { shareStatus } from 'resources/manila/share';
+import actionConfigs from './actions';
 
 export class ShareInstance extends Base {
   init() {
@@ -32,6 +33,10 @@ export class ShareInstance extends Base {
 
   get fetchDataByAllProjects() {
     return false;
+  }
+
+  get actionConfigs() {
+    return actionConfigs;
   }
 
   getColumns = () => [
