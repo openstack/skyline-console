@@ -243,8 +243,7 @@ function getActionList(actions, item, containerProps) {
   };
 }
 
-@inject('rootStore')
-export default class ItemActionButtons extends Component {
+export class ItemActionButtons extends Component {
   constructor(props) {
     super(props);
     this.actionList = [];
@@ -337,3 +336,5 @@ export default class ItemActionButtons extends Component {
     );
   }
 }
+
+export default inject('rootStore')(ItemActionButtons);

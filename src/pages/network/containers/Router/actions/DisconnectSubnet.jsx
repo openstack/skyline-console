@@ -20,9 +20,7 @@ import globalSubnetStore from 'stores/neutron/subnet';
 import { PortStore } from 'stores/neutron/port';
 import { ModalAction } from 'containers/Action';
 
-@inject('rootStore')
-@observer
-export default class DisconnectSubnet extends ModalAction {
+export class DisconnectSubnet extends ModalAction {
   static id = 'disconnect-subnet';
 
   static title = t('Disconnect Subnet');
@@ -153,3 +151,5 @@ export default class DisconnectSubnet extends ModalAction {
     return this.store.disconnectSubnet({ id, subnetId });
   };
 }
+
+export default inject('rootStore')(observer(DisconnectSubnet));

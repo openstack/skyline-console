@@ -21,9 +21,7 @@ import PoolStep from '../../../StepCreateComponents/PoolStep';
 import MemberStep from '../../../StepCreateComponents/MemberStep';
 import HealthMonitorStep from '../../../StepCreateComponents/HealthMonitorStep';
 
-@inject('rootStore')
-@observer
-class StepCreate extends StepAction {
+export class StepCreate extends StepAction {
   static id = 'lb-create';
 
   static title = t('Create Loadbalancer');
@@ -167,4 +165,4 @@ class StepCreate extends StepAction {
   };
 }
 
-export default StepCreate;
+export default inject('rootStore')(observer(StepCreate));

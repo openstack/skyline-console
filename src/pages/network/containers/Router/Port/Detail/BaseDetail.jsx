@@ -18,9 +18,7 @@ import Base from 'containers/BaseDetail';
 import { bindingTypes } from 'resources/neutron/port';
 import { isEmpty } from 'lodash';
 
-@inject('rootStore')
-@observer
-export default class BaseDetail extends Base {
+export class BaseDetail extends Base {
   get leftCards() {
     const cards = [this.portInfo];
     const {
@@ -198,3 +196,5 @@ export default class BaseDetail extends Base {
     };
   }
 }
+
+export default inject('rootStore')(observer(BaseDetail));

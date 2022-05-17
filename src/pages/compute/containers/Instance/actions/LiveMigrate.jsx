@@ -27,9 +27,7 @@ import {
   hypervisorFilters,
 } from 'resources/nova/hypervisor';
 
-@inject('rootStore')
-@observer
-export default class LiveMigrate extends ModalAction {
+export class LiveMigrate extends ModalAction {
   static id = 'LiveMigrate';
 
   static title = t('Live Migrate');
@@ -148,3 +146,5 @@ export default class LiveMigrate extends ModalAction {
     return this.store.migrateLive({ id, body });
   };
 }
+
+export default inject('rootStore')(observer(LiveMigrate));

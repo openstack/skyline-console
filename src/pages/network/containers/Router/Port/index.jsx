@@ -19,9 +19,7 @@ import { portStatus } from 'resources/neutron/port';
 import { PortStore } from 'stores/neutron/port';
 import { getOptions } from 'utils';
 
-@inject('rootStore')
-@observer
-export default class Ports extends Base {
+export class Ports extends Base {
   init() {
     this.store = new PortStore();
   }
@@ -114,3 +112,5 @@ export default class Ports extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Ports));

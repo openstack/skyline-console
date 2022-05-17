@@ -17,9 +17,7 @@ import Base from 'containers/TabList';
 import { qosEndpoint } from 'client/client/constants';
 import QoSPolicyComponent from './QoSPolicy';
 
-@inject('rootStore')
-@observer
-export default class QoSPolicy extends Base {
+export class QoSPolicy extends Base {
   get checkEndpoint() {
     return true;
   }
@@ -51,3 +49,5 @@ export default class QoSPolicy extends Base {
     return tabs;
   }
 }
+
+export default inject('rootStore')(observer(QoSPolicy));

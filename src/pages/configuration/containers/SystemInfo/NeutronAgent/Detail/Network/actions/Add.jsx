@@ -20,9 +20,7 @@ import { networkColumns, networkSortProps } from 'resources/neutron/network';
 import { yesNoOptions } from 'utils/constants';
 import { projectRender } from 'utils/table';
 
-@inject('rootStore')
-@observer
-export default class AddNetwork extends ModalAction {
+export class AddNetwork extends ModalAction {
   static id = 'add-network';
 
   static title = t('Add Network');
@@ -155,3 +153,5 @@ export default class AddNetwork extends ModalAction {
     return this.store.add({ agentId }, data);
   };
 }
+
+export default inject('rootStore')(observer(AddNetwork));

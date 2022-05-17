@@ -26,9 +26,7 @@ import styles from './index.less';
 
 const { getLocale, setLocale } = i18n;
 
-@inject('rootStore')
-@observer
-class AvatarDropdown extends React.Component {
+export class AvatarDropdown extends React.Component {
   get rootStore() {
     return this.props.rootStore || {};
   }
@@ -160,4 +158,4 @@ class AvatarDropdown extends React.Component {
   }
 }
 
-export default AvatarDropdown;
+export default inject('rootStore')(observer(AvatarDropdown));

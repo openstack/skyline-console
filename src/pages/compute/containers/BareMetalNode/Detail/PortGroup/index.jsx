@@ -17,9 +17,7 @@ import Base from 'containers/List';
 import { IronicPortGroupStore } from 'stores/ironic/port-group';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class BareMetalNodePortGroup extends Base {
+export class BareMetalNodePortGroup extends Base {
   init() {
     this.store = new IronicPortGroupStore();
   }
@@ -75,3 +73,5 @@ export default class BareMetalNodePortGroup extends Base {
     return rest;
   };
 }
+
+export default inject('rootStore')(observer(BareMetalNodePortGroup));

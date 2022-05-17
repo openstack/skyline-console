@@ -16,9 +16,7 @@ import { observer, inject } from 'mobx-react';
 import Base from 'containers/TabList';
 import Image from './Image';
 
-@inject('rootStore')
-@observer
-export default class TabImage extends Base {
+export class TabImage extends Base {
   get tabs() {
     const tabs = [
       {
@@ -47,3 +45,5 @@ export default class TabImage extends Base {
     return tabs;
   }
 }
+
+export default inject('rootStore')(observer(TabImage));

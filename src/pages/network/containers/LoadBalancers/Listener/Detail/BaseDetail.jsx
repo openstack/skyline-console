@@ -17,9 +17,7 @@ import globalListenerStore from 'stores/octavia/listener';
 import Base from 'containers/BaseDetail';
 import { HealthMonitorStore } from 'stores/octavia/health-monitor';
 
-@inject('rootStore')
-@observer
-export default class BaseDetail extends Base {
+export class BaseDetail extends Base {
   componentDidMount() {
     this.fetchData();
     const { default_pool: { healthmonitor_id } = {} } = this.detailData;
@@ -109,3 +107,5 @@ export default class BaseDetail extends Base {
     };
   }
 }
+
+export default inject('rootStore')(observer(BaseDetail));

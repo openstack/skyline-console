@@ -22,9 +22,7 @@ import Arm from './Arm';
 import BareMetal from './BareMetal';
 import Other from './Other';
 
-@inject('rootStore')
-@observer
-export default class Flavor extends Base {
+export class Flavor extends Base {
   init() {
     this.settingStore = globalSettingStore;
     this.getSettings();
@@ -54,3 +52,5 @@ export default class Flavor extends Base {
     }));
   }
 }
+
+export default inject('rootStore')(observer(Flavor));

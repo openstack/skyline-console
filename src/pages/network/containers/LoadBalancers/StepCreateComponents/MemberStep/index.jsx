@@ -18,9 +18,7 @@ import { PortStore } from 'stores/neutron/port';
 import { VirtualAdapterStore } from 'stores/neutron/virtual-adapter';
 import { get } from 'lodash';
 
-@inject('rootStore')
-@observer
-export default class MemberStep extends Base {
+export class MemberStep extends Base {
   init() {
     this.store = new VirtualAdapterStore();
     this.portStore = new PortStore();
@@ -72,3 +70,5 @@ export default class MemberStep extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(MemberStep));

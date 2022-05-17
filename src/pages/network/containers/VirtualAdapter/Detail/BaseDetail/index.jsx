@@ -19,9 +19,7 @@ import Base from 'containers/BaseDetail';
 import { bindingTypes } from 'resources/neutron/port';
 import { qosEndpoint } from 'client/client/constants';
 
-@inject('rootStore')
-@observer
-export default class BaseDetail extends Base {
+export class BaseDetail extends Base {
   get leftCards() {
     return [this.baseInfoCard];
   }
@@ -81,3 +79,5 @@ export default class BaseDetail extends Base {
     };
   }
 }
+
+export default inject('rootStore')(observer(BaseDetail));

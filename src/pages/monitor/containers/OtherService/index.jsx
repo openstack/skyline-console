@@ -20,8 +20,7 @@ import RabbitMQ from './components/RabbitMQ';
 import Memcache from './components/Memcache';
 import styles from './index.less';
 
-@observer
-class OtherService extends Component {
+export class OtherService extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -78,4 +77,4 @@ class OtherService extends Component {
   }
 }
 
-export default OtherService;
+export default observer(OtherService);

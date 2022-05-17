@@ -19,9 +19,7 @@ import { vpnStatus, vpnStatusOptions } from 'resources/neutron/vpn';
 import React from 'react';
 import { actionConfigs, adminConfigs } from './actions';
 
-@inject('rootStore')
-@observer
-export default class Index extends Base {
+export class VPNGateway extends Base {
   init() {
     this.store = new VpnServicesStore();
     this.downloadStore = new VpnServicesStore();
@@ -120,3 +118,5 @@ export default class Index extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(VPNGateway));

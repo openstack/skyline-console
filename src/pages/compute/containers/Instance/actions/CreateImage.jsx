@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import globalServerStore from 'stores/nova/instance';
 import { ModalAction } from 'containers/Action';
 
-@inject('rootStore')
-@observer
-export default class CreateImage extends ModalAction {
+export class CreateImage extends ModalAction {
   static id = 'create-image';
 
   static title = t('Create Image');
@@ -87,3 +85,5 @@ export default class CreateImage extends ModalAction {
     return this.store.createImage({ id, image });
   };
 }
+
+export default inject('rootStore')(observer(CreateImage));

@@ -20,9 +20,7 @@ import { ipProtocols } from 'resources/neutron/security-group-rule';
 import { has } from 'lodash';
 import { cidrAllValidate } from 'utils/validate';
 
-@inject('rootStore')
-@observer
-export default class Create extends ModalAction {
+export class Create extends ModalAction {
   static id = 'create';
 
   static title = t('Create Rule');
@@ -337,3 +335,5 @@ export default class Create extends ModalAction {
     return this.store.create(modalValue);
   };
 }
+
+export default inject('rootStore')(observer(Create));

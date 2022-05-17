@@ -20,9 +20,7 @@ import { MetadataStore } from 'stores/glance/metadata';
 import { isEmpty, has } from 'lodash';
 import { isOwner } from 'resources/glance/image';
 
-@inject('rootStore')
-@observer
-export default class ManageMetadata extends ModalAction {
+export class ManageMetadata extends ModalAction {
   static id = 'ManageMetadata';
 
   static title = t('Manage Metadata');
@@ -259,3 +257,5 @@ export default class ManageMetadata extends ModalAction {
     return this.store.update({ id: this.item.id }, changeValues);
   };
 }
+
+export default inject('rootStore')(observer(ManageMetadata));

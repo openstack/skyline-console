@@ -52,9 +52,7 @@ function getDefaultMsg(action, data) {
   };
 }
 
-@inject('rootStore')
-@observer
-class ActionButton extends Component {
+export class ActionButton extends Component {
   static propTypes() {
     return {
       title: PropTypes.string.isRequired,
@@ -536,4 +534,4 @@ class ActionButton extends Component {
   }
 }
 
-export default ActionButton;
+export default inject('rootStore')(observer(ActionButton));

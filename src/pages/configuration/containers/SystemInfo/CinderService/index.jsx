@@ -19,9 +19,7 @@ import globalServiceStore from 'stores/cinder/service';
 import { getOptions } from 'utils';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class CinderService extends Base {
+export class CinderService extends Base {
   init() {
     this.store = globalServiceStore;
   }
@@ -104,3 +102,5 @@ export default class CinderService extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(CinderService));

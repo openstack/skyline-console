@@ -17,9 +17,7 @@ import Base from 'containers/List';
 import globalStaticRouteStore from 'stores/neutron/static-route';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class StaticRouters extends Base {
+export class StaticRouters extends Base {
   init() {
     this.store = globalStaticRouteStore;
   }
@@ -54,3 +52,5 @@ export default class StaticRouters extends Base {
     return [];
   }
 }
+
+export default inject('rootStore')(observer(StaticRouters));

@@ -19,9 +19,7 @@ import KeyValueInput from 'components/FormItem/KeyValueInput';
 import { MetadataStore } from 'stores/glance/metadata';
 import { isEmpty, has } from 'lodash';
 
-@inject('rootStore')
-@observer
-export default class ManageMetadata extends ModalAction {
+export class ManageMetadata extends ModalAction {
   static id = 'ManageMetadata';
 
   static title = t('Manage Metadata');
@@ -178,3 +176,5 @@ export default class ManageMetadata extends ModalAction {
     return this.store.manageMetadata({ id, metadata });
   };
 }
+
+export default inject('rootStore')(observer(ManageMetadata));

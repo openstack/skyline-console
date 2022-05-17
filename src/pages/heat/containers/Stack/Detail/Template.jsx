@@ -19,9 +19,7 @@ import yaml from 'js-yaml';
 import { Card } from 'antd';
 import CodeEditor from 'components/CodeEditor';
 
-@inject('rootStore')
-@observer
-export default class Template extends Component {
+export class Template extends Component {
   constructor(props) {
     super(props);
     this.store = new StackStore();
@@ -61,3 +59,5 @@ export default class Template extends Component {
     );
   }
 }
+
+export default inject('rootStore')(observer(Template));

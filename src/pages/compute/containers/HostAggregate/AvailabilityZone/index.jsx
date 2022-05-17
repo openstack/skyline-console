@@ -18,9 +18,7 @@ import Base from 'containers/List';
 import { isEmpty } from 'lodash';
 import globalAvailabilityZoneStore from 'stores/nova/zone';
 
-@inject('rootStore')
-@observer
-export default class AvailabilityZone extends Base {
+export class AvailabilityZone extends Base {
   init() {
     this.store = globalAvailabilityZoneStore;
   }
@@ -80,3 +78,5 @@ export default class AvailabilityZone extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(AvailabilityZone));

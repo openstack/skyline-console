@@ -19,9 +19,7 @@ import { isEmpty } from 'lodash';
 import globalAggregateStore from 'stores/nova/aggregate';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class HostAggregate extends Base {
+export class HostAggregate extends Base {
   init() {
     this.store = globalAggregateStore;
   }
@@ -103,3 +101,5 @@ export default class HostAggregate extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(HostAggregate));

@@ -18,9 +18,7 @@ import globalVirtualAdapterStore from 'stores/neutron/virtual-adapter';
 import List from 'stores/base-list';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class AllowedAddressPair extends Base {
+export class AllowedAddressPair extends Base {
   init() {
     this.store = globalVirtualAdapterStore;
     // because of the father component use new Store
@@ -96,3 +94,5 @@ export default class AllowedAddressPair extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(AllowedAddressPair));

@@ -22,9 +22,7 @@ import {
 } from '@ant-design/icons/lib/icons';
 import styles from '../style.less';
 
-@inject('rootStore')
-@observer
-class ComputeService extends Component {
+export class ComputeService extends Component {
   componentDidMount() {
     this.props.store.getComputeService();
   }
@@ -83,4 +81,4 @@ ComputeService.propTypes = {
   store: PropTypes.object.isRequired,
 };
 
-export default ComputeService;
+export default inject('rootStore')(observer(ComputeService));

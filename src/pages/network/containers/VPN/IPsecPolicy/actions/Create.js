@@ -23,9 +23,7 @@ import {
   pfsOptions,
 } from 'resources/neutron/vpn';
 
-@inject('rootStore')
-@observer
-export default class Create extends ModalAction {
+export class Create extends ModalAction {
   static id = 'create-vpn-ipsec-policy';
 
   static title = t('Create VPN IPsec Policy');
@@ -123,3 +121,5 @@ export default class Create extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Create));

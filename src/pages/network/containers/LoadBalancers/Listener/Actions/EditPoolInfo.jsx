@@ -18,9 +18,7 @@ import globalPoolStore from 'stores/octavia/pool';
 import { BackendProtocol, Algorithm } from 'resources/octavia/pool';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
 
-@inject('rootStore')
-@observer
-class EditPoolInfo extends ModalAction {
+export class EditPoolInfo extends ModalAction {
   init() {
     this.state = {
       pool: {},
@@ -123,4 +121,4 @@ class EditPoolInfo extends ModalAction {
   };
 }
 
-export default EditPoolInfo;
+export default inject('rootStore')(observer(EditPoolInfo));

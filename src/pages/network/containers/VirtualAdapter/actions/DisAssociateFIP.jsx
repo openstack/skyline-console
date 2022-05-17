@@ -17,9 +17,7 @@ import globalFloatingIpsStore from 'stores/neutron/floatingIp';
 import { ModalAction } from 'containers/Action';
 import { isNotError } from 'resources/nova/instance';
 
-@inject('rootStore')
-@observer
-export default class DisAssociateFip extends ModalAction {
+export class DisAssociateFip extends ModalAction {
   static id = 'DisAssociateFip';
 
   static title = t('Disassociate Floating IP');
@@ -100,3 +98,5 @@ export default class DisAssociateFip extends ModalAction {
     return globalFloatingIpsStore.disassociateFip({ id });
   };
 }
+
+export default inject('rootStore')(observer(DisAssociateFip));

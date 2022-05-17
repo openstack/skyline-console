@@ -20,9 +20,7 @@ import { ProjectStore } from 'stores/keystone/project';
 import { toJS } from 'mobx';
 import { multiTip } from 'resources/cinder/volume';
 
-@inject('rootStore')
-@observer
-export default class Create extends ModalAction {
+export class Create extends ModalAction {
   static id = 'create';
 
   static title = t('Create Volume Type');
@@ -178,3 +176,5 @@ export default class Create extends ModalAction {
     return this.store.create(body, projectIds);
   };
 }
+
+export default inject('rootStore')(observer(Create));

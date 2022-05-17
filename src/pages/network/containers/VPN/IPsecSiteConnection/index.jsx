@@ -18,9 +18,7 @@ import { VpnIPsecConnectionStore } from 'stores/neutron/vpn-ipsec-connection';
 import { vpnStatus, vpnStatusOptions } from 'resources/neutron/vpn';
 import { actionConfigs, adminConfigs } from './actions';
 
-@inject('rootStore')
-@observer
-export default class Index extends Base {
+export class IPsecSiteConnection extends Base {
   init() {
     this.store = new VpnIPsecConnectionStore();
     this.downloadStore = new VpnIPsecConnectionStore();
@@ -119,3 +117,5 @@ export default class Index extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(IPsecSiteConnection));

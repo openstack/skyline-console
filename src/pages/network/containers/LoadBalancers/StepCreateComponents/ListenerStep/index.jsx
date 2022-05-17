@@ -15,9 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
 
-@inject('rootStore')
-@observer
-export default class ListenerStep extends Base {
+export class ListenerStep extends Base {
   get title() {
     return 'Listener Detail';
   }
@@ -81,3 +79,5 @@ export default class ListenerStep extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(ListenerStep));

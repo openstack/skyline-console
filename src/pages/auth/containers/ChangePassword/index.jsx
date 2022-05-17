@@ -25,9 +25,7 @@ import Notify from 'components/Notify';
 import SimpleForm from 'components/SimpleForm';
 import styles from './index.less';
 
-@inject('rootStore')
-@observer
-export default class Password extends Component {
+export class Password extends Component {
   formRef = null;
 
   constructor(props) {
@@ -215,3 +213,5 @@ export default class Password extends Component {
     );
   }
 }
+
+export default inject('rootStore')(observer(Password));

@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { getPath } from 'utils/route-map';
 import Create from './Create';
 
-@inject('rootStore')
-@observer
-export default class Edit extends Create {
+export class Edit extends Create {
   static id = 'edit-template';
 
   static title = t('Update Template');
@@ -44,3 +42,5 @@ export default class Edit extends Create {
     return Promise.resolve(true);
   }
 }
+
+export default inject('rootStore')(observer(Edit));

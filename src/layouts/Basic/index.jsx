@@ -16,9 +16,7 @@ import { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import renderRoutes from 'utils/RouterConfig';
 
-@inject('rootStore')
-@observer
-class BaseLayout extends Component {
+export class BaseLayout extends Component {
   constructor(props) {
     super(props);
 
@@ -32,4 +30,4 @@ class BaseLayout extends Component {
   }
 }
 
-export default BaseLayout;
+export default inject('rootStore')(observer(BaseLayout));

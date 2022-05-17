@@ -15,9 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import Create from './Create';
 
-@inject('rootStore')
-@observer
-export default class Edit extends Create {
+export class Edit extends Create {
   static id = 'edit-node';
 
   static title = t('Edit Bare Metal Node');
@@ -40,3 +38,5 @@ export default class Edit extends Create {
     return Promise.resolve(true);
   }
 }
+
+export default inject('rootStore')(observer(Edit));

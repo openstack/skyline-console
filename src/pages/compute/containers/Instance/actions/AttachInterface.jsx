@@ -27,9 +27,7 @@ import { ipValidate } from 'utils/validate';
 
 const { isIPv4, isIpv6, isIpInRangeAll } = ipValidate;
 
-@inject('rootStore')
-@observer
-export default class AttachInterface extends ModalAction {
+export class AttachInterface extends ModalAction {
   static id = 'attach-interface';
 
   static title = t('Attach Interface');
@@ -235,3 +233,5 @@ export default class AttachInterface extends ModalAction {
     return this.store.addInterface({ id, body });
   };
 }
+
+export default inject('rootStore')(observer(AttachInterface));

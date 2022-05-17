@@ -18,9 +18,7 @@ import { ModalAction } from 'containers/Action';
 import globalVpnIKEPolicyStore from 'stores/neutron/vpn-ike-policy';
 import globalVpnIPsecConnectionStore from 'stores/neutron/vpn-ipsec-connection';
 
-@inject('rootStore')
-@observer
-export default class Edit extends ModalAction {
+export class Edit extends ModalAction {
   static id = 'edit-vpn-ike-policy';
 
   static title = t('Edit VPN IKE Policy');
@@ -159,3 +157,5 @@ export default class Edit extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Edit));

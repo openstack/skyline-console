@@ -21,9 +21,7 @@ import {
 import globalNeutronAgentStore from 'stores/neutron/agent';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class NeutronAgent extends Base {
+export class NeutronAgent extends Base {
   init() {
     this.store = globalNeutronAgentStore;
   }
@@ -110,3 +108,5 @@ export default class NeutronAgent extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(NeutronAgent));

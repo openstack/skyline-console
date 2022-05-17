@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalQosSpecStore from 'stores/cinder/qos-spec';
 
-@inject('rootStore')
-@observer
-export default class EditConsumer extends ModalAction {
+export class EditConsumer extends ModalAction {
   static id = 'editConsumer';
 
   static title = t('Edit Consumer');
@@ -65,3 +63,5 @@ export default class EditConsumer extends ModalAction {
     return this.store.editConsumer({ ...this.item, ...values });
   };
 }
+
+export default inject('rootStore')(observer(EditConsumer));

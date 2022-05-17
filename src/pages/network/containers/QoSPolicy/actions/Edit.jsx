@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import { QoSPolicyStore } from 'stores/neutron/qos-policy';
 
-@inject('rootStore')
-@observer
-export default class Edit extends ModalAction {
+export class Edit extends ModalAction {
   static id = 'edit_qos_policy';
 
   static title = t('Edit QoS Policy');
@@ -74,3 +72,5 @@ export default class Edit extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Edit));

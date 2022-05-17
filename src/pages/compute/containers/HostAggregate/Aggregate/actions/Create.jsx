@@ -18,9 +18,7 @@ import { ModalAction } from 'containers/Action';
 import globalAvailabilityZoneStore from 'stores/nova/zone';
 import { getYesNoList } from 'utils/index';
 
-@inject('rootStore')
-@observer
-export default class Create extends ModalAction {
+export class Create extends ModalAction {
   static id = 'create';
 
   static title = t('Create Host Aggregate');
@@ -110,3 +108,5 @@ export default class Create extends ModalAction {
     return globalAggregateStore.create(data);
   };
 }
+
+export default inject('rootStore')(observer(Create));

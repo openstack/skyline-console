@@ -22,9 +22,7 @@ import {
 } from '@ant-design/icons/lib/icons';
 import styles from '../style.less';
 
-@inject('rootStore')
-@observer
-class NetworkService extends Component {
+export class NetworkService extends Component {
   componentDidMount() {
     this.props.store.getNetworkService();
   }
@@ -83,4 +81,4 @@ NetworkService.propTypes = {
   store: PropTypes.object.isRequired,
 };
 
-export default NetworkService;
+export default inject('rootStore')(observer(NetworkService));

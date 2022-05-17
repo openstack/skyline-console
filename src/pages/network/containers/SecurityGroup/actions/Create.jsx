@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalSecurityGroupStore from 'stores/neutron/security-group';
 
-@inject('rootStore')
-@observer
-export default class CreateAction extends ModalAction {
+export class CreateAction extends ModalAction {
   static id = 'create';
 
   static title = t('Create Security Group');
@@ -58,3 +56,5 @@ export default class CreateAction extends ModalAction {
     return globalSecurityGroupStore.create(values);
   };
 }
+
+export default inject('rootStore')(observer(CreateAction));

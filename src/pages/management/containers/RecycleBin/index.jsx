@@ -21,9 +21,7 @@ import globalRecycleBinStore, {
 import ImageType from 'components/ImageType';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class RecycleBin extends Base {
+export class RecycleBin extends Base {
   init() {
     this.store = globalRecycleBinStore;
     this.downloadStore = new RecycleBinStore();
@@ -154,3 +152,5 @@ export default class RecycleBin extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(RecycleBin));

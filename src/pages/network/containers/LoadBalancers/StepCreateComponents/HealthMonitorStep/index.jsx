@@ -15,9 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
 
-@inject('rootStore')
-@observer
-export default class HealthMonitorStep extends Base {
+export class HealthMonitorStep extends Base {
   get title() {
     return 'Health Monitor Detail';
   }
@@ -118,3 +116,5 @@ export default class HealthMonitorStep extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(HealthMonitorStep));

@@ -17,9 +17,7 @@ import { ModalAction } from 'containers/Action';
 import globalObjectStore from 'stores/swift/object';
 import { allCanChangePolicy } from 'resources/skyline/policy';
 
-@inject('rootStore')
-@observer
-export default class CreateFolder extends ModalAction {
+export class CreateFolder extends ModalAction {
   static id = 'create';
 
   static title = t('Create Folder');
@@ -91,3 +89,5 @@ export default class CreateFolder extends ModalAction {
     return globalObjectStore.createFolder(container, rest);
   };
 }
+
+export default inject('rootStore')(observer(CreateFolder));

@@ -20,9 +20,7 @@ import globalRootStore from 'stores/root';
 import actionConfigs from './subnetActions';
 // import { networkStatus } from 'resources/network';
 
-@inject('rootStore')
-@observer
-export default class Subnets extends Base {
+export class Subnets extends Base {
   init() {
     this.store = new SubnetStore();
     const { detail: { subnet_ip_availability = [] } = {} } = this.props;
@@ -152,3 +150,5 @@ export default class Subnets extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Subnets));

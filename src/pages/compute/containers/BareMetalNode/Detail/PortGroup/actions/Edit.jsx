@@ -22,9 +22,7 @@ import { macAddressValidate } from 'utils/validate';
 import { updateObjToAddSelectArray } from 'utils/index';
 import { getDifFromAddSelectValue } from 'resources/ironic/ironic';
 
-@inject('rootStore')
-@observer
-export default class Edit extends ModalAction {
+export class Edit extends ModalAction {
   static id = 'EditPortGroup';
 
   static title = t('Edit Port Group');
@@ -193,3 +191,5 @@ export default class Edit extends ModalAction {
     return globalIronicPortGroupStore.edit({ id: this.item.uuid }, body);
   };
 }
+
+export default inject('rootStore')(observer(Edit));

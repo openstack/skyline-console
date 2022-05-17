@@ -17,9 +17,7 @@ import Base from 'containers/List';
 import { PortForwardingStore } from 'stores/neutron/port-forwarding';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class PortForwarding extends Base {
+export class PortForwarding extends Base {
   init() {
     this.store = new PortForwardingStore();
     this.downloadStore = new PortForwardingStore();
@@ -97,3 +95,5 @@ export default class PortForwarding extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(PortForwarding));

@@ -20,9 +20,7 @@ import { onlyAdminCanReadPolicy } from 'resources/skyline/policy';
 import { getOptions } from 'utils';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class ComputeHost extends Base {
+export class ComputeHost extends Base {
   init() {
     this.store = globalComputeHostStore;
   }
@@ -105,3 +103,5 @@ export default class ComputeHost extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(ComputeHost));

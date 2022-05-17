@@ -18,9 +18,7 @@ import Base from 'containers/TabDetail';
 import BaseDetail from './BaseDetail';
 import actionConfigs from '../actions';
 
-@inject('rootStore')
-@observer
-export default class MetadataDetail extends Base {
+export class MetadataDetail extends Base {
   get name() {
     return t('metadata');
   }
@@ -71,3 +69,5 @@ export default class MetadataDetail extends Base {
     this.store = new MetadataStore();
   }
 }
+
+export default inject('rootStore')(observer(MetadataDetail));

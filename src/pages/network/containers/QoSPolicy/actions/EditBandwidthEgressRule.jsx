@@ -17,9 +17,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalQoSPolicyStore from 'stores/neutron/qos-policy';
 
-@inject('rootStore')
-@observer
-export default class EditBandwidthEgressRule extends ModalAction {
+export class EditBandwidthEgressRule extends ModalAction {
   static id = 'edit_bandwidth_egress_limit_rule';
 
   static title = t('Edit Bandwidth Egress Limit Rule');
@@ -99,3 +97,5 @@ export default class EditBandwidthEgressRule extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(EditBandwidthEgressRule));

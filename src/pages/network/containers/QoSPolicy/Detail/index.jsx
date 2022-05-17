@@ -19,9 +19,7 @@ import FloatingIp from 'pages/network/containers/FloatingIp';
 import BaseDetail from './BaseDetail';
 import actionConfigs from '../actions';
 
-@inject('rootStore')
-@observer
-export default class QoSPolicyDetail extends Base {
+export class QoSPolicyDetail extends Base {
   get name() {
     return t('qoS policy');
   }
@@ -101,3 +99,5 @@ export default class QoSPolicyDetail extends Base {
     this.store = new QoSPolicyStore();
   }
 }
+
+export default inject('rootStore')(observer(QoSPolicyDetail));

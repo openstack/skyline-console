@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import globalMetadataStore from 'stores/glance/metadata';
 import { ModalAction } from 'containers/Action';
 
-@inject('rootStore')
-@observer
-export default class Edit extends ModalAction {
+export class Edit extends ModalAction {
   static id = 'edit';
 
   static title = t('Edit Metadata');
@@ -86,3 +84,5 @@ export default class Edit extends ModalAction {
     return globalMetadataStore.edit({ id: namespace }, body);
   };
 }
+
+export default inject('rootStore')(observer(Edit));

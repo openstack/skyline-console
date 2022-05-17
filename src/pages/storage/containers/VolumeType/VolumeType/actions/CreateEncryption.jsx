@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalVolumeTypeStore from 'stores/cinder/volume-type';
 
-@inject('rootStore')
-@observer
-export default class CreateEncryption extends ModalAction {
+export class CreateEncryption extends ModalAction {
   static id = 'create';
 
   static title = t('Create Encryption');
@@ -98,3 +96,5 @@ export default class CreateEncryption extends ModalAction {
     return this.store.createEncryption(id, values);
   };
 }
+
+export default inject('rootStore')(observer(CreateEncryption));

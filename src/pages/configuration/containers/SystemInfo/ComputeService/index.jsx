@@ -19,9 +19,7 @@ import { ComputeHostStore } from 'stores/nova/compute-host';
 import { getOptions } from 'utils';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class ComputeService extends Base {
+export class ComputeService extends Base {
   init() {
     this.store = new ComputeHostStore();
   }
@@ -105,3 +103,5 @@ export default class ComputeService extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(ComputeService));

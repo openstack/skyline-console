@@ -18,9 +18,7 @@ import { VpnIPsecConnectionStore } from 'stores/neutron/vpn-ipsec-connection';
 import React from 'react';
 import { toJS } from 'mobx';
 
-@inject('rootStore')
-@observer
-export default class BaseDetail extends Base {
+export class BaseDetail extends Base {
   init() {
     this.store = new VpnIPsecConnectionStore();
   }
@@ -182,3 +180,5 @@ export default class BaseDetail extends Base {
     };
   }
 }
+
+export default inject('rootStore')(observer(BaseDetail));

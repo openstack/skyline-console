@@ -26,9 +26,7 @@ import {
 
 const { isCidr, isIPv6CidrOnly } = ipValidate;
 
-@inject('rootStore')
-@observer
-export default class Create extends ModalAction {
+export class Create extends ModalAction {
   static id = 'create-vpn-endpoint-group';
 
   static title = t('Create VPN Endpoint Group');
@@ -203,3 +201,5 @@ export default class Create extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Create));

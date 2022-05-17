@@ -17,9 +17,7 @@ import { ModalAction } from 'containers/Action';
 import globalVolumeStore from 'stores/cinder/volume';
 import { isAvailableOrInUse } from 'resources/cinder/volume';
 
-@inject('rootStore')
-@observer
-export default class CloneVolume extends ModalAction {
+export class CloneVolume extends ModalAction {
   static id = 'clone-volume';
 
   static title = t('Clone Volume');
@@ -76,3 +74,5 @@ export default class CloneVolume extends ModalAction {
     return this.store.create(body);
   };
 }
+
+export default inject('rootStore')(observer(CloneVolume));

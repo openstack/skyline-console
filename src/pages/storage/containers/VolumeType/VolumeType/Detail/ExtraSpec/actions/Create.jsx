@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalExtraSpecStore from 'stores/cinder/extra-spec';
 
-@inject('rootStore')
-@observer
-export default class Create extends ModalAction {
+export class Create extends ModalAction {
   static id = 'create';
 
   static title = t('Create Extra Specs');
@@ -69,3 +67,5 @@ export default class Create extends ModalAction {
     return this.store.createOrUpdate(id, extra_specs);
   };
 }
+
+export default inject('rootStore')(observer(Create));

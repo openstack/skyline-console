@@ -16,9 +16,7 @@ import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalRoleStore from 'stores/keystone/role';
 
-@inject('rootStore')
-@observer
-export default class Role extends Base {
+export class Role extends Base {
   init() {
     this.store = globalRoleStore;
   }
@@ -75,3 +73,5 @@ export default class Role extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Role));

@@ -17,9 +17,7 @@ import { ModalAction } from 'containers/Action';
 import globalObjectStore, { ObjectStore } from 'stores/swift/object';
 import { allCanChangePolicy } from 'resources/skyline/policy';
 
-@inject('rootStore')
-@observer
-export default class UploadFile extends ModalAction {
+export class UploadFile extends ModalAction {
   static id = 'upload-file';
 
   static title = t('Upload File');
@@ -102,3 +100,5 @@ export default class UploadFile extends ModalAction {
     return this.store.createFile(container, rest, config);
   };
 }
+
+export default inject('rootStore')(observer(UploadFile));

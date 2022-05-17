@@ -22,9 +22,7 @@ import {
   pfsOptions,
 } from 'resources/neutron/vpn';
 
-@inject('rootStore')
-@observer
-export default class Create extends ModalAction {
+export class Create extends ModalAction {
   static id = 'create-vpn-ike-policy';
 
   static title = t('Create VPN IKE Policy');
@@ -114,3 +112,5 @@ export default class Create extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Create));

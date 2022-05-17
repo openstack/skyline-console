@@ -35,9 +35,7 @@ const {
 
 const { isIpCidr, isIPv6Cidr, isIpv6 } = ipValidate;
 
-@inject('rootStore')
-@observer
-export default class CreateSubnet extends ModalAction {
+export class CreateSubnet extends ModalAction {
   static id = 'create-subnet';
 
   static title = t('Create Subnet');
@@ -352,3 +350,5 @@ export default class CreateSubnet extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(CreateSubnet));

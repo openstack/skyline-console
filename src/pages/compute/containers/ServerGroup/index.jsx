@@ -19,9 +19,7 @@ import policyType from 'resources/nova/server-group';
 import { getOptions } from 'utils';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class ServerGroup extends Base {
+export class ServerGroup extends Base {
   init() {
     this.store = globalServerGroupStore;
   }
@@ -86,3 +84,5 @@ export default class ServerGroup extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(ServerGroup));

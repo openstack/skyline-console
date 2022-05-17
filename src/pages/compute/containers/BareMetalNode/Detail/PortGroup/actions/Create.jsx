@@ -21,9 +21,7 @@ import { isEmpty } from 'lodash';
 import { macAddressValidate } from 'utils/validate';
 import { updateAddSelectValueToObj } from 'utils/index';
 
-@inject('rootStore')
-@observer
-export default class Create extends ModalAction {
+export class Create extends ModalAction {
   static id = 'CreatePort';
 
   static title = t('Create Port Group');
@@ -128,3 +126,5 @@ export default class Create extends ModalAction {
     return globalIronicPortGroupStore.create(body);
   };
 }
+
+export default inject('rootStore')(observer(Create));

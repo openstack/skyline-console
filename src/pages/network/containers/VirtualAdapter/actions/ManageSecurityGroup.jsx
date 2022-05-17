@@ -23,9 +23,7 @@ import {
 import { toJS } from 'mobx';
 import { get as _get } from 'lodash';
 
-@inject('rootStore')
-@observer
-export default class ManageSecurityGroup extends ModalAction {
+export class ManageSecurityGroup extends ModalAction {
   static id = 'manage-security-group';
 
   static title = t('Manage Security Group');
@@ -147,3 +145,5 @@ export default class ManageSecurityGroup extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(ManageSecurityGroup));

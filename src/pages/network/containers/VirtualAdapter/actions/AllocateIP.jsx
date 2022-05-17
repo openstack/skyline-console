@@ -18,9 +18,7 @@ import globalVirtualAdapterStore from 'stores/neutron/virtual-adapter';
 import { NetworkStore } from 'stores/neutron/network';
 import { SubnetStore } from 'stores/neutron/subnet';
 
-@inject('rootStore')
-@observer
-export default class AllocateIP extends ModalAction {
+export class AllocateIP extends ModalAction {
   static id = 'allocate-ip';
 
   static title = t('Allocate IP');
@@ -111,3 +109,5 @@ export default class AllocateIP extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(AllocateIP));

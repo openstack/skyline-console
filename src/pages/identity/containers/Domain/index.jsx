@@ -16,9 +16,7 @@ import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalDomainStore from 'stores/keystone/domain';
 
-@inject('rootStore')
-@observer
-export default class Domains extends Base {
+export class Domains extends Base {
   init() {
     this.store = globalDomainStore;
   }
@@ -67,3 +65,5 @@ export default class Domains extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Domains));

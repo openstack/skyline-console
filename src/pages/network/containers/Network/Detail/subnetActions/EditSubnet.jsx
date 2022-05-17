@@ -35,9 +35,7 @@ const {
 
 const { isIpWithMask, isIPv6Cidr } = ipValidate;
 
-@inject('rootStore')
-@observer
-export default class EditSubnet extends ModalAction {
+export class EditSubnet extends ModalAction {
   static id = 'edit-subnet';
 
   static title = t('Edit Subnet');
@@ -219,3 +217,5 @@ export default class EditSubnet extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(EditSubnet));

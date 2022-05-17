@@ -18,9 +18,7 @@ import globalPoolStore from 'stores/octavia/pool';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
 import { Algorithm, algorithmTip } from 'resources/octavia/pool';
 
-@inject('rootStore')
-@observer
-class CreatePool extends ModalAction {
+export class CreatePool extends ModalAction {
   static id = 'pool-create';
 
   static title = t('Create Default Pool');
@@ -114,4 +112,4 @@ class CreatePool extends ModalAction {
   };
 }
 
-export default CreatePool;
+export default inject('rootStore')(observer(CreatePool));

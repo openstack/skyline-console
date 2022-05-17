@@ -19,9 +19,7 @@ import { ModalAction } from 'containers/Action';
 import { portStatus } from 'resources/neutron/port';
 import { isActiveOrShutOff, isNotLocked } from 'resources/nova/instance';
 
-@inject('rootStore')
-@observer
-export default class DetachInterface extends ModalAction {
+export class DetachInterface extends ModalAction {
   static id = 'detach-interface';
 
   static title = t('Detach Interface');
@@ -139,3 +137,5 @@ export default class DetachInterface extends ModalAction {
     return this.store.detachInterface({ id, ports: selectedRowKeys });
   };
 }
+
+export default inject('rootStore')(observer(DetachInterface));

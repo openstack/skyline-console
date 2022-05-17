@@ -19,9 +19,7 @@ import { provisioningStatusCodes } from 'resources/octavia/lb';
 import Listeners from '../../Listener';
 import { actionConfigs, adminActions } from '../actions';
 
-@inject('rootStore')
-@observer
-export default class LoadBalancerDetail extends Base {
+export class LoadBalancerDetail extends Base {
   get name() {
     return t('load balancer');
   }
@@ -106,3 +104,5 @@ export default class LoadBalancerDetail extends Base {
     this.store = new LbaasStore();
   }
 }
+
+export default inject('rootStore')(observer(LoadBalancerDetail));

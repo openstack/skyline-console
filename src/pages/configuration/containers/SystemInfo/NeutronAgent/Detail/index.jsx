@@ -24,9 +24,7 @@ import Router from './Router';
 import Network from './Network';
 import actionConfigs from '../actions';
 
-@inject('rootStore')
-@observer
-export default class KeypairDetail extends Base {
+export class KeypairDetail extends Base {
   get name() {
     return t('neutron agent');
   }
@@ -106,3 +104,5 @@ export default class KeypairDetail extends Base {
     this.store = new NeutronAgentStore();
   }
 }
+
+export default inject('rootStore')(observer(KeypairDetail));

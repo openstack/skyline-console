@@ -18,9 +18,7 @@ import { RouterStore } from 'stores/neutron/router';
 import { FloatingIpStore } from 'stores/neutron/floatingIp';
 import { ModalAction } from 'containers/Action';
 
-@inject('rootStore')
-@observer
-export default class AssociateFip extends ModalAction {
+export class AssociateFip extends ModalAction {
   static id = 'associate-fip';
 
   static title = t('Associate Floating IP');
@@ -141,3 +139,5 @@ export default class AssociateFip extends ModalAction {
     return this.store.associateFip({ id, fip, router: this.item });
   };
 }
+
+export default inject('rootStore')(observer(AssociateFip));

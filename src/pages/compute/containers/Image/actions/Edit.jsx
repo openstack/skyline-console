@@ -21,9 +21,7 @@ import { isActive } from 'resources/nova/instance';
 import { NoSetValue, getOptionsWithNoSet } from 'utils/index';
 import { cpuPolicyList, cpuThreadPolicyList } from 'resources/nova/flavor';
 
-@inject('rootStore')
-@observer
-class Edit extends ModalAction {
+export class Edit extends ModalAction {
   init() {
     this.store = globalImageStore;
   }
@@ -254,4 +252,4 @@ class Edit extends ModalAction {
   };
 }
 
-export default Edit;
+export default inject('rootStore')(observer(Edit));

@@ -15,9 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
 
-@inject('rootStore')
-@observer
-export default class NodeInterface extends Base {
+export class NodeInterface extends Base {
   get bootInterfaces() {
     return [
       { value: 'pxe', label: t('PXE') },
@@ -125,3 +123,5 @@ export default class NodeInterface extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(NodeInterface));

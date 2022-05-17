@@ -22,9 +22,7 @@ import {
   isIronicInstance,
 } from 'resources/nova/instance';
 
-@inject('rootStore')
-@observer
-export default class ChangePassword extends ModalAction {
+export class ChangePassword extends ModalAction {
   static id = 'change-password';
 
   static title = t('Change Password');
@@ -98,3 +96,5 @@ export default class ChangePassword extends ModalAction {
     return this.store.changePassword({ id, password });
   };
 }
+
+export default inject('rootStore')(observer(ChangePassword));

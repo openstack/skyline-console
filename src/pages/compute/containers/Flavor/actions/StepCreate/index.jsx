@@ -27,9 +27,7 @@ import { parse } from 'qs';
 import AccessTypeSetting from './AccessTypeSetting';
 import ParamSetting from './ParamSetting';
 
-@inject('rootStore')
-@observer
-class StepCreate extends StepAction {
+export class StepCreate extends StepAction {
   static id = 'flavor-create';
 
   static title = t('Create Flavor');
@@ -200,4 +198,4 @@ class StepCreate extends StepAction {
   };
 }
 
-export default StepCreate;
+export default inject('rootStore')(observer(StepCreate));

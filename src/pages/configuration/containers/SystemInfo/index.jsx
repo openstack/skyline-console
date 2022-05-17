@@ -20,9 +20,7 @@ import CinderService from './CinderService';
 import NeutronAgent from './NeutronAgent';
 import HeatService from './HeatService';
 
-@inject('rootStore')
-@observer
-export default class Service extends Base {
+export class Service extends Base {
   get enableCinder() {
     return this.props.rootStore.checkEndpoint('cinder');
   }
@@ -60,3 +58,5 @@ export default class Service extends Base {
     return tabs;
   }
 }
+
+export default inject('rootStore')(observer(Service));

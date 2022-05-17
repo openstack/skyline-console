@@ -17,9 +17,7 @@ import Base from 'containers/List';
 import { FixedIpStore } from 'stores/neutron/fixed-ip';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class FixedIP extends Base {
+export class FixedIP extends Base {
   init() {
     this.store = new FixedIpStore();
     this.downloadStore = new FixedIpStore();
@@ -84,3 +82,5 @@ export default class FixedIP extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(FixedIP));

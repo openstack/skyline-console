@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalVolumeStore from 'stores/cinder/volume';
 
-@inject('rootStore')
-@observer
-export default class UpdateStatus extends ModalAction {
+export class UpdateStatus extends ModalAction {
   static id = 'update-status';
 
   static title = t('Update Status');
@@ -93,3 +91,5 @@ export default class UpdateStatus extends ModalAction {
     return this.store.resetStatus(id, values);
   };
 }
+
+export default inject('rootStore')(observer(UpdateStatus));
