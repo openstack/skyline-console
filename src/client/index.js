@@ -26,6 +26,7 @@ import swift from './swift';
 import trove from './trove';
 import manila from './manila';
 import barbican from './barbican';
+import zun from './zun';
 import magnum from './magnum';
 
 const client = {
@@ -43,6 +44,7 @@ const client = {
   trove,
   manila,
   barbican,
+  zun,
   magnum
 };
 

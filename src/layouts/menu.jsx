@@ -582,11 +582,47 @@ const renderMenu = (t) => {
       ],
     },
     {
-      path: '/container-infra',
-      name: t('Container Infra'),
-      key: 'containerInfra',
+      path: '/container',
+      name: t('Container'),
+      key: 'container',
       icon: <ContainerOutlined />,
       children: [
+        {
+          path: '/container/containers',
+          name: t('Containers'),
+          key: 'containers',
+          level: 1,
+          children: [
+            {
+              path: '/container/containers/create',
+              name: t('Create Container'),
+              key: 'containersCreateContainer',
+              level: 2,
+            },
+            {
+              path: /^\/container\/containers\/detail\/.[^/]+$/,
+              name: t('Containers Detail'),
+              key: 'containersDetail',
+              level: 2,
+              routePath: '/container/containers/detail/:id',
+            },
+          ],
+        },
+        {
+          path: '/container/capsules',
+          name: t('Capsules'),
+          key: 'capsules',
+          level: 1,
+          children: [
+            {
+              path: /^\/container\/capsules\/detail\/.[^/]+$/,
+              name: t('Capsules Detail'),
+              key: 'capsulesDetail',
+              level: 2,
+              routePath: '/container/capsules/detail/:id',
+            },
+          ],
+        },
         {
           path: '/container-infra/clusters',
           name: t('Clusters'),
