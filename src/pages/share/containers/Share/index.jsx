@@ -20,7 +20,7 @@ import actionConfigs from './actions';
 
 export class Share extends Base {
   init() {
-    this.store = globalShareStore;
+    this.store = this.inDetailPage ? new ShareStore() : globalShareStore;
     this.downloadStore = new ShareStore();
   }
 
@@ -54,6 +54,14 @@ export class Share extends Base {
   get inShareServerDetailPage() {
     const { pathname } = this.props.location;
     return this.inDetailPage && pathname.includes('share-server');
+  }
+
+  get isSortByBackend() {
+    return true;
+  }
+
+  get defaultSortKey() {
+    return 'created_at';
   }
 
   updateFetchParamsByPage = (params) => {
@@ -92,20 +100,24 @@ export class Share extends Base {
         dataIndex: 'project_name',
         isHideable: true,
         hidden: !this.isAdminPage,
+        sortKey: 'project_id',
       },
       {
         title: t('Description'),
         dataIndex: 'description',
         isHideable: true,
+        sorter: false,
       },
       {
         title: t('Availability Zone'),
         dataIndex: 'availability_zone',
+        sorter: false,
       },
       {
         title: t('Share Type'),
         dataIndex: 'share_type_name',
         render: (value, record) => value || record.share_type,
+        sortKey: 'share_type_id',
       },
       {
         title: t('Size'),
@@ -122,6 +134,7 @@ export class Share extends Base {
         dataIndex: 'is_public',
         isHideable: true,
         valueRender: 'yesNo',
+        sorter: false,
       },
       {
         title: t('Status'),
@@ -155,6 +168,7 @@ export class Share extends Base {
           });
           return link;
         },
+        // sorter: false,
       },
       {
         title: t('Created At'),

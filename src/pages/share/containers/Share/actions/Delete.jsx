@@ -38,5 +38,9 @@ export default class Delete extends ConfirmAction {
 
   policy = 'manila:share:delete';
 
+  allowedCheckFunc = (item) => {
+    return this.isAdminPage || item.isMine;
+  };
+
   onSubmit = (data) => globalShareStore.delete(data);
 }

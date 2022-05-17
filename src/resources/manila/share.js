@@ -60,3 +60,15 @@ export const shareAccessRuleState = {
   denying: t('Denying'),
   applying: t('Applying'),
 };
+
+export const shareAccessLevel = {
+  rw: t('Read and write'),
+  ro: t('Read only'),
+};
+
+export const shareAccessType = {
+  ip: t('IP'),
+  cert: t('Cert'),
+  user: t('User'),
+  cephx: t('Cephx'),
+};

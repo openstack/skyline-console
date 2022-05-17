@@ -73,9 +73,27 @@ export class ShareStore extends Base {
         all_tenants: all_projects ? 1 : 0,
         offset: marker,
         limit,
+        is_public: true,
       };
     };
   }
+
+  get mapper() {
+    return (data) => {
+      const { project_id } = data;
+      return {
+        ...data,
+        isMine: project_id === this.currentProjectId,
+      };
+    };
+  }
+
+  updateParamsSortPage = (params, sortKey, sortOrder) => {
+    if (sortKey && sortOrder) {
+      params.sort_key = sortKey;
+      params.sort_dir = sortOrder === 'descend' ? 'desc' : 'asc';
+    }
+  };
 
   @action
   async fetchAvailableZones() {

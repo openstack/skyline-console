@@ -41,6 +41,14 @@ export class ShareGroup extends Base {
     return true;
   }
 
+  get isSortByBackend() {
+    return true;
+  }
+
+  get defaultSortKey() {
+    return 'created_at';
+  }
+
   get actionConfigs() {
     return this.isAdminPage
       ? actionConfigs.actionConfigsAdmin

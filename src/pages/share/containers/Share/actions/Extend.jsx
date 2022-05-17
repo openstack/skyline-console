@@ -36,7 +36,7 @@ export class ExtendShare extends ModalAction {
 
   static policy = 'manila:share:extend';
 
-  static allowed = () => Promise.resolve(true);
+  static allowed = (item) => Promise.resolve(item.isMine);
 
   get tips() {
     return t('After the share is expanded, the share cannot be reduced.');

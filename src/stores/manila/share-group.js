@@ -37,6 +37,13 @@ export class ShareGroupStore extends Base {
     };
   }
 
+  updateParamsSortPage = (params, sortKey, sortOrder) => {
+    if (sortKey && sortOrder) {
+      params.sort_key = sortKey;
+      params.sort_dir = sortOrder === 'descend' ? 'desc' : 'asc';
+    }
+  };
+
   async detailDidFetch(item, all_projects) {
     const { share_network_id, share_group_type_id, share_types } = item;
     const shareGroupType = await new ShareGroupTypeStore().fetchDetail({

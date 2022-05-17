@@ -17,7 +17,8 @@ import { ModalAction } from 'containers/Action';
 import globalShareAccessRuleStore from 'stores/manila/share-access-rule';
 import { keyValueValidator } from 'pages/share/containers/ShareType/actions/Create';
 import KeyValueInput from 'components/FormItem/KeyValueInput';
-import { updateAddSelectValueToObj } from 'utils/index';
+import { updateAddSelectValueToObj, getOptions } from 'utils/index';
+import { shareAccessLevel, shareAccessType } from 'resources/manila/share';
 
 export const metadataFormItem = {
   name: 'metadata',
@@ -55,37 +56,11 @@ export class Create extends ModalAction {
   static allowed = () => Promise.resolve(true);
 
   get typeOptions() {
-    return [
-      {
-        value: 'ip',
-        label: t('IP'),
-      },
-      {
-        value: 'cert',
-        label: t('Cert'),
-      },
-      {
-        value: 'user',
-        label: t('User'),
-      },
-      {
-        value: 'cephx',
-        label: t('Cephx'),
-      },
-    ];
+    return getOptions(shareAccessType);
   }
 
   get levelOptions() {
-    return [
-      {
-        value: 'rw',
-        label: t('Read and write'),
-      },
-      {
-        value: 'ro',
-        label: t('Read only'),
-      },
-    ];
+    return getOptions(shareAccessLevel);
   }
 
   get defaultValue() {

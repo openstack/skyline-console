@@ -17,15 +17,18 @@ export const getShareGroupColumns = (self) => {
       dataIndex: 'project_name',
       isHideable: true,
       hidden: !self.isAdminPage,
+      sortKey: 'project_id',
     },
     {
       title: t('Description'),
       dataIndex: 'description',
       isHideable: true,
+      sorter: false,
     },
     {
       title: t('Availability Zone'),
       dataIndex: 'availability_zone',
+      sorter: false,
     },
     {
       title: t('Share Network'),

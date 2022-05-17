@@ -38,6 +38,7 @@ import { cloneDeep } from 'lodash';
 import { idNameColumn } from 'utils/table';
 import { extraFormItem } from 'pages/share/containers/ShareType/actions/Create';
 import { updateAddSelectValueToObj, getOptions } from 'utils/index';
+import { checkPolicyRule } from 'resources/skyline/policy';
 
 export class Create extends FormAction {
   static id = 'create';
@@ -135,6 +136,14 @@ export class Create extends FormAction {
     return [idNameColumn, ...rest];
   }
 
+  get shareProtocolOptions() {
+    return getOptions(shareProtocol);
+  }
+
+  checkShowPublic() {
+    return checkPolicyRule('manila:share:create_public_share');
+  }
+
   get formItems() {
     const { showNetworks = false, shareGroups = [] } = this.state;
     const minSize = 1;
@@ -175,7 +184,7 @@ export class Create extends FormAction {
         label: t('Share Protocol'),
         type: 'select',
         required: true,
-        options: getOptions(shareProtocol),
+        options: this.shareProtocolOptions,
       },
       {
         name: 'size',
@@ -183,7 +192,7 @@ export class Create extends FormAction {
         type: 'slider-input',
         max: this.maxSize,
         min: minSize,
-        description: `${minSize}GB-${this.maxSize}GB`,
+        description: `${minSize}GiB-${this.maxSize}GiB`,
         required: this.quotaIsLimit,
         display: this.quotaIsLimit,
       },
@@ -201,6 +210,7 @@ export class Create extends FormAction {
         type: 'check',
         content: t('Public'),
         tip: t('If set then all tenants will be able to see this share.'),
+        display: this.checkShowPublic(),
       },
       {
         name: 'shareType',
@@ -246,14 +256,24 @@ export class Create extends FormAction {
   }
 
   onSubmit = (values) => {
-    const { shareType, shareNetwork, shareGroup, project, metadata, ...rest } =
-      values;
+    const {
+      shareType,
+      shareNetwork,
+      shareGroup,
+      project,
+      metadata,
+      is_public,
+      ...rest
+    } = values;
     const { showNetworks = false } = this.state;
     const body = {
       ...rest,
       share_type: shareType.selectedRowKeys[0],
       metadata: updateAddSelectValueToObj(metadata),
     };
+    if (this.checkShowPublic() && is_public) {
+      body.is_public = is_public;
+    }
     const { selectedRowKeys: networkKeys = [] } = shareNetwork || {};
     const { selectedRowKeys: groupKeys = [] } = shareGroup || {};
     if (showNetworks && networkKeys.length) {

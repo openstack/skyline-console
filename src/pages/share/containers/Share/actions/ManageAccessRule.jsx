@@ -38,7 +38,7 @@ export class ManageAccessRule extends FormAction {
 
   static policy = 'manila:share_access_rule:index';
 
-  static allowed = () => Promise.resolve(true);
+  static allowed = (item) => Promise.resolve(item.isMine);
 }
 
 export default inject('rootStore')(observer(ManageAccessRule));

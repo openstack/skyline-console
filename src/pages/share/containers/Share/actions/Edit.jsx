@@ -15,6 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalShareStore from 'stores/manila/share';
+import { checkPolicyRule } from 'resources/skyline/policy';
 
 export class Edit extends ModalAction {
   static id = 'edit';
@@ -33,7 +34,11 @@ export class Edit extends ModalAction {
 
   static policy = 'manila:share:update';
 
-  static allowed = () => Promise.resolve(true);
+  static allowed = (item) => Promise.resolve(item.isMine);
+
+  checkShowPublic() {
+    return checkPolicyRule('manila:share:set_public_share');
+  }
 
   get formItems() {
     return [
@@ -54,6 +59,7 @@ export class Edit extends ModalAction {
         type: 'check',
         content: t('Public'),
         tip: t('If set then all tenants will be able to see this share.'),
+        display: this.checkShowPublic(),
       },
     ];
   }
@@ -64,7 +70,14 @@ export class Edit extends ModalAction {
 
   onSubmit = (values) => {
     const { id } = this.item;
-    return this.store.update(id, values);
+    const { is_public, ...rest } = values;
+    const body = {
+      ...rest,
+    };
+    if (this.checkShowPublic()) {
+      body.is_public = is_public;
+    }
+    return this.store.update(id, body);
   };
 }
 

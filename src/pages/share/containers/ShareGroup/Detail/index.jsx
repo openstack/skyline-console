@@ -59,11 +59,6 @@ export class Detail extends Base {
         dataIndex: 'created_at',
         valueRender: 'toLocalTime',
       },
-      {
-        title: t('Updated'),
-        dataIndex: 'updated_at',
-        valueRender: 'toLocalTime',
-      },
     ];
   }
 

@@ -15,7 +15,8 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalShareAccessRuleStore from 'stores/manila/share-access-rule';
-import { shareAccessRuleState } from 'resources/manila/share';
+import { shareAccessRuleState, shareAccessLevel } from 'resources/manila/share';
+import { emptyActionConfig } from 'utils/constants';
 import actionConfigs from './actions';
 
 export class ShareAccessRule extends Base {
@@ -32,9 +33,14 @@ export class ShareAccessRule extends Base {
   }
 
   get actionConfigs() {
-    return this.isAdminPage
-      ? actionConfigs.actionConfigsAdmin
-      : actionConfigs.actionConfigs;
+    if (this.isAdminPage) {
+      return actionConfigs.actionConfigsAdmin;
+    }
+    const { detail: { isMine } = {} } = this.props;
+    if (isMine) {
+      return actionConfigs.actionConfigs;
+    }
+    return emptyActionConfig;
   }
 
   getColumns = () => [
@@ -53,6 +59,7 @@ export class ShareAccessRule extends Base {
     {
       title: t('Access Level'),
       dataIndex: 'access_level',
+      render: (value) => shareAccessLevel[value] || value,
     },
     {
       title: t('State'),

@@ -38,7 +38,7 @@ export class ManageMetadata extends FormAction {
 
   static policy = 'manila:share:update_share_metadata';
 
-  static allowed = () => Promise.resolve(true);
+  static allowed = (item) => Promise.resolve(item.isMine);
 }
 
 export default inject('rootStore')(observer(ManageMetadata));

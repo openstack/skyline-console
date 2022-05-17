@@ -15,6 +15,7 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { ShareMetadataStore } from 'stores/manila/share-metadata';
+import { emptyActionConfig } from 'utils/constants';
 import actionConfigs from './actions';
 
 export class Metadata extends Base {
@@ -42,9 +43,14 @@ export class Metadata extends Base {
   ];
 
   get actionConfigs() {
-    return this.isAdminPage
-      ? actionConfigs.actionConfigsAdmin
-      : actionConfigs.actionConfigs;
+    if (this.isAdminPage) {
+      return actionConfigs.actionConfigsAdmin;
+    }
+    const { detail: { isMine } = {} } = this.props;
+    if (isMine) {
+      return actionConfigs.actionConfigs;
+    }
+    return emptyActionConfig;
   }
 
   get searchFilters() {
