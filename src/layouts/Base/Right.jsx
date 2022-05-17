@@ -25,9 +25,7 @@ import styles from './index.less';
 
 const { Content } = Layout;
 
-@inject('rootStore')
-@observer
-class Right extends Component {
+export class Right extends Component {
   constructor(props) {
     super(props);
     this.routes = props.route.routes;
@@ -193,4 +191,4 @@ class Right extends Component {
   }
 }
 
-export default Right;
+export default inject('rootStore')(observer(Right));

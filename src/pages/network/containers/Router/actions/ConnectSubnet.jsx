@@ -19,9 +19,7 @@ import globalSubnetStore from 'stores/neutron/subnet';
 import { PortStore } from 'stores/neutron/port';
 import { ModalAction } from 'containers/Action';
 
-@inject('rootStore')
-@observer
-export default class ConnectSubnet extends ModalAction {
+export class ConnectSubnet extends ModalAction {
   static id = 'connect-subnet';
 
   static title = t('Connect Subnet');
@@ -167,3 +165,5 @@ export default class ConnectSubnet extends ModalAction {
     return this.store.connectSubnet({ id, subnetId, networkId });
   };
 }
+
+export default inject('rootStore')(observer(ConnectSubnet));

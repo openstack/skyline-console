@@ -17,9 +17,7 @@ import { ModalAction } from 'containers/Action';
 import { getPasswordOtherRule } from 'utils/validate';
 import globalUserStore from 'stores/keystone/user';
 
-@inject('rootStore')
-@observer
-export default class Password extends ModalAction {
+export class Password extends ModalAction {
   static id = 'update-user-password';
 
   static title = t('Update User Password');
@@ -84,3 +82,5 @@ export default class Password extends ModalAction {
     });
   };
 }
+
+export default inject('rootStore')(observer(Password));

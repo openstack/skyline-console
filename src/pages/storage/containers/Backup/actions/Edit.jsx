@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalBackupStore from 'stores/cinder/backup';
 
-@inject('rootStore')
-@observer
-export default class Edit extends ModalAction {
+export class Edit extends ModalAction {
   static id = 'edit-backup';
 
   static title = t('Edit Backup');
@@ -52,3 +50,5 @@ export default class Edit extends ModalAction {
     return globalBackupStore.edit({ id }, values);
   };
 }
+
+export default inject('rootStore')(observer(Edit));

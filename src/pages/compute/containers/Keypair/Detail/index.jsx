@@ -18,9 +18,7 @@ import Base from 'containers/TabDetail';
 import BaseDetail from './BaseDetail';
 import actionConfigs from '../actions';
 
-@inject('rootStore')
-@observer
-export default class KeypairDetail extends Base {
+export class KeypairDetail extends Base {
   get name() {
     return t('keypair');
   }
@@ -70,3 +68,5 @@ export default class KeypairDetail extends Base {
     this.store = new KeypairStore();
   }
 }
+
+export default inject('rootStore')(observer(KeypairDetail));

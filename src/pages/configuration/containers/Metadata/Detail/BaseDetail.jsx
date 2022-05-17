@@ -17,9 +17,7 @@ import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
 import styles from './styles.less';
 
-@inject('rootStore')
-@observer
-export default class BaseDetail extends Base {
+export class BaseDetail extends Base {
   get leftCards() {
     return [this.baseInfoCard, this.resourceCard];
   }
@@ -83,3 +81,5 @@ export default class BaseDetail extends Base {
     };
   }
 }
+
+export default inject('rootStore')(observer(BaseDetail));

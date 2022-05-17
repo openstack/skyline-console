@@ -21,9 +21,7 @@ import { BackendProtocol } from 'resources/octavia/pool';
 import { PoolStore } from 'stores/octavia/pool';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
 
-@inject('rootStore')
-@observer
-class EditHealthMonitor extends ModalAction {
+export class EditHealthMonitor extends ModalAction {
   init() {
     this.store = new HealthMonitorStore();
     this.poolStore = new PoolStore();
@@ -194,4 +192,4 @@ class EditHealthMonitor extends ModalAction {
   };
 }
 
-export default EditHealthMonitor;
+export default inject('rootStore')(observer(EditHealthMonitor));

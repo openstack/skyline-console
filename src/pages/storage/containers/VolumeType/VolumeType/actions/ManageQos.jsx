@@ -18,9 +18,7 @@ import { ModalAction } from 'containers/Action';
 import { consumerTypes } from 'resources/cinder/volume-type';
 import globalQosSpecStore from 'stores/cinder/qos-spec';
 
-@inject('rootStore')
-@observer
-export default class ManageQos extends ModalAction {
+export class ManageQos extends ModalAction {
   static id = 'manage-qos';
 
   static title = t('Manage QoS');
@@ -127,3 +125,5 @@ export default class ManageQos extends ModalAction {
     });
   };
 }
+
+export default inject('rootStore')(observer(ManageQos));

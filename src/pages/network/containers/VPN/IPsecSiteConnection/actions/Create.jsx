@@ -27,9 +27,7 @@ import LocalSubnet from './components/LocalSubnet';
 
 const { isIPv4, isIpv6 } = ipValidate;
 
-@inject('rootStore')
-@observer
-export default class Create extends ModalAction {
+export class Create extends ModalAction {
   static id = 'create-ipsec-site-connection';
 
   static title = t('Create IPsec Site Connection');
@@ -313,3 +311,4 @@ export default class Create extends ModalAction {
     ];
   }
 }
+export default inject('rootStore')(observer(Create));

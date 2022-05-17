@@ -20,9 +20,7 @@ import { ModalAction } from 'containers/Action';
 import { ProjectStore } from 'stores/keystone/project';
 import { projectTableOptions } from 'resources/keystone/project';
 
-@inject('rootStore')
-@observer
-export default class ManageAccess extends ModalAction {
+export class ManageAccess extends ModalAction {
   static id = 'manage-access';
 
   static title = t('Manage Access');
@@ -138,3 +136,5 @@ export default class ManageAccess extends ModalAction {
     return globalVolumeTypeStore.updateProjectAccess(body);
   };
 }
+
+export default inject('rootStore')(observer(ManageAccess));

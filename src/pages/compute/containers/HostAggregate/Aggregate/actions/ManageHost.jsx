@@ -18,9 +18,7 @@ import globalComputeHostStore from 'stores/nova/compute-host';
 import { ModalAction } from 'containers/Action';
 import { serviceStatus, serviceState } from 'resources/nova/service';
 
-@inject('rootStore')
-@observer
-export default class ManageHost extends ModalAction {
+export class ManageHost extends ModalAction {
   static id = 'ManageHost';
 
   static title = t('Manage Host');
@@ -149,3 +147,5 @@ export default class ManageHost extends ModalAction {
     return this.store.manageHost({ id, adds, dels });
   };
 }
+
+export default inject('rootStore')(observer(ManageHost));

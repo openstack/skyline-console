@@ -18,9 +18,7 @@ import { ModalAction } from 'containers/Action';
 import globalQoSPolicyStore from 'stores/neutron/qos-policy';
 import dscpMarkingItems from './DSCPMarkingItems';
 
-@inject('rootStore')
-@observer
-export default class CreateDSCPMarkingRules extends ModalAction {
+export class CreateDSCPMarkingRules extends ModalAction {
   static id = 'create_DSCP_marking_rule';
 
   static title = t('Create DSCP Marking Rule');
@@ -66,3 +64,5 @@ export default class CreateDSCPMarkingRules extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(CreateDSCPMarkingRules));

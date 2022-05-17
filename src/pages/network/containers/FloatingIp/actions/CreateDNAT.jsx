@@ -24,9 +24,7 @@ import { getInterfaceWithReason } from 'resources/neutron/floatingip';
 import globalPortForwardingStore from 'stores/neutron/port-forwarding';
 import { enablePFW } from 'resources/neutron/neutron';
 
-@inject('rootStore')
-@observer
-export default class CreateDNAT extends ModalAction {
+export class CreateDNAT extends ModalAction {
   static id = 'createDNAT';
 
   static title = t('Create DNAT Rule');
@@ -250,3 +248,5 @@ export default class CreateDNAT extends ModalAction {
     return ret;
   }
 }
+
+export default inject('rootStore')(observer(CreateDNAT));

@@ -17,9 +17,7 @@ import { ModalAction } from 'containers/Action';
 import globalProjectStore from 'stores/keystone/project';
 import { QoSPolicyStore } from 'stores/neutron/qos-policy';
 
-@inject('rootStore')
-@observer
-export default class Create extends ModalAction {
+export class Create extends ModalAction {
   static id = 'create_qos_policy';
 
   static title = t('Create QoS Policy');
@@ -99,3 +97,4 @@ export default class Create extends ModalAction {
     ];
   }
 }
+export default inject('rootStore')(observer(Create));

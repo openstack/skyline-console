@@ -22,9 +22,7 @@ import {
 } from 'resources/keystone/openstack-rc';
 import FileSaver from 'file-saver';
 
-@inject('rootStore')
-@observer
-export default class OpenRc extends ModalAction {
+export class OpenRc extends ModalAction {
   init() {
     this.store = globalAuthCatalogStore;
   }
@@ -129,3 +127,5 @@ export default class OpenRc extends ModalAction {
     });
   };
 }
+
+export default inject('rootStore')(observer(OpenRc));

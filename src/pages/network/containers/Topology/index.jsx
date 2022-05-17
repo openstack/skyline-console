@@ -43,9 +43,7 @@ import NodeCard from './NodeCard';
 let graph = null;
 const { isIpInRangeAll } = ipValidate;
 
-@inject('rootStore')
-@observer
-export default class Topology extends React.Component {
+export class Topology extends React.Component {
   constructor(props) {
     super(props);
     this.init();
@@ -809,3 +807,5 @@ export default class Topology extends React.Component {
     );
   }
 }
+
+export default inject('rootStore')(observer(Topology));

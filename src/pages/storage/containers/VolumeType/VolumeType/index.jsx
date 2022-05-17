@@ -21,9 +21,7 @@ import { has } from 'lodash';
 import { multiTip } from 'resources/cinder/volume';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class VolumeType extends Base {
+export class VolumeType extends Base {
   init() {
     this.store = globalVolumeTypeStore;
     this.downloadStore = new VolumeTypeStore();
@@ -120,3 +118,5 @@ export default class VolumeType extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(VolumeType));

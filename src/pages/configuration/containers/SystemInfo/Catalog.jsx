@@ -19,9 +19,7 @@ import { generateId } from 'utils/index';
 
 import globalAuthCatalogStore from 'stores/keystone/catalog';
 
-@inject('rootStore')
-@observer
-export default class Catalog extends Base {
+export class Catalog extends Base {
   init() {
     this.store = globalAuthCatalogStore;
   }
@@ -84,3 +82,5 @@ export default class Catalog extends Base {
     return [];
   }
 }
+
+export default inject('rootStore')(observer(Catalog));

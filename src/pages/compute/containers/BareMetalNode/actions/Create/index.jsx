@@ -26,9 +26,7 @@ import DriveInterface from './DriveInterface';
 import DriveInfo from './DriveInfo';
 import NodeInfo from './NodeInfo';
 
-@inject('rootStore')
-@observer
-export default class Create extends StepAction {
+export class Create extends StepAction {
   static id = 'create';
 
   static title = t('Create Node');
@@ -222,3 +220,5 @@ export default class Create extends StepAction {
     return this.store.edit({ id: this.id }, body);
   };
 }
+
+export default inject('rootStore')(observer(Create));

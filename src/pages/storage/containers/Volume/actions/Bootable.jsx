@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalVolumeStore from 'stores/cinder/volume';
 
-@inject('rootStore')
-@observer
-export default class Bootable extends ModalAction {
+export class Bootable extends ModalAction {
   static id = 'volume-bootable';
 
   static title = t('Bootable');
@@ -58,3 +56,5 @@ export default class Bootable extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Bootable));

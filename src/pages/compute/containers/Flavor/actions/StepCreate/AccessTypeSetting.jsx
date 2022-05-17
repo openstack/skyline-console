@@ -17,9 +17,7 @@ import Base from 'components/Form';
 import { ProjectStore } from 'stores/keystone/project';
 import { projectTableOptions } from 'resources/keystone/project';
 
-@inject('rootStore')
-@observer
-export default class AccessTypeSetting extends Base {
+export class AccessTypeSetting extends Base {
   init() {
     this.projectStore = new ProjectStore();
     this.getProjects();
@@ -78,3 +76,5 @@ export default class AccessTypeSetting extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(AccessTypeSetting));

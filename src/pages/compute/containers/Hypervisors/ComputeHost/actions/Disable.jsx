@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import globalComputeHostStore from 'stores/nova/compute-host';
 import { ModalAction } from 'containers/Action';
 
-@inject('rootStore')
-@observer
-export default class DisableAction extends ModalAction {
+export class DisableAction extends ModalAction {
   static id = 'disable-host';
 
   static title = t('Disable Compute Host');
@@ -85,3 +83,5 @@ export default class DisableAction extends ModalAction {
     return globalComputeHostStore.disable(body);
   };
 }
+
+export default inject('rootStore')(observer(DisableAction));

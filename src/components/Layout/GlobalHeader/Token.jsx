@@ -22,9 +22,7 @@ import styles from './index.less';
 
 const { Paragraph } = Typography;
 
-@inject('rootStore')
-@observer
-export default class Token extends ModalAction {
+export class Token extends ModalAction {
   static id = 'get-token';
 
   static title = t('Get Token');
@@ -140,3 +138,5 @@ export default class Token extends ModalAction {
 
   onSubmit = () => Promise.resolve();
 }
+
+export default inject('rootStore')(observer(Token));

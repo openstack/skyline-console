@@ -17,9 +17,7 @@ import { ModalAction } from 'containers/Action';
 import globalContainerStore, { ContainerStore } from 'stores/swift/container';
 import { allCanChangePolicy } from 'resources/skyline/policy';
 
-@inject('rootStore')
-@observer
-export default class Access extends ModalAction {
+export class Access extends ModalAction {
   static id = 'access';
 
   static title = t('Update Access');
@@ -70,3 +68,5 @@ export default class Access extends ModalAction {
     return globalContainerStore.updatePublic(this.item.name, isPublic);
   };
 }
+
+export default inject('rootStore')(observer(Access));

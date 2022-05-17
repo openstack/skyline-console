@@ -23,9 +23,7 @@ import {
   volumeSelectTablePropsBackend,
 } from 'resources/cinder/volume';
 
-@inject('rootStore')
-@observer
-export default class Create extends ModalAction {
+export class Create extends ModalAction {
   static id = 'create';
 
   static title = t('Create Backup');
@@ -102,3 +100,5 @@ export default class Create extends ModalAction {
     return this.store.create(body);
   };
 }
+
+export default inject('rootStore')(observer(Create));

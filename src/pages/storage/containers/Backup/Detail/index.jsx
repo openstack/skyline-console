@@ -19,9 +19,7 @@ import { backupStatus } from 'resources/cinder/backup';
 import BaseDetail from './BaseDetail';
 import actionConfigs from '../actions';
 
-@inject('rootStore')
-@observer
-export default class Detail extends Base {
+export class Detail extends Base {
   get name() {
     return t('backup');
   }
@@ -99,3 +97,5 @@ export default class Detail extends Base {
     this.store = globalBackupStore;
   }
 }
+
+export default inject('rootStore')(observer(Detail));

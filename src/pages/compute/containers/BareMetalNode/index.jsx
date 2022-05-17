@@ -20,9 +20,7 @@ import { ironicOriginEndpoint } from 'client/client/constants';
 import { getOptions } from 'utils';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class BareMetalNode extends Base {
+export class BareMetalNode extends Base {
   init() {
     this.store = globalIronicStore;
   }
@@ -123,3 +121,5 @@ export default class BareMetalNode extends Base {
     return rest;
   };
 }
+
+export default inject('rootStore')(observer(BareMetalNode));

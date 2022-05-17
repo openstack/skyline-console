@@ -18,9 +18,7 @@ import { RouterStore } from 'stores/neutron/router';
 import globalVpnServicesStore from 'stores/neutron/vpn-service';
 import { getRouterSelectTablePropsBackend } from 'resources/neutron/router';
 
-@inject('rootStore')
-@observer
-export default class Create extends ModalAction {
+export class Create extends ModalAction {
   static id = 'create-vpn';
 
   static title = t('Create VPN');
@@ -85,3 +83,5 @@ export default class Create extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Create));

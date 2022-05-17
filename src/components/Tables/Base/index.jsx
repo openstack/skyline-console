@@ -55,8 +55,7 @@ import Download from './Download';
 
 import styles from './index.less';
 
-@inject('rootStore')
-export default class BaseTable extends React.Component {
+export class BaseTable extends React.Component {
   static propTypes = {
     data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
     columns: PropTypes.array.isRequired,
@@ -937,3 +936,5 @@ export default class BaseTable extends React.Component {
     );
   }
 }
+
+export default inject('rootStore')(BaseTable);

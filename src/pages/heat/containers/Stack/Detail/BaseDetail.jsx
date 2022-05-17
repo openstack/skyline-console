@@ -17,9 +17,7 @@ import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
 import { rollbackTip } from 'resources/heat/stack';
 
-@inject('rootStore')
-@observer
-export default class BaseDetail extends Base {
+export class BaseDetail extends Base {
   get leftCards() {
     return [this.startCard, this.outputCard];
   }
@@ -84,3 +82,5 @@ export default class BaseDetail extends Base {
     };
   }
 }
+
+export default inject('rootStore')(observer(BaseDetail));

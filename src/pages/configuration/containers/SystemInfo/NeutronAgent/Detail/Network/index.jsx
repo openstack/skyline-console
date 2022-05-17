@@ -19,9 +19,7 @@ import { NeutronAgentNetworkStore } from 'stores/neutron/agent-network';
 import { yesNoOptions } from 'utils/constants';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class Networks extends Base {
+export class Networks extends Base {
   init() {
     this.store = new NeutronAgentNetworkStore();
   }
@@ -79,3 +77,5 @@ export default class Networks extends Base {
     };
   };
 }
+
+export default inject('rootStore')(observer(Networks));

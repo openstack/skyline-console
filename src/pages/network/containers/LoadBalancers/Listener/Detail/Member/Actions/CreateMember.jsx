@@ -22,9 +22,7 @@ import { uniqWith, get } from 'lodash';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
 import isEqual from 'react-fast-compare';
 
-@inject('rootStore')
-@observer
-export default class CreateAction extends ModalAction {
+export class CreateAction extends ModalAction {
   static id = 'manage-member';
 
   static title = t('Add Member');
@@ -150,3 +148,5 @@ export default class CreateAction extends ModalAction {
     });
   };
 }
+
+export default inject('rootStore')(observer(CreateAction));

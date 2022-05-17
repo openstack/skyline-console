@@ -19,9 +19,7 @@ import { checkPolicyRule } from 'resources/skyline/policy';
 import globalRootStore from 'stores/root';
 import { getYesNoList } from 'utils/index';
 
-@inject('rootStore')
-@observer
-export default class Edit extends ModalAction {
+export class Edit extends ModalAction {
   static id = 'edit-network';
 
   static title = t('Edit');
@@ -99,3 +97,5 @@ export default class Edit extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Edit));

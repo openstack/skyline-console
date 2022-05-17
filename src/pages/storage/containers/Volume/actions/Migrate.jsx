@@ -19,9 +19,7 @@ import { isAvailableOrInUse } from 'resources/cinder/volume';
 import globalPoolStore from 'stores/cinder/pool';
 import { poolColumns } from 'resources/cinder/cinder-pool';
 
-@inject('rootStore')
-@observer
-export default class Migrate extends ModalAction {
+export class Migrate extends ModalAction {
   static id = 'migrate-volume';
 
   static title = t('Migrate Volume');
@@ -105,3 +103,5 @@ export default class Migrate extends ModalAction {
     return globalVolumeStore.migrate(id, { host: selectedRowKeys[0] });
   };
 }
+
+export default inject('rootStore')(observer(Migrate));

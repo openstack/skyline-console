@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import globalMetadataStore from 'stores/glance/metadata';
 import { ModalAction } from 'containers/Action';
 
-@inject('rootStore')
-@observer
-export default class Create extends ModalAction {
+export class Create extends ModalAction {
   static id = 'create';
 
   static title = t('Import Metadata');
@@ -72,3 +70,5 @@ export default class Create extends ModalAction {
     return this.store.create(body);
   };
 }
+
+export default inject('rootStore')(observer(Create));

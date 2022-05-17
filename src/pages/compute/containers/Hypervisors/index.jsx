@@ -17,9 +17,7 @@ import Base from 'containers/TabList';
 import Hypervisor from './Hypervisor';
 import ComputeHost from './ComputeHost';
 
-@inject('rootStore')
-@observer
-export default class Index extends Base {
+export class Hypervisors extends Base {
   get tabs() {
     const tabs = [
       {
@@ -36,3 +34,5 @@ export default class Index extends Base {
     return tabs;
   }
 }
+
+export default inject('rootStore')(observer(Hypervisors));

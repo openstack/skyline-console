@@ -17,9 +17,7 @@ import { ModalAction } from 'containers/Action';
 import globalContainerStore from 'stores/swift/container';
 import { allCanChangePolicy } from 'resources/skyline/policy';
 
-@inject('rootStore')
-@observer
-export default class Create extends ModalAction {
+export class Create extends ModalAction {
   static id = 'create';
 
   static title = t('Create Container');
@@ -66,3 +64,5 @@ export default class Create extends ModalAction {
     return globalContainerStore.create(value);
   };
 }
+
+export default inject('rootStore')(observer(Create));

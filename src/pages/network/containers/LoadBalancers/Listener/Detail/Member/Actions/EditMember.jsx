@@ -17,9 +17,7 @@ import { ModalAction } from 'containers/Action';
 import globalPoolMemberStore from 'stores/octavia/pool-member';
 import { toJS } from 'mobx';
 
-@inject('rootStore')
-@observer
-class Edit extends ModalAction {
+export class Edit extends ModalAction {
   init() {
     this.state = {};
     this.store = globalPoolMemberStore;
@@ -82,4 +80,4 @@ class Edit extends ModalAction {
   };
 }
 
-export default Edit;
+export default inject('rootStore')(observer(Edit));

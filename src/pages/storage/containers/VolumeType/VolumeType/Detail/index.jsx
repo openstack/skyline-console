@@ -20,9 +20,7 @@ import ExtraSpec from './ExtraSpec';
 import BaseDetail from './BaseDetail';
 import actionConfigs from '../actions';
 
-@inject('rootStore')
-@observer
-export default class Detail extends Base {
+export class Detail extends Base {
   get name() {
     return t('volume type');
   }
@@ -86,3 +84,5 @@ export default class Detail extends Base {
     this.store = new VolumeTypeStore();
   }
 }
+
+export default inject('rootStore')(observer(Detail));

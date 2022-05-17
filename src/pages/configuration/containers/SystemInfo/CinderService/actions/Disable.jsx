@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import globalServiceStore from 'stores/cinder/service';
 import { ModalAction } from 'containers/Action';
 
-@inject('rootStore')
-@observer
-export default class DisableAction extends ModalAction {
+export class DisableAction extends ModalAction {
   static id = 'disable-service';
 
   static title = t('Disable Cinder Service');
@@ -86,3 +84,5 @@ export default class DisableAction extends ModalAction {
     return globalServiceStore.disable(body);
   };
 }
+
+export default inject('rootStore')(observer(DisableAction));

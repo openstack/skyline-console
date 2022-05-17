@@ -24,9 +24,7 @@ import {
 import { lbEndpoint } from 'client/client/constants';
 import { actionConfigs, adminActions } from './actions';
 
-@inject('rootStore')
-@observer
-export default class LoadBalancerInstance extends Base {
+export class LoadBalancerInstance extends Base {
   init() {
     this.store = new LbaasStore();
     this.downloadStore = new LbaasStore();
@@ -163,3 +161,5 @@ export default class LoadBalancerInstance extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(LoadBalancerInstance));

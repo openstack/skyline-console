@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
 import { ImageStore } from 'stores/glance/image';
 
-@inject('rootStore')
-@observer
-export default class NodeInfo extends Base {
+export class NodeInfo extends Base {
   init() {
     this.imageStore = new ImageStore();
     this.getImages();
@@ -164,3 +162,5 @@ export default class NodeInfo extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(NodeInfo));

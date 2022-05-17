@@ -18,9 +18,7 @@ import globalObjectStore from 'stores/swift/object';
 import { allCanChangePolicy } from 'resources/skyline/policy';
 import { isFile } from 'resources/swift/container';
 
-@inject('rootStore')
-@observer
-export default class Rename extends ModalAction {
+export class Rename extends ModalAction {
   static id = 'rename';
 
   static title = t('Rename');
@@ -93,3 +91,5 @@ export default class Rename extends ModalAction {
     return globalObjectStore.rename(container, name, newName);
   };
 }
+
+export default inject('rootStore')(observer(Rename));

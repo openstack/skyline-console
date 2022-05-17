@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { FloatingIpStore } from 'stores/neutron/floatingIp';
 import { ModalAction } from 'containers/Action';
 
-@inject('rootStore')
-@observer
-export default class DisassociateFip extends ModalAction {
+export class DisassociateFip extends ModalAction {
   static id = 'DisassociateFip';
 
   static title = t('Disassociate Floating Ip');
@@ -83,3 +81,5 @@ export default class DisassociateFip extends ModalAction {
     return this.store.disassociateFip({ id: results[0].id });
   };
 }
+
+export default inject('rootStore')(observer(DisassociateFip));

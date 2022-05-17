@@ -22,9 +22,7 @@ import Port from './Port';
 import PortGroup from './PortGroup';
 import actionConfigs from '../actions';
 
-@inject('rootStore')
-@observer
-export default class Detail extends Base {
+export class Detail extends Base {
   get name() {
     return t('bare metal node');
   }
@@ -109,3 +107,5 @@ export default class Detail extends Base {
     this.store = new IronicStore();
   }
 }
+
+export default inject('rootStore')(observer(Detail));

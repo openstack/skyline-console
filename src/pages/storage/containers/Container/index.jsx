@@ -82,9 +82,7 @@ function PopUpContent({ name }) {
   );
 }
 
-@inject('rootStore')
-@observer
-export default class Container extends Base {
+export class Container extends Base {
   init() {
     this.store = globalContainerStore;
   }
@@ -168,3 +166,5 @@ export default class Container extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Container));

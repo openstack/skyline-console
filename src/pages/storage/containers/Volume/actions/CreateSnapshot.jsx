@@ -18,9 +18,7 @@ import globalSnapshotStore from 'stores/cinder/snapshot';
 import { isAvailableOrInUse } from 'resources/cinder/volume';
 import globalVolumeTypeStore from 'stores/cinder/volume-type';
 
-@inject('rootStore')
-@observer
-export default class CreateSnapshot extends ModalAction {
+export class CreateSnapshot extends ModalAction {
   static id = 'create-snapshot';
 
   static title = t('Create Snapshot');
@@ -75,3 +73,5 @@ export default class CreateSnapshot extends ModalAction {
     return this.store.create(data);
   };
 }
+
+export default inject('rootStore')(observer(CreateSnapshot));

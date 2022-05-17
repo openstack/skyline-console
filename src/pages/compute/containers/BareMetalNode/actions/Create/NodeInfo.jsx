@@ -21,9 +21,7 @@ import globalIronicStore from 'stores/ironic/ironic';
 
 const filterCustomTrait = (item) => item.indexOf('CUSTOM_') < 0;
 
-@inject('rootStore')
-@observer
-export default class NodeInfo extends Base {
+export class NodeInfo extends Base {
   init() {
     this.getTraits();
   }
@@ -245,3 +243,5 @@ export default class NodeInfo extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(NodeInfo));

@@ -21,8 +21,7 @@ import globalRootStore from 'stores/root';
 import Services from './Services';
 import styles from './index.less';
 
-@observer
-class OpenstackService extends Component {
+export class OpenstackService extends Component {
   constructor(props) {
     super(props);
     const { Store = OpenstackServiceStore } = props;
@@ -88,4 +87,4 @@ class OpenstackService extends Component {
   }
 }
 
-export default OpenstackService;
+export default observer(OpenstackService);

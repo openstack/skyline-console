@@ -20,9 +20,7 @@ import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
 import styles from './index.less';
 import ProjectSelect from './ProjectTable';
 
-@inject('rootStore')
-@observer
-export default class ProjectDropdown extends React.Component {
+export class ProjectDropdown extends React.Component {
   get user() {
     const { user } = this.props.rootStore;
     return user;
@@ -72,3 +70,5 @@ export default class ProjectDropdown extends React.Component {
     );
   }
 }
+
+export default inject('rootStore')(observer(ProjectDropdown));

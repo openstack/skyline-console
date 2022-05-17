@@ -26,9 +26,7 @@ import {
   isBareMetal,
 } from 'resources/nova/flavor';
 
-@inject('rootStore')
-@observer
-export default class BaseDetail extends Base {
+export class BaseDetail extends Base {
   get leftCards() {
     const { category, disk, usbType } = this.detailData;
     const isGPUType = isGpuCategory(category);
@@ -269,3 +267,5 @@ export default class BaseDetail extends Base {
     };
   }
 }
+
+export default inject('rootStore')(observer(BaseDetail));

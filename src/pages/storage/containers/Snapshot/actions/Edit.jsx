@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalSnapshotStore from 'stores/cinder/snapshot';
 
-@inject('rootStore')
-@observer
-export default class EditAction extends ModalAction {
+export class EditAction extends ModalAction {
   static id = 'edit';
 
   static title = t('Edit');
@@ -58,3 +56,5 @@ export default class EditAction extends ModalAction {
     return globalSnapshotStore.update(id, values);
   };
 }
+
+export default inject('rootStore')(observer(EditAction));

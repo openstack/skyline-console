@@ -17,9 +17,7 @@ import { ModalAction } from 'containers/Action';
 import { allCanReadPolicy } from 'resources/skyline/policy';
 import globalUserStore from 'stores/keystone/user';
 
-@inject('rootStore')
-@observer
-export default class ProjectSelect extends ModalAction {
+export class ProjectSelect extends ModalAction {
   static id = 'project-id';
 
   static title = t('Switch Project');
@@ -165,3 +163,5 @@ export default class ProjectSelect extends ModalAction {
     }
   };
 }
+
+export default inject('rootStore')(observer(ProjectSelect));

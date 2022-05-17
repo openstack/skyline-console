@@ -17,9 +17,7 @@ import Base from 'containers/List';
 import { ExtraSpecStore } from 'stores/cinder/extra-spec';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class ExtraSpecs extends Base {
+export class ExtraSpecs extends Base {
   init() {
     this.store = new ExtraSpecStore();
   }
@@ -56,3 +54,5 @@ export default class ExtraSpecs extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(ExtraSpecs));

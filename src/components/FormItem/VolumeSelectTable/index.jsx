@@ -22,9 +22,7 @@ import {
   volumeSortProps,
 } from 'resources/cinder/volume';
 
-@inject('rootStore')
-@observer
-export default class VolumeSelectTable extends Component {
+export class VolumeSelectTable extends Component {
   constructor(props) {
     super(props);
     this.stores = {
@@ -148,3 +146,5 @@ export default class VolumeSelectTable extends Component {
     );
   }
 }
+
+export default inject('rootStore')(observer(VolumeSelectTable));

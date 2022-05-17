@@ -21,9 +21,7 @@ import { restoreTip } from 'resources/cinder/backup';
 import { volumeStatus } from 'resources/cinder/volume';
 import { instanceStatus, isShutOff } from 'resources/nova/instance';
 
-@inject('rootStore')
-@observer
-export default class Restore extends ModalAction {
+export class Restore extends ModalAction {
   static id = 'restore-backup';
 
   static title = t('Restore Backup');
@@ -163,3 +161,5 @@ export default class Restore extends ModalAction {
     return globalBackupStore.restore(id, body);
   };
 }
+
+export default inject('rootStore')(observer(Restore));

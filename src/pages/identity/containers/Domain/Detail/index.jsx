@@ -19,9 +19,7 @@ import { DomainStore } from 'stores/keystone/domain';
 import Base from 'containers/TabDetail';
 import User from '../../User';
 
-@inject('rootStore')
-@observer
-export default class DomainDetail extends Base {
+export class DomainDetail extends Base {
   get name() {
     return t('domain');
   }
@@ -84,3 +82,5 @@ export default class DomainDetail extends Base {
     this.store = new DomainStore();
   }
 }
+
+export default inject('rootStore')(observer(DomainDetail));

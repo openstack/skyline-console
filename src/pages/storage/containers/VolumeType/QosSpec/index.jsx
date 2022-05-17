@@ -19,9 +19,7 @@ import { consumerTypes } from 'resources/cinder/volume-type';
 import globalQosSpecStore from 'stores/cinder/qos-spec';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class QosSpecs extends Base {
+export class QosSpecs extends Base {
   init() {
     this.store = globalQosSpecStore;
   }
@@ -96,3 +94,5 @@ export default class QosSpecs extends Base {
     return false;
   }
 }
+
+export default inject('rootStore')(observer(QosSpecs));

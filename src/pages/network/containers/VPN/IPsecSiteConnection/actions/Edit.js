@@ -18,9 +18,7 @@ import globalVpnIPsecConnectionStore from 'stores/neutron/vpn-ipsec-connection';
 
 const canEditStatus = ['ACTIVE', 'DOWN'];
 
-@inject('rootStore')
-@observer
-export default class Edit extends ModalAction {
+export class Edit extends ModalAction {
   static id = 'edit-ipsec-site-connection';
 
   static title = t('Edit IPsec Site Connection');
@@ -68,3 +66,5 @@ export default class Edit extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Edit));

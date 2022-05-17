@@ -18,9 +18,7 @@ import globalObjectStore, { ObjectStore } from 'stores/swift/object';
 import { allCanChangePolicy } from 'resources/skyline/policy';
 import { isFile } from 'resources/swift/container';
 
-@inject('rootStore')
-@observer
-export default class Edit extends ModalAction {
+export class Edit extends ModalAction {
   static id = 'edit-file';
 
   static title = t('Edit');
@@ -115,3 +113,5 @@ export default class Edit extends ModalAction {
     return this.store.updateFile(container, file, this.item.name, config);
   };
 }
+
+export default inject('rootStore')(observer(Edit));

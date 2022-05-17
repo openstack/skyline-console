@@ -19,9 +19,7 @@ import { MetadataStore } from 'stores/glance/metadata';
 import { ModalAction } from 'containers/Action';
 import { Input } from 'antd';
 
-@inject('rootStore')
-@observer
-export default class Manage extends ModalAction {
+export class Manage extends ModalAction {
   static id = 'manage';
 
   static title = t('Manage Resource Types');
@@ -178,3 +176,5 @@ export default class Manage extends ModalAction {
     return this.store.manageResourceTypes(namespace, dels, adds);
   };
 }
+
+export default inject('rootStore')(observer(Manage));

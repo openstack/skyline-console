@@ -17,9 +17,7 @@ import Base from 'containers/List';
 import keypairStore from 'stores/nova/keypair';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class Keypair extends Base {
+export class Keypair extends Base {
   init() {
     this.store = keypairStore;
   }
@@ -66,3 +64,5 @@ export default class Keypair extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Keypair));

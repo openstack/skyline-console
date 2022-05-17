@@ -19,9 +19,7 @@ import Base from 'containers/List';
 import globalMetadataStore from 'stores/glance/metadata';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class Metadata extends Base {
+export class Metadata extends Base {
   init() {
     this.store = globalMetadataStore;
   }
@@ -92,3 +90,5 @@ export default class Metadata extends Base {
     },
   ];
 }
+
+export default inject('rootStore')(observer(Metadata));

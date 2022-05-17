@@ -19,9 +19,7 @@ import i18n from 'core/i18n';
 import DocumentTitle from 'react-document-title';
 import styles from './index.less';
 
-@inject('rootStore')
-@observer
-class BlankLayout extends Component {
+export class BlankLayout extends Component {
   constructor(props) {
     super(props);
     console.log('props', props);
@@ -54,4 +52,4 @@ class BlankLayout extends Component {
   }
 }
 
-export default BlankLayout;
+export default inject('rootStore')(observer(BlankLayout));

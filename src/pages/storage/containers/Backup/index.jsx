@@ -19,9 +19,7 @@ import CreateBackup from 'pages/storage/containers/Volume/actions/CreateBackup';
 import { backupStatus } from 'resources/cinder/backup';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class Backup extends Base {
+export class Backup extends Base {
   get name() {
     return t('Backups');
   }
@@ -139,3 +137,5 @@ export default class Backup extends Base {
     return params;
   };
 }
+
+export default inject('rootStore')(observer(Backup));

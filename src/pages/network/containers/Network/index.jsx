@@ -16,9 +16,7 @@ import { observer, inject } from 'mobx-react';
 import Base from 'containers/TabList';
 import NetworkTab from './Network';
 
-@inject('rootStore')
-@observer
-export default class Network extends Base {
+export class Network extends Base {
   get tabs() {
     const tabs = [
       {
@@ -47,3 +45,5 @@ export default class Network extends Base {
     return tabs;
   }
 }
+
+export default inject('rootStore')(observer(Network));

@@ -18,9 +18,7 @@ import { LbaasStore } from 'stores/octavia/loadbalancer';
 import { NetworkStore } from 'stores/neutron/network';
 import { SubnetStore } from 'stores/neutron/subnet';
 
-@inject('rootStore')
-@observer
-export default class BaseStep extends Base {
+export class BaseStep extends Base {
   init() {
     this.store = new LbaasStore();
     this.networkStore = new NetworkStore();
@@ -115,3 +113,5 @@ export default class BaseStep extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(BaseStep));

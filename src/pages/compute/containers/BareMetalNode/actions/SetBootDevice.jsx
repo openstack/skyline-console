@@ -17,9 +17,7 @@ import { IronicStore } from 'stores/ironic/ironic';
 import { ModalAction } from 'containers/Action';
 import { yesNoOptions } from 'utils/constants';
 
-@inject('rootStore')
-@observer
-export default class SetBootDevice extends ModalAction {
+export class SetBootDevice extends ModalAction {
   static id = 'SetBootDevice';
 
   static title = t('Set Boot Device');
@@ -107,3 +105,5 @@ export default class SetBootDevice extends ModalAction {
     return this.store.setBootDevice(uuid, body);
   };
 }
+
+export default inject('rootStore')(observer(SetBootDevice));

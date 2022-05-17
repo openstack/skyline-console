@@ -18,9 +18,7 @@ import Base from 'containers/BaseDetail';
 import { toJS } from 'mobx';
 import rolePermission from 'resources/keystone/role';
 
-@inject('rootStore')
-@observer
-export default class BaseDetail extends Base {
+export class BaseDetail extends Base {
   init() {
     this.store = globalRoleStore;
   }
@@ -105,3 +103,5 @@ export default class BaseDetail extends Base {
     };
   }
 }
+
+export default inject('rootStore')(observer(BaseDetail));

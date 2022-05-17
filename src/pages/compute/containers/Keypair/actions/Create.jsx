@@ -17,9 +17,7 @@ import { ModalAction } from 'containers/Action';
 import globalKeypairStore from 'stores/nova/keypair';
 import FileSaver from 'file-saver';
 
-@inject('rootStore')
-@observer
-export default class CreateKeypair extends ModalAction {
+export class CreateKeypair extends ModalAction {
   static id = 'create-keypair';
 
   static title = t('Create Keypair');
@@ -93,3 +91,5 @@ export default class CreateKeypair extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(CreateKeypair));

@@ -17,9 +17,7 @@ import Base from 'containers/List';
 import globalPoolStore from 'stores/cinder/pool';
 import { poolColumns } from 'resources/cinder/cinder-pool';
 
-@inject('rootStore')
-@observer
-export default class Storage extends Base {
+export class Storage extends Base {
   init() {
     this.store = globalPoolStore;
   }
@@ -47,3 +45,5 @@ export default class Storage extends Base {
     return rest;
   };
 }
+
+export default inject('rootStore')(observer(Storage));

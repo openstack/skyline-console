@@ -18,9 +18,7 @@ import globalServerGroupStore from 'stores/nova/server-group';
 import { ModalAction } from 'containers/Action';
 import policyType from 'resources/nova/server-group';
 
-@inject('rootStore')
-@observer
-export default class Create extends ModalAction {
+export class Create extends ModalAction {
   static id = 'create';
 
   static title = t('Create Server Group');
@@ -92,3 +90,5 @@ export default class Create extends ModalAction {
 
   onSubmit = (values) => globalServerGroupStore.create(values);
 }
+
+export default inject('rootStore')(observer(Create));

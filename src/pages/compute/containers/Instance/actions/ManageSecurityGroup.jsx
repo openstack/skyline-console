@@ -26,9 +26,7 @@ import {
 } from 'resources/neutron/security-group';
 import { toJS } from 'mobx';
 
-@inject('rootStore')
-@observer
-export default class ManageSecurityGroup extends ModalAction {
+export class ManageSecurityGroup extends ModalAction {
   static id = 'manage-security-group';
 
   static title = t('Manage Security Group');
@@ -212,3 +210,5 @@ export default class ManageSecurityGroup extends ModalAction {
     return this.securityGroupStore.updatePortSecurityGroup({ id, reqBody });
   };
 }
+
+export default inject('rootStore')(observer(ManageSecurityGroup));

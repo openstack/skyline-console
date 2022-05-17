@@ -18,9 +18,7 @@ import { VpnIPsecConnectionStore } from 'stores/neutron/vpn-ipsec-connection';
 import BaseDetail from './BaseDetail';
 import { actionConfigs, adminConfigs } from '../actions';
 
-@inject('rootStore')
-@observer
-export default class IPsecSiteConnection extends Base {
+export class IPsecSiteConnection extends Base {
   init() {
     this.store = new VpnIPsecConnectionStore();
   }
@@ -103,3 +101,5 @@ export default class IPsecSiteConnection extends Base {
     return tabs;
   }
 }
+
+export default inject('rootStore')(observer(IPsecSiteConnection));

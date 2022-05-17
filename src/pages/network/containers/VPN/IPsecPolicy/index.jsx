@@ -25,9 +25,7 @@ import {
 } from 'resources/neutron/vpn';
 import { actionConfigs, adminConfigs } from './actions';
 
-@inject('rootStore')
-@observer
-export default class Index extends Base {
+export class IPsecPolicy extends Base {
   init() {
     this.store = new VpnIPsecPolicyStore();
     this.downloadStore = new VpnIPsecPolicyStore();
@@ -167,3 +165,5 @@ export default class Index extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(IPsecPolicy));

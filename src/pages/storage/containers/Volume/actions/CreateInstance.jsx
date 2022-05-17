@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import CreateInstance from 'pages/compute/containers/Instance/actions/StepCreate';
 import { canCreateInstance } from 'resources/cinder/volume';
 
-@inject('rootStore')
-@observer
-export default class StepCreate extends CreateInstance {
+export class StepCreate extends CreateInstance {
   static id = 'instance-create';
 
   static title = t('Create Instance');
@@ -33,3 +31,5 @@ export default class StepCreate extends CreateInstance {
     return Promise.resolve(canCreateInstance(item));
   }
 }
+
+export default inject('rootStore')(observer(StepCreate));

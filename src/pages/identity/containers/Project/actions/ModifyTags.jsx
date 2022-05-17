@@ -19,9 +19,7 @@ import Tags from 'components/Tags';
 import globalTagStore from 'stores/keystone/tag';
 import { isEqual } from 'lodash';
 
-@inject('rootStore')
-@observer
-export default class ModifyTags extends ModalAction {
+export class ModifyTags extends ModalAction {
   static id = 'modify-project-tags';
 
   static title = t('Modify Project Tags');
@@ -111,3 +109,5 @@ export default class ModifyTags extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(ModifyTags));

@@ -18,9 +18,7 @@ import { getRouterColumns, routerFilters } from 'resources/neutron/router';
 import { NeutronAgentRouterStore } from 'stores/neutron/agent-router';
 import actionConfigs from './actions';
 
-@inject('rootStore')
-@observer
-export default class Router extends Base {
+export class Router extends Base {
   init() {
     this.store = new NeutronAgentRouterStore();
   }
@@ -59,3 +57,5 @@ export default class Router extends Base {
     };
   };
 }
+
+export default inject('rootStore')(observer(Router));

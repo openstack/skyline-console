@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalVPNEndPointGroupStore from 'stores/neutron/vpn-endpoint-group';
 
-@inject('rootStore')
-@observer
-export default class Edit extends ModalAction {
+export class Edit extends ModalAction {
   static id = 'edit-vpn-endpoint-groups';
 
   static title = t('Edit VPN EndPoint Groups');
@@ -65,3 +63,5 @@ export default class Edit extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Edit));

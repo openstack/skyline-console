@@ -23,9 +23,7 @@ import {
 } from 'resources/neutron/router';
 import { projectRender } from 'utils/table';
 
-@inject('rootStore')
-@observer
-export default class AddRouter extends ModalAction {
+export class AddRouter extends ModalAction {
   static id = 'add-router';
 
   static title = t('Add Router');
@@ -141,3 +139,5 @@ export default class AddRouter extends ModalAction {
     return this.store.add({ agentId }, data);
   };
 }
+
+export default inject('rootStore')(observer(AddRouter));

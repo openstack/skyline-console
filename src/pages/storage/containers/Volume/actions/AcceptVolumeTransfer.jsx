@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalVolumeStore from 'stores/cinder/volume';
 
-@inject('rootStore')
-@observer
-export default class AcceptVolumeTransfer extends ModalAction {
+export class AcceptVolumeTransfer extends ModalAction {
   static id = 'accept-volume-transfer';
 
   static title = t('Accept Volume Transfer');
@@ -62,3 +60,5 @@ export default class AcceptVolumeTransfer extends ModalAction {
   onSubmit = ({ transfer_id, auth_key }) =>
     globalVolumeStore.acceptVolumeTransfer(transfer_id, { auth_key });
 }
+
+export default inject('rootStore')(observer(AcceptVolumeTransfer));

@@ -21,9 +21,7 @@ import IKEPolicy from './IKEPolicy';
 import IPsecPolicy from './IPsecPolicy';
 import IPsecSiteConnection from './IPsecSiteConnection';
 
-@inject('rootStore')
-@observer
-export default class VPN extends Base {
+export class VPN extends Base {
   get name() {
     return t('VPN');
   }
@@ -66,3 +64,5 @@ export default class VPN extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(VPN));

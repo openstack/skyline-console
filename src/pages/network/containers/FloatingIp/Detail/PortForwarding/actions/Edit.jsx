@@ -22,9 +22,7 @@ import { getPortFormItem, getPortsAndReasons } from 'resources/neutron/port';
 import { DesktopOutlined } from '@ant-design/icons';
 import { ModalAction } from 'containers/Action';
 
-@inject('rootStore')
-@observer
-export default class Edit extends ModalAction {
+export class Edit extends ModalAction {
   static id = 'editDnat';
 
   static title = t('Edit');
@@ -325,3 +323,5 @@ export default class Edit extends ModalAction {
     return ret;
   }
 }
+
+export default inject('rootStore')(observer(Edit));

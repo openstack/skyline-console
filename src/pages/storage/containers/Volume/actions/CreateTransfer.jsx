@@ -17,9 +17,7 @@ import { ModalAction } from 'containers/Action';
 import globalVolumeStore from 'stores/cinder/volume';
 import { isAvailable } from 'resources/cinder/volume';
 
-@inject('rootStore')
-@observer
-export default class CreateTransfer extends ModalAction {
+export class CreateTransfer extends ModalAction {
   static id = 'create-transfer';
 
   static title = t('Create Transfer');
@@ -85,3 +83,5 @@ export default class CreateTransfer extends ModalAction {
     });
   };
 }
+
+export default inject('rootStore')(observer(CreateTransfer));

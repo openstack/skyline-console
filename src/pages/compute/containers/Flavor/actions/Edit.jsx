@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import globalFlavorStore from 'stores/nova/flavor';
 import { ModalAction } from 'containers/Action';
 
-@inject('rootStore')
-@observer
-export default class Edit extends ModalAction {
+export class Edit extends ModalAction {
   static id = 'edit-flavor';
 
   static title = t('Edit Flavor');
@@ -33,3 +31,5 @@ export default class Edit extends ModalAction {
 
   static allowed = () => Promise.resolve(true);
 }
+
+export default inject('rootStore')(observer(Edit));

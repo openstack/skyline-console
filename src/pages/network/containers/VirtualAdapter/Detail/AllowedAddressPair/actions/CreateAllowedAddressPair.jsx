@@ -20,9 +20,7 @@ import { isEmpty } from 'lodash';
 
 const { isIpCidr, isIPv6Cidr } = ipValidate;
 
-@inject('rootStore')
-@observer
-export default class CreateAllowedAddressPair extends ModalAction {
+export class CreateAllowedAddressPair extends ModalAction {
   static id = 'create-ip';
 
   static title = t('Create Allowed Address Pair');
@@ -151,3 +149,5 @@ export default class CreateAllowedAddressPair extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(CreateAllowedAddressPair));

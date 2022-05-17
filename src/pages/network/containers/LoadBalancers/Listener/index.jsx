@@ -18,9 +18,7 @@ import { provisioningStatusCodes } from 'resources/octavia/lb';
 import { ListenerStore } from 'stores/octavia/listener';
 import { actionConfigs, adminActions } from './Actions';
 
-@inject('rootStore')
-@observer
-export default class Listeners extends Base {
+export class Listeners extends Base {
   init() {
     this.store = new ListenerStore();
     this.downloadStore = new ListenerStore();
@@ -104,3 +102,5 @@ export default class Listeners extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Listeners));

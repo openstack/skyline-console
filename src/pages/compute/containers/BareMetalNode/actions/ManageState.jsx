@@ -18,9 +18,7 @@ import { ModalAction } from 'containers/Action';
 import { provisioningState, canChangeStatus } from 'resources/ironic/ironic';
 import { getOptions } from 'utils/index';
 
-@inject('rootStore')
-@observer
-export default class ManageState extends ModalAction {
+export class ManageState extends ModalAction {
   static id = 'ManageState';
 
   static title = t('Manage State');
@@ -95,3 +93,5 @@ export default class ManageState extends ModalAction {
     return globalIronicStore.changeProvision(uuid, body);
   };
 }
+
+export default inject('rootStore')(observer(ManageState));

@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import globalStaticRouteStore from 'stores/neutron/static-route';
 import { ModalAction } from 'containers/Action';
 
-@inject('rootStore')
-@observer
-export default class Create extends ModalAction {
+export class Create extends ModalAction {
   static id = 'create';
 
   static title = t('Create Static Route');
@@ -66,3 +64,5 @@ export default class Create extends ModalAction {
     return this.store.addStaticRoute({ id, routes });
   };
 }
+
+export default inject('rootStore')(observer(Create));

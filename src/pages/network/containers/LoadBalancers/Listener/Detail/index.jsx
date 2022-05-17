@@ -20,9 +20,7 @@ import BaseDetail from './BaseDetail';
 import Members from './Member';
 import { actionConfigs, adminActions } from '../Actions';
 
-@inject('rootStore')
-@observer
-export default class ListenerDetail extends Base {
+export class ListenerDetail extends Base {
   get name() {
     return t('listener');
   }
@@ -93,3 +91,5 @@ export default class ListenerDetail extends Base {
     this.store = new ListenerStore();
   }
 }
+
+export default inject('rootStore')(observer(ListenerDetail));

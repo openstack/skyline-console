@@ -19,9 +19,7 @@ import { provisioningStatusCodes } from 'resources/octavia/lb';
 import globalPoolMemberStore from 'stores/octavia/pool-member';
 import { actionConfigs, adminActions } from './Actions';
 
-@inject('rootStore')
-@observer
-export default class Members extends Base {
+export class Members extends Base {
   init() {
     this.store = globalPoolMemberStore;
   }
@@ -105,3 +103,5 @@ export default class Members extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Members));

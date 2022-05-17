@@ -18,9 +18,7 @@ import { serviceState } from 'resources/nova/service';
 import { getOptions } from 'utils';
 import globalHeatServiceStore from 'stores/heat/service';
 
-@inject('rootStore')
-@observer
-export default class HeatService extends Base {
+export class HeatService extends Base {
   init() {
     this.store = globalHeatServiceStore;
   }
@@ -79,3 +77,5 @@ export default class HeatService extends Base {
     ];
   }
 }
+
+export default inject('rootStore')(observer(HeatService));

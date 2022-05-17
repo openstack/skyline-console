@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import globalIronicStore from 'stores/ironic/ironic';
 import { ModalAction } from 'containers/Action';
 
-@inject('rootStore')
-@observer
-export default class SetMaintenance extends ModalAction {
+export class SetMaintenance extends ModalAction {
   static id = 'SetMaintenance';
 
   static title = t('Enter Maintenance Mode');
@@ -64,3 +62,5 @@ export default class SetMaintenance extends ModalAction {
     return globalIronicStore.setMaintenance(uuid, body);
   };
 }
+
+export default inject('rootStore')(observer(SetMaintenance));

@@ -19,9 +19,7 @@ import Members from 'pages/compute/containers/Instance';
 import policyType from 'resources/nova/server-group';
 import actionConfigs from '../actions';
 
-@inject('rootStore')
-@observer
-export default class ServerGroupDetail extends Base {
+export class ServerGroupDetail extends Base {
   get name() {
     return t('server group');
   }
@@ -79,3 +77,5 @@ export default class ServerGroupDetail extends Base {
     this.store = new ServerGroupStore();
   }
 }
+
+export default inject('rootStore')(observer(ServerGroupDetail));

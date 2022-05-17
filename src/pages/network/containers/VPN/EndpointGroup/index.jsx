@@ -21,9 +21,7 @@ import { FileTextOutlined } from '@ant-design/icons';
 import { SubnetStore } from 'stores/neutron/subnet';
 import { actionConfigs, adminConfigs } from './actions';
 
-@inject('rootStore')
-@observer
-export default class Index extends Base {
+export class EndpointGroup extends Base {
   init() {
     this.store = new VpnEndPointGroupStore();
     this.downloadStore = new VpnEndPointGroupStore();
@@ -170,3 +168,5 @@ function PopUpSubnet({ record }) {
     </Row>
   );
 }
+
+export default inject('rootStore')(observer(EndpointGroup));

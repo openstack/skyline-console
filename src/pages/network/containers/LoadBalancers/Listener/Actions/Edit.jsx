@@ -17,9 +17,7 @@ import globalListenerStore from 'stores/octavia/listener';
 import { ModalAction } from 'containers/Action';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
 
-@inject('rootStore')
-@observer
-export default class Edit extends ModalAction {
+export class Edit extends ModalAction {
   static id = 'edit-listener';
 
   static title = t('Edit Listener');
@@ -74,3 +72,5 @@ export default class Edit extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(Edit));

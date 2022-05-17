@@ -23,9 +23,7 @@ import {
   handleFixedIPChange,
 } from 'resources/neutron/floatingip';
 
-@inject('rootStore')
-@observer
-export default class AssociateFip extends ModalAction {
+export class AssociateFip extends ModalAction {
   static id = 'AssociateFip';
 
   static title = t('Associate Floating IP');
@@ -179,3 +177,5 @@ export default class AssociateFip extends ModalAction {
     ];
   }
 }
+
+export default inject('rootStore')(observer(AssociateFip));

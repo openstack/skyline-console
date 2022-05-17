@@ -19,9 +19,7 @@ import { consumerTypes } from 'resources/cinder/volume-type';
 import ExtraSpec from './ExtraSpec';
 import actionConfigs from '../actions';
 
-@inject('rootStore')
-@observer
-export default class Detail extends Base {
+export class Detail extends Base {
   get name() {
     return t('volume type qos');
   }
@@ -71,3 +69,5 @@ export default class Detail extends Base {
     this.store = new QosSpecStore();
   }
 }
+
+export default inject('rootStore')(observer(Detail));

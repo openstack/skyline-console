@@ -16,9 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { FormAction } from 'containers/Action';
 import globalDomainStore from 'stores/keystone/domain';
 
-@inject('rootStore')
-@observer
-class EditForm extends FormAction {
+export class EditForm extends FormAction {
   init() {
     this.store = globalDomainStore;
   }
@@ -141,4 +139,4 @@ class EditForm extends FormAction {
   };
 }
 
-export default EditForm;
+export default inject('rootStore')(observer(EditForm));
