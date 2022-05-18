@@ -17,6 +17,7 @@ import { ModalAction } from 'containers/Action';
 import globalShareNetworkStore from 'stores/manila/share-network';
 import { NetworkStore } from 'stores/neutron/network';
 import { SubnetStore } from 'stores/neutron/subnet';
+import { PortStore } from 'stores/neutron/port';
 
 export class Create extends ModalAction {
   static id = 'create';
@@ -31,6 +32,7 @@ export class Create extends ModalAction {
     this.store = globalShareNetworkStore;
     this.networkStore = new NetworkStore();
     this.subnetStore = new SubnetStore();
+    this.portStore = new PortStore();
   }
 
   static policy = 'manila:share_network:create';
@@ -45,25 +47,42 @@ export class Create extends ModalAction {
     return 'large';
   }
 
-  get subnets() {
-    const { networkId } = this.state;
-    if (!networkId) {
-      return [];
-    }
-    return this.subnetStore.list.data || [];
-  }
-
-  getSubnets() {
+  async getSubnets() {
     const { networkId } = this.state;
     if (!networkId) {
       return;
     }
-    this.subnetStore.fetchList({ network_id: networkId });
+    const [subnets, ports] = await Promise.all([
+      this.subnetStore.fetchList({ network_id: networkId }),
+      this.portStore.fetchList({ network_id: networkId }),
+    ]);
+    const routerInterfaceOwners = [
+      'network:router_interface',
+      'network:ha_router_replicated_interface',
+      'network:router_interface_distributed',
+    ];
+    const routerPorts = ports.filter((it) =>
+      routerInterfaceOwners.includes(it.device_owner)
+    );
+    subnets.forEach((subnet) => {
+      const port = routerPorts.find((it) => {
+        const { fixed_ips = [] } = it;
+        return fixed_ips.some((ip) => ip.subnet_id === subnet.id);
+      });
+      subnet.selectable = !!port;
+    });
+    this.setState({
+      subnets,
+    });
   }
 
   onNetworkChange = (value) => {
     const { selectedRowKeys = [] } = value;
     if (selectedRowKeys.length === 0) {
+      this.setState({
+        networkId: null,
+        subnets: [],
+      });
       return;
     }
     this.setState(
@@ -81,7 +100,7 @@ export class Create extends ModalAction {
   }
 
   get formItems() {
-    const { networkId } = this.state;
+    const { networkId, subnets } = this.state;
     return [
       {
         name: 'name',
@@ -105,9 +124,16 @@ export class Create extends ModalAction {
         name: 'subnet',
         label: t('Subnet'),
         type: 'select-table',
-        data: this.subnets,
-        isLoading: networkId && this.subnetStore.list.isLoading,
+        data: subnets,
+        isLoading:
+          networkId &&
+          this.subnetStore.list.isLoading &&
+          this.portStore.list.isLoading,
         required: true,
+        extra: t(
+          'Only subnets that are already connected to the router can be selected.'
+        ),
+        disabledFunc: (record) => !record.selectable,
         filterParams: [
           {
             label: t('Name'),
@@ -139,6 +165,7 @@ export class Create extends ModalAction {
             valueRender: 'sinceTime',
           },
         ],
+        display: !!networkId,
       },
     ];
   }

@@ -22,7 +22,7 @@ export class ShareServerStore extends Base {
 
   get paramsFunc() {
     return (params) => {
-      const { all_projects, ...rest } = params;
+      const { all_projects, keywords, ...rest } = params;
       return rest;
     };
   }

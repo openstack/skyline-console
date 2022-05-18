@@ -29,7 +29,10 @@ export class ShareGroupTypeStore extends Base {
   }
 
   get paramsFunc() {
-    return (params) => params;
+    return (params) => {
+      const { keywords, ...rest } = params;
+      return rest;
+    };
   }
 
   @action

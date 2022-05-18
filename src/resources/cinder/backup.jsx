@@ -21,7 +21,6 @@ export const backupStatus = {
   error: t('Error'),
   updating: t('Updating'),
   deleting: t('Deleting'),
-  applying: t('Applying'),
   error_deleting: t('Error Deleting'),
   restoring: t('Restoring'),
   creating: t('Creating'),

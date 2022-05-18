@@ -26,10 +26,13 @@ export class PoolStore extends Base {
   }
 
   get paramsFunc() {
-    return (params) => ({
-      ...params,
-      detail: true,
-    });
+    return (params) => {
+      const { keywords, ...rest } = params;
+      return {
+        ...rest,
+        detail: true,
+      };
+    };
   }
 
   get mapper() {

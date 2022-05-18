@@ -1420,6 +1420,7 @@
   "Online": "Online",
   "Online Resize": "Online Resize",
   "Only a MAC address or an OpenFlow based datapath_id of the switch are accepted in this field": "Only a MAC address or an OpenFlow based datapath_id of the switch are accepted in this field",
+  "Only subnets that are already connected to the router can be selected.": "Only subnets that are already connected to the router can be selected.",
   "Open External Gateway": "Open External Gateway",
   "OpenStack Service": "OpenStack Service",
   "Operating Status": "Operating Status",

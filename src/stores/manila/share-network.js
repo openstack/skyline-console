@@ -35,7 +35,7 @@ export class ShareNetworkStore extends Base {
 
   get paramsFunc() {
     return (params) => {
-      const { all_projects, ...rest } = params;
+      const { all_projects, keywords, ...rest } = params;
       return {
         ...rest,
         all_tenants: all_projects ? 1 : 0,

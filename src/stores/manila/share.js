@@ -157,6 +157,17 @@ export class ShareStore extends Base {
     };
     return this.submitting(this.client.action(id, body));
   }
+
+  deleteItem = (data) => {
+    const { id, share_group_id } = data;
+    if (!share_group_id) {
+      return this.client.delete(id);
+    }
+    return this.client.delete(id, null, { share_group_id });
+  };
+
+  @action
+  delete = (data) => this.submitting(this.deleteItem(data));
 }
 
 const globalShareStore = new ShareStore();

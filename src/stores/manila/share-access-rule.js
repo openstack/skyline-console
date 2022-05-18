@@ -32,7 +32,7 @@ export class ShareAccessRuleStore extends Base {
 
   get paramsFunc() {
     return (params) => {
-      const { id, ...rest } = params;
+      const { id, keywords, ...rest } = params;
       return {
         ...rest,
         share_id: id,
