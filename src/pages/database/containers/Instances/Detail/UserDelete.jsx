@@ -32,6 +32,10 @@ export default class UserDelete extends ConfirmAction {
     return 'danger';
   }
 
+  get buttonText() {
+    return t('Delete');
+  }
+
   allowedCheckFunction = () => true;
 
   policy = 'trove:instance:extension:user:delete';

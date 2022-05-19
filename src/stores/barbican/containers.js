@@ -173,7 +173,7 @@ export class ContainersStore extends Base {
       secret_refs.map((it) => {
         const { secret_ref = '' } = it;
         const [, secretId] = secret_ref.split('/secrets/');
-        return this.secretStore.delete(secretId);
+        return this.secretStore.delete({ id: secretId });
       })
     );
     return this.submitting(this.client.delete(id));

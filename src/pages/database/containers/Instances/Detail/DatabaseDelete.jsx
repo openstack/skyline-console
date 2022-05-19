@@ -32,6 +32,10 @@ export default class DatabaseDelete extends ConfirmAction {
     return 'danger';
   }
 
+  get buttonText() {
+    return t('Delete');
+  }
+
   allowedCheckFunction = () => true;
 
   policy = 'trove:instance:extension:database:delete';
