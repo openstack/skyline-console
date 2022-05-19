@@ -17,6 +17,9 @@ export const shareGroupTypeColumns = [
     render: (value) => {
       return (value || []).map((it) => <div key={it.id}>{it.name}</div>);
     },
+    stringify: (value) => {
+      return (value || []).map((it) => it.name).join(';') || '-';
+    },
   },
 ];
 

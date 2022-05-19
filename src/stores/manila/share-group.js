@@ -30,10 +30,11 @@ export class ShareGroupStore extends Base {
   get paramsFuncPage() {
     return (params) => {
       const { all_projects, current, keywords, ...rest } = params;
-      return {
-        ...rest,
-        all_tenants: all_projects ? 1 : 0,
-      };
+      const newParams = { ...rest };
+      if (all_projects) {
+        newParams.all_tenants = 1;
+      }
+      return newParams;
     };
   }
 
