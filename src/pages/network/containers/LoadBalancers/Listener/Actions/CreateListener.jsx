@@ -214,6 +214,7 @@ export class Create extends ModalAction {
     if (client_ca_tls_container_ref) {
       data.client_ca_tls_container_ref =
         client_ca_tls_container_ref.selectedRows[0].secret_ref;
+      data.client_authentication = 'MANDATORY';
     }
     if (sni_container_refs) {
       data.sni_container_refs = [

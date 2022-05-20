@@ -117,6 +117,7 @@ export class StepCreate extends StepAction {
       ) {
         listenerData.client_ca_tls_container_ref =
           listener_client_ca_tls_container_ref.selectedRows[0].secret_ref;
+        listenerData.client_authentication = 'MANDATORY';
       }
       if (listener_sni_enabled && listener_sni_container_refs) {
         listenerData.sni_container_refs = [

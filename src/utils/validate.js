@@ -50,6 +50,8 @@ const ipv6CidrOnly =
 const asciiRegex = /^[\x00-\x7f]*$/; // eslint-disable-line
 const swiftFileNameRegex =
   /^[A-Za-z\u4e00-\u9fa5]+[A-Za-z\u4e00-\u9fa5\d-.]{2,62}$/;
+const domainRegex =
+  /^[a-zA-Z0-9]([-a-zA-Z0-9]{0,62}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([-a-zA-Z0-9]{0,62}[a-zA-Z0-9])?)*$/;
 
 export const regex = {
   cidr,
@@ -70,6 +72,13 @@ export const regex = {
   ipv6CidrOnly,
   asciiRegex,
   swiftFileNameRegex,
+};
+
+export const isDomain = (value) => {
+  if (value && isString(value)) {
+    return domainRegex.test(value);
+  }
+  return false;
 };
 
 export const isPhoneNumber = (value) => isValidPhoneNumber(value);

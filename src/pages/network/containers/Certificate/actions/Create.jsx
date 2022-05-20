@@ -15,7 +15,12 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import { getOptions } from 'utils/index';
+import { isDomain } from 'utils/validate';
 import { certificateMode } from 'resources/octavia/lb';
+import {
+  certificateContentTip,
+  certificateKeyPairTip,
+} from 'resources/octavia/secrets';
 import globalContainersStore from 'stores/barbican/containers';
 import moment from 'moment';
 
@@ -34,6 +39,14 @@ export class CreateAction extends ModalAction {
     return t('Create Certificate');
   }
 
+  static get modalSize() {
+    return 'large';
+  }
+
+  getModalSize() {
+    return 'large';
+  }
+
   get defaultValue() {
     const data = {
       mode: 'SERVER',
@@ -47,15 +60,62 @@ export class CreateAction extends ModalAction {
 
   validateDomain = (rule, value) => {
     if (value === undefined || value === '') return Promise.resolve();
-    const urlReg = /^https?:\/\/(.*)/;
-    if (!urlReg.test(value)) {
+    const domains = value.split(',');
+    const allCorrect = domains.every((it) => it.length <= 100 && isDomain(it));
+    if (domains.length > 30 || !allCorrect) {
       return Promise.reject(
-        t(
-          'Please enter a correct domain starting with "http://" or "https://"!'
-        )
+        t('Please enter a correct domain, format is refer to the left tip!')
       );
     }
     return Promise.resolve();
+  };
+
+  validateCertificateContent = (rule, value) => {
+    if (!value) return Promise.reject();
+    const keys = value.split(/\n/g);
+    const start = keys.shift();
+    const end = keys.pop();
+    const middleCorrect = keys.every((it, index) => {
+      if (index === keys.length - 1) {
+        return it.length <= 64;
+      }
+      return it.length === 64;
+    });
+    if (
+      start === '-----BEGIN CERTIFICATE-----' &&
+      end === '-----END CERTIFICATE-----' &&
+      middleCorrect
+    ) {
+      return Promise.resolve();
+    }
+    return Promise.reject(
+      t(
+        'Please enter a correct certificate content, format is refer to the left tip!'
+      )
+    );
+  };
+
+  validateCertificateKeyPair = (rule, value) => {
+    if (!value) return Promise.reject();
+    const keys = value.split(/\n/g);
+    const start = keys.shift();
+    const end = keys.pop();
+    const middleCorrect = keys.every((it, index) => {
+      if (index === keys.length - 1) {
+        return it.length <= 64;
+      }
+      return it.length === 64;
+    });
+    if (
+      start === '-----BEGIN RSA PRIVATE KEY-----' &&
+      end === '-----END RSA PRIVATE KEY-----' &&
+      middleCorrect
+    ) {
+      return Promise.resolve();
+    }
+    return Promise.reject(
+      t('Please enter a correct private key, format is refer to the left tip!')
+    );
   };
 
   get formItems() {
@@ -80,6 +140,8 @@ export class CreateAction extends ModalAction {
         type: 'textarea-from-file',
         placeholder: t('PEM encoding'),
         accept: '.crt,.pem',
+        tip: certificateContentTip,
+        validator: this.validateCertificateContent,
         required: true,
       },
       {
@@ -88,16 +150,22 @@ export class CreateAction extends ModalAction {
         type: 'textarea-from-file',
         placeholder: t('PEM encoding'),
         accept: '.key,.pem',
+        tip: certificateKeyPairTip,
+        validator: this.validateCertificateKeyPair,
         required: true,
         display: mode === 'SERVER',
       },
       {
         name: 'domain',
         label: t('Domain Name'),
-        type: 'input',
+        type: 'textarea',
         placeholder: t('Please input'),
+        maxLength: 1024,
         hidden: mode === 'CA',
         validator: this.validateDomain,
+        tip: t(
+          'The domain name can only be composed of letters, numbers, dashes, in A dash cannot be at the beginning or end, and a single string cannot exceed more than 63 characters, separated by dots; At most can support 30 domain names, separated by commas;The length of a single domain name does not exceed 100 characters, and the total length degree does not exceed 1024 characters.'
+        ),
         extra: t(
           'If it is an SNI type certificate, a domain name needs to be specified'
         ),
