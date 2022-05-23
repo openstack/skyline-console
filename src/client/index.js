@@ -26,6 +26,7 @@ import swift from './swift';
 import trove from './trove';
 import manila from './manila';
 import barbican from './barbican';
+import magnum from './magnum';
 
 const client = {
   skyline,
@@ -42,6 +43,7 @@ const client = {
   trove,
   manila,
   barbican,
+  magnum
 };
 
 window.client = client;
