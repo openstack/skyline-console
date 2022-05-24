@@ -188,7 +188,7 @@ export class Create extends FormAction {
       },
       {
         name: 'size',
-        label: t('Capacity (GB)'),
+        label: t('Capacity (GiB)'),
         type: 'slider-input',
         max: this.maxSize,
         min: minSize,
@@ -198,7 +198,7 @@ export class Create extends FormAction {
       },
       {
         name: 'size',
-        label: t('Capacity (GB)'),
+        label: t('Capacity (GiB)'),
         type: 'input-int',
         min: minSize,
         display: !this.quotaIsLimit,
