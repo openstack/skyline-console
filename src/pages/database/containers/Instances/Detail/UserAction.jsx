@@ -13,8 +13,17 @@
 // limitations under the License.
 
 import DeleteUser from './UserDelete';
+import CreateUser from './UserCreate';
 
 const actionConfigs = {
+  rowActions: {
+    firstAction: DeleteUser,
+  },
+  batchActions: [DeleteUser],
+  primaryActions: [CreateUser],
+};
+
+const actionConfigsAdmin = {
   rowActions: {
     firstAction: DeleteUser,
   },
@@ -22,4 +31,4 @@ const actionConfigs = {
   primaryActions: [],
 };
 
-export default actionConfigs;
+export default { actionConfigs, actionConfigsAdmin };

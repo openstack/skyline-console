@@ -13,8 +13,17 @@
 // limitations under the License.
 
 import DeleteDatabase from './DatabaseDelete';
+import CreateDatabase from './DatabaseCreate';
 
 const actionConfigs = {
+  rowActions: {
+    firstAction: DeleteDatabase,
+  },
+  batchActions: [DeleteDatabase],
+  primaryActions: [CreateDatabase],
+};
+
+const actionConfigsAdmin = {
   rowActions: {
     firstAction: DeleteDatabase,
   },
@@ -22,4 +31,4 @@ const actionConfigs = {
   primaryActions: [],
 };
 
-export default actionConfigs;
+export default { actionConfigs, actionConfigsAdmin };

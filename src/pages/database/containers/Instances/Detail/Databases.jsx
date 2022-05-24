@@ -22,6 +22,10 @@ export class Databases extends Base {
     this.store = new InstancesDatabasesStore();
   }
 
+  get rowKey() {
+    return 'name';
+  }
+
   get name() {
     return 'Databases';
   }
@@ -31,7 +35,10 @@ export class Databases extends Base {
   }
 
   get actionConfigs() {
-    return actions;
+    if (this.isAdminPage) {
+      return actions.actionConfigsAdmin;
+    }
+    return actions.actionConfigs;
   }
 
   get hideCustom() {

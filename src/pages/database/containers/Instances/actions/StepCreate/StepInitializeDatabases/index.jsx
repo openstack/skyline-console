@@ -14,6 +14,7 @@
 
 import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
+import { getPasswordOtherRule } from 'utils/validate';
 
 export class StepInitializeDatabases extends Base {
   get title() {
@@ -46,20 +47,33 @@ export class StepInitializeDatabases extends Base {
       {
         name: 'initialDatabases',
         label: t('Initial Databases'),
-        type: 'input',
+        type: 'input-name',
         required: true,
+        maxLength: 64,
+        isDatabaseName: true,
       },
       {
         name: 'initialAdminUser',
         label: t('Initial Admin User'),
-        type: 'input',
+        type: 'input-name',
         required: true,
+        maxLength: 16,
+        isDatabaseUserName: true,
       },
       {
         name: 'password',
         label: t('Password'),
         type: 'input-password',
         required: true,
+        otherRule: getPasswordOtherRule('password'),
+      },
+      {
+        name: 'confirmPassword',
+        label: t('Confirm Password'),
+        type: 'input-password',
+        required: true,
+        dependencies: ['password'],
+        otherRule: getPasswordOtherRule('confirmPassword'),
       },
     ];
   }

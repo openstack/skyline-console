@@ -26,6 +26,8 @@ const {
   imageNameMessage,
   instanceNameMessage,
   swiftFilenameMessage,
+  databaseNameMessage,
+  databaseUserNameMessage,
 } = nameMessageInfo;
 
 const {
@@ -38,6 +40,8 @@ const {
   imageNameValidate,
   instanceNameValidate,
   swiftFileNameValidate,
+  databaseNameValidate,
+  databaseUserNameValidate,
 } = nameTypeValidate;
 
 export default class index extends Component {
@@ -54,6 +58,8 @@ export default class index extends Component {
     isImage,
     isInstance,
     isSwiftFile,
+    isDatabaseName,
+    isDatabaseUserName,
   }) {
     const uniqueNameValidate = (rule, value) => {
       if (names && names.length && names.includes(value)) {
@@ -82,6 +88,10 @@ export default class index extends Component {
       validator = crontabNameValidate;
     } else if (isSwiftFile) {
       validator = swiftFileNameValidate;
+    } else if (isDatabaseName) {
+      validator = databaseNameValidate;
+    } else if (isDatabaseUserName) {
+      validator = databaseUserNameValidate;
     }
     const newRules = {
       validator,
@@ -101,6 +111,8 @@ export default class index extends Component {
     isImage,
     isInstance,
     isSwiftFile,
+    isDatabaseName,
+    isDatabaseUserName,
   }) {
     if (withoutChinese) {
       return nameMessageWithoutChinese;
@@ -126,6 +138,12 @@ export default class index extends Component {
     if (isSwiftFile) {
       return swiftFilenameMessage;
     }
+    if (isDatabaseName) {
+      return databaseNameMessage;
+    }
+    if (isDatabaseUserName) {
+      return databaseUserNameMessage;
+    }
     return nameMessage;
   }
 
@@ -136,6 +154,8 @@ export default class index extends Component {
       isFile = false,
       isKeypair = false,
       isSwiftFile = false,
+      isDatabaseName = false,
+      isDatabaseUserName = false,
       isStack,
       isCrontab,
       isImage,
@@ -162,6 +182,8 @@ export default class index extends Component {
       isImage,
       isInstance,
       isSwiftFile,
+      isDatabaseName,
+      isDatabaseUserName,
     });
     const message = this.getMessage({
       withoutChinese,
@@ -172,6 +194,8 @@ export default class index extends Component {
       isImage,
       isInstance,
       isSwiftFile,
+      isDatabaseName,
+      isDatabaseUserName,
     });
     const newFormItemProps = {
       ...rest,

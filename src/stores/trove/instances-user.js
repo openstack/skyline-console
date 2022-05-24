@@ -36,6 +36,19 @@ export class InstancesUsersStore extends Base {
     };
   }
 
+  listDidFetch(items) {
+    if (items.length === 0) return items;
+    return items.map((it) => ({
+      ...it,
+      databases: (it.databases || []).map((db) => db.name).join(' , ') || '-',
+    }));
+  }
+
+  @action
+  async create(id, body) {
+    return this.submitting(this.client.create(id, body));
+  }
+
   @action
   async deleteUser({ id, name }) {
     return this.submitting(this.client.delete(id, name));

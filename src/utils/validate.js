@@ -52,6 +52,8 @@ const swiftFileNameRegex =
   /^[A-Za-z\u4e00-\u9fa5]+[A-Za-z\u4e00-\u9fa5\d-.]{2,62}$/;
 const domainRegex =
   /^[a-zA-Z0-9]([-a-zA-Z0-9]{0,62}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([-a-zA-Z0-9]{0,62}[a-zA-Z0-9])?)*$/;
+const databaseNameRegex = /^(?=.*[0-9a-zA-Z])[-_0-9a-zA-Z]{2,64}$/;
+const databaseUserRegex = /^(?=.*[0-9a-zA-Z])[-_0-9a-zA-Z]{1,16}$/;
 
 export const regex = {
   cidr,
@@ -77,6 +79,20 @@ export const regex = {
 export const isDomain = (value) => {
   if (value && isString(value)) {
     return domainRegex.test(value);
+  }
+  return false;
+};
+
+export const isDatabaseName = (value) => {
+  if (value && isString(value)) {
+    return databaseNameRegex.test(value);
+  }
+  return false;
+};
+
+export const isDatabaseUserName = (value) => {
+  if (value && isString(value)) {
+    return databaseUserRegex.test(value);
   }
   return false;
 };
@@ -329,6 +345,14 @@ const instanceNameMessage = t(
   'The name should start with upper letter, lower letter or chinese, and be a string of 1 to 128, characters can only contain "0-9, a-z, A-Z, "-\'_.".'
 );
 
+const databaseNameMessage = t(
+  'The name should contain letter or number, the length is 2 to 64, characters can only contain "0-9, a-z, A-Z, -, _."'
+);
+
+const databaseUserNameMessage = t(
+  'The name should contain letter or number, the length is 1 to 16, characters can only contain "0-9, a-z, A-Z, -, _."'
+);
+
 export const nameMessageInfo = {
   nameMessage,
   nameMessageWithoutChinese,
@@ -339,6 +363,8 @@ export const nameMessageInfo = {
   imageNameMessage,
   instanceNameMessage,
   swiftFilenameMessage,
+  databaseNameMessage,
+  databaseUserNameMessage,
 };
 
 export const portMessage = t('Enter an integer value between 1 and 65535.');
@@ -356,6 +382,33 @@ export const macAddressMessage = t(
 );
 
 const asciiMessage = t('Please enter a valid ASCII code');
+
+export const databaseNameValidate = (rule, value) => {
+  if (!rule.required && value === undefined) {
+    return Promise.resolve(true);
+  }
+  if (isDatabaseName(value)) {
+    return Promise.resolve(true);
+  }
+  return Promise.reject(new Error(`${t('Invalid: ')}${databaseNameMessage}`));
+};
+
+export const databaseUserNameValidate = (rule, value) => {
+  if (!rule.required && value === undefined) {
+    return Promise.resolve(true);
+  }
+  if (['os_admin', 'root'].includes(value)) {
+    return Promise.reject(
+      t('The root and os_admin are default users and cannot be created!')
+    );
+  }
+  if (isDatabaseUserName(value)) {
+    return Promise.resolve(true);
+  }
+  return Promise.reject(
+    new Error(`${t('Invalid: ')}${databaseUserNameMessage}`)
+  );
+};
 
 export const phoneNumberValidate = (rule, value) => {
   if (!rule.required && !value) {
@@ -481,6 +534,8 @@ export const nameTypeValidate = {
   imageNameValidate,
   instanceNameValidate,
   swiftFileNameValidate,
+  databaseNameValidate,
+  databaseUserNameValidate,
 };
 
 export const cidrAllValidate = (rule, value) => {
