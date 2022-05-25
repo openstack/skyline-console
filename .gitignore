@@ -14,6 +14,11 @@ test/e2e/results
 test/e2e/report
 *.qcow2
 /packages
+reno.cache
+skyline_console.egg-info/
+AUTHORS
+ChangeLog
+RELEASENOTES.rst
 
 # config
 test/e2e/config/local_config.yaml

@@ -1,4 +1,4 @@
-# Copyright 2021 99cloud
+# Copyright 2022 99cloud
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pathlib import Path
+import setuptools
 
-static_path = Path(__file__).parent.joinpath("static")
+setuptools.setup(
+    setup_requires=['pbr>=2.0.0'],
+    pbr=True)

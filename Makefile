@@ -76,7 +76,8 @@ package: install
 	rm -rf $(ROOT_DIR)/skyline_console/static
 	yarn run build
 	echo `git rev-parse --verify HEAD` > $(ROOT_DIR)/skyline_console/static/commit_id.txt
-	poetry build
+	python setup.py sdist
+	python setup.py bdist_wheel
 
 
 .PHONY: fmt
@@ -96,7 +97,7 @@ test:
 
 .PHONY: clean
 clean:
-	rm -rf .venv node_modules dist
+	rm -rf .venv node_modules dist .tox build skyline_console.egg-info AUTHORS ChangeLog RELEASENOTES.rst skyline_console/static
 
 
 .PHONY: e2e
