@@ -149,7 +149,7 @@ export class BaseDetail extends Base {
       },
       {
         label: t('RAM'),
-        content: `${flavor.ram / 1024} GB`,
+        content: `${flavor.ram / 1024} GiB`,
       },
       {
         label: t('VCPUs'),
@@ -366,7 +366,7 @@ export class BaseDetail extends Base {
         },
         {
           label: t('Size'),
-          value: `${item.size}GB`,
+          value: `${item.size}GiB`,
         },
         {
           label: t('Volume Type'),

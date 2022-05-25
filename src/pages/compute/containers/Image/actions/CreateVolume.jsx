@@ -92,10 +92,10 @@ export class CreateVolume extends ModalAction {
       },
       {
         name: 'size',
-        label: t('Capacity (GB)'),
+        label: t('Capacity (GiB)'),
         type: 'input-int',
         min: minSize,
-        extra: `${t('Min size')}: ${minSize}GB`,
+        extra: `${t('Min size')}: ${minSize}GiB`,
         required: true,
       },
     ];

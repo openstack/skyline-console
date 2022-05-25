@@ -33,8 +33,8 @@ export class ConfirmStep extends Base {
     const { flavor } = context;
     const { disk, ram, vcpus } = flavor.selectedRows[0];
     return disk
-      ? `${vcpus}VCPU/${disk}GB/${Number.parseInt(ram / 1024, 10)}GB`
-      : `${vcpus}VCPU/${Number.parseInt(ram / 1024, 10)}GB`;
+      ? `${vcpus}VCPU/${disk}GiB/${Number.parseInt(ram / 1024, 10)}GiB`
+      : `${vcpus}VCPU/${Number.parseInt(ram / 1024, 10)}GiB`;
   }
 
   getSourceValue() {

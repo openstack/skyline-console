@@ -37,13 +37,13 @@ export class ConfirmStep extends Base {
 
   getDisk(diskInfo) {
     const { size, typeOption, deleteTypeLabel } = diskInfo;
-    return `${typeOption.label} ${size}GB ${deleteTypeLabel}`;
+    return `${typeOption.label} ${size}GiB ${deleteTypeLabel}`;
   }
 
   getBootableVolumeDisk() {
     const { bootableVolume } = this.props.context;
     const { size, volume_type } = bootableVolume.selectedRows[0];
-    return `${volume_type} ${size}GB`;
+    return `${volume_type} ${size}GiB`;
   }
 
   getSystemDisk() {
@@ -67,8 +67,8 @@ export class ConfirmStep extends Base {
     const { flavor } = context;
     const { disk, ram, vcpus } = flavor.selectedRows[0];
     return disk
-      ? `${vcpus}VCPU/${disk}GB/${Number.parseInt(ram / 1024, 10)}GB`
-      : `${vcpus}VCPU/${Number.parseInt(ram / 1024, 10)}GB`;
+      ? `${vcpus}VCPU/${disk}GiB/${Number.parseInt(ram / 1024, 10)}GiB`
+      : `${vcpus}VCPU/${Number.parseInt(ram / 1024, 10)}GiB`;
   }
 
   getSourceValue() {

@@ -181,7 +181,7 @@ export default class InstanceVolume extends React.Component {
           <Col span={14}>
             <span className={styles.label}>{t('Size')}</span>
             {input}
-            <span className={styles['size-label']}>GB</span>
+            <span className={styles['size-label']}>GiB</span>
             {checkbox}
           </Col>
         </Row>

@@ -39,7 +39,7 @@ export class RestoreAction extends ModalAction {
   get defaultValue() {
     const { name, id = '-', volume_type = '-', size } = this.item;
     const value = {
-      volume: `${name || id}(${volume_type} | ${size}GB)`,
+      volume: `${name || id}(${volume_type} | ${size}GiB)`,
     };
     return value;
   }
@@ -78,7 +78,7 @@ export class RestoreAction extends ModalAction {
           {
             title: t('Size'),
             dataIndex: 'size',
-            render: (value) => `${value}GB`,
+            render: (value) => `${value}GiB`,
             sorter: false,
           },
           {

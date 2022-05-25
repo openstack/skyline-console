@@ -335,7 +335,7 @@ export const storageLeftCardList = [
     },
   },
   {
-    title: t('Disk allocation (GB)'),
+    title: t('Disk allocation (GiB)'),
     span: 12,
     createFetchParams: {
       metricKey: 'monitorOverview.cephStorageAllocate',
@@ -367,7 +367,7 @@ export const storageLeftCardList = [
                 fontSize: 12,
               }}
             >
-              {`${usedValue} GB / ${totalValue} GB`}
+              {`${usedValue} GiB / ${totalValue} GiB`}
             </Row>
           </div>
         </div>

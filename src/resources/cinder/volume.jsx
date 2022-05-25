@@ -146,7 +146,7 @@ export const volumeColumns = [
   {
     title: t('Size'),
     dataIndex: 'size',
-    render: (value) => `${value}GB`,
+    render: (value) => `${value}GiB`,
   },
   {
     title: t('Status'),
@@ -257,7 +257,7 @@ export const getVolumeColumnsList = (self) => {
       title: t('Size'),
       dataIndex: 'size',
       isHideable: true,
-      render: (value) => `${value}GB`,
+      render: (value) => `${value}GiB`,
     },
     {
       title: t('Status'),

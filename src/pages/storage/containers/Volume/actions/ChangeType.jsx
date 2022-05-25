@@ -67,7 +67,7 @@ export class ChangeType extends ModalAction {
   get defaultValue() {
     const { name, id, volume_type, size } = this.item;
     const value = {
-      volume: `${name || id}(${volume_type} | ${size}GB)`,
+      volume: `${name || id}(${volume_type} | ${size}GiB)`,
       volume_type: (this.volumeTypes[0] || {}).value,
     };
     return value;

@@ -248,8 +248,8 @@ export class BaseStep extends Base {
     let imageSize = 0;
     if (this.sourceTypeIsImage) {
       const { min_disk = 0, size = 0 } = this.state.image || {};
-      const sizeGB = Math.ceil(size / 1024 / 1024 / 1024);
-      imageSize = Math.max(min_disk, sizeGB, 1);
+      const sizeGiB = Math.ceil(size / 1024 / 1024 / 1024);
+      imageSize = Math.max(min_disk, sizeGiB, 1);
     }
     return Math.max(flavorSize, imageSize, 1);
   }
@@ -317,7 +317,7 @@ export class BaseStep extends Base {
       {
         title: t('Size'),
         dataIndex: 'size',
-        render: (value) => `${value}GB`,
+        render: (value) => `${value}GiB`,
         width: 80,
       },
       {

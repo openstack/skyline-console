@@ -32,7 +32,18 @@ import { SIZE_VALUE, MILLISECOND_IN_TIME_UNIT } from './constants';
  */
 export const formatSize = (size, start = 0) => {
   const divisor = 1024;
-  const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB', 'BB'];
+  const units = [
+    'B',
+    'KiB',
+    'MiB',
+    'GiB',
+    'TiB',
+    'PiB',
+    'EiB',
+    'ZiB',
+    'YiB',
+    'BiB',
+  ];
   let index = isNumber(start) ? start : 0;
   if (!isNumber(size) || isNaN(size)) {
     return size || '-';
@@ -82,7 +93,7 @@ export const getQueryString = (params) =>
 
 export const getYesNo = (input) => (input ? t('Yes') : t('No'));
 
-export const getGBValue = (input) => {
+export const getGiBValue = (input) => {
   const gb = 1024;
   if (isNaN(input) || isNil(input) || !input || !isNumber(input)) {
     return 0;
@@ -116,19 +127,19 @@ export const bytesFilter = (input) => {
   }
   if (input >= tb) {
     const size = Number(input / tb).toFixed(2);
-    return t('{ size } TB', { size });
+    return t('{ size } TiB', { size });
   }
   if (input >= gb) {
     const size = Number(input / gb).toFixed(2);
-    return t('{ size } GB', { size });
+    return t('{ size } GiB', { size });
   }
   if (input >= mb) {
     const size = Number(input / mb).toFixed(2);
-    return t('{ size } MB', { size });
+    return t('{ size } MiB', { size });
   }
   if (input >= kb) {
     const size = Number(input / kb).toFixed(2);
-    return t('{ size } KB', { size });
+    return t('{ size } KiB', { size });
   }
   const size = Math.floor(input);
   return t('{ size } bytes', { size });
@@ -181,7 +192,7 @@ export const renderFilterMap = {
   sinceTime: getSinceTime,
   keepTime: getKeepTime,
   yesNo: getYesNo,
-  GBValue: getGBValue,
+  GiBValue: getGiBValue,
   noValue: getNoValue,
   bytes: bytesFilter,
   uppercase: uppercaseFilter,

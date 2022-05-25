@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { action, observable } from 'mobx';
-import { getGBValue } from 'utils/index';
+import { getGiBValue } from 'utils/index';
 import { get, isNil, isEmpty } from 'lodash';
 import client from 'client';
 import Base from 'stores/base';
@@ -308,8 +308,8 @@ export class ProjectStore extends Base {
     const { quota: neutronQuota } = neutronResult;
     const { quota_set: shareQuota = {} } = shareResult || {};
     novaQuota.ram = {
-      in_use: getGBValue(ram.in_use),
-      limit: ram.limit === -1 ? ram.limit : getGBValue(ram.limit),
+      in_use: getGiBValue(ram.in_use),
+      limit: ram.limit === -1 ? ram.limit : getGiBValue(ram.limit),
     };
     const renameShareQuota = Object.keys(shareQuota).reduce((pre, cur) => {
       if (cur === 'gigabytes') {

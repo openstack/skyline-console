@@ -9,7 +9,7 @@ import {
   formatUsedTime,
   generateArray,
   generateId,
-  getGBValue,
+  getGiBValue,
   getNoValue,
   getOptions,
   getOptionsWithNoSet,
@@ -32,10 +32,10 @@ describe('test utils index.js', () => {
     expect(formatSize(NaN)).toBe('-');
     expect(formatSize('')).toBe('-');
     expect(formatSize(1000)).toBe('1000 B');
-    expect(formatSize(128012010202)).toBe('119.22 GB');
+    expect(formatSize(128012010202)).toBe('119.22 GiB');
     expect(formatSize('128012010202')).toBe('128012010202');
-    expect(formatSize(10000 * 1024 ** 8)).toBe('9.77 BB');
-    expect(formatSize(10000 * 1024 ** 9)).toBe('10000.00 BB');
+    expect(formatSize(10000 * 1024 ** 8)).toBe('9.77 BiB');
+    expect(formatSize(10000 * 1024 ** 9)).toBe('10000.00 BiB');
   });
 
   it('formatUsedTime', () => {
@@ -65,19 +65,19 @@ describe('test utils index.js', () => {
     expect(getYesNo(0)).toBe(t('No'));
   });
 
-  it('getGBValue', () => {
-    expect(getGBValue(1024)).toBe(1);
-    expect(getGBValue(2 * 1024)).toBe(2);
-    expect(getGBValue(2.554 * 1024)).toBe(2.55);
-    expect(getGBValue(2.555 * 1024)).toBe(2.56);
-    expect(getGBValue(2.556 * 1024)).toBe(2.56);
-    expect(getGBValue(true)).toBe(0);
-    expect(getGBValue(false)).toBe(0);
-    expect(getGBValue(null)).toBe(0);
-    expect(getGBValue(undefined)).toBe(0);
-    expect(getGBValue(NaN)).toBe(0);
-    expect(getGBValue('')).toBe(0);
-    expect(getGBValue(0)).toBe(0);
+  it('getGiBValue', () => {
+    expect(getGiBValue(1024)).toBe(1);
+    expect(getGiBValue(2 * 1024)).toBe(2);
+    expect(getGiBValue(2.554 * 1024)).toBe(2.55);
+    expect(getGiBValue(2.555 * 1024)).toBe(2.56);
+    expect(getGiBValue(2.556 * 1024)).toBe(2.56);
+    expect(getGiBValue(true)).toBe(0);
+    expect(getGiBValue(false)).toBe(0);
+    expect(getGiBValue(null)).toBe(0);
+    expect(getGiBValue(undefined)).toBe(0);
+    expect(getGiBValue(NaN)).toBe(0);
+    expect(getGiBValue('')).toBe(0);
+    expect(getGiBValue(0)).toBe(0);
   });
 
   it('getNoValue', () => {
@@ -110,15 +110,15 @@ describe('test utils index.js', () => {
     expect(bytesFilter(-1)).toBe('');
     expect(bytesFilter(NaN)).toBe('');
     expect(bytesFilter(100)).toBe(t('{ size } bytes', { size: '100' }));
-    expect(bytesFilter(1024)).toBe(t('{ size } KB', { size: '1.00' }));
+    expect(bytesFilter(1024)).toBe(t('{ size } KiB', { size: '1.00' }));
     expect(bytesFilter(10 * 1024 ** 2)).toBe(
-      t('{ size } MB', { size: '10.00' })
+      t('{ size } MiB', { size: '10.00' })
     );
-    expect(bytesFilter(1024 ** 2)).toBe(t('{ size } MB', { size: '1.00' }));
-    expect(bytesFilter(1024 ** 3)).toBe(t('{ size } GB', { size: '1.00' }));
-    expect(bytesFilter(1024 ** 4)).toBe(t('{ size } TB', { size: '1.00' }));
+    expect(bytesFilter(1024 ** 2)).toBe(t('{ size } MiB', { size: '1.00' }));
+    expect(bytesFilter(1024 ** 3)).toBe(t('{ size } GiB', { size: '1.00' }));
+    expect(bytesFilter(1024 ** 4)).toBe(t('{ size } TiB', { size: '1.00' }));
     expect(bytesFilter(3.15 * 1024 ** 4)).toBe(
-      t('{ size } TB', { size: '3.15' })
+      t('{ size } TiB', { size: '3.15' })
     );
   });
 

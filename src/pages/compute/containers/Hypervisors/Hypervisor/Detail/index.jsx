@@ -57,7 +57,7 @@ export class HypervisorDetail extends Base {
           ),
       },
       {
-        title: t('Configured Memory (GB)'),
+        title: t('Configured Memory (GiB)'),
         dataIndex: 'memory_mb_percent',
         render: (value, record) =>
           record.hypervisor_type === 'ironic' ? (

@@ -67,7 +67,7 @@ export const backupPointColumns = [
     title: t('Size'),
     dataIndex: 'size',
     isHideable: true,
-    render: (value) => `${value} GB`,
+    render: (value) => `${value} GiB`,
   },
   {
     title: t('Status'),

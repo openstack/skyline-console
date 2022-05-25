@@ -27,7 +27,7 @@ export const resourceCircle = [
   {
     resource: 'memory_mb',
     used: 'memory_mb_used',
-    label: t('Memory usage Num (GB)'),
+    label: t('Memory usage Num (GiB)'),
   },
 ];
 

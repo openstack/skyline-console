@@ -294,8 +294,8 @@ export class Create extends FormAction {
     let imageSize = 0;
     if (this.sourceTypeIsImage) {
       const { min_disk = 0, size = 0 } = this.state.image || {};
-      const sizeGB = Math.ceil(size / 1024 / 1024 / 1024);
-      imageSize = Math.max(min_disk, sizeGB, 1);
+      const sizeGiB = Math.ceil(size / 1024 / 1024 / 1024);
+      imageSize = Math.max(min_disk, sizeGiB, 1);
     } else if (this.sourceTypeIsSnapshot) {
       const { size = 0 } = this.state.snapshot || {};
       imageSize = size;
@@ -405,7 +405,7 @@ export class Create extends FormAction {
           {
             title: t('Size'),
             dataIndex: 'size',
-            render: (value) => `${value}GB`,
+            render: (value) => `${value}GiB`,
             sorter: false,
           },
           {
@@ -445,17 +445,17 @@ export class Create extends FormAction {
       },
       {
         name: 'size',
-        label: t('Capacity (GB)'),
+        label: t('Capacity (GiB)'),
         type: 'slider-input',
         max: this.maxSize,
         min: minSize,
-        description: `${minSize}GB-${this.maxSize}GB`,
+        description: `${minSize}GiB-${this.maxSize}GiB`,
         required: this.quotaIsLimit,
         hidden: !this.quotaIsLimit,
       },
       {
         name: 'size',
-        label: t('Capacity (GB)'),
+        label: t('Capacity (GiB)'),
         type: 'input-int',
         min: minSize,
         hidden: this.quotaIsLimit,

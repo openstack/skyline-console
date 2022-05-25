@@ -249,14 +249,14 @@ export class CreateForm extends FormAction {
       },
       {
         name: 'min_disk',
-        label: t('Min System Disk(GB)'),
+        label: t('Min System Disk(GiB)'),
         type: 'input-int',
         min: 0,
         max: 500,
       },
       {
         name: 'min_ram',
-        label: t('Min Memory(GB)'),
+        label: t('Min Memory(GiB)'),
         type: 'input-int',
         min: 0,
         max: 500,

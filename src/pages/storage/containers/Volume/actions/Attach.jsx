@@ -53,7 +53,7 @@ export class Attach extends ModalAction {
   get defaultValue() {
     const { name, id, size, volume_type } = this.item;
     const value = {
-      volume: `${name || id}(${volume_type} | ${size}GB)`,
+      volume: `${name || id}(${volume_type} | ${size}GiB)`,
     };
     return value;
   }

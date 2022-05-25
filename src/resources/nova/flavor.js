@@ -172,7 +172,7 @@ export const getBaseColumns = (self) => [
     },
   },
   {
-    title: t('Ephemeral Disk(GB)'),
+    title: t('Ephemeral Disk(GiB)'),
     dataIndex: 'OS-FLV-EXT-DATA:ephemeral',
     isHideable: true,
   },

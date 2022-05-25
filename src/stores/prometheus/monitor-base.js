@@ -91,7 +91,7 @@ export default class MonitorBase extends Base {
     }, 200);
   };
 
-  formatToGB(str) {
+  formatToGiB(str) {
     return parseFloat((parseInt(str, 10) / 1073741824).toFixed(2));
   }
 

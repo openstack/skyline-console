@@ -32,7 +32,7 @@ export class ExtendVolume extends ModalAction {
   get defaultValue() {
     const { name, id, volume_type, size } = this.item;
     const value = {
-      volume: `${name || id}(${volume_type} | ${size}GB)`,
+      volume: `${name || id}(${volume_type} | ${size}GiB)`,
       new_size: size + 1,
     };
     return value;
@@ -91,17 +91,17 @@ export class ExtendVolume extends ModalAction {
       },
       {
         name: 'new_size',
-        label: t('Capacity (GB)'),
+        label: t('Capacity (GiB)'),
         type: 'slider-input',
         max: this.maxSize,
         min: minSize,
-        description: `${minSize}GB-${this.maxSize}GB`,
+        description: `${minSize}GiB-${this.maxSize}GiB`,
         required: true,
         display: this.isQuotaLimited,
       },
       {
         name: 'new_size',
-        label: t('Capacity (GB)'),
+        label: t('Capacity (GiB)'),
         type: 'input-int',
         min: minSize,
         required: true,

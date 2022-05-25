@@ -60,7 +60,7 @@ export class Detach extends ModalAction {
   get defaultValue() {
     const { name, size, volume_type } = this.item;
     const value = {
-      volume: `${name}(${volume_type} | ${size}GB)`,
+      volume: `${name}(${volume_type} | ${size}GiB)`,
     };
     return value;
   }

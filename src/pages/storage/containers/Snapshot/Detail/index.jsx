@@ -57,7 +57,7 @@ export class Detail extends Base {
       {
         title: t('Size'),
         dataIndex: 'size',
-        render: (data) => `${data} GB`,
+        render: (data) => `${data} GiB`,
       },
       {
         title: t('Created At'),

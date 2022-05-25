@@ -86,7 +86,7 @@ export default class index extends Component {
       <>
         <span className={styles.cpu}>{t('CPU(Core)')}</span>
         <InputNumber value={cpu} onChange={this.onCpuChange} {...config} />
-        <span className={styles.ram}>{t('RAM(MB)')}</span>
+        <span className={styles.ram}>{t('RAM(MiB)')}</span>
         <InputNumber value={ram} onChange={this.onRamChange} {...config} />
       </>
     );

@@ -44,7 +44,7 @@ export class Migrate extends ModalAction {
   get defaultValue() {
     const { name, id, volume_type, size, host } = this.item;
     const value = {
-      volume: `${name || id}(${volume_type} | ${size}GB)`,
+      volume: `${name || id}(${volume_type} | ${size}GiB)`,
       host,
     };
     return value;

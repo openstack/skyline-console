@@ -45,13 +45,13 @@ export class BaseDetail extends Base {
         valueRender: 'bytes',
       },
       {
-        label: t('Min System Disk(GB)'),
+        label: t('Min System Disk(GiB)'),
         dataIndex: 'min_disk',
       },
       {
-        label: t('Min Memory(GB)'),
+        label: t('Min Memory(GiB)'),
         dataIndex: 'min_ram',
-        valueRender: 'GBValue',
+        valueRender: 'GiBValue',
       },
       {
         label: t('Disk Format'),

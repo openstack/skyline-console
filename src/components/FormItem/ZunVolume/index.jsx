@@ -29,15 +29,21 @@ export default class ZunVolume extends React.Component {
     this.state = {
       type: [],
       source: [],
-      destination: "",
+      destination: '',
       cinderVolumeSize: 0,
-      isCinderVolume: false
+      isCinderVolume: false,
     };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { type, source, cinderVolumeSize, destination } = nextProps.value || {};
-    if (type !== prevState.type || source !== prevState.source || cinderVolumeSize !== prevState.cinderVolumeSize || destination !== prevState.destination) {
+    const { type, source, cinderVolumeSize, destination } =
+      nextProps.value || {};
+    if (
+      type !== prevState.type ||
+      source !== prevState.source ||
+      cinderVolumeSize !== prevState.cinderVolumeSize ||
+      destination !== prevState.destination
+    ) {
       return {
         type,
         source,
@@ -56,19 +62,15 @@ export default class ZunVolume extends React.Component {
   };
 
   onTypeChange = (value) => {
-    if (value === "cinder-new") {
-      this.setState(
-        {
-          isCinderVolume: true,
-        },
-      );
+    if (value === 'cinder-new') {
+      this.setState({
+        isCinderVolume: true,
+      });
     }
-    if (value === "cinder-available") {
-      this.setState(
-        {
-          isCinderVolume: false,
-        },
-      );
+    if (value === 'cinder-available') {
+      this.setState({
+        isCinderVolume: false,
+      });
     }
     this.onChange({
       ...this.state,
@@ -86,25 +88,20 @@ export default class ZunVolume extends React.Component {
   onCinderVolumeSizeChange = (e) => {
     this.onChange({
       ...this.state,
-      cinderVolumeSize: e
+      cinderVolumeSize: e,
     });
   };
 
   onDestinationChange = (e) => {
     this.onChange({
       ...this.state,
-      destination: e.target.value
+      destination: e.target.value,
     });
   };
 
   render() {
-    const {
-      type,
-      source,
-      destination,
-      cinderVolumeSize,
-      isCinderVolume
-    } = this.state;
+    const { type, source, destination, cinderVolumeSize, isCinderVolume } =
+      this.state;
     const { name } = this.props;
     const selectType = (
       <Select
@@ -142,9 +139,7 @@ export default class ZunVolume extends React.Component {
     );
 
     return (
-      <Form.Item
-        className={styles['zun-volume']}
-        name={name}>
+      <Form.Item className={styles['zun-volume']} name={name}>
         <Row gutter={24}>
           <Col span={8}>
             <span className={styles.label}>{t('Type')}</span>
@@ -155,7 +150,7 @@ export default class ZunVolume extends React.Component {
             {selectSource}
           </Col>
           <Col span={8} hidden={!isCinderVolume}>
-            <span className={styles.label}>{t('Size(GB)')}</span>
+            <span className={styles.label}>{t('Size(GiB)')}</span>
             {inputSize}
           </Col>
           <Col span={8}>

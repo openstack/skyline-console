@@ -106,7 +106,7 @@ export class Snapshots extends Base {
       title: t('Size'),
       dataIndex: 'size',
       isHideable: true,
-      render: (data) => `${data} GB`,
+      render: (data) => `${data} GiB`,
       sorter: false,
     },
     {

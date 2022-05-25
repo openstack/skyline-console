@@ -46,11 +46,11 @@ export class StorageClusterStore extends MonitorBase {
         used:
           used.data.result.length === 0
             ? 0
-            : this.formatToGB(used.data.result[0].value[1]),
+            : this.formatToGiB(used.data.result[0].value[1]),
         total:
           total.data.result.length === 0
             ? 0
-            : this.formatToGB(total.data.result[0].value[1]),
+            : this.formatToGiB(total.data.result[0].value[1]),
       },
     });
   };

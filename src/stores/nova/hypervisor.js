@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getGBValue } from 'utils/index';
+import { getGiBValue } from 'utils/index';
 import { action, observable } from 'mobx';
 import { get } from 'lodash';
 import client from 'client';
@@ -48,8 +48,8 @@ export class HypervisorStore extends Base {
   //     item.vcpus_used_percent = ((item.vcpus_used / item.vcpus) * 100).toFixed(2);
   //     item.memory_mb_percent = ((item.memory_mb_used / item.memory_mb) * 100).toFixed(2);
   //     item.storage_percent = ((item.local_gb_used / item.local_gb) * 100).toFixed(2);
-  //     item.memory_mb_used_gb = getGBValue(item.memory_mb_used);
-  //     item.memory_mb_gb = getGBValue(item.memory_mb);
+  //     item.memory_mb_used_gb = getGiBValue(item.memory_mb_used);
+  //     item.memory_mb_gb = getGiBValue(item.memory_mb);
   //     return item;
   //   };
   // }
@@ -84,8 +84,8 @@ export class HypervisorStore extends Base {
         (item.local_gb &&
           ((item.local_gb_used / item.local_gb) * 100).toFixed(2)) ||
         0;
-      item.memory_mb_used_gb = getGBValue(item.memory_mb_used);
-      item.memory_mb_gb = getGBValue(item.memory_mb);
+      item.memory_mb_used_gb = getGiBValue(item.memory_mb_used);
+      item.memory_mb_gb = getGiBValue(item.memory_mb);
       return item;
     });
     return result;
@@ -129,8 +129,8 @@ export class HypervisorStore extends Base {
       const { usages: { VGPU } = {} } = usagesVGPU;
       item.vgpus_used = VGPU;
     }
-    item.memory_mb_used_gb = getGBValue(item.memory_mb_used);
-    item.memory_mb_gb = getGBValue(item.memory_mb);
+    item.memory_mb_used_gb = getGiBValue(item.memory_mb_used);
+    item.memory_mb_gb = getGiBValue(item.memory_mb);
     const newItem = await this.detailDidFetch(item, all_projects);
     const detail = this.mapper(newItem);
     this.detail = detail;
@@ -168,8 +168,8 @@ export class HypervisorStore extends Base {
       }
       data.vcpus += item.vcpus;
       data.vcpus_used += item.vcpus_used;
-      data.memory_mb += getGBValue(item.memory_mb);
-      data.memory_mb_used += getGBValue(item.memory_mb_used);
+      data.memory_mb += getGiBValue(item.memory_mb);
+      data.memory_mb_used += getGiBValue(item.memory_mb_used);
       // fetch storage info from prometheus
       // data.local_gb += item.local_gb;
       // data.local_gb_used += item.local_gb_used;
