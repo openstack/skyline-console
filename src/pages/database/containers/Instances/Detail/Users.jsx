@@ -15,7 +15,6 @@
 import Base from 'containers/List';
 import { inject, observer } from 'mobx-react';
 import { InstancesUsersStore } from 'stores/trove/instances-user';
-import { get as _get } from 'lodash';
 import actions from './UserAction';
 
 export class Users extends Base {
@@ -23,12 +22,19 @@ export class Users extends Base {
     this.store = new InstancesUsersStore();
   }
 
+  get rowKey() {
+    return 'name';
+  }
+
   get name() {
     return t('Users');
   }
 
   get actionConfigs() {
-    return actions;
+    if (this.isAdminPage) {
+      return actions.actionConfigsAdmin;
+    }
+    return actions.actionConfigs;
   }
 
   get policy() {
@@ -52,7 +58,6 @@ export class Users extends Base {
       {
         title: t('Databases'),
         dataIndex: 'databases',
-        render: (value) => _get(value, 'name', '-'),
       },
     ];
   };

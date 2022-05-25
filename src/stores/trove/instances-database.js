@@ -37,6 +37,11 @@ export class InstancesDatabasesStore extends Base {
   }
 
   @action
+  async create(id, body) {
+    return this.submitting(this.client.create(id, body));
+  }
+
+  @action
   async deleteDatabase({ id, name }) {
     return this.submitting(this.client.delete(id, name));
   }
