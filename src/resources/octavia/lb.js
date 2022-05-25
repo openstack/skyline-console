@@ -79,7 +79,7 @@ export const listenerProtocols = [
     value: 'TCP',
   },
   {
-    label: 'TERMINATED_HTTPS',
+    label: 'HTTPS',
     value: 'TERMINATED_HTTPS',
   },
   {

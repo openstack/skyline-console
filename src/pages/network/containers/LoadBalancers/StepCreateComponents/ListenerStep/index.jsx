@@ -152,7 +152,9 @@ export class ListenerStep extends Base {
             name: 'name',
           },
         ],
-        columns: certificateColumns,
+        columns: certificateColumns.filter(
+          (it) => it.dataIndex !== 'algorithm'
+        ),
         display:
           listener_protocol === 'TERMINATED_HTTPS' &&
           listener_ssl_parsing_method === 'two-way',
@@ -170,7 +172,7 @@ export class ListenerStep extends Base {
         required: true,
         data: this.SNISecrets,
         isLoading: false,
-        isMulti: false,
+        isMulti: true,
         filterParams: [
           {
             label: t('Name'),

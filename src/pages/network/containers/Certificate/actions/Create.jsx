@@ -73,18 +73,11 @@ export class CreateAction extends ModalAction {
   validateCertificateContent = (rule, value) => {
     if (!value) return Promise.reject();
     const keys = value.split(/\n/g);
-    const start = keys.shift();
-    const end = keys.pop();
-    const middleCorrect = keys.every((it, index) => {
-      if (index === keys.length - 1) {
-        return it.length <= 64;
-      }
-      return it.length === 64;
-    });
+    const start = keys[0];
+    const end = keys[keys.length - 1] || keys[keys.length - 2]; // Compatible with last blank line
     if (
       start === '-----BEGIN CERTIFICATE-----' &&
-      end === '-----END CERTIFICATE-----' &&
-      middleCorrect
+      end === '-----END CERTIFICATE-----'
     ) {
       return Promise.resolve();
     }
@@ -98,18 +91,11 @@ export class CreateAction extends ModalAction {
   validateCertificateKeyPair = (rule, value) => {
     if (!value) return Promise.reject();
     const keys = value.split(/\n/g);
-    const start = keys.shift();
-    const end = keys.pop();
-    const middleCorrect = keys.every((it, index) => {
-      if (index === keys.length - 1) {
-        return it.length <= 64;
-      }
-      return it.length === 64;
-    });
+    const start = keys[0];
+    const end = keys[keys.length - 1] || keys[keys.length - 2];
     if (
       start === '-----BEGIN RSA PRIVATE KEY-----' &&
-      end === '-----END RSA PRIVATE KEY-----' &&
-      middleCorrect
+      end === '-----END RSA PRIVATE KEY-----'
     ) {
       return Promise.resolve();
     }

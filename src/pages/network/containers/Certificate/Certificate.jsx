@@ -20,7 +20,6 @@ import globalContainersStore, {
 import { checkPolicyRule } from 'resources/skyline/policy';
 import globalSecretsStore, { SecretsStore } from 'stores/barbican/secrets';
 import { certificateMode, certificateStatus } from 'resources/octavia/lb';
-import { getOptions } from 'utils/index';
 import { parse } from 'qs';
 import actionConfigs from './actions';
 
@@ -90,16 +89,20 @@ export class Certificate extends Base {
         title: t('Certificate Type'),
         dataIndex: 'mode',
         render: (value) => certificateMode[value] || value,
+        isHideable: true,
       },
       {
         title: t('Expires At'),
         dataIndex: 'expiration',
         valueRender: 'toLocalTime',
+        isHideable: true,
       },
       {
         title: t('Domain Name'),
         dataIndex: 'algorithm',
         render: (value) => value || '-',
+        hidden: this.currentMode === 'CA',
+        isHideable: true,
       },
       {
         title: t('Status'),
@@ -110,6 +113,7 @@ export class Certificate extends Base {
         title: t('Created At'),
         dataIndex: 'created',
         valueRender: 'toLocalTime',
+        isHideable: true,
       },
     ];
     return columns;
@@ -120,11 +124,6 @@ export class Certificate extends Base {
       {
         label: t('Name'),
         name: 'name',
-      },
-      {
-        label: t('Certificate Type'),
-        name: 'mode',
-        options: getOptions(certificateMode),
       },
     ];
     return ret;

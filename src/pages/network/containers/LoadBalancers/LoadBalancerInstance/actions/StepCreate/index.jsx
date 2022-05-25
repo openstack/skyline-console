@@ -120,9 +120,10 @@ export class StepCreate extends StepAction {
         listenerData.client_authentication = 'MANDATORY';
       }
       if (listener_sni_enabled && listener_sni_container_refs) {
-        listenerData.sni_container_refs = [
-          listener_sni_container_refs.selectedRows[0].container_ref,
-        ];
+        listenerData.sni_container_refs =
+          listener_sni_container_refs.selectedRows.map(
+            (it) => it.container_ref
+          );
       }
     }
 

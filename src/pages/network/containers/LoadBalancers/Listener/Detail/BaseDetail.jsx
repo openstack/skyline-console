@@ -46,6 +46,10 @@ export class BaseDetail extends Base {
     return [this.PoolInfo, this.healthMonitor];
   }
 
+  get rightCards() {
+    return [this.certificateInfo];
+  }
+
   get PoolInfo() {
     const { default_pool = {} } = this.detailData || {};
     const { name, protocol, lb_algorithm, description } = default_pool;
@@ -104,6 +108,67 @@ export class BaseDetail extends Base {
     return {
       title: t('HealthMonitor'),
       options,
+    };
+  }
+
+  get certificateInfo() {
+    const options = [
+      {
+        label: t('Server Certificate'),
+        dataIndex: 'serverCertificateId',
+        render: (value) => {
+          return value
+            ? this.getLinkRender(
+                'certificateContainerDetail',
+                value,
+                {
+                  id: value,
+                },
+                null
+              )
+            : '-';
+        },
+      },
+      {
+        label: t('CA Certificate'),
+        dataIndex: 'caCertificateId',
+        render: (value) => {
+          return value
+            ? this.getLinkRender(
+                'certificateSecretDetail',
+                value,
+                {
+                  id: value,
+                },
+                null
+              )
+            : '-';
+        },
+      },
+      {
+        label: t('SNI Certificate'),
+        dataIndex: 'sniCertificateId',
+        render: (value) => {
+          return value.length
+            ? value.map(
+                (it, index) =>
+                  this.getLinkRender(
+                    'certificateContainerDetail',
+                    `${it}${index === value.length - 1 ? '' : ' , '}`,
+                    {
+                      id: it,
+                    }
+                  ),
+                null
+              )
+            : '-';
+        },
+      },
+    ];
+    return {
+      title: t('certificate'),
+      options,
+      labelCol: 4,
     };
   }
 }

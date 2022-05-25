@@ -150,7 +150,9 @@ export class Create extends ModalAction {
             name: 'name',
           },
         ],
-        columns: certificateColumns,
+        columns: certificateColumns.filter(
+          (it) => it.dataIndex !== 'algorithm'
+        ),
         display:
           protocol === 'TERMINATED_HTTPS' && ssl_parsing_method === 'two-way',
       },
@@ -167,7 +169,7 @@ export class Create extends ModalAction {
         required: true,
         data: this.SNICertificate,
         isLoading: this.containersStore.list.isLoading,
-        isMulti: false,
+        isMulti: true,
         filterParams: [
           {
             label: t('Name'),
@@ -217,9 +219,9 @@ export class Create extends ModalAction {
       data.client_authentication = 'MANDATORY';
     }
     if (sni_container_refs) {
-      data.sni_container_refs = [
-        sni_container_refs.selectedRows[0].container_ref,
-      ];
+      data.sni_container_refs = sni_container_refs.selectedRows.map(
+        (it) => it.container_ref
+      );
     }
     return this.store.create(data);
   };

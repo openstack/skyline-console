@@ -1069,7 +1069,7 @@
   "If OS is Linux, system will reset root password, if OS is Windows, system will reset Administrator password.": "如果操作系统是Linux，系统会修改root用户密码，如果是Windows，系统会修改Administrator用户密码。",
   "If an instance is using this flavor, deleting it will cause the instance's flavor data to be missing. Are you sure to delete {name}?": "若有云主机正在使用此 flavor，删除会导致云主机的 flavor 数据缺失，确定删除 {name} ？",
   "If checked, the network will be enable.": "如果选中，那么网络将被启用。",
-  "If it is an SNI type certificate, a domain name needs to be specified": "如果是 SNI 类型证书，需制定域名",
+  "If it is an SNI type certificate, a domain name needs to be specified": "如果是 SNI 类型证书，需指定域名",
   "If no gateway is specified, the first IP address will be defaulted.": "如果不指定网关IP，默认是第一个地址。",
   "If not provided, the roles assigned to the application credential will be the same as the roles in the current token.": "如果不选择，那么分配给应用凭证的角色将与当前用户的角色相同。",
   "If nova-compute on the host is disabled, it will be forbidden to be selected as the target host.": "如果计算节点上的nova-compute被禁用，将禁止其作为目标节点。",

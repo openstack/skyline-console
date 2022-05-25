@@ -50,7 +50,7 @@ export class Detail extends Base {
   get tabs() {
     return [
       {
-        title: t('Detail Info'),
+        title: t('BaseDetail'),
         key: 'detail_info',
         component: BaseDetail,
       },
