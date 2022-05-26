@@ -39,8 +39,7 @@ export class ConfirmStep extends Base {
 
   getSourceValue() {
     const { context } = this.props;
-    const { source } = context;
-    const { selectedRows = [], selectedRowKeys = [] } = context[source.value];
+    const { selectedRows = [], selectedRowKeys = [] } = context.image;
     return selectedRows.length ? selectedRows[0].name : selectedRowKeys[0];
   }
 
@@ -115,6 +114,10 @@ export class ConfirmStep extends Base {
           {
             label: t('Flavor'),
             value: this.getFlavor(),
+          },
+          {
+            label: t('Image Name'),
+            value: this.getSourceValue(),
           },
         ],
       },
