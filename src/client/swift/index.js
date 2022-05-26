@@ -15,7 +15,7 @@
 import Base from '../client/base';
 import { swiftBase } from '../client/constants';
 
-class SwiftClient extends Base {
+export class SwiftClient extends Base {
   get baseUrl() {
     return swiftBase();
   }

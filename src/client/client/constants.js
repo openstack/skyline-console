@@ -34,7 +34,7 @@ export const endpointVersionMap = {
   manilav2: 'v2',
   barbican: 'v1',
   zun: 'v1',
-  magnum : 'v1',
+  magnum: 'v1',
 };
 
 export const endpointsDefault = {

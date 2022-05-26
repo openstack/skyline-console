@@ -15,7 +15,7 @@
 import Base from '../client/base';
 import { troveBase } from '../client/constants';
 
-class TroveClient extends Base {
+export class TroveClient extends Base {
   get baseUrl() {
     return troveBase();
   }

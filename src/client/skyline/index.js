@@ -15,7 +15,7 @@
 import Base from '../client/base';
 import { skylineBase } from '../client/constants';
 
-class SkylineClient extends Base {
+export class SkylineClient extends Base {
   get baseUrl() {
     return skylineBase();
   }

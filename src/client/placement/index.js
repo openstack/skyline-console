@@ -15,7 +15,7 @@
 import Base from '../client/base';
 import { placementBase } from '../client/constants';
 
-class PlacementClient extends Base {
+export class PlacementClient extends Base {
   get baseUrl() {
     return placementBase();
   }

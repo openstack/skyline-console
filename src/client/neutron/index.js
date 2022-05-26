@@ -15,7 +15,7 @@
 import Base from '../client/base';
 import { neutronBase } from '../client/constants';
 
-class NeutronClient extends Base {
+export class NeutronClient extends Base {
   get baseUrl() {
     return neutronBase();
   }

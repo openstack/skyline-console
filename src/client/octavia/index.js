@@ -15,7 +15,7 @@
 import Base from '../client/base';
 import { octaviaBase } from '../client/constants';
 
-class OctaviaClient extends Base {
+export class OctaviaClient extends Base {
   get baseUrl() {
     return octaviaBase();
   }

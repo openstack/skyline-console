@@ -15,7 +15,7 @@
 import Base from '../client/base';
 import { barbicanBase } from '../client/constants';
 
-class BarbicanClient extends Base {
+export class BarbicanClient extends Base {
   get baseUrl() {
     return barbicanBase();
   }
