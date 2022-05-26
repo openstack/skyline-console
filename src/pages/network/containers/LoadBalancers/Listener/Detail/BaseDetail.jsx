@@ -47,7 +47,11 @@ export class BaseDetail extends Base {
   }
 
   get rightCards() {
-    return [this.certificateInfo];
+    const { protocol } = this.detailData || {};
+    if (protocol === 'TERMINATED_HTTPS') {
+      return [this.certificateInfo];
+    }
+    return [];
   }
 
   get PoolInfo() {

@@ -50,6 +50,8 @@ export class ListenerDetail extends Base {
       {
         title: t('Protocol Type'),
         dataIndex: 'protocol',
+        render: (value) =>
+          (value === 'TERMINATED_HTTPS' ? 'HTTPS' : value) || '-',
       },
       {
         title: t('Port'),

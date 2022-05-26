@@ -81,6 +81,8 @@ export class Listeners extends Base {
       title: t('Protocol'),
       dataIndex: 'protocol',
       isHideable: true,
+      render: (value) =>
+        (value === 'TERMINATED_HTTPS' ? 'HTTPS' : value) || '-',
     },
     {
       title: t('Port'),

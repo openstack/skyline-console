@@ -49,13 +49,15 @@ export class ListenerStore extends Base {
   async detailDidFetch(item) {
     const {
       default_pool_id,
-      default_tls_container_ref = '',
-      client_ca_tls_container_ref = '',
-      sni_container_refs = [],
+      default_tls_container_ref,
+      client_ca_tls_container_ref,
+      sni_container_refs,
     } = item;
-    const [, serverId] = default_tls_container_ref.split('/containers/');
-    const [, caId] = client_ca_tls_container_ref.split('/secrets/');
-    const sniId = sni_container_refs.map((it) => {
+    const [, serverId] = (default_tls_container_ref || '').split(
+      '/containers/'
+    );
+    const [, caId] = (client_ca_tls_container_ref || '').split('/secrets/');
+    const sniId = (sni_container_refs || []).map((it) => {
       const [, ssid] = it.split('/containers/');
       return ssid;
     });
