@@ -155,10 +155,6 @@ export class BaseDetail extends Base {
         label: t('VCPUs'),
         content: flavor.vcpus,
       },
-      // {
-      //   label: t('Disk'),
-      //   content: `${flavor.disk} GB`,
-      // },
     ];
     if (
       extra_specs[':architecture'] === 'heterogeneous_computing' &&

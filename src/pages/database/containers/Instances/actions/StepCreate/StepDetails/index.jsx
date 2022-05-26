@@ -148,7 +148,7 @@ export class StepDetails extends Base {
       },
       {
         name: 'size',
-        label: t('Size (GB)'),
+        label: t('Size (GiB)'),
         type: 'input-number',
         min: 1,
         max: 50,

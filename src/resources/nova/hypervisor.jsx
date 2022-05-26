@@ -69,12 +69,6 @@ export const hypervisorColumns = [
         record.memory_mb_gb
       })`,
   },
-  // {
-  //   title: t('Used Local Storage (GB)'),
-  //   dataIndex: 'storage_percent',
-  //   render: (value, record) => <Progress value={value} label={`${record.local_gb_used || '-'} / ${record.local_gb || '-'}`} />,
-  //   width: 180,
-  // },
   {
     title: t('Instances'),
     dataIndex: 'running_vms',
