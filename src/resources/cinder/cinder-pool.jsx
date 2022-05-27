@@ -30,7 +30,7 @@ export const poolColumns = [
     isHideable: true,
   },
   {
-    title: t('Storage Capacity(GB)'),
+    title: t('Storage Capacity(GiB)'),
     dataIndex: 'usedGBPercent',
     isHideable: true,
     render: (value, record) => (

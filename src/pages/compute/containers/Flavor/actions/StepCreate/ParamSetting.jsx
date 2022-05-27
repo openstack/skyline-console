@@ -305,7 +305,7 @@ export class ParamSetting extends Base {
       'The unit suffix must be one of the following: Kb(it), Kib(it), Mb(it), Mib(it), Gb(it), Gib(it), Tb(it), Tib(it), KB, KiB, MB, MiB, GB, GiB, TB, TiB. If the unit suffix is not provided, it is assumed to be KB.'
     );
     const pageSizePlaceholder = t(
-      'Please enter a memory page size, such as: 1024, 1024MB'
+      'Please enter a memory page size, such as: 1024, 1024MiB'
     );
 
     return [

@@ -12,13 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
-import globalImageStore from "src/stores/glance/image";
-import globalKeypairStore from "src/stores/nova/keypair";
-import Base from "components/Form";
-import { inject, observer } from "mobx-react";
+import globalImageStore from 'src/stores/glance/image';
+import globalKeypairStore from 'src/stores/nova/keypair';
+import Base from 'components/Form';
+import { inject, observer } from 'mobx-react';
 import React from 'react';
-import FlavorSelectTable from "src/pages/compute/containers/Instance/components/FlavorSelectTable";
+import FlavorSelectTable from 'src/pages/compute/containers/Instance/components/FlavorSelectTable';
 
 export class StepNodeSpec extends Base {
   init() {
@@ -27,11 +26,11 @@ export class StepNodeSpec extends Base {
   }
 
   get title() {
-    return t("Node Spec");
+    return t('Node Spec');
   }
 
   get name() {
-    return t("Node Spec");
+    return t('Node Spec');
   }
 
   async getImageOsDistro() {
@@ -69,25 +68,23 @@ export class StepNodeSpec extends Base {
 
   get getVolumeDriver() {
     const { context = {} } = this.props;
-    const {
-      coeSelectRows = "",
-      coe = ""
-    } = context;
-    let volumeDriver = [];
+    const { coeSelectRows = '', coe = '' } = context;
+    const volumeDriver = [];
     if (!coeSelectRows || !coe) {
-      volumeDriver.push({ val: "cinder", name: "Cinder" }, { val: "rexray", name: "Rexray" })
+      volumeDriver.push(
+        { val: 'cinder', name: 'Cinder' },
+        { val: 'rexray', name: 'Rexray' }
+      );
     }
-    if (coeSelectRows === "kubernetes") {
-      volumeDriver.push({ val: "cinder", name: "Cinder" })
+    if (coeSelectRows === 'kubernetes') {
+      volumeDriver.push({ val: 'cinder', name: 'Cinder' });
+    } else if (coeSelectRows) {
+      volumeDriver.push({ val: 'rexray', name: 'Rexray' });
     }
-    else if (coeSelectRows) {
-      volumeDriver.push({ val: "rexray", name: "Rexray" })
-    }
-    return (volumeDriver || [])
-      .map((it) => ({
-        value: it.val,
-        label: it.name,
-      }));
+    return (volumeDriver || []).map((it) => ({
+      value: it.val,
+      label: it.name,
+    }));
   }
 
   onFlavorChange = (value) => {
@@ -116,20 +113,20 @@ export class StepNodeSpec extends Base {
   get formItems() {
     return [
       {
-        name: "image",
-        label: t("Image"),
-        type: "select",
+        name: 'image',
+        label: t('Image'),
+        type: 'select',
         options: this.getImageOsDistroList,
         allowClear: true,
-        showSearch: true
+        showSearch: true,
       },
       {
-        name: "keypair",
-        label: t("Keypair"),
-        type: "select",
+        name: 'keypair',
+        label: t('Keypair'),
+        type: 'select',
         options: this.getKeypairList,
         allowClear: true,
-        showSearch: true
+        showSearch: true,
       },
       {
         name: 'flavorCurrent',
@@ -141,9 +138,7 @@ export class StepNodeSpec extends Base {
         name: 'flavor',
         label: t('Flavor'),
         type: 'select-table',
-        component: (
-          <FlavorSelectTable onChange={this.onFlavorChange} />
-        ),
+        component: <FlavorSelectTable onChange={this.onFlavorChange} />,
       },
       {
         name: 'masterFlavorCurrent',
@@ -152,47 +147,45 @@ export class StepNodeSpec extends Base {
         iconType: 'flavor',
       },
       {
-        name: "masterFlavor",
-        label: t("Master Flavor"),
-        type: "select-table",
-        component: (
-          <FlavorSelectTable onChange={this.onFlavorChange} />
-        ),
+        name: 'masterFlavor',
+        label: t('Master Flavor'),
+        type: 'select-table',
+        component: <FlavorSelectTable onChange={this.onFlavorChange} />,
       },
       {
-        name: "volumeDriver",
-        label: t("Volume Driver"),
-        type: "select",
+        name: 'volumeDriver',
+        label: t('Volume Driver'),
+        type: 'select',
         options: this.getVolumeDriver,
         allowClear: true,
-        showSearch: true
+        showSearch: true,
       },
       {
-        name: "dockerStorageDriver",
-        label: t("Docker Storage Driver"),
-        type: "select",
+        name: 'dockerStorageDriver',
+        label: t('Docker Storage Driver'),
+        type: 'select',
         options: [
           {
-            label: t("Overlay"),
-            value: "overlay"
+            label: t('Overlay'),
+            value: 'overlay',
           },
           {
-            label: t("Overlay2"),
-            value: "overlay2"
-          }
+            label: t('Overlay2'),
+            value: 'overlay2',
+          },
         ],
         allowClear: true,
-        showSearch: true
+        showSearch: true,
       },
       {
-        name: "dockerVolumeSize",
-        label: t("Docker Volume Size (GB)"),
-        type: "input-number",
-        min: "1",
-        placeholder: "Spec"
-      }
-    ]
+        name: 'dockerVolumeSize',
+        label: t('Docker Volume Size (GiB)'),
+        type: 'input-number',
+        min: '1',
+        placeholder: 'Spec',
+      },
+    ];
   }
 }
 
-export default inject("rootStore")(observer(StepNodeSpec))
+export default inject('rootStore')(observer(StepNodeSpec));

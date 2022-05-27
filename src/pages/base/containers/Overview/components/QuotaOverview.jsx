@@ -34,7 +34,7 @@ export const quotaCardList = [
     value: [
       { text: t('Instances'), key: 'instances' },
       { text: t('vCPUs'), key: 'cores' },
-      { text: t('Memory'), key: 'ram' },
+      { text: t('Memory (GiB)'), key: 'ram' },
       { text: t('Key Pair'), key: 'key_pairs' },
       { text: t('Server Group'), key: 'server_groups' },
     ],
@@ -44,11 +44,11 @@ export const quotaCardList = [
     type: 'storage',
     value: [
       {
-        text: t('volumes'),
+        text: t('Volumes'),
         key: 'volumes',
       },
       {
-        text: t('Gigabytes(GB)'),
+        text: t('Gigabytes (GiB)'),
         key: 'gigabytes',
       },
       {
@@ -56,11 +56,11 @@ export const quotaCardList = [
         key: 'snapshots',
       },
       {
-        text: t('backups'),
+        text: t('Backups'),
         key: 'backups',
       },
       {
-        text: t('backup gigabytes (GiB)'),
+        text: t('Backup gigabytes (GiB)'),
         key: 'backup_gigabytes',
       },
     ],
@@ -104,7 +104,7 @@ export const getVolumeTypeCards = (data) => {
           key: `volumes_${item.name}`,
         },
         {
-          text: t('{name} type gigabytes(GB)', { name: item.name }),
+          text: t('{name} type gigabytes(GiB)', { name: item.name }),
           key: `gigabytes_${item.name}`,
         },
         {
