@@ -47,34 +47,58 @@ const Index = function () {
   const [memCount, setMemCount] = useState(0);
   const [weekData, setWeekData] = useState(build7DaysData());
 
-  useEffect(() => {
-    const end = moment();
-    const start = moment().startOf('day');
-    setIsLoading(true);
-    fetchData({
+  const fetchDataByDate = async (date) => {
+    const end = moment(date).endOf('day');
+    const start = moment(date).startOf('day');
+    const result = await fetchData({
       interval: STEP,
       currentRange: [start, end],
-    })
-      .then((d) => {
-        const [cpuData, memoryData] = dataHandler(d).retData;
-        const newCpuCount = cpuData.reduce(
-          (pre, cur, idx) =>
-            idx > 0 && cur.x - cpuData[idx - 1].x > STEP ? pre + 1 : pre,
-          0
-        );
-        const newMemoryCount = memoryData.reduce(
-          (pre, cur, idx) =>
-            idx > 0 && cur.x - memoryData[idx - 1].x > STEP ? pre + 1 : pre,
-          0
-        );
-        setCpuCount(newCpuCount);
-        setMemCount(newMemoryCount);
-        weekData[6].count = newCpuCount + newMemoryCount;
-        setWeekData([...weekData]);
-      })
-      .finally(() => {
-        setIsLoading(false);
+    });
+    const [cpuData, memoryData] = dataHandler(result).retData;
+    const newCpuCount = cpuData.reduce(
+      (pre, cur, idx) =>
+        idx > 0 && cur.x - cpuData[idx - 1].x > STEP ? pre + 1 : pre,
+      0
+    );
+    const newMemoryCount = memoryData.reduce(
+      (pre, cur, idx) =>
+        idx > 0 && cur.x - memoryData[idx - 1].x > STEP ? pre + 1 : pre,
+      0
+    );
+    const total = newCpuCount + newMemoryCount;
+    return {
+      date,
+      total,
+      cpuTotal: newCpuCount,
+      memTotal: newMemoryCount,
+    };
+  };
+
+  const fetchWeekData = async () => {
+    setIsLoading(true);
+    const reqs = weekData.map((it) => {
+      const { fullDate } = it;
+      return fetchDataByDate(fullDate);
+    });
+    try {
+      const results = await Promise.all(reqs);
+      results.forEach((r, index) => {
+        const { total, cpuTotal, memTotal } = r;
+        if (index === results.length - 1) {
+          setCpuCount(cpuTotal);
+          setMemCount(memTotal);
+        }
+        weekData[index].count = total;
       });
+    } catch (e) {
+      console.log(e);
+    }
+    setWeekData([...weekData]);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    fetchWeekData();
   }, []);
 
   return isLoading ? (
@@ -107,6 +131,7 @@ function build7DaysData() {
   const ret = [];
   for (let index = 6; index >= 0; index--) {
     ret.push({
+      fullDate: today.clone().subtract(index, 'day').format('YYYY-MM-DD'),
       date: today.clone().subtract(index, 'day').format('MM-DD'),
       count: 0,
     });
