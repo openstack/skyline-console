@@ -191,7 +191,7 @@ export class BaseStep extends Base {
         type: 'select-table',
         data: this.images,
         isLoading: imageLoading,
-        isMulti: false,
+        required: true,
         filterParams: [
           {
             label: t('Name'),
