@@ -15,7 +15,7 @@
 import Base from '../client/base';
 import { cinderBase, cinderEndpoint } from '../client/constants';
 
-class CinderClient extends Base {
+export class CinderClient extends Base {
   get baseUrl() {
     return cinderBase();
   }

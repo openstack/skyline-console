@@ -15,7 +15,7 @@
 import Base from '../client/base';
 import { novaBase } from '../client/constants';
 
-class NovaClient extends Base {
+export class NovaClient extends Base {
   get baseUrl() {
     return novaBase();
   }

@@ -13,7 +13,7 @@
 import Base from '../client/base';
 import { magnumBase } from '../client/constants';
 
-class MagnumClient extends Base {
+export class MagnumClient extends Base {
   get baseUrl() {
     return magnumBase();
   }
@@ -30,7 +30,7 @@ class MagnumClient extends Base {
             key: 'actions/resize',
             method: 'post',
           },
-        ]
+        ],
       },
       {
         name: 'clusterTemplates',

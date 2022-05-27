@@ -15,7 +15,7 @@
 import Base from '../client/base';
 import { keystoneBase } from '../client/constants';
 
-class KeystoneClient extends Base {
+export class KeystoneClient extends Base {
   get baseUrl() {
     return keystoneBase();
   }

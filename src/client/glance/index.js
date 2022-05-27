@@ -15,7 +15,7 @@
 import Base from '../client/base';
 import { glanceBase } from '../client/constants';
 
-class GlanceClient extends Base {
+export class GlanceClient extends Base {
   get baseUrl() {
     return glanceBase();
   }

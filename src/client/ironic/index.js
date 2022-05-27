@@ -15,7 +15,7 @@
 import Base from '../client/base';
 import { ironicBase } from '../client/constants';
 
-class IronicClient extends Base {
+export class IronicClient extends Base {
   get baseUrl() {
     return ironicBase();
   }
@@ -60,7 +60,8 @@ class IronicClient extends Base {
             key: 'management/boot_device/supported',
           },
           {
-            key: 'updateTraits',
+            name: 'updateTraits',
+            key: 'traits',
             method: 'put',
           },
         ],

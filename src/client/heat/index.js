@@ -15,7 +15,7 @@
 import Base from '../client/base';
 import { heatBase } from '../client/constants';
 
-class HeatClient extends Base {
+export class HeatClient extends Base {
   get baseUrl() {
     return heatBase();
   }

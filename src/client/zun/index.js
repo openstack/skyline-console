@@ -15,7 +15,7 @@
 import { zunBase } from 'client/client/constants';
 import Base from '../client/base';
 
-class ZunClient extends Base {
+export class ZunClient extends Base {
   get baseUrl() {
     return zunBase();
   }
