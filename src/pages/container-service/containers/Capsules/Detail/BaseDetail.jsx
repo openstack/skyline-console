@@ -27,28 +27,8 @@ export class BaseDetail extends Base {
   get baseInfoCard() {
     const options = [
       {
-        label: t('ID'),
-        dataIndex: 'uuid',
-      },
-      {
-        label: t('Name'),
-        dataIndex: 'meta_name',
-      },
-      {
-        label: t('Status'),
-        dataIndex: 'status',
-      },
-      {
         label: t('Status Reason'),
         dataIndex: 'status_reason',
-      },
-      {
-        label: t('Created'),
-        dataIndex: 'created_at',
-      },
-      {
-        label: t('Updated'),
-        dataIndex: 'updated_at',
       },
       {
         label: t('Project ID'),
@@ -61,7 +41,7 @@ export class BaseDetail extends Base {
     ];
 
     return {
-      title: t('Cluster Type'),
+      title: t('Capsule Type'),
       options,
     };
   }
@@ -74,9 +54,11 @@ export class BaseDetail extends Base {
         render: (value) =>
           value.map((it) => {
             return (
-              <React.Fragment>
-                <b>Name</b> : {it.name} <br /> <b>Container ID</b> : {it.uuid}
-              </React.Fragment>
+              <div key={it.uuid}>
+                <b>{t('Name')}</b> : {it.name}
+                <br />
+                <b>{t('Container ID')}</b>: {it.uuid}
+              </div>
             );
           }),
       },
@@ -113,7 +95,7 @@ export class BaseDetail extends Base {
         render: (value) =>
           value.map((it) => {
             return (
-              <div>
+              <div key={it.href}>
                 {it.href} : {it.rel}
               </div>
             );
@@ -133,4 +115,4 @@ export class BaseDetail extends Base {
   }
 }
 
-export default inject("rootStore")(observer(BaseDetail))
+export default inject('rootStore')(observer(BaseDetail));

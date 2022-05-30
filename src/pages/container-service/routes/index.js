@@ -28,7 +28,11 @@ export default [
     routes: [
       // Containers
       { path: `${PATH}/containers`, component: Containers, exact: true },
-      { path: `${PATH}/containers/create`, component: StepCreateContainer, exact: true },
+      {
+        path: `${PATH}/containers/create`,
+        component: StepCreateContainer,
+        exact: true,
+      },
       {
         path: `${PATH}/containers/detail/:id`,
         component: ContainersDetail,

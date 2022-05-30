@@ -10,21 +10,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { inject, observer } from 'mobx-react';
 import { ConfirmAction } from 'containers/Action';
 import globalCapsulesStore from 'src/stores/zun/capsules';
 
-export class DeleteCapsules extends ConfirmAction {
+export default class DeleteCapsule extends ConfirmAction {
   get id() {
     return 'delete';
   }
 
   get title() {
-    return t('Delete Capsules');
+    return t('Delete Capsule');
   }
 
   get actionName() {
-    return t('Delete Capsules');
+    return t('Delete Capsule');
+  }
+
+  get buttonText() {
+    return t('Delete');
   }
 
   get buttonType() {
@@ -37,5 +40,3 @@ export class DeleteCapsules extends ConfirmAction {
 
   onSubmit = (data) => globalCapsulesStore.delete({ id: data.uuid });
 }
-
-export default inject("rootStore")(observer(DeleteCapsules))

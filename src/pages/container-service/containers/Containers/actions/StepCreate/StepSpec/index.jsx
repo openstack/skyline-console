@@ -10,9 +10,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Base from "components/Form";
-import { inject, observer } from "mobx-react";
-import globalAvailabilityZoneStore from "src/stores/nova/zone";
+import Base from 'components/Form';
+import { inject, observer } from 'mobx-react';
+import globalAvailabilityZoneStore from 'src/stores/nova/zone';
 
 export class StepSpec extends Base {
   init() {
@@ -21,11 +21,11 @@ export class StepSpec extends Base {
   }
 
   get title() {
-    return t("Spec");
+    return t('Spec');
   }
 
   get name() {
-    return t("Spec");
+    return t('Spec');
   }
 
   async getAvailabilityZones() {
@@ -33,7 +33,8 @@ export class StepSpec extends Base {
   }
 
   get getAvailabilityZoneList() {
-    return (globalAvailabilityZoneStore.list.data || []).filter((it) => it.zoneState.available)
+    return (globalAvailabilityZoneStore.list.data || [])
+      .filter((it) => it.zoneState.available)
       .map((it) => ({
         value: it.zoneName,
         label: it.zoneName,
@@ -41,95 +42,95 @@ export class StepSpec extends Base {
   }
 
   onExitPolicyChange(value) {
-    this.setState({ isMaxRetry: value === "on-failure" ? false : true })
+    this.setState({ isMaxRetry: value !== 'on-failure' });
   }
 
   get formItems() {
     return [
       {
-        name: "hostname",
-        label: t("Hostname"),
-        type: "input",
-        placeholder: t("The host name of this container"),
+        name: 'hostname',
+        label: t('Hostname'),
+        type: 'input',
+        placeholder: t('The host name of this container'),
       },
       {
-        name: "runtime",
-        label: t("Runtime"),
-        type: "input",
-        placeholder: t("The runtime to create container with"),
+        name: 'runtime',
+        label: t('Runtime'),
+        type: 'input',
+        placeholder: t('The runtime to create container with'),
       },
       {
-        name: "cpu",
-        label: t("CPU"),
-        type: "input-number",
-        placeholder: t("The number of virtual cpu for this container"),
+        name: 'cpu',
+        label: t('CPU'),
+        type: 'input-number',
+        placeholder: t('The number of virtual cpu for this container'),
         min: 1,
-        width: 300
+        width: 300,
       },
       {
-        name: "memory",
-        label: t("Memory"),
-        type: "input-number",
-        placeholder: t("The container memory size in MiB"),
+        name: 'memory',
+        label: t('Memory'),
+        type: 'input-number',
+        placeholder: t('The container memory size in MiB'),
         min: 4,
-        width: 300
+        width: 300,
       },
       {
-        name: "disk",
-        label: t("Disk"),
-        type: "input-number",
-        placeholder: t("The disk size in GİB for per container"),
+        name: 'disk',
+        label: t('Disk'),
+        type: 'input-number',
+        placeholder: t('The disk size in GİB for per container'),
         min: 1,
-        width: 300
+        width: 300,
       },
       {
-        name: "availableZone",
-        label: t("Availability Zone"),
-        type: "select",
+        name: 'availableZone',
+        label: t('Availability Zone'),
+        type: 'select',
         options: this.getAvailabilityZoneList,
         allowClear: true,
-        showSearch: true
+        showSearch: true,
       },
       {
-        name: "exitPolicy",
-        label: t("Exit Policy"),
-        type: "select",
+        name: 'exitPolicy',
+        label: t('Exit Policy'),
+        type: 'select',
         options: [
           {
-            label: t("No"),
-            value: "no"
+            label: t('No'),
+            value: 'no',
           },
           {
-            label: t("On failure"),
-            value: "on-failure"
+            label: t('On failure'),
+            value: 'on-failure',
           },
           {
-            label: t("Always"),
-            value: "always"
+            label: t('Always'),
+            value: 'always',
           },
           {
-            label: t("Unless Stopped"),
-            value: "unless-stopped"
+            label: t('Unless Stopped'),
+            value: 'unless-stopped',
           },
         ],
         onChange: (val) => this.onExitPolicyChange(val),
         allowClear: true,
-        showSearch: true
+        showSearch: true,
       },
       {
-        name: "maxRetry",
-        label: t("Max Retry"),
-        type: "input-number",
+        name: 'maxRetry',
+        label: t('Max Retry'),
+        type: 'input-number',
         placeholder: t("Retry times for 'Restart on failure' policy"),
         min: 1,
-        disabled: this.state.isMaxRetry
+        disabled: this.state.isMaxRetry,
       },
       {
-        name: "enableAutoHeal",
-        label: t("Enable auto heal"),
-        type: "check"
-      }
-    ]
+        name: 'enableAutoHeal',
+        label: t('Enable auto heal'),
+        type: 'check',
+      },
+    ];
   }
 }
 

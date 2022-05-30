@@ -36,7 +36,7 @@ export class Create extends ModalAction {
   }
 
   get name() {
-    return t('Create Capsules');
+    return t('Create Capsule');
   }
 
   static policy = 'container:capsule:create';
@@ -76,4 +76,4 @@ export class Create extends ModalAction {
   };
 }
 
-export default inject("rootStore")(observer(Create))
+export default inject('rootStore')(observer(Create));

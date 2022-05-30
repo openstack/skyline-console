@@ -12,14 +12,16 @@
 
 import { SecurityGroupStore } from 'stores/neutron/security-group';
 import { VirtualAdapterStore } from 'stores/neutron/virtual-adapter';
-import Base from "components/Form";
-import { inject, observer } from "mobx-react";
+import Base from 'components/Form';
+import { inject, observer } from 'mobx-react';
 import globalNetworkStore from 'src/stores/neutron/network';
 import { portColumns, portFilters } from 'src/resources/neutron/port';
-import { securityGroupColumns, securityGroupFilter } from 'src/resources/neutron/security-group';
+import {
+  securityGroupColumns,
+  securityGroupFilter,
+} from 'src/resources/neutron/security-group';
 
 export class StepNetworks extends Base {
-
   init() {
     this.getNetworkStore();
     this.portStore = new VirtualAdapterStore();
@@ -27,11 +29,11 @@ export class StepNetworks extends Base {
   }
 
   get title() {
-    return t("Networks")
+    return t('Networks');
   }
 
   get name() {
-    return t("Networks")
+    return t('Networks');
   }
 
   async getNetworkStore() {
@@ -61,7 +63,11 @@ export class StepNetworks extends Base {
         columns: portColumns,
         filterParams: portFilters,
         backendPageStore: this.portStore,
-        extraParams: { project_id: this.currentProjectId, device_owner: [''], admin_state_up: [true] }
+        extraParams: {
+          project_id: this.currentProjectId,
+          device_owner: [''],
+          admin_state_up: [true],
+        },
       },
       {
         name: 'securityGroup',
@@ -71,9 +77,9 @@ export class StepNetworks extends Base {
         extraParams: { project_id: this.currentProjectId },
         columns: securityGroupColumns,
         filterParams: securityGroupFilter,
-        isMulti: true
-      }
-    ]
+        isMulti: true,
+      },
+    ];
   }
 }
 

@@ -29,18 +29,6 @@ export class BaseDetail extends Base {
   get baseInfoCard() {
     const options = [
       {
-        label: t('ID'),
-        dataIndex: 'uuid',
-      },
-      {
-        label: t('Name'),
-        dataIndex: 'name',
-      },
-      {
-        label: t('Status'),
-        dataIndex: 'status',
-      },
-      {
         label: t('Status Detail'),
         dataIndex: 'status_detail',
       },
@@ -83,7 +71,7 @@ export class BaseDetail extends Base {
       {
         label: t('Environment'),
         dataIndex: 'environment',
-        content
+        content,
       },
       {
         label: t('Interactive'),
@@ -98,7 +86,11 @@ export class BaseDetail extends Base {
       {
         label: t('Links'),
         dataIndex: 'links',
-        render: (value) => <div> <pre>{JSON.stringify(value, null, 4)}</pre> </div>
+        render: (value) => (
+          <div>
+            <pre>{JSON.stringify(value, null, 4)}</pre>
+          </div>
+        ),
       },
     ];
 
@@ -145,7 +137,11 @@ export class BaseDetail extends Base {
       {
         label: t('Restart Policy'),
         dataIndex: 'restart_policy',
-        render: (value) => <div> <pre>{JSON.stringify(value, null, 4)}</pre> </div>
+        render: (value) => (
+          <div>
+            <pre>{JSON.stringify(value, null, 4)}</pre>
+          </div>
+        ),
       },
       {
         label: t('Auto Remove'),
@@ -158,17 +154,29 @@ export class BaseDetail extends Base {
       {
         label: t('Addresses'),
         dataIndex: 'addresses',
-        render: (value) => <div> <pre>{JSON.stringify(value, null, 4)}</pre> </div>
+        render: (value) => (
+          <div>
+            <pre>{JSON.stringify(value, null, 4)}</pre>
+          </div>
+        ),
       },
       {
         label: t('Ports'),
         dataIndex: 'ports',
-        render: (value) => <div> <pre>{JSON.stringify(value, null, 4)}</pre> </div>
+        render: (value) => (
+          <div>
+            <pre>{JSON.stringify(value, null, 4)}</pre>
+          </div>
+        ),
       },
       {
         label: t('Security Groups'),
         dataIndex: 'security_groups',
-        render: (value) => <div> <pre>{JSON.stringify(value, null, 4)}</pre> </div>
+        render: (value) => (
+          <div>
+            <pre>{JSON.stringify(value, null, 4)}</pre>
+          </div>
+        ),
       },
     ];
 
@@ -180,4 +188,4 @@ export class BaseDetail extends Base {
   }
 }
 
-export default inject("rootStore")(observer(BaseDetail))
+export default inject('rootStore')(observer(BaseDetail));

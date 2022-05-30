@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 import Create from './Create';
-import DeleteCapsules from './Delete';
+import DeleteCapsule from './Delete';
 
 const actionConfigs = {
   rowActions: {
-    firstAction: DeleteCapsules,
+    firstAction: DeleteCapsule,
   },
-  batchActions: [DeleteCapsules],
+  batchActions: [DeleteCapsule],
   primaryActions: [Create],
 };
 

@@ -15,17 +15,21 @@
 import { ConfirmAction } from 'containers/Action';
 import globalContainersStore from 'src/stores/zun/containers';
 
-export default class StopContainers extends ConfirmAction {
+export default class StopContainer extends ConfirmAction {
   get id() {
     return 'start';
   }
 
   get title() {
-    return t('Stop Container')
+    return t('Stop Container');
   }
 
   get actionName() {
     return t('Stop Container');
+  }
+
+  get buttonText() {
+    return t('Stop');
   }
 
   policy = 'container:container:stop';

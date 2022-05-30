@@ -10,58 +10,58 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Base from "components/Form";
-import { inject, observer } from "mobx-react";
+import Base from 'components/Form';
+import { inject, observer } from 'mobx-react';
 
 export class StepInfo extends Base {
   get title() {
-    return t("Info")
+    return t('Info');
   }
 
   get name() {
-    return t("Info")
+    return t('Info');
   }
 
   get formItems() {
     return [
       {
-        name: "clusterName",
-        label: t("Cluster Name"),
-        type: "input",
-        placeholder: t("Cluster Name"),
-        required: true
+        name: 'containerName',
+        label: t('Container Name'),
+        type: 'input',
+        placeholder: t('Container Name'),
+        required: true,
       },
       {
-        name: "image",
-        label: t("Image"),
-        type: "input",
-        placeholder: t("Name or ID og the container image"),
-        required: true
+        name: 'image',
+        label: t('Image'),
+        type: 'input',
+        placeholder: t('Name or ID og the container image'),
+        required: true,
       },
       {
-        name: "imageDriver",
-        label: t("Image Driver"),
-        placeholder: t("Image Driver"),
-        type: "select",
+        name: 'imageDriver',
+        label: t('Image Driver'),
+        placeholder: t('Image Driver'),
+        type: 'select',
         options: [
           {
-            label: t("Docker"),
-            value: "docker"
+            label: t('Docker'),
+            value: 'docker',
           },
           {
-            label: t("Glance"),
-            value: "glance"
-          }
+            label: t('Glance'),
+            value: 'glance',
+          },
         ],
-        allowClear: true
+        allowClear: true,
       },
       {
-        name: "command",
-        label: t("Command"),
-        type: "input",
-        placeholder: t("A command that will be sent to the container"),
+        name: 'command',
+        label: t('Command'),
+        type: 'input',
+        placeholder: t('A command that will be sent to the container'),
       },
-    ]
+    ];
   }
 }
 

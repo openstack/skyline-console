@@ -10,13 +10,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Base from "components/Form";
-import { inject, observer } from "mobx-react";
-import ZunVolume from "src/components/FormItem/ZunVolume";
-import globalVolumeStore from "src/stores/cinder/volume";
+import Base from 'components/Form';
+import { inject, observer } from 'mobx-react';
+import ZunVolume from 'src/components/FormItem/ZunVolume';
+import globalVolumeStore from 'src/stores/cinder/volume';
 
 export class StepVolumes extends Base {
-
   init() {
     this.globalVolumeStore = globalVolumeStore;
     this.getVolumeStore();
@@ -38,14 +37,17 @@ export class StepVolumes extends Base {
   get formItems() {
     return [
       {
-        name: "mounts",
-        label: t("Type"),
+        name: 'mounts',
+        label: t('Type'),
         type: 'add-select',
-        optionsType: [{ label: "Existing Cinder Volume", value: "cinder-available" }, { label: "New Cinder Volume", value: "cinder-new" }],
+        optionsType: [
+          { label: 'Existing Cinder Volume', value: 'cinder-available' },
+          { label: 'New Cinder Volume', value: 'cinder-new' },
+        ],
         optionsSource: this.cinderVolume,
         itemComponent: ZunVolume,
       },
-    ]
+    ];
   }
 }
 

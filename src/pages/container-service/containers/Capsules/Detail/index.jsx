@@ -14,8 +14,9 @@
 
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/TabDetail';
-import BaseDetail from './BaseDetail';
 import globalCapsulesStore from 'src/stores/zun/capsules';
+import { capsuleStatus } from 'resources/zun/capsule';
+import BaseDetail from './BaseDetail';
 
 export class CapsulesDetail extends Base {
   init() {
@@ -27,7 +28,7 @@ export class CapsulesDetail extends Base {
   }
 
   get listUrl() {
-    return this.getRoutePath('capsules');
+    return this.getRoutePath('zunCapsules');
   }
 
   get policy() {
@@ -38,7 +39,22 @@ export class CapsulesDetail extends Base {
     return [
       {
         title: t('Name'),
-        dataIndex: 'name',
+        dataIndex: 'meta_name',
+      },
+      {
+        title: t('Status'),
+        dataIndex: 'status',
+        render: (value) => capsuleStatus[value] || value,
+      },
+      {
+        title: t('Created At'),
+        dataIndex: 'created_at',
+        valueRender: 'toLocalTime',
+      },
+      {
+        title: t('Updated At'),
+        dataIndex: 'updated_at',
+        valueRender: 'toLocalTime',
       },
     ];
   }
@@ -54,4 +70,4 @@ export class CapsulesDetail extends Base {
   }
 }
 
-export default inject("rootStore")(observer(CapsulesDetail))
+export default inject('rootStore')(observer(CapsulesDetail));

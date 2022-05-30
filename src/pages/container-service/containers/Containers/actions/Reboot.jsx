@@ -13,17 +13,21 @@
 import { ConfirmAction } from 'containers/Action';
 import globalContainersStore from 'src/stores/zun/containers';
 
-export default class RebootContainers extends ConfirmAction {
+export default class RebootContainer extends ConfirmAction {
   get id() {
     return 'reboot';
   }
 
   get title() {
-    return t('Reboot Container')
+    return t('Reboot Container');
   }
 
   get actionName() {
     return t('Reboot Container');
+  }
+
+  get buttonText() {
+    return t('Reboot');
   }
 
   policy = 'container:container:reboot';

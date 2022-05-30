@@ -591,19 +591,19 @@ const renderMenu = (t) => {
         {
           path: '/container/containers',
           name: t('Containers'),
-          key: 'containers',
+          key: 'zunContainers',
           level: 1,
           children: [
             {
               path: '/container/containers/create',
               name: t('Create Container'),
-              key: 'containersCreateContainer',
+              key: 'zunContainersCreateContainer',
               level: 2,
             },
             {
               path: /^\/container\/containers\/detail\/.[^/]+$/,
-              name: t('Containers Detail'),
-              key: 'containersDetail',
+              name: t('Container Detail'),
+              key: 'zunContainerDetail',
               level: 2,
               routePath: '/container/containers/detail/:id',
             },
@@ -612,13 +612,13 @@ const renderMenu = (t) => {
         {
           path: '/container/capsules',
           name: t('Capsules'),
-          key: 'capsules',
+          key: 'zunCapsules',
           level: 1,
           children: [
             {
               path: /^\/container\/capsules\/detail\/.[^/]+$/,
-              name: t('Capsules Detail'),
-              key: 'capsulesDetail',
+              name: t('Capsule Detail'),
+              key: 'zunCapsuleDetail',
               level: 2,
               routePath: '/container/capsules/detail/:id',
             },

@@ -14,8 +14,9 @@
 
 import Base from 'containers/List';
 import { inject, observer } from 'mobx-react';
-import actionConfigs from './actions';
 import globalContainersStore from 'src/stores/zun/containers';
+import { containerStatus, containerTaskStatus } from 'resources/zun/container';
+import actionConfigs from './actions';
 
 export class Containers extends Base {
   init() {
@@ -44,13 +45,14 @@ export class Containers extends Base {
       title: t('ID/Name'),
       dataIndex: 'name',
       isLink: true,
-      routeName: this.getRouteName('containerDetail'),
+      routeName: this.getRouteName('zunContainerDetail'),
       idKey: 'uuid',
     },
     {
       title: t('Status'),
       isHideable: true,
       dataIndex: 'status',
+      render: (value) => containerStatus[value] || value,
     },
     {
       title: t('Image'),
@@ -61,8 +63,9 @@ export class Containers extends Base {
       title: t('Task State'),
       isHideable: true,
       dataIndex: 'task_state',
+      render: (value) => containerTaskStatus[value] || value,
     },
   ];
 }
 
-export default inject("rootStore")(observer(Containers))
+export default inject('rootStore')(observer(Containers));

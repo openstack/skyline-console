@@ -15,13 +15,13 @@
 import { ConfirmAction } from 'containers/Action';
 import globalContainersStore from 'src/stores/zun/containers';
 
-export default class DeleteContainers extends ConfirmAction {
+export default class DeleteContainer extends ConfirmAction {
   get id() {
     return 'delete';
   }
 
   get title() {
-    return t('Delete Container')
+    return t('Delete Container');
   }
 
   get actionName() {
@@ -40,6 +40,5 @@ export default class DeleteContainers extends ConfirmAction {
 
   allowedCheckFunc = () => true;
 
-  onSubmit = (data) =>
-    globalContainersStore.delete({ id: data.uuid });
+  onSubmit = (data) => globalContainersStore.delete({ id: data.uuid });
 }

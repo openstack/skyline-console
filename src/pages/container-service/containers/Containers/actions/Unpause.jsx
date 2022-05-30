@@ -15,17 +15,21 @@
 import { ConfirmAction } from 'containers/Action';
 import globalContainersStore from 'src/stores/zun/containers';
 
-export default class UnpauseContainers extends ConfirmAction {
+export default class UnpauseContainer extends ConfirmAction {
   get id() {
     return 'Unpause';
   }
 
   get title() {
-    return t('Unpause Container')
+    return t('Unpause Container');
   }
 
   get actionName() {
     return t('Unpause Container');
+  }
+
+  get buttonText() {
+    return t('Unpause');
   }
 
   policy = 'container:container:unpause';

@@ -14,8 +14,9 @@
 
 import Base from 'containers/List';
 import { inject, observer } from 'mobx-react';
+import globalCapsulesStore from 'stores/zun/capsules';
+import { capsuleStatus } from 'resources/zun/capsule';
 import actionConfigs from './actions';
-import globalCapsulesStore from 'src/stores/zun/capsules';
 
 export class Capsules extends Base {
   init() {
@@ -40,13 +41,14 @@ export class Capsules extends Base {
       title: t('ID/Name'),
       dataIndex: 'meta_name',
       isLink: true,
-      routeName: this.getRouteName('capsulesDetail'),
+      routeName: this.getRouteName('zunCapsuleDetail'),
       idKey: 'uuid',
     },
     {
       title: t('Status'),
       isHideable: true,
       dataIndex: 'status',
+      render: (value) => capsuleStatus[value] || value,
     },
     {
       title: t('CPU'),
@@ -61,4 +63,4 @@ export class Capsules extends Base {
   ];
 }
 
-export default inject("rootStore")(observer(Capsules))
+export default inject('rootStore')(observer(Capsules));

@@ -21,9 +21,9 @@ import UnpauseContainer from './Unpause';
 
 const actionConfigs = {
   rowActions: {
+    firstAction: DeleteContainer,
     moreActions: [
       { action: StartContainer },
-      { action: DeleteContainer },
       { action: StopContainer },
       { action: PauseContainer },
       { action: RebootContainer },

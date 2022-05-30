@@ -12,20 +12,21 @@
 
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/TabDetail';
-import BaseDetail from './BaseDetail';
 import globalContainersStore from 'src/stores/zun/containers';
+import { containerStatus } from 'resources/zun/container';
+import BaseDetail from './BaseDetail';
 
-export class ContainersDetail extends Base {
+export class ContainerDetail extends Base {
   init() {
     this.store = globalContainersStore;
   }
 
   get name() {
-    return t('Containers Detail');
+    return t('Container Detail');
   }
 
   get listUrl() {
-    return this.getRoutePath('containers');
+    return this.getRoutePath('zunContainers');
   }
 
   get policy() {
@@ -37,6 +38,11 @@ export class ContainersDetail extends Base {
       {
         title: t('Name'),
         dataIndex: 'name',
+      },
+      {
+        title: t('Status'),
+        dataIndex: 'status',
+        render: (value) => containerStatus[value] || value,
       },
     ];
   }
@@ -52,4 +58,4 @@ export class ContainersDetail extends Base {
   }
 }
 
-export default inject("rootStore")(observer(ContainersDetail))
+export default inject('rootStore')(observer(ContainerDetail));

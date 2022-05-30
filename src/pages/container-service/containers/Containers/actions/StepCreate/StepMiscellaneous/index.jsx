@@ -10,61 +10,60 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Base from "components/Form";
-import { inject, observer } from "mobx-react";
+import Base from 'components/Form';
+import { inject, observer } from 'mobx-react';
 import KeyValueInput from 'components/FormItem/KeyValueInput';
 
 export class StepMiscellaneous extends Base {
-
   get title() {
-    return t("Miscellaneous")
+    return t('Miscellaneous');
   }
 
   get name() {
-    return t("Miscellaneous")
+    return t('Miscellaneous');
   }
 
   get formItems() {
     return [
       {
-        name: "workingDirectory",
-        label: t("Working Directory"),
-        type: "input",
-        placeholder: t("The working directory for commands to run in")
+        name: 'workingDirectory',
+        label: t('Working Directory'),
+        type: 'input',
+        placeholder: t('The working directory for commands to run in'),
       },
       {
-        name: "environmentVariables",
-        label: t("Environment Variables"),
+        name: 'environmentVariables',
+        label: t('Environment Variables'),
         type: 'add-select',
         itemComponent: KeyValueInput,
         addText: t('Add Environment Variable'),
       },
       {
-        name: "enableInteractiveMode",
-        label: t("Enable interactive mode"),
-        type: "check"
+        name: 'enableInteractiveMode',
+        label: t('Enable interactive mode'),
+        type: 'check',
       },
       {
-        type: "divider"
+        type: 'divider',
       },
       {
-        name: "labels",
-        label: t("Labels"),
+        name: 'labels',
+        label: t('Labels'),
         type: 'add-select',
         itemComponent: KeyValueInput,
         addText: t('Add Label'),
       },
       {
-        type: "divider"
+        type: 'divider',
       },
       {
-        name: "hints",
-        label: t("Scheduler Hints"),
-        type: "select",
-        mode: "tags",
-        placeholder: t("Type to Scheduler Hints and press enter")
-      }
-    ]
+        name: 'hints',
+        label: t('Scheduler Hints'),
+        type: 'select',
+        mode: 'tags',
+        placeholder: t('Type to Scheduler Hints and press enter'),
+      },
+    ];
   }
 }
 

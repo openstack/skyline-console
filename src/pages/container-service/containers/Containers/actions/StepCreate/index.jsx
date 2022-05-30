@@ -10,38 +10,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { inject, observer } from 'mobx-react';
+import { StepAction } from 'src/containers/Action';
+import globalContainersStore from 'src/stores/zun/containers';
 import StepInfo from './StepInfo';
 import StepSpec from './StepSpec';
 import StepVolumes from './StepVolumes';
 import StepNetworks from './StepNetworks';
-import { inject, observer } from 'mobx-react';
 import StepMiscellaneous from './StepMiscellaneous';
-import { StepAction } from 'src/containers/Action';
-import globalContainersStore from 'src/stores/zun/containers';
 
 export class StepCreate extends StepAction {
   init() {
     this.store = globalContainersStore;
   }
 
-  static id = "create-container";
+  static id = 'create-container';
 
-  static title = t("Create Container (Step)");
+  static title = t('Create Container');
 
-  static path = "/container/containers/create";
+  static path = '/container/containers/create';
 
-  static policy = "container:container:create";
+  static policy = 'container:container:create';
 
   static allowed() {
     return Promise.resolve(true);
   }
 
   get name() {
-    return t("Create Container");
+    return t('Create Container');
   }
 
   get listUrl() {
-    return this.getRoutePath("containers");
+    return this.getRoutePath('zunContainers');
   }
 
   get hasConfirmStep() {
@@ -51,80 +51,91 @@ export class StepCreate extends StepAction {
   get steps() {
     return [
       {
-        title: t("Info"),
-        component: StepInfo
+        title: t('Info'),
+        component: StepInfo,
       },
       {
-        title: t("Spec"),
-        component: StepSpec
+        title: t('Spec'),
+        component: StepSpec,
       },
       {
-        title: t("Volumes"),
-        component: StepVolumes
+        title: t('Volumes'),
+        component: StepVolumes,
       },
       {
-        title: t("Network Config"),
-        component: StepNetworks
+        title: t('Network Config'),
+        component: StepNetworks,
       },
       {
-        title: t("Miscellaneous"),
-        component: StepMiscellaneous
-      }
-    ]
+        title: t('Miscellaneous'),
+        component: StepMiscellaneous,
+      },
+    ];
   }
 
   onSubmit = (values) => {
-    const { environmentVariables, labels, mounts } = values
+    const { environmentVariables, labels, mounts } = values;
 
     const requestEnviranment = {};
     const requestLabels = {};
     const requestValumes = [];
 
-    environmentVariables !== null ? environmentVariables.forEach((item) => {
-      const labelKey = item.value.key.toLowerCase().trim();
-      const labelValue = item.value.value.toLowerCase().trim();
-      requestEnviranment[labelKey] = labelValue;
-    }) : null;
+    environmentVariables !== undefined
+      ? environmentVariables.forEach((item) => {
+          const labelKey = item.value.key.toLowerCase().trim();
+          const labelValue = item.value.value.toLowerCase().trim();
+          requestEnviranment[labelKey] = labelValue;
+        })
+      : undefined;
 
-    labels !== null ? labels.forEach((item) => {
-      const key = item.value.key.toLowerCase().trim();
-      const value = item.value.value.toLowerCase().trim();
-      requestLabels[key] = value;
-    }) : null;
+    labels !== undefined
+      ? labels.forEach((item) => {
+          const key = item.value.key.toLowerCase().trim();
+          const value = item.value.value.toLowerCase().trim();
+          requestLabels[key] = value;
+        })
+      : undefined;
 
-    mounts !== null ? mounts.forEach((item) => {
-      const destination = item.value.destination;
-      const source = item.value.source;
-      const type = item.value.type;
-      const cinderVolumeSize = item.value.cinderVolumeSize;
-      item.value.isCinderVolume !== true ? requestValumes.push({
-        destination: destination,
-        source: source,
-        type: type
-      }) : requestValumes.push({
-        destination: destination,
-        cinderVolumeSize: cinderVolumeSize,
-        type: type
-      })
-    }) : null;
+    mounts !== undefined
+      ? mounts.forEach((item) => {
+          const { destination } = item.value;
+          const { source } = item.value;
+          const { type } = item.value;
+          const { cinderVolumeSize } = item.value;
+          item.value.isCinderVolume !== true
+            ? requestValumes.push({
+                destination,
+                source,
+                type,
+              })
+            : requestValumes.push({
+                destination,
+                cinderVolumeSize,
+                type,
+              });
+        })
+      : undefined;
 
     const networks = [];
     const securityGroups = [];
 
-    values.networkSelect.selectedRowKeys.forEach((item) => {
-      networks.push({ network: item })
-    })
+    values.networkSelect &&
+      values.networkSelect.selectedRowKeys.forEach((item) => {
+        networks.push({ network: item });
+      });
 
-    values.ports.selectedRowKeys.forEach((item) => {
-      networks.push({ port: item })
-    })
+    values.ports &&
+      values.ports.selectedRowKeys.forEach((item) => {
+        networks.push({ port: item });
+      });
 
-    values.securityGroup.selectedRowKeys.forEach((item) => {
-      securityGroups.push(item)
-    })
+    values.securityGroup &&
+      values.securityGroup.selectedRowKeys.forEach((item) => {
+        securityGroups.push(item);
+      });
 
     return this.store.create({
-      name: values.clusterName,
+      name: values.containerName,
       image: values.image,
       command: values.command,
       cpu: values.cpu,
@@ -133,8 +144,8 @@ export class StepCreate extends StepAction {
       labels: requestLabels,
       environment: requestEnviranment,
       restart_policy: {
-        Name: values.exitPolicy === null ? 'no' : values.exitPolicy,
-        MaximumRetryCount: values.maxRetry === null ? 0 : values.maxRetry,
+        Name: values.exitPolicy === undefined ? 'no' : values.exitPolicy,
+        MaximumRetryCount: values.maxRetry === undefined ? 0 : values.maxRetry,
       },
       interactive: values.enableInteractiveMode,
       image_driver: values.imageDriver,
@@ -146,8 +157,8 @@ export class StepCreate extends StepAction {
       availability_zone: values.availableZone,
       hints: values.hints,
       mounts: values.mounts,
-    })
-  }
+    });
+  };
 }
 
 export default inject('rootStore')(observer(StepCreate));
