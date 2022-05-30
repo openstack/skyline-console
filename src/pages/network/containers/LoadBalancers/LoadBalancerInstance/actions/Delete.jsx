@@ -55,7 +55,8 @@ export default class DeleteAction extends ConfirmAction {
       return true;
     }
     return (
-      (this.isCurrentProject(item) && item.provisioning_status === 'ACTIVE') ||
+      (this.isCurrentProject(item) &&
+        ['ACTIVE', 'PENDING_UPDATE'].includes(item.provisioning_status)) ||
       item.provisioning_status === 'ERROR'
     );
   };

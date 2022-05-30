@@ -36,7 +36,7 @@ export default class DeleteAction extends ConfirmAction {
     return t('delete certificate');
   }
 
-  policy = 'secret:delete';
+  policy = 'barbican:secret:delete';
 
   allowedCheckFunc = () => true;
 

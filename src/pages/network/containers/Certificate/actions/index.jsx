@@ -25,15 +25,6 @@ const actionConfigsContainer = {
   primaryActions: [CreateAction],
 };
 
-const actionConfigsContainerAdmin = {
-  rowActions: {
-    firstAction: DeleteContainerAction,
-    moreActions: [],
-  },
-  batchActions: [DeleteContainerAction],
-  primaryActions: [],
-};
-
 const actionConfigsSecret = {
   rowActions: {
     firstAction: DeleteSecretAction,
@@ -43,18 +34,7 @@ const actionConfigsSecret = {
   primaryActions: [CreateAction],
 };
 
-const actionConfigsSecretAdmin = {
-  rowActions: {
-    firstAction: DeleteSecretAction,
-    moreActions: [],
-  },
-  batchActions: [DeleteSecretAction],
-  primaryActions: [],
-};
-
 export default {
   actionConfigsContainer,
-  actionConfigsContainerAdmin,
   actionConfigsSecret,
-  actionConfigsSecretAdmin,
 };

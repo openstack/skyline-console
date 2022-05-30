@@ -171,21 +171,6 @@ export default [
         component: CertificateDetailSecret,
         exact: true,
       },
-      {
-        path: `${PATH}/certificate-admin`,
-        component: Certificate,
-        exact: true,
-      },
-      {
-        path: `${PATH}/certificate-container-admin/detail/:id`,
-        component: CertificateDetailContainer,
-        exact: true,
-      },
-      {
-        path: `${PATH}/certificate-secret-admin/detail/:id`,
-        component: CertificateDetailSecret,
-        exact: true,
-      },
       { path: `${PATH}/vpn`, component: VPN, exact: true },
       {
         path: `${PATH}/ipsec-site-connection/detail/:id`,

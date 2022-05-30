@@ -55,12 +55,14 @@ export class Create extends ModalAction {
     this.fetchSecrets();
   }
 
-  fetchContainers() {
-    this.containersStore.fetchList();
+  async fetchContainers() {
+    await this.containersStore.fetchList();
+    this.updateDefaultValue();
   }
 
-  fetchSecrets() {
-    this.secretsStore.fetchList({ mode: 'CA' });
+  async fetchSecrets() {
+    await this.secretsStore.fetchList({ mode: 'CA' });
+    this.updateDefaultValue();
   }
 
   get ServerCertificate() {
@@ -75,6 +77,10 @@ export class Create extends ModalAction {
     return (this.containersStore.list.data || []).filter(
       (it) => !!it.algorithm
     );
+  }
+
+  get isEdit() {
+    return false;
   }
 
   get nameForStateUpdate() {
@@ -110,6 +116,7 @@ export class Create extends ModalAction {
         type: 'select',
         options: listenerProtocols,
         required: true,
+        disabled: this.isEdit,
       },
       {
         name: 'ssl_parsing_method',
@@ -184,6 +191,7 @@ export class Create extends ModalAction {
         label: t('Port'),
         type: 'input-number',
         required: true,
+        disabled: this.isEdit,
       },
       {
         name: 'connection_limit',

@@ -35,11 +35,11 @@ export class Certificate extends Base {
   }
 
   get policy() {
-    return ['containers:get', 'secrets:get'];
+    return ['barbican:containers:get', 'barbican:secrets:get'];
   }
 
   get showDetail() {
-    return checkPolicyRule('secret:decrypt');
+    return checkPolicyRule('barbican:secret:decrypt');
   }
 
   get name() {
@@ -47,11 +47,6 @@ export class Certificate extends Base {
   }
 
   get actionConfigs() {
-    if (this.isAdminPage) {
-      return this.currentMode === 'SERVER'
-        ? actionConfigs.actionConfigsContainerAdmin
-        : actionConfigs.actionConfigsSecretAdmin;
-    }
     return this.currentMode === 'SERVER'
       ? actionConfigs.actionConfigsContainer
       : actionConfigs.actionConfigsSecret;

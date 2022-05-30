@@ -25,7 +25,7 @@ export class Detail extends Base {
   }
 
   get policy() {
-    return 'container:get';
+    return 'barbican:container:get';
   }
 
   get name() {
@@ -37,9 +37,6 @@ export class Detail extends Base {
   }
 
   get actionConfigs() {
-    if (this.isAdminPage) {
-      return actionConfigs.actionConfigsContainerAdmin;
-    }
     return actionConfigs.actionConfigsContainer;
   }
 

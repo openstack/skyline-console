@@ -25,7 +25,7 @@ export class Detail extends Base {
   }
 
   get policy() {
-    return 'secret:get';
+    return 'barbican:secret:get';
   }
 
   get name() {
@@ -37,14 +37,11 @@ export class Detail extends Base {
   }
 
   get actionConfigs() {
-    if (this.isAdminPage) {
-      return actionConfigs.actionConfigsSecretAdmin;
-    }
     return actionConfigs.actionConfigsSecret;
   }
 
   get detailInfos() {
-    return certificateColumns;
+    return certificateColumns.filter((it) => it.dataIndex !== 'algorithm');
   }
 
   get tabs() {

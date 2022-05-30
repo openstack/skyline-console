@@ -14,27 +14,15 @@
 
 import { inject, observer } from 'mobx-react';
 import globalListenerStore from 'stores/octavia/listener';
-import { ModalAction } from 'containers/Action';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
+import { Create as Base } from './CreateListener';
 
-export class Edit extends ModalAction {
+export class Edit extends Base {
   static id = 'edit-listener';
 
   static title = t('Edit Listener');
 
   static buttonText = t('Edit');
-
-  init() {
-    this.store = globalListenerStore;
-  }
-
-  get defaultValue() {
-    const { item } = this.props;
-    return {
-      name: item.name,
-      description: item.description,
-    };
-  }
 
   static policy = 'os_load-balancer_api:listener:put';
 
@@ -49,28 +37,98 @@ export class Edit extends ModalAction {
     );
   };
 
+  get name() {
+    return t('Edit Listener');
+  }
+
+  get isEdit() {
+    return true;
+  }
+
+  get defaultValue() {
+    const { item } = this.props;
+    const values = {
+      name: item.name,
+      description: item.description,
+      protocol: item.protocol,
+      protocol_port: item.protocol_port,
+      connection_limit: item.connection_limit,
+    };
+    if (item.protocol === 'TERMINATED_HTTPS') {
+      if (item.default_tls_container_ref) {
+        const [, uuid] = item.default_tls_container_ref.split('/containers/');
+        values.default_tls_container_ref = {
+          selectedRowKeys: [uuid],
+          selectedRows: this.ServerCertificate.filter((it) => it.id === uuid),
+        };
+      }
+      if (item.client_ca_tls_container_ref) {
+        const [, uuid] = item.client_ca_tls_container_ref.split('/secrets/');
+        values.ssl_parsing_method = 'two-way';
+        values.client_ca_tls_container_ref = {
+          selectedRowKeys: [uuid],
+          selectedRows: this.CaCertificate.filter((it) => it.id === uuid),
+        };
+      } else {
+        values.ssl_parsing_method = 'one-way';
+      }
+      if (item.sni_container_refs && item.sni_container_refs.length) {
+        values.sni_enabled = true;
+        const selectedKeys = item.sni_container_refs.map((it) => {
+          const [, uuid] = it.split('/containers/');
+          return uuid;
+        });
+        values.sni_container_refs = {
+          selectedRowKeys: selectedKeys,
+          selectedRows: this.SNICertificate.filter((it) => {
+            return selectedKeys.includes(it.id);
+          }),
+        };
+      } else {
+        values.sni_enabled = false;
+      }
+    }
+    return values;
+  }
+
   onSubmit = (values) => {
     const { id } = this.item;
-    return globalListenerStore.edit({ id }, values);
+    const {
+      protocol,
+      protocol_port,
+      sni_enabled,
+      ssl_parsing_method,
+      default_tls_container_ref,
+      client_ca_tls_container_ref,
+      sni_container_refs,
+      ...rest
+    } = values;
+    const data = {
+      ...rest,
+    };
+    if (protocol === 'TERMINATED_HTTPS') {
+      if (default_tls_container_ref) {
+        data.default_tls_container_ref =
+          default_tls_container_ref.selectedRows[0].container_ref;
+      }
+      if (ssl_parsing_method === 'two-way' && client_ca_tls_container_ref) {
+        data.client_ca_tls_container_ref =
+          client_ca_tls_container_ref.selectedRows[0].secret_ref;
+        data.client_authentication = 'MANDATORY';
+      } else {
+        data.client_ca_tls_container_ref = null;
+        data.client_authentication = 'NONE';
+      }
+      if (sni_enabled && sni_container_refs) {
+        data.sni_container_refs = sni_container_refs.selectedRows.map(
+          (it) => it.container_ref
+        );
+      } else {
+        data.sni_container_refs = [];
+      }
+    }
+    return globalListenerStore.edit({ id }, data);
   };
-
-  get formItems() {
-    return [
-      {
-        name: 'name',
-        label: t('Name'),
-        type: 'input-name',
-        required: true,
-        placeholder: t('Please input name'),
-      },
-      {
-        name: 'description',
-        label: t('Description'),
-        type: 'textarea',
-        required: false,
-      },
-    ];
-  }
 }
 
 export default inject('rootStore')(observer(Edit));
