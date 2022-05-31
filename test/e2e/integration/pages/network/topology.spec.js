@@ -21,7 +21,7 @@ describe('The Network Topology Page', () => {
   const routerName = `e2e-router-for-topo-${uuid}`;
 
   beforeEach(() => {
-    cy.login().wait(2000).visit(topologyUrl);
+    cy.login().wait(2000).visit(topologyUrl).wait(2000);
   });
 
   it('successfully prepare resource', () => {
@@ -31,7 +31,7 @@ describe('The Network Topology Page', () => {
   });
 
   it('successfully page', () => {
-    cy.wait(5000);
+    cy.wait(10000);
     cy.get('canvas').should('exist');
   });
 

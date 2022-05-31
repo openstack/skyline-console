@@ -27,4 +27,4 @@ testFiles:
   - pages/network/security-group.spec.js
   - pages/network/vpn.spec.js
   - pages/network/lb.spec.js
-  # - pages/network/topology.spec.js
+  - pages/network/topology.spec.js

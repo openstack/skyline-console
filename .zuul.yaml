@@ -552,10 +552,12 @@
               - ^src/stores/octavia/.*$
               - ^src/resources/neutron/.*$
               - ^src/resources/octavia/.*$
+              - ^test/e2e/integration/pages/network/.*$
               # storage
               - ^src/pages/storage/.*$
               - ^src/stores/cinder/.*$
               - ^src/resources/cinder/.*$
+              - ^test/e2e/integration/pages/storage/.*$
               # other
               - ^src/pages/auth/.*$
               - ^src/pages/base/.*$
@@ -569,6 +571,11 @@
               - ^src/stores/keystone/.*$
               - ^src/resources/heat/.*$
               - ^src/resources/keystone/.*$
+              - ^test/e2e/integration/pages/configuration/.*$
+              - ^test/e2e/integration/pages/heat/.*$
+              - ^test/e2e/integration/pages/identity/.*$
+              - ^test/e2e/integration/pages/error.spec.js
+              - ^test/e2e/integration/pages/login.spec.js
               # no run
               - ^src/styles/.*$
               - ^src/locales/.*$
@@ -591,10 +598,12 @@
               - ^src/resources/glance/.*$
               - ^src/resources/ironic/.*$
               - ^src/resources/nova/.*$
+              - ^test/e2e/integration/pages/compute/.*$
               # storage
               - ^src/pages/storage/.*$
               - ^src/stores/cinder/.*$
               - ^src/resources/cinder/.*$
+              - ^test/e2e/integration/pages/storage/.*$
               # other
               - ^src/pages/auth/.*$
               - ^src/pages/base/.*$
@@ -608,6 +617,11 @@
               - ^src/stores/keystone/.*$
               - ^src/resources/heat/.*$
               - ^src/resources/keystone/.*$
+              - ^test/e2e/integration/pages/configuration/.*$
+              - ^test/e2e/integration/pages/heat/.*$
+              - ^test/e2e/integration/pages/identity/.*$
+              - ^test/e2e/integration/pages/error.spec.js
+              - ^test/e2e/integration/pages/login.spec.js
               # no run
               - ^src/styles/.*$
               - ^src/locales/.*$
@@ -630,16 +644,19 @@
               - ^src/resources/glance/.*$
               - ^src/resources/ironic/.*$
               - ^src/resources/nova/.*$
+              - ^test/e2e/integration/pages/compute/.*$
               # network
               - ^src/pages/network/.*$
               - ^src/stores/neutron/.*$
               - ^src/stores/octavia/.*$
               - ^src/resources/neutron/.*$
               - ^src/resources/octavia/.*$
+              - ^test/e2e/integration/pages/network/.*$
               # storage
               - ^src/pages/storage/.*$
               - ^src/stores/cinder/.*$
               - ^src/resources/cinder/.*$
+              - ^test/e2e/integration/pages/storage/.*$
               # no run
               - ^src/styles/.*$
               - ^src/locales/.*$
@@ -662,12 +679,14 @@
               - ^src/resources/glance/.*$
               - ^src/resources/ironic/.*$
               - ^src/resources/nova/.*$
+              - ^test/e2e/integration/pages/compute/.*$
               # network
               - ^src/pages/network/.*$
               - ^src/stores/neutron/.*$
               - ^src/stores/octavia/.*$
               - ^src/resources/neutron/.*$
               - ^src/resources/octavia/.*$
+              - ^test/e2e/integration/pages/network/.*$
               # other
               - ^src/pages/auth/.*$
               - ^src/pages/base/.*$
@@ -681,6 +700,11 @@
               - ^src/stores/keystone/.*$
               - ^src/resources/heat/.*$
               - ^src/resources/keystone/.*$
+              - ^test/e2e/integration/pages/configuration/.*$
+              - ^test/e2e/integration/pages/heat/.*$
+              - ^test/e2e/integration/pages/identity/.*$
+              - ^test/e2e/integration/pages/error.spec.js
+              - ^test/e2e/integration/pages/login.spec.js
               # no run
               - ^src/styles/.*$
               - ^src/locales/.*$
