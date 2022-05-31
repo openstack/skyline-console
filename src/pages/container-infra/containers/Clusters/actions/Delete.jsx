@@ -21,7 +21,7 @@ export default class DeleteClusters extends ConfirmAction {
   }
 
   get title() {
-    return t('Delete Clusters')
+    return t('Delete Clusters');
   }
 
   get actionName() {
@@ -32,8 +32,8 @@ export default class DeleteClusters extends ConfirmAction {
     return t('Delete');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   policy = 'container-infra:cluster:delete';

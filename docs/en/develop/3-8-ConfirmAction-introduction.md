@@ -138,11 +138,21 @@ English | [简体中文](../../zh/develop/3-8-ConfirmAction-introduction.md)
 - `buttonType`
   - The type of button, support `primary`, `danger`, `default`
   - Default is `default`
+  - Take reset setting value as an example `src/pages/configuration/containers/Setting/actions/Reset.jsx`
+
+    ```javascript
+    get buttonType() {
+      return 'primary';
+    }
+    ```
+
+- `isDanger`
+  - Support boolean `false`, `true`, the default value is `false`
   - When the button is to emphasize the risk of action, the button or the text on the button is generally red, use `danger`
   - Take stop instance as an example `src/pages/compute/containers/Instance/actions/Stop.jsx` :
 
     ```javascript
-    get buttonType() {
+    get isDanger() {
       return 'danger';
     }
     ```

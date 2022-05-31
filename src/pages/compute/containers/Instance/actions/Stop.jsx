@@ -27,8 +27,8 @@ export default class Stop extends ConfirmAction {
     return t('Stop Instance');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get buttonText() {

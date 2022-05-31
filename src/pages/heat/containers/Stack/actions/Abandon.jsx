@@ -29,8 +29,8 @@ export default class Abandon extends ConfirmAction {
     return t('abandon stack');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get isAsyncAction() {

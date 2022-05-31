@@ -101,12 +101,13 @@ export default class TablePrimaryButtons extends Component {
     } = this.props;
     const primaryActionButtons = this.actionList.map((it, index) => {
       const key = `primary-${generateId()}`;
-      const { id, title, buttonType, actionType, buttonText } = it;
+      const { id, title, buttonType, actionType, buttonText, isDanger } = it;
       const config = {
         id,
         title,
         name: buttonText || title,
         buttonType,
+        isDanger,
         actionType,
         action: it,
       };

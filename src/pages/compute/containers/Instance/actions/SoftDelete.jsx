@@ -34,8 +34,8 @@ export default class SoftDelete extends ConfirmAction {
     return t('Delete Instance');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get buttonText() {

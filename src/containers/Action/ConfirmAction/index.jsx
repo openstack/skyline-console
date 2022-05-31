@@ -58,6 +58,10 @@ export default class ConfirmAction {
     return 'default';
   }
 
+  get isDanger() {
+    return false;
+  }
+
   get buttonText() {
     // action button text use buttonText || title
     return '';

@@ -24,10 +24,6 @@ export default class Enable extends ConfirmAction {
     return t('Enable Neutron Agent');
   }
 
-  get buttonType() {
-    return 'default';
-  }
-
   get buttonText() {
     return t('Enable');
   }

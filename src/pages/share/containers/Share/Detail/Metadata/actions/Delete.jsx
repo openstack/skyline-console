@@ -24,8 +24,8 @@ export default class Delete extends ConfirmAction {
     return t('Delete Share Metadata');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get buttonText() {

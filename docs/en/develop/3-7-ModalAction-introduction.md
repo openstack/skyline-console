@@ -271,12 +271,16 @@ English | [简体中文](../../zh/develop/3-7-ModalAction-introduction.md)
 
 - `buttonType`
   - Static
-  - The type of button, support `primary`, `danger`
-  - When the button is to emphasize the risk of action, the button or the text on the button is generally red, use `danger`
+  - The type of button, support `primary`, `default`, `link`
+
+- `isDanger`
+  - Static
+  - Support boolean `false`, `true`, the default value is `false`
+  - When the button is to emphasize the risk of action, the button or the text on the button is generally red, use `true`
   - As the example of disable cinder service`src/pages/configuration/containers/SystemInfo/CinderService/actions/Disable.jsx` :
 
     ```javascript
-    static buttonType = 'danger';
+    static isDanger = true;
     ```
 
 - `modalSize`

@@ -32,7 +32,7 @@ function getIdReset(formItemName) {
 }
 
 Cypress.Commands.add('closeNotice', () => {
-  cy.get('.ant-notification-topRight')
+  cy.get('.ant-notification-topRight', { timeout: 30000 })
     .first()
     .find('.anticon-check-circle')
     .should('exist');

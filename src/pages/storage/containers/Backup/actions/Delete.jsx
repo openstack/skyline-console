@@ -24,8 +24,8 @@ export default class DeleteAction extends ConfirmAction {
     return t('Delete Backup');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get buttonText() {

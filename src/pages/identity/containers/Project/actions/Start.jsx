@@ -24,10 +24,6 @@ export default class StartAction extends ConfirmAction {
     return t('Start');
   }
 
-  get buttonType() {
-    return 'default';
-  }
-
   policy = 'identity:update_project';
 
   confirmContext(data) {

@@ -28,8 +28,8 @@ export default class DeleteAction extends ConfirmAction {
     return t('Release');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get actionName() {

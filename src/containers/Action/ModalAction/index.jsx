@@ -24,6 +24,8 @@ export default class ModalAction extends BaseForm {
 
   static buttonType = 'primary';
 
+  static isDanger = false;
+
   get name() {
     return t('Edit');
   }

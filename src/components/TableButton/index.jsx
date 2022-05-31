@@ -22,6 +22,7 @@ export default class TableButton extends Component {
     return {
       title: PropTypes.string.isRequired,
       buttonType: PropTypes.string,
+      isDanger: PropTypes.bool,
       data: PropTypes.array,
       columns: PropTypes.array,
       modalSize: PropTypes.string,
@@ -33,6 +34,7 @@ export default class TableButton extends Component {
 
   static defaultProps = {
     buttonType: 'link',
+    isDanger: false,
     data: [],
     columns: [],
     modalSize: 'middle',
@@ -47,9 +49,11 @@ export default class TableButton extends Component {
   };
 
   render() {
-    const { buttonType, title, buttonText, modalSize, style } = this.props;
+    const { buttonType, isDanger, title, buttonText, modalSize, style } =
+      this.props;
     const configs = {
       buttonType,
+      isDanger,
       title,
       buttonText,
       modalSize,

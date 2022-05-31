@@ -24,6 +24,8 @@ export default class FormAction extends BaseForm {
 
   static buttonType = 'primary';
 
+  static isDanger = false;
+
   static path = '/';
 
   static allowed() {

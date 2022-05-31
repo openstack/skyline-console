@@ -28,7 +28,7 @@ export class Detach extends ModalAction {
 
   static title = t('Detach');
 
-  static buttonType = 'danger';
+  static isDanger = true;
 
   get name() {
     return t('Detach');

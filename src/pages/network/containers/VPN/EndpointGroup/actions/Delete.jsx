@@ -27,8 +27,8 @@ export default class DeleteAction extends ConfirmAction {
     return t('Delete VPN EndPoint Groups');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get buttonText() {

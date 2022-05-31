@@ -24,8 +24,8 @@ export default class DeleteAction extends ConfirmAction {
     return t('Delete Bandwidth Egress Rules');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get buttonText() {

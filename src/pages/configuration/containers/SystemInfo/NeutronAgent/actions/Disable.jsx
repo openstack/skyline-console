@@ -24,8 +24,8 @@ export default class Disable extends ConfirmAction {
     return t('Disable Neutron Agent');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get buttonText() {

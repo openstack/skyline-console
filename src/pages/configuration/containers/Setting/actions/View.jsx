@@ -25,8 +25,6 @@ export class View extends ModalAction {
 
   static title = t('View Detail');
 
-  static buttonType = 'primary';
-
   static readOnly = true;
 
   static enableSystemReader = true;

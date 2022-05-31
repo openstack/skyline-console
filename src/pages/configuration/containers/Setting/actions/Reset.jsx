@@ -25,7 +25,11 @@ export default class Reset extends ConfirmAction {
   }
 
   get buttonType() {
-    return 'danger';
+    return 'primary';
+  }
+
+  get isDanger() {
+    return true;
   }
 
   get actionName() {

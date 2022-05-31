@@ -24,10 +24,6 @@ export default class Enable extends ConfirmAction {
     return t('Enable Service');
   }
 
-  get buttonType() {
-    return 'default';
-  }
-
   get buttonText() {
     return t('Enable');
   }

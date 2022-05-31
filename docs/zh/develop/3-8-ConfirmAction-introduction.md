@@ -138,12 +138,23 @@
 - `buttonType`
   - 按钮的类型，支持`primary`、`danger`、`default`
   - 默认值为`default`
+  - 以重置系统配置初始值 `src/pages/configuration/containers/Setting/actions/Reset.jsx` 为例
+
+    ```javascript
+    get buttonType() {
+      return 'primary';
+    }
+    ```
+
+- `isDanger`
+  - 是否属于危险级别的按钮
+  - 支持的值为：布尔值 `false`、`true`，默认值为`false`
   - 当按钮要强调操作危险性时，按钮或按钮上的文字一般为红色，使用`danger`
   - 以停止云主机`src/pages/compute/containers/Instance/actions/Stop.jsx`为例
 
     ```javascript
-    get buttonType() {
-      return 'danger';
+    get isDanger() {
+      return true;
     }
     ```
 

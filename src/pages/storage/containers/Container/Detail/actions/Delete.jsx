@@ -37,8 +37,8 @@ export default class Delete extends ConfirmAction {
     return this.title;
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get buttonText() {
