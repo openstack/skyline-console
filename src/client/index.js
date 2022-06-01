@@ -45,7 +45,7 @@ const client = {
   manila,
   barbican,
   zun,
-  magnum
+  magnum,
 };
 
 window.client = client;
