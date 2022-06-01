@@ -12,13 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
 
 export class BaseDetail extends Base {
+  get leftCardsStyle() {
+    return {
+      flex: 1,
+    };
+  }
+
   get leftCards() {
-    const cards = [this.contentCard, this.keyPairCard];
-    return cards;
+    return [this.contentCard];
+  }
+
+  get rightCards() {
+    return [this.keyPairCard];
   }
 
   get contentCard() {
@@ -27,13 +37,14 @@ export class BaseDetail extends Base {
       secret_refs.find((it) => it.name === 'certificate') || {};
     const options = [
       {
-        content: secret_info.payload,
+        content: <pre>{secret_info.payload}</pre>,
         copyable: true,
       },
     ];
     return {
       title: t('Certificate Content'),
       labelCol: 0,
+      contentCol: 24,
       options,
     };
   }
@@ -44,13 +55,14 @@ export class BaseDetail extends Base {
       secret_refs.find((it) => it.name === 'private_key') || {};
     const options = [
       {
-        content: secret_info.payload,
+        content: <pre>{secret_info.payload}</pre>,
         copyable: true,
       },
     ];
     return {
       title: t('Private Key'),
       labelCol: 0,
+      contentCol: 24,
       options,
     };
   }

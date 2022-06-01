@@ -12,10 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
 
 export class BaseDetail extends Base {
+  get leftCardsStyle() {
+    return {
+      flex: 1,
+    };
+  }
+
   get leftCards() {
     const cards = [this.contentCard];
     return cards;
@@ -25,13 +32,14 @@ export class BaseDetail extends Base {
     const { payload } = this.props.detail;
     const options = [
       {
-        content: payload,
+        content: <pre>{payload}</pre>,
         copyable: true,
       },
     ];
     return {
       title: t('Certificate Content'),
       labelCol: 0,
+      contentCol: 24,
       options,
     };
   }

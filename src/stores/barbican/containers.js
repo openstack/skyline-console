@@ -40,6 +40,17 @@ export class ContainersStore extends Base {
     offset,
   });
 
+  get mapper() {
+    return (data) => {
+      const { container_ref } = data;
+      const [, uuid] = container_ref.split('/containers/');
+      return {
+        ...data,
+        id: uuid,
+      };
+    };
+  }
+
   async requestListAllByLimit(params, limit) {
     let hasNext = true;
     let data = [];
@@ -60,8 +71,7 @@ export class ContainersStore extends Base {
     if (items.length === 0) return items;
     const secrets = await this.secretStore.fetchList({ mode: 'SERVER' });
     const newItems = items.map((it) => {
-      const { container_ref = '', secret_refs = [] } = it;
-      const [, uuid] = container_ref.split('/containers/');
+      const { secret_refs = [] } = it;
       if (secret_refs.length === 0) {
         it.hidden = true;
       } else {
@@ -84,7 +94,6 @@ export class ContainersStore extends Base {
       }
       return {
         ...it,
-        id: uuid,
       };
     });
     return newItems.filter((it) => it.hidden !== true);

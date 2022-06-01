@@ -351,6 +351,7 @@ const renderMenu = (t) => {
           path: '/network/certificate',
           name: t('Certificate Management'),
           key: 'certificate',
+          endpoints: 'barbican',
           level: 1,
           children: [
             {

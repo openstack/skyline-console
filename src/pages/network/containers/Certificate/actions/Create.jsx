@@ -23,6 +23,7 @@ import {
 } from 'resources/octavia/secrets';
 import globalContainersStore from 'stores/barbican/containers';
 import moment from 'moment';
+import { parse } from 'qs';
 
 export class CreateAction extends ModalAction {
   static id = 'create-certificate';
@@ -49,13 +50,21 @@ export class CreateAction extends ModalAction {
 
   get defaultValue() {
     const data = {
-      mode: 'SERVER',
+      mode: this.typeTab,
     };
     return data;
   }
 
+  get typeTab() {
+    const { location: { search = '' } = {} } = this.containerProps;
+    const params = parse(search.slice(1));
+    return params.tab || 'SERVER';
+  }
+
   get certificateModeOptions() {
-    return getOptions(certificateMode);
+    return getOptions(certificateMode).filter((it) => {
+      return it.value === this.typeTab;
+    });
   }
 
   validateDomain = (rule, value) => {
@@ -129,6 +138,7 @@ export class CreateAction extends ModalAction {
         tip: certificateContentTip,
         validator: this.validateCertificateContent,
         required: true,
+        rows: 6,
       },
       {
         name: 'private_key',
@@ -140,6 +150,7 @@ export class CreateAction extends ModalAction {
         validator: this.validateCertificateKeyPair,
         required: true,
         display: mode === 'SERVER',
+        rows: 6,
       },
       {
         name: 'domain',

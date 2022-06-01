@@ -83,6 +83,10 @@ export default class BaseDetail extends React.Component {
     return false;
   }
 
+  get leftCardsStyle() {
+    return {};
+  }
+
   getRouteName(routeName) {
     return this.isAdminPage ? `${routeName}Admin` : routeName;
   }
@@ -181,7 +185,11 @@ export default class BaseDetail extends React.Component {
   render() {
     return (
       <div className={classnames(styles.main)}>
-        <div className={styles['left-side']} id="detail-left-side">
+        <div
+          className={styles['left-side']}
+          id="detail-left-side"
+          style={this.leftCardsStyle}
+        >
           {this.renderLeftCards()}
         </div>
         <div className={styles['right-side']} id="detail-right-side">

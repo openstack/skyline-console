@@ -40,6 +40,17 @@ export class SecretsStore extends Base {
     offset,
   });
 
+  get mapper() {
+    return (data) => {
+      const { secret_ref } = data;
+      const [, uuid] = secret_ref.split('/secrets/');
+      return {
+        ...data,
+        id: uuid,
+      };
+    };
+  }
+
   async requestListAllByLimit(params, limit) {
     let hasNext = true;
     let data = [];
@@ -54,18 +65,6 @@ export class SecretsStore extends Base {
       }
     }
     return data;
-  }
-
-  listDidFetch(items) {
-    if (items.length === 0) return items;
-    return items.map((it) => {
-      const { secret_ref = '' } = it;
-      const [, uuid] = secret_ref.split('/secrets/');
-      return {
-        ...it,
-        id: uuid,
-      };
-    });
   }
 
   @action
