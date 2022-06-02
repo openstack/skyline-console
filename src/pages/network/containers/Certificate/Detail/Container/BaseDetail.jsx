@@ -38,7 +38,9 @@ export class BaseDetail extends Base {
     const options = [
       {
         content: <pre>{secret_info.payload}</pre>,
-        copyable: true,
+        copyable: {
+          text: secret_info.payload,
+        },
       },
     ];
     return {
@@ -56,7 +58,9 @@ export class BaseDetail extends Base {
     const options = [
       {
         content: <pre>{secret_info.payload}</pre>,
-        copyable: true,
+        copyable: {
+          text: secret_info.payload,
+        },
       },
     ];
     return {
