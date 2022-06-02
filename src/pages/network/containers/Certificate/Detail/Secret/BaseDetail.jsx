@@ -33,7 +33,9 @@ export class BaseDetail extends Base {
     const options = [
       {
         content: <pre>{payload}</pre>,
-        copyable: true,
+        copyable: {
+          text: payload,
+        },
       },
     ];
     return {

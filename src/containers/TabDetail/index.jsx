@@ -356,7 +356,7 @@ export default class DetailBase extends React.Component {
                   dataIndex.toLowerCase().indexOf('_id') >= 0
                 ) {
                   desc = (
-                    <Paragraph style={{ margin: 0 }} copyable>
+                    <Paragraph style={{ margin: 0 }} copyable={copyable}>
                       {desc}
                     </Paragraph>
                   );

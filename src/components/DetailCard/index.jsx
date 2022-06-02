@@ -15,7 +15,7 @@
 import React from 'react';
 import { Row, Col, Skeleton, Tooltip, Typography, Popover } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { has, get, isNumber, isBoolean } from 'lodash';
+import { has, get, isNumber } from 'lodash';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { renderFilterMap } from 'utils/index';
@@ -39,9 +39,6 @@ const getContentValue = (value, dataIndex, data, copyable) => {
       (/_?id/g.test(dataIndex.toLowerCase()) && copyable !== false) ||
       copyable
     ) {
-      if (isBoolean(copyable)) {
-        return <Paragraph copyable>{value}</Paragraph>;
-      }
       return <Paragraph copyable={copyable}>{value}</Paragraph>;
     }
   }
@@ -51,7 +48,11 @@ const getContentValue = (value, dataIndex, data, copyable) => {
 const getContent = (data, option) => {
   const { content, dataIndex, render, valueRender, copyable } = option;
   if (has(option, 'content')) {
-    return copyable ? <Paragraph copyable>{content}</Paragraph> : content;
+    return copyable ? (
+      <Paragraph copyable={copyable}>{content}</Paragraph>
+    ) : (
+      content
+    );
   }
   let value = get(data, dataIndex);
   if (!render) {
