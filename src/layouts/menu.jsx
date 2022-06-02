@@ -204,6 +204,7 @@ const renderMenu = (t) => {
           path: '/storage/container',
           name: t('Object Storage'),
           key: 'container',
+          endpoints: 'swift',
           level: 1,
           children: [
             {
@@ -323,6 +324,7 @@ const renderMenu = (t) => {
           path: '/network/load-balancers',
           name: t('Load Balancers'),
           key: 'lb',
+          endpoints: 'octavia',
           level: 1,
           children: [
             {
@@ -374,6 +376,7 @@ const renderMenu = (t) => {
           path: '/network/vpn',
           name: t('VPN'),
           key: 'vpn',
+          endpoints: 'neutron_vpn',
           level: 1,
           children: [
             {
@@ -406,6 +409,7 @@ const renderMenu = (t) => {
       path: '/share',
       name: t('Share File Storage'),
       key: 'fileStorage',
+      endpoints: 'manilav2',
       icon: <SwitcherOutlined />,
       children: [
         {
@@ -413,7 +417,6 @@ const renderMenu = (t) => {
           name: t('Share'),
           key: 'share',
           level: 1,
-          endpoints: 'manilav2',
           children: [
             {
               path: /^\/share\/share\/detail\/.[^/]+$/,
@@ -435,7 +438,6 @@ const renderMenu = (t) => {
           name: t('Share Network'),
           key: 'shareNetwork',
           level: 1,
-          endpoints: 'manilav2',
           children: [
             {
               path: /^\/share\/share-network\/detail\/.[^/]+$/,
@@ -451,7 +453,6 @@ const renderMenu = (t) => {
           name: t('Share Group'),
           key: 'shareGroup',
           level: 1,
-          endpoints: 'manilav2',
           children: [
             {
               path: /^\/share\/share-group\/detail\/.[^/]+$/,
@@ -491,6 +492,7 @@ const renderMenu = (t) => {
       path: '/heat',
       name: t('Orchestration'),
       key: 'heat',
+      endpoints: 'heat',
       icon: <AppstoreOutlined />,
       children: [
         {
@@ -527,6 +529,7 @@ const renderMenu = (t) => {
       path: '/database',
       name: t('Database'),
       key: 'database',
+      endpoints: 'trove',
       icon: <DatabaseFilled />,
       children: [
         {
@@ -592,6 +595,7 @@ const renderMenu = (t) => {
           path: '/container/containers',
           name: t('Containers'),
           key: 'zunContainers',
+          endpoints: 'zun',
           level: 1,
           children: [
             {
@@ -613,6 +617,7 @@ const renderMenu = (t) => {
           path: '/container/capsules',
           name: t('Capsules'),
           key: 'zunCapsules',
+          endpoints: 'zun',
           level: 1,
           children: [
             {
@@ -628,6 +633,7 @@ const renderMenu = (t) => {
           path: '/container-infra/clusters',
           name: t('Clusters'),
           key: 'containerInfraClusters',
+          endpoints: 'magnum',
           level: 1,
           children: [
             {
@@ -649,6 +655,7 @@ const renderMenu = (t) => {
           path: '/container-infra/cluster-template',
           name: t('Cluster Template'),
           key: 'clusterTemplate',
+          endpoints: 'magnum',
           level: 1,
           children: [
             {

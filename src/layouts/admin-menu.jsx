@@ -143,6 +143,7 @@ const renderMenu = (t) => {
           path: '/compute/baremetal-node-admin',
           name: t('Bare Metal Setting'),
           key: 'baremetalNodeAdmin',
+          endpoints: 'ironic',
           level: 1,
           children: [
             {
@@ -348,6 +349,7 @@ const renderMenu = (t) => {
           path: '/network/load-balancers-admin',
           name: t('Load Balancers'),
           key: 'lbAdmin',
+          endpoints: 'octavia',
           level: 1,
           children: [
             {
@@ -371,6 +373,7 @@ const renderMenu = (t) => {
           path: '/network/vpn-admin',
           name: t('VPN'),
           key: 'vpnAdmin',
+          endpoints: 'neutron_vpn',
           level: 1,
           children: [
             {
@@ -403,6 +406,7 @@ const renderMenu = (t) => {
       path: '/share',
       name: t('Share File Storage'),
       key: 'fileStorageAdmin',
+      endpoints: 'manilav2',
       icon: <SwitcherOutlined />,
       children: [
         {
@@ -410,7 +414,6 @@ const renderMenu = (t) => {
           name: t('Share'),
           key: 'shareAdmin',
           level: 1,
-          endpoints: 'manilav2',
           children: [
             {
               path: /^\/share\/share-admin\/detail\/.[^/]+$/,
@@ -426,7 +429,6 @@ const renderMenu = (t) => {
           name: t('Share Type'),
           key: 'shareTypeAdmin',
           level: 1,
-          endpoints: 'manilav2',
           children: [
             {
               path: /^\/share\/share-type-admin\/detail\/.[^/]+$/,
@@ -442,7 +444,6 @@ const renderMenu = (t) => {
           name: t('Share Group Type'),
           key: 'shareGroupTypeAdmin',
           level: 1,
-          endpoints: 'manilav2',
           children: [
             {
               path: /^\/share\/share-group-type-admin\/detail\/.[^/]+$/,
@@ -458,7 +459,6 @@ const renderMenu = (t) => {
           name: t('Share Network'),
           key: 'shareNetworkAdmin',
           level: 1,
-          endpoints: 'manilav2',
           children: [
             {
               path: /^\/share\/share-network-admin\/detail\/.[^/]+$/,
@@ -474,7 +474,6 @@ const renderMenu = (t) => {
           name: t('Share Server'),
           key: 'shareServerAdmin',
           level: 1,
-          endpoints: 'manilav2',
           children: [
             {
               path: /^\/share\/share-server-admin\/detail\/.[^/]+$/,
@@ -490,7 +489,6 @@ const renderMenu = (t) => {
           name: t('Share Instance'),
           key: 'shareInstanceAdmin',
           level: 1,
-          endpoints: 'manilav2',
           children: [
             {
               path: /^\/share\/share-instance-admin\/detail\/.[^/]+$/,
@@ -506,7 +504,6 @@ const renderMenu = (t) => {
           name: t('Share Group'),
           key: 'shareGroupAdmin',
           level: 1,
-          endpoints: 'manilav2',
           children: [
             {
               path: /^\/share\/share-group-admin\/detail\/.[^/]+$/,
@@ -681,6 +678,7 @@ const renderMenu = (t) => {
       path: '/heat',
       name: t('Orchestration'),
       key: 'heatAdmin',
+      endpoints: 'heats',
       icon: <AppstoreOutlined />,
       children: [
         {
