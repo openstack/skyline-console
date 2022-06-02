@@ -20,6 +20,8 @@ import classnames from 'classnames';
 import { firstUpperCase, unescapeHtml } from 'utils/index';
 import { parse } from 'qs';
 import NotFound from 'components/Cards/NotFound';
+import InfoButton from 'components/InfoButton';
+import QuotaChart from 'components/QuotaChart';
 import { getPath, getLinkRender } from 'utils/route-map';
 import styles from './index.less';
 
@@ -203,6 +205,14 @@ export default class BaseStepForm extends React.Component {
 
   get hasExtraProps() {
     return false;
+  }
+
+  get showQuota() {
+    return false;
+  }
+
+  get quotaInfo() {
+    return null;
   }
 
   setFormRefs() {
@@ -416,6 +426,34 @@ export default class BaseStepForm extends React.Component {
     );
   }
 
+  renderQuota() {
+    if (!this.showQuota) {
+      return null;
+    }
+    let props = {};
+    if (!this.quotaInfo || isEmpty(this.quotaInfo)) {
+      props.loading = true;
+    } else {
+      props = {
+        loading: false,
+        ...this.quotaInfo,
+      };
+    }
+    return <QuotaChart {...props} />;
+  }
+
+  renderRightTopExtra() {
+    const content = this.renderQuota();
+    if (!content) {
+      return null;
+    }
+    return (
+      <div className={styles['right-top-extra-wrapper']}>
+        <InfoButton content={content} />
+      </div>
+    );
+  }
+
   render() {
     if (this.endpointError) {
       return (
@@ -432,6 +470,7 @@ export default class BaseStepForm extends React.Component {
       <div className={classnames(styles.wrapper, this.className)}>
         <Spin spinning={this.isLoading || this.isSubmitting}>
           {this.renderSteps()}
+          {this.renderRightTopExtra()}
           {this.renderFooter()}
         </Spin>
       </div>

@@ -145,6 +145,24 @@ export class StepCreate extends StepAction {
     );
   }
 
+  get showQuota() {
+    return true;
+  }
+
+  get quotaInfo() {
+    const { instances = {} } = toJS(this.projectStore.quota) || {};
+    const { limit } = instances || {};
+    if (!limit) {
+      return {};
+    }
+    const { data = {} } = this.state;
+    const { count = 1 } = data;
+    return {
+      ...instances,
+      add: count,
+    };
+  }
+
   get errorText() {
     const { status } = this.state;
     if (status === 'error') {
@@ -210,7 +228,7 @@ export class StepCreate extends StepAction {
 
   getVolumeInputMap() {
     const { data } = this.state;
-    const { systemDisk = {}, dataDisk = [] } = data;
+    const { systemDisk = {}, dataDisk = [], count = 1 } = data;
     const newCountMap = {};
     const newSizeMap = {};
     let totalNewCount = 0;
@@ -220,20 +238,22 @@ export class StepCreate extends StepAction {
       const { label } = systemDisk.typeOption || {};
       newCountMap[label] = !newCountMap[label] ? 1 : newCountMap[label] + 1;
       newSizeMap[label] = !newSizeMap[label] ? size : newSizeMap[label] + size;
-      totalNewCount += 1;
-      totalNewSize += size;
+      totalNewCount += 1 * count;
+      totalNewSize += size * count;
     }
     if (dataDisk) {
       dataDisk.forEach((item) => {
         if (item.value && item.value.type) {
           const { size } = item.value;
           const { label } = item.value.typeOption || {};
-          newCountMap[label] = !newCountMap[label] ? 1 : newCountMap[label] + 1;
+          newCountMap[label] = !newCountMap[label]
+            ? 1 * count
+            : newCountMap[label] + 1 * count;
           newSizeMap[label] = !newSizeMap[label]
-            ? size
-            : newSizeMap[label] + size;
-          totalNewCount += 1;
-          totalNewSize += size;
+            ? size * count
+            : newSizeMap[label] + size * count;
+          totalNewCount += 1 * count;
+          totalNewSize += size * count;
         }
       });
     }
@@ -320,7 +340,12 @@ export class StepCreate extends StepAction {
     const { count = 1, source: { value: sourceValue } = {} } = data;
     const configs = {
       min: 1,
-      max: sourceValue === 'bootableVolume' ? 1 : 100,
+      max:
+        sourceValue === 'bootableVolume'
+          ? 1
+          : isFinite(this.quota)
+          ? this.quota
+          : 100,
       precision: 0,
       onChange: this.onCountChange,
       formatter: (value) => `$ ${value}`.replace(/\D/g, ''),
