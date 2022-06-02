@@ -23,8 +23,6 @@ export class Edit extends ModalAction {
     return 'edit';
   }
 
-  static buttonType = 'primary';
-
   get instanceName() {
     return this.item.key;
   }

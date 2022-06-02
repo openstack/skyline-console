@@ -29,8 +29,8 @@ export default class Delete extends ConfirmAction {
     return t('delete ironic instance');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get isAsyncAction() {

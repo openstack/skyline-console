@@ -25,8 +25,8 @@ export default class DeletePoolAction extends ConfirmAction {
     return t('Delete Default Pool');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get buttonText() {

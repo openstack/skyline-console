@@ -19,15 +19,15 @@ export default class DeleteClusterTemplates extends ConfirmAction {
   }
 
   get title() {
-    return t('Delete Template')
+    return t('Delete Template');
   }
 
   get actionName() {
     return t('Delete Clusters Templates');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get buttonText() {

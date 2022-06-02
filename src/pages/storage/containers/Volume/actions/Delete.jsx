@@ -28,8 +28,8 @@ export default class DeleteAction extends ConfirmAction {
     return t('Delete Volume');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get buttonText() {

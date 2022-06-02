@@ -24,8 +24,8 @@ export default class Delete extends ConfirmAction {
     return t('Force Delete Share Instance');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get buttonText() {

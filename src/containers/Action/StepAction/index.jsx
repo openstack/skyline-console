@@ -19,6 +19,8 @@ export default class StepAction extends StepForm {
 
   static buttonType = 'primary';
 
+  static isDanger = false;
+
   static id = 'step-action';
 
   static title = 'StepAction';

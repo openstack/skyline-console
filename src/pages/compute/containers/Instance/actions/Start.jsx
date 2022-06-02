@@ -27,10 +27,6 @@ export default class StartAction extends ConfirmAction {
     return t('Start Instance');
   }
 
-  get buttonType() {
-    return 'default';
-  }
-
   get buttonText() {
     return t('Start');
   }

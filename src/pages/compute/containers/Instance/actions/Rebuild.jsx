@@ -29,8 +29,8 @@ export default class Rebuild extends ConfirmAction {
     return t('Rebuild Instance');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get actionName() {

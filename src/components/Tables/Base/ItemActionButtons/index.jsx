@@ -25,14 +25,14 @@ import styles from './index.less';
 const { SubMenu } = Menu;
 
 function getActionConf(action) {
-  const { id, title, actionType, buttonText, buttonType } = action;
+  const { id, title, actionType, buttonText, isDanger = false } = action;
   return {
     id,
     title,
     name: buttonText || title,
     actionType,
     action,
-    danger: buttonType === 'danger',
+    danger: isDanger,
   };
 }
 

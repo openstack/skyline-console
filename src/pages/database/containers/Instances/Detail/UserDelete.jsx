@@ -28,8 +28,8 @@ export default class UserDelete extends ConfirmAction {
     return t('Delete User');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get buttonText() {

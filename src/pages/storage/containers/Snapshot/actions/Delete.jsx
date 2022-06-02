@@ -25,8 +25,8 @@ export default class DeleteAction extends ConfirmAction {
     return t('Delete Snapshot');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get buttonText() {

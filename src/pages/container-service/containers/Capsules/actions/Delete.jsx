@@ -30,8 +30,8 @@ export default class DeleteCapsule extends ConfirmAction {
     return t('Delete');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   policy = 'container:capsule:delete';

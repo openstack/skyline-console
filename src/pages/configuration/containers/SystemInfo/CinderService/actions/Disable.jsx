@@ -23,7 +23,7 @@ export class DisableAction extends ModalAction {
 
   static buttonText = t('Disable');
 
-  static buttonType = 'danger';
+  static isDanger = true;
 
   init() {
     this.store = globalServiceStore;

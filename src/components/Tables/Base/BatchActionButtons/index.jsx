@@ -22,13 +22,14 @@ import { getActionsByPolicy } from '../Action';
 import styles from './index.less';
 
 const updateConf = (conf, selectedItems) => {
-  const { id, title, actionType, buttonType, buttonText } = conf;
+  const { id, title, actionType, buttonType, buttonText, isDanger } = conf;
   return {
     id,
     title,
     name: buttonText || title,
     actionType,
     buttonType,
+    isDanger,
     action: conf,
     isAllowed: selectedItems.length > 0,
     items: selectedItems,
@@ -59,9 +60,9 @@ function DropdownActionButton({
   const menuItems = actions.map((it) => {
     const key = `table-batch-more-${generateId()}`;
     const newConf = updateConf(it, selectedItems);
-    const { buttonType, name } = newConf;
+    const { isDanger, name } = newConf;
     newConf.onFinishAction = onFinishAction;
-    newConf.danger = buttonType === 'danger';
+    newConf.danger = !!isDanger;
     if (!selectedItems.length) {
       return (
         <Menu.Item key={key} disabled style={{ textAlign: 'center' }}>

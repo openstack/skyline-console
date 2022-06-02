@@ -28,8 +28,8 @@ export default class Delete extends ConfirmAction {
     return t('Delete Port');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get buttonText() {

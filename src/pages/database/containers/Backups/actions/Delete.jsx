@@ -28,8 +28,8 @@ export default class Delete extends ConfirmAction {
     return t('Delete Backup');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   allowedCheckFunction = () => true;

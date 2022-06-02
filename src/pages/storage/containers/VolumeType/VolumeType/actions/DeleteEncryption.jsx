@@ -24,8 +24,8 @@ export default class DeleteEncryptionAction extends ConfirmAction {
     return t('Delete Encryption');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get buttonText() {

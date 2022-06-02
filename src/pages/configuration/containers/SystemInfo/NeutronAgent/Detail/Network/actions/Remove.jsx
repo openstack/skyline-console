@@ -24,8 +24,8 @@ export default class RemoveAction extends ConfirmAction {
     return t('Remove Network');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get buttonText() {

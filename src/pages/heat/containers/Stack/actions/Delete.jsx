@@ -29,8 +29,8 @@ export default class Delete extends ConfirmAction {
     return t('delete stack');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get isAsyncAction() {

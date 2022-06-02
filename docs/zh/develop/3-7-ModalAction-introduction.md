@@ -271,12 +271,16 @@
 
 - `buttonType`
   - 静态属性
-  - 按钮的类型，支持`primary`、`danger`
-  - 当按钮要强调操作危险性时，按钮或按钮上的文字一般为红色，使用`danger`
+  - 按钮的类型，支持`primary`、`default`、`link`
+
+- `isDanger`
+  - 静态属性
+  - 支持布尔值 `false`, `true`
+  - 当按钮要强调操作危险性时，按钮或按钮上的文字一般为红色，使用`true`
   - 以禁止 Cinder 服务`src/pages/configuration/containers/SystemInfo/CinderService/actions/Disable.jsx`为例
 
     ```javascript
-    static buttonType = 'danger';
+    static isDanger = true;
     ```
 
 - `modalSize`

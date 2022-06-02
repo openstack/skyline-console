@@ -27,8 +27,8 @@ export default class Release extends ConfirmAction {
     return t('Release');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get buttonText() {

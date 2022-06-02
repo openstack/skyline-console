@@ -28,8 +28,8 @@ export default class DatabaseDelete extends ConfirmAction {
     return t('Delete Database');
   }
 
-  get buttonType() {
-    return 'danger';
+  get isDanger() {
+    return true;
   }
 
   get buttonText() {
