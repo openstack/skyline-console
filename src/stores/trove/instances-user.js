@@ -21,6 +21,10 @@ export class InstancesUsersStore extends Base {
     return client.trove.instances.users;
   }
 
+  get databaseClient() {
+    return client.trove.instances.databases;
+  }
+
   get isSubResource() {
     return true;
   }
@@ -36,11 +40,17 @@ export class InstancesUsersStore extends Base {
     };
   }
 
-  listDidFetch(items) {
+  async listDidFetch(items, _, filters) {
     if (items.length === 0) return items;
+    const { id } = filters;
+    const { databases = [] } = await this.databaseClient.list(id);
     return items.map((it) => ({
       ...it,
-      databases: (it.databases || []).map((db) => db.name).join(' , ') || '-',
+      databases:
+        (it.databases || [])
+          .filter((l1) => databases.find((l2) => l2.name === l1.name))
+          .map((db) => db.name)
+          .join(' , ') || '-',
     }));
   }
 

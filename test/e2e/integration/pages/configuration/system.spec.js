@@ -111,7 +111,7 @@ describe('The System Info Page', () => {
       .clickDetailTab('Router')
       .tableSearchText(routerName)
       .clickActionButtonByTitle('Remove')
-      .clickConfirmActionSubmitButton();
+      .clickConfirmActionSubmitButton(10000);
   });
 
   it('successfully neutron agent l3 add router', () => {
