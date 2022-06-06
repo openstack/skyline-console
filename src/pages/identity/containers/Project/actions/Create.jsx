@@ -17,7 +17,7 @@ import { ModalAction } from 'containers/Action';
 import globalDomainStore from 'stores/keystone/domain';
 import globalProjectStore from 'stores/keystone/project';
 import { regex } from 'utils/validate';
-import { statusTypes } from 'utils/constants';
+import { statusTypes } from 'resources/keystone/domain';
 
 export class CreateForm extends ModalAction {
   constructor(props) {

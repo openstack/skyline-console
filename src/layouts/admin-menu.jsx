@@ -529,19 +529,6 @@ const renderMenu = (t) => {
           level: 1,
           children: [
             {
-              path: '/identity/domain-admin/create',
-              name: t('Create Domain'),
-              key: 'domainCreateAdmin',
-              level: 2,
-            },
-            {
-              path: /^\/identity\/domain-admin\/edit\/.[^/]+$/,
-              name: t('Domain Edit'),
-              key: 'domainEditAdmin',
-              level: 2,
-              routePath: '/identity/domain-admin/edit/:id',
-            },
-            {
               path: /^\/identity\/domain-admin\/detail\/.[^/]+$/,
               name: t('Domain Detail'),
               key: 'domainDetailAdmin',

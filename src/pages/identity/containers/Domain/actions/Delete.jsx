@@ -38,6 +38,8 @@ export default class DeleteAction extends ConfirmAction {
 
   policy = 'identity:delete_domain';
 
+  allowedCheckFunc = (data) => !data.enabled;
+
   onSubmit = (data) => {
     const { id } = data;
     return globalDomainStore.delete({ id });

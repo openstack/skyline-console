@@ -23,7 +23,7 @@ describe('The Domain Page', () => {
   });
 
   it('successfully detail', () => {
-    cy.tableSearchText(name).goToDetail(0);
+    cy.tableSearchText(name).goToDetail();
     cy.goBackToList(listUrl);
   });
 });

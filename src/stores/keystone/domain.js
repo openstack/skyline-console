@@ -13,19 +13,12 @@
 // limitations under the License.
 
 import { action, observable } from 'mobx';
-import { get } from 'lodash';
 import client from 'client';
 import Base from 'stores/base';
 
 export class DomainStore extends Base {
   @observable
   domains = [];
-
-  @observable
-  domainUsers = [];
-
-  @observable
-  adminRoleId = '';
 
   get client() {
     return client.keystone.domains;
@@ -35,66 +28,50 @@ export class DomainStore extends Base {
     return client.keystone.users;
   }
 
-  @action
-  async fetchList({
-    limit,
-    page,
-    sortKey,
-    sortOrder,
-    conditions,
-    ...filters
-  } = {}) {
-    this.list.isLoading = true;
-    // todo: no page, no limit, fetch all
-    // const params = { ...filters };
-
-    await Promise.all([this.client.list(), this.userClient.list()]).then(
-      ([domainsResult, usersResult]) => {
-        const { domains } = domainsResult;
-        // eslint-disable-next-line array-callback-return
-        domains.map((domain) => {
-          const domainUsers = usersResult.users.filter(
-            (it) => it.domain_id === domain.id
-          );
-          domain.user_num = domainUsers.length;
-        });
-
-        // const { domains: items } = domainsResult;
-        this.list.update({
-          data: domains,
-          total: domains.length || 0,
-          limit: Number(limit) || 10,
-          page: Number(page) || 1,
-          sortKey,
-          sortOrder,
-          filters,
-          isLoading: false,
-          ...(this.list.silent ? {} : { selectedRowKeys: [] }),
-        });
-        return domains;
-      }
-    );
+  get projectClient() {
+    return client.keystone.projects;
   }
 
-  @action
-  async fetchDetail({ id, silent }) {
-    if (!silent) {
-      this.isLoading = true;
+  async listDidFetch(items) {
+    if (!items.length) {
+      return items;
     }
-    await Promise.all([this.client.show(id), this.userClient.list()]).then(
-      ([result, usersResult]) => {
-        const domain = this.mapper(get(result, this.responseKey) || result);
-        domain.domain_administrator = [];
-        const domainUsers = usersResult.users.filter(
-          (it) => it.domain_id === domain.id
-        );
-        domain.user_num = domainUsers.length;
-        this.domainUsers = domainUsers;
-        this.detail = domain;
-        this.isLoading = false;
-        return domain;
-      }
-    );
+    const [userResult, projectResult] = await Promise.all([
+      this.userClient.list(),
+      this.projectClient.list(),
+    ]);
+    return items.map((it) => {
+      const users = (userResult.users || []).filter(
+        (user) => user.domain_id === it.id
+      );
+      const projects = (projectResult.projects || []).filter(
+        (project) => project.domain_id === it.id
+      );
+      return {
+        ...it,
+        users,
+        userCount: users.length,
+        projects,
+        projectCount: projects.length,
+      };
+    });
+  }
+
+  async detailDidFetch(item) {
+    const { id } = item;
+    const [userResult, projectResult] = await Promise.all([
+      this.userClient.list({ domain_id: id }),
+      this.projectClient.list({ domain_id: id }),
+    ]);
+    const { users = [] } = userResult || {};
+    const { projects = [] } = projectResult || {};
+    return {
+      ...item,
+      users,
+      userCount: users.length,
+      projects,
+      projectCount: projects.length,
+    };
   }
 
   @action
@@ -104,28 +81,11 @@ export class DomainStore extends Base {
   }
 
   @action
-  async update({ id, body }) {
-    this.isSubmitting = true;
-    const resData = await this.client.update(id, body);
-    this.isSubmitting = false;
-    return resData;
-  }
-
-  @action
   async edit({ id, description }) {
     const reqBody = {
       domain: { description },
     };
     return this.submitting(this.client.patch(id, reqBody));
-  }
-
-  async setDomainAdmin({ id, user_id, role_id }) {
-    return this.submitting(this.client.users.roles.put(id, user_id, role_id));
-  }
-
-  async deleteDomainAdmin({ id, user_id, role_id }) {
-    const result = await this.client.users.roles.delete(id, user_id, role_id);
-    return result;
   }
 
   @action

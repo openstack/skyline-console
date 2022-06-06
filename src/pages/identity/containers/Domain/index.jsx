@@ -15,14 +15,12 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalDomainStore from 'stores/keystone/domain';
+import { enabledColumn } from 'resources/keystone/domain';
+import actionConfigs from './actions';
 
 export class Domains extends Base {
   init() {
     this.store = globalDomainStore;
-  }
-
-  get tabs() {
-    return [];
   }
 
   get policy() {
@@ -37,6 +35,10 @@ export class Domains extends Base {
     return false;
   }
 
+  get actionConfigs() {
+    return actionConfigs;
+  }
+
   getColumns = () => [
     {
       title: t('Domain ID/Name'),
@@ -44,11 +46,16 @@ export class Domains extends Base {
       routeName: 'domainDetailAdmin',
     },
     {
-      title: t('Member Num'),
-      dataIndex: 'user_num',
+      title: t('User Num'),
+      dataIndex: 'userCount',
       isHideable: true,
-      render: (user_num) => `${t('User Num: ')}${user_num}`,
     },
+    {
+      title: t('Project Num'),
+      dataIndex: 'projectCount',
+      isHideable: true,
+    },
+    enabledColumn,
     {
       title: t('Description'),
       dataIndex: 'description',

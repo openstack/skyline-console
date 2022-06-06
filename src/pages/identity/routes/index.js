@@ -15,8 +15,6 @@
 import BaseLayout from 'layouts/Basic';
 import E404 from 'pages/base/containers/404';
 import Domain from '../containers/Domain';
-import DomainCreate from '../containers/Domain/actions/Create';
-import DomainEdit from '../containers/Domain/actions/Edit';
 import DomainDetail from '../containers/Domain/Detail';
 import Project from '../containers/Project';
 import ProjectCreate from '../containers/Project/actions/Create';
@@ -43,16 +41,6 @@ export default [
       {
         path: `${PATH}/domain-admin/detail/:id`,
         component: DomainDetail,
-        exact: true,
-      },
-      {
-        path: `${PATH}/domain-admin/create`,
-        component: DomainCreate,
-        exact: true,
-      },
-      {
-        path: `${PATH}/domain-admin/edit/:id`,
-        component: DomainEdit,
         exact: true,
       },
       { path: `${PATH}/project`, component: Project, exact: true },

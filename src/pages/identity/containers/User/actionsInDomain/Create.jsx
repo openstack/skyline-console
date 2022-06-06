@@ -20,7 +20,7 @@ import globalProjectStore from 'stores/keystone/project';
 import globalRoleStore from 'stores/keystone/role';
 import { getPasswordOtherRule, phoneNumberValidate } from 'utils/validate';
 import globalDomainStore from 'stores/keystone/domain';
-import { statusTypes } from 'utils/constants';
+import { statusTypes } from 'resources/keystone/domain';
 
 export class CreateForm extends ModalAction {
   init() {

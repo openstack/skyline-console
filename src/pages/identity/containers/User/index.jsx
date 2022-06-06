@@ -20,6 +20,7 @@ import globalUserStore, { UserStore } from 'stores/keystone/user';
 import { yesNoOptions, emptyActionConfig } from 'utils/constants';
 import { Link } from 'react-router-dom';
 import { FileTextOutlined } from '@ant-design/icons';
+import { enabledColumn } from 'resources/keystone/domain';
 import actionConfigs from './actions';
 import actionConfigsInDomain from './actionsInDomain';
 
@@ -204,18 +205,7 @@ export class User extends Base {
         dataIndex: 'phone',
         isHideable: true,
       },
-      {
-        title: t('Enabled'),
-        dataIndex: 'enabled',
-        isHideable: true,
-        render: (val) => {
-          if (val === true) {
-            return <Badge color="green" text={t('Yes')} />;
-          }
-          return <Badge color="red" text={t('No')} />;
-        },
-        stringify: (val) => (val ? t('Yes') : t('No')),
-      },
+      enabledColumn,
     ];
     if (!this.inDetailPage) {
       return columns.filter(

@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalProjectStore from 'stores/keystone/project';
-import { statusTypes } from 'utils/constants';
+import { statusTypes } from 'resources/keystone/domain';
 
 export class EditForm extends ModalAction {
   init() {

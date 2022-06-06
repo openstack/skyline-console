@@ -12,11 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { Badge } from 'antd';
 import { ProjectStore } from 'stores/keystone/project';
 import Base from 'containers/TabDetail';
+import { enabledColumn } from 'resources/keystone/domain';
 import UserGroup from '../../UserGroup';
 import User from '../../User';
 import Quota from './Quota';
@@ -53,17 +52,7 @@ export class Detail extends Base {
         title: t('Project Name'),
         dataIndex: 'name',
       },
-      {
-        title: t('Enabled'),
-        dataIndex: 'enabled',
-        isHideable: true,
-        render: (val) => {
-          if (val === true) {
-            return <Badge color="green" text={t('Yes')} />;
-          }
-          return <Badge color="red" text={t('No')} />;
-        },
-      },
+      enabledColumn,
       {
         title: t('User Num'),
         dataIndex: 'user_num',
