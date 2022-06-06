@@ -15,14 +15,11 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalRoleStore from 'stores/keystone/role';
+import actionConfigs from './actions';
 
 export class Role extends Base {
   init() {
     this.store = globalRoleStore;
-  }
-
-  get tabs() {
-    return [];
   }
 
   get policy() {
@@ -35,6 +32,10 @@ export class Role extends Base {
 
   get isFilterByBackend() {
     return false;
+  }
+
+  get actionConfigs() {
+    return actionConfigs;
   }
 
   getColumns = () => [

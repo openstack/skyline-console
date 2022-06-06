@@ -12,23 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const rolePermission = {
-  project_admin: t('Project Admin'),
-  project_reader: t('Project Reader'),
-  project_member: t('Project Member'),
-  system_admin: t('System Admin'),
-  system_reader: t('System Reader'),
-  admin: t('Admin'),
-  reader: t('Reader'),
-  member: t('Member'),
+import Create from './Create';
+import Delete from './Delete';
+import Edit from './Edit';
+
+const actionConfigs = {
+  rowActions: {
+    firstAction: Edit,
+    moreActions: [
+      {
+        action: Delete,
+      },
+    ],
+  },
+  batchActions: [Delete],
+  primaryActions: [Create],
 };
 
-export const editable = (item) => {
-  const { options: { immutable } = {} } = item || {};
-  if (immutable || immutable === 'true' || immutable === 'True') {
-    return false;
-  }
-  return true;
-};
-
-export default rolePermission;
+export default actionConfigs;

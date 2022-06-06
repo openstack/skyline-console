@@ -24,7 +24,7 @@ describe('The Role Page', () => {
 
   it('successfully detail', () => {
     cy.tableSearchText(name)
-      .goToDetail(0)
+      .goToDetail()
       .clickDetailTab('Binding User', 'user')
       .clickDetailTab('Binding Group', 'group');
     cy.goBackToList(listUrl);
