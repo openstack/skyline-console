@@ -124,7 +124,6 @@ export class BaseTable extends React.Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       hideRow:
         getLocalStorageItem(`${this.useId}-${this.props.resourceName}`) || [],
@@ -136,16 +135,6 @@ export class BaseTable extends React.Component {
 
     this.sortKey = props.defaultSortKey;
     this.sortOrder = props.defaultSortOrder;
-    this.hideableRow = props.columns
-      .filter((column) => !column.hidden)
-      .filter((column) => column.isHideable)
-      .map((column) => ({
-        label: column.title,
-        value: this.getDataIndex(column.dataIndex) || column.key,
-      }));
-
-    this.hideableColValues = this.hideableRow.map((item) => item.value);
-
     this.suggestions = props.columns
       .filter((column) => column.search && column.dataIndex)
       .map((column) => ({
@@ -157,6 +146,16 @@ export class BaseTable extends React.Component {
             label: filter.text,
             key: filter.value,
           })),
+      }));
+  }
+
+  get hideableRows() {
+    return this.props.columns
+      .filter((column) => !column.hidden)
+      .filter((column) => column.isHideable)
+      .map((column) => ({
+        label: column.title,
+        value: this.getDataIndex(column.dataIndex) || column.key,
       }));
   }
 
@@ -238,11 +237,10 @@ export class BaseTable extends React.Component {
   };
 
   handleRowHide = (columns) => {
+    const hideableColValues = this.hideableRows.map((item) => item.value);
     this.setState(
       {
-        hideRow: this.hideableColValues.filter(
-          (value) => !columns.includes(value)
-        ),
+        hideRow: hideableColValues.filter((value) => !columns.includes(value)),
       },
       () => {
         setLocalStorageItem(
@@ -815,7 +813,7 @@ export class BaseTable extends React.Component {
 
     const getHideColKeys = (cols) => {
       const results = [];
-      this.hideableRow.forEach((item) => {
+      this.hideableRows.forEach((item) => {
         if (cols.indexOf(item.value) === -1) {
           results.push(item.value);
         }
@@ -826,7 +824,7 @@ export class BaseTable extends React.Component {
     return (
       <CustomColumns
         className={styles['column-menu']}
-        options={this.hideableRow}
+        options={this.hideableRows}
         value={getHideColKeys(hideRow)}
         onChange={this.handleRowHide}
       />
