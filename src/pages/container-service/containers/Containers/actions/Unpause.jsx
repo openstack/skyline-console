@@ -14,6 +14,7 @@
 
 import { ConfirmAction } from 'containers/Action';
 import globalContainersStore from 'src/stores/zun/containers';
+import { checkItemAction } from 'resources/zun/container';
 
 export default class UnpauseContainer extends ConfirmAction {
   get id() {
@@ -34,7 +35,7 @@ export default class UnpauseContainer extends ConfirmAction {
 
   policy = 'container:container:unpause';
 
-  allowedCheckFunc = () => true;
+  allowedCheckFunc = (item) => checkItemAction(item, 'unpause');
 
   onSubmit = (data) => globalContainersStore.unpause({ id: data.uuid });
 }

@@ -6,6 +6,9 @@ export const containerStatus = {
   Paused: t('Paused'),
   Restarting: t('Restarting'),
   Deleting: t('Deleting'),
+  Error: t('Error'),
+  Unknown: t('Unknown'),
+  Rebuilding: t('Rebuilding'),
 };
 
 export const containerTaskStatus = {
@@ -15,4 +18,71 @@ export const containerTaskStatus = {
   container_stopping: t('Container Stopping'),
   container_rebooting: t('Container Rebooting'),
   container_deleting: t('Container Deleting'),
+};
+
+const states = {
+  ERROR: 'Error',
+  RUNNING: 'Running',
+  STOPPED: 'Stopped',
+  PAUSED: 'Paused',
+  UNKNOWN: 'Unknown',
+  CREATING: 'Creating',
+  CREATED: 'Created',
+  DELETED: 'Deleted',
+  DELETING: 'Deleting',
+  REBUILDING: 'Rebuilding',
+  DEAD: 'Dead',
+  RESTARTING: 'Restarting',
+};
+
+const validStates = {
+  update: [states.CREATED, states.RUNNING, states.STOPPED, states.PAUSED],
+  start: [states.CREATED, states.STOPPED, states.ERROR],
+  stop: [states.RUNNING],
+  reboot: [states.CREATED, states.RUNNING, states.STOPPED, states.ERROR],
+  rebuild: [states.CREATED, states.RUNNING, states.STOPPED, states.ERROR],
+  pause: [states.RUNNING],
+  unpause: [states.PAUSED],
+  execute: [states.RUNNING],
+  kill: [states.RUNNING],
+  delete: [
+    states.CREATED,
+    states.ERROR,
+    states.STOPPED,
+    states.DELETED,
+    states.DEAD,
+  ],
+  delete_force: [
+    states.CREATED,
+    states.CREATING,
+    states.ERROR,
+    states.RUNNING,
+    states.STOPPED,
+    states.UNKNOWN,
+    states.DELETED,
+    states.DEAD,
+    states.RESTARTING,
+    states.REBUILDING,
+    states.DELETING,
+  ],
+  delete_stop: [
+    states.RUNNING,
+    states.CREATED,
+    states.ERROR,
+    states.STOPPED,
+    states.DELETED,
+    states.DEAD,
+  ],
+  manage_security_groups: [
+    states.CREATED,
+    states.RUNNING,
+    states.STOPPED,
+    states.PAUSED,
+  ],
+};
+
+export const checkItemAction = (item, actionName) => {
+  if (!item) return false;
+  const { status } = item;
+  return validStates[actionName].includes(status);
 };

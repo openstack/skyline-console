@@ -14,6 +14,7 @@
 
 import { ConfirmAction } from 'containers/Action';
 import globalContainersStore from 'src/stores/zun/containers';
+import { checkItemAction } from 'resources/zun/container';
 
 export default class StopContainer extends ConfirmAction {
   get id() {
@@ -34,7 +35,7 @@ export default class StopContainer extends ConfirmAction {
 
   policy = 'container:container:stop';
 
-  allowedCheckFunc = () => true;
+  allowedCheckFunc = (item) => checkItemAction(item, 'stop');
 
   onSubmit = (data) => globalContainersStore.stop({ id: data.uuid });
 }

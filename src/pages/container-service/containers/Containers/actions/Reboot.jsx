@@ -12,6 +12,7 @@
 
 import { ConfirmAction } from 'containers/Action';
 import globalContainersStore from 'src/stores/zun/containers';
+import { checkItemAction } from 'resources/zun/container';
 
 export default class RebootContainer extends ConfirmAction {
   get id() {
@@ -32,7 +33,7 @@ export default class RebootContainer extends ConfirmAction {
 
   policy = 'container:container:reboot';
 
-  allowedCheckFunc = () => true;
+  allowedCheckFunc = (item) => checkItemAction(item, 'reboot');
 
   onSubmit = (data) => globalContainersStore.reboot({ id: data.uuid });
 }
