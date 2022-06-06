@@ -314,6 +314,7 @@
       - openstack/devstack
       - openstack/glance
       - openstack/heat
+      - openstack/zun
       - openstack/keystone
       - openstack/neutron
       - openstack/nova
@@ -568,11 +569,14 @@
               - ^src/pages/management/.*$
               - ^src/pages/user-center/.*$
               - ^src/stores/heat/.*$
+              - ^src/stores/zun/.*$
               - ^src/stores/keystone/.*$
               - ^src/resources/heat/.*$
+              - ^src/resources/zun/.*$
               - ^src/resources/keystone/.*$
               - ^test/e2e/integration/pages/configuration/.*$
               - ^test/e2e/integration/pages/heat/.*$
+              - ^test/e2e/integration/pages/zun/.*$
               - ^test/e2e/integration/pages/identity/.*$
               - ^test/e2e/integration/pages/error.spec.js
               - ^test/e2e/integration/pages/login.spec.js
@@ -614,11 +618,14 @@
               - ^src/pages/management/.*$
               - ^src/pages/user-center/.*$
               - ^src/stores/heat/.*$
+              - ^src/stores/zun/.*$
               - ^src/stores/keystone/.*$
               - ^src/resources/heat/.*$
+              - ^src/resources/zun/.*$
               - ^src/resources/keystone/.*$
               - ^test/e2e/integration/pages/configuration/.*$
               - ^test/e2e/integration/pages/heat/.*$
+              - ^test/e2e/integration/pages/zun/.*$
               - ^test/e2e/integration/pages/identity/.*$
               - ^test/e2e/integration/pages/error.spec.js
               - ^test/e2e/integration/pages/login.spec.js
@@ -697,11 +704,14 @@
               - ^src/pages/management/.*$
               - ^src/pages/user-center/.*$
               - ^src/stores/heat/.*$
+              - ^src/stores/zun/.*$
               - ^src/stores/keystone/.*$
               - ^src/resources/heat/.*$
+              - ^src/resources/zun/.*$
               - ^src/resources/keystone/.*$
               - ^test/e2e/integration/pages/configuration/.*$
               - ^test/e2e/integration/pages/heat/.*$
+              - ^test/e2e/integration/pages/zun/.*$
               - ^test/e2e/integration/pages/identity/.*$
               - ^test/e2e/integration/pages/error.spec.js
               - ^test/e2e/integration/pages/login.spec.js

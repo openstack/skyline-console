@@ -1,0 +1,45 @@
+kind: capsule
+spec:
+  restartPolicy: Always
+  initContainers:
+    - workDir: /
+      command:
+        - wget
+        - '-O'
+        - /work-dir/index.html
+        - 'https://www.openstack.org/'
+      env:
+        ENV1: env1-value1
+      image: busybox
+      volumeMounts:
+        - mountPath: /work-dir
+          name: workdir
+      resources:
+        requests:
+          cpu: 0.1
+          memory: 128
+  containers:
+    - workDir: /
+      env:
+        ENV2: env2-value
+      image: nginx
+      volumeMounts:
+        - mountPath: /usr/share/nginx/html
+          name: workdir
+      ports:
+        - protocol: TCP
+          containerPort: 80
+      resources:
+        requests:
+          cpu: 0.5
+          memory: 512
+  volumes:
+    - cinder:
+        size: 1
+      name: workdir
+metadata:
+  labels:
+    app: web
+  name: e2e-zun-capsule
+  annotations:
+    key1: value1
