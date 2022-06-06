@@ -12,6 +12,7 @@
 
 import { ConfirmAction } from 'containers/Action';
 import globalContainersStore from 'src/stores/zun/containers';
+import { checkItemAction } from 'resources/zun/container';
 
 export default class StartContainer extends ConfirmAction {
   get id() {
@@ -32,7 +33,7 @@ export default class StartContainer extends ConfirmAction {
 
   policy = 'container:container:start';
 
-  allowedCheckFunc = () => true;
+  allowedCheckFunc = (item) => checkItemAction(item, 'start');
 
   onSubmit = (data) => globalContainersStore.start({ id: data.uuid });
 }

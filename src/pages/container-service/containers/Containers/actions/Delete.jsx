@@ -14,6 +14,7 @@
 
 import { ConfirmAction } from 'containers/Action';
 import globalContainersStore from 'src/stores/zun/containers';
+import { checkItemAction } from 'resources/zun/container';
 
 export default class DeleteContainer extends ConfirmAction {
   get id() {
@@ -38,7 +39,7 @@ export default class DeleteContainer extends ConfirmAction {
 
   policy = 'container:container:delete';
 
-  allowedCheckFunc = () => true;
+  allowedCheckFunc = (item) => checkItemAction(item, 'delete');
 
   onSubmit = (data) => globalContainersStore.delete({ id: data.uuid });
 }
