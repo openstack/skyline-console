@@ -29,6 +29,8 @@ export class Resize extends ModalAction {
 
   static title = t('Resize');
 
+  static isDanger = true;
+
   init() {
     this.store = globalFlavorStore;
   }
