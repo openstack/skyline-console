@@ -15,6 +15,7 @@
 import { action, observable } from 'mobx';
 import client from 'client';
 import Base from 'stores/base';
+import List from 'stores/base-list';
 
 export class RoleStore extends Base {
   get client() {
@@ -23,6 +24,9 @@ export class RoleStore extends Base {
 
   @observable
   implyRoles = {};
+
+  @observable
+  systemRoles = new List();
 
   @action
   async fetchImpliedRoles({ id }) {
@@ -52,6 +56,30 @@ export class RoleStore extends Base {
     });
     this.isLoading = false;
     this.implyRoles = sourceRole;
+  }
+
+  checkSystemRole = (roleItem) => {
+    return roleItem.name === 'admin' || roleItem.name === 'reader';
+  };
+
+  @action
+  async fetchSystemRoles() {
+    this.systemRoles.isLoading = true;
+    const result = await this.client.list();
+    const { roles = [] } = result;
+    const systemRoles = roles.filter((it) => {
+      return this.checkSystemRole(it);
+    });
+    this.systemRoles.data = systemRoles;
+    this.systemRoles.isLoading = false;
+    return systemRoles;
+  }
+
+  @action
+  update({ id }, newObject) {
+    const body = {};
+    body[this.responseKey] = newObject;
+    return this.submitting(this.client.patch(id, body));
   }
 }
 
