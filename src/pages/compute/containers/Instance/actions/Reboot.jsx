@@ -35,6 +35,10 @@ export default class RebootAction extends ConfirmAction {
     return t('reboot instance');
   }
 
+  get isDanger() {
+    return true;
+  }
+
   get passiveAction() {
     return t('be rebooted');
   }

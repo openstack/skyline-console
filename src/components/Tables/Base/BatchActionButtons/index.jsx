@@ -62,7 +62,7 @@ function DropdownActionButton({
     const newConf = updateConf(it, selectedItems);
     const { isDanger, name } = newConf;
     newConf.onFinishAction = onFinishAction;
-    newConf.danger = !!isDanger;
+    newConf.isDanger = !!isDanger;
     if (!selectedItems.length) {
       return (
         <Menu.Item key={key} disabled style={{ textAlign: 'center' }}>
@@ -126,13 +126,14 @@ export default function TableBatchButtons(props) {
     showedActions = actionList;
   }
   batchButtons = showedActions.map((it) => {
+    const { isDanger = false, buttonType = 'default' } = it;
     if (!selectedItems || selectedItems.length === 0) {
       return (
         <Tooltip
           title={t('Please select {name} first', { name: resourceName })}
           key={`tooltip-${generateId()}`}
         >
-          <Button type="default" disabled>
+          <Button type={buttonType} disabled danger={isDanger}>
             {it.buttonText || it.title}
           </Button>
         </Tooltip>

@@ -30,6 +30,8 @@ export class ResizeOnline extends ModalAction {
 
   static title = t('Online Resize');
 
+  static isDanger = true;
+
   init() {
     this.store = globalFlavorStore;
   }

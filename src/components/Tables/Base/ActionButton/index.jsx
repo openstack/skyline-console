@@ -64,6 +64,7 @@ export class ActionButton extends Component {
       isAllowed: PropTypes.bool,
       needHide: PropTypes.bool,
       buttonType: PropTypes.string,
+      isDanger: PropTypes.bool,
       items: PropTypes.array,
       isBatch: PropTypes.bool,
       path: PropTypes.string,
@@ -83,6 +84,7 @@ export class ActionButton extends Component {
     confirm: false,
     needHide: true,
     buttonType: 'link',
+    isDanger: false,
     isLink: false,
     items: [],
     isBatch: false,
@@ -493,7 +495,7 @@ export class ActionButton extends Component {
       name,
       id,
       title,
-      danger,
+      isDanger,
       style,
       maxLength,
       isFirstAction,
@@ -509,7 +511,7 @@ export class ActionButton extends Component {
     const button = (
       <Button
         type={buttonType}
-        danger={danger}
+        danger={isDanger}
         onClick={this.onClick}
         key={id}
         disabled={!isAllowed}

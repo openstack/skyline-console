@@ -32,7 +32,7 @@ function getActionConf(action) {
     name: buttonText || title,
     actionType,
     action,
-    danger: isDanger,
+    isDanger,
   };
 }
 
