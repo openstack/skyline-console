@@ -14,11 +14,12 @@
 
 import React from 'react';
 import { observer, inject } from 'mobx-react';
-import { Divider, Badge } from 'antd';
+import { Divider } from 'antd';
 import Base from 'containers/List';
 import globalProjectStore, { ProjectStore } from 'stores/keystone/project';
 import { yesNoOptions, emptyActionConfig } from 'utils/constants';
 import { SimpleTag } from 'resources/nova/instance';
+import { enabledColumn } from 'resources/keystone/domain';
 import actionConfigs from './actions';
 import styles from './index.less';
 
@@ -106,18 +107,7 @@ export class Projects extends Base {
           )}${group_num}`;
         },
       },
-      {
-        title: t('Enabled'),
-        dataIndex: 'enabled',
-        isHideable: true,
-        render: (val) => {
-          if (val === true) {
-            return <Badge color="green" text={t('Yes')} />;
-          }
-          return <Badge color="red" text={t('No')} />;
-        },
-        stringify: (enabled) => (enabled ? t('Yes') : t('No')),
-      },
+      enabledColumn,
       {
         title: t('Tags'),
         dataIndex: 'tags',

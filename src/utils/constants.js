@@ -140,14 +140,3 @@ export const projectTagsColors = shuffle([
   'geekblue',
   'purple',
 ]);
-
-export const statusTypes = [
-  {
-    label: t('Enable'),
-    value: true,
-  },
-  {
-    label: t('Forbidden'),
-    value: false,
-  },
-];

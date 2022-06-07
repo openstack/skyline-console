@@ -33,6 +33,10 @@ export default class ForbiddenAction extends ConfirmAction {
     return t('Forbidden Domain');
   }
 
+  get isDanger() {
+    return true;
+  }
+
   policy = 'identity:update_domain';
 
   allowedCheckFunc = (item) => {

@@ -26,7 +26,7 @@ import {
   phoneNumberValidate,
   emailValidate,
 } from 'utils/validate';
-import { statusTypes } from 'utils/constants';
+import { statusTypes } from 'resources/keystone/domain';
 
 export class CreateForm extends FormAction {
   constructor(props) {

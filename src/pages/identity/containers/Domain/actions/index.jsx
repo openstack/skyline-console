@@ -12,29 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import createActionConfig from './Create';
-import deleteActionConfig from './Delete';
-import editActionConfig from './Edit';
-import enableActionConfig from './Enable';
-import forbiddenActionConfig from './Forbidden';
+import Create from './Create';
+import Delete from './Delete';
+import Edit from './Edit';
+import Enable from './Enable';
+import Forbidden from './Forbidden';
 
 const actionConfigs = {
   rowActions: {
-    firstAction: editActionConfig,
+    firstAction: Edit,
     moreActions: [
       {
-        action: deleteActionConfig,
+        action: Delete,
       },
       {
-        action: enableActionConfig,
+        action: Enable,
       },
       {
-        action: forbiddenActionConfig,
+        action: Forbidden,
       },
     ],
   },
-  batchActions: [deleteActionConfig],
-  primaryActions: [createActionConfig],
+  batchActions: [Delete],
+  primaryActions: [Create],
 };
 
 export default actionConfigs;

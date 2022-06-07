@@ -14,10 +14,10 @@
 
 import { inject, observer } from 'mobx-react';
 import globalDomainStore from 'stores/keystone/domain';
-import { FormAction } from 'containers/Action';
-import { statusTypes } from 'utils/constants';
+import { ModalAction } from 'containers/Action';
+import { statusTypes } from 'resources/keystone/domain';
 
-export class CreateForm extends FormAction {
+export class Create extends ModalAction {
   init() {
     this.store = globalDomainStore;
   }
@@ -26,27 +26,14 @@ export class CreateForm extends FormAction {
 
   static title = t('Create Domain');
 
-  static path = '/identity/domain-admin/create';
-
   static policy = 'identity:create_domain';
 
   static allowed() {
     return Promise.resolve(true);
   }
 
-  get listUrl() {
-    return this.getRoutePath('domain');
-  }
-
   get name() {
     return t('Create Domain');
-  }
-
-  get labelCol() {
-    return {
-      xs: { span: 6 },
-      sm: { span: 5 },
-    };
   }
 
   get defaultValue() {
@@ -100,4 +87,4 @@ export class CreateForm extends FormAction {
   };
 }
 
-export default inject('rootStore')(observer(CreateForm));
+export default inject('rootStore')(observer(Create));

@@ -40,10 +40,6 @@ export class Instance extends Base {
     this.downloadStore = new ServerStore();
   }
 
-  get tabs() {
-    return [];
-  }
-
   get policy() {
     if (this.isAdminPage) {
       return 'os_compute_api:servers:index:get_all_tenants';

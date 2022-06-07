@@ -12,12 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { Badge } from 'antd';
 import { DomainStore } from 'stores/keystone/domain';
 import Base from 'containers/TabDetail';
+import { enabledColumn } from 'resources/keystone/domain';
 import User from '../../User';
+import Project from '../../Project';
+import actionConfigs from '../actions';
 
 export class DomainDetail extends Base {
   get name() {
@@ -32,26 +33,24 @@ export class DomainDetail extends Base {
     return this.getRoutePath('domain');
   }
 
+  get actionConfigs() {
+    return actionConfigs;
+  }
+
   get detailInfos() {
     return [
       {
         title: t('Domain Name'),
         dataIndex: 'name',
       },
-      {
-        title: t('Enabled'),
-        dataIndex: 'enabled',
-        isHideable: true,
-        render: (val) => {
-          if (val === true) {
-            return <Badge color="green" text={t('Yes')} />;
-          }
-          return <Badge color="red" text={t('No')} />;
-        },
-      },
+      enabledColumn,
       {
         title: t('User Num'),
-        dataIndex: 'user_num',
+        dataIndex: 'userCount',
+      },
+      {
+        title: t('Project Num'),
+        dataIndex: 'projectCount',
       },
       {
         title: t('Description'),
@@ -63,20 +62,18 @@ export class DomainDetail extends Base {
   get tabs() {
     const tabs = [
       {
-        title: t('User List'),
+        title: t('Users'),
         key: 'user',
         component: User,
+      },
+      {
+        title: t('Projects'),
+        key: 'project',
+        component: Project,
       },
     ];
     return tabs;
   }
-
-  goEdit = () => {
-    const {
-      params: { id },
-    } = this.props.match;
-    this.routing.push(`${this.listUrl}/edit/${id}`);
-  };
 
   init() {
     this.store = new DomainStore();
