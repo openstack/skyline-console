@@ -15,7 +15,6 @@
 import React, { Component } from 'react';
 import { Row, Col, Card, Descriptions, Progress, Avatar } from 'antd';
 import { inject, observer } from 'mobx-react';
-import globalHypervisorStore from 'stores/nova/hypervisor';
 import styles from '../style.less';
 
 export const resourceCircle = [
@@ -38,13 +37,8 @@ export const color = {
 };
 
 export class ResourceCircle extends Component {
-  constructor(props) {
-    super(props);
-    this.store = globalHypervisorStore;
-  }
-
   componentDidMount() {
-    this.store.getOverview();
+    this.props.store.getVirtualResource();
   }
 
   get resourceCircle() {
@@ -56,7 +50,7 @@ export class ResourceCircle extends Component {
   }
 
   renderCircle = (item, index) => {
-    const { overview } = this.store;
+    const { overview } = this.props.store;
     const resource = overview[item.resource];
 
     const used = overview[item.used];
@@ -114,7 +108,7 @@ export class ResourceCircle extends Component {
   };
 
   render() {
-    const { isLoading } = this.store;
+    const { isLoading } = this.props.store;
     return (
       <Card
         loading={isLoading}

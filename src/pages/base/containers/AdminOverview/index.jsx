@@ -16,6 +16,8 @@ import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { Row, Col } from 'antd';
 import OverviewAdminStore from 'stores/overview-admin';
+import globalServerStore from 'stores/nova/server';
+import globalHypervisorStore from 'stores/nova/hypervisor';
 import styles from './style.less';
 import PlatformInfo from './components/PlatformInfo';
 import ComputeService from './components/ComputeService';
@@ -34,11 +36,11 @@ export class Overview extends Component {
   }
 
   renderVirtualResource() {
-    return <VirtualResource store={this.adminStore} />;
+    return <VirtualResource store={globalHypervisorStore} />;
   }
 
   renderResourceOverview() {
-    return <ResourceOverview store={this.adminStore} />;
+    return <ResourceOverview store={globalServerStore} />;
   }
 
   renderComputeService() {

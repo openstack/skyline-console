@@ -83,7 +83,7 @@ const volumeColors = {
 
 export class virtualResourceInfo extends Component {
   componentDidMount() {
-    this.props.store.getVirtualResource();
+    this.props.store.getVirtualResourceOverview();
   }
 
   get card() {
