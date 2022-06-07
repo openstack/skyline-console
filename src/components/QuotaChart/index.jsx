@@ -1,115 +1,58 @@
+// Copyright 2022 99cloud
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 import React from 'react';
 import { Skeleton } from 'antd';
-import {
-  Chart,
-  Interval,
-  Coordinate,
-  Legend,
-  View,
-  Annotation,
-} from 'bizcharts';
+import Ring from './Ring';
+import Line from './Line';
+import QuotaInfo from './Info';
 
-function Ring(props) {
-  const { used = 0, add = 1, reserved = 0, limit = 1 } = props;
-  const left = limit - used - reserved - add;
-  const data = [
-    {
-      type: t('Used'),
-      value: used,
-      color: '#5B8FF9',
-    },
-  ];
-  if (reserved) {
-    data.push({
-      type: t('Reserved'),
-      value: reserved,
-      color: '#5D7092',
-    });
-  }
-  data.push({
-    type: t('New'),
-    value: add,
-    color: '#5AD8A6',
-  });
-  data.push({
-    type: t('Left'),
-    value: left,
-    color: '#eee',
-  });
-  const colors = data.map((it) => it.color);
-  return (
-    <div style={{ width: '120px' }}>
-      <Chart placeholder={false} height={120} padding="auto" autoFit>
-        <Legend visible={false} />
-        {/* 绘制图形 */}
-        <View data={data}>
-          <Coordinate type="theta" innerRadius={0.75} />
-          <Interval
-            position="value"
-            adjust="stack"
-            color={['type', colors]}
-            size={16}
-          />
-          <Annotation.Text
-            position={['50%', '40%']}
-            content={t('Quota')}
-            style={{
-              lineHeight: '240px',
-              fontSize: '16',
-              fill: '#000',
-              textAlign: 'center',
-            }}
-          />
-          <Annotation.Text
-            position={['50%', '62%']}
-            content={limit}
-            style={{
-              lineHeight: '240px',
-              fontSize: '24',
-              fill: colors[0],
-              textAlign: 'center',
-            }}
-          />
-        </View>
-      </Chart>
-    </div>
-  );
-}
-
-function QuotaInfo(props) {
-  const { used = 0, reserved = 0, add = 1 } = props;
-  return (
-    <div>
-      <p>
-        <b>{t('Quota')}:</b> {t('Unlimit')}
-      </p>
-      <p>
-        <b>{t('Used')}:</b>: {used}
-      </p>
-      {!!reserved && (
-        <p>
-          <b>{t('Reserved')}:</b>: {reserved}
-        </p>
-      )}
-      <p>
-        <b>{t('New')}:</b>: {add}
-      </p>
-    </div>
-  );
-}
-
-export default function QuotaChart(props) {
-  const { limit = 0, loading } = props;
-  if (loading) {
-    return <Skeleton />;
-  }
+function renderItem(props) {
+  const { type = 'ring', limit } = props;
   if (limit === -1) {
     return <QuotaInfo {...props} />;
   }
+  if (type === 'ring') {
+    return <Ring {...props} />;
+  }
+  if (type === 'line') {
+    return <Line {...props} />;
+  }
+}
 
-  return (
-    <div>
-      <Ring {...props} />
-    </div>
-  );
+export default function QuotaChart(props) {
+  const { quotas = [], loading } = props;
+  if (loading) {
+    return <Skeleton />;
+  }
+  const items = quotas.map((it, index) => {
+    const { name } = it;
+    const style = index === quotas.length - 1 ? {} : { marginBottom: 10 };
+    return (
+      <div key={name} style={style}>
+        {renderItem(it)}
+      </div>
+    );
+  });
+
+  const style = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    overflowY: 'auto',
+    overflowX: 'hidden',
+    maxHeight: 400,
+  };
+  return <div style={style}>{items}</div>;
 }

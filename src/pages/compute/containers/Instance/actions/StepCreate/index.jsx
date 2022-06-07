@@ -153,14 +153,35 @@ export class StepCreate extends StepAction {
     const { instances = {} } = toJS(this.projectStore.quota) || {};
     const { limit } = instances || {};
     if (!limit) {
-      return {};
+      return [];
     }
     const { data = {} } = this.state;
     const { count = 1 } = data;
-    return {
+    const instanceQuotaInfo = {
       ...instances,
       add: count,
+      name: 'instance',
+      title: t('Instance'),
+      // type: 'line',
     };
+
+    const volumeQuota = this.getVolumeQuota();
+    const { totalNewCount, totalNewSize } = this.getVolumeInputMap();
+    const volumeQuotaInfo = {
+      ...volumeQuota.volumes,
+      add: totalNewCount,
+      name: 'volume',
+      title: t('Volume'),
+      type: 'line',
+    };
+    const volumeSizeQuotaInfo = {
+      ...volumeQuota.gigabytes,
+      add: totalNewSize,
+      name: 'volumeSize',
+      title: t('Volume Size'),
+      type: 'line',
+    };
+    return [instanceQuotaInfo, volumeQuotaInfo, volumeSizeQuotaInfo];
   }
 
   get errorText() {

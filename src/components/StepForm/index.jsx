@@ -431,12 +431,12 @@ export default class BaseStepForm extends React.Component {
       return null;
     }
     let props = {};
-    if (!this.quotaInfo || isEmpty(this.quotaInfo)) {
+    if (!this.quotaInfo || !this.quotaInfo.length) {
       props.loading = true;
     } else {
       props = {
         loading: false,
-        ...this.quotaInfo,
+        quotas: this.quotaInfo,
       };
     }
     return <QuotaChart {...props} />;

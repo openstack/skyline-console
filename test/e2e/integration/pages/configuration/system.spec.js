@@ -114,16 +114,16 @@ describe('The System Info Page', () => {
       .clickConfirmActionSubmitButton(10000);
   });
 
-  it('successfully neutron agent l3 add router', () => {
-    cy.clickTab(NeutronAgentsTab)
-      .tableSearchText('l3')
-      .goToDetail(0)
-      .clickDetailTab('Router')
-      .clickHeaderButton(1)
-      .wait(10000)
-      .formTableSelectBySearch('router', routerName)
-      .clickModalActionSubmitButton();
-  });
+  // it('successfully neutron agent l3 add router', () => {
+  //   cy.clickTab(NeutronAgentsTab)
+  //     .tableSearchText('l3')
+  //     .goToDetail(0)
+  //     .clickDetailTab('Router')
+  //     .clickHeaderButton(1)
+  //     .wait(10000)
+  //     .formTableSelectBySearch('router', routerName)
+  //     .clickModalActionSubmitButton();
+  // });
 
   it('successfully neutron agent detail - dhcp', () => {
     cy.clickTab(NeutronAgentsTab)
