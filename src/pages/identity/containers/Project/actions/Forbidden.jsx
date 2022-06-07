@@ -33,6 +33,10 @@ export default class ForbiddenAction extends ConfirmAction {
     return t('Forbidden Project');
   }
 
+  get isDanger() {
+    return true;
+  }
+
   policy = 'identity:update_project';
 
   allowedCheckFunc = (item) => {

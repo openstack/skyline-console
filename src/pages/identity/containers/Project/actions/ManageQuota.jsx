@@ -23,7 +23,7 @@ import {
   shareQuotaCard,
 } from 'pages/base/containers/Overview/components/QuotaOverview';
 
-export class QuotaManager extends ModalAction {
+export class ManageQuota extends ModalAction {
   static id = 'quota-management';
 
   static title = t('Edit Quota');
@@ -216,4 +216,4 @@ export class QuotaManager extends ModalAction {
   };
 }
 
-export default inject('rootStore')(observer(QuotaManager));
+export default inject('rootStore')(observer(ManageQuota));

@@ -17,9 +17,9 @@ import { ModalAction } from 'containers/Action';
 import globalDomainStore from 'stores/keystone/domain';
 import globalProjectStore from 'stores/keystone/project';
 import { regex } from 'utils/validate';
-import { statusTypes } from 'resources/keystone/domain';
+import { statusTypes, getDomainFormItem } from 'resources/keystone/domain';
 
-export class CreateForm extends ModalAction {
+export class Create extends ModalAction {
   constructor(props) {
     super(props);
     this.state = {
@@ -66,29 +66,6 @@ export class CreateForm extends ModalAction {
     return data;
   }
 
-  get domainList() {
-    const {
-      rootStore: { baseDomains },
-    } = this.props;
-    const { domains } = this.domainStore;
-    const domainList = (domains || []).filter(
-      (it) =>
-        baseDomains.indexOf(it.name) === -1 || it.id === this.item.domain_id
-    );
-    return domainList.map((it) => ({
-      label: it.name,
-      value: it.id,
-    }));
-  }
-
-  get checkedList() {
-    const { domains } = this.domainStore;
-    return (domains || []).map((it) => ({
-      label: it.name,
-      value: it.id,
-    }));
-  }
-
   checkName = (rule, value) => {
     if (!value) {
       return Promise.reject(t('Please input'));
@@ -108,6 +85,7 @@ export class CreateForm extends ModalAction {
   };
 
   get formItems() {
+    const domainFormItem = getDomainFormItem(this);
     return [
       {
         name: 'name',
@@ -119,15 +97,7 @@ export class CreateForm extends ModalAction {
         extra: t('Project') + t('Name can not be duplicated'),
         maxLength: 30,
       },
-      {
-        name: 'domain_id',
-        label: t('Affiliated Domain'),
-        type: 'select',
-        checkOptions: this.checkedList,
-        checkBoxInfo: t('Show All Domain'),
-        options: this.domainList,
-        required: true,
-      },
+      domainFormItem,
       {
         name: 'enabled',
         label: t('Status'),
@@ -154,4 +124,4 @@ export class CreateForm extends ModalAction {
   };
 }
 
-export default inject('rootStore')(observer(CreateForm));
+export default inject('rootStore')(observer(Create));

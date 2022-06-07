@@ -55,11 +55,11 @@ export class Detail extends Base {
       enabledColumn,
       {
         title: t('User Num'),
-        dataIndex: 'user_num',
+        dataIndex: 'userCount',
       },
       {
         title: t('User Group Num'),
-        dataIndex: 'group_num',
+        dataIndex: 'groupCount',
       },
       {
         title: t('Tags'),
@@ -93,13 +93,6 @@ export class Detail extends Base {
     ];
     return tabs;
   }
-
-  goEdit = () => {
-    const {
-      params: { id },
-    } = this.props.match;
-    this.routing.push(`${this.listUrl}/edit/${id}`);
-  };
 }
 
 export default inject('rootStore')(observer(Detail));

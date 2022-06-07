@@ -12,45 +12,45 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import deleteActionConfig from './Delete';
-import editActionConfig from './Edit';
-import enableActionConfig from './Enable';
-import forbiddenActionConfig from './Forbidden';
-import createActionConfig from './Create';
-import userActionConfig from './UserManager';
-import userGroupActionConfig from './UserGroupManager';
-import quotaActionConfig from './QuotaManager';
+import Delete from './Delete';
+import Edit from './Edit';
+import Enable from './Enable';
+import Forbidden from './Forbidden';
+import Create from './Create';
+import ManageUser from './ManageUser';
+import ManageUserGroup from './ManageUserGroup';
+import ManageQuota from './ManageQuota';
 import ModifyTags from './ModifyTags';
 
 const actionConfigs = {
   rowActions: {
-    firstAction: editActionConfig,
+    firstAction: Edit,
     moreActions: [
       {
-        action: deleteActionConfig,
+        action: Delete,
       },
       {
-        action: quotaActionConfig,
+        action: ManageQuota,
       },
       {
-        action: userActionConfig,
+        action: ManageUser,
       },
       {
-        action: userGroupActionConfig,
+        action: ManageUserGroup,
       },
       {
-        action: enableActionConfig,
+        action: Enable,
       },
       {
-        action: forbiddenActionConfig,
+        action: Forbidden,
       },
       {
         action: ModifyTags,
       },
     ],
   },
-  batchActions: [deleteActionConfig],
-  primaryActions: [createActionConfig],
+  batchActions: [Delete],
+  primaryActions: [Create],
 };
 
 export default actionConfigs;

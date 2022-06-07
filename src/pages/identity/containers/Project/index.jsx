@@ -28,10 +28,6 @@ export class Projects extends Base {
     this.store = this.inDetailPage ? new ProjectStore() : globalProjectStore;
   }
 
-  get tabs() {
-    return [];
-  }
-
   get policy() {
     return 'identity:list_projects';
   }
@@ -59,52 +55,163 @@ export class Projects extends Base {
     return this.inDetailPage && pathname.includes('user-group-admin/detail');
   }
 
-  getColumns() {
-    const columns = [
+  get inDomainDetail() {
+    const { pathname } = this.props.location;
+    return this.inDetailPage && pathname.includes('domain-admin/detail');
+  }
+
+  getUserProjectRole = (record) => {
+    // return [{role, groups}]
+    const { users = {}, groups = {} } = record || {};
+    const userRoleIds = [];
+    const result = [];
+    Object.keys(users).forEach((id) => {
+      const roles = users[id];
+      roles.forEach((r) => {
+        result.push({
+          role: r,
+        });
+        userRoleIds.push(r.id);
+      });
+    });
+    Object.keys(groups).forEach((groupId) => {
+      const { roles, group } = groups[groupId];
+      const leftRoles = roles.filter((r) => !userRoleIds.includes(r.id));
+      leftRoles.forEach((r) => {
+        const resultItem = result.find((it) => it.role.id === r.id);
+        if (resultItem) {
+          resultItem.groups.push(group);
+        } else {
+          result.push({
+            role: r,
+            groups: [group],
+          });
+        }
+      });
+    });
+    return result;
+  };
+
+  getBaseColumns() {
+    const userProjectRole = {
+      title: t('Role'),
+      dataIndex: 'userProjectRole',
+      render: (_, record) => {
+        const roles = this.getUserProjectRole(record);
+        const links = roles.map((it) => {
+          const {
+            role: { id, name },
+            groups = [],
+          } = it;
+          if (!groups.length) {
+            const link = this.getLinkRender(
+              'roleDetail',
+              name,
+              { id },
+              { tab: 'user' }
+            );
+            return <div key={`user-role-${id}`}>{link}</div>;
+          }
+          const roleGroupLink = this.getLinkRender(
+            'roleDetail',
+            name,
+            { id },
+            { tab: 'groups' }
+          );
+          const groupLinks = groups.map((g) => {
+            const link = this.getLinkRender('groupDetail', g.name, {
+              id: g.id,
+            });
+            return <span style={{ marginRight: '8px' }}>{link}</span>;
+          });
+          return (
+            <div key={`group-role-${id}`}>
+              {roleGroupLink} ({t('authorized by group ')}
+              {groupLinks})
+            </div>
+          );
+        });
+        return <div>{links}</div>;
+      },
+      stringify: (_, record) => {
+        const roles = this.getUserProjectRole(record);
+        return roles
+          .map((it) => {
+            const {
+              role: { name },
+              groups = [],
+            } = it;
+            if (!groups.length) {
+              return name;
+            }
+            const groupNames = groups.map((g) => g.name).join('; ');
+            return `${name} (${t('authorized by group ')}${groupNames})`;
+          })
+          .join('; ');
+      },
+    };
+
+    const groupProjectRole = {
+      title: t('Role'),
+      dataIndex: 'groupProjectRole',
+      render: (_, record) => {
+        const { groups: projectRole = {} } = record;
+        const tab = 'group';
+        return Object.keys(projectRole).map((id) => {
+          const roles = projectRole[id];
+          return roles.map((role) => {
+            const { id: roleId, name } = role;
+            const link = this.getLinkRender(
+              'roleDetail',
+              name,
+              { id: roleId },
+              { tab }
+            );
+            return <div key={`${id}-${roleId}`}>{link}</div>;
+          });
+        });
+      },
+      stringify: (_, record) => {
+        const { groups: projectRole = {} } = record;
+        return Object.keys(projectRole).map((id) => {
+          const roles = projectRole[id];
+          return roles.map((role) => role.name).join(' ; ');
+        });
+      },
+    };
+    return [
       {
         title: t('Project ID/Name'),
         dataIndex: 'name',
         routeName: 'projectDetailAdmin',
       },
-      {
-        title: t('Role'),
-        dataIndex: 'projectRole',
-        render: (roles, value) => {
-          const { groupProjectRole = [] } = value;
-          const rolesAll = [...(roles || []), ...(groupProjectRole || [])];
-          return (rolesAll || []).map((it, idx) => <div key={idx}>{it}</div>);
-        },
-        stringify: (roles, value) => {
-          const { groupProjectRole = [] } = value;
-          const rolesAll = [...(roles || []), ...(groupProjectRole || [])];
-          return (rolesAll || []).join(';');
-        },
-      },
+      userProjectRole,
+      groupProjectRole,
       {
         title: t('Member Num'),
         dataIndex: 'num',
         isHideable: true,
         render: (name, record) => {
-          const { user_num, group_num } = record;
+          const { userCount, groupCount } = record;
           return (
             <div>
               <span>
                 {t('User Num: ')}
-                {user_num}
+                {userCount}
               </span>
               <Divider type="vertical" className={styles['header-divider']} />
               <span>
                 {t('User Group Num: ')}
-                {group_num}
+                {groupCount}
               </span>
             </div>
           );
         },
         stringify: (name, record) => {
-          const { user_num, group_num } = record;
-          return `${t('User Num: ')}${user_num} | ${t(
+          const { userCount, groupCount } = record;
+          return `${t('User Num: ')}${userCount} | ${t(
             'User Group Num: '
-          )}${group_num}`;
+          )}${groupCount}`;
         },
       },
       enabledColumn,
@@ -120,16 +227,32 @@ export class Projects extends Base {
         isHideable: true,
       },
     ];
+  }
 
-    if (this.inProject) {
-      return columns.filter((it) => it.dataIndex !== 'projectRole');
+  getColumns() {
+    const columns = this.getBaseColumns();
+
+    if (this.inProject || this.inDomainDetail) {
+      return columns.filter(
+        (it) => !['userProjectRole', 'groupProjectRole'].includes(it.dataIndex)
+      );
+    }
+    if (this.inUserDetail) {
+      return columns.filter(
+        (it) => !['num', 'groupProjectRole'].includes(it.dataIndex)
+      );
+    }
+    if (this.inUserGroupDetail) {
+      return columns.filter(
+        (it) => !['num', 'userProjectRole'].includes(it.dataIndex)
+      );
     }
 
     return columns;
   }
 
   get actionConfigs() {
-    if (this.inUserDetail || this.inUserGroupDetail) {
+    if (this.inDetailPage) {
       return emptyActionConfig;
     }
     return actionConfigs;
@@ -157,22 +280,19 @@ export class Projects extends Base {
     ];
   }
 
-  async getData({ silent, ...params } = {}) {
+  updateFetchParams = (params) => {
     const { match } = this.props;
     const { id } = match.params || {};
     const newParams = { ...params };
-    silent && (this.list.silent = true);
     if (this.inUserDetail) {
       newParams.userId = id;
-      await this.store.fetchListInUserDetail(newParams);
     } else if (this.inUserGroupDetail) {
       newParams.groupId = id;
-      await this.store.fetchListInGroupDetail(newParams);
-    } else {
-      await this.store.fetchList(newParams);
+    } else if (this.inDomainDetail) {
+      newParams.domain_id = id;
     }
-    this.list.silent = false;
-  }
+    return newParams;
+  };
 }
 
 export default inject('rootStore')(observer(Projects));

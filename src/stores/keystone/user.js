@@ -102,16 +102,16 @@ export class UserStore extends Base {
       });
       select_project.forEach((id) => {
         if (!newProjects.includes(id)) {
-          const role_id = defaultRole;
+          const roleId = defaultRole;
           promiseList.push(
-            globalProjectStore.assignUserRole({ id, user_id, role_id })
+            globalProjectStore.assignUserRole({ id, userId: user_id, roleId })
           );
         } else {
           promiseList.push(
             globalProjectStore.assignUserRole({
               id,
-              user_id,
-              role_id: newProjectRoles[id],
+              userId: user_id,
+              roleId: newProjectRoles[id],
             })
           );
         }

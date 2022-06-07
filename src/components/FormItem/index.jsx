@@ -245,7 +245,7 @@ export default class FormItem extends React.Component {
       case 'check-group':
         return {
           ...base,
-          wrapperCol: {
+          wrapperCol: wrapperCol || {
             xs: {
               span: 24,
             },

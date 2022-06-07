@@ -15,7 +15,6 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalProjectStore from 'stores/keystone/project';
-import { statusTypes } from 'resources/keystone/domain';
 
 export class EditForm extends ModalAction {
   init() {
@@ -72,17 +71,6 @@ export class EditForm extends ModalAction {
         value: this.item.name,
         validator: this.checkName,
         extra: t('Project') + t('Name can not be duplicated'),
-      },
-      {
-        name: 'enabled',
-        label: t('Status'),
-        type: 'radio',
-        optionType: 'default',
-        options: statusTypes,
-        disabled: true,
-        help: t(
-          'Disabling the project will have a negative impact. If the users associated with the project are only assigned to the project, they will not be able to log in'
-        ),
       },
       {
         name: 'description',

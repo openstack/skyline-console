@@ -33,7 +33,7 @@ export const projectColumns = [
   },
   {
     title: t('User Num'),
-    dataIndex: 'user_num',
+    dataIndex: 'userCount',
   },
   {
     title: t('Enabled'),
