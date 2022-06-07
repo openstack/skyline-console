@@ -14,13 +14,11 @@
 
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import globalDomainStore from 'stores/keystone/domain';
 import globalGroupStore from 'stores/keystone/user-group';
 
 export class EditForm extends ModalAction {
   init() {
     this.store = globalGroupStore;
-    this.domainStore = globalDomainStore;
   }
 
   static id = 'user-group-edit';
@@ -35,17 +33,10 @@ export class EditForm extends ModalAction {
 
   get defaultValue() {
     const { name, description } = this.item;
-    if (name && this.formRef.current) {
-      this.formRef.current.setFieldsValue({
-        name,
-        description,
-      });
-    }
-    const data = {
+    return {
       name,
       description,
     };
-    return data;
   }
 
   checkName = (rule, value) => {
@@ -55,9 +46,9 @@ export class EditForm extends ModalAction {
     const {
       list: { data },
     } = this.store;
-    const { name } = this.item;
-    const nameUsed = data.filter((it) => it.name === value);
-    if (nameUsed[0] && nameUsed[0].name !== name) {
+    const { id } = this.item;
+    const nameUsed = data.find((it) => it.name === value && it.id !== id);
+    if (nameUsed) {
       return Promise.reject(
         t('Invalid: User Group name can not be duplicated')
       );

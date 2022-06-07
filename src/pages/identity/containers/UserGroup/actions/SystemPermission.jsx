@@ -103,14 +103,14 @@ export class SystemPermission extends ModalAction {
     } = this.props;
     const promiseList = [];
     oldRoles.forEach((role) => {
-      const { id: role_id } = role;
-      if (newRoles.indexOf(role_id) === -1) {
-        promiseList.push(globalGroupStore.deleteSystemRole({ id, role_id }));
+      const { id: roleId } = role;
+      if (newRoles.indexOf(roleId) === -1) {
+        promiseList.push(globalGroupStore.deleteSystemRole({ id, roleId }));
       }
     });
-    newRoles.forEach((role_id) => {
-      if (oldRoles.indexOf(role_id) === -1) {
-        promiseList.push(globalGroupStore.assignSystemRole({ id, role_id }));
+    newRoles.forEach((roleId) => {
+      if (oldRoles.indexOf(roleId) === -1) {
+        promiseList.push(globalGroupStore.assignSystemRole({ id, roleId }));
       }
     });
     const results = await Promise.all(promiseList);

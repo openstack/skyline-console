@@ -15,18 +15,15 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import globalGroupStore from 'stores/keystone/user-group';
-import { Badge } from 'antd';
+import globalGroupStore, { GroupStore } from 'stores/keystone/user-group';
+import { Typography } from 'antd';
 import { emptyActionConfig } from 'utils/constants';
+import { isEmpty } from 'lodash';
 import actionConfigs from './actions';
 
 export class UserGroups extends Base {
   init() {
-    this.store = globalGroupStore;
-  }
-
-  get tabs() {
-    return [];
+    this.store = this.inDetailPage ? new GroupStore() : globalGroupStore;
   }
 
   get policy() {
@@ -41,50 +38,143 @@ export class UserGroups extends Base {
     return false;
   }
 
-  getColumns() {
-    const {
-      match: { path },
-    } = this.props;
-    const components = [
+  get inUserDetail() {
+    const { pathname } = this.props.location;
+    return this.inDetailPage && pathname.includes('user-admin/detail');
+  }
+
+  get inProjectDetail() {
+    const { pathname } = this.props.location;
+    return this.inDetailPage && pathname.includes('project-admin/detail');
+  }
+
+  get inRoleDetail() {
+    const { pathname } = this.props.location;
+    return this.inDetailPage && pathname.includes('role-admin/detail');
+  }
+
+  getBaseColumns() {
+    return [
       {
         title: t('User Group ID/Name'),
         dataIndex: 'name',
         routeName: 'userGroupDetailAdmin',
       },
       {
-        title: t('Project Scope'),
-        dataIndex: 'projectScope',
+        title: t('Project Scope (Project Name: Role Names)'),
+        dataIndex: 'projects',
         isHideable: true,
-        render: (projectScope) => {
-          if (projectScope && projectScope[0]) {
-            return projectScope.map((it, idx) => <div key={idx}>{it}</div>);
+        width: 500,
+        render: (value) => {
+          if (isEmpty(value)) {
+            return '-';
           }
+          return Object.keys(value).map((projectId) => {
+            const { project, roles } = value[projectId];
+            const roleNames = roles
+              .map((role) => {
+                return role.name;
+              })
+              .join(', ');
+            const { id, name } = project;
+            const link = this.getLinkRender(
+              'projectDetail',
+              name,
+              { id },
+              { tab: 'userGroup' }
+            );
+            return (
+              <div key={projectId}>
+                <Typography.Text strong>{link}</Typography.Text>: {roleNames}
+              </div>
+            );
+          });
+        },
+        stringify: (value) => {
+          if (isEmpty(value)) {
+            return '-';
+          }
+          return Object.keys(value)
+            .map((projectId) => {
+              const { project, roles } = value[projectId];
+              const roleNames = roles.map((it) => it.name).join('|');
+              return `${project.name}: ${roleNames}`;
+            })
+            .join(';');
         },
       },
-      // {
-      //   title: t('System Scope'),
-      //   dataIndex: 'systemScope',
-      //   isHideable: true,
-      //   render: (systemScope) => {
-      //     if (systemScope === true) {
-      //       return 'All';
-      //     }
-      //     return '-';
-      //   },
-      // },
       {
-        title: t('Project Num'),
-        dataIndex: 'project_num',
-        render: (project_num) => {
-          if (project_num === 0) {
-            return <Badge color="red" text={project_num} />;
+        title: t('Roles'),
+        dataIndex: 'rolesInProjectDetailPage',
+        isHideable: true,
+        render: (_, record) => {
+          const { projects = {} } = record;
+          if (isEmpty(projects)) {
+            return '-';
           }
-          return <Badge color="green" text={project_num} />;
+          return Object.keys(projects).map((projectId) => {
+            const { roles } = projects[projectId];
+            return roles.map((role) => {
+              const { id, name } = role;
+              const link = this.getLinkRender(
+                'roleDetail',
+                name,
+                { id },
+                { tab: 'group' }
+              );
+              return <div key={id}>{link}</div>;
+            });
+          });
+        },
+        stringify: (_, record) => {
+          const { projects = {} } = record;
+          if (isEmpty(projects)) {
+            return '-';
+          }
+          return Object.keys(projects).map((projectId) => {
+            const { roles } = projects[projectId];
+            return roles.map((role) => role.name).join(';');
+          });
         },
       },
       {
-        title: t('User Num'),
-        dataIndex: 'user_num',
+        title: t('Project Scope'),
+        dataIndex: 'projectsInRoleDetailPage',
+        isHideable: true,
+        render: (_, record) => {
+          const { projects = {} } = record;
+          if (isEmpty(projects)) {
+            return '-';
+          }
+          return Object.keys(projects).map((projectId) => {
+            const { project } = projects[projectId];
+            const { id, name } = project;
+            const link = this.getLinkRender(
+              'projectDetail',
+              name,
+              { id },
+              { tab: 'userGroup' }
+            );
+            return <div key={id}>{link}</div>;
+          });
+        },
+        stringify: (_, record) => {
+          const { projects = {} } = record;
+          if (isEmpty(projects)) {
+            return '-';
+          }
+          return Object.keys(projects)
+            .map((projectId) => {
+              const { project } = projects[projectId];
+              return project.name;
+            })
+            .join(';');
+        },
+      },
+      {
+        title: t('Affiliated Domain'),
+        dataIndex: 'domainName',
+        isHideable: true,
       },
       {
         title: t('Description'),
@@ -92,21 +182,32 @@ export class UserGroups extends Base {
         isHideable: true,
       },
     ];
+  }
 
-    if (path.indexOf('role-admin/detail') === -1) {
-      components.splice(1, 1);
+  getColumns() {
+    const columns = this.getBaseColumns();
+    if (!this.inDetailPage || this.inUserDetail) {
+      return columns.filter((it) => !it.dataIndex.includes('DetailPage'));
     }
-    if (path.indexOf('user-group-admin') === -1) {
-      components.splice(2, 1);
+    if (this.inProjectDetail) {
+      return columns.filter(
+        (it) =>
+          it.dataIndex !== 'projects' &&
+          it.dataIndex !== 'projectsInRoleDetailPage'
+      );
     }
-    return components;
+    if (this.inRoleDetail) {
+      return columns.filter(
+        (it) =>
+          it.dataIndex !== 'rolesInProjectDetailPage' &&
+          it.dataIndex !== 'projects'
+      );
+    }
+    return columns;
   }
 
   get actionConfigs() {
-    const {
-      match: { path },
-    } = this.props;
-    if (path.indexOf('identity/user-group') >= 0) {
+    if (!this.inDetailPage) {
       return actionConfigs;
     }
     return emptyActionConfig;
@@ -121,27 +222,19 @@ export class UserGroups extends Base {
     ];
   }
 
-  async getData({ silent, ...params } = {}) {
+  updateFetchParams = (params) => {
     const { match } = this.props;
-    const { path } = match;
+    const { id } = match.params || {};
     const newParams = { ...params };
-    if (path.indexOf('project-admin/detail') >= 0) {
-      const { id } = match.params;
-      newParams.projectId = id;
-      await this.store.fetchListInProjectDetail(newParams);
-    } else if (path.indexOf('user-admin/detail') >= 0) {
-      const { id } = match.params;
+    if (this.inUserDetail) {
       newParams.userId = id;
-      await this.store.fetchListInUserDetail(newParams);
-    } else if (path.indexOf('role-admin/detail') >= 0) {
-      const { id } = match.params;
+    } else if (this.inProjectDetail) {
+      newParams.projectId = id;
+    } else if (this.inRoleDetail) {
       newParams.roleId = id;
-      await this.store.fetchListInRoleDetail(newParams);
-    } else {
-      await this.store.fetchList(newParams);
     }
-    this.list.silent = false;
-  }
+    return newParams;
+  };
 }
 
 export default inject('rootStore')(observer(UserGroups));

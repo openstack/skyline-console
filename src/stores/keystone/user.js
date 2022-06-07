@@ -96,7 +96,9 @@ export class UserStore extends Base {
     if (select_user_group[0] || select_project[0]) {
       const newProjects = Object.keys(newProjectRoles);
       select_user_group.forEach((id) => {
-        promiseList.push(globalGroupStore.addGroupUsers({ id, user_id }));
+        promiseList.push(
+          globalGroupStore.addGroupUsers({ id, userId: user_id })
+        );
       });
       select_project.forEach((id) => {
         if (!newProjects.includes(id)) {
@@ -128,9 +130,10 @@ export class UserStore extends Base {
 
   get mapper() {
     return (item) => {
-      const domain = this.domains.filter((it) => it.id === item.domain_id);
-      if (domain[0]) {
-        item.domain_name = domain[0].name;
+      const domain = this.domains.find((it) => it.id === item.domain_id);
+      if (domain) {
+        item.domain_name = domain.name;
+        item.domainName = domain.name;
       }
       return item;
     };
@@ -623,6 +626,23 @@ export class UserStore extends Base {
     });
 
     return newData;
+  }
+
+  @action
+  async fetchAllWithDomain() {
+    this.list.isLoading = true;
+    await this.fetchDomain();
+    const result = await this.client.list();
+    const data = get(result, this.listResponseKey, []);
+    const items = data.map(this.mapper);
+    const newData = await this.listDidFetch(items);
+    this.list.update({
+      data: newData,
+      total: items.length || 0,
+      isLoading: false,
+    });
+
+    return items;
   }
 }
 

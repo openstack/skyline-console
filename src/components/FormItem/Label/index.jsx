@@ -34,6 +34,8 @@ import {
   HddOutlined,
   CloudServerOutlined,
   LoadingOutlined,
+  TeamOutlined,
+  ProjectOutlined,
 } from '@ant-design/icons';
 import styles from './index.less';
 
@@ -66,6 +68,8 @@ const iconTypeMap = {
   host: <CloudServerOutlined />,
   security: SecurityIcon,
   lb: LBIcon,
+  group: <TeamOutlined />,
+  project: <ProjectOutlined />,
 };
 
 export default class index extends Component {

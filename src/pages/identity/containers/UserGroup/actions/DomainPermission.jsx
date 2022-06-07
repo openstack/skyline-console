@@ -103,17 +103,17 @@ export class DomainPermission extends ModalAction {
     } = this.props;
     const promiseList = [];
     oldRoles.forEach((role) => {
-      const { id: role_id } = role;
-      if (newRoles.indexOf(role_id) === -1) {
+      const { id: roleId } = role;
+      if (newRoles.indexOf(roleId) === -1) {
         promiseList.push(
-          globalGroupStore.deleteDomainRole({ id, role_id, domain_id })
+          globalGroupStore.deleteDomainRole({ id, roleId, domain_id })
         );
       }
     });
-    newRoles.forEach((role_id) => {
-      if (oldRoles.indexOf(role_id) === -1) {
+    newRoles.forEach((roleId) => {
+      if (oldRoles.indexOf(roleId) === -1) {
         promiseList.push(
-          globalGroupStore.assignDomainRole({ id, role_id, domain_id })
+          globalGroupStore.assignDomainRole({ id, roleId, domain_id })
         );
       }
     });

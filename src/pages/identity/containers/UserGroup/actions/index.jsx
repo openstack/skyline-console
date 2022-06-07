@@ -15,7 +15,7 @@
 import Create from './Create';
 import Delete from './Delete';
 import Edit from './Edit';
-import UserManager from './UserManager';
+import ManageUser from './ManageUser';
 // import SystemPermission from './SystemPermission';
 // import DomainPermission from './DomainPermission';
 
@@ -30,7 +30,7 @@ const actionConfigs = {
       //   action: DomainPermission,
       // },
       {
-        action: UserManager,
+        action: ManageUser,
       },
       {
         action: Delete,

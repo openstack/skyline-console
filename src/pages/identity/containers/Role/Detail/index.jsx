@@ -18,6 +18,7 @@ import Base from 'containers/TabDetail';
 import User from '../../User';
 import Group from '../../UserGroup';
 import impliedRole from './BaseDetail';
+import actionConfigs from '../actions';
 
 export class RoleDetail extends Base {
   get name() {
@@ -30,6 +31,10 @@ export class RoleDetail extends Base {
 
   get listUrl() {
     return this.getRoutePath('role');
+  }
+
+  get actionConfigs() {
+    return actionConfigs;
   }
 
   init() {

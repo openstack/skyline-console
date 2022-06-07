@@ -12,62 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
 import { inject, observer } from 'mobx-react';
-import globalUserStore from 'stores/keystone/user';
-import { has } from 'lodash';
 import { ModalAction } from 'containers/Action';
-import { Select } from 'antd';
-import globalProjectStore from 'stores/keystone/project';
-import globalRoleStore from 'stores/keystone/role';
 import globalDomainStore from 'stores/keystone/domain';
 import globalGroupStore from 'stores/keystone/user-group';
+import { getDomainFormItem } from 'resources/keystone/domain';
 
-export class CreateForm extends ModalAction {
-  constructor(props) {
-    super(props);
-    this.state = {
-      domain: null,
-      more: false,
-      newProjectRoles: {},
-    };
-  }
-
+export class Create extends ModalAction {
   init() {
-    this.userStore = globalUserStore;
-    this.userGroupStore = globalGroupStore;
-    this.projectStore = globalProjectStore;
+    this.store = globalGroupStore;
     this.domainStore = globalDomainStore;
-    this.roleStore = globalRoleStore;
-    this.getUser();
-    this.getProject();
-    this.getDomains();
-    this.getRole();
-  }
-
-  getUser() {
-    this.userStore.fetchList();
-  }
-
-  getProject() {
-    this.projectStore.fetchList();
-  }
-
-  getDomains() {
     this.domainStore.fetchDomain();
-  }
-
-  getRole() {
-    this.roleStore.fetchList();
   }
 
   static id = 'user-group-create';
 
   static title = t('Create User Group');
 
-  // static path = '/identity/user-group-admin/create';
-
-  static policy = ['identity:create_group', 'identity:add_user_to_group'];
+  static policy = 'identity:create_group';
 
   static allowed() {
     return Promise.resolve(true);
@@ -77,128 +39,20 @@ export class CreateForm extends ModalAction {
     return t('Create User Group');
   }
 
-  get domainDefault() {
-    const { domains } = this.domainStore;
-    const domainDefault = domains.filter((it) => it.id === 'default');
-    return domainDefault[0];
-  }
-
   get defaultValue() {
     const data = {
-      more: false,
+      domain_id: 'default',
     };
     return data;
-  }
-
-  get domainList() {
-    const { domains } = this.domainStore;
-    return (domains || []).map((it) => ({
-      label: it.name,
-      value: it.id,
-    }));
-  }
-
-  get userList() {
-    return (this.userStore.list.data || []).map((it) => ({
-      ...it,
-      key: it.id,
-    }));
-  }
-
-  get projects() {
-    return (this.projectStore.list.data || []).map((it) => ({
-      ...it,
-      key: it.id,
-    }));
-  }
-
-  groupRolesList = (groupId) => {
-    return (this.roleStore.list.data || []).map((it) => ({
-      label: it.name,
-      value: it.id,
-      groupId,
-    }));
-  };
-
-  defaultRoles = () => {
-    return [this.roleStore.list.data[0].id];
-  };
-
-  groupRoleChange = (value, option) => {
-    const { newProjectRoles } = this.state;
-    const { groupId } = option[0];
-    newProjectRoles[groupId] = value;
-    this.setState({ newProjectRoles });
-  };
-
-  onValuesChange = (changedFields) => {
-    if (has(changedFields, 'more')) {
-      this.setState({
-        more: changedFields.more,
-      });
-    }
-  };
-
-  get leftProjectTable() {
-    return [
-      {
-        dataIndex: 'name',
-        title: t('Name'),
-      },
-    ];
-  }
-
-  get rightProjectTable() {
-    return [
-      {
-        dataIndex: 'name',
-        title: t('Name'),
-      },
-      {
-        title: t('Select Project Role'),
-        dataIndex: 'id',
-        render: (id) => {
-          return (
-            <Select
-              size="small"
-              options={this.groupRolesList(id)}
-              defaultValue={this.defaultRoles()}
-              onChange={this.groupRoleChange}
-              mode="multiple"
-            />
-          );
-        },
-      },
-    ];
-  }
-
-  get leftUserTable() {
-    return [
-      {
-        dataIndex: 'name',
-        title: t('Name'),
-      },
-    ];
-  }
-
-  get rightUserTable() {
-    return [
-      {
-        dataIndex: 'name',
-        title: t('Name'),
-      },
-    ];
   }
 
   checkName = (rule, value) => {
     if (!value) {
       return Promise.reject(t('Please input'));
     }
-    const {
-      list: { data },
-    } = this.userGroupStore;
-    const nameUsed = data.filter((it) => it.name === value);
-    if (nameUsed[0]) {
+    const { list: { data = [] } = {} } = this.store;
+    const nameUsed = data.find((it) => it.name === value);
+    if (nameUsed) {
       return Promise.reject(
         t('Invalid: User Group name can not be duplicated')
       );
@@ -207,6 +61,7 @@ export class CreateForm extends ModalAction {
   };
 
   get formItems() {
+    const domainFormItem = getDomainFormItem(this);
     return [
       {
         name: 'name',
@@ -218,50 +73,18 @@ export class CreateForm extends ModalAction {
         extra: t('User Groups') + t('Name can not be duplicated'),
         maxLength: 30,
       },
+      domainFormItem,
       {
         name: 'description',
         label: t('Description'),
         type: 'textarea',
       },
-      // {
-      //   type: 'divider',
-      // },
-      // {
-      //   name: 'more',
-      //   label: t('Advanced Options'),
-      //   type: 'more',
-      // },
-      // {
-      //   name: 'select_project',
-      //   label: t('Select Project'),
-      //   type: 'transfer',
-      //   leftTableColumns: this.leftProjectTable,
-      //   rightTableColumns: this.rightProjectTable,
-      //   dataSource: domain ? this.projects.filter(it => it.domain_id === domain) : [],
-      //   disabled: false,
-      //   showSearch: true,
-      //   hidden: !more || !domain,
-      // },
-      // {
-      //   name: 'select_user',
-      //   label: t('Select User'),
-      //   type: 'transfer',
-      //   leftTableColumns: this.leftUserTable,
-      //   rightTableColumns: this.rightUserTable,
-      //   dataSource: domain ? this.userList.filter(it => it.domain_id === domain) : [],
-      //   disabled: false,
-      //   showSearch: true,
-      //   hidden: !more || !domain,
-      // },
     ];
   }
 
   onSubmit = (values) => {
-    const defaultRole = this.roleStore.list.data[0].id;
-    values.domain_id = this.domainDefault.id;
-    const { newProjectRoles } = this.state;
-    return this.userGroupStore.create(values, newProjectRoles, defaultRole);
+    return this.store.create(values);
   };
 }
 
-export default inject('rootStore')(observer(CreateForm));
+export default inject('rootStore')(observer(Create));
