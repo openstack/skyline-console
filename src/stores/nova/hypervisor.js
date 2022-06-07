@@ -139,7 +139,7 @@ export class HypervisorStore extends Base {
   }
 
   @action
-  getOverview = async () => {
+  getVirtualResource = async () => {
     this.isLoading = true;
     const hypervisorResult = await this.client.listDetail();
     const { hypervisors } = hypervisorResult;

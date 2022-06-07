@@ -14,41 +14,21 @@
 
 import { extendObservable, action } from 'mobx';
 import client from 'client';
-import globalRootStore from 'stores/root';
 
 export default class OverviewStore {
   constructor() {
-    this.reset(true);
-  }
-
-  get initValue() {
-    return {
+    extendObservable(this, {
       projectInfoLoading: true,
       computeServiceLoading: true,
       networkServiceLoading: true,
-      virtualResourceLoading: true,
       computeService: [],
       networkService: [],
-      virtualResource: {},
       platformNum: {
         projectNum: 0,
         userNum: 0,
         nodeNum: 0,
       },
-    };
-  }
-
-  @action
-  reset(init) {
-    const state = this.initValue;
-
-    if (init) {
-      extendObservable(this, state);
-    } else {
-      Object.keys(state).forEach((key) => {
-        this[key] = state[key];
-      });
-    }
+    });
   }
 
   @action
@@ -69,91 +49,6 @@ export default class OverviewStore {
     this.platformNum.userNum = users.length;
     this.platformNum.nodeNum = services.length;
     this.projectInfoLoading = false;
-  }
-
-  @action
-  async getVirtualResource() {
-    this.virtualResourceLoading = true;
-    const promiseArray = [
-      client.skyline.extension.servers({ limit: 10, all_projects: true }),
-      client.skyline.extension.servers({
-        limit: 10,
-        all_projects: true,
-        status: 'ACTIVE',
-      }),
-      client.skyline.extension.servers({
-        limit: 10,
-        all_projects: true,
-        status: 'ERROR',
-      }),
-      client.skyline.extension.servers({
-        limit: 10,
-        all_projects: true,
-        status: 'SHUTOFF',
-      }),
-    ];
-    if (globalRootStore.checkEndpoint('cinder')) {
-      const volumeResource = [
-        client.skyline.extension.volumes({ limit: 10, all_projects: true }),
-        client.skyline.extension.volumes({
-          limit: 10,
-          all_projects: true,
-          status: 'in-use',
-        }),
-        client.skyline.extension.volumes({
-          limit: 10,
-          all_projects: true,
-          status: 'error',
-        }),
-        client.skyline.extension.volumes({
-          limit: 10,
-          all_projects: true,
-          status: 'available',
-        }),
-      ];
-      promiseArray.push(...volumeResource);
-    }
-    const [
-      allServers,
-      activeServers,
-      errorServers,
-      shutoffServers,
-      allVolumes,
-      attachVolumes,
-      errorVolumes,
-      availableVolumes,
-    ] = await Promise.all(promiseArray);
-    const { count: allServersCount } = allServers;
-    const { count: activeServersCount } = activeServers;
-    const { count: errorServersCount } = errorServers;
-    const { count: shutoffServersCount } = shutoffServers;
-    const serviceNum = {
-      all: allServersCount,
-      active: activeServersCount,
-      error: errorServersCount,
-      shutoff: shutoffServersCount,
-      other:
-        allServersCount -
-        (activeServersCount + errorServersCount + shutoffServersCount),
-    };
-    this.virtualResource = { serviceNum };
-    if (globalRootStore.checkEndpoint('cinder')) {
-      const { count: allVolumesCount } = allVolumes;
-      const { count: attachVolumesCount } = attachVolumes;
-      const { count: errorVolumesCount } = errorVolumes;
-      const { count: availableVolumesCount } = availableVolumes;
-      const volumeNum = {
-        all: allVolumesCount,
-        active: attachVolumesCount,
-        error: errorVolumesCount,
-        available: availableVolumesCount,
-        other:
-          allVolumesCount -
-          (attachVolumesCount + errorVolumesCount + availableVolumesCount),
-      };
-      this.virtualResource.volumeNum = volumeNum;
-    }
-    this.virtualResourceLoading = false;
   }
 
   @action
