@@ -15,7 +15,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { toJS } from 'mobx';
-import { InputNumber, Badge } from 'antd';
+import { InputNumber, Badge, message as $message } from 'antd';
 import { StepAction } from 'containers/Action';
 import globalServerStore from 'stores/nova/instance';
 import globalProjectStore from 'stores/keystone/project';
@@ -334,6 +334,10 @@ export class StepCreate extends StepAction {
     return msg;
   }
 
+  get badgeStyle() {
+    return { marginTop: 8, marginBottom: 8, marginLeft: 10, maxWidth: 600 };
+  }
+
   renderBadge() {
     const { status = 'success' } = this.state;
     const volumeMsg = this.checkVolumeQuota();
@@ -344,9 +348,12 @@ export class StepCreate extends StepAction {
     }
     this.status = 'error';
     const msg = status === 'error' ? this.msg : volumeMsg;
+    if (this.errorMsg !== msg) {
+      $message.error(msg);
+    }
     this.errorMsg = msg;
     return (
-      <div style={{ marginTop: 8, marginBottom: 8 }}>
+      <div style={this.badgeStyle}>
         <Badge status="error" text={msg} />
       </div>
     );
@@ -372,7 +379,7 @@ export class StepCreate extends StepAction {
       formatter: (value) => `$ ${value}`.replace(/\D/g, ''),
     };
     return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <div className={styles['number-input']}>
             <span>{t('Count')}</span>
