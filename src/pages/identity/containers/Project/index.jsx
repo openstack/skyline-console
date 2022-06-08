@@ -214,6 +214,11 @@ export class Projects extends Base {
           )}${groupCount}`;
         },
       },
+      {
+        title: t('Affiliated Domain'),
+        dataIndex: 'domainName',
+        isHideable: true,
+      },
       enabledColumn,
       {
         title: t('Tags'),

@@ -11,17 +11,22 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { Select } from 'antd';
-import globalProjectStore from 'stores/keystone/project';
-import globalUserStore from 'stores/keystone/user';
-import { RoleStore } from 'stores/keystone/role';
 import { ModalAction } from 'containers/Action';
-import globalDomainStore from 'stores/keystone/domain';
+import { UserStore } from 'stores/keystone/user';
+import globalRoleStore from 'stores/keystone/role';
 
 export class SystemRole extends ModalAction {
+  init() {
+    this.store = new UserStore();
+    this.roleStore = globalRoleStore;
+    this.getRoleList();
+  }
+
+  getRoleList() {
+    this.roleStore.fetchSystemRoles();
+  }
+
   static id = 'edit-system-permission';
 
   static title = t('Edit System Permission');
@@ -30,318 +35,70 @@ export class SystemRole extends ModalAction {
     return t('edit system permission');
   }
 
-  async init() {
-    const systemRole = JSON.stringify(this.item.projectMapSystemRole);
-    this.state.domainDefault = this.item.domain_id;
-    this.state.projectRoles = JSON.parse(systemRole);
-    this.store = new RoleStore();
-    this.domainStore = globalDomainStore;
-    this.userStore = globalUserStore;
-    await this.getRoleList();
-    this.getDomains();
-    this.getUser();
-  }
-
-  getRoleList() {
-    return this.store.fetchList();
-  }
-
-  getDomains() {
-    this.domainStore.fetchDomain();
-  }
-
-  getUser() {
-    this.userStore.fetchProject();
-  }
-
-  static get modalSize() {
-    return 'large';
-  }
-
-  getModalSize() {
-    return 'large';
-  }
-
-  // get defaultSystemRoles() {
-  //   const { projects } = this.item;
-  //   const defaultProjects = Object.keys(projects);
-  //   const systemRole = (this.store.list.data || []).filter(it =>
-  //     ((it.name.indexOf('system_') !== -1) && (it.name.indexOf('_system_') === -1)) ||
-  //     it.name === 'admin'
-  //   );
-  //   const systemRoleId = systemRole.map(it => it.id);
-  //   const defaultSystemRoles = {};
-  //   defaultProjects.forEach((project_id) => {
-  //     const roles = projects[project_id].filter(role_id => systemRoleId.indexOf(role_id) !== -1);
-  //     if (roles[0]) {
-  //       defaultSystemRoles[project_id] = roles;
-  //     }
-  //   });
-  //   return defaultSystemRoles;
-  // }
-
-  get domainList() {
-    const {
-      rootStore: { baseDomains },
-    } = this.props;
-    const { domains } = this.domainStore;
-    const domainList = (domains || []).filter(
-      (it) =>
-        baseDomains.indexOf(it.name) === -1 || it.id === this.item.domain_id
-    );
-    return domainList.map((it) => ({
+  get rolesList() {
+    return (this.roleStore.systemRoles.data || []).map((it) => ({
       label: it.name,
       value: it.id,
-      key: it.id,
-    }));
-  }
-
-  get item() {
-    const { item } = this.props;
-    item.roles = {};
-    return item;
-  }
-
-  get multipleMode() {
-    return 'multiple';
-  }
-
-  get projectList() {
-    return (this.userStore.projects || []).map((it) => ({
-      ...it,
-      key: it.id,
-    }));
-  }
-
-  get systemRoleList() {
-    const systemRole = this.store.list.data || [];
-    return systemRole;
-  }
-
-  get adminRoleId() {
-    const adminRole = (this.store.list.data || []).filter(
-      (it) => it.name === 'admin'
-    );
-    return adminRole[0].id;
-  }
-
-  adminRoleList = (project_id) => {
-    const adminRole = (this.store.list.data || []).filter(
-      (it) => it.name === 'admin'
-    );
-    return adminRole.map((it) => ({
-      label: it.name,
-      value: it.id,
-      key: it.id,
-      project_id,
-    }));
-  };
-
-  projectRolesList = (project_id) =>
-    this.systemRoleList.map((it) => ({
-      label: it.name,
-      value: it.id,
-      key: it.id,
-      project_id,
-    }));
-
-  defaultRoles = (projectId) => {
-    const { roles, projects } = this.item;
-    const { projectRoles } = this.state;
-    const filterRoles = this.multipleMode ? projects : projectRoles;
-    if (!filterRoles[projectId]) {
-      roles[projectId] = [this.systemRoleList[0].id];
-    } else {
-      const usersSystemRole = filterRoles[projectId].filter((it) => {
-        const systemRole = this.systemRoleList.filter((role) => role.id === it);
-        if (systemRole[0]) {
-          return true;
-        }
-        return false;
-      });
-      return this.multipleMode ? usersSystemRole : usersSystemRole.slice(0, 1);
-    }
-    return roles[projectId];
-  };
-
-  static policy = 'identity:update_project';
-
-  static allowed = () => Promise.resolve(true);
-
-  get leftUserTable() {
-    return [
-      {
-        dataIndex: 'name',
-        title: t('Name'),
-      },
-    ];
-  }
-
-  get rightUserTable() {
-    return [
-      {
-        dataIndex: 'name',
-        title: t('Name'),
-      },
-      {
-        title: t('Select System Role'),
-        dataIndex: 'id',
-        render: (id) => this.renderSelect(id),
-      },
-    ];
-  }
-
-  renderSelect = (id) => {
-    let disable = false;
-    if (this.item.projects && this.item.projects[id]) {
-      // eslint-disable-next-line prefer-destructuring
-      disable = this.item.projects[id].filter(
-        (it) => it === this.adminRoleId
-      )[0];
-    }
-    // for test e2e, will delete by next patch
-    localStorage.setItem('test-project-role', this.projectRolesList(id));
-    localStorage.setItem('test-total-role', this.systemRoleList);
-    localStorage.setItem('test-actual', 'can get localstorage');
-    return (
-      <Select
-        size="small"
-        mode={this.multipleMode}
-        options={disable ? this.adminRoleList(id) : this.projectRolesList(id)}
-        defaultValue={disable ? this.adminRoleId : this.defaultRoles(id)}
-        onChange={this.onSubChange}
-        disabled={disable}
-      />
-    );
-  };
-
-  onSubChange = (value, option) => {
-    if (
-      (this.multipleMode && value.length && option.length) ||
-      (!this.multipleMode && value && option)
-    ) {
-      const { projectRoles } = this.state;
-      const { project_id } = this.multipleMode ? option[0] : option;
-      projectRoles[project_id] = this.multipleMode ? value : [value];
-      this.setState({ projectRoles });
-    } else {
-      this.setState({ projectRoles: {} });
-    }
-  };
-
-  get checkedList() {
-    const { domains } = this.domainStore;
-    return (domains || []).map((it) => ({
-      label: it.name,
-      value: it.id,
-      key: it.id,
     }));
   }
 
   get defaultValue() {
-    const { domain_id: domain } = this.item;
-    const data = {
-      domain_id: domain || 'default',
-    };
-    return data;
+    const { name, systemRoles = [] } = this.item;
+    const roles = systemRoles.map((it) => it.id);
+    const role = roles[0];
+    if (role) {
+      return { name, role };
+    }
+    return { name };
+  }
+
+  static policy = 'identity:list_roles';
+
+  static allowed(item, containerProps) {
+    const { match: { path = '' } = {} } = containerProps || {};
+    if (path.indexOf('domain-admin/detail') >= 0) {
+      return Promise.resolve(false);
+    }
+    return Promise.resolve(true);
   }
 
   get formItems() {
-    const { projects } = this.item;
-    const { domainDefault } = this.state;
     return [
       {
-        name: 'domain_id',
-        label: t('Affiliated Domain'),
-        type: 'select',
-        checkOptions: this.checkedList,
-        checkBoxInfo: t('Show All Domain'),
-        options: this.domainList,
-        onChange: (e) => {
-          this.setState({
-            domainDefault: e,
-          });
-        },
-        required: true,
+        name: 'name',
+        label: t('User'),
+        type: 'label',
+        iconType: 'user',
       },
       {
-        name: 'select_project',
-        type: 'transfer',
-        label: t('Project'),
-        leftTableColumns: this.leftUserTable,
-        rightTableColumns: this.rightUserTable,
-        dataSource: this.projectList
-          ? this.projectList.filter((it) => it.domain_id === domainDefault)
-          : [],
-        disabled: false,
-        showSearch: true,
-        oriTargetKeys: projects ? Object.keys(projects) : [],
+        name: 'role',
+        label: t('Role'),
+        type: 'select',
+        options: this.rolesList,
+        loading: this.roleStore.systemRoles.isLoading,
       },
     ];
   }
 
   onSubmit = async (values) => {
-    const { projectRoles } = this.state;
-    if (!this.multipleMode) {
-      // If it is not multiple choices, role only takes the first item of the array
-      Object.keys(projectRoles).forEach((key) => {
-        projectRoles[key] = projectRoles[key].slice(0, 1);
-      });
-    }
-    const { id: user_id, projects } = this.item;
-    const oldProjectRoles = projects;
-    const defaultProjects = Object.keys(oldProjectRoles);
+    const { role: newRole } = values;
+    const { systemRoles: oldRoles, id } = this.item;
     const promiseList = [];
-    defaultProjects.forEach((id) => {
-      if (values.select_project && !values.select_project.includes(id)) {
-        (oldProjectRoles[id] || []).forEach((role_id) => {
-          promiseList.push(
-            globalProjectStore.removeUserRole({ id, user_id, role_id })
-          );
-        });
-      } else {
-        (oldProjectRoles[id] || []).forEach((role_id) => {
-          if (projectRoles[id] && !projectRoles[id].includes(role_id)) {
-            promiseList.push(
-              globalProjectStore.removeUserRole({ id, user_id, role_id })
-            );
-          }
-        });
+    const newRoles = newRole ? [newRole] : [];
+    const oldRoleIds = oldRoles.map((it) => it.id);
+    oldRoles.forEach((role) => {
+      const { id: roleId } = role;
+      if (!newRoles.includes(roleId)) {
+        promiseList.push(this.store.deleteSystemRole({ id, roleId }));
       }
     });
-    (values.select_project || []).forEach((id) => {
-      if (defaultProjects && !defaultProjects.includes(id)) {
-        if (projectRoles[id]) {
-          projectRoles[id].forEach((role_id) => {
-            promiseList.push(
-              globalProjectStore.assignUserRole({ id, user_id, role_id })
-            );
-          });
-        } else {
-          promiseList.push(
-            globalProjectStore.assignUserRole({
-              id,
-              user_id,
-              role_id: this.systemRoleList[0].id,
-            })
-          );
-        }
-      } else {
-        (projectRoles[id] || []).forEach((role_id) => {
-          if (
-            (oldProjectRoles[id] && !oldProjectRoles[id].includes(role_id)) ||
-            !oldProjectRoles[id]
-          ) {
-            promiseList.push(
-              globalProjectStore.assignUserRole({ id, user_id, role_id })
-            );
-          }
-        });
+    newRoles.forEach((roleId) => {
+      if (!oldRoleIds.includes(roleId)) {
+        promiseList.push(this.store.assignSystemRole({ id, roleId }));
       }
     });
     const results = await Promise.all(promiseList);
     return results;
   };
 }
-
 export default inject('rootStore')(observer(SystemRole));

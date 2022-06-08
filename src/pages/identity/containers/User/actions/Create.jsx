@@ -13,56 +13,61 @@
 // limitations under the License.
 
 import React from 'react';
-import { has } from 'lodash';
 import { inject, observer } from 'mobx-react';
-import globalGroupStore from 'stores/keystone/user-group';
+import { GroupStore } from 'stores/keystone/user-group';
 import globalUserStore from 'stores/keystone/user';
 import { FormAction } from 'containers/Action';
 import { Select } from 'antd';
-import globalProjectStore from 'stores/keystone/project';
+import { ProjectStore } from 'stores/keystone/project';
 import globalRoleStore from 'stores/keystone/role';
+import globalDomainStore from 'stores/keystone/domain';
 import {
   getPasswordOtherRule,
   phoneNumberValidate,
   emailValidate,
 } from 'utils/validate';
-import { statusTypes } from 'resources/keystone/domain';
+import {
+  statusTypes,
+  getDomainFormItem,
+  nameDomainColumns,
+  transferFilterOption,
+} from 'resources/keystone/domain';
 
-export class CreateForm extends FormAction {
+export class Create extends FormAction {
   constructor(props) {
     super(props);
 
     this.state = {
       domain: 'default',
       more: false,
-      newProjectRoles: {},
+      projectRoles: {},
     };
   }
 
   init() {
     this.store = globalUserStore;
-    this.userGroupStore = globalGroupStore;
-    this.projectStore = globalProjectStore;
+    this.userGroupStore = new GroupStore();
+    this.projectStore = new ProjectStore();
     this.roleStore = globalRoleStore;
-    this.getUserGroup();
-    this.getProject();
-    this.getRole();
+    this.getUserGroups();
+    this.getProjects();
+    this.getRoles();
     this.getDomains();
   }
 
   getDomains() {
-    this.store.fetchDomain();
+    globalDomainStore.fetchDomain();
   }
 
-  getUserGroup() {
-    this.userGroupStore.fetchList();
+  getUserGroups() {
+    this.userGroupStore.fetchList({ withRole: false });
   }
 
-  getProject() {
-    this.projectStore.fetchList();
+  getProjects() {
+    this.projectStore.fetchList({ withRole: false });
   }
 
-  getRole() {
+  getRoles() {
     this.roleStore.fetchList();
   }
 
@@ -97,13 +102,10 @@ export class CreateForm extends FormAction {
   }
 
   get defaultValue() {
-    const { domains } = this.store;
-    const { domain } = this.state;
-    const domainDefault = (domains || []).filter((it) => it.id === domain)[0];
     const data = {
       more: false,
       enabled: statusTypes[0].value,
-      domain_id: domainDefault ? domainDefault.name : 'Default',
+      domain_id: 'default',
     };
     return data;
   }
@@ -129,96 +131,81 @@ export class CreateForm extends FormAction {
     }));
   }
 
-  // get roleList() {
-  //   return (this.roleStore.list.data || []).map(it => ({
-  //     label: it.name,
-  //     value: it.id,
-  //   }));
-  // }
-
-  // get adminRole() {
-  //   return (this.roleStore.list.data || []).filter(it =>
-  //     it.name === 'admin'
-  //   )[0];
-  // }
-
-  onValuesChange = (changedFields) => {
-    if (has(changedFields, 'more')) {
-      this.setState({
-        more: changedFields.more,
-      });
-    }
-  };
-
   static allowed = () => Promise.resolve(true);
 
   get leftProjectTable() {
-    return [
-      {
-        dataIndex: 'name',
-        title: t('Name'),
-      },
-    ];
+    return nameDomainColumns;
   }
 
   get projectRoleList() {
-    const projectRole = this.roleStore.list.data || [];
-    return projectRole;
+    return this.roleStore.list.data || [];
   }
 
-  userRolesList = (role_id) =>
+  projectRolesList = (projectId) =>
     (this.projectRoleList || []).map((it) => ({
       label: it.name,
       value: it.id,
-      role_id,
+      projectId,
     }));
 
-  defaultRoles = () => [this.projectRoleList[0].id];
+  defaultRoles = () => [(this.projectRoleList[0] || {}).id];
 
-  userRoleChange = (value, option) => {
-    const { newProjectRoles } = this.state;
-    const { role_id } = option;
-    newProjectRoles[role_id] = value;
-    this.setState({ newProjectRoles });
+  onSelectChange = (value, option, projectId) => {
+    const { projectRoles } = this.state;
+    if (value.length && option.length) {
+      projectRoles[projectId] = value;
+    } else {
+      projectRoles[projectId] = {};
+    }
+    this.setState({ projectRoles });
+  };
+
+  renderSelect = (projectId) => {
+    return (
+      <Select
+        size="small"
+        mode="multiple"
+        options={this.projectRolesList(projectId)}
+        defaultValue={this.defaultRoles()}
+        onChange={(value, option) => {
+          this.onSelectChange(value, option, projectId);
+        }}
+      />
+    );
   };
 
   get rightProjectTable() {
     return [
-      {
-        dataIndex: 'name',
-        title: t('Name'),
-      },
+      ...nameDomainColumns,
       {
         title: t('Select Project Role'),
         dataIndex: 'id',
-        render: (id) => (
-          <Select
-            size="small"
-            options={this.userRolesList(id)}
-            defaultValue={this.defaultRoles()}
-            onChange={this.userRoleChange}
-          />
-        ),
+        render: (id) => this.renderSelect(id),
       },
     ];
   }
 
+  onChangeProject = (value) => {
+    const { projectRoles } = this.state;
+    (value || []).forEach((projectId) => {
+      if (!projectRoles[projectId]) {
+        projectRoles[projectId] = this.defaultRoles();
+      }
+    });
+    Object.keys(projectRoles).forEach((projectId) => {
+      if (!(value || []).includes(projectId)) {
+        delete projectRoles[projectId];
+      }
+    });
+    this.setState(projectRoles);
+  };
+
   get leftUserGroupTable() {
-    return [
-      {
-        dataIndex: 'name',
-        title: t('Name'),
-      },
-    ];
+    return nameDomainColumns;
   }
 
   get rightUserGroupTable() {
-    return [
-      {
-        dataIndex: 'name',
-        title: t('Name'),
-      },
-    ];
+    return nameDomainColumns;
   }
 
   checkName = (rule, value) => {
@@ -236,17 +223,22 @@ export class CreateForm extends FormAction {
   };
 
   get formItems() {
-    const { more, domain } = this.state;
+    const { more } = this.state;
     const labelCol = {
       xs: { span: 5 },
       sm: { span: 6 },
+    };
+    const domainFormItem = getDomainFormItem(this);
+    const currentDomainFormItem = {
+      ...domainFormItem,
+      labelCol,
+      colNum: 2,
     };
     return [
       {
         name: 'name',
         label: t('User Name'),
         type: 'input',
-        placeholder: t('Please input user name'),
         validator: this.checkName,
         extra: t('User name can not be duplicated'),
         required: true,
@@ -291,20 +283,7 @@ export class CreateForm extends FormAction {
         labelCol,
         colNum: 2,
       },
-      {
-        name: 'domain_id',
-        label: t('Affiliated Domain'),
-        type: 'input',
-        // options: this.domainList,
-        // onChange: (e) => {
-        //   this.setState({
-        //     domain: e,
-        //   });
-        // },
-        disabled: true,
-        colNum: 2,
-        labelCol,
-      },
+      currentDomainFormItem,
       {
         name: 'enabled',
         label: t('Status'),
@@ -315,14 +294,6 @@ export class CreateForm extends FormAction {
         labelCol,
         colNum: 2,
       },
-      // {
-      //   name: 'default_project_id',
-      //   label: t('Main Project'),
-      //   type: 'select',
-      //   options: this.projectList,
-      //   labelCol,
-      //   colNum: 2,
-      // },
       {
         name: 'description',
         label: t('Description'),
@@ -339,13 +310,6 @@ export class CreateForm extends FormAction {
         colNum: 2,
         maxLength: 30,
       },
-      // {
-      //   name: 'work num',
-      //   label: t('Work Num'),
-      //   type: 'input',
-      //   labelCol,
-      //   colNum: 2,
-      // },
       {
         type: 'divider',
       },
@@ -360,12 +324,11 @@ export class CreateForm extends FormAction {
         type: 'transfer',
         leftTableColumns: this.leftProjectTable,
         rightTableColumns: this.rightProjectTable,
-        dataSource: domain
-          ? this.projects.filter((it) => it.domain_id === domain)
-          : [],
-        disabled: false,
+        dataSource: this.projects,
         showSearch: true,
-        hidden: !more || !domain,
+        hidden: !more,
+        onChange: this.onChangeProject,
+        filterOption: transferFilterOption,
       },
       {
         name: 'select_user_group',
@@ -373,12 +336,10 @@ export class CreateForm extends FormAction {
         type: 'transfer',
         leftTableColumns: this.leftUserGroupTable,
         rightTableColumns: this.rightUserGroupTable,
-        dataSource: domain
-          ? this.userGroupList.filter((it) => it.domain_id === domain)
-          : [],
-        disabled: false,
+        dataSource: this.userGroupList,
         showSearch: true,
-        hidden: !more || !domain,
+        hidden: !more,
+        filterOption: transferFilterOption,
       },
     ];
   }
@@ -386,11 +347,11 @@ export class CreateForm extends FormAction {
   onSubmit = async (values) => {
     const { domain } = this.state;
     values.defaultRole = this.projectRoleList[0].id;
-    values.newProjectRoles = this.state.newProjectRoles;
+    values.projectRoles = this.state.projectRoles;
     values.domain_id = domain;
     const { confirmPassword, more, ...rest } = values;
     return this.store.create(rest);
   };
 }
 
-export default inject('rootStore')(observer(CreateForm));
+export default inject('rootStore')(observer(Create));

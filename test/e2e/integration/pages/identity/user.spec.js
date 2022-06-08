@@ -54,8 +54,6 @@ describe('The User Page', () => {
       .formButtonClick('more')
       .wait(2000)
       .formTransfer('select_project', projectName)
-      .formTransferRight('select_project', projectName)
-      .formSelect('select_project', 'admin')
       .wait(2000)
       .formTransfer('select_user_group', userGroupName)
       .clickFormActionSubmitButton()
@@ -75,20 +73,13 @@ describe('The User Page', () => {
     cy.goBackToList(listUrl);
   });
 
-  // it('successfully edit system permission', () => {
-  //   cy.tableSearchText(name)
-  //     .clickActionInMore('Edit System Permission')
-  //     .wait(10000)
-  //     .formTransfer('select_project', projectName2)
-  //     .formTransferRight('select_project', projectName2)
-  //     .wait(10000)
-  //     .log('test-project-role', localStorage.getItem('test-project-role'))
-  //     .log('test-total-role', localStorage.getItem('test-total-role'))
-  //     .log('test-actual', localStorage.getItem('test-actual'))
-  //     .wait(2000)
-  //     .formSelect('select_project', 'admin')
-  //     .clickModalActionSubmitButton();
-  // });
+  it('successfully edit system permission', () => {
+    cy.tableSearchText(name)
+      .clickActionInMore('Edit System Permission')
+      .wait(10000)
+      .formSelect('role', 'admin')
+      .clickModalActionSubmitButton();
+  });
 
   it('successfully forbidden user', () => {
     cy.tableSearchText(name).clickConfirmActionInMore('Forbidden');

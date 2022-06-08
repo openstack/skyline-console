@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import { action, observable } from 'mobx';
-import { get } from 'lodash';
 import List from 'stores/base-list';
 import client from 'client';
 import globalRootStore from 'stores/root';
@@ -23,25 +22,7 @@ import Base from 'stores/base';
 
 export class UserStore extends Base {
   @observable
-  domains = [];
-
-  @observable
-  roleAssignments = [];
-
-  @observable
   userProjects = new List();
-
-  @observable
-  userGroups = new List();
-
-  @observable
-  projects = [];
-
-  @observable
-  systemRoles = [];
-
-  @observable
-  domainRoles = [];
 
   get client() {
     return client.keystone.users;
@@ -75,13 +56,37 @@ export class UserStore extends Base {
     return client.keystone.groups;
   }
 
+  listFetchByClient(params, originParams) {
+    const { groupId } = originParams;
+    if (groupId) {
+      return this.groupClient.users.list(groupId, params);
+    }
+    return this.client.list(params);
+  }
+
+  get paramsFunc() {
+    return (params) => {
+      const {
+        id,
+        projectId,
+        groupId,
+        roleId,
+        withProjectRole,
+        withSystemRole,
+        all_projects,
+        ...rest
+      } = params;
+      return rest;
+    };
+  }
+
   @action
   async create(values) {
     const body = {};
     const {
-      select_project = [],
+      select_project,
       select_user_group = [],
-      newProjectRoles,
+      projectRoles,
       defaultRole,
       ...other
     } = values;
@@ -90,54 +95,31 @@ export class UserStore extends Base {
     this.isSubmitting = true;
     const result = await this.client.create(body);
     const {
-      user: { id: user_id },
+      user: { id: userId },
     } = result;
     const promiseList = [];
-    if (select_user_group[0] || select_project[0]) {
-      const newProjects = Object.keys(newProjectRoles);
-      select_user_group.forEach((id) => {
-        promiseList.push(
-          globalGroupStore.addGroupUsers({ id, userId: user_id })
-        );
+    select_user_group.forEach((groupId) => {
+      promiseList.push(this.addGroupUsers(groupId, userId));
+    });
+
+    Object.keys(projectRoles).forEach((projectId) => {
+      const roles = projectRoles[projectId];
+      roles.forEach((roleId) => {
+        promiseList.push(this.addProjectUser(projectId, userId, roleId));
       });
-      select_project.forEach((id) => {
-        if (!newProjects.includes(id)) {
-          const roleId = defaultRole;
-          promiseList.push(
-            globalProjectStore.assignUserRole({ id, userId: user_id, roleId })
-          );
-        } else {
-          promiseList.push(
-            globalProjectStore.assignUserRole({
-              id,
-              userId: user_id,
-              roleId: newProjectRoles[id],
-            })
-          );
-        }
-      });
-      await Promise.all(promiseList);
-    }
+    });
+    await Promise.all(promiseList);
     this.isSubmitting = false;
     return result;
   }
 
-  @action
-  async fetchDomain() {
-    const domainsResult = await this.domainClient.list();
-    this.domains = domainsResult.domains;
-  }
+  addGroupUsers = (groupId, userId) => {
+    return globalGroupStore.addGroupUsers({ id: groupId, userId });
+  };
 
-  get mapper() {
-    return (item) => {
-      const domain = this.domains.find((it) => it.id === item.domain_id);
-      if (domain) {
-        item.domain_name = domain.name;
-        item.domainName = domain.name;
-      }
-      return item;
-    };
-  }
+  addProjectUser = (projectId, userId, roleId) => {
+    return globalProjectStore.assignUserRole({ id: projectId, userId, roleId });
+  };
 
   @action
   async getUserProjects() {
@@ -157,166 +139,166 @@ export class UserStore extends Base {
     return projects;
   }
 
-  @action
-  async getUserGroups() {
-    this.userGroups.update({
-      isLoading: true,
-    });
-    const {
-      user: {
-        user: { id },
-      },
-    } = globalRootStore;
-    const { groups } = await this.client.groups.list(id);
-    this.userGroups.update({
-      data: groups,
-      isLoading: false,
-    });
-  }
-
-  @action
-  getUserProjectRole = (user, roleAssignment, projectMapRole) => {
-    if (roleAssignment.user) {
+  getProjectMapRoles = (user, projectRoleAssignments, roles, projects) => {
+    const projectMapRoles = {};
+    const { id } = user;
+    projectRoleAssignments.forEach((roleAssignment) => {
       const {
-        user: { id: user_id },
-        role: { id: role_id },
-        scope: { project: { id } = {} } = {},
+        scope: { project: { id: projectId } = {} } = {},
+        role: { id: roleId } = {},
+        user: { id: userId } = {},
       } = roleAssignment;
-      if (id && user_id === user.id) {
-        if (projectMapRole[id]) {
-          projectMapRole[id].push(role_id);
+      if (userId === id && roleId && projectId) {
+        const roleItem = roles.find((it) => it.id === roleId);
+        if (!projectMapRoles[projectId]) {
+          const projectItem = projects.find((it) => it.id === projectId);
+          projectMapRoles[projectId] = {
+            project: projectItem,
+            roles: [roleItem],
+          };
         } else {
-          projectMapRole[id] = [role_id];
+          projectMapRoles[projectId].roles = [
+            ...projectMapRoles[projectId].roles,
+            roleItem,
+          ];
         }
       }
-    }
+    });
+    return projectMapRoles;
   };
 
-  getUserProjectWithRole = (projectMapRole, roles, projects) => {
-    return Object.keys(projectMapRole).map((key) => {
-      const item = projects.find((it) => it.id === key);
-      const roleItems = projectMapRole[key].map((roleId) =>
-        roles.find((it) => it.id === roleId)
-      );
-      item.roles = roleItems;
-      return item;
-    });
-  };
-
-  @action
-  async fetchList({
-    limit,
-    page,
-    sortKey,
-    sortOrder,
-    conditions,
-    timeFilter,
-    ...filters
-  } = {}) {
-    this.list.isLoading = true;
-    // todo: no page, no limit, fetch all
-    const [roleAssignmentsResult, usersResult, roleResult, projectResult] =
-      await Promise.all([
-        this.roleAssignmentClient.list(),
-        this.client.list(),
-        this.roleClient.list(),
-        this.projectClient.list(),
-      ]);
-    const { users } = usersResult;
-    const { roles } = roleResult;
-    const systemRoles = roles.filter(
-      (it) =>
-        (it.name.includes('system_') && !it.name.includes('_system_')) ||
-        it.name === 'admin'
-    );
-    const systemRoleId = systemRoles.map((it) => it.id);
-    users.map((user) => {
-      const projectMapRole = {}; // { project_id: [roles_id] }
-      const projectMapSystemRole = {}; // { project_id: [systemRoles_id] }
-      roleAssignmentsResult.role_assignments.forEach((roleAssignment) => {
-        this.getUserProjectRole(user, roleAssignment, projectMapRole);
-      });
-      this.getUsersSystemRole(
-        projectMapRole,
-        systemRoleId,
-        projectMapSystemRole
-      );
-      user.projectItems = this.getUserProjectWithRole(
-        projectMapRole,
-        roles,
-        projectResult.projects
-      );
-      user.projects = projectMapRole;
-      user.projectMapSystemRole = projectMapSystemRole;
-      user.project_num = Object.keys(projectMapRole).length;
-      return users;
-    });
-    const newData = users.map(this.mapper);
-    this.list.update({
-      data: newData,
-      total: newData.length || 0,
-      limit: Number(limit) || 10,
-      page: Number(page) || 1,
-      sortKey,
-      sortOrder,
-      filters,
-      timeFilter,
-      isLoading: false,
-      ...(this.list.silent ? {} : { selectedRowKeys: [] }),
-    });
-
-    return newData;
-  }
-
-  @action
-  async fetchDetail({ id, silent }) {
-    if (!silent) {
-      this.isLoading = true;
-    }
-    const [roleAssignmentsResult, usersResult, roleResult] = await Promise.all([
-      this.roleAssignmentClient.list(),
-      this.client.show(id),
-      this.roleClient.list(),
-    ]);
-    const { roles } = roleResult;
-    const systemRoles = roles.filter(
-      (it) =>
-        (it.name.includes('system_') && !it.name.includes('_system_')) ||
-        it.name === 'admin'
-    );
-    const systemRoleId = systemRoles.map((it) => it.id);
-    const { user } = usersResult;
-    const projectMapRole = {};
-    const projectMapSystemRole = {};
-    roleAssignmentsResult.role_assignments.forEach((roleAssignment) => {
-      this.getUserProjectRole(user, roleAssignment, projectMapRole);
-    });
-    this.getUsersSystemRole(projectMapRole, systemRoleId, projectMapSystemRole);
-    user.projects = projectMapRole;
-    user.projectMapSystemRole = projectMapSystemRole;
-    user.project_num = Object.keys(projectMapRole).length;
-    this.detail = user;
-    this.isLoading = false;
-    return user;
-  }
-
-  @action
-  async pureFetchDetail({ id, silent }) {
-    return super.fetchDetail({ id, silent });
-  }
-
-  @action
-  getUsersSystemRole = (projectMapRole, systemRoleId, projectMapSystemRole) => {
-    const systemProject = Object.keys(projectMapRole);
-    systemProject.forEach((project_id) => {
-      const roles = projectMapRole[project_id].filter((role_id) =>
-        systemRoleId.includes(role_id)
-      );
-      if (roles[0]) {
-        projectMapSystemRole[project_id] = roles;
+  // eslint-disable-next-line no-unused-vars
+  getSystemRoles = (user, systemRoleAssignments, roles, projects) => {
+    const systemRoles = [];
+    const { id } = user || {};
+    systemRoleAssignments.forEach((roleAssignment) => {
+      const { role: { id: roleId } = {}, user: { id: userId } = {} } =
+        roleAssignment;
+      if (userId === id && roleId) {
+        const roleItem = roles.find((it) => it.id === roleId);
+        systemRoles.push(roleItem);
       }
     });
+    return systemRoles;
   };
+
+  updateUser = (
+    user,
+    projectRoleAssignments,
+    systemAssigns,
+    roles,
+    projects,
+    domains
+  ) => {
+    const projectMapRoles = this.getProjectMapRoles(
+      user,
+      projectRoleAssignments,
+      roles,
+      projects
+    );
+    const systemRoles = this.getSystemRoles(
+      user,
+      systemAssigns,
+      roles,
+      projects
+    );
+    const domain = domains.find((it) => it.id === user.domain_id);
+    return {
+      ...user,
+      projects: projectMapRoles,
+      projectCount: Object.keys(projectMapRoles).length,
+      domain,
+      domainName: (domain || {}).name || user.domain_id,
+      systemRoles,
+    };
+  };
+
+  async listDidFetch(items, allProjects, filters) {
+    if (!items.length) {
+      return items;
+    }
+    const {
+      withProjectRole = true,
+      withSystemRole = true,
+      projectId,
+      roleId,
+      domain_id,
+    } = filters;
+    const withRole = withProjectRole || withSystemRole;
+    const params = {};
+    if (roleId) {
+      params['role.id'] = roleId;
+    }
+    if (projectId) {
+      params['scope.project.id'] = projectId;
+    }
+    const reqs = [
+      withProjectRole ? this.roleAssignmentClient.list(params) : null,
+      withSystemRole
+        ? this.roleAssignmentClient.list({ 'scope.system': 'all' })
+        : null,
+      withRole ? this.roleClient.list() : null,
+      withProjectRole ? this.projectClient.list() : null,
+      domain_id ? null : this.domainClient.list(),
+    ];
+    const [
+      projectRoleAssignmentsResult,
+      systemRoleAssignmentsResult,
+      roleResult,
+      projectResult,
+      domainResult,
+    ] = await Promise.all(reqs);
+
+    const { roles = [] } = roleResult || {};
+    const { domains = [] } = domainResult || {};
+    const { role_assignments: assigns = [] } =
+      projectRoleAssignmentsResult || {};
+    const { role_assignments: systemAssigns = [] } =
+      systemRoleAssignmentsResult || {};
+    const { projects = [] } = projectResult || {};
+    const newItems = items.map((user) => {
+      return this.updateUser(
+        user,
+        assigns,
+        systemAssigns,
+        roles,
+        projects,
+        domains
+      );
+    });
+    if (projectId) {
+      return newItems.filter((it) => !!it.projectCount);
+    }
+    if (roleId) {
+      return newItems.filter((it) => {
+        const { projectCount, systemRoles } = it;
+        if (projectCount) {
+          return true;
+        }
+        const systemRole = systemRoles.find((role) => role.id === roleId);
+        return !!systemRole;
+      });
+    }
+    return newItems;
+  }
+
+  async detailDidFetch(item) {
+    const { id } = item;
+    const params = { 'user.id': id, 'scope.system': 'all' };
+    const reqs = [
+      this.roleAssignmentClient.list(params),
+      this.roleClient.list(),
+      this.domainClient.list(),
+    ];
+    const [systemRoleAssignmentsResult, roleResult, domainResult] =
+      await Promise.all(reqs);
+
+    const { roles = [] } = roleResult || {};
+    const { domains = [] } = domainResult;
+    const { role_assignments: systemAssigns = [] } =
+      systemRoleAssignmentsResult || {};
+    return this.updateUser(item, [], systemAssigns, roles, [], domains);
+  }
 
   @action
   async enable({ id }) {
@@ -351,50 +333,13 @@ export class UserStore extends Base {
   }
 
   @action
-  async fetchProject() {
-    const projectsResult = await this.projectClient.list();
-    this.projects = projectsResult.projects;
+  async assignSystemRole({ id, roleId }) {
+    return this.systemUserClient.roles.update(id, roleId);
   }
 
   @action
-  async fetchSystemRole({ id, projects }) {
-    this.systemRoles = [];
-    const project_id = projects[0].id;
-    const projectResult = await this.projectClient.users.roles.list(
-      project_id,
-      id
-    );
-    const systemRole = projectResult.roles.filter(
-      (it) => it.name.includes('system_') && !it.name.includes('_system_')
-    );
-    this.systemRoles = systemRole;
-  }
-
-  @action
-  async assignSystemRole({ id, role_id }) {
-    return this.systemUserClient.roles.update(id, role_id);
-  }
-
-  @action
-  async deleteSystemRole({ id, role_id }) {
-    return this.systemUserClient.delete(id, role_id);
-  }
-
-  @action
-  async fetchDomainRole({ id, domain_id }) {
-    this.domainRoles = [];
-    const rolesResult = await this.domainClient.users.roles.list(id, domain_id);
-    this.domainRoles = rolesResult.roles;
-  }
-
-  @action
-  async assignDomainRole({ id, role_id, domain_id }) {
-    return this.domainClient.users.roles.update(domain_id, id, role_id);
-  }
-
-  @action
-  async deleteDomainRole({ id, role_id, domain_id }) {
-    return this.domainClient.users.roles.delete(domain_id, id, role_id);
+  async deleteSystemRole({ id, roleId }) {
+    return this.systemUserClient.roles.delete(id, roleId);
   }
 
   @action
@@ -409,240 +354,6 @@ export class UserStore extends Base {
       },
     };
     return this.submitting(this.client.patch(id, reqBody));
-  }
-
-  @action
-  async fetchListInDomainDetail({
-    limit,
-    page,
-    sortKey,
-    sortOrder,
-    conditions,
-    ...filters
-  } = {}) {
-    this.list.isLoading = true;
-    const { domainId } = filters;
-    const params = {};
-    const result = await this.client.list(params);
-    let data = get(result, this.listResponseKey, []);
-    data = data.filter((it) => it.domain_id === domainId);
-    const items = data.map(this.mapper);
-    const newData = await this.listDidFetch(items);
-    Promise.all(newData.map((it) => this.client.projects.list(it.id))).then(
-      (projectResult) => {
-        newData.map((it, index) => {
-          const { projects } = projectResult[index];
-          it.projects = projects;
-          it.project_num = projects.length;
-          return it;
-        });
-        this.list.update({
-          data: newData,
-          total: items.length || 0,
-          limit: Number(limit) || 10,
-          page: Number(page) || 1,
-          sortKey,
-          sortOrder,
-          filters,
-          isLoading: false,
-          ...(this.list.silent ? {} : { selectedRowKeys: [] }),
-        });
-
-        return items;
-      }
-    );
-  }
-
-  @action
-  async fetchListInProjectDetail({
-    limit,
-    page,
-    sortKey,
-    sortOrder,
-    conditions,
-    ...filters
-  } = {}) {
-    this.list.isLoading = true;
-    const { projectId } = filters;
-    const params = {};
-    const [roleAssignmentsResult, roleResult, result] = await Promise.all([
-      this.roleAssignmentClient.list(),
-      this.roleClient.list(),
-      this.client.list(params),
-    ]);
-    const projectUserIds = [];
-    const userMapRole = {};
-    roleAssignmentsResult.role_assignments.forEach((roleAssignment) => {
-      if (roleAssignment.user) {
-        const {
-          user: { id: user_id },
-          role: { id: role_id },
-          scope: { project: { id } = {} } = {},
-        } = roleAssignment;
-        if (id && id === projectId) {
-          projectUserIds.push(user_id);
-          if (userMapRole[user_id]) {
-            userMapRole[user_id].push(role_id);
-          } else {
-            userMapRole[user_id] = [role_id];
-          }
-        }
-      }
-    });
-    let data = get(result, this.listResponseKey, []);
-    data = data.filter((it) => projectUserIds.includes(it.id));
-    const items = data.map(this.mapper);
-    const newData = await this.listDidFetch(items);
-    Promise.all(newData.map((it) => this.client.projects.list(it.id))).then(
-      (projectResult) => {
-        newData.map((it, index) => {
-          const { projects } = projectResult[index];
-          it.projects = projects;
-          it.project_num = projects.length;
-          it.project_roles = userMapRole[it.id].map(
-            (r) => roleResult.roles.filter((role) => role.id === r)[0].name
-          );
-          return it;
-        });
-        this.list.update({
-          data: newData,
-          total: items.length || 0,
-          limit: Number(limit) || 10,
-          page: Number(page) || 1,
-          sortKey,
-          sortOrder,
-          filters,
-          isLoading: false,
-          ...(this.list.silent ? {} : { selectedRowKeys: [] }),
-        });
-
-        return items;
-      }
-    );
-  }
-
-  @action
-  async fetchListInGroupDetail({
-    limit,
-    page,
-    sortKey,
-    sortOrder,
-    conditions,
-    ...filters
-  } = {}) {
-    this.list.isLoading = true;
-    const { groupId } = filters;
-    const params = {};
-    const result = await this.groupClient.users.list(groupId, params);
-    const data = get(result, this.listResponseKey, []);
-    const items = data.map(this.mapper);
-    const newData = await this.listDidFetch(items);
-    Promise.all(newData.map((it) => this.client.projects.list(it.id))).then(
-      (projectResult) => {
-        newData.map((it, index) => {
-          const { projects } = projectResult[index];
-          it.projects = projects;
-          it.project_num = projects.length;
-          return it;
-        });
-        this.list.update({
-          data: newData,
-          total: items.length || 0,
-          limit: Number(limit) || 10,
-          page: Number(page) || 1,
-          sortKey,
-          sortOrder,
-          filters,
-          isLoading: false,
-          ...(this.list.silent ? {} : { selectedRowKeys: [] }),
-        });
-
-        return items;
-      }
-    );
-  }
-
-  @action
-  async fetchListInRoleDetail({
-    limit,
-    page,
-    sortKey,
-    sortOrder,
-    conditions,
-    ...filters
-  } = {}) {
-    this.list.isLoading = true;
-    const { roleId } = filters;
-    const params = {};
-    const [roleAssignmentsResult, projectResult, result] = await Promise.all([
-      this.roleAssignmentClient.list(),
-      this.projectClient.list(),
-      this.client.list(params),
-    ]);
-    const projectRoleUsers = {};
-    const systemRoleUsers = {};
-    roleAssignmentsResult.role_assignments.forEach((roleAssignment) => {
-      if (roleAssignment.user) {
-        const {
-          user: { id: user_id },
-          role: { id: role_id },
-          scope: { project, system } = {},
-        } = roleAssignment;
-        if (role_id === roleId && project) {
-          const projectData = projectResult.projects.find(
-            (it) => it.id === project.id
-          );
-          if (projectRoleUsers[user_id]) {
-            projectRoleUsers[user_id].push(projectData);
-          } else {
-            projectRoleUsers[user_id] = [projectData];
-          }
-        } else if (role_id === roleId && system) {
-          systemRoleUsers[user_id] = system.all;
-        }
-      }
-    });
-    const data = get(result, this.listResponseKey, []);
-    const items = data
-      .filter((it) => projectRoleUsers[it.id] || systemRoleUsers[it.id])
-      .map((it) => ({
-        projects: projectRoleUsers[it.id] || [],
-        systemScope: systemRoleUsers[it.id] || [],
-        ...it,
-      }));
-
-    const newData = items.map(this.mapper);
-    // const newData = await this.listDidFetch(items);
-    this.list.update({
-      data: newData,
-      total: newData.length || 0,
-      limit: Number(limit) || 10,
-      page: Number(page) || 1,
-      sortKey,
-      sortOrder,
-      filters,
-      isLoading: false,
-      ...(this.list.silent ? {} : { selectedRowKeys: [] }),
-    });
-
-    return newData;
-  }
-
-  @action
-  async fetchAllWithDomain() {
-    this.list.isLoading = true;
-    await this.fetchDomain();
-    const result = await this.client.list();
-    const data = get(result, this.listResponseKey, []);
-    const items = data.map(this.mapper);
-    const newData = await this.listDidFetch(items);
-    this.list.update({
-      data: newData,
-      total: items.length || 0,
-      isLoading: false,
-    });
-
-    return items;
   }
 }
 
