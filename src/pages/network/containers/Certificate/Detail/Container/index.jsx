@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/TabDetail';
 import { ContainersStore } from 'stores/barbican/containers';
-import { certificateColumns } from 'resources/octavia/lb';
+import { getCertificateColumns } from 'resources/octavia/lb';
 import BaseDetail from './BaseDetail';
 import actionConfigs from '../../actions';
 
@@ -41,7 +41,7 @@ export class Detail extends Base {
   }
 
   get detailInfos() {
-    return certificateColumns;
+    return getCertificateColumns(this);
   }
 
   get tabs() {

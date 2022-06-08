@@ -26,7 +26,7 @@ export const certificateStatus = {
   ERROR: t('Error'),
 };
 
-export const certificateColumns = [
+export const getCertificateColumns = (self) => [
   {
     title: t('Name'),
     dataIndex: 'name',
@@ -43,8 +43,25 @@ export const certificateColumns = [
   },
   {
     title: t('Domain Name'),
-    dataIndex: 'algorithm',
+    dataIndex: 'domain',
     render: (value) => value || '-',
+  },
+  {
+    title: t('Listener'),
+    dataIndex: 'listener',
+    render: (value) => {
+      return value
+        ? self.getLinkRender(
+            'lbListenerDetail',
+            value.name,
+            {
+              loadBalancerId: value.lb,
+              id: value.id,
+            },
+            null
+          )
+        : '-';
+    },
   },
   {
     title: t('Status'),

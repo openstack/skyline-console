@@ -38,7 +38,7 @@ export default class DeleteAction extends ConfirmAction {
 
   policy = ['barbican:secret:delete', 'barbican:container:delete'];
 
-  allowedCheckFunc = () => true;
+  allowedCheckFunc = (item) => !item.listener;
 
   onSubmit = (data) => {
     return globalContainersStore.delete(data);
