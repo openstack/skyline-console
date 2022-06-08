@@ -1,4 +1,4 @@
-// Copyright 2021 99cloud
+// Copyright 2022 99cloud
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ export class Create extends ModalAction {
 
   init() {
     this.store = globalCapsulesStore;
-    this.maxSize = 1;
   }
 
   static allowed = () => Promise.resolve(true);
@@ -41,37 +40,33 @@ export class Create extends ModalAction {
 
   static policy = 'container:capsule:create';
 
-  sizeValidate = (rule, value) => {
-    if (!value) {
-      return Promise.reject(t('Please select a file'));
-    }
-    const { size } = value;
-    if (size <= this.maxSize * 1024 * 1024 * 1024) {
-      return Promise.resolve();
-    }
-    return Promise.reject(
-      t(
-        'Please upload files smaller than { size }G on the page. It is recommended to upload files over { size }G using API.',
-        { size: this.maxSize }
-      )
-    );
-  };
-
   get formItems() {
     return [
       {
         name: 'template_file',
         label: t('Load Template from a file'),
         type: 'textarea-from-file',
+        rows: 6,
+        required: true,
+        accept: '.yaml',
+        validator: (rule, value) => {
+          if (!value) {
+            // eslint-disable-next-line prefer-promise-reject-errors
+            return Promise.reject(
+              t('Please input or load Template from a file')
+            );
+          }
+          return Promise.resolve();
+        },
       },
     ];
   }
 
   onSubmit = (values) => {
-    const y = getYaml(values.template_file);
+    const template = getYaml(values.template_file);
 
     return this.store.create({
-      template: y,
+      template,
     });
   };
 }
