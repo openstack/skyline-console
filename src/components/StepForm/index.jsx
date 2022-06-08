@@ -447,9 +447,10 @@ export default class BaseStepForm extends React.Component {
     if (!content) {
       return null;
     }
+    const checkValue = JSON.stringify(this.quotaInfo);
     return (
       <div className={styles['right-top-extra-wrapper']}>
-        <InfoButton content={content} />
+        <InfoButton content={content} checkValue={checkValue} />
       </div>
     );
   }

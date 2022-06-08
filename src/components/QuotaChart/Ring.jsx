@@ -128,6 +128,7 @@ export default function Ring(props) {
               fontSize: '14',
               fill: getUsedValueColor(percent),
               textAlign: 'center',
+              fontWeight: 'bold',
             }}
           />
         </View>

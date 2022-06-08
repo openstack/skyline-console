@@ -12,33 +12,134 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React, { useState } from 'react';
-import { Button, Card } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Button, Card, Tooltip, Switch } from 'antd';
 import { ExpandOutlined, CompressOutlined } from '@ant-design/icons';
 
-export default function InfoButton(props) {
-  const { content, defaultCollapsed = false, title, size = 'small' } = props;
-  const [collapsed, setCollapsed] = useState(defaultCollapsed);
+const seconds = 5;
 
-  const onChangeCollapsed = () => {
-    setCollapsed(!collapsed);
+export default function InfoButton(props) {
+  const {
+    content,
+    defaultCollapsed = false,
+    size = 'small',
+    ableAuto = true,
+    tip = t(
+      'When auto-expand/close is enabled, if there is no operation in the pop-up window, the pop-up window will be closed automatically after { seconds } seconds, and it will be automatically expanded when the displayed content changes.',
+      { seconds }
+    ),
+    checkValue = '',
+  } = props;
+  const [collapsed, setCollapsed] = useState(defaultCollapsed);
+  const [auto, setAuto] = useState(ableAuto);
+  const [timer, setTimer] = useState(null);
+  const [hover, setHover] = useState(false);
+
+  const clearTimer = () => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    setTimer(null);
+  };
+
+  const open = () => {
+    setCollapsed(false);
+  };
+
+  const close = () => {
+    setCollapsed(true);
+    clearTimer();
+  };
+
+  const startTimer = () => {
+    if (collapsed) {
+      return;
+    }
+    if (timer) {
+      clearTimer();
+    }
+    const newTimer = setTimeout(() => {
+      if (!collapsed) {
+        close();
+      }
+    }, seconds * 1000);
+    setTimer(newTimer);
+  };
+
+  useEffect(() => {
+    if (!auto) {
+      return;
+    }
+    if (!collapsed) {
+      if (hover) {
+        clearTimer();
+      } else {
+        startTimer();
+      }
+    }
+  }, [collapsed, hover]);
+
+  useEffect(() => {
+    if (auto) {
+      open();
+      startTimer();
+    }
+  }, [checkValue]);
+
+  const onChangeAuto = (checked) => {
+    setAuto(checked);
+  };
+
+  const renderSwitch = () => {
+    if (!ableAuto) {
+      return null;
+    }
+    return (
+      <Tooltip title={tip}>
+        <Switch size="small" checked={auto} onChange={onChangeAuto} />
+      </Tooltip>
+    );
+  };
+
+  const onMouseEnter = () => {
+    setHover(true);
+  };
+
+  const onMouseLeave = () => {
+    setHover(false);
   };
 
   if (collapsed) {
     return (
-      <Button onClick={onChangeCollapsed} size={size}>
-        <CompressOutlined />
-      </Button>
+      <div
+        style={{ padding: 8 }}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        className="content-wrapper"
+      >
+        <Tooltip title={t('Expand')}>
+          <Button onClick={open} size={size}>
+            <ExpandOutlined />
+          </Button>
+        </Tooltip>
+      </div>
     );
   }
   const closeButton = (
-    <Button onClick={onChangeCollapsed} size={size}>
-      <ExpandOutlined />
-    </Button>
+    <Tooltip title={t('Close')}>
+      <Button onClick={close} size={size}>
+        <CompressOutlined />
+      </Button>
+    </Tooltip>
   );
   return (
-    <div>
-      <Card title={title} extra={closeButton}>
+    <div
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      className="content-wrapper"
+      style={{ minWidth: 150 }}
+    >
+      <Card title={renderSwitch()} extra={closeButton}>
         {content}
       </Card>
     </div>
