@@ -20,6 +20,7 @@ import {
   Legend,
   View,
   Annotation,
+  Tooltip,
 } from 'bizcharts';
 
 export const typeColors = {
@@ -54,24 +55,28 @@ export default function Ring(props) {
     secondTitle = t('Quota'),
     hasLabel = false,
   } = props;
-  const left = limit - used - reserved - add;
+  const isLimit = limit !== -1;
+  const showTip = isLimit;
+  const limitNumber = !isLimit ? Infinity : limit;
+  const limitStr = !isLimit ? t('Infinity') : limit;
+  const left = !isLimit ? 1 : limit - used - reserved - add;
   const data = [
     {
       type: t('Used'),
-      value: used,
+      value: isLimit ? used : 0,
       color: typeColors.used,
     },
   ];
   if (reserved) {
     data.push({
       type: t('Reserved'),
-      value: reserved,
+      value: isLimit ? reserved : 0,
       color: typeColors.reserved,
     });
   }
   data.push({
     type: t('New'),
-    value: add,
+    value: isLimit ? add : 0,
     color: typeColors.add,
   });
   data.push({
@@ -79,18 +84,20 @@ export default function Ring(props) {
     value: left,
     color: typeColors.left,
   });
+
   const colors = data.map((it) => it.color);
 
   const width = hasLabel ? 200 : 120;
   const style = { width };
   const height = width;
   const allCount = used + add + reserved;
-  const percent = (allCount / limit) * 100;
+  const percent = isLimit ? (allCount / limitNumber) * 100 : 0;
 
   return (
     <div style={style}>
       <Chart placeholder={false} height={height} padding="auto" autoFit>
-        <Legend visible={hasLabel} />
+        <Legend visible={showTip && hasLabel} />
+        <Tooltip visible={showTip} />
         {/* 绘制图形 */}
         <View data={data}>
           <Coordinate type="theta" innerRadius={0.75} />
@@ -122,7 +129,7 @@ export default function Ring(props) {
           />
           <Annotation.Text
             position={['50%', '70%']}
-            content={`${allCount}/${limit}`}
+            content={`${allCount}/${limitStr}`}
             style={{
               lineHeight: '240px',
               fontSize: '14',

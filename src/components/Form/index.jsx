@@ -23,6 +23,8 @@ import { parse } from 'qs';
 import FormItem from 'components/FormItem';
 import { CancelToken } from 'axios';
 import { getPath, getLinkRender } from 'utils/route-map';
+import InfoButton from 'components/InfoButton';
+import QuotaChart from 'components/QuotaChart';
 import styles from './index.less';
 
 export default class BaseForm extends React.Component {
@@ -251,6 +253,14 @@ export default class BaseForm extends React.Component {
 
   get hasRequestCancelCallback() {
     return false;
+  }
+
+  get showQuota() {
+    return false;
+  }
+
+  get quotaInfo() {
+    return null;
   }
 
   getSubmitData(data) {
@@ -624,6 +634,35 @@ export default class BaseForm extends React.Component {
     );
   }
 
+  renderQuota() {
+    if (!this.showQuota) {
+      return null;
+    }
+    let props = {};
+    if (!this.quotaInfo || !this.quotaInfo.length) {
+      props.loading = true;
+    } else {
+      props = {
+        loading: false,
+        quotas: this.quotaInfo,
+      };
+    }
+    return <QuotaChart {...props} />;
+  }
+
+  renderRightTopExtra() {
+    const content = this.renderQuota();
+    if (!content) {
+      return null;
+    }
+    const checkValue = JSON.stringify(this.quotaInfo);
+    return (
+      <div className={styles['right-top-extra-wrapper']}>
+        <InfoButton content={content} checkValue={checkValue} />
+      </div>
+    );
+  }
+
   render() {
     const wrapperPadding =
       this.listUrl || this.isStep || (this.isModal && this.tips)
@@ -646,6 +685,7 @@ export default class BaseForm extends React.Component {
       >
         <Spin spinning={this.isSubmitting} tip={this.renderSubmittingTip()}>
           {tips}
+          {this.renderRightTopExtra()}
           <div className={classnames(styles.form, 'sl-form')} style={formStyle}>
             {this.renderForms()}
           </div>

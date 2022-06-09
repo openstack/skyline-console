@@ -52,6 +52,7 @@ export default function QuotaInfo(props) {
         pagination={false}
         title={() => fullTitle}
         bordered
+        size="small"
       />
     </div>
   );

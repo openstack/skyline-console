@@ -19,8 +19,8 @@ import Line from './Line';
 import QuotaInfo from './Info';
 
 function renderItem(props) {
-  const { type = 'ring', limit } = props;
-  if (limit === -1) {
+  const { type = 'ring', limit, unlimitByTable = false } = props;
+  if (limit === -1 && unlimitByTable) {
     return <QuotaInfo {...props} />;
   }
   if (type === 'ring') {

@@ -25,13 +25,15 @@ export default function Line(props) {
     title = '',
     secondTitle = t('Quota'),
   } = props;
-  let left = limit - used - reserved - add;
+  const isLimit = limit !== -1;
+  const limitStr = !isLimit ? t('Infinity') : limit;
+  let left = isLimit ? limit - used - reserved - add : 1;
   left = left < 0 ? 0 : left;
   const usedTip = `${t('Used')}: ${used}`;
   const reservedTip = reserved ? '' : `${t('Reserved')}: ${reserved}`;
   const newTip = `${t('New')}: ${add}`;
   const leftTip = `${t('Left')}: ${left}`;
-  const tips = [usedTip, newTip, leftTip];
+  const tips = isLimit ? [usedTip, newTip, leftTip] : [usedTip, newTip];
   if (reserved) {
     tips.splice(1, 0, reservedTip);
   }
@@ -43,17 +45,19 @@ export default function Line(props) {
   const resourceTitle = (
     <span>
       {`${title} ${secondTitle}: `}{' '}
-      <span style={{ color: usedColor }}>{`${allCount}/${limit}`}</span>
+      <span style={{ color: usedColor }}>{`${allCount}/${limitStr}`}</span>
     </span>
   );
 
-  const progress = (
+  const progress = isLimit ? (
     <Progress
       percent={allPercent}
       success={{ percent: usedPercent, strokeColor: typeColors.used }}
       strokeColor={typeColors.add}
       showInfo={false}
     />
+  ) : (
+    <Progress percent={0} showInfo={false} />
   );
 
   return (

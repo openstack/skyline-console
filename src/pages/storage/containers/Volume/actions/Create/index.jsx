@@ -26,11 +26,11 @@ import globalImageStore from 'stores/glance/image';
 import globalVolumeStore from 'stores/cinder/volume';
 import globalVolumeTypeStore from 'stores/cinder/volume-type';
 import globalBackupStore from 'stores/cinder/backup';
-import { InputNumber, Badge } from 'antd';
+import { InputNumber, Badge, message as $message } from 'antd';
 import { toJS } from 'mobx';
 import { FormAction } from 'containers/Action';
 import classnames from 'classnames';
-import { isFinite } from 'lodash';
+import { isEmpty, isObject } from 'lodash';
 import {
   getImageSystemTabs,
   getImageOS,
@@ -94,13 +94,84 @@ export class Create extends FormAction {
   }
 
   get errorText() {
-    const { status } = this.state;
-    if (status === 'error') {
+    if (this.msg) {
       return t(
         'Unable to create volume: insufficient quota to create resources.'
       );
     }
     return super.errorText;
+  }
+
+  get showQuota() {
+    return true;
+  }
+
+  getVolumeQuota() {
+    const quotaAll = toJS(this.volumeStore.quotaSet) || {};
+    if (isEmpty(quotaAll)) {
+      return [];
+    }
+    Object.values(quotaAll).forEach((it) => {
+      if (isObject(it)) {
+        it.used = it.in_use;
+      }
+    });
+    const { volume_type } = this.state;
+    const { name } = volume_type || {};
+    const result = {
+      volumes: quotaAll.volumes,
+      gigabytes: quotaAll.gigabytes,
+    };
+    if (name) {
+      result[`volumes_${name}`] = quotaAll[`volumes_${name}`];
+      result[`gigabytes_${name}`] = quotaAll[`gigabytes_${name}`];
+    }
+    return result;
+  }
+
+  get quotaInfo() {
+    const quota = this.getVolumeQuota();
+    const { volumes = {}, gigabytes = {} } = quota;
+    const { limit } = volumes || {};
+    if (!limit) {
+      return [];
+    }
+
+    const { volume_type, size = 0, count = 1 } = this.state;
+    const { name } = volume_type || {};
+    const volume = {
+      ...volumes,
+      add: count,
+      name: 'volume',
+      title: t('Volume'),
+    };
+    const sizeInfo = {
+      ...gigabytes,
+      add: count * size,
+      name: 'gigabytes',
+      title: t('volume gigabytes'),
+      type: 'line',
+    };
+    if (!name) {
+      return [volume, sizeInfo];
+    }
+    const typeQuota = quota[`volumes_${name}`] || {};
+    const typeSizeQuota = quota[`gigabytes_${name}`] || {};
+    const detailInfo = {
+      ...typeQuota,
+      add: count,
+      name: `volumes_${name}`,
+      title: t('{name} type', { name }),
+      type: 'line',
+    };
+    const detailSizeInfo = {
+      ...typeSizeQuota,
+      add: count * size,
+      name: `gigabytes_${name}`,
+      title: t('{name} type gigabytes', { name }),
+      type: 'line',
+    };
+    return [volume, sizeInfo, detailInfo, detailSizeInfo];
   }
 
   get defaultValue() {
@@ -167,23 +238,19 @@ export class Create extends FormAction {
   }
 
   get quota() {
-    const { volumes: { limit = 10, in_use = 0 } = {} } =
-      toJS(this.volumeStore.quotaSet) || {};
-    if (limit === -1) {
-      return Infinity;
-    }
-    return limit - in_use;
+    const { volumes = {} } = this.getVolumeQuota();
+    return volumes;
   }
 
   get quotaIsLimit() {
-    const { gigabytes: { limit } = {} } = toJS(this.volumeStore.quotaSet) || {};
+    const { gigabytes: { limit } = {} } = this.getVolumeQuota();
     return limit !== -1;
   }
 
   get maxSize() {
-    const { gigabytes: { limit = 10, in_use = 0 } = {} } =
-      toJS(this.volumeStore.quotaSet) || {};
-    return limit - in_use;
+    const { gigabytes: { limit = 10, in_use = 0, reserved = 0 } = {} } =
+      this.getVolumeQuota();
+    return limit !== -1 ? limit - in_use - reserved : 1000;
   }
 
   getAvailZones() {
@@ -204,6 +271,7 @@ export class Create extends FormAction {
       this.setState(
         {
           initVolumeType,
+          volume_type: types[0],
         },
         () => {
           this.updateFormValue('volume_type', initVolumeType);
@@ -325,7 +393,7 @@ export class Create extends FormAction {
   };
 
   get nameForStateUpdate() {
-    return ['source', 'image', 'snapshot'];
+    return ['source', 'image', 'snapshot', 'size', 'volume_type'];
   }
 
   get formItems() {
@@ -481,20 +549,9 @@ export class Create extends FormAction {
   onCountChangeCallback() {}
 
   onCountChange = (value) => {
-    let msg = t('Quota: Project quotas sufficient resources can be created');
-    let status = 'success';
-    if (isFinite(this.quota) && value > this.quota) {
-      msg = t(
-        'Quota: Insufficient quota to create resources, please adjust resource quantity or quota(left { quota }, input { input }).',
-        { quota: this.quota, input: value }
-      );
-      status = 'error';
-    }
-    this.msg = msg;
     this.setState(
       {
         count: value,
-        status,
       },
       () => {
         if (this.onCountChangeCallback) {
@@ -504,23 +561,77 @@ export class Create extends FormAction {
     );
   };
 
+  checkQuotaDetail = (quota) => {
+    if (!quota || isEmpty(quota)) {
+      return true;
+    }
+    const { limit, add, reserved = 0 } = quota || {};
+    if (limit === -1) {
+      return true;
+    }
+    return limit >= add + reserved;
+  };
+
+  getQuotaErrorMsg = (quota) => {
+    const { limit, used, reserved, add, title } = quota;
+    const left = limit - used - reserved;
+    return t(
+      'Quota: Insufficient { name } quota to create resources, please adjust resource quantity or quota(left { left }, input { input }).',
+      {
+        name: title,
+        left,
+        input: add,
+      }
+    );
+  };
+
+  checkQuotaAll = () => {
+    const results = this.quotaInfo;
+    if (!results.length) {
+      return '';
+    }
+    const [quota = {}, sizeQuota = {}, typeQuota = {}, typeSizeQuota = {}] =
+      results;
+    let msg = '';
+    const quotas = [quota, sizeQuota, typeQuota, typeSizeQuota];
+    const errorQuota = quotas.find((it) => !this.checkQuotaDetail(it));
+    if (errorQuota) {
+      msg = this.getQuotaErrorMsg(errorQuota);
+    }
+    return msg;
+  };
+
   renderBadge() {
-    const { status } = this.state;
-    if (status === 'success') {
+    const msg = this.checkQuotaAll();
+    if (!msg) {
+      this.msg = '';
       return null;
     }
-    return <Badge status={status} text={this.msg} />;
+    if (msg && this.msg !== msg) {
+      $message.error(msg);
+      this.msg = msg;
+    }
+    return <Badge status="error" text={msg} />;
   }
 
   renderExtra() {
     return this.renderBadge();
   }
 
+  getCountMax = () => {
+    const { limit, used, reserved } = this.quota;
+    if (!limit || limit === -1) {
+      return 100;
+    }
+    return limit - used - reserved;
+  };
+
   renderFooterLeft() {
     const { count = 1 } = this.state;
+    const max = this.getCountMax();
     const configs = {
       min: 1,
-      max: 100,
+      max,
       precision: 0,
       onChange: this.onCountChange,
       formatter: (value) => `$ ${value}`.replace(/\D/g, ''),
@@ -539,9 +650,9 @@ export class Create extends FormAction {
   }
 
   onSubmit = (data) => {
-    const { count, status } = this.state;
-    if (status === 'error') {
-      return Promise.reject();
+    const { count } = this.state;
+    if (this.msg) {
+      return Promise.reject(this.msg);
     }
     const {
       backup,
