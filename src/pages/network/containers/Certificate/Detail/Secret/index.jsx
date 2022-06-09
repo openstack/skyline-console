@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/TabDetail';
 import { SecretsStore } from 'stores/barbican/secrets';
-import { certificateColumns } from 'resources/octavia/lb';
+import { getCertificateColumns } from 'resources/octavia/lb';
 import BaseDetail from './BaseDetail';
 import actionConfigs from '../../actions';
 
@@ -41,7 +41,9 @@ export class Detail extends Base {
   }
 
   get detailInfos() {
-    return certificateColumns.filter((it) => it.dataIndex !== 'algorithm');
+    return getCertificateColumns(this).filter(
+      (it) => it.dataIndex !== 'domain'
+    );
   }
 
   get tabs() {

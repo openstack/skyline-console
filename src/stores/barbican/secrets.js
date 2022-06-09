@@ -15,6 +15,7 @@
 import Base from 'stores/base';
 import client from 'client';
 import { action } from 'mobx';
+import globalListenerStore from '../octavia/listener';
 
 export class SecretsStore extends Base {
   get client() {
@@ -42,11 +43,14 @@ export class SecretsStore extends Base {
 
   get mapper() {
     return (data) => {
-      const { secret_ref } = data;
+      const { secret_ref, algorithm } = data;
       const [, uuid] = secret_ref.split('/secrets/');
+      const { domain, expiration } = algorithm ? JSON.parse(algorithm) : {};
       return {
         ...data,
         id: uuid,
+        domain,
+        expiration,
       };
     };
   }
@@ -67,25 +71,70 @@ export class SecretsStore extends Base {
     return data;
   }
 
+  updateItem(item, listeners) {
+    const { secret_ref } = item;
+    const enabledLs = listeners.find((ls) => {
+      const refs = [
+        ls.default_tls_container_ref,
+        ls.client_ca_tls_container_ref,
+        ...ls.sni_container_refs,
+      ];
+      return refs.includes(secret_ref);
+    });
+    if (enabledLs) {
+      item.listener = {
+        id: enabledLs.id,
+        name: enabledLs.name,
+        lb: enabledLs.lbIds[0],
+      };
+    }
+    return item;
+  }
+
   @action
   async fetchDetail({ id, silent }) {
     if (!silent) {
       this.isLoading = true;
     }
-    const [item, payload] = await Promise.all([
+    const [item, payload, listeners] = await Promise.all([
       this.client.show(id, {}, { headers: { Accept: 'application/json' } }),
       this.payloadClient.list(id, {}, { headers: { Accept: 'text/plain' } }),
+      globalListenerStore.fetchList(),
     ]);
     item.payload = payload;
+    // Determine if the certificate is used in the listener
+    this.updateItem(item, listeners);
     const detail = this.mapper(item || {});
     this.detail = detail;
     this.isLoading = false;
     return detail;
   }
 
+  async listDidFetch(items) {
+    if (items.length === 0) return items;
+    const listeners = await globalListenerStore.fetchList();
+    return items.map((it) => {
+      // Determine if the certificate is used in the listener
+      this.updateItem(it, listeners);
+      return {
+        ...it,
+      };
+    });
+  }
+
   @action
   async create(data) {
-    return this.client.create(data);
+    const { expiration, domain, algorithm, ...rest } = data;
+    const body = {
+      ...rest,
+      algorithm:
+        algorithm ||
+        JSON.stringify({
+          domain,
+          expiration,
+        }),
+    };
+    return this.client.create(body);
   }
 }
 

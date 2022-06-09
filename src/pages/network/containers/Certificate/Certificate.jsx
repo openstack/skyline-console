@@ -94,9 +94,27 @@ export class Certificate extends Base {
       },
       {
         title: t('Domain Name'),
-        dataIndex: 'algorithm',
+        dataIndex: 'domain',
         render: (value) => value || '-',
         hidden: this.currentMode === 'CA',
+        isHideable: true,
+      },
+      {
+        title: t('Listener'),
+        dataIndex: 'listener',
+        render: (value) => {
+          return value
+            ? this.getLinkRender(
+                'lbListenerDetail',
+                value.name,
+                {
+                  loadBalancerId: value.lb,
+                  id: value.id,
+                },
+                null
+              )
+            : '-';
+        },
         isHideable: true,
       },
       {

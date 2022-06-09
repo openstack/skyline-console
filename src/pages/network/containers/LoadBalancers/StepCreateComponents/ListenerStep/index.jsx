@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
 import {
-  certificateColumns,
+  getCertificateColumns,
   listenerProtocols,
   sslParseMethod,
 } from 'resources/octavia/lb';
@@ -59,9 +59,7 @@ export class ListenerStep extends Base {
   }
 
   get SNISecrets() {
-    return (this.containersStore.list.data || []).filter(
-      (it) => !!it.algorithm
-    );
+    return (this.containersStore.list.data || []).filter((it) => !!it.domain);
   }
 
   get defaultValue() {
@@ -135,7 +133,7 @@ export class ListenerStep extends Base {
             name: 'name',
           },
         ],
-        columns: certificateColumns,
+        columns: getCertificateColumns(this),
         display: listener_protocol === 'TERMINATED_HTTPS',
       },
       {
@@ -152,8 +150,8 @@ export class ListenerStep extends Base {
             name: 'name',
           },
         ],
-        columns: certificateColumns.filter(
-          (it) => it.dataIndex !== 'algorithm'
+        columns: getCertificateColumns(this).filter(
+          (it) => it.dataIndex !== 'domain'
         ),
         display:
           listener_protocol === 'TERMINATED_HTTPS' &&
@@ -179,7 +177,7 @@ export class ListenerStep extends Base {
             name: 'name',
           },
         ],
-        columns: certificateColumns,
+        columns: getCertificateColumns(this),
         display:
           listener_protocol === 'TERMINATED_HTTPS' && listener_sni_enabled,
       },

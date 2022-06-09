@@ -18,7 +18,7 @@ import { ListenerStore } from 'stores/octavia/listener';
 import { ContainersStore } from 'stores/barbican/containers';
 import { SecretsStore } from 'stores/barbican/secrets';
 import {
-  certificateColumns,
+  getCertificateColumns,
   listenerProtocols,
   sslParseMethod,
 } from 'resources/octavia/lb';
@@ -74,9 +74,7 @@ export class Create extends ModalAction {
   }
 
   get SNICertificate() {
-    return (this.containersStore.list.data || []).filter(
-      (it) => !!it.algorithm
-    );
+    return (this.containersStore.list.data || []).filter((it) => !!it.domain);
   }
 
   get isEdit() {
@@ -140,7 +138,7 @@ export class Create extends ModalAction {
             name: 'name',
           },
         ],
-        columns: certificateColumns,
+        columns: getCertificateColumns(this),
         display: protocol === 'TERMINATED_HTTPS',
       },
       {
@@ -157,8 +155,8 @@ export class Create extends ModalAction {
             name: 'name',
           },
         ],
-        columns: certificateColumns.filter(
-          (it) => it.dataIndex !== 'algorithm'
+        columns: getCertificateColumns(this).filter(
+          (it) => it.dataIndex !== 'domain'
         ),
         display:
           protocol === 'TERMINATED_HTTPS' && ssl_parsing_method === 'two-way',
@@ -183,7 +181,7 @@ export class Create extends ModalAction {
             name: 'name',
           },
         ],
-        columns: certificateColumns,
+        columns: getCertificateColumns(this),
         display: protocol === 'TERMINATED_HTTPS' && sni_enabled,
       },
       {

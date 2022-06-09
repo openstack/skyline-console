@@ -16,6 +16,7 @@ import Base from 'stores/base';
 import client from 'client';
 import { action } from 'mobx';
 import { SecretsStore } from './secrets';
+import globalListenerStore from '../octavia/listener';
 
 export class ContainersStore extends Base {
   get client() {
@@ -42,11 +43,14 @@ export class ContainersStore extends Base {
 
   get mapper() {
     return (data) => {
-      const { container_ref } = data;
+      const { container_ref, algorithm } = data;
       const [, uuid] = container_ref.split('/containers/');
+      const { domain, expiration } = algorithm ? JSON.parse(algorithm) : {};
       return {
         ...data,
         id: uuid,
+        domain,
+        expiration,
       };
     };
   }
@@ -67,9 +71,32 @@ export class ContainersStore extends Base {
     return data;
   }
 
+  updateItem(item, listeners) {
+    const { container_ref } = item;
+    const enabledLs = listeners.find((ls) => {
+      const refs = [
+        ls.default_tls_container_ref,
+        ls.client_ca_tls_container_ref,
+        ...ls.sni_container_refs,
+      ];
+      return refs.includes(container_ref);
+    });
+    if (enabledLs) {
+      item.listener = {
+        id: enabledLs.id,
+        name: enabledLs.name,
+        lb: enabledLs.lbIds[0],
+      };
+    }
+    return item;
+  }
+
   async listDidFetch(items) {
     if (items.length === 0) return items;
-    const secrets = await this.secretStore.fetchList({ mode: 'SERVER' });
+    const [secrets, listeners] = await Promise.all([
+      this.secretStore.fetchList({ mode: 'SERVER' }),
+      globalListenerStore.fetchList(),
+    ]);
     const newItems = items.map((it) => {
       const { secret_refs = [] } = it;
       if (secret_refs.length === 0) {
@@ -85,12 +112,13 @@ export class ContainersStore extends Base {
             Object.assign(it, {
               algorithm: theSecret.algorithm,
               mode: theSecret.mode,
-              expiration: theSecret.expiration,
             });
           } else {
             it.hidden = true;
           }
         });
+        // Determine if the certificate is used in the listener
+        this.updateItem(it, listeners);
       }
       return {
         ...it,
@@ -101,7 +129,10 @@ export class ContainersStore extends Base {
 
   async detailDidFetch(item) {
     const { secret_refs = [] } = item;
-    const secrets = await this.secretStore.fetchList({ mode: 'SERVER' });
+    const [secrets, listeners] = await Promise.all([
+      this.secretStore.fetchList({ mode: 'SERVER' }),
+      globalListenerStore.fetchList(),
+    ]);
     const secretIds = [];
     // Filter available secrets
     secret_refs.forEach(async (secret) => {
@@ -114,10 +145,11 @@ export class ContainersStore extends Base {
         Object.assign(item, {
           algorithm: theSecret.algorithm,
           mode: theSecret.mode,
-          expiration: theSecret.expiration,
         });
       }
     });
+    // Determine if the certificate is used in the listener
+    this.updateItem(item, listeners);
     // Fetch secrets payload
     const payloads = await Promise.all(
       secretIds.map((id) =>
@@ -138,8 +170,10 @@ export class ContainersStore extends Base {
       mode: values.mode,
       payload_content_type: 'text/plain',
       secret_type: 'certificate',
-      expiration: values.expiration,
-      algorithm: values.domain,
+      algorithm: JSON.stringify({
+        domain: values.domain,
+        expiration: values.expiration,
+      }),
     };
     const contentData = {
       ...commonData,
