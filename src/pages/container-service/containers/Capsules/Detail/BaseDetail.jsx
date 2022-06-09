@@ -55,7 +55,7 @@ export class BaseDetail extends Base {
           value.map((it) => {
             return (
               <div key={it.uuid}>
-                <b>{t('Name')}</b> : {it.name}
+                <b>{t('Container Name')}</b> : {it.name}
                 <br />
                 <b>{t('Container ID')}</b>: {it.uuid}
               </div>
@@ -67,6 +67,8 @@ export class BaseDetail extends Base {
     return {
       title: t('Containers'),
       options,
+      labelCol: 0,
+      contentCol: 24,
     };
   }
 
