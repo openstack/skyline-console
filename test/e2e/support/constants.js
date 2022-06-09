@@ -61,6 +61,10 @@ export const settingUrl = '/configuration-admin/setting';
 // stack
 export const stackListUrl = '/heat/stack';
 
+// zun
+export const zunContainerListUrl = '/container/containers';
+export const zunCapsuleListUrl = '/container/capsules';
+
 export default {
   // compute
   instance: instanceListUrl,

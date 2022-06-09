@@ -15,6 +15,7 @@
           cp test/e2e/config/config-other.yaml $config_file
           sed -i "s#baseUrl.*#baseUrl: https://127.0.0.1:9999#" $config_file
           sed -i "s/- heat/# - heat/" $config_file
+          sed -i "s/- zun/# - zun/" $config_file
           sed -i "s#username:.*#username: admin#" $config_file
           sed -i "s#password:.*#password: secretadmin#" $config_file
           sed -i "s#usernameAdmin:.*#usernameAdmin: admin#" $config_file

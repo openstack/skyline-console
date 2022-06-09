@@ -14,6 +14,7 @@ env:
   imageCanChangePassword: false
   extensions:
     - heat
+    - zun
 testFiles:
   - pages/login.spec.js
   - pages/error.spec.js
@@ -29,3 +30,6 @@ testFiles:
   - pages/configuration/setting.spec.js
   # heat
   - pages/heat/stack.spec.js
+  # zun
+  - pages/zun/container.spec.js
+  - pages/zun/capsule.spec.js
