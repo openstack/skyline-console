@@ -17,23 +17,15 @@ import Delete from './Delete';
 import Edit from './Edit';
 import Enable from './Enable';
 import Forbidden from './Forbidden';
-import SystemPermission from './SystemRole';
+import SystemRole from './SystemRole';
 import Password from './Password';
 
 const actionConfigs = {
   rowActions: {
-    moreActions: [],
-  },
-  batchActions: [],
-  primaryActions: [],
-};
-
-const adminConfigs = {
-  rowActions: {
     firstAction: Edit,
     moreActions: [
       {
-        action: SystemPermission,
+        action: SystemRole,
       },
       // {
       //   action: DomainPermission,
@@ -59,4 +51,4 @@ const adminConfigs = {
   primaryActions: [Create],
 };
 
-export default { actionConfigs, adminConfigs };
+export default actionConfigs;

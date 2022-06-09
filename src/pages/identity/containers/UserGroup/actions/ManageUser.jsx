@@ -47,7 +47,7 @@ export class ManageUser extends ModalAction {
   }
 
   getAllUser() {
-    this.userStore.fetchAllWithDomain();
+    this.userStore.fetchList({ withProjectRole: false, withSystemRole: false });
   }
 
   async getGroupUsers() {

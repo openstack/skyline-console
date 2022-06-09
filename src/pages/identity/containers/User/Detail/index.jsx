@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { UserStore } from 'stores/keystone/user';
-import globalDomainStore from 'stores/keystone/domain';
 import Base from 'containers/TabDetail';
 import Credentials from 'src/pages/user-center/containers/Credentials';
+import { emptyActionConfig } from 'utils/constants';
 import { enabledColumn } from 'resources/keystone/domain';
 import UserGroup from '../../UserGroup';
 import Project from '../../Project';
@@ -36,32 +37,12 @@ export class UserDetail extends Base {
   }
 
   get actionConfigs() {
-    return this.isAdminPage
-      ? actionConfigs.adminConfigs
-      : actionConfigs.actionConfigs;
+    return this.isAdminPage ? actionConfigs : emptyActionConfig;
   }
 
   init() {
     this.store = new UserStore();
-    this.domainStore = globalDomainStore;
-    this.getDomains();
   }
-
-  getDomains() {
-    this.domainStore.fetchDomain();
-  }
-
-  get domainList() {
-    const { domains } = this.domainStore;
-    return domains || [];
-  }
-
-  goEdit = () => {
-    const {
-      params: { id },
-    } = this.props.match;
-    this.routing.push(`${this.listUrl}/edit/${id}`);
-  };
 
   get detailInfos() {
     return [
@@ -71,24 +52,26 @@ export class UserDetail extends Base {
       },
       enabledColumn,
       {
+        title: t('System Roles'),
+        dataIndex: 'systemRoles',
+        render: (value) => {
+          if (!value || !value.length) {
+            return '-';
+          }
+          return (value || []).map((it) => <div key={it.id}>{it.name}</div>);
+        },
+      },
+      {
         title: t('Real Name'),
         dataIndex: 'real_name',
       },
       // {
       //   title: t('User Group Num'),
-      //   dataIndex: 'group_num',
+      //   dataIndex: 'groupCount',
       // },
       {
         title: t('Affiliated Domain'),
-        dataIndex: 'domain_id',
-        isHideable: true,
-        render: (domain_id) => {
-          const domain = this.domainList.filter((it) => it.id === domain_id);
-          if (domain[0]) {
-            return domain[0].name;
-          }
-          return domain_id;
-        },
+        dataIndex: 'domainName',
       },
       {
         title: t('Email'),

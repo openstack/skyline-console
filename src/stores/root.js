@@ -20,9 +20,6 @@ import { getQueryString } from 'utils/index';
 import { setLocalStorageItem } from 'utils/local-storage';
 import { isEmpty, values } from 'lodash';
 
-const checkItemPolicy = require('resources/skyline/policy').default;
-const { onlyAdminCanReadPolicy } = require('resources/skyline/policy');
-
 export class RootStore {
   @observable
   user = null;
@@ -115,23 +112,35 @@ export class RootStore {
     return this.getUserProfileAndPolicy();
   }
 
-  checkAdminRole(roles) {
-    if (checkItemPolicy({ policy: onlyAdminCanReadPolicy })) {
+  async getUserSystemRoles(user) {
+    // only user admin or system roles has admin/reader can go to administrator
+    const { id, name } = user;
+    if (name === 'admin') {
       return true;
     }
-    const regex = /^[\w-_]*(system_admin|system_reader)$/;
-    return roles.some((role) => regex.test(role.name));
+    try {
+      const result = await client.keystone.systemUsers.roles.list(id);
+      const { roles = [] } = result;
+      return roles.some((it) => it.name === 'admin' || it.name === 'reader');
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
   }
 
   @action
-  updateUserRoles(user) {
-    const { roles = [], base_roles = [], base_domains } = user || {};
+  async updateUserRoles(user) {
+    const {
+      roles = [],
+      base_roles = [],
+      base_domains,
+      user: userInfo = {},
+    } = user || {};
     this.roles = roles;
     this.baseRoles = base_roles;
     this.baseDomains = base_domains;
-    // TODO: fix system/project admin/member/reader for W
-    this.hasAdminRole = checkItemPolicy({ policy: onlyAdminCanReadPolicy });
-    this.hasAdminPageRole = this.checkAdminRole(roles);
+    this.hasAdminPageRole = await this.getUserSystemRoles(userInfo);
+    this.hasAdminRole = this.hasAdminPageRole;
   }
 
   @action
@@ -148,15 +157,9 @@ export class RootStore {
     this.projectName = projectName;
     this.license = license || {};
     this.version = version;
+    this.endpoints = endpoints;
     this.updateUserRoles(user);
     this.setKeystoneToken(user);
-    this.endpoints = endpoints;
-  }
-
-  @action
-  async getUserPolices() {
-    const result = await this.client.policies.list();
-    this.policies = result.policies;
   }
 
   checkLicense(key) {
@@ -183,7 +186,7 @@ export class RootStore {
       this.client.profile(),
       this.client.policies.list(),
     ]);
-    this.updateUser(profile, policies.policies || []);
+    await this.updateUser(profile, policies.policies || []);
     return this.getNeutronExtensions();
   }
 

@@ -29,6 +29,10 @@ export default class ForbiddenAction extends ConfirmAction {
     return t('Forbidden');
   }
 
+  get isDanger() {
+    return true;
+  }
+
   get actionName() {
     return t('Forbidden User');
   }

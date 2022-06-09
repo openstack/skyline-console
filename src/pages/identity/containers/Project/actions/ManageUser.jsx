@@ -46,7 +46,7 @@ export class ManagerUser extends ModalAction {
   }
 
   getUser() {
-    this.userStore.fetchAllWithDomain();
+    this.userStore.fetchList({ withProjectRole: false, withSystemRole: false });
   }
 
   getInitRoleMap() {
