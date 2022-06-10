@@ -73,7 +73,7 @@ export class SecretsStore extends Base {
 
   updateItem(item, listeners) {
     const { secret_ref } = item;
-    const enabledLs = listeners.find((ls) => {
+    const enabledLs = listeners.filter((ls) => {
       const refs = [
         ls.default_tls_container_ref,
         ls.client_ca_tls_container_ref,
@@ -81,12 +81,12 @@ export class SecretsStore extends Base {
       ];
       return refs.includes(secret_ref);
     });
-    if (enabledLs) {
-      item.listener = {
-        id: enabledLs.id,
-        name: enabledLs.name,
-        lb: enabledLs.lbIds[0],
-      };
+    if (enabledLs.length) {
+      item.listener = enabledLs.map((ls) => ({
+        id: ls.id,
+        name: ls.name,
+        lb: ls.lbIds[0],
+      }));
     }
     return item;
   }

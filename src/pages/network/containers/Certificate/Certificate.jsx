@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalContainersStore, {
@@ -104,15 +105,19 @@ export class Certificate extends Base {
         dataIndex: 'listener',
         render: (value) => {
           return value
-            ? this.getLinkRender(
-                'lbListenerDetail',
-                value.name,
-                {
-                  loadBalancerId: value.lb,
-                  id: value.id,
-                },
-                null
-              )
+            ? value.map((it) => (
+                <div>
+                  {this.getLinkRender(
+                    'lbListenerDetail',
+                    it.name,
+                    {
+                      loadBalancerId: it.lb,
+                      id: it.id,
+                    },
+                    null
+                  )}
+                </div>
+              ))
             : '-';
         },
         isHideable: true,
