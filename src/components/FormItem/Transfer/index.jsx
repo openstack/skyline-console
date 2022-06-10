@@ -23,6 +23,7 @@ const TableTransfer = ({
   leftColumns,
   rightColumns,
   pageSize,
+  loading,
   ...restProps
 }) => (
   <Transfer {...restProps} showSelectAll={false}>
@@ -60,6 +61,7 @@ const TableTransfer = ({
 
       return (
         <Table
+          loading={loading}
           rowSelection={rowSelection}
           columns={columns}
           dataSource={filteredItems}
@@ -91,6 +93,7 @@ export default class Index extends Component {
     // eslint-disable-next-line react/no-unused-prop-types
     value: PropTypes.array,
     pageSize: PropTypes.number,
+    loading: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -101,6 +104,7 @@ export default class Index extends Component {
     onChange: null,
     value: [],
     pageSize: 5,
+    loading: false,
   };
 
   constructor(props) {
@@ -149,6 +153,7 @@ export default class Index extends Component {
       filterOption,
       titles,
       pageSize,
+      loading,
     } = this.props;
     const { targetKeys } = this.state;
     return (
@@ -164,6 +169,7 @@ export default class Index extends Component {
           filterOption={filterOption}
           leftColumns={leftTableColumns}
           rightColumns={rightTableColumns}
+          loading={loading}
         />
       </>
     );

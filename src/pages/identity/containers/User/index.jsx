@@ -34,31 +34,19 @@ export class User extends Base {
   }
 
   get inDomainDetail() {
-    const {
-      match: { path },
-    } = this.props;
-    return this.inDetailPage && path.includes('domain-admin/detail');
+    return this.inDetailPage && this.path.includes('domain-admin/detail');
   }
 
   get inProjectDetail() {
-    const {
-      match: { path },
-    } = this.props;
-    return this.inDetailPage && path.includes('project-admin/detail');
+    return this.inDetailPage && this.path.includes('project-admin/detail');
   }
 
   get inUserGroupDetail() {
-    const {
-      match: { path },
-    } = this.props;
-    return this.inDetailPage && path.includes('identity/user-group');
+    return this.inDetailPage && this.path.includes('identity/user-group');
   }
 
   get inRoleDetail() {
-    const {
-      match: { path },
-    } = this.props;
-    return this.inDetailPage && path.includes('identity/role-admin');
+    return this.inDetailPage && this.path.includes('identity/role-admin');
   }
 
   getBaseColumns() {

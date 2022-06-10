@@ -136,6 +136,11 @@ export default class BaseList extends React.Component {
     return '';
   }
 
+  get path() {
+    const { location: { pathname = '' } = {} } = this.props;
+    return pathname || '';
+  }
+
   get inDetailPage() {
     const { detail } = this.props;
     return !!detail;

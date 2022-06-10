@@ -27,29 +27,19 @@ export class VirtualAdapter extends Base {
   }
 
   get isInstanceDetail() {
-    const {
-      match: { path },
-    } = this.props;
-    if (
-      path.indexOf('compute/instance') >= 0 ||
-      path.indexOf('management/recycle-bin') >= 0
-    ) {
-      return true;
-    }
-    return false;
+    return (
+      this.inDetailPage &&
+      (this.path.includes('compute/instance') ||
+        this.path.includes('management/recycle-bin'))
+    );
   }
 
   get isNetworkDetail() {
-    const {
-      match: { path },
-    } = this.props;
-    if (
-      path.indexOf('networks/detail') >= 0 ||
-      path.indexOf('networks-admin/detail') >= 0
-    ) {
-      return true;
-    }
-    return false;
+    return (
+      this.inDetailPage &&
+      (this.path.includes('networks/detail') ||
+        this.path.includes('networks-admin/detail'))
+    );
   }
 
   get isFilterByBackend() {

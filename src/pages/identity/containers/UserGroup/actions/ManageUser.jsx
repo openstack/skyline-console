@@ -119,6 +119,7 @@ export class ManageUser extends ModalAction {
         disabled: false,
         showSearch: true,
         filterOption: transferFilterOption,
+        loading: this.userStore.list.isLoading,
       },
     ];
   }

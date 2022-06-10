@@ -24,21 +24,21 @@ import {
   transferFilterOption,
 } from 'resources/keystone/domain';
 
-export class ManageGroupGroup extends ModalAction {
+export class ManageUserGroup extends ModalAction {
   static id = 'manage-group-group';
 
   static title = t('Manage User Group');
 
   async init() {
     this.state.groupRoles = this.getInitRoleMap();
-    this.groupGroupStore = new GroupStore();
+    this.userGroupStore = new GroupStore();
     this.store = globalRoleStore;
     this.getRoleList();
     this.getGroupGroup();
   }
 
   get name() {
-    return t('Manager user group');
+    return t('Manage user group');
   }
 
   getInitRoleMap() {
@@ -50,7 +50,7 @@ export class ManageGroupGroup extends ModalAction {
   }
 
   getGroupGroup() {
-    this.groupGroupStore.fetchList();
+    this.userGroupStore.fetchList();
   }
 
   getRoleList() {
@@ -80,7 +80,7 @@ export class ManageGroupGroup extends ModalAction {
   }
 
   get groupList() {
-    return (this.groupGroupStore.list.data || []).map((it) => ({
+    return (this.userGroupStore.list.data || []).map((it) => ({
       ...it,
       key: it.id,
     }));
@@ -187,6 +187,7 @@ export class ManageGroupGroup extends ModalAction {
         oriTargetKeys: groups ? Object.keys(groups) : [],
         filterOption: transferFilterOption,
         wrapperCol: this.wrapperCol,
+        loading: this.userGroupStore.list.isLoading,
       },
     ];
   }
@@ -221,4 +222,4 @@ export class ManageGroupGroup extends ModalAction {
   };
 }
 
-export default inject('rootStore')(observer(ManageGroupGroup));
+export default inject('rootStore')(observer(ManageUserGroup));

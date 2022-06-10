@@ -24,7 +24,7 @@ import {
   transferFilterOption,
 } from 'resources/keystone/domain';
 
-export class ManagerUser extends ModalAction {
+export class ManageUser extends ModalAction {
   static id = 'management-user';
 
   static title = t('Manage User');
@@ -148,7 +148,7 @@ export class ManagerUser extends ModalAction {
     if (value.length && option.length) {
       userRoles[userId] = value;
     } else {
-      userRoles[userId] = {};
+      userRoles[userId] = [];
     }
     this.setState({ userRoles });
   };
@@ -203,6 +203,7 @@ export class ManagerUser extends ModalAction {
         onChange: this.onChangeUser,
         filterOption: transferFilterOption,
         wrapperCol: this.wrapperCol,
+        loading: this.userStore.list.isLoading,
       },
     ];
   }
@@ -237,4 +238,4 @@ export class ManagerUser extends ModalAction {
   };
 }
 
-export default inject('rootStore')(observer(ManagerUser));
+export default inject('rootStore')(observer(ManageUser));

@@ -28,10 +28,7 @@ export class Credentials extends Base {
   }
 
   get isUserDetail() {
-    const {
-      match: { path },
-    } = this.props;
-    return path.indexOf('user-admin/detail') >= 0;
+    return this.inDetailPage && this.path.includes('user-admin/detail');
   }
 
   updateFetchParamsByPage = (params) => {

@@ -55,30 +55,21 @@ export class Instance extends Base {
     if (!this.inDetailPage) {
       return false;
     }
-    const {
-      match: { path },
-    } = this.props;
-    return path.indexOf('server-group') >= 0;
+    return this.path.includes('server-group');
   }
 
   get inHostDetailPage() {
     if (!this.inDetailPage) {
       return false;
     }
-    const {
-      match: { path },
-    } = this.props;
-    return path.indexOf('hypervisors') >= 0;
+    return this.path.includes('hypervisors');
   }
 
   get inFlavorDetailPage() {
     if (!this.inDetailPage) {
       return false;
     }
-    const {
-      match: { path },
-    } = this.props;
-    return path.indexOf('flavor') >= 0;
+    return this.path.includes('flavor');
   }
 
   get isFilterByBackend() {

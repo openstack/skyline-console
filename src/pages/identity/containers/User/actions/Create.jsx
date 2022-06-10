@@ -155,7 +155,7 @@ export class Create extends FormAction {
     if (value.length && option.length) {
       projectRoles[projectId] = value;
     } else {
-      projectRoles[projectId] = {};
+      projectRoles[projectId] = [];
     }
     this.setState({ projectRoles });
   };
@@ -225,14 +225,22 @@ export class Create extends FormAction {
   get formItems() {
     const { more } = this.state;
     const labelCol = {
-      xs: { span: 5 },
-      sm: { span: 6 },
+      xs: { span: 4 },
+      sm: { span: 5 },
+    };
+    const wrapperCol = {
+      xs: { span: 16 },
+      sm: { span: 15 },
+    };
+    const cols = {
+      labelCol,
+      wrapperCol,
+      colNum: 2,
     };
     const domainFormItem = getDomainFormItem(this);
     const currentDomainFormItem = {
       ...domainFormItem,
-      labelCol,
-      colNum: 2,
+      ...cols,
     };
     return [
       {
@@ -242,8 +250,7 @@ export class Create extends FormAction {
         validator: this.checkName,
         extra: t('User name can not be duplicated'),
         required: true,
-        labelCol,
-        colNum: 2,
+        ...cols,
         maxLength: 30,
       },
       {
@@ -252,8 +259,7 @@ export class Create extends FormAction {
         type: 'input',
         required: true,
         validator: emailValidate,
-        labelCol,
-        colNum: 2,
+        ...cols,
       },
       {
         name: 'password',
@@ -261,8 +267,7 @@ export class Create extends FormAction {
         type: 'input-password',
         required: true,
         otherRule: getPasswordOtherRule('password'),
-        labelCol,
-        colNum: 2,
+        ...cols,
       },
       {
         name: 'phone',
@@ -270,8 +275,7 @@ export class Create extends FormAction {
         type: 'phone',
         required: true,
         validator: phoneNumberValidate,
-        labelCol,
-        colNum: 2,
+        ...cols,
       },
       {
         name: 'confirmPassword',
@@ -280,8 +284,7 @@ export class Create extends FormAction {
         required: true,
         dependencies: ['password'],
         otherRule: getPasswordOtherRule('confirmPassword'),
-        labelCol,
-        colNum: 2,
+        ...cols,
       },
       currentDomainFormItem,
       {
@@ -291,23 +294,20 @@ export class Create extends FormAction {
         optionType: 'default',
         options: statusTypes,
         required: true,
-        labelCol,
-        colNum: 2,
+        ...cols,
       },
       {
         name: 'description',
         label: t('Description'),
         type: 'textarea',
-        labelCol,
-        colNum: 2,
+        ...cols,
       },
       {
         name: 'real_name',
         label: t('Real Name'),
         type: 'input',
         required: true,
-        labelCol,
-        colNum: 2,
+        ...cols,
         maxLength: 30,
       },
       {
@@ -329,6 +329,7 @@ export class Create extends FormAction {
         hidden: !more,
         onChange: this.onChangeProject,
         filterOption: transferFilterOption,
+        loading: this.projectStore.list.isLoading,
       },
       {
         name: 'select_user_group',
@@ -340,15 +341,15 @@ export class Create extends FormAction {
         showSearch: true,
         hidden: !more,
         filterOption: transferFilterOption,
+        loading: this.userGroupStore.list.isLoading,
       },
     ];
   }
 
   onSubmit = async (values) => {
-    const { domain } = this.state;
+    const { projectRoles } = this.state;
     values.defaultRole = this.projectRoleList[0].id;
-    values.projectRoles = this.state.projectRoles;
-    values.domain_id = domain;
+    values.projectRoles = projectRoles;
     const { confirmPassword, more, ...rest } = values;
     return this.store.create(rest);
   };
