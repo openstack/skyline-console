@@ -18,19 +18,41 @@ import RebootContainer from './Reboot';
 import StartContainer from './Start';
 import StopContainer from './Stop';
 import UnpauseContainer from './Unpause';
+import RebuildContainer from './Rebuild';
+import EditContainer from './Edit';
+import KillContainer from './Kill';
+import ForceDeleteContainer from './ForceDelete';
+import ExecuteCommandContainer from './ExecuteCommand';
+
+const moreActions = [
+  { action: StartContainer },
+  { action: StopContainer },
+  { action: RebootContainer },
+  { action: KillContainer },
+  { action: RebuildContainer },
+  { action: DeleteContainer },
+  { action: ForceDeleteContainer },
+];
 
 const actionConfigs = {
   rowActions: {
-    firstAction: DeleteContainer,
+    firstAction: EditContainer,
     moreActions: [
-      { action: StartContainer },
-      { action: StopContainer },
       { action: PauseContainer },
-      { action: RebootContainer },
       { action: UnpauseContainer },
+      { action: ExecuteCommandContainer },
+      ...moreActions,
     ],
   },
   batchActions: [DeleteContainer],
   primaryActions: [CreateStep],
 };
-export default actionConfigs;
+const actionConfigsAdmin = {
+  rowActions: {
+    firstAction: EditContainer,
+    moreActions,
+  },
+  batchActions: [DeleteContainer],
+  primaryActions: [],
+};
+export default { actionConfigs, actionConfigsAdmin };

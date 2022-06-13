@@ -55,6 +55,26 @@ export class ContainersStore extends Base {
   async unpause({ id }) {
     return this.client.unpause(id);
   }
+
+  @action
+  async rebuild(id, data) {
+    return this.client.rebuild(id, data);
+  }
+
+  @action
+  async kill(id, data) {
+    return this.client.kill(id, data);
+  }
+
+  @action
+  async forceDelete({ id }) {
+    return this.client.delete(id, null, { force: true });
+  }
+
+  @action
+  async execute(id, data) {
+    return this.client.execute(id, data);
+  }
 }
 
 const globalContainersStore = new ContainersStore();

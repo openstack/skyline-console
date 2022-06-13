@@ -106,7 +106,7 @@ export class Certificate extends Base {
         render: (value) => {
           return value
             ? value.map((it) => (
-                <div>
+                <div key={it.id}>
                   {this.getLinkRender(
                     'lbListenerDetail',
                     it.name,

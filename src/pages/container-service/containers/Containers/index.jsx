@@ -33,7 +33,10 @@ export class Containers extends Base {
   }
 
   get actionConfigs() {
-    return actionConfigs;
+    if (this.isAdminPage) {
+      return actionConfigs.actionConfigsAdmin;
+    }
+    return actionConfigs.actionConfigs;
   }
 
   get rowKey() {

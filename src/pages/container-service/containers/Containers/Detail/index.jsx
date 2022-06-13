@@ -14,6 +14,7 @@ import { inject, observer } from 'mobx-react';
 import Base from 'containers/TabDetail';
 import globalContainersStore from 'src/stores/zun/containers';
 import { containerStatus } from 'resources/zun/container';
+import actionConfigs from '../actions';
 import BaseDetail from './BaseDetail';
 
 export class ContainerDetail extends Base {
@@ -31,6 +32,13 @@ export class ContainerDetail extends Base {
 
   get policy() {
     return 'container:container:get_one';
+  }
+
+  get actionConfigs() {
+    if (this.isAdminPage) {
+      return actionConfigs.actionConfigsAdmin;
+    }
+    return actionConfigs.actionConfigs;
   }
 
   get detailInfos() {

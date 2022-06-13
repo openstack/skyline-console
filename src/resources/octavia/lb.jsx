@@ -68,7 +68,7 @@ export const getCertificateColumns = (self) => [
     render: (value) => {
       return value
         ? value.map((it) => (
-            <div>
+            <div key={it.id}>
               {self.getLinkRender(
                 'lbListenerDetail',
                 it.name,

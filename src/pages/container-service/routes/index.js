@@ -38,6 +38,12 @@ export default [
         component: ContainersDetail,
         exact: true,
       },
+      { path: `${PATH}/containers-admin`, component: Containers, exact: true },
+      {
+        path: `${PATH}/containers-admin/detail/:id`,
+        component: ContainersDetail,
+        exact: true,
+      },
       {
         path: `${PATH}/capsules`,
         component: Capsules,

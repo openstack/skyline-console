@@ -23,6 +23,7 @@ import {
   HomeOutlined,
   AppstoreOutlined,
   SwitcherOutlined,
+  ContainerOutlined,
 } from '@ant-design/icons';
 
 const renderMenu = (t) => {
@@ -785,6 +786,30 @@ const renderMenu = (t) => {
               key: 'metadataDetailAdmin',
               level: 2,
               routePath: '/configuration-admin/metadata/detail/:id',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      path: '/container',
+      name: t('Container'),
+      key: 'containerAdmin',
+      icon: <ContainerOutlined />,
+      children: [
+        {
+          path: '/container/containers-admin',
+          name: t('Containers'),
+          key: 'zunContainersAdmin',
+          endpoints: 'zun',
+          level: 1,
+          children: [
+            {
+              path: /^\/container\/containers-admin\/detail\/.[^/]+$/,
+              name: t('Container Detail'),
+              key: 'zunContainerDetailAdmin',
+              level: 2,
+              routePath: '/container/containers-admin/detail/:id',
             },
           ],
         },

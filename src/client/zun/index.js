@@ -52,6 +52,18 @@ export class ZunClient extends Base {
             key: 'unpause',
             method: 'post',
           },
+          {
+            key: 'rebuild',
+            method: 'post',
+          },
+          {
+            key: 'kill',
+            method: 'post',
+          },
+          {
+            key: 'execute',
+            method: 'post',
+          },
         ],
       },
     ];

@@ -32,6 +32,8 @@ export const containerTaskStatus = {
   container_stopping: t('Container Stopping'),
   container_rebooting: t('Container Rebooting'),
   container_deleting: t('Container Deleting'),
+  container_rebuilding: t('Container Rebuilding'),
+  container_killing: t('Container Killing'),
 };
 
 const states = {

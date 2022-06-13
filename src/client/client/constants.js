@@ -109,6 +109,10 @@ export const apiVersionMaps = {
     key: 'X-OpenStack-Manila-API-Version',
     value: '2.55',
   },
+  zun: {
+    key: 'OpenStack-API-Version',
+    value: 'container 1.7',
+  },
 };
 
 export const getOpenstackApiVersion = (url) => {
