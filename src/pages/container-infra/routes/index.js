@@ -19,8 +19,8 @@ import ClustersDetail from '../containers/Clusters/Detail';
 import ClusterTemplates from '../containers/ClusterTemplates';
 import ClusterTemplateDetail from '../containers/ClusterTemplates/Detail';
 import ClustersCreate from '../containers/Clusters/actions/StepCreate';
-import ClustersTemplateCreate from '../containers/ClusterTemplates/actions/StepCreate'
-import StepUpdateClusterTemplate from '../containers/ClusterTemplates/actions/EditStep'
+import ClustersTemplateCreate from '../containers/ClusterTemplates/actions/StepCreate';
+import StepUpdateClusterTemplate from '../containers/ClusterTemplates/actions/EditStep';
 
 const PATH = '/container-infra';
 export default [
@@ -29,20 +29,36 @@ export default [
     component: BaseLayout,
     routes: [
       { path: `${PATH}/clusters`, component: Clusters, exact: true },
-      { path: `${PATH}/clusters/detail/:id`, component: ClustersDetail, exact: true },
-      { path: `${PATH}/cluster-template`, component: ClusterTemplates, exact: true },
-      { path: `${PATH}/cluster-template/detail/:id`, component: ClusterTemplateDetail, exact: true },
+      {
+        path: `${PATH}/clusters/detail/:id`,
+        component: ClustersDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/cluster-template`,
+        component: ClusterTemplates,
+        exact: true,
+      },
+      {
+        path: `${PATH}/cluster-template/detail/:id`,
+        component: ClusterTemplateDetail,
+        exact: true,
+      },
       {
         path: `${PATH}/clusters/create`,
         component: ClustersCreate,
         exact: true,
       },
       {
-        path: `${PATH}/clusters-template/create`,
+        path: `${PATH}/cluster-template/create`,
         component: ClustersTemplateCreate,
         exact: true,
       },
-      { path: `${PATH}/cluster-template/update/:id`, component: StepUpdateClusterTemplate, exact: true },
+      {
+        path: `${PATH}/cluster-template/update/:id`,
+        component: StepUpdateClusterTemplate,
+        exact: true,
+      },
       { path: '*', component: E404 },
     ],
   },

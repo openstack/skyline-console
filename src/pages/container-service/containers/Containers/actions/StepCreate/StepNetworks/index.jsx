@@ -14,7 +14,6 @@ import { SecurityGroupStore } from 'stores/neutron/security-group';
 import { VirtualAdapterStore } from 'stores/neutron/virtual-adapter';
 import Base from 'components/Form';
 import { inject, observer } from 'mobx-react';
-import globalNetworkStore from 'src/stores/neutron/network';
 import { portColumns, portFilters } from 'src/resources/neutron/port';
 import {
   securityGroupColumns,
@@ -23,7 +22,6 @@ import {
 
 export class StepNetworks extends Base {
   init() {
-    this.getNetworkStore();
     this.portStore = new VirtualAdapterStore();
     this.securityGroupStore = new SecurityGroupStore();
   }
@@ -34,17 +32,6 @@ export class StepNetworks extends Base {
 
   get name() {
     return t('Networks');
-  }
-
-  async getNetworkStore() {
-    await globalNetworkStore.fetchList({ project_id: this.currentProjectId });
-  }
-
-  get networking() {
-    return (globalNetworkStore.list.data || []).map((it) => ({
-      label: it.name,
-      value: it.id,
-    }));
   }
 
   get formItems() {

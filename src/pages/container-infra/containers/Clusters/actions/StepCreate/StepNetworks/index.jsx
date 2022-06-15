@@ -12,113 +12,95 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Base from "components/Form";
-import { inject, observer } from "mobx-react";
-import globalNetworkStore from "src/stores/neutron/network";
+import Base from 'components/Form';
+import { inject, observer } from 'mobx-react';
 
 export class StepNetworks extends Base {
-
-  init() {
-    this.getNetworks();
-  }
-
   get title() {
-    return t("Cluster Network")
+    return t('Cluster Network');
   }
 
   get name() {
-    return t("Cluster Network")
+    return t('Cluster Network');
   }
 
   allowed = () => Promise.resolve();
 
   get defaultValue() {
     return {
-      enableNetwork: true
+      enableNetwork: true,
     };
   }
 
   get nameForStateUpdate() {
-    return ['enableNetwork']
-  }
-
-  async getNetworks() {
-    globalNetworkStore.fetchList();
-  }
-
-  get getNetworkList() {
-    return (globalNetworkStore.list.data || []).map((it) => ({
-      value: it.id,
-      label: it.name,
-    }));
+    return ['enableNetwork'];
   }
 
   get formItems() {
-
     const { enableNetwork } = this.state;
 
     return [
       {
-        name: "enableLoadBalancer",
-        label: t("Enable Load Balancer"),
-        type: "check",
-        content: t("Enabled Load Balancer for Master Nodes"),
+        name: 'enableLoadBalancer',
+        label: t('Enable Load Balancer'),
+        type: 'check',
+        content: t('Enabled Load Balancer for Master Nodes'),
       },
       {
-        name: "enableNetwork",
-        label: t("Enabled Network"),
-        type: "check",
-        content: t("Create New Network"),
+        name: 'enableNetwork',
+        label: t('Enabled Network'),
+        type: 'check',
+        content: t('Create New Network'),
       },
       {
-        name: "network",
-        label: t("Use an Existing Network"),
+        name: 'network',
+        label: t('Use an Existing Network'),
         type: 'network-select-table',
-        hidden: enableNetwork
+        hidden: enableNetwork,
       },
       {
-        type: "divider"
+        type: 'divider',
       },
       {
-        name: "floating_ip_enabled",
-        label: t("Cluster API"),
-        type: "select",
+        name: 'floating_ip_enabled',
+        label: t('Cluster API'),
+        type: 'select',
         options: [
           {
-            label: t("Accessible on private network only"),
-            value: "networkOnly"
+            label: t('Accessible on private network only'),
+            value: 'networkOnly',
           },
           {
-            label: t("Accessible on the public internet"),
-            value: "publicInternet"
-          }
+            label: t('Accessible on the public internet'),
+            value: 'publicInternet',
+          },
         ],
       },
       {
-        type: "divider"
+        type: 'divider',
       },
       {
-        name: "ingress_controller",
-        label: t("Ingress Controller"),
-        type: "select",
+        name: 'ingress_controller',
+        label: t('Ingress Controller'),
+        type: 'select',
         options: [
           {
-            label: t("octavia"),
-            value: "octavia"
+            label: t('octavia'),
+            value: 'octavia',
           },
           {
-            label: t("nginx"),
-            value: "nginx"
+            label: t('nginx'),
+            value: 'nginx',
           },
           {
-            label: t("traefik"),
-            value: "traefik"
-          }
+            label: t('traefik'),
+            value: 'traefik',
+          },
         ],
-        placeholder: t("Choose an ingress controller"),
-      }
-    ]
+        placeholder: t('Choose an ingress controller'),
+      },
+    ];
   }
 }
 
-export default inject("rootStore")(observer(StepNetworks))
+export default inject('rootStore')(observer(StepNetworks));
