@@ -17,6 +17,7 @@ import { DomainStore } from 'stores/keystone/domain';
 import Base from 'containers/TabDetail';
 import { enabledColumn } from 'resources/keystone/domain';
 import User from '../../User';
+import UserGroup from '../../UserGroup';
 import Project from '../../Project';
 import actionConfigs from '../actions';
 
@@ -45,12 +46,16 @@ export class DomainDetail extends Base {
       },
       enabledColumn,
       {
+        title: t('Project Num'),
+        dataIndex: 'projectCount',
+      },
+      {
         title: t('User Num'),
         dataIndex: 'userCount',
       },
       {
-        title: t('Project Num'),
-        dataIndex: 'projectCount',
+        title: t('User Group Num'),
+        dataIndex: 'groupCount',
       },
       {
         title: t('Description'),
@@ -62,14 +67,19 @@ export class DomainDetail extends Base {
   get tabs() {
     const tabs = [
       {
+        title: t('Projects'),
+        key: 'project',
+        component: Project,
+      },
+      {
         title: t('Users'),
         key: 'user',
         component: User,
       },
       {
-        title: t('Projects'),
-        key: 'project',
-        component: Project,
+        title: t('User Groups'),
+        key: 'userGroup',
+        component: UserGroup,
       },
     ];
     return tabs;

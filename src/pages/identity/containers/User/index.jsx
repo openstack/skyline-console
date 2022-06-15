@@ -146,7 +146,8 @@ export class User extends Base {
     }
     if (this.inDomainDetail) {
       return columns.filter(
-        (it) => !['domain', 'projects', 'projectRoles'].includes(it.dataIndex)
+        (it) =>
+          !['domainName', 'projects', 'projectRoles'].includes(it.dataIndex)
       );
     }
     if (this.inRoleDetail) {

@@ -35,8 +35,7 @@ export class SecurityGroups extends Base {
   }
 
   get isRecycleBinDetail() {
-    const { pathname } = this.props.location;
-    return pathname.indexOf('recycle-bin') >= 0;
+    return this.inDetailPage && this.path.includes('recycle-bin');
   }
 
   get actionConfigs() {
