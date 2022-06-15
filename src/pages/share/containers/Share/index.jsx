@@ -37,23 +37,19 @@ export class Share extends Base {
   }
 
   get inShareGroupDetailPage() {
-    const { pathname } = this.props.location;
-    return this.inDetailPage && pathname.includes('share-group');
+    return this.inDetailPage && this.path.includes('share-group');
   }
 
   get inShareTypeDetailPage() {
-    const { pathname } = this.props.location;
-    return this.inDetailPage && pathname.includes('share-type');
+    return this.inDetailPage && this.path.includes('share-type');
   }
 
   get inShareNetworkDetailPage() {
-    const { pathname } = this.props.location;
-    return this.inDetailPage && pathname.includes('share-network');
+    return this.inDetailPage && this.path.includes('share-network');
   }
 
   get inShareServerDetailPage() {
-    const { pathname } = this.props.location;
-    return this.inDetailPage && pathname.includes('share-server');
+    return this.inDetailPage && this.path.includes('share-server');
   }
 
   get isSortByBackend() {

@@ -46,13 +46,18 @@ export class Domains extends Base {
       routeName: 'domainDetailAdmin',
     },
     {
+      title: t('Project Num'),
+      dataIndex: 'projectCount',
+      isHideable: true,
+    },
+    {
       title: t('User Num'),
       dataIndex: 'userCount',
       isHideable: true,
     },
     {
-      title: t('Project Num'),
-      dataIndex: 'projectCount',
+      title: t('User Group Num'),
+      dataIndex: 'groupCount',
       isHideable: true,
     },
     enabledColumn,

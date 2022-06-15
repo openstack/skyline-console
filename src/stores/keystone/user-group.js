@@ -62,6 +62,7 @@ export class GroupStore extends Base {
         groupId,
         roleId,
         projectId,
+        domainId,
         withRole,
         all_projects,
         ...rest
@@ -182,7 +183,7 @@ export class GroupStore extends Base {
     if (!items.length) {
       return items;
     }
-    const { projectId, roleId, withRole = true } = filters;
+    const { projectId, roleId, domainId, withRole = true } = filters;
     const params = {};
     if (projectId) {
       params['project.id'] = projectId;
@@ -201,7 +202,11 @@ export class GroupStore extends Base {
     const { domains = [] } = domainResult;
     const { projects = [] } = projectsResult || {};
     const { role_assignments: assigns = [] } = roleAssignmentResult || {};
-    const newItems = items.map((group) => {
+    let newItems = items;
+    if (domainId) {
+      newItems = items.filter((it) => it.domain_id === domainId);
+    }
+    newItems = newItems.map((group) => {
       return this.updateUserGroup(group, assigns, roles, domains, projects);
     });
     if (projectId || roleId) {

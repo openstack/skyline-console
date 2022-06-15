@@ -39,18 +39,19 @@ export class UserGroups extends Base {
   }
 
   get inUserDetail() {
-    const { pathname } = this.props.location;
-    return this.inDetailPage && pathname.includes('user-admin/detail');
+    return this.inDetailPage && this.path.includes('user-admin/detail');
+  }
+
+  get inDomainDetail() {
+    return this.inDetailPage && this.path.includes('domain-admin/detail');
   }
 
   get inProjectDetail() {
-    const { pathname } = this.props.location;
-    return this.inDetailPage && pathname.includes('project-admin/detail');
+    return this.inDetailPage && this.path.includes('project-admin/detail');
   }
 
   get inRoleDetail() {
-    const { pathname } = this.props.location;
-    return this.inDetailPage && pathname.includes('role-admin/detail');
+    return this.inDetailPage && this.path.includes('role-admin/detail');
   }
 
   getBaseColumns() {
@@ -187,20 +188,31 @@ export class UserGroups extends Base {
   getColumns() {
     const columns = this.getBaseColumns();
     if (!this.inDetailPage || this.inUserDetail) {
-      return columns.filter((it) => !it.dataIndex.includes('DetailPage'));
+      return columns.filter(
+        (it) =>
+          !['rolesInProjectDetailPage', 'projectsInRoleDetailPage'].includes(
+            it.dataIndex
+          )
+      );
+    }
+    if (this.inDomainDetail) {
+      return columns.filter(
+        (it) =>
+          ![
+            'domainName',
+            'rolesInProjectDetailPage',
+            'projectsInRoleDetailPage',
+          ].includes(it.dataIndex)
+      );
     }
     if (this.inProjectDetail) {
       return columns.filter(
-        (it) =>
-          it.dataIndex !== 'projects' &&
-          it.dataIndex !== 'projectsInRoleDetailPage'
+        (it) => !['projects', 'projectsInRoleDetailPage'].includes(it.dataIndex)
       );
     }
     if (this.inRoleDetail) {
       return columns.filter(
-        (it) =>
-          it.dataIndex !== 'rolesInProjectDetailPage' &&
-          it.dataIndex !== 'projects'
+        (it) => !['projects', 'rolesInProjectDetailPage'].includes(it.dataIndex)
       );
     }
     return columns;
@@ -232,6 +244,8 @@ export class UserGroups extends Base {
       newParams.projectId = id;
     } else if (this.inRoleDetail) {
       newParams.roleId = id;
+    } else if (this.inDomainDetail) {
+      newParams.domainId = id;
     }
     return newParams;
   };

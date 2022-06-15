@@ -41,23 +41,19 @@ export class Projects extends Base {
   }
 
   get inProject() {
-    const { pathname } = this.props.location;
-    return pathname.includes('project-admin');
+    return this.path.includes('project-admin');
   }
 
   get inUserDetail() {
-    const { pathname } = this.props.location;
-    return this.inDetailPage && pathname.includes('user-admin/detail');
+    return this.inDetailPage && this.path.includes('user-admin/detail');
   }
 
   get inUserGroupDetail() {
-    const { pathname } = this.props.location;
-    return this.inDetailPage && pathname.includes('user-group-admin/detail');
+    return this.inDetailPage && this.path.includes('user-group-admin/detail');
   }
 
   get inDomainDetail() {
-    const { pathname } = this.props.location;
-    return this.inDetailPage && pathname.includes('domain-admin/detail');
+    return this.inDetailPage && this.path.includes('domain-admin/detail');
   }
 
   getUserProjectRole = (record) => {
@@ -237,9 +233,17 @@ export class Projects extends Base {
   getColumns() {
     const columns = this.getBaseColumns();
 
-    if (this.inProject || this.inDomainDetail) {
+    if (this.inProject) {
       return columns.filter(
         (it) => !['userProjectRole', 'groupProjectRole'].includes(it.dataIndex)
+      );
+    }
+    if (this.inDomainDetail) {
+      return columns.filter(
+        (it) =>
+          !['domainName', 'userProjectRole', 'groupProjectRole'].includes(
+            it.dataIndex
+          )
       );
     }
     if (this.inUserDetail) {

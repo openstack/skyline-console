@@ -28,6 +28,10 @@ export class DomainStore extends Base {
     return client.keystone.users;
   }
 
+  get userGroupClient() {
+    return client.keystone.groups;
+  }
+
   get projectClient() {
     return client.keystone.projects;
   }
@@ -36,9 +40,10 @@ export class DomainStore extends Base {
     if (!items.length) {
       return items;
     }
-    const [userResult, projectResult] = await Promise.all([
+    const [userResult, projectResult, userGroupResult] = await Promise.all([
       this.userClient.list(),
       this.projectClient.list(),
+      this.userGroupClient.list(),
     ]);
     return items.map((it) => {
       const users = (userResult.users || []).filter(
@@ -47,30 +52,39 @@ export class DomainStore extends Base {
       const projects = (projectResult.projects || []).filter(
         (project) => project.domain_id === it.id
       );
+      const groups = (userGroupResult.groups || []).filter(
+        (group) => group.domain_id === it.id
+      );
       return {
         ...it,
         users,
         userCount: users.length,
         projects,
         projectCount: projects.length,
+        groups,
+        groupCount: groups.length,
       };
     });
   }
 
   async detailDidFetch(item) {
     const { id } = item;
-    const [userResult, projectResult] = await Promise.all([
+    const [userResult, projectResult, groupResult] = await Promise.all([
       this.userClient.list({ domain_id: id }),
       this.projectClient.list({ domain_id: id }),
+      this.userGroupClient.list({ domain_id: id }),
     ]);
     const { users = [] } = userResult || {};
     const { projects = [] } = projectResult || {};
+    const { groups = [] } = groupResult || {};
     return {
       ...item,
       users,
       userCount: users.length,
       projects,
       projectCount: projects.length,
+      groups,
+      groupCount: groups.length,
     };
   }
 

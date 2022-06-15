@@ -52,18 +52,15 @@ export class FloatingIps extends Base {
   }
 
   get inQosDetail() {
-    const { pathname } = this.props.location;
-    return this.inDetailPage && pathname.includes('qos');
+    return this.inDetailPage && this.path.includes('qos');
   }
 
   get isRecycleBinDetail() {
-    const { pathname } = this.props.location;
-    return this.inDetailPage && pathname.includes('recycle-bin');
+    return this.inDetailPage && this.path.includes('recycle-bin');
   }
 
   get inInstanceDetail() {
-    const { pathname } = this.props.location;
-    return this.inDetailPage && pathname.includes('instance');
+    return this.inDetailPage && this.path.includes('instance');
   }
 
   async getData({ silent, ...params } = {}) {
