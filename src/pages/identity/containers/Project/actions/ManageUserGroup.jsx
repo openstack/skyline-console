@@ -152,6 +152,21 @@ export class ManageUserGroup extends ModalAction {
     this.setState({ groupRoles });
   };
 
+  onChangeUserGroup = (value) => {
+    const { groupRoles } = this.state;
+    (value || []).forEach((groupId) => {
+      if (!groupRoles[groupId]) {
+        groupRoles[groupId] = this.defaultRoles(groupId);
+      }
+    });
+    Object.keys(groupRoles).forEach((groupId) => {
+      if (!(value || []).includes(groupId)) {
+        delete groupRoles[groupId];
+      }
+    });
+    this.setState(groupRoles);
+  };
+
   get defaultValue() {
     const { name, domainName } = this.item;
     const data = {
@@ -186,6 +201,7 @@ export class ManageUserGroup extends ModalAction {
         showSearch: true,
         oriTargetKeys: groups ? Object.keys(groups) : [],
         filterOption: transferFilterOption,
+        onChange: this.onChangeUserGroup,
         wrapperCol: this.wrapperCol,
         loading: this.userGroupStore.list.isLoading,
       },
