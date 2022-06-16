@@ -66,6 +66,11 @@ export class ZunClient extends Base {
           },
         ],
       },
+      {
+        name: 'hosts',
+        key: 'hosts',
+        responseKey: 'host',
+      },
     ];
   }
 }

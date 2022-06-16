@@ -813,6 +813,22 @@ const renderMenu = (t) => {
             },
           ],
         },
+        {
+          path: '/container/hosts-admin',
+          name: t('Hosts'),
+          key: 'zunHostsAdmin',
+          endpoints: 'zun',
+          level: 1,
+          children: [
+            {
+              path: /^\/container\/hosts-admin\/detail\/.[^/]+$/,
+              name: t('Hosts Detail'),
+              key: 'zuHostsDetailAdmin',
+              level: 2,
+              routePath: '/container/hosts-admin/detail/:id',
+            },
+          ],
+        },
       ],
     },
   ];

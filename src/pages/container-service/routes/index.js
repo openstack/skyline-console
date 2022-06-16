@@ -16,8 +16,10 @@ import BaseLayout from 'layouts/Basic';
 import E404 from 'pages/base/containers/404';
 import Containers from '../containers/Containers';
 import Capsules from '../containers/Capsules';
+import Hosts from '../containers/Hosts';
 import ContainersDetail from '../containers/Containers/Detail';
 import CapsulesDetail from '../containers/Capsules/Detail';
+import HostsDetail from '../containers/Hosts/Detail';
 import StepCreateContainer from '../containers/Containers/actions/StepCreate';
 
 const PATH = '/container';
@@ -52,6 +54,16 @@ export default [
       {
         path: `${PATH}/capsules/detail/:id`,
         component: CapsulesDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/hosts-admin`,
+        component: Hosts,
+        exact: true,
+      },
+      {
+        path: `${PATH}/hosts-admin/detail/:id`,
+        component: HostsDetail,
         exact: true,
       },
       // All
