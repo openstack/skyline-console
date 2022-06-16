@@ -186,7 +186,7 @@ export class GroupStore extends Base {
     const { projectId, roleId, domainId, withRole = true } = filters;
     const params = {};
     if (projectId) {
-      params['project.id'] = projectId;
+      params['scope.project.id'] = projectId;
     }
     if (roleId) {
       params['role.id'] = roleId;
