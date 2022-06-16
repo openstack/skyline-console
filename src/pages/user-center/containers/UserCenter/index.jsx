@@ -21,6 +21,13 @@ import classnames from 'classnames';
 import styles from './styles.less';
 
 export class Overview extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      detail: {},
+    };
+  }
+
   componentDidMount() {
     this.fetchData();
   }
@@ -29,7 +36,10 @@ export class Overview extends Component {
     const {
       user: { user },
     } = this.props.rootStore;
-    globalUserStore.pureFetchDetail({ id: user.id, silent: false });
+    const detail = await globalUserStore.pureFetchDetail({ id: user.id });
+    this.setState({
+      detail,
+    });
   }
 
   renderInfoItem(item) {
@@ -42,7 +52,7 @@ export class Overview extends Component {
   }
 
   renderUserInfo() {
-    const { detail = {} } = globalUserStore;
+    const { detail = {} } = this.state;
     const data = {
       [t('Username')]: detail.name || '-',
       [t('Email')]: detail.email || '-',

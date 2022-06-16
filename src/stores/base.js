@@ -511,6 +511,11 @@ export default class BaseStore {
     return newData;
   }
 
+  async pureFetchDetail({ id }) {
+    const result = await this.client.show(id);
+    return result[this.responseKey];
+  }
+
   @action
   async fetchDetail({ all_projects, silent, ...rest }) {
     if (!silent) {

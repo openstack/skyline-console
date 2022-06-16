@@ -138,11 +138,6 @@ export class LbaasStore extends Base {
     return this.detail;
   }
 
-  async pureFetchDetail({ id }) {
-    const result = await this.client.show(id);
-    return result[this.responseKey];
-  }
-
   @action
   delete = ({ id }) =>
     // TODO: check params;
