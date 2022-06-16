@@ -14,14 +14,8 @@
 
 import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
-import globalNetworkStore from 'stores/neutron/network';
 
 export class StepNetworking extends Base {
-  init() {
-    this.getNetworkStore();
-    this.selectedNetwork = [];
-  }
-
   get title() {
     return t('Networking *');
   }
@@ -30,22 +24,7 @@ export class StepNetworking extends Base {
     return 'Networking';
   }
 
-  get networking() {
-    return (globalNetworkStore.list.data || []).map((it) => ({
-      label: it.name,
-      value: it.id,
-    }));
-  }
-
   allowed = () => Promise.resolve();
-
-  async getNetworkStore() {
-    await globalNetworkStore.fetchList();
-  }
-
-  onChangeNetworkGroup = (checkedValues) => {
-    this.selectedNetwork = checkedValues;
-  };
 
   get defaultValue() {
     const values = {
@@ -66,9 +45,9 @@ export class StepNetworking extends Base {
       },
       {
         name: 'network',
-        label: t('Options'),
+        label: t('Network'),
         type: 'network-select-table',
-        options: this.networking,
+        required: true,
       },
     ];
   }

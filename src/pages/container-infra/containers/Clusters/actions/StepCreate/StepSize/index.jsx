@@ -13,17 +13,17 @@
 // limitations under the License.
 
 import React from 'react';
-import { inject, observer } from "mobx-react";
-import Base from "components/Form";
+import { inject, observer } from 'mobx-react';
+import Base from 'components/Form';
 import FlavorSelectTable from 'src/pages/compute/containers/Instance/components/FlavorSelectTable';
 
 export class StepSize extends Base {
   get title() {
-    return t("Cluster Size")
+    return t('Cluster Size');
   }
 
   get name() {
-    return t("Cluster Size")
+    return t('Cluster Size');
   }
 
   allowed = () => Promise.resolve();
@@ -41,37 +41,37 @@ export class StepSize extends Base {
   get formItems() {
     return [
       {
-        name: "numberOfMasterNodes",
-        label: t("Number of Master Nodes"),
-        type: "input-number",
+        name: 'numberOfMasterNodes',
+        label: t('Number of Master Nodes'),
+        type: 'input-int',
         min: 1,
-        required: true
+        required: true,
       },
       {
-        name: "flavorOfMasterNodes",
-        label: t("Flavor of Master Nodes"),
+        name: 'flavorOfMasterNodes',
+        label: t('Flavor of Master Nodes'),
         type: 'select-table',
         component: this.getFlavorComponent(),
         required: true,
       },
       {
-        type: "divider"
+        type: 'divider',
       },
       {
-        name: "numberOfWorkerNodes",
-        label: t("Number of Worker Nodes"),
-        type: "input-number",
+        name: 'numberOfWorkerNodes',
+        label: t('Number of Worker Nodes'),
+        type: 'input-int',
         min: 1,
         required: true,
       },
       {
-        name: "flavorOfWorkerNodes",
-        label: t("Flavor of Worker Nodes"),
+        name: 'flavorOfWorkerNodes',
+        label: t('Flavor of Worker Nodes'),
         type: 'select-table',
         component: this.getFlavorComponent(),
-        required: true
-      }
-    ]
+        required: true,
+      },
+    ];
   }
 }
 

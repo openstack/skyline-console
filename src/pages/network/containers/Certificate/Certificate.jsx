@@ -121,6 +121,7 @@ export class Certificate extends Base {
             : '-';
         },
         isHideable: true,
+        stringify: (value = []) => value.map((it) => it.name).join(',') || '-',
       },
       {
         title: t('Status'),
