@@ -27,9 +27,9 @@ export class CredentialStore extends Base {
     return client.keystone.users.applicationCredentials;
   }
 
-  get paramsFuncPage() {
+  get paramsFunc() {
     return (params) => {
-      const { current, id, ...rest } = params;
+      const { current, id, all_projects, ...rest } = params;
       return rest;
     };
   }

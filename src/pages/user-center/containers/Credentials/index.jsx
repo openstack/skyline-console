@@ -14,11 +14,9 @@
 
 import React from 'react';
 import { observer, inject } from 'mobx-react';
-import { Row, Col } from 'antd';
 import Base from 'containers/List';
 import { CredentialStore } from 'stores/keystone/credential';
 import globalRootStore from 'stores/root';
-import rolePermission from 'resources/keystone/role';
 import { actionConfigs, detailConfigs } from './actions';
 
 export class Credentials extends Base {
@@ -29,25 +27,6 @@ export class Credentials extends Base {
 
   get isUserDetail() {
     return this.inDetailPage && this.path.includes('user-admin/detail');
-  }
-
-  updateFetchParamsByPage = (params) => {
-    if (!this.isUserDetail) {
-      params.id = globalRootStore.user.user.id;
-    }
-    return params;
-  };
-
-  get rolePermissions() {
-    return rolePermission;
-  }
-
-  get isFilterByBackend() {
-    return true;
-  }
-
-  get isSortByBackend() {
-    return true;
   }
 
   get policy() {
@@ -90,17 +69,9 @@ export class Credentials extends Base {
       {
         title: t('Roles'),
         dataIndex: 'roles',
-        render: (roles) => (
-          <Row gutter={[8]} style={{ maxWidth: 300 }}>
-            {roles.map((i) => (
-              <Col span={24} key={i.id}>
-                {this.rolePermissions[i.name] || i.name}
-              </Col>
-            ))}
-          </Row>
-        ),
-        stringify: (values) =>
-          values.map((i) => this.rolePermissions[i.name] || i.name).join('\n'),
+        render: (roles) =>
+          (roles || []).map((role) => <div key={role.id}>{role.name}</div>),
+        stringify: (values) => values.map((i) => i.name).join('\n'),
       },
     ];
     return ret;
@@ -115,6 +86,16 @@ export class Credentials extends Base {
     ];
     return filters;
   }
+
+  updateFetchParams = (params) => {
+    if (!this.isUserDetail) {
+      return {
+        ...params,
+        id: globalRootStore.user.user.id,
+      };
+    }
+    return params;
+  };
 }
 
 export default inject('rootStore')(observer(Credentials));

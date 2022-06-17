@@ -19,7 +19,6 @@ import moment from 'moment';
 import globalRootStore from 'stores/root';
 import { toJS } from 'mobx';
 import FileSaver from 'file-saver';
-import rolePermission from 'resources/keystone/role';
 
 export class Create extends ModalAction {
   static id = 'create-application_credentials';
@@ -36,10 +35,6 @@ export class Create extends ModalAction {
 
   get name() {
     return t('Create Application Credentials');
-  }
-
-  get rolePermissions() {
-    return rolePermission;
   }
 
   onSubmit = (values) => {
@@ -73,7 +68,7 @@ export class Create extends ModalAction {
     const roles = toJS(globalRootStore.roles);
 
     return roles.map((i) => ({
-      label: this.rolePermissions[i.name] || i.name,
+      label: i.name,
       value: i.id,
     }));
   }
