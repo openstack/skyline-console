@@ -122,12 +122,13 @@ export class StepCreate extends StepAction {
       accessControl = {},
       resourceProps,
       traitProps,
+      disk,
     } = values;
     const body = {
       name,
       vcpus,
       ram: memoryGb * 1024,
-      disk: 0,
+      disk: disk || 0,
     };
     const isPublic = accessType === 'public';
     body['os-flavor-access:is_public'] = isPublic;

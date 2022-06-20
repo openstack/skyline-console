@@ -152,6 +152,7 @@ export class ParamSetting extends Base {
       settings: toJS(this.settingStore.list.data || []),
       ephemeral: 0,
       ephemeralTmp: 0,
+      disk: 0,
       architecture: this.tab,
       attachUsb: false,
       resourceProps: this.getDefaultResourcePropValues(),
@@ -178,6 +179,10 @@ export class ParamSetting extends Base {
       'more',
       'memPageSize',
     ];
+  }
+
+  get enableCinder() {
+    return this.props.rootStore.checkEndpoint('cinder');
   }
 
   allowed = () => Promise.resolve();
@@ -381,6 +386,13 @@ export class ParamSetting extends Base {
         min: 0,
         hidden: isBareMetal || hasEphemeral,
         disabled: !hasEphemeral,
+      },
+      {
+        name: 'disk',
+        label: t('Root Disk(GiB)'),
+        type: 'input-int',
+        min: 0,
+        hidden: this.enableCinder,
       },
       {
         name: 'iops',

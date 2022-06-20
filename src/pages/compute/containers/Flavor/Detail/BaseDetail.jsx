@@ -154,7 +154,7 @@ export class BaseDetail extends Base {
   get diskCard() {
     const options = [
       {
-        label: t('Disk'),
+        label: t('Root Disk(GiB)'),
         dataIndex: 'disk',
       },
     ];
