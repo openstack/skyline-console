@@ -1,4 +1,5 @@
 @import '~antd/lib/style/themes/default.less';
+@import '~styles/variables';
 
 .container {
   height: 100%;
@@ -16,8 +17,8 @@
     font-size: 18px;
     line-height: 88px;
     background: #fff;
-    border-radius: 9px;
-    box-shadow: 0 0 4px 1px rgba(175, 175, 175, 50%);
+    border-radius: @border-radius;
+    box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 9%);
     opacity: 0.9;
   }
 
@@ -109,6 +110,8 @@
 }
 
 .bottom {
+  border-radius: @border-radius;
+
   :global {
     .ant-card {
       box-shadow: unset;

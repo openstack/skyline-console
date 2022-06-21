@@ -14,7 +14,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Badge, Row, Col, Card, Descriptions } from 'antd';
+import { Badge, Row, Col, Card } from 'antd';
 import { inject, observer } from 'mobx-react';
 import adminInstance from 'asset/image/admin-instance.svg';
 import adminVolume from 'asset/image/admin-volume.svg';
@@ -119,10 +119,11 @@ export class virtualResourceInfo extends Component {
 
   renderCard() {
     const { virtualResource } = this.props.store;
+    const span = this.card.length === 1 ? 24 : 12;
     return (
-      <Row>
+      <Row gutter={20}>
         {this.card.map((item) => (
-          <Col span={12} style={{ textAlign: 'center' }} key={item.key}>
+          <Col span={span} style={{ textAlign: 'center' }} key={item.key}>
             <Card className={styles.card}>
               <Link to={item.to} style={{ color: '#000000' }}>
                 <Row>
@@ -194,12 +195,7 @@ export class virtualResourceInfo extends Component {
         title={t('Virtual Resource Overview')}
         bordered={false}
       >
-        <Descriptions column={1}>
-          <div className="site-card-wrapper">
-            {this.renderCard()}
-            {/* {this.renderSmallCard()} */}
-          </div>
-        </Descriptions>
+        <div>{this.renderCard()}</div>
       </Card>
     );
   }

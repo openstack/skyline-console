@@ -60,8 +60,15 @@ export class Overview extends Component {
     return actions;
   }
 
+  get span() {
+    if (!globalRootStore.checkEndpoint('cinder')) {
+      return 8;
+    }
+    return 6;
+  }
+
   renderAction = (item) => (
-    <Row className={styles['action-button']} gutter={[8]}>
+    <Row className={styles['action-button']}>
       <Col span={8} className={styles['main-icon']}>
         <img alt="avatar" src={item.avatar} className={styles['action-icon']} />
       </Col>
@@ -73,7 +80,7 @@ export class Overview extends Component {
 
   renderActions() {
     return this.filterActions.map((item) => (
-      <Col span={6} key={item.key}>
+      <Col span={this.span} key={item.key}>
         <Link to={item.to}>{this.renderAction(item)}</Link>
       </Col>
     ));
@@ -96,8 +103,8 @@ export class Overview extends Component {
       <div className={styles.container}>
         <Row
           justify="space-between"
-          gutter={[22, 22]}
-          style={{ marginBottom: '22px' }}
+          gutter={16}
+          style={{ marginBottom: '16px' }}
         >
           {this.renderActions()}
         </Row>
