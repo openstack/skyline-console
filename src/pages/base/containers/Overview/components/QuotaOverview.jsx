@@ -236,9 +236,14 @@ export class QuotaOverview extends Component {
     return (
       <Row className={styles.content}>
         {this.quotaCardList.map((item) => (
-          <Col className={styles.card} span={12} key={item.type}>
-            <Card title={item.text} bordered={false} loading={isLoading}>
-              {this.renderQuotaCardContent(item)}
+          <Col className={styles.card} span={24} key={item.type}>
+            <Card
+              title={item.text}
+              bordered={false}
+              loading={isLoading}
+              size="small"
+            >
+              <Row gutter={24}>{this.renderQuotaCardContent(item)}</Row>
             </Card>
           </Col>
         ))}
@@ -252,6 +257,7 @@ export class QuotaOverview extends Component {
               title={this.volumeTypesQuota.text}
               bordered={false}
               loading={isLoading}
+              size="small"
             >
               {this.renderVolumeTypes()}
             </Card>
@@ -273,7 +279,11 @@ export class QuotaOverview extends Component {
   }
 
   renderQuotaCard = (data, item = []) =>
-    item.map((i) => <div key={i.text}>{this.getItemInfo(data, i)}</div>);
+    item.map((i) => (
+      <Col key={i.text} span={12}>
+        {this.getItemInfo(data, i)}
+      </Col>
+    ));
 
   renderVolumeTypes = () => {
     const { isLoading } = this.state;
@@ -310,6 +320,7 @@ export class QuotaOverview extends Component {
         className={styles.bottom}
         bodyStyle={{ padding: 0 }}
         loading={isLoading}
+        headStyle={{ paddingLeft: '20px' }}
         title={
           <div className={styles.title}>
             <span className={styles.text}>{t('Quota Overview')}</span>
