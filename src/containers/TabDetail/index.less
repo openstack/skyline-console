@@ -74,7 +74,7 @@
   padding-right: @body-padding;
   padding-bottom: 30px;
   padding-left: @body-padding;
-  background-color: #fff;
+  background-color: @white;
 
   :global {
     .ant-descriptions-title {
@@ -134,7 +134,7 @@
   :global {
     .ant-btn-link {
       padding: 5.6px 15px !important;
-      border-color: #0068ff;
+      border-color: @primary-color;
     }
 
     .ant-divider-vertical {
@@ -142,9 +142,9 @@
     }
 
     .ant-btn-dangerous {
-      color: #c4233e;
+      color: @danger-color;
       background: transparent;
-      border-color: #c4233e;
+      border-color: @danger-color;
     }
 
     .ant-btn-link[disabled],
@@ -155,16 +155,16 @@
     }
 
     .ant-btn-dangerous.ant-btn-link:active {
-      color: #c4233e;
+      color: @danger-color;
       background: transparent;
-      border-color: #c4233e;
+      border-color: @danger-color;
     }
 
     .ant-btn-dangerous:hover,
     .ant-btn-dangerous:focus {
-      color: #f76070;
-      background: #fff;
-      border-color: #f76070;
+      color: @danger-color-hover;
+      background: @white;
+      border-color: @danger-color-hover;
     }
   }
 }

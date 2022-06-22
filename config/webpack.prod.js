@@ -86,6 +86,7 @@ module.exports = (env) => {
               options: {
                 importLoaders: true,
                 javascriptEnabled: true,
+                modifyVars: theme,
               },
             },
           ],
