@@ -429,16 +429,18 @@ export class ActionButton extends Component {
     callback();
   };
 
-  getModalWidth = (size) => {
+  getModalWidth = (action) => {
+    const { modalSize: size, showQuota = false } = action;
+    const multi = showQuota ? 1.25 : 1;
     switch (size) {
       case 'small':
-        return 520;
+        return 520 * multi;
       case 'middle':
-        return 720;
+        return 720 * multi;
       case 'large':
-        return 1200;
+        return 1200 * multi;
       default:
-        return 520;
+        return 520 * multi;
     }
   };
 
@@ -455,8 +457,15 @@ export class ActionButton extends Component {
     }
     const { title, action, item, containerProps, items } = this.props;
     const ActionComponent = action;
-    const { modalSize, okText, cancelText, id, className, readOnly } = action;
-    const width = this.getModalWidth(modalSize);
+    const {
+      okText,
+      cancelText,
+      id,
+      className,
+      readOnly,
+      disableSubmit = false,
+    } = action;
+    const width = this.getModalWidth(action);
     const modalProps = {
       title,
       visible,
@@ -464,6 +473,9 @@ export class ActionButton extends Component {
       width,
       onOk: () => this.onClickModalActionOk(),
       onCancel: this.onClickModalActionCancel,
+      okButtonProps: {
+        disabled: disableSubmit,
+      },
       confirmLoading: submitLoading,
       okText,
       cancelText,

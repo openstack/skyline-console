@@ -14,7 +14,7 @@
 
 import { action, observable } from 'mobx';
 import { getGiBValue } from 'utils/index';
-import { isNil, isEmpty } from 'lodash';
+import { isNil, isEmpty, isObject } from 'lodash';
 import client from 'client';
 import Base from 'stores/base';
 import globalRootStore from 'stores/root';
@@ -22,6 +22,9 @@ import globalRootStore from 'stores/root';
 export class ProjectStore extends Base {
   @observable
   quota = {};
+
+  @observable
+  novaQuota = {};
 
   @observable
   groupRoleList = [];
@@ -261,14 +264,9 @@ export class ProjectStore extends Base {
       ...neutronQuota,
       ...renameShareQuota,
     };
-    const quotaKey = Object.keys(quota);
-    quotaKey.forEach((it) => {
-      if (quota[it].in_use !== undefined) {
-        quota[it].used = quota[it].in_use;
-      }
-    });
-    this.quota = quota;
-    return quota;
+    const newQuota = this.updateQuotaData(quota);
+    this.quota = newQuota;
+    return newQuota;
   }
 
   omitNil = (obj) => {
@@ -436,6 +434,36 @@ export class ProjectStore extends Base {
   async removeGroupRole({ id, groupId, roleId }) {
     const result = await this.client.groups.roles.delete(id, groupId, roleId);
     return result;
+  }
+
+  getLeftQuotaData = (data) => {
+    const { used = 0, limit = 0, reserved = 0 } = data;
+    if (limit === -1) {
+      return -1;
+    }
+    return limit - used - reserved;
+  };
+
+  updateQuotaData = (quota) => {
+    const newData = JSON.parse(JSON.stringify(quota));
+    Object.keys(newData).forEach((it) => {
+      if (isObject(newData[it])) {
+        if (newData[it].in_use !== undefined) {
+          newData[it].used = newData[it].in_use;
+        }
+        newData[it].left = this.getLeftQuotaData(newData[it]);
+      }
+    });
+    return newData;
+  };
+
+  @action
+  async fetchProjectNovaQuota() {
+    const result = await this.novaQuotaClient.detail(this.currentProjectId);
+    const { quota_set: quota } = result;
+    const novaQuota = this.updateQuotaData(quota);
+    this.novaQuota = novaQuota;
+    return novaQuota;
   }
 }
 
