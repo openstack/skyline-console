@@ -17,7 +17,7 @@ import { RoleStore } from 'stores/keystone/role';
 import Base from 'containers/TabDetail';
 import User from '../../User';
 import Group from '../../UserGroup';
-import impliedRole from './BaseDetail';
+import BaseDetail from './BaseDetail';
 import actionConfigs from '../actions';
 
 export class RoleDetail extends Base {
@@ -57,9 +57,9 @@ export class RoleDetail extends Base {
   get tabs() {
     const tabs = [
       {
-        title: t('Role Power'),
-        key: 'role',
-        component: impliedRole,
+        title: t('Base Info'),
+        key: 'base',
+        component: BaseDetail,
       },
       {
         title: t('Binding User'),

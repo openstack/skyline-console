@@ -12,31 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { inject, observer } from 'mobx-react';
-import globalRoleStore from 'stores/keystone/role';
 import Base from 'containers/BaseDetail';
-import { toJS } from 'mobx';
-import rolePermission from 'resources/keystone/role';
 
 export class BaseDetail extends Base {
-  init() {
-    this.store = globalRoleStore;
-  }
-
-  fetchData = (params) => {
-    const { id } = this.props.match.params;
-    this.store
-      .fetchImpliedRoles({
-        id,
-        ...params,
-      })
-      .catch(this.catch);
-  };
-
-  get detailData() {
-    return toJS(this.store.implyRoles);
-  }
-
   get leftCards() {
     const cards = [this.roleCard];
     return cards;
@@ -45,61 +25,24 @@ export class BaseDetail extends Base {
   get roleCard() {
     const options = [
       {
-        label: t('Compute service:'),
-        dataIndex: 'nova',
+        label: t('Roles'),
+        dataIndex: 'implies',
         render: (value) => {
-          return rolePermission[value] || '-';
-        },
-      },
-      {
-        label: t('Block Storage service:'),
-        dataIndex: 'cinder',
-        render: (value) => {
-          return rolePermission[value] || '-';
-        },
-      },
-      {
-        label: t('Networking service:'),
-        dataIndex: 'neutron',
-        render: (value) => {
-          return rolePermission[value] || '-';
-        },
-      },
-      {
-        label: t('Image service:'),
-        dataIndex: 'glance',
-        render: (value) => {
-          return rolePermission[value] || '-';
-        },
-      },
-      {
-        label: t('Placement service:'),
-        dataIndex: 'placement',
-        render: (value) => {
-          return rolePermission[value] || '-';
-        },
-      },
-      {
-        label: t('Orchestration service:'),
-        dataIndex: 'heat',
-        render: (value) => {
-          return rolePermission[value] || '-';
-        },
-      },
-      {
-        label: t('Identity service:'),
-        dataIndex: 'keystone',
-        render: (value) => {
-          return rolePermission[value] || '-';
+          if (!value || !value.length) {
+            return '-';
+          }
+          return value.map((it) => {
+            const { id, name } = it;
+            const link = this.getLinkRender('roleDetail', name, { id });
+            return <div key={id}>{link}</div>;
+          });
         },
       },
     ];
 
     return {
-      title: t('Resource'),
+      title: t('Implied Roles'),
       options,
-      labelCol: 12,
-      contentCol: 12,
     };
   }
 }
