@@ -42,6 +42,14 @@ export default class ModalAction extends BaseForm {
     return 'small';
   }
 
+  static get showQuota() {
+    return false;
+  }
+
+  get showQuota() {
+    return false;
+  }
+
   get labelCol() {
     const size = this.getModalSize();
     if (size === 'large') {

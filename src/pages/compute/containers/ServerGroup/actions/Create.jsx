@@ -17,6 +17,7 @@ import { inject, observer } from 'mobx-react';
 import globalServerGroupStore from 'stores/nova/server-group';
 import { ModalAction } from 'containers/Action';
 import policyType from 'resources/nova/server-group';
+import globalProjectStore from 'src/stores/keystone/project';
 
 export class Create extends ModalAction {
   static id = 'create';
@@ -24,7 +25,11 @@ export class Create extends ModalAction {
   static title = t('Create Server Group');
 
   init() {
+    this.state.quota = {};
+    this.state.quotaLoading = true;
     this.store = globalServerGroupStore;
+    this.projectStore = globalProjectStore;
+    this.getQuota();
   }
 
   get name() {
@@ -34,6 +39,45 @@ export class Create extends ModalAction {
   static policy = 'os_compute_api:os-server-groups:create';
 
   static allowed = () => Promise.resolve(true);
+
+  static get disableSubmit() {
+    const { novaQuota: { server_groups: { left = 0 } = {} } = {} } =
+      globalProjectStore;
+    return left === 0;
+  }
+
+  static get showQuota() {
+    return true;
+  }
+
+  get showQuota() {
+    return true;
+  }
+
+  async getQuota() {
+    const result = await this.projectStore.fetchProjectNovaQuota();
+    const { server_groups: quota = {} } = result || {};
+    this.setState({
+      quota,
+      quotaLoading: false,
+    });
+  }
+
+  get quotaInfo() {
+    const { quota = {}, quotaLoading } = this.state;
+    if (quotaLoading) {
+      return [];
+    }
+    const { left = 0 } = quota;
+    const add = left === 0 ? 0 : 1;
+    const data = {
+      ...quota,
+      add,
+      name: 'server_groups',
+      title: t('Server Group'),
+    };
+    return [data];
+  }
 
   get formItems() {
     const policies = Object.keys(policyType).map((it) => ({

@@ -74,8 +74,8 @@ export default class BaseForm extends React.Component {
     this.unMountActions && this.unMountActions();
   }
 
-  get canSubmit() {
-    return true;
+  get disableSubmit() {
+    return false;
   }
 
   get name() {
@@ -534,7 +534,7 @@ export default class BaseForm extends React.Component {
             {t('Cancel')}
           </Button>
           <Button
-            disabled={!this.canSubmit}
+            disabled={this.disableSubmit}
             type="primary"
             className={styles.submit}
             onClick={this.onClickSubmit}
@@ -651,6 +651,9 @@ export default class BaseForm extends React.Component {
   }
 
   renderRightTopExtra() {
+    if (this.isModal) {
+      return null;
+    }
     const content = this.renderQuota();
     if (!content) {
       return null;
@@ -661,6 +664,17 @@ export default class BaseForm extends React.Component {
         <InfoButton content={content} checkValue={checkValue} />
       </div>
     );
+  }
+
+  renderModalRightExtra() {
+    if (!this.isModal) {
+      return null;
+    }
+    const content = this.renderQuota();
+    if (!content) {
+      return null;
+    }
+    return <div className={styles['modal-right-extra-wrapper']}>{content}</div>;
   }
 
   render() {
@@ -679,18 +693,31 @@ export default class BaseForm extends React.Component {
         formStyle.height = `calc(100% - ${tipHeight}px)`;
       }
     }
+
+    const formDiv = (
+      <Spin spinning={this.isSubmitting} tip={this.renderSubmittingTip()}>
+        {tips}
+        {this.renderRightTopExtra()}
+        <div className={classnames(styles.form, 'sl-form')} style={formStyle}>
+          {this.renderForms()}
+        </div>
+        {this.renderFooter()}
+      </Spin>
+    );
+    const onlyForm = !this.isModal || (this.isModal && !this.showQuota);
+    const modalInner =
+      this.isModal && !onlyForm ? (
+        <Row justify="space-between" align="top">
+          <Col span={18}>{formDiv}</Col>
+          <Col span={6}>{this.renderModalRightExtra()}</Col>
+        </Row>
+      ) : null;
     return (
       <div
         className={classnames(styles.wrapper, wrapperPadding, this.className)}
       >
-        <Spin spinning={this.isSubmitting} tip={this.renderSubmittingTip()}>
-          {tips}
-          {this.renderRightTopExtra()}
-          <div className={classnames(styles.form, 'sl-form')} style={formStyle}>
-            {this.renderForms()}
-          </div>
-          {this.renderFooter()}
-        </Spin>
+        {onlyForm && formDiv}
+        {modalInner}
       </div>
     );
   }
