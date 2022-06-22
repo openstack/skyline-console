@@ -47,6 +47,13 @@ export default class DetailBase extends React.Component {
     this.fetchDataWithPolicy();
   }
 
+  componentDidUpdate(prevProps) {
+    const { id: oldId } = prevProps.match.params;
+    if (this.id !== oldId) {
+      this.handleRefresh(true);
+    }
+  }
+
   get params() {
     return this.props.match.params || {};
   }

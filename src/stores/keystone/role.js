@@ -28,34 +28,14 @@ export class RoleStore extends Base {
   @observable
   systemRoles = new List();
 
-  @action
-  async fetchImpliedRoles({ id }) {
-    const rolesResult = await this.client.implies.list(id);
-    const {
-      role_inference: { implies },
-    } = rolesResult;
-    const sources = [
-      'nova',
-      'neutron',
-      'glance',
-      'placement',
-      'heat',
-      'keystone',
-      'cinder',
-    ];
-    const sourceRole = {};
-    sources.forEach((source) => {
-      const roles = [];
-      implies.forEach((it) => {
-        if (it.name.indexOf(source) !== -1) {
-          const role = it.name.split(`${source}_`)[1];
-          roles.push(role);
-        }
-      });
-      sourceRole[source] = roles;
-    });
-    this.isLoading = false;
-    this.implyRoles = sourceRole;
+  async detailDidFetch(item) {
+    const { id } = item;
+    const { role_inference: { implies = [] } = {} } =
+      await this.client.implies.list(id);
+    return {
+      ...item,
+      implies,
+    };
   }
 
   checkSystemRole = (roleItem) => {
