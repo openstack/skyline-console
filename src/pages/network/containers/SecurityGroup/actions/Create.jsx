@@ -15,6 +15,19 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalSecurityGroupStore from 'stores/neutron/security-group';
+import globalProjectStore from 'stores/keystone/project';
+
+const defaultRuleCount = 2;
+
+const getAdd = (groupQuota, ruleQuota) => {
+  const { left: groupLeft = 0 } = groupQuota || {};
+  const { left: ruleLeft = 0 } = ruleQuota || {};
+  const add =
+    groupLeft !== 0 && (ruleLeft >= defaultRuleCount || ruleLeft === -1)
+      ? 1
+      : 0;
+  return add;
+};
 
 export class CreateAction extends ModalAction {
   static id = 'create';
@@ -28,6 +41,71 @@ export class CreateAction extends ModalAction {
   static policy = 'create_security_group';
 
   static allowed = () => Promise.resolve(true);
+
+  init() {
+    this.state.groupQuota = {};
+    this.state.ruleQuota = {};
+    this.state.quotaLoading = true;
+    this.projectStore = globalProjectStore;
+    this.getQuota();
+  }
+
+  static get disableSubmit() {
+    const {
+      neutronQuota: { security_group = {}, security_group_rule = {} } = {},
+    } = globalProjectStore;
+    const add = getAdd(security_group, security_group_rule);
+    return add === 0;
+  }
+
+  static get showQuota() {
+    return true;
+  }
+
+  get showQuota() {
+    return true;
+  }
+
+  async getQuota() {
+    const result = await this.projectStore.fetchProjectNeutronQuota();
+    const {
+      security_group: groupQuota = {},
+      security_group_rule: ruleQuota = {},
+    } = result || {};
+    this.setState({
+      groupQuota,
+      ruleQuota,
+      quotaLoading: false,
+    });
+  }
+
+  get tips() {
+    return t(
+      'This operation creates a security group with default security group rules for the IPv4 and IPv6 ether types.'
+    );
+  }
+
+  get quotaInfo() {
+    const { groupQuota = {}, ruleQuota = {}, quotaLoading } = this.state;
+    if (quotaLoading) {
+      return [];
+    }
+    const add = getAdd(groupQuota, ruleQuota);
+    const groupQuotaData = {
+      ...groupQuota,
+      add,
+      name: 'security_group',
+      title: t('Security Group'),
+    };
+    const ruleQuotaData = {
+      ...ruleQuota,
+      add: add * defaultRuleCount,
+      name: 'security_group_rule',
+      title: t('Security Group Rule'),
+      type: 'line',
+    };
+    return [groupQuotaData, ruleQuotaData];
+  }
 
   get defaultValue() {
     const value = {};

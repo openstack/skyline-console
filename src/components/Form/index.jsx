@@ -696,7 +696,6 @@ export default class BaseForm extends React.Component {
 
     const formDiv = (
       <Spin spinning={this.isSubmitting} tip={this.renderSubmittingTip()}>
-        {tips}
         {this.renderRightTopExtra()}
         <div className={classnames(styles.form, 'sl-form')} style={formStyle}>
           {this.renderForms()}
@@ -716,6 +715,7 @@ export default class BaseForm extends React.Component {
       <div
         className={classnames(styles.wrapper, wrapperPadding, this.className)}
       >
+        {tips}
         {onlyForm && formDiv}
         {modalInner}
       </div>

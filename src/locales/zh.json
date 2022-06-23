@@ -2279,6 +2279,7 @@
   "There are resources that cannot {action} in the selected resources.": "您选中的资源中有无法{action}的资源。",
   "There are resources under the project and cannot be deleted.": "项目下存在资源，无法执行删除操作。",
   "There is currently no file to paste.": "当前没有需要粘贴的文件。",
+  "This operation creates a security group with default security group rules for the IPv4 and IPv6 ether types.": "此操作会创建带有 IPv4 和 IPv6 的默认安全组规则的安全组。",
   "This service will automatically query the configuration (CPU, memory, etc.) and mac address of the physical machine, and the ironic-inspector service will automatically register this information in the node information.": "此服务将对在对物理机的配置（CPU、内存等）和 mac 地址进行自动查询, 并且 ironic-inspector 服务会将这些信息自动注册入节点信息中。",
   "This will delete all child objects of the load balancer.": "这会删除所有LB下的资源",
   "Threads Activity Trends": "",

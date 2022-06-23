@@ -2279,6 +2279,7 @@
   "There are resources that cannot {action} in the selected resources.": "There are resources that cannot {action} in the selected resources.",
   "There are resources under the project and cannot be deleted.": "There are resources under the project and cannot be deleted.",
   "There is currently no file to paste.": "There is currently no file to paste.",
+  "This operation creates a security group with default security group rules for the IPv4 and IPv6 ether types.": "This operation creates a security group with default security group rules for the IPv4 and IPv6 ether types.",
   "This service will automatically query the configuration (CPU, memory, etc.) and mac address of the physical machine, and the ironic-inspector service will automatically register this information in the node information.": "This service will automatically query the configuration (CPU, memory, etc.) and mac address of the physical machine, and the ironic-inspector service will automatically register this information in the node information.",
   "This will delete all child objects of the load balancer.": "This will delete all child objects of the load balancer.",
   "Threads Activity Trends": "Threads Activity Trends",
