@@ -32,6 +32,10 @@ export class NetworkStore extends Base {
   @observable
   securityGroups = [];
 
+  // use this to check subnet quota when create network
+  @observable
+  createWithSubnet = false;
+
   get client() {
     return client.neutron.networks;
   }
@@ -330,6 +334,11 @@ export class NetworkStore extends Base {
       data.ipv6_ra_mode = ipv6_ra_mode;
     }
     return this.subnetClient.create({ subnet: data });
+  }
+
+  @action
+  updateCreateWithSubnet(value) {
+    this.createWithSubnet = value;
   }
 }
 const globalNetworkStore = new NetworkStore();

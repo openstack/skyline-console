@@ -41,6 +41,15 @@ const { isIpCidr, isIPv6Cidr, isIpv6 } = ipValidate;
 
 const { nameValidateWithoutChinese } = nameTypeValidate;
 
+const getAdd = (networkQuota, subnetQuota, createSubnet = false) => {
+  const { left: networkLeft = 0 } = networkQuota || {};
+  const { left: subnetLeft = 0 } = subnetQuota || {};
+  if (createSubnet) {
+    return networkLeft !== 0 && subnetLeft !== 0 ? 1 : 0;
+  }
+  return networkLeft !== 0 ? 1 : 0;
+};
+
 export class CreateNetwork extends ModalAction {
   static id = 'create-network';
 
@@ -51,18 +60,84 @@ export class CreateNetwork extends ModalAction {
   }
 
   init() {
+    globalNetworkStore.updateCreateWithSubnet(false);
+    this.state.networkQuota = {};
+    this.state.subnetQuota = {};
+    this.state.quotaLoading = true;
+    this.state.create_subnet = false;
+    this.state.projectId = this.currentProjectId;
+    this.projectStore = globalProjectStore;
     globalNeutronStore.fetchAvailableZones();
     this.isAdminPage && globalProjectStore.fetchList();
+    this.getQuota();
   }
 
   get isSystemAdmin() {
     return checkPolicyRule('skyline:system_admin');
   }
 
+  static get disableSubmit() {
+    const {
+      neutronQuota: { network = {}, subnet = {} },
+    } = globalProjectStore;
+    const { createWithSubnet = false } = globalNetworkStore;
+    const add = getAdd(network, subnet, createWithSubnet);
+    return add === 0;
+  }
+
+  static get showQuota() {
+    return true;
+  }
+
+  get showQuota() {
+    return true;
+  }
+
+  async getQuota() {
+    const { projectId } = this.state;
+    this.setState({
+      quotaLoading: true,
+    });
+    const result = await this.projectStore.fetchProjectNeutronQuota(projectId);
+    const { network: networkQuota = {}, subnet: subnetQuota = {} } =
+      result || {};
+    this.setState({
+      networkQuota,
+      subnetQuota,
+      quotaLoading: false,
+    });
+  }
+
+  get quotaInfo() {
+    const {
+      networkQuota = {},
+      subnetQuota = {},
+      quotaLoading,
+      create_subnet,
+    } = this.state;
+    if (quotaLoading) {
+      return [];
+    }
+    const add = getAdd(networkQuota, subnetQuota, create_subnet);
+    const network = {
+      ...networkQuota,
+      add,
+      name: 'network',
+      title: t('Network'),
+    };
+    const subnet = {
+      ...subnetQuota,
+      add: create_subnet ? add : 0,
+      name: 'subnet',
+      title: t('Subnet'),
+      type: 'line',
+    };
+    return [network, subnet];
+  }
+
   get defaultValue() {
-    const { user: { project: { id } = {} } = {} } = this.props.rootStore;
     return {
-      project_id: id,
+      project_id: this.currentProjectId,
       enable_dhcp: true,
       provider_network_type: 'vxlan',
       ip_version: 'ipv4',
@@ -235,6 +310,24 @@ export class CreateNetwork extends ModalAction {
     return validateAllocationPoolsWithGatewayIp.call(this, rule, value);
   };
 
+  onProjectChange = (value) => {
+    this.setState(
+      {
+        projectId: value,
+      },
+      () => {
+        this.getQuota();
+      }
+    );
+  };
+
+  onCreateSubnetChange = (value) => {
+    this.setState({
+      create_subnet: value,
+    });
+    globalNetworkStore.updateCreateWithSubnet(value);
+  };
+
   get formItems() {
     const {
       more,
@@ -296,11 +389,7 @@ export class CreateNetwork extends ModalAction {
         name: 'create_subnet',
         label: t('Create Subnet'),
         type: 'check',
-        onChange: (e) => {
-          this.setState({
-            create_subnet: e,
-          });
-        },
+        onChange: this.onCreateSubnetChange,
       },
       {
         name: 'shared',
@@ -340,6 +429,8 @@ export class CreateNetwork extends ModalAction {
         hidden: !this.isAdminPage,
         required: this.isAdminPage,
         options: projectOptions,
+        onChange: this.onProjectChange,
+        allowClear: false,
       },
       {
         name: 'provider_network_type',
