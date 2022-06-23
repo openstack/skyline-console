@@ -48,6 +48,20 @@ export class TroveClient extends Base {
             responseKey: 'log',
           },
         ],
+        extendOperations: [
+          {
+            name: 'grantDatabase',
+            generate: (id, subId, body) => {
+              return this.request.put(
+                `${this.getDetailUrl(
+                  'instances',
+                  id
+                )}/users/${subId}/databases`,
+                body
+              );
+            },
+          },
+        ],
       },
       {
         name: 'datastores',

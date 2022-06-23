@@ -25,6 +25,10 @@ export class InstancesUsersStore extends Base {
     return client.trove.instances.databases;
   }
 
+  get instanceClient() {
+    return client.trove.instances;
+  }
+
   get isSubResource() {
     return true;
   }
@@ -46,11 +50,9 @@ export class InstancesUsersStore extends Base {
     const { databases = [] } = await this.databaseClient.list(id);
     return items.map((it) => ({
       ...it,
-      databases:
-        (it.databases || [])
-          .filter((l1) => databases.find((l2) => l2.name === l1.name))
-          .map((db) => db.name)
-          .join(' , ') || '-',
+      databases: (it.databases || [])
+        .filter((l1) => databases.find((l2) => l2.name === l1.name))
+        .map((db) => db.name),
     }));
   }
 
@@ -62,6 +64,11 @@ export class InstancesUsersStore extends Base {
   @action
   async deleteUser({ id, name }) {
     return this.submitting(this.client.delete(id, name));
+  }
+
+  @action
+  async grantDatabaseAccess({ id, name, data }) {
+    return this.submitting(this.instanceClient.grantDatabase(id, name, data));
   }
 }
 

@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalInstancesStore from 'stores/trove/instances';
@@ -65,6 +66,17 @@ export class Instances extends Base {
     {
       title: t('Host'),
       dataIndex: 'ip',
+      render: (value) => {
+        return value && value.length ? (
+          <>
+            {value.map((it) => (
+              <div key={it}>{it}</div>
+            ))}
+          </>
+        ) : (
+          '-'
+        );
+      },
       isHideable: true,
     },
     {

@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
 import { InstanceStatus, policyType } from 'resources/trove/database';
@@ -104,7 +105,17 @@ export class BaseDetail extends Base {
       {
         label: t('Host'),
         dataIndex: 'ip',
-        render: (value) => (value ? value.map((it) => it) : '-'),
+        render: (value) => {
+          return value && value.length ? (
+            <span>
+              {value.map((it) => (
+                <div key={it}>{it}</div>
+              ))}
+            </span>
+          ) : (
+            '-'
+          );
+        },
       },
       {
         label: t('Database Port'),
