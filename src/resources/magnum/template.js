@@ -1,3 +1,5 @@
+// Copyright 2022 99cloud
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -9,17 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import Create from './StepCreate';
-import Delete from './Delete';
-import Edit from './Edit';
 
-const actionConfigs = {
-  rowActions: {
-    firstAction: Delete,
-    moreActions: [{ action: Edit }],
-  },
-  batchActions: [Delete],
-  primaryActions: [Create],
-};
-
-export default actionConfigs;
+export const admission_control_list =
+  'NodeRestriction,NamespaceLifecycle,LimitRanger,ServiceAccount,ResourceQuota,TaintNodesByCondition,Priority,DefaultTolerationSeconds,DefaultStorageClass,StorageObjectInUseProtection,PersistentVolumeClaimResize,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,RuntimeClass';

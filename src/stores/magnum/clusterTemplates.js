@@ -32,18 +32,20 @@ export class ClusterTemplatesStore extends Base {
   }
 
   @action
-  async get(data) {
-    return this.client.get(data);
+  async update({ id }, body) {
+    const newBody = Object.keys(body).map((key) => ({
+      path: `/${key}`,
+      value: key === 'labels' ? JSON.stringify(body[key] || {}) : body[key],
+      op: [null, undefined, ''].includes(body[key]) ? 'remove' : 'replace',
+    }));
+    return this.submitting(this.client.patch(id, newBody));
   }
 
-  @action
-  async update({ id }, newbody) {
-    return this.client.update(id, newbody);
-  }
-
-  async listDidFetch(items) {
-    if (!items.length) return items
-    return items.map(it => ({ ...it, id: it.uuid }));
+  get mapper() {
+    return (data) => ({
+      ...data,
+      id: data.uuid,
+    });
   }
 }
 

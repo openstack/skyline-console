@@ -58,6 +58,11 @@ export default class BaseStepForm extends React.Component {
     this.unMountActions && this.unMountActions();
   }
 
+  get path() {
+    const { location: { pathname = '' } = {} } = this.props;
+    return pathname || '';
+  }
+
   get hasConfirmStep() {
     return false;
   }

@@ -10,9 +10,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Base from 'containers/BaseDetail';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Base from 'containers/BaseDetail';
 import { inject, observer } from 'mobx-react';
 
 export class BaseDetail extends Base {
@@ -28,82 +27,94 @@ export class BaseDetail extends Base {
     const options = [
       {
         label: t('COE'),
-        dataIndex: 'coe'
+        dataIndex: 'coe',
       },
       {
         label: t('Cluster Distro'),
-        dataIndex: 'cluster_distro'
+        dataIndex: 'cluster_distro',
       },
       {
         label: t('Server Type'),
-        dataIndex: 'server_type'
+        dataIndex: 'server_type',
       },
       {
         label: t('Public'),
         dataIndex: 'public',
-        valueRender: 'yesNo'
+        valueRender: 'yesNo',
       },
       {
         label: t('Registry Enabled'),
         dataIndex: 'registry_enabled',
-        valueRender: 'yesNo'
+        valueRender: 'yesNo',
       },
       {
         label: t('TLS Disabled'),
         dataIndex: 'tls_disabled',
-        valueRender: 'yesNo'
+        valueRender: 'yesNo',
       },
     ];
 
     return {
       title: t('Cluster Type'),
-      options
+      options,
     };
   }
 
   get networkCard() {
+    const { external_network_id, fixed_network } = this.detailData || {};
+    const externalNetworkUrl = external_network_id
+      ? this.getLinkRender('networkDetail', external_network_id, {
+          id: external_network_id,
+        })
+      : '-';
+    const fixedNetworkUrl = fixed_network
+      ? this.getLinkRender('networkDetail', fixed_network, {
+          id: fixed_network,
+        })
+      : '-';
+
     const options = [
       {
         label: t('Network Driver'),
-        dataIndex: 'network_driver'
+        dataIndex: 'network_driver',
       },
       {
         label: t('HTTP Proxy'),
-        dataIndex: 'http_proxy'
+        dataIndex: 'http_proxy',
       },
       {
         label: t('HTTPS Proxy'),
-        dataIndex: 'https_proxy'
+        dataIndex: 'https_proxy',
       },
       {
         label: t('No Proxy'),
-        dataIndex: 'no_proxy'
+        dataIndex: 'no_proxy',
       },
       {
         label: t('External Network ID'),
-        dataIndex: 'external_network_id'
+        content: externalNetworkUrl,
       },
       {
-        label: t('Fixed Network'),
-        dataIndex: 'fixed_network'
+        label: t('Fixed Network ID'),
+        content: fixedNetworkUrl,
       },
       {
-        label: t('Fixed Subnet'),
-        dataIndex: 'fixed_subnet'
+        label: t('Fixed Subnet ID'),
+        dataIndex: 'fixed_subnet',
       },
       {
         label: t('DNS'),
-        dataIndex: 'dns_nameserver'
+        dataIndex: 'dns_nameserver',
       },
       {
         label: t('Master LB Enabled'),
         dataIndex: 'master_lb_enabled',
-        valueRender: 'yesNo'
+        valueRender: 'yesNo',
       },
       {
         label: t('Floating IP Enabled'),
         dataIndex: 'floating_ip_enabled',
-        valueRender: 'yesNo'
+        valueRender: 'yesNo',
       },
     ];
 
@@ -114,44 +125,64 @@ export class BaseDetail extends Base {
   }
 
   get specCard() {
-    const image = this.detailData.image_id;
-    const imageUrl = this.getRoutePath('imageDetail', { id: image });
+    const { image_id, keypair_id, flavor_id, master_flavor_id } =
+      this.detailData;
+    const imageUrl = image_id
+      ? this.getLinkRender('imageDetail', image_id, {
+          id: image_id,
+        })
+      : '-';
 
-    const keypair = this.detailData.keypair_id;
-    const keypairUrl = this.getRoutePath('keypairDetail', { id: keypair });
+    const keypairUrl = keypair_id
+      ? this.getLinkRender('keypairDetail', keypair_id, {
+          id: keypair_id,
+        })
+      : '-';
+
+    const flavorUrl = flavor_id
+      ? this.getLinkRender('flavorDetail', flavor_id, {
+          id: flavor_id,
+        })
+      : '-';
+
+    const masterFlavorUrl = master_flavor_id
+      ? this.getLinkRender('flavorDetail', master_flavor_id, {
+          id: master_flavor_id,
+        })
+      : '-';
 
     const options = [
       {
         label: t('Image ID'),
-        content: <Link to={imageUrl}>{image}</Link>
+        content: imageUrl,
       },
       {
         label: t('Keypair'),
-        content: <Link to={keypairUrl}>{keypair}</Link>
+        content: keypairUrl,
       },
       {
         label: t('Flavor ID'),
-        dataIndex: 'flavor_id'
+        content: flavorUrl,
       },
       {
         label: t('Master Flavor ID'),
-        dataIndex: 'master_flavor_id'
+        content: masterFlavorUrl,
       },
       {
         label: t('Volume Driver'),
-        dataIndex: 'volume_driver'
+        dataIndex: 'volume_driver',
       },
       {
         label: t('Docker Storage Driver'),
-        dataIndex: 'docker_storage_driver'
+        dataIndex: 'docker_storage_driver',
       },
       {
         label: t('Docker Volume Size'),
-        dataIndex: 'docker_volume_size'
+        dataIndex: 'docker_volume_size',
       },
       {
         label: t('Insecure Registry'),
-        dataIndex: 'insecure_registry'
+        dataIndex: 'insecure_registry',
       },
     ];
 
@@ -166,9 +197,20 @@ export class BaseDetail extends Base {
       {
         label: t('labels'),
         dataIndex: 'labels',
-        render: (value) => value ? Object.entries(value).map(([key, val]) => {
-          return <div key={key}><ul><li>{key} : {val}</li></ul></div>
-        }) : '-'
+        render: (value) =>
+          value
+            ? Object.entries(value).map(([key, val]) => {
+                return (
+                  <div key={key}>
+                    <ul>
+                      <li>
+                        {key} : {val}
+                      </li>
+                    </ul>
+                  </div>
+                );
+              })
+            : '-',
       },
     ];
 
@@ -180,4 +222,4 @@ export class BaseDetail extends Base {
   }
 }
 
-export default inject("rootStore")(observer(BaseDetail))
+export default inject('rootStore')(observer(BaseDetail));

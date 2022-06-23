@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Base from "components/Form";
-import { inject, observer } from "mobx-react";
+import Base from 'components/Form';
+import { inject, observer } from 'mobx-react';
 
 export class StepInfo extends Base {
   get title() {
-    return t("Info")
+    return t('Info');
   }
 
   get name() {
-    return t("Info")
+    return t('Info');
   }
 
   get isEdit() {
@@ -32,22 +32,28 @@ export class StepInfo extends Base {
     return true;
   }
 
-  onCOEChange = (value) => {
-    this.updateContext({
-      coeSelectRows: value,
-    });
-  }
-
   get defaultValue() {
-    const values = {};
+    let values = {};
 
     if (this.isEdit) {
-      values.clusterTemplateName = this.props.extra.name;
-      values.coe = this.props.extra.coe;
-      values.cluster_template_public = this.props.extra.public;
-      values.cluster_template_hidden = this.props.extra.hidden;
-      values.docker_registry_enabled = this.props.extra.registry_enabled;
-      values.tls_disabled = this.props.extra.tls_disabled;
+      const {
+        extra: {
+          name,
+          coe,
+          public: publics,
+          hidden,
+          registry_enabled,
+          tls_disabled,
+        } = {},
+      } = this.props;
+      values = {
+        name,
+        coe,
+        public: publics,
+        hidden,
+        registry_enabled,
+        tls_disabled,
+      };
     }
     return values;
   }
@@ -55,64 +61,62 @@ export class StepInfo extends Base {
   get formItems() {
     return [
       {
-        name: "clusterTemplateName",
-        label: t("Cluster Template Name"),
-        type: "input",
-        placeholder: t("Cluster Template Name"),
-        required: true
+        name: 'name',
+        label: t('Cluster Template Name'),
+        type: 'input',
+        placeholder: t('Cluster Template Name'),
+        required: true,
       },
       {
-        name: "coe",
-        label: t("Container Orchestration Engine"),
-        type: "select",
+        name: 'coe',
+        label: t('Container Orchestration Engine'),
+        type: 'select',
         options: [
           {
-            label: t("Kubernetes"),
-            value: "kubernetes"
+            label: t('Kubernetes'),
+            value: 'kubernetes',
           },
           {
-            label: t("Docker Swarm"),
-            value: "swarm"
+            label: t('Docker Swarm'),
+            value: 'swarm',
           },
           {
-            label: t("Docker Swarm Mode"),
-            value: "swarm-mode"
+            label: t('Docker Swarm Mode'),
+            value: 'swarm-mode',
           },
           {
-            label: t("Mesos"),
-            value: "mesos"
+            label: t('Mesos'),
+            value: 'mesos',
           },
           {
-            label: t("DC/OS"),
-            value: "dcos"
+            label: t('DC/OS'),
+            value: 'dcos',
           },
         ],
-        onChange: this.onCOEChange,
-        allowClear: true,
-        showSearch: true
+        required: true,
       },
       {
-        name: "cluster_template_public",
-        label: t("Public"),
-        type: "check"
+        name: 'public',
+        label: t('Public'),
+        type: 'check',
       },
       {
-        name: "cluster_template_hidden",
-        label: t("Hidden"),
-        type: "check"
+        name: 'hidden',
+        label: t('Hidden'),
+        type: 'check',
       },
       {
-        name: "docker_registry_enabled",
-        label: t("Enable Registry"),
-        type: "check"
+        name: 'registry_enabled',
+        label: t('Enable Registry'),
+        type: 'check',
       },
       {
-        name: "tls_disabled",
-        label: t("Disable TLS"),
-        type: "check"
-      }
-    ]
+        name: 'tls_disabled',
+        label: t('Disable TLS'),
+        type: 'check',
+      },
+    ];
   }
 }
 
-export default inject("rootStore")(observer(StepInfo))
+export default inject('rootStore')(observer(StepInfo));

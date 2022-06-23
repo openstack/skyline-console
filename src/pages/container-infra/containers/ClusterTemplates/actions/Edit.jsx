@@ -14,11 +14,9 @@
 
 import { inject, observer } from 'mobx-react';
 import { getPath } from 'src/utils/route-map';
-import StepCreate from './StepCreate';
+import { StepCreate as Base } from './StepCreate';
 
-@inject('rootStore')
-@observer
-export default class Edit extends StepCreate {
+export class Edit extends Base {
   static id = 'update-cluster-template';
 
   static title = t('Update Cluster Template');
@@ -43,3 +41,5 @@ export default class Edit extends StepCreate {
     return Promise.resolve(true);
   }
 }
+
+export default inject('rootStore')(observer(Edit));

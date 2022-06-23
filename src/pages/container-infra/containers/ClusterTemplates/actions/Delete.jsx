@@ -13,7 +13,7 @@
 import { ConfirmAction } from 'containers/Action';
 import globalClusterTemplateStore from 'stores/magnum/clusterTemplates';
 
-export default class DeleteClusterTemplates extends ConfirmAction {
+export default class Delete extends ConfirmAction {
   get id() {
     return 'delete';
   }

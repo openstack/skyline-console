@@ -20,7 +20,7 @@ import ClusterTemplates from '../containers/ClusterTemplates';
 import ClusterTemplateDetail from '../containers/ClusterTemplates/Detail';
 import ClustersCreate from '../containers/Clusters/actions/StepCreate';
 import ClustersTemplateCreate from '../containers/ClusterTemplates/actions/StepCreate';
-import StepUpdateClusterTemplate from '../containers/ClusterTemplates/actions/EditStep';
+import StepUpdateClusterTemplate from '../containers/ClusterTemplates/actions/Edit';
 
 const PATH = '/container-infra';
 export default [
