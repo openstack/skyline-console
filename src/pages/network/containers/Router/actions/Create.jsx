@@ -16,6 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { RouterStore } from 'stores/neutron/router';
 import { NetworkStore } from 'stores/neutron/network';
 import globalNeutronStore from 'stores/neutron/neutron';
+import globalProjectStore from 'stores/keystone/project';
 import { ModalAction } from 'containers/Action';
 import { has } from 'lodash';
 import { networkStatus } from 'resources/neutron/network';
@@ -30,9 +31,13 @@ export class Create extends ModalAction {
   static title = t('Create Router');
 
   init() {
+    this.state.quota = {};
+    this.state.quotaLoading = true;
     this.store = new RouterStore();
     this.networkStore = new NetworkStore();
+    this.projectStore = globalProjectStore;
     this.fetchAzones();
+    this.getQuota();
   }
 
   get name() {
@@ -58,6 +63,45 @@ export class Create extends ModalAction {
         ...it,
         id: it.name,
       }));
+  }
+
+  static get disableSubmit() {
+    const { neutronQuota: { router: { left = 0 } = {} } = {} } =
+      globalProjectStore;
+    return left === 0;
+  }
+
+  static get showQuota() {
+    return true;
+  }
+
+  get showQuota() {
+    return true;
+  }
+
+  async getQuota() {
+    const result = await this.projectStore.fetchProjectNeutronQuota();
+    const { router: quota = {} } = result || {};
+    this.setState({
+      quota,
+      quotaLoading: false,
+    });
+  }
+
+  get quotaInfo() {
+    const { quota = {}, quotaLoading } = this.state;
+    if (quotaLoading) {
+      return [];
+    }
+    const { left = 0 } = quota;
+    const add = left === 0 ? 0 : 1;
+    const data = {
+      ...quota,
+      add,
+      name: 'router',
+      title: t('Router'),
+    };
+    return [data];
   }
 
   get defaultValue() {

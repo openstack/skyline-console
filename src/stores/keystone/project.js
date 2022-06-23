@@ -27,6 +27,9 @@ export class ProjectStore extends Base {
   novaQuota = {};
 
   @observable
+  neutronQuota = {};
+
+  @observable
   groupRoleList = [];
 
   get client() {
@@ -464,6 +467,17 @@ export class ProjectStore extends Base {
     const novaQuota = this.updateQuotaData(quota);
     this.novaQuota = novaQuota;
     return novaQuota;
+  }
+
+  @action
+  async fetchProjectNeutronQuota(projectId) {
+    const result = await this.neutronQuotaClient.details(
+      projectId || this.currentProjectId
+    );
+    const { quota } = result;
+    const neutronQuota = this.updateQuotaData(quota);
+    this.neutronQuota = neutronQuota;
+    return neutronQuota;
   }
 }
 

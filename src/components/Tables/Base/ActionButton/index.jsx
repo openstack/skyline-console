@@ -438,7 +438,7 @@ export class ActionButton extends Component {
       case 'middle':
         return 720 * multi;
       case 'large':
-        return 1200 * multi;
+        return 1200;
       default:
         return 520 * multi;
     }
