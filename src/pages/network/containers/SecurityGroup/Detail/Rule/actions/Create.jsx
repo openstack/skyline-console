@@ -16,6 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalSecurityGroupRuleStore from 'stores/neutron/security-rule';
 import globalSecurityGroupStore from 'stores/neutron/security-group';
+import globalProjectStore from 'stores/keystone/project';
 import { ipProtocols } from 'resources/neutron/security-group-rule';
 import { has } from 'lodash';
 import { cidrAllValidate } from 'utils/validate';
@@ -41,9 +42,13 @@ export class Create extends ModalAction {
   }
 
   init() {
+    this.state.quota = {};
+    this.state.quotaLoading = true;
     this.store = globalSecurityGroupRuleStore;
     this.groupStore = globalSecurityGroupStore;
+    this.projectStore = globalProjectStore;
     this.getAllGroups();
+    this.getQuota();
   }
 
   static policy = 'create_security_group_rule';
@@ -60,6 +65,45 @@ export class Create extends ModalAction {
       label: item.name,
       value: item.id,
     }));
+  }
+
+  static get disableSubmit() {
+    const { neutronQuota: { security_group_rule: { left = 0 } = {} } = {} } =
+      globalProjectStore;
+    return left === 0;
+  }
+
+  static get showQuota() {
+    return true;
+  }
+
+  get showQuota() {
+    return true;
+  }
+
+  async getQuota() {
+    const result = await this.projectStore.fetchProjectNeutronQuota();
+    const { security_group_rule: quota = {} } = result || {};
+    this.setState({
+      quota,
+      quotaLoading: false,
+    });
+  }
+
+  get quotaInfo() {
+    const { quota = {}, quotaLoading } = this.state;
+    if (quotaLoading) {
+      return [];
+    }
+    const { left = 0 } = quota || {};
+    const add = left === 0 ? 0 : 1;
+    const data = {
+      ...quota,
+      add,
+      name: 'security_group_rule',
+      title: t('Security Group Rule'),
+    };
+    return [data];
   }
 
   get defaultRules() {
