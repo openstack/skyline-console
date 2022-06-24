@@ -38,7 +38,9 @@ export class ClusterTemplates extends Base {
       title: t('ID'),
       dataIndex: 'uuid',
       render: (data) => {
-        return this.getLinkRender("containerInfraClusterTemplateDetail", data, { id: data })
+        return this.getLinkRender('containerInfraClusterTemplateDetail', data, {
+          id: data,
+        });
       },
     },
     {
@@ -56,10 +58,10 @@ export class ClusterTemplates extends Base {
       isHideable: true,
       dataIndex: 'keypair_id',
       render: (value) => {
-        return this.getLinkRender("keypairDetail", value, { id: value })
-      }
+        return this.getLinkRender('keypairDetail', value, { id: value });
+      },
     },
   ];
 }
 
-export default inject("rootStore")(observer(ClusterTemplates))
+export default inject('rootStore')(observer(ClusterTemplates));

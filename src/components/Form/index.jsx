@@ -74,6 +74,11 @@ export default class BaseForm extends React.Component {
     this.unMountActions && this.unMountActions();
   }
 
+  get path() {
+    const { location: { pathname = '' } = {} } = this.props;
+    return pathname || '';
+  }
+
   get disableSubmit() {
     return false;
   }

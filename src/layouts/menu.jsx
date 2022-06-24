@@ -672,7 +672,7 @@ const renderMenu = (t) => {
               level: 2,
             },
             {
-              path: /^\/container-infra\/cluster-template\/update\/.[^/]+\/.[^/]+$/,
+              path: /^\/container-infra\/cluster-template\/update\/.[^/]+$/,
               name: t('Update Cluster Template'),
               key: 'containerInfraUpdateClusterTemplate',
               level: 2,

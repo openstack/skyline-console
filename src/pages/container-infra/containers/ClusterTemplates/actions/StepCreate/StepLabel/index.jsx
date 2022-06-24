@@ -10,8 +10,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Base from "components/Form";
-import { inject, observer } from "mobx-react";
+import Base from 'components/Form';
+import { inject, observer } from 'mobx-react';
 import KeyValueInput from 'components/FormItem/KeyValueInput';
 
 export class StepLabel extends Base {
@@ -23,6 +23,30 @@ export class StepLabel extends Base {
     return t('Labels');
   }
 
+  get isStep() {
+    return true;
+  }
+
+  get isEdit() {
+    return !!this.props.extra;
+  }
+
+  get defaultValue() {
+    const values = {};
+    if (this.isEdit) {
+      const {
+        extra: { labels },
+      } = this.props;
+      values.additionalLabels = Object.keys(labels || {}).map((key) => ({
+        value: {
+          key,
+          value: labels[key],
+        },
+      }));
+    }
+    return values;
+  }
+
   get formItems() {
     return [
       {
@@ -32,8 +56,8 @@ export class StepLabel extends Base {
         itemComponent: KeyValueInput,
         addText: t('Add Label'),
       },
-    ]
+    ];
   }
 }
 
-export default inject("rootStore")(observer(StepLabel))
+export default inject('rootStore')(observer(StepLabel));

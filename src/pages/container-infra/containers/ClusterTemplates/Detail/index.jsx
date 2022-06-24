@@ -12,8 +12,9 @@
 
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/TabDetail';
-import BaseDetail from './BaseDetail';
 import globalClusterTemplateStore from 'src/stores/magnum/clusterTemplates';
+import BaseDetail from './BaseDetail';
+import actionConfigs from '../actions';
 
 export class ClusterTemplateDetail extends Base {
   init() {
@@ -32,6 +33,10 @@ export class ClusterTemplateDetail extends Base {
     return 'container-infra:clustertemplate:detail';
   }
 
+  get actionConfigs() {
+    return actionConfigs;
+  }
+
   get detailInfos() {
     return [
       {
@@ -41,12 +46,12 @@ export class ClusterTemplateDetail extends Base {
       {
         title: t('Created'),
         dataIndex: 'created_at',
-        valueRender: 'toLocalTime'
+        valueRender: 'toLocalTime',
       },
       {
         title: t('Updated'),
         dataIndex: 'updated_at',
-        valueRender: 'toLocalTime'
+        valueRender: 'toLocalTime',
       },
     ];
   }
@@ -62,4 +67,4 @@ export class ClusterTemplateDetail extends Base {
   }
 }
 
-export default inject("rootStore")(observer(ClusterTemplateDetail))
+export default inject('rootStore')(observer(ClusterTemplateDetail));

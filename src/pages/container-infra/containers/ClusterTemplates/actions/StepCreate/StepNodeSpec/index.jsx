@@ -94,18 +94,33 @@ export class StepNodeSpec extends Base {
   };
 
   get defaultValue() {
-    const values = {};
+    let values = {};
 
     if (this.isEdit) {
-      values.image = this.props.extra.image_id;
-      values.keypair = this.props.extra.keypair_id;
-      values.flavorCurrent = this.props.extra.flavor_id;
-      values.flavor = this.props.extra.flavor_id;
-      values.masterFlavor = this.props.extra.master_flavor_id;
-      values.masterFlavorCurrent = this.props.extra.master_flavor_id;
-      values.volumeDriver = this.props.extra.volume_driver;
-      values.dockerStorageDriver = this.props.extra.docker_storage_driver;
-      values.dockerVolumeSize = this.props.extra.docker_volume_size;
+      const {
+        extra: {
+          image_id,
+          keypair_id,
+          flavor_id,
+          master_flavor_id,
+          volume_driver,
+          docker_storage_driver,
+          docker_volume_size,
+        } = {},
+      } = this.props;
+      values = {
+        image_id,
+        keypair_id,
+        volume_driver,
+        docker_storage_driver,
+        docker_volume_size,
+      };
+      if (flavor_id) {
+        values.flavor = { selectedRowKeys: [flavor_id] };
+      }
+      if (master_flavor_id) {
+        values.masterFlavor = { selectedRowKeys: [master_flavor_id] };
+      }
     }
     return values;
   }
@@ -113,26 +128,17 @@ export class StepNodeSpec extends Base {
   get formItems() {
     return [
       {
-        name: 'image',
+        name: 'image_id',
         label: t('Image'),
         type: 'select',
         options: this.getImageOsDistroList,
-        allowClear: true,
-        showSearch: true,
+        required: true,
       },
       {
-        name: 'keypair',
+        name: 'keypair_id',
         label: t('Keypair'),
         type: 'select',
         options: this.getKeypairList,
-        allowClear: true,
-        showSearch: true,
-      },
-      {
-        name: 'flavorCurrent',
-        label: t('Current Flavor'),
-        type: 'label',
-        iconType: 'flavor',
       },
       {
         name: 'flavor',
@@ -141,27 +147,19 @@ export class StepNodeSpec extends Base {
         component: <FlavorSelectTable onChange={this.onFlavorChange} />,
       },
       {
-        name: 'masterFlavorCurrent',
-        label: t('Current Master Flavor'),
-        type: 'label',
-        iconType: 'flavor',
-      },
-      {
         name: 'masterFlavor',
         label: t('Master Flavor'),
         type: 'select-table',
         component: <FlavorSelectTable onChange={this.onFlavorChange} />,
       },
       {
-        name: 'volumeDriver',
+        name: 'volume_driver',
         label: t('Volume Driver'),
         type: 'select',
         options: this.getVolumeDriver,
-        allowClear: true,
-        showSearch: true,
       },
       {
-        name: 'dockerStorageDriver',
+        name: 'docker_storage_driver',
         label: t('Docker Storage Driver'),
         type: 'select',
         options: [
@@ -174,15 +172,13 @@ export class StepNodeSpec extends Base {
             value: 'overlay2',
           },
         ],
-        allowClear: true,
-        showSearch: true,
       },
       {
-        name: 'dockerVolumeSize',
+        name: 'docker_volume_size',
         label: t('Docker Volume Size (GiB)'),
-        type: 'input-number',
-        min: '1',
-        placeholder: 'Spec',
+        type: 'input-int',
+        min: 1,
+        placeholder: t('Spec'),
       },
     ];
   }

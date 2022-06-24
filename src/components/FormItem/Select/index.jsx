@@ -62,6 +62,7 @@ export default class index extends Component {
       checkOptions,
       checkBoxInfo,
       allowClear = true,
+      showSearch = true,
       ...rest
     } = this.props;
     if (isUndefined(value) || isNull(value)) {
@@ -69,6 +70,7 @@ export default class index extends Component {
         <Select
           {...rest}
           allowClear={allowClear}
+          showSearch={showSearch}
           placeholder={placeholder}
           onChange={this.onChange}
         />
@@ -88,6 +90,7 @@ export default class index extends Component {
             <Select
               {...rest}
               allowClear={allowClear}
+              showSearch={showSearch}
               placeholder={placeholder}
               onChange={this.onChange}
               value={this.getValue()}
@@ -104,6 +107,7 @@ export default class index extends Component {
       <Select
         {...rest}
         allowClear={allowClear}
+        showSearch={showSearch}
         placeholder={placeholder}
         onChange={this.onChange}
         value={this.getValue()}
