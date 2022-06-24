@@ -48,16 +48,23 @@ export class Allocate extends ModalAction {
     this.store = new FloatingIpStore();
     this.networkStore = new NetworkStore();
     this.qosPolicyStore = new QoSPolicyStore();
-    this.getExternalNetworks();
-    this.isAdminPage && globalProjectStore.fetchList();
+    this.projectStore = globalProjectStore;
     this.state = {
+      ...(this.state || {}),
       selectedNetwork: null,
       selectedSubnet: null,
       networks: [],
       subnets: [],
       qosPolicy: null,
       count: 2,
+      quota: {},
+      quotaLoading: true,
+      projectId: this.currentProjectId,
+      maxCount: 2,
     };
+    this.getExternalNetworks();
+    this.isAdminPage && globalProjectStore.fetchList();
+    this.getQuota();
   }
 
   async getExternalNetworks() {
@@ -76,6 +83,72 @@ export class Allocate extends ModalAction {
   static policy = 'create_floatingip';
 
   static allowed = () => Promise.resolve(true);
+
+  static get disableSubmit() {
+    const {
+      neutronQuota: { floatingip: { left = 0 } = {} },
+    } = globalProjectStore;
+    return left === 0;
+  }
+
+  static get showQuota() {
+    return true;
+  }
+
+  get showQuota() {
+    return true;
+  }
+
+  async getQuota() {
+    const { projectId, count } = this.state;
+    this.setState({
+      quotaLoading: true,
+    });
+    const result = await this.projectStore.fetchProjectNeutronQuota(projectId);
+    const { floatingip: quota = {} } = result || {};
+    const { left = 0 } = quota;
+    this.setState({
+      quota,
+      quotaLoading: false,
+      maxCount: left,
+    });
+    let newCount = count;
+    if (left < count) {
+      newCount = left;
+    } else if (left > 0 && count === 0) {
+      newCount = 1;
+    }
+    if (newCount !== count) {
+      this.updateFormValue('count', newCount);
+      this.setState({
+        count: newCount,
+      });
+    }
+  }
+
+  get quotaInfo() {
+    const {
+      quota = {},
+      quotaLoading,
+      batchAllocate = false,
+      count,
+    } = this.state;
+    if (quotaLoading) {
+      return [];
+    }
+    const { left = 0 } = quota;
+    let add = 0;
+    if (left !== 0) {
+      add = batchAllocate ? count : 1;
+    }
+    const data = {
+      ...quota,
+      add,
+      name: 'floatingip',
+      title: t('Floating IP'),
+    };
+    return [data];
+  }
 
   get defaultValue() {
     return {
@@ -133,6 +206,17 @@ export class Allocate extends ModalAction {
     });
   };
 
+  onProjectChange = (value) => {
+    this.setState(
+      {
+        projectId: value,
+      },
+      () => {
+        this.getQuota();
+      }
+    );
+  };
+
   get formItems() {
     const {
       networks,
@@ -140,6 +224,7 @@ export class Allocate extends ModalAction {
       subnets,
       selectedSubnet,
       batchAllocate = false,
+      maxCount,
     } = this.state;
     const networkItems = networks.map((item) => ({
       label: item.name,
@@ -166,6 +251,7 @@ export class Allocate extends ModalAction {
         hidden: !this.isAdminPage,
         required: this.isAdminPage,
         options: projectOptions,
+        onChange: this.onProjectChange,
       },
       {
         name: 'subnet_id',
@@ -200,8 +286,9 @@ export class Allocate extends ModalAction {
       {
         name: 'count',
         label: t('Count'),
-        type: 'input-number',
-        min: 2,
+        type: 'input-int',
+        min: 1,
+        max: maxCount,
         hidden: !batchAllocate,
         required: true,
         onChange: this.onCountChange,
