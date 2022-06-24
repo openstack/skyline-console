@@ -1812,6 +1812,7 @@
   "Quota exceeded": "Quota exceeded",
   "Quota is not enough for extend share.": "Quota is not enough for extend share.",
   "Quota is not enough for extend volume.": "Quota is not enough for extend volume.",
+  "Quota of key pair means: the number of allowed key pairs for each user.": "Quota of key pair means: the number of allowed key pairs for each user.",
   "Quota: Insufficient quota to create resources, please adjust resource quantity or quota(left { quota }, input { input }).": "Quota: Insufficient quota to create resources, please adjust resource quantity or quota(left { quota }, input { input }).",
   "Quota: Insufficient { name } quota to create resources, please adjust resource quantity or quota(left { left }, input { input }).": "Quota: Insufficient { name } quota to create resources, please adjust resource quantity or quota(left { left }, input { input }).",
   "Quota: Project quotas sufficient resources can be created": "Quota: Project quotas sufficient resources can be created",

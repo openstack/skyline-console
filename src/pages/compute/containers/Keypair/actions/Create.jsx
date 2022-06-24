@@ -15,7 +15,22 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalKeypairStore from 'stores/nova/keypair';
+import globalProjectStore from 'stores/keystone/project';
 import FileSaver from 'file-saver';
+
+const getUsed = () => {
+  const { total = 0, data = [] } = globalKeypairStore.list || {};
+  return total || data.length;
+};
+
+const getAdd = (quota) => {
+  const { limit = 0 } = quota || {};
+  if (limit === -1) {
+    return 1;
+  }
+  const used = getUsed();
+  return limit > used ? 1 : 0;
+};
 
 export class CreateKeypair extends ModalAction {
   static id = 'create-keypair';
@@ -24,6 +39,64 @@ export class CreateKeypair extends ModalAction {
 
   get name() {
     return t('Create Keypair');
+  }
+
+  init() {
+    this.state.quota = {};
+    this.state.quotaLoading = true;
+    this.projectStore = globalProjectStore;
+    this.getQuota();
+  }
+
+  get tips() {
+    return t(
+      'Quota of key pair means: the number of allowed key pairs for each user.'
+    );
+  }
+
+  static get disableSubmit() {
+    const {
+      novaQuota: { key_pairs: quota = {} },
+    } = globalProjectStore;
+    const add = getAdd(quota);
+    return add === 0;
+  }
+
+  static get showQuota() {
+    return true;
+  }
+
+  get showQuota() {
+    return true;
+  }
+
+  async getQuota() {
+    this.setState({
+      quotaLoading: true,
+    });
+    const result = await this.projectStore.fetchProjectNovaQuota();
+    const { key_pairs: quota = {} } = result || {};
+    this.setState({
+      quota,
+      quotaLoading: false,
+    });
+  }
+
+  get quotaInfo() {
+    const { quota = {}, quotaLoading } = this.state;
+    if (quotaLoading) {
+      return [];
+    }
+    const add = getAdd(quota);
+    const used = getUsed();
+    const data = {
+      ...quota,
+      add,
+      used,
+      name: 'key_pair',
+      title: t('Key Pair'),
+    };
+    return [data];
   }
 
   onSubmit = (values) => {

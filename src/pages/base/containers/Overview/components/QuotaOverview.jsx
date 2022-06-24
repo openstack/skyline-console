@@ -31,10 +31,7 @@ const colors = {
 const keyPairTitle = (
   <span>
     {t('Key Pair')}
-    <Tooltip
-      title={t('The number of allowed key pairs for each user.')}
-      getPopupContainer={(node) => node.parentNode}
-    >
+    <Tooltip title={t('The number of allowed key pairs for each user.')}>
       <QuestionCircleOutlined style={{ marginLeft: 4 }} />
     </Tooltip>
   </span>

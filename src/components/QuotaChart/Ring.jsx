@@ -22,6 +22,7 @@ import {
   Annotation,
   Tooltip,
 } from 'bizcharts';
+import { Tooltip as AntTooltip } from 'antd';
 
 export const typeColors = {
   used: '#5B8FF9',
@@ -59,7 +60,10 @@ export default function Ring(props) {
   const showTip = isLimit;
   const limitNumber = !isLimit ? Infinity : limit;
   const limitStr = !isLimit ? t('Infinity') : limit;
-  const left = !isLimit ? 1 : limit - used - reserved - add;
+  let left = !isLimit ? 1 : limit - used - reserved - add;
+  if (left < 0) {
+    left = 0;
+  }
   const data = [
     {
       type: t('Used'),
@@ -93,53 +97,71 @@ export default function Ring(props) {
   const allCount = used + add + reserved;
   const percent = isLimit ? (allCount / limitNumber) * 100 : 0;
 
-  return (
-    <div style={style}>
-      <Chart placeholder={false} height={height} padding="auto" autoFit>
-        <Legend visible={showTip && hasLabel} />
-        <Tooltip visible={showTip} />
-        {/* 绘制图形 */}
-        <View data={data}>
-          <Coordinate type="theta" innerRadius={0.75} />
-          <Interval
-            position="value"
-            adjust="stack"
-            color={['type', colors]}
-            size={16}
-          />
-          <Annotation.Text
-            position={['50%', '30%']}
-            content={title}
-            style={{
-              lineHeight: '240px',
-              fontSize: '14',
-              fill: '#000',
-              textAlign: 'center',
-            }}
-          />
-          <Annotation.Text
-            position={['50%', '50%']}
-            content={secondTitle}
-            style={{
-              lineHeight: '240px',
-              fontSize: '14',
-              fill: '#000',
-              textAlign: 'center',
-            }}
-          />
-          <Annotation.Text
-            position={['50%', '70%']}
-            content={`${allCount}/${limitStr}`}
-            style={{
-              lineHeight: '240px',
-              fontSize: '14',
-              fill: getUsedValueColor(percent),
-              textAlign: 'center',
-              fontWeight: 'bold',
-            }}
-          />
-        </View>
-      </Chart>
-    </div>
+  let tipTitle = '';
+  if (!isLimit) {
+    const usedTip = `${t('Used')}: ${used}`;
+    const reservedTip = reserved ? '' : `${t('Reserved')}: ${reserved}`;
+    const newTip = `${t('New')}: ${add}`;
+    const tips = [usedTip, newTip];
+    if (reserved) {
+      tips.splice(1, 0, reservedTip);
+    }
+    tipTitle = tips.join(' / ');
+  }
+
+  const chart = (
+    <Chart placeholder={false} height={height} padding="auto" autoFit>
+      <Legend visible={showTip && hasLabel} />
+      <Tooltip visible={showTip} />
+      {/* 绘制图形 */}
+      <View data={data}>
+        <Coordinate type="theta" innerRadius={0.75} />
+        <Interval
+          position="value"
+          adjust="stack"
+          color={['type', colors]}
+          size={16}
+        />
+        <Annotation.Text
+          position={['50%', '30%']}
+          content={title}
+          style={{
+            lineHeight: '240px',
+            fontSize: '14',
+            fill: '#000',
+            textAlign: 'center',
+          }}
+        />
+        <Annotation.Text
+          position={['50%', '50%']}
+          content={secondTitle}
+          style={{
+            lineHeight: '240px',
+            fontSize: '14',
+            fill: '#000',
+            textAlign: 'center',
+          }}
+        />
+        <Annotation.Text
+          position={['50%', '70%']}
+          content={`${allCount}/${limitStr}`}
+          style={{
+            lineHeight: '240px',
+            fontSize: '14',
+            fill: getUsedValueColor(percent),
+            textAlign: 'center',
+            fontWeight: 'bold',
+          }}
+        />
+      </View>
+    </Chart>
   );
+
+  const content = isLimit ? (
+    chart
+  ) : (
+    <AntTooltip title={tipTitle}>{chart}</AntTooltip>
+  );
+
+  return <div style={style}>{content}</div>;
 }
