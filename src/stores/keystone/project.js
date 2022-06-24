@@ -18,6 +18,7 @@ import { isNil, isEmpty, isObject } from 'lodash';
 import client from 'client';
 import Base from 'stores/base';
 import globalRootStore from 'stores/root';
+import globalKeypairStore from 'stores/nova/keypair';
 
 export class ProjectStore extends Base {
   @observable
@@ -228,7 +229,7 @@ export class ProjectStore extends Base {
   }
 
   @action
-  async fetchProjectQuota({ project_id }) {
+  async fetchProjectQuota({ project_id, withKeyPair = false }) {
     const promiseArr = [
       this.novaQuotaClient.detail(project_id),
       this.neutronQuotaClient.details(project_id),
@@ -241,8 +242,14 @@ export class ProjectStore extends Base {
     promiseArr.push(
       this.enableShare ? this.shareQuotaClient.showDetail(project_id) : null
     );
-    const [novaResult, neutronResult, cinderResult, shareResult] =
-      await Promise.all(promiseArr);
+    promiseArr.push(withKeyPair ? globalKeypairStore.fetchList() : null);
+    const [
+      novaResult,
+      neutronResult,
+      cinderResult,
+      shareResult,
+      keyPairResult,
+    ] = await Promise.all(promiseArr);
     this.isSubmitting = false;
     const { quota_set: novaQuota } = novaResult;
     const { ram } = novaQuota;
@@ -267,6 +274,11 @@ export class ProjectStore extends Base {
       ...neutronQuota,
       ...renameShareQuota,
     };
+    if (withKeyPair) {
+      const keyPairCount = (keyPairResult || []).length;
+      const keyPairItem = quota.key_pairs || {};
+      keyPairItem.in_use = keyPairCount;
+    }
     const newQuota = this.updateQuotaData(quota);
     this.quota = newQuota;
     return newQuota;

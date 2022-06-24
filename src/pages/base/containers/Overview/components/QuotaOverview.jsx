@@ -14,6 +14,7 @@
 
 import React, { Component } from 'react';
 import { Badge, Card, Col, List, Progress, Row, Spin, Tooltip } from 'antd';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import { inject, observer } from 'mobx-react';
 import globalVolumeTypeStore from 'stores/cinder/volume-type';
 import globalProjectStore from 'stores/keystone/project';
@@ -27,6 +28,18 @@ const colors = {
   full: { color: '#E8684A', text: t('Full') },
 };
 
+const keyPairTitle = (
+  <span>
+    {t('Key Pair')}
+    <Tooltip
+      title={t('The number of allowed key pairs for each user.')}
+      getPopupContainer={(node) => node.parentNode}
+    >
+      <QuestionCircleOutlined style={{ marginLeft: 4 }} />
+    </Tooltip>
+  </span>
+);
+
 export const quotaCardList = [
   {
     text: t('Compute'),
@@ -35,7 +48,7 @@ export const quotaCardList = [
       { text: t('Instances'), key: 'instances' },
       { text: t('vCPUs'), key: 'cores' },
       { text: t('Memory (GiB)'), key: 'ram' },
-      { text: t('Key Pair'), key: 'key_pairs' },
+      { text: keyPairTitle, key: 'key_pairs' },
       { text: t('Server Group'), key: 'server_groups' },
     ],
   },
@@ -144,7 +157,10 @@ export class QuotaOverview extends Component {
       const { user } = this.props.rootStore;
       const { project: { id: projectId = '' } = {} } = user;
       const promiseArr = [
-        this.projectStore.fetchProjectQuota({ project_id: projectId }),
+        this.projectStore.fetchProjectQuota({
+          project_id: projectId,
+          withKeyPair: true,
+        }),
       ];
       if (this.enableCinder) {
         promiseArr.push(this.volumeTypeStore.fetchList());
@@ -207,26 +223,38 @@ export class QuotaOverview extends Component {
       (percent >= 90 && colors.full.color) ||
       (percent >= 80 && colors.danger.color) ||
       colors.normal.color;
-    let title = `${i.text} : ${used}`;
+    let title = (
+      <span>
+        {i.text} : {used}
+      </span>
+    );
     const { server_group_members } = data;
     if (i.key === 'server_groups' && server_group_members) {
-      title = `${title}   (${t('Member in group')} : ${
-        server_group_members.limit === -1
-          ? t('Unlimit')
-          : server_group_members.limit
-      })`;
+      title = (
+        <span>
+          {title} ({t('Member in group')} :
+          {server_group_members.limit === -1
+            ? t('Unlimit')
+            : server_group_members.limit}
+          )
+        </span>
+      );
     }
     return (
       <>
-        <Tooltip title={title}>
-          <div className={styles['progress-title']}>{title}</div>
+        <div className={styles['progress-title']}>{title}</div>
+        <Tooltip
+          title={title}
+          placement="top"
+          getPopupContainer={(node) => node.parentNode}
+        >
+          <Progress
+            style={{ marginTop: 13, marginBottom: 13 }}
+            percent={percent}
+            showInfo={false}
+            strokeColor={strokeColor}
+          />
         </Tooltip>
-        <Progress
-          style={{ marginTop: 13, marginBottom: 13 }}
-          percent={percent}
-          showInfo={false}
-          strokeColor={strokeColor}
-        />
       </>
     );
   };

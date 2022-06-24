@@ -2241,6 +2241,7 @@
   "The name should start with upper letter, lower letter, and be a string of 3 to 63, characters can only contain \"0-9, a-z, A-Z, -\".": "名称应以大写字母，小写字母开头，长度为3-63字符，且只包含“0-9, a-z, A-Z, -”。",
   "The new password cannot be identical to the current password.": "用户新密码不能与原密码相同。",
   "The no_proxy address to use for nodes in cluster": "用于集群中节点的 no_proxy 地址",
+  "The number of allowed key pairs for each user.": "每个用户允许创建的配额数量",
   "The number of vCPU cores should not exceed the maximum number of CPU cores of the physical node. Otherwise it will cause fail to schedule to any physical node when creating instance.": "vCPU核数不应该超过物理节点的最大CPU核数，否则会导致云主机创建时无法调度到任何物理节点。",
   "The number of virtual cpu for this container": "容器的虚拟 CPU 数量",
   "The password must not be the same as the previous": "新密码不能与以前的密码相同",

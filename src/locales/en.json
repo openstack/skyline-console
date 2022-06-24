@@ -2241,6 +2241,7 @@
   "The name should start with upper letter, lower letter, and be a string of 3 to 63, characters can only contain \"0-9, a-z, A-Z, -\".": "The name should start with upper letter, lower letter, and be a string of 3 to 63, characters can only contain \"0-9, a-z, A-Z, -\".",
   "The new password cannot be identical to the current password.": "The new password cannot be identical to the current password.",
   "The no_proxy address to use for nodes in cluster": "The no_proxy address to use for nodes in cluster",
+  "The number of allowed key pairs for each user.": "The number of allowed key pairs for each user.",
   "The number of vCPU cores should not exceed the maximum number of CPU cores of the physical node. Otherwise it will cause fail to schedule to any physical node when creating instance.": "The number of vCPU cores should not exceed the maximum number of CPU cores of the physical node. Otherwise it will cause fail to schedule to any physical node when creating instance.",
   "The number of virtual cpu for this container": "The number of virtual cpu for this container",
   "The password must not be the same as the previous": "The password must not be the same as the previous",
