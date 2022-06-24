@@ -14,7 +14,6 @@ import { inject, observer } from 'mobx-react';
 import { StepAction } from 'src/containers/Action';
 import globalClusterTemplateStore from 'src/stores/magnum/clusterTemplates';
 import { toJS } from 'mobx';
-import { admission_control_list } from 'resources/magnum/template';
 import StepInfo from './StepInfo';
 import StepNodeSpec from './StepNodeSpec';
 import StepNetwork from './StepNetwork';
@@ -105,10 +104,7 @@ export class StepCreate extends StepAction {
     }
 
     const body = {
-      labels: {
-        ...requestLabels,
-        admission_control_list,
-      },
+      labels: requestLabels,
       ...rest,
     };
     if (flavor) {

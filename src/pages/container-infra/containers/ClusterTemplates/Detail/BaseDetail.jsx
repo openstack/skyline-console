@@ -13,6 +13,7 @@
 import React from 'react';
 import Base from 'containers/BaseDetail';
 import { inject, observer } from 'mobx-react';
+import { isEmpty } from 'lodash';
 
 export class BaseDetail extends Base {
   get leftCards() {
@@ -198,7 +199,7 @@ export class BaseDetail extends Base {
         label: t('labels'),
         dataIndex: 'labels',
         render: (value) =>
-          value
+          !isEmpty(value)
             ? Object.entries(value).map(([key, val]) => {
                 return (
                   <div key={key}>

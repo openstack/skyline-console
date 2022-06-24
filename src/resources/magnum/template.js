@@ -14,3 +14,31 @@
 
 export const admission_control_list =
   'NodeRestriction,NamespaceLifecycle,LimitRanger,ServiceAccount,ResourceQuota,TaintNodesByCondition,Priority,DefaultTolerationSeconds,DefaultStorageClass,StorageObjectInUseProtection,PersistentVolumeClaimResize,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,RuntimeClass';
+
+export const getBaseTemplateColumns = (self) => [
+  {
+    title: t('ID/Name'),
+    dataIndex: 'name',
+    routeName: self.getRouteName('containerInfraClusterTemplateDetail'),
+  },
+  {
+    title: t('COE'),
+    isHideable: true,
+    dataIndex: 'coe',
+  },
+  {
+    title: t('Network Driver'),
+    isHideable: true,
+    dataIndex: 'network_driver',
+  },
+  {
+    title: t('Keypair'),
+    isHideable: true,
+    dataIndex: 'keypair_id',
+    render: (value) => {
+      return value
+        ? self.getLinkRender('keypairDetail', value, { id: value })
+        : '-';
+    },
+  },
+];

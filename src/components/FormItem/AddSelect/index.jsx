@@ -162,8 +162,13 @@ export default class index extends Component {
 
   // eslint-disable-next-line no-shadow
   renderItem = (item, index) => {
-    const { itemComponent, readonlyKeys = [], isInput = false } = this.props;
-    const { placeholder, width } = this.props;
+    const {
+      itemComponent,
+      readonlyKeys = [],
+      isInput = false,
+      placeholder,
+      width,
+    } = this.props;
     if (!itemComponent) {
       if (isInput) {
         return (

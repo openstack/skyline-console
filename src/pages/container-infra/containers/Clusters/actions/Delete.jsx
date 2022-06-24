@@ -40,5 +40,5 @@ export default class DeleteClusters extends ConfirmAction {
 
   allowedCheckFunc = () => true;
 
-  onSubmit = (data) => globalClustersStore.delete({ id: data.uuid });
+  onSubmit = (data) => globalClustersStore.delete({ id: data.id });
 }

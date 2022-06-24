@@ -9,17 +9,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import DeleteClusters from './Delete';
-import ResizeClusters from './Resize';
-import StepCreate from './StepCreate';
+import Delete from './Delete';
+import Resize from './Resize';
+import Create from './StepCreate';
 
 const actionConfigs = {
   rowActions: {
-    firstAction: DeleteClusters,
-    moreActions: [{ action: ResizeClusters }],
+    firstAction: Delete,
+    moreActions: [{ action: Resize }],
   },
-  batchActions: [DeleteClusters],
-  primaryActions: [StepCreate],
+  batchActions: [Delete],
+  primaryActions: [Create],
 };
 
 export default actionConfigs;

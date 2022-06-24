@@ -17,7 +17,6 @@ import client from 'client';
 import { action } from 'mobx';
 
 export class ClustersStore extends Base {
-
   get client() {
     return client.magnum.clusters;
   }
@@ -41,8 +40,8 @@ export class ClustersStore extends Base {
   }
 
   @action
-  async update({ id }, newbody) {
-    return this.client.resize.create(id, newbody);
+  async resize({ id }, newbody) {
+    return this.client.resize(id, newbody);
   }
 
   async detailDidFetch(item) {
@@ -52,9 +51,11 @@ export class ClustersStore extends Base {
     return item;
   }
 
-  async listDidFetch(items) {
-    if (!items.length) return items
-    return items.map(it => ({ ...it, id: it.uuid }));
+  get mapper() {
+    return (data) => ({
+      ...data,
+      id: data.uuid,
+    });
   }
 }
 

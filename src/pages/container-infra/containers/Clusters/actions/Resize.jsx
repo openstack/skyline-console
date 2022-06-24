@@ -14,7 +14,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'src/containers/Action';
 import globalClustersStore from 'stores/magnum/clusters';
 
-export class ResizeClusters extends ModalAction {
+export class Resize extends ModalAction {
   init() {
     this.store = globalClustersStore;
   }
@@ -33,16 +33,21 @@ export class ResizeClusters extends ModalAction {
     return t('Resize Cluster');
   }
 
-  get buttonText() {
-    return t('Resize');
+  static buttonText = t('Resize');
+
+  get defaultValue() {
+    const { node_count } = this.item;
+    return {
+      node_count: node_count || 1,
+    };
   }
 
   get formItems() {
     return [
       {
         name: 'node_count',
-        label: t('Instance'),
-        type: 'input-number',
+        label: t('Node Count'),
+        type: 'input-int',
         min: 1,
         required: true,
       },
@@ -50,11 +55,8 @@ export class ResizeClusters extends ModalAction {
   }
 
   onSubmit = (data) => {
-    this.store.update(
-      { id: this.props.item.uuid },
-      { node_count: data.node_count }
-    );
+    this.store.resize({ id: this.item.id }, data);
   };
 }
 
-export default inject("rootStore")(observer(ResizeClusters))
+export default inject('rootStore')(observer(Resize));

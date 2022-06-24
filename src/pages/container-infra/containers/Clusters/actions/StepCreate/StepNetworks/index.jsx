@@ -28,76 +28,46 @@ export class StepNetworks extends Base {
 
   get defaultValue() {
     return {
-      enableNetwork: true,
+      newNetwork: true,
     };
   }
 
   get nameForStateUpdate() {
-    return ['enableNetwork'];
+    return ['newNetwork'];
   }
 
   get formItems() {
-    const { enableNetwork } = this.state;
+    const { newNetwork } = this.state;
 
     return [
       {
-        name: 'enableLoadBalancer',
+        name: 'master_lb_enabled',
         label: t('Enable Load Balancer'),
         type: 'check',
         content: t('Enabled Load Balancer for Master Nodes'),
       },
       {
-        name: 'enableNetwork',
+        name: 'newNetwork',
         label: t('Enabled Network'),
         type: 'check',
         content: t('Create New Network'),
       },
       {
-        name: 'network',
+        name: 'fixed_network',
         label: t('Use an Existing Network'),
         type: 'network-select-table',
-        hidden: enableNetwork,
+        hidden: newNetwork,
       },
       {
         type: 'divider',
       },
       {
         name: 'floating_ip_enabled',
-        label: t('Cluster API'),
-        type: 'select',
-        options: [
-          {
-            label: t('Accessible on private network only'),
-            value: 'networkOnly',
-          },
-          {
-            label: t('Accessible on the public internet'),
-            value: 'publicInternet',
-          },
-        ],
-      },
-      {
-        type: 'divider',
-      },
-      {
-        name: 'ingress_controller',
-        label: t('Ingress Controller'),
-        type: 'select',
-        options: [
-          {
-            label: t('octavia'),
-            value: 'octavia',
-          },
-          {
-            label: t('nginx'),
-            value: 'nginx',
-          },
-          {
-            label: t('traefik'),
-            value: 'traefik',
-          },
-        ],
-        placeholder: t('Choose an ingress controller'),
+        label: t('Enable Floating IP'),
+        type: 'check',
+        tip: t(
+          'Whether enable or not using the floating IP of cloud provider. If it’s not set, the value of this in template will be used.'
+        ),
       },
     ];
   }

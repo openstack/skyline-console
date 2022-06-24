@@ -17,13 +17,13 @@ import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
 import FlavorSelectTable from 'src/pages/compute/containers/Instance/components/FlavorSelectTable';
 
-export class StepSize extends Base {
+export class StepNodeSpec extends Base {
   get title() {
-    return t('Cluster Size');
+    return t('Node Spec');
   }
 
   get name() {
-    return t('Cluster Size');
+    return t('Node Spec');
   }
 
   allowed = () => Promise.resolve();
@@ -38,17 +38,24 @@ export class StepSize extends Base {
     });
   };
 
+  get defaultValue() {
+    return {
+      master_count: 1,
+      node_count: 1,
+    };
+  }
+
   get formItems() {
     return [
       {
-        name: 'numberOfMasterNodes',
+        name: 'master_count',
         label: t('Number of Master Nodes'),
         type: 'input-int',
         min: 1,
         required: true,
       },
       {
-        name: 'flavorOfMasterNodes',
+        name: 'masterFlavor',
         label: t('Flavor of Master Nodes'),
         type: 'select-table',
         component: this.getFlavorComponent(),
@@ -58,14 +65,14 @@ export class StepSize extends Base {
         type: 'divider',
       },
       {
-        name: 'numberOfWorkerNodes',
+        name: 'node_count',
         label: t('Number of Worker Nodes'),
         type: 'input-int',
         min: 1,
         required: true,
       },
       {
-        name: 'flavorOfWorkerNodes',
+        name: 'flavor',
         label: t('Flavor of Worker Nodes'),
         type: 'select-table',
         component: this.getFlavorComponent(),
@@ -75,4 +82,4 @@ export class StepSize extends Base {
   }
 }
 
-export default inject('rootStore')(observer(StepSize));
+export default inject('rootStore')(observer(StepNodeSpec));

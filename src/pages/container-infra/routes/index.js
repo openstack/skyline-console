@@ -20,7 +20,7 @@ import ClusterTemplates from '../containers/ClusterTemplates';
 import ClusterTemplateDetail from '../containers/ClusterTemplates/Detail';
 import ClustersCreate from '../containers/Clusters/actions/StepCreate';
 import ClustersTemplateCreate from '../containers/ClusterTemplates/actions/StepCreate';
-import StepUpdateClusterTemplate from '../containers/ClusterTemplates/actions/Edit';
+import ClusterTemplateUpdate from '../containers/ClusterTemplates/actions/Edit';
 
 const PATH = '/container-infra';
 export default [
@@ -35,6 +35,11 @@ export default [
         exact: true,
       },
       {
+        path: `${PATH}/clusters/create`,
+        component: ClustersCreate,
+        exact: true,
+      },
+      {
         path: `${PATH}/cluster-template`,
         component: ClusterTemplates,
         exact: true,
@@ -45,18 +50,13 @@ export default [
         exact: true,
       },
       {
-        path: `${PATH}/clusters/create`,
-        component: ClustersCreate,
-        exact: true,
-      },
-      {
         path: `${PATH}/cluster-template/create`,
         component: ClustersTemplateCreate,
         exact: true,
       },
       {
         path: `${PATH}/cluster-template/update/:id`,
-        component: StepUpdateClusterTemplate,
+        component: ClusterTemplateUpdate,
         exact: true,
       },
       { path: '*', component: E404 },

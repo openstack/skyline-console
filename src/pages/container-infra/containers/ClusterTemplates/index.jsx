@@ -13,6 +13,7 @@
 import Base from 'containers/List';
 import { inject, observer } from 'mobx-react';
 import globalClusterTemplateStore from 'src/stores/magnum/clusterTemplates';
+import { getBaseTemplateColumns } from 'resources/magnum/template';
 import actionConfigs from './actions';
 
 export class ClusterTemplates extends Base {
@@ -33,35 +34,7 @@ export class ClusterTemplates extends Base {
     return actionConfigs;
   }
 
-  getColumns = () => [
-    {
-      title: t('ID'),
-      dataIndex: 'uuid',
-      render: (data) => {
-        return this.getLinkRender('containerInfraClusterTemplateDetail', data, {
-          id: data,
-        });
-      },
-    },
-    {
-      title: t('COE'),
-      isHideable: true,
-      dataIndex: 'coe',
-    },
-    {
-      title: t('Network Driver'),
-      isHideable: true,
-      dataIndex: 'network_driver',
-    },
-    {
-      title: t('Keypair'),
-      isHideable: true,
-      dataIndex: 'keypair_id',
-      render: (value) => {
-        return this.getLinkRender('keypairDetail', value, { id: value });
-      },
-    },
-  ];
+  getColumns = () => getBaseTemplateColumns(this);
 }
 
 export default inject('rootStore')(observer(ClusterTemplates));

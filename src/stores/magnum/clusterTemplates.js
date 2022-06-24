@@ -33,11 +33,19 @@ export class ClusterTemplatesStore extends Base {
 
   @action
   async update({ id }, body) {
-    const newBody = Object.keys(body).map((key) => ({
-      path: `/${key}`,
-      value: key === 'labels' ? JSON.stringify(body[key] || {}) : body[key],
-      op: [null, undefined, ''].includes(body[key]) ? 'remove' : 'replace',
-    }));
+    const newBody = Object.keys(body)
+      .filter(
+        (key) =>
+          !(
+            ['network_driver', 'external_network_id'].includes(key) &&
+            !body[key]
+          )
+      )
+      .map((key) => ({
+        path: `/${key}`,
+        value: key === 'labels' ? JSON.stringify(body[key] || {}) : body[key],
+        op: [null, undefined, ''].includes(body[key]) ? 'remove' : 'replace',
+      }));
     return this.submitting(this.client.patch(id, newBody));
   }
 

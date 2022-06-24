@@ -159,6 +159,7 @@ export class StepNetwork extends Base {
   }
 
   get formItems() {
+    const { extra: { network_driver, external_network_id } = {} } = this.props;
     return [
       {
         name: 'network_driver',
@@ -166,6 +167,7 @@ export class StepNetwork extends Base {
         placeholder: t('Choose a Network Driver'),
         type: 'select',
         options: this.getNetworkDriver,
+        disabled: network_driver && this.isEdit,
       },
       {
         name: 'http_proxy',
@@ -191,6 +193,7 @@ export class StepNetwork extends Base {
         placeholder: t('Choose a External Network'),
         type: 'select',
         options: this.getFloatingIpList,
+        disabled: external_network_id && this.isEdit,
       },
       {
         name: 'fixed_network',

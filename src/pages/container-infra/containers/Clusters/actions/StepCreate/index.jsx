@@ -13,11 +13,11 @@
 import { inject, observer } from 'mobx-react';
 import { StepAction } from 'src/containers/Action';
 import globalClustersStore from 'src/stores/magnum/clusters';
-import StepDetails from './StepDetails';
-import StepSize from './StepSize';
+import StepInfo from './StepInfo';
+import StepNodeSpec from './StepNodeSpec';
 import StepNetworks from './StepNetworks';
 import StepManagement from './StepManagement';
-import StepAdvanced from './StepAdvanced';
+import StepLabel from './StepLabel';
 
 export class StepCreate extends StepAction {
   init() {
@@ -51,12 +51,12 @@ export class StepCreate extends StepAction {
   get steps() {
     return [
       {
-        title: t('Details *'),
-        component: StepDetails,
+        title: t('Info *'),
+        component: StepInfo,
       },
       {
-        title: t('Size: *'),
-        component: StepSize,
+        title: t('Node Spec *'),
+        component: StepNodeSpec,
       },
       {
         title: t('Networks'),
@@ -67,15 +67,25 @@ export class StepCreate extends StepAction {
         component: StepManagement,
       },
       {
-        title: t('Advanced'),
-        component: StepAdvanced,
+        title: t('Labels'),
+        component: StepLabel,
       },
     ];
   }
 
   onSubmit = (values) => {
-    const { additionalLabels, auto_healing_enabled, auto_scaling_enabled } =
-      values;
+    const {
+      additionalLabels,
+      clusterTemplate,
+      keypair,
+      auto_healing_enabled,
+      auto_scaling_enabled,
+      newNetwork,
+      fixed_network,
+      flavor,
+      masterFlavor,
+      ...rest
+    } = values;
     const requestLabels = {};
 
     if (additionalLabels) {
@@ -87,27 +97,21 @@ export class StepCreate extends StepAction {
     }
 
     const data = {
-      name: values.clusterName,
+      name: values.name,
       labels: {
         ...requestLabels,
-        auto_healing_enabled,
-        auto_scaling_enabled,
-        admission_control_list:
-          'NodeRestriction,NamespaceLifecycle,LimitRanger,ServiceAccount,ResourceQuota,TaintNodesByCondition,Priority,DefaultTolerationSeconds,DefaultStorageClass,StorageObjectInUseProtection,PersistentVolumeClaimResize,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,RuntimeClass',
+        auto_healing_enabled: `${auto_healing_enabled}`,
+        auto_scaling_enabled: `${auto_scaling_enabled}`,
       },
-      cluster_template_id: values.clusterTemplateId,
-      create_timeout: 60,
-      master_count: values.numberOfMasterNodes,
-      node_count: values.numberOfWorkerNodes,
-      keypair: values.keypair,
-      master_flavor_id: values.flavorOfMasterNodes.selectedRowKeys[0],
-      flavor_id: values.flavorOfWorkerNodes.selectedRowKeys[0],
-      master_lb_enabled: values.enableLoadBalancer,
-      floating_ip_enabled: values.floating_ip_enabled !== 'networkOnly',
+      master_flavor_id: masterFlavor.selectedRowKeys[0],
+      flavor_id: flavor.selectedRowKeys[0],
+      cluster_template_id: clusterTemplate.selectedRowKeys[0],
+      keypair: keypair.selectedRowKeys[0],
+      ...rest,
     };
 
-    if (!values.enableNetwork && values.network) {
-      const { selectedRowKeys = [] } = values.network;
+    if (!newNetwork && fixed_network) {
+      const { selectedRowKeys = [] } = fixed_network;
       data.fixed_network = selectedRowKeys[0];
     }
 

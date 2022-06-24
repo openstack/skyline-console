@@ -13,11 +13,11 @@
 // limitations under the License.
 
 import Base from 'containers/BaseDetail';
+import { isEmpty } from 'lodash';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
 
 export class BaseDetail extends Base {
-
   get leftCards() {
     return [this.baseInfoCard, this.miscellaneousCard];
   }
@@ -27,47 +27,84 @@ export class BaseDetail extends Base {
   }
 
   get baseInfoCard() {
+    const { template = {} } = this.detailData;
+    const templateUrl = template
+      ? this.getLinkRender(
+          'containerInfraClusterTemplateDetail',
+          template.name,
+          {
+            id: template.uuid,
+          }
+        )
+      : '-';
     const options = [
       {
         label: t('Name'),
-        dataIndex: "template.name",
-        render: (value) => {
-          return this.getLinkRender('containerInfraClusterTemplateDetail', value, { id: this.detailData.template.uuid })
-        },
+        dataIndex: 'template.name',
+        content: templateUrl,
       },
       {
-        label: t("ID"),
-        dataIndex: "template.uuid"
+        label: t('ID'),
+        dataIndex: 'template.uuid',
       },
       {
-        label: t("COE"),
-        dataIndex: "template.coe",
+        label: t('COE'),
+        dataIndex: 'template.coe',
       },
       {
-        label: t("Image ID"),
-        dataIndex: "template.image_id",
-      }
+        label: t('Image ID'),
+        dataIndex: 'template.image_id',
+      },
     ];
 
     return {
       title: t('Cluster Template'),
       options,
+      labelCol: 6,
+      contentCol: 18,
     };
   }
 
   get miscellaneousCard() {
+    const { master_flavor_id, flavor_id, keypair } = this.detailData;
+    const masterFlavorUrl = master_flavor_id
+      ? this.getLinkRender('flavorDetail', master_flavor_id, {
+          id: master_flavor_id,
+        })
+      : '-';
+
+    const flavorUrl = flavor_id
+      ? this.getLinkRender('flavorDetail', flavor_id, {
+          id: flavor_id,
+        })
+      : '-';
+
+    const keypairUrl = keypair
+      ? this.getLinkRender('keypairDetail', keypair, {
+          id: keypair,
+        })
+      : '-';
+
     const options = [
       {
         label: t('Discovery URL'),
         dataIndex: 'discovery_url',
+        render: (value) =>
+          value ? (
+            <a href={value} target="blank">
+              {value}
+            </a>
+          ) : (
+            '-'
+          ),
       },
       {
-        label: t('Cluster Create Timeout'),
+        label: t('Timeout(Minute)'),
         dataIndex: 'create_timeout',
       },
       {
         label: t('Keypair'),
-        dataIndex: 'keypair',
+        content: keypairUrl,
       },
       {
         label: t('Docker Volume Size'),
@@ -75,11 +112,11 @@ export class BaseDetail extends Base {
       },
       {
         label: t('Master Flavor ID'),
-        dataIndex: 'master_flavor_id',
+        content: masterFlavorUrl,
       },
       {
         label: t('Node Flavor ID'),
-        dataIndex: 'flavor_id',
+        content: flavorUrl,
       },
       {
         label: t('COE Version'),
@@ -114,10 +151,14 @@ export class BaseDetail extends Base {
       {
         label: t('Master Addresses'),
         dataIndex: 'master_addresses',
+        render: (value) =>
+          value && value.length ? value.map((it) => <div>{it}</div>) : '-',
       },
       {
         label: t('Node Addresses'),
         dataIndex: 'node_addresses',
+        render: (value) =>
+          value && value.length ? value.map((it) => <div>{it}</div>) : '-',
       },
     ];
 
@@ -134,17 +175,19 @@ export class BaseDetail extends Base {
         label: t('Labels'),
         dataIndex: 'labels',
         render: (value) =>
-          Object.entries(value).map(([key, val]) => {
-            return (
-              <React.Fragment>
-                <ul>
-                  <li>
+          !isEmpty(value) ? (
+            <ul>
+              {Object.entries(value).map(([key, val]) => {
+                return (
+                  <li key={key}>
                     {key} : {val}
                   </li>
-                </ul>
-              </React.Fragment>
-            );
-          }),
+                );
+              })}
+            </ul>
+          ) : (
+            '-'
+          ),
       },
     ];
 
@@ -164,9 +207,20 @@ export class BaseDetail extends Base {
       {
         label: t('Stack Faults'),
         dataIndex: 'faults',
-        render: (value) => value ? Object.entries(value).map(([key, val]) => {
-          return <React.Fragment><ul><li>{key} : {val}</li></ul></React.Fragment>
-        }) : " - "
+        render: (value) =>
+          !isEmpty(value) ? (
+            <ul>
+              {Object.entries(value).map(([key, val]) => {
+                return (
+                  <li key={key}>
+                    {key} : {val}
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            '-'
+          ),
       },
     ];
 
@@ -178,4 +232,4 @@ export class BaseDetail extends Base {
   }
 }
 
-export default inject("rootStore")(observer(BaseDetail))
+export default inject('rootStore')(observer(BaseDetail));

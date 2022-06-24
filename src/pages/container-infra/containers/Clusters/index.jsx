@@ -14,6 +14,7 @@
 
 import Base from 'containers/List';
 import { inject, observer } from 'mobx-react';
+import { clusterStatus, healthStatus } from 'resources/magnum/cluster';
 import globalClustersStore from 'src/stores/magnum/clusters';
 import actionConfigs from './actions';
 
@@ -35,10 +36,6 @@ export class Clusters extends Base {
     return actionConfigs;
   }
 
-  get rowKey() {
-    return 'uuid';
-  }
-
   getColumns = () => [
     {
       title: t('ID/Name'),
@@ -49,18 +46,25 @@ export class Clusters extends Base {
       title: t('Status'),
       isHideable: true,
       dataIndex: 'status',
+      render: (value) => clusterStatus[value] || value,
     },
     {
       title: t('Health Status'),
       isHideable: true,
       dataIndex: 'health_status',
+      render: (value) => healthStatus[value] || value || '-',
     },
     {
       title: t('Keypair'),
       isHideable: true,
       dataIndex: 'keypair',
+      render: (value) => {
+        return value
+          ? this.getLinkRender('keypairDetail', value, { id: value })
+          : '-';
+      },
     },
   ];
 }
 
-export default inject("rootStore")(observer(Clusters))
+export default inject('rootStore')(observer(Clusters));
