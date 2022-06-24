@@ -17,7 +17,6 @@ import { ModalAction } from 'containers/Action';
 import { ipValidate } from 'utils/validate';
 import globalNetworkStore from 'stores/neutron/network';
 import { isEmpty } from 'lodash';
-import { checkPolicyRule } from 'resources/skyline/policy';
 import globalProjectStore from 'stores/keystone/project';
 import globalRootStore from 'stores/root';
 import { subnetIpv6Tip } from 'resources/neutron/network';
@@ -65,12 +64,60 @@ export class CreateSubnet extends ModalAction {
   }
 
   init() {
+    this.state.projectId = this.currentProjectId;
+    this.state.quota = {};
+    this.state.quotaLoading = true;
     this.projectStore = globalProjectStore;
     this.isSystemAdmin && this.getProjects();
+    this.getQuota();
   }
 
   getProjects() {
     this.projectStore.fetchList();
+  }
+
+  static get disableSubmit() {
+    const {
+      neutronQuota: { subnet: { left = 0 } = {} },
+    } = globalProjectStore;
+    return left === 0;
+  }
+
+  static get showQuota() {
+    return true;
+  }
+
+  get showQuota() {
+    return true;
+  }
+
+  async getQuota() {
+    const { projectId } = this.state;
+    this.setState({
+      quotaLoading: true,
+    });
+    const result = await this.projectStore.fetchProjectNeutronQuota(projectId);
+    const { subnet: quota = {} } = result || {};
+    this.setState({
+      quota,
+      quotaLoading: false,
+    });
+  }
+
+  get quotaInfo() {
+    const { quota = {}, quotaLoading } = this.state;
+    if (quotaLoading) {
+      return [];
+    }
+    const { left = 0 } = quota;
+    const add = left === 0 ? 0 : 1;
+    const data = {
+      ...quota,
+      add,
+      name: 'subnet',
+      title: t('Subnet'),
+    };
+    return [data];
   }
 
   checkCidr = (value) => {
@@ -108,27 +155,57 @@ export class CreateSubnet extends ModalAction {
 
   static policy = 'create_subnet';
 
-  static allowed = (item) => {
+  static allowed = (item, containerProps) => {
+    const { project_id } = item || {};
+    const { detail: { project_id: detailProjectId } = {} } =
+      containerProps || {};
+    const networkProjectId = project_id || detailProjectId;
     const rootStore = globalRootStore;
-    if (
-      !checkPolicyRule('skyline:system_admin') &&
-      item.project_id !== rootStore.user.project.id
-    ) {
+    const {
+      hasAdminRole = false,
+      user: { project: { id: userProjectId } = {} } = {},
+    } = rootStore;
+    if (!hasAdminRole && networkProjectId !== userProjectId) {
       return Promise.resolve(false);
     }
     return Promise.resolve(true);
   };
 
   get isSystemAdmin() {
-    return checkPolicyRule('skyline:system_admin');
+    return this.props.rootStore.hasAdminRole;
   }
 
   validateAllocationPools = (rule, value) => {
     return validateAllocationPoolsWithGatewayIp.call(this, rule, value);
   };
 
+  onProjectChange = (value) => {
+    this.setState(
+      {
+        projectId: value,
+      },
+      () => {
+        this.getQuota();
+      }
+    );
+  };
+
+  get networkProjectId() {
+    const { project_id } = this.item;
+    if (project_id) {
+      return project_id;
+    }
+    const { detail = {} } = this.containerProps;
+    return detail.project_id;
+  }
+
   get formItems() {
-    const { more, ip_version = 'ipv4', disable_gateway = false } = this.state;
+    const {
+      more,
+      ip_version = 'ipv4',
+      disable_gateway = false,
+      projectId,
+    } = this.state;
     const isIpv4 = ip_version === 'ipv4';
     const projectOptions = globalProjectStore.list.data.map((project) => ({
       label: project.name,
@@ -151,11 +228,12 @@ export class CreateSubnet extends ModalAction {
         hidden: !this.isSystemAdmin,
         showSearch: true,
         extra:
-          this.currentProjectId !== this.item.project_id &&
+          projectId !== this.networkProjectId &&
           t(
-            'You are trying to edit a network that not belong to current project. Please do not continue unless you are quit sure what you are doing.'
+            'The selected project is different from the project to which the network belongs. That is, the subnet to be created is not under the same project as the network. Please do not continue unless you are quit sure what you are doing.'
           ),
         options: projectOptions,
+        onChange: this.onProjectChange,
       },
       {
         name: 'ip_version',
