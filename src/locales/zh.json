@@ -2461,6 +2461,7 @@
   "Virtual LANs": "块虚拟网卡",
   "Virtual Resource Num": "虚拟资源用量",
   "Virtual Resource Overview": "虚拟资源总览",
+  "Virtual adapter mainly used for binding instance and other operations, occupying the quota of the port.": "虚拟网卡，主要用于绑定云主机等操作，占用端口的配额。",
   "VirtualAdapter Mac": "虚拟网卡的MAC",
   "Visibility": "可见性",
   "Visualization Compute Optimized Type with GPU": "GPU虚拟化型",

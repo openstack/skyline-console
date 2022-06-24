@@ -39,12 +39,16 @@ export class CreateAction extends ModalAction {
   }
 
   init() {
+    this.state.quota = {};
+    this.state.quotaLoading = true;
+    this.projectStore = globalProjectStore;
     this.networkStore = new NetworkStore();
     this.securityGroupStore = new SecurityGroupStore();
     this.qosPolicyStore = new QoSPolicyStore();
     this.subnetStore = new SubnetStore();
+    this.getQuota();
     // this.getSecurityGroups();
-    this.isAdminPage && globalProjectStore.fetchList();
+    // this.isAdminPage && globalProjectStore.fetchList();
   }
 
   async getSubnets(value) {
@@ -69,6 +73,55 @@ export class CreateAction extends ModalAction {
 
   getModalSize() {
     return 'large';
+  }
+
+  get tips() {
+    return t(
+      'Virtual adapter mainly used for binding instance and other operations, occupying the quota of the port.'
+    );
+  }
+
+  static get disableSubmit() {
+    const {
+      neutronQuota: { port: { left = 0 } = {} },
+    } = globalProjectStore;
+    return left === 0;
+  }
+
+  static get showQuota() {
+    return true;
+  }
+
+  get showQuota() {
+    return true;
+  }
+
+  async getQuota() {
+    this.setState({
+      quotaLoading: true,
+    });
+    const result = await this.projectStore.fetchProjectNeutronQuota();
+    const { port: quota = {} } = result || {};
+    this.setState({
+      quota,
+      quotaLoading: false,
+    });
+  }
+
+  get quotaInfo() {
+    const { quota = {}, quotaLoading } = this.state;
+    if (quotaLoading) {
+      return [];
+    }
+    const { left = 0 } = quota;
+    const add = left === 0 ? 0 : 1;
+    const data = {
+      ...quota,
+      add,
+      name: 'port',
+      title: t('Port'),
+    };
+    return [data];
   }
 
   get defaultValue() {

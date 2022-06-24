@@ -2461,6 +2461,7 @@
   "Virtual LANs": "Virtual LANs",
   "Virtual Resource Num": "Virtual Resource Num",
   "Virtual Resource Overview": "Virtual Resource Overview",
+  "Virtual adapter mainly used for binding instance and other operations, occupying the quota of the port.": "Virtual adapter mainly used for binding instance and other operations, occupying the quota of the port.",
   "VirtualAdapter Mac": "VirtualAdapter Mac",
   "Visibility": "Visibility",
   "Visualization Compute Optimized Type with GPU": "Visualization Compute Optimized Type with GPU",
