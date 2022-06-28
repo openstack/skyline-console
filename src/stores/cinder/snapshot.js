@@ -12,11 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { action } from 'mobx';
+import { action, observable } from 'mobx';
 import client from 'client';
 import Base from 'stores/base';
 
 export class SnapshotStore extends Base {
+  @observable
+  currentVolumeType = null;
+
   get client() {
     return client.cinder.snapshots;
   }
@@ -67,6 +70,12 @@ export class SnapshotStore extends Base {
   update(id, data) {
     const body = { [this.responseKey]: data };
     return this.submitting(this.client.update(id, body));
+  }
+
+  @action
+  setCurrentVolumeType(volume) {
+    const { volume_type } = volume || {};
+    this.currentVolumeType = volume_type;
   }
 }
 const globalSnapshotStore = new SnapshotStore();

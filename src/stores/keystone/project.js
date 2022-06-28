@@ -31,6 +31,9 @@ export class ProjectStore extends Base {
   neutronQuota = {};
 
   @observable
+  cinderQuota = {};
+
+  @observable
   groupRoleList = [];
 
   get client() {
@@ -490,6 +493,18 @@ export class ProjectStore extends Base {
     const neutronQuota = this.updateQuotaData(quota);
     this.neutronQuota = neutronQuota;
     return neutronQuota;
+  }
+
+  @action
+  async fetchProjectCinderQuota(projectId) {
+    const result = await this.cinderQuotaClient.show(
+      projectId || this.currentProjectId,
+      { usage: 'True' }
+    );
+    const { quota_set: quota } = result;
+    const cinderQuota = this.updateQuotaData(quota);
+    this.cinderQuota = cinderQuota;
+    return cinderQuota;
   }
 }
 

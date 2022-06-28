@@ -16,7 +16,24 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalSnapshotStore from 'stores/cinder/snapshot';
 import { isAvailableOrInUse } from 'resources/cinder/volume';
-import globalVolumeTypeStore from 'stores/cinder/volume-type';
+import globalProjectStore from 'stores/keystone/project';
+
+const getQuota = (cinderQuota) => {
+  const { snapshots: snapshotQuota = {} } = cinderQuota;
+  const { currentVolumeType } = globalSnapshotStore;
+  const typeQuota = cinderQuota[`snapshots_${currentVolumeType}`] || {};
+  return {
+    snapshotQuota,
+    typeQuota,
+  };
+};
+
+const getAdd = (cinderQuota) => {
+  const { snapshotQuota, typeQuota } = getQuota(cinderQuota);
+  const { left: totalLeft = 0 } = snapshotQuota || {};
+  const { left: typeLeft = 0 } = typeQuota || {};
+  return totalLeft !== 0 && typeLeft !== 0 ? 1 : 0;
+};
 
 export class CreateSnapshot extends ModalAction {
   static id = 'create-snapshot';
@@ -24,8 +41,12 @@ export class CreateSnapshot extends ModalAction {
   static title = t('Create Snapshot');
 
   init() {
+    globalSnapshotStore.setCurrentVolumeType(this.item);
+    this.state.quota = {};
+    this.state.quotaLoading = true;
     this.store = globalSnapshotStore;
-    this.volumeTypeStore = globalVolumeTypeStore;
+    this.projectStore = globalProjectStore;
+    this.getQuota();
   }
 
   get name() {
@@ -43,6 +64,55 @@ export class CreateSnapshot extends ModalAction {
   static policy = 'volume:create_snapshot';
 
   static allowed = (item) => Promise.resolve(isAvailableOrInUse(item));
+
+  static get disableSubmit() {
+    const { cinderQuota = {} } = globalProjectStore;
+    const add = getAdd(cinderQuota);
+    return add === 0;
+  }
+
+  static get showQuota() {
+    return true;
+  }
+
+  get showQuota() {
+    return true;
+  }
+
+  async getQuota() {
+    this.setState({
+      quotaLoading: true,
+    });
+    const result = await this.projectStore.fetchProjectCinderQuota();
+    this.setState({
+      quota: result,
+      quotaLoading: false,
+    });
+  }
+
+  get quotaInfo() {
+    const { quota = {}, quotaLoading } = this.state;
+    if (quotaLoading) {
+      return [];
+    }
+    const { snapshotQuota = {}, typeQuota = {} } = getQuota(quota);
+    const add = getAdd(quota);
+    const snapshotData = {
+      ...snapshotQuota,
+      add,
+      name: 'snapshot',
+      title: t('Snapshots'),
+    };
+    const { volume_type } = this.item;
+    const typeData = {
+      ...typeQuota,
+      add,
+      name: 'type',
+      title: t('{name} type snapshots', { name: volume_type }),
+      type: 'line',
+    };
+    return [snapshotData, typeData];
+  }
 
   get formItems() {
     return [
