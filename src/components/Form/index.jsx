@@ -268,6 +268,13 @@ export default class BaseForm extends React.Component {
     return null;
   }
 
+  getRightExtraSpan() {
+    return {
+      left: 18,
+      right: 6,
+    };
+  }
+
   getSubmitData(data) {
     return { ...data };
   }
@@ -709,11 +716,12 @@ export default class BaseForm extends React.Component {
       </Spin>
     );
     const onlyForm = !this.isModal || (this.isModal && !this.showQuota);
+    const { left, right } = this.getRightExtraSpan();
     const modalInner =
       this.isModal && !onlyForm ? (
         <Row justify="space-between" align="top">
-          <Col span={18}>{formDiv}</Col>
-          <Col span={6}>{this.renderModalRightExtra()}</Col>
+          <Col span={left}>{formDiv}</Col>
+          <Col span={right}>{this.renderModalRightExtra()}</Col>
         </Row>
       ) : null;
     return (

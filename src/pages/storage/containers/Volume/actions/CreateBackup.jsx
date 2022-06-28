@@ -16,7 +16,14 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalBackupStore from 'stores/cinder/backup';
 import { isAvailableOrInUse, isInUse } from 'resources/cinder/volume';
-import { createTip, backupModeList, modeTip } from 'resources/cinder/backup';
+import {
+  createTip,
+  backupModeList,
+  modeTip,
+  getQuotaInfo,
+  checkQuotaDisable,
+  fetchQuota,
+} from 'resources/cinder/backup';
 
 export class CreateBackup extends ModalAction {
   static id = 'create-backup';
@@ -70,6 +77,24 @@ export class CreateBackup extends ModalAction {
 
   init() {
     this.store = globalBackupStore;
+    globalBackupStore.setCurrentVolume(this.item);
+    fetchQuota(this);
+  }
+
+  static get disableSubmit() {
+    return checkQuotaDisable();
+  }
+
+  static get showQuota() {
+    return true;
+  }
+
+  get showQuota() {
+    return true;
+  }
+
+  get quotaInfo() {
+    return getQuotaInfo(this);
   }
 
   onSubmit = (values) => {
