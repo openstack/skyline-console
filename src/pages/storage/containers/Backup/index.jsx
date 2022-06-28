@@ -89,13 +89,16 @@ export class Backup extends Base {
       },
       {
         title: t('Backup Mode'),
-        dataIndex: 'backup_node',
-        render: (_, record) => {
-          const {
-            metadata: { auto = false },
-          } = record;
-          return auto ? t('Automatic backup') : t('Manual backup');
-        },
+        dataIndex: 'is_incremental',
+        isHideable: true,
+        render: (value) => (value ? t('Incremental Backup') : t('Full Backup')),
+        sorter: false,
+      },
+      {
+        title: t('Size'),
+        dataIndex: 'size',
+        isHideable: true,
+        render: (value) => `${value}GiB`,
         sorter: false,
       },
       {

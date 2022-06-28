@@ -12,12 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { action } from 'mobx';
+import { action, observable } from 'mobx';
 import client from 'client';
 import Base from 'stores/base';
 import { VolumeStore } from 'stores/cinder/volume';
 
 export class BackupStore extends Base {
+  @observable
+  currentVolumeSize = 0;
+
   get client() {
     return client.cinder.backups;
   }
@@ -57,6 +60,12 @@ export class BackupStore extends Base {
   restore(id, data) {
     const body = { restore: data || {} };
     return this.submitting(this.client.restore(id, body));
+  }
+
+  @action
+  setCurrentVolume(volume) {
+    const { size = 0 } = volume || {};
+    this.currentVolumeSize = size || 0;
   }
 }
 const globalBackupStore = new BackupStore();
