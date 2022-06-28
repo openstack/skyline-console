@@ -13,13 +13,15 @@
 // limitations under the License.
 
 const { resolve } = require('path');
+const autoprefixer = require('autoprefixer');
+
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
-const autoprefixer = require('autoprefixer');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+
 const common = require('./webpack.common');
 const theme = require('./theme');
-// const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 
 const root = (path) => resolve(__dirname, `../${path}`);
 
@@ -38,7 +40,16 @@ module.exports = (env) => {
     hot: true,
     inline: true,
     disableHostCheck: true,
-    // progress: true
+    progress: true,
+    // WARNING: disable the following attribute when debug webpack.
+    stats: {
+      children: false,
+      chunks: false,
+      chunkModules: false,
+      modules: false,
+      reasons: false,
+      useExports: false,
+    },
   };
 
   if (API === 'mock' || API === 'dev') {
@@ -66,16 +77,31 @@ module.exports = (env) => {
       publicPath: '/',
     },
     mode: 'development',
-    devtool: 'inline-source-map',
+    devtool: 'cheap-module-eval-source-map',
     devServer,
     module: {
       rules: [
+        // `react-refresh` only works in develop mode
+        {
+          test: /\.jsx?$/,
+          exclude: /node_modules/,
+          use: [
+            'thread-loader',
+            {
+              loader: 'babel-loader',
+              options: {
+                plugins: ['react-refresh/babel'],
+              },
+            },
+          ],
+        },
         {
           test: /\.css$/,
           use: [
             {
               loader: 'style-loader',
             },
+            'thread-loader',
             {
               loader: 'css-loader',
             },
@@ -121,6 +147,7 @@ module.exports = (env) => {
             {
               loader: 'style-loader', // creates style nodes from JS strings
             },
+            'thread-loader',
             {
               loader: 'css-loader', // translates CSS into CommonJS
             },
@@ -136,7 +163,8 @@ module.exports = (env) => {
       ],
     },
     plugins: [
-      new webpack.HotModuleReplacementPlugin(),
+      // new webpack.HotModuleReplacementPlugin(), `hmr` is outdated, now using `react-refresh`
+      new ReactRefreshWebpackPlugin({ overlay: false }),
       // new OpenBrowserPlugin({
       //   url: 'http://localhost:8080',
       //   browser: "Google Chrome",

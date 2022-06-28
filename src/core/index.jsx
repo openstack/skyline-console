@@ -12,11 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React, { lazy, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { createBrowserHistory } from 'history';
 import { syncHistoryWithStore } from 'mobx-react-router';
-// import { AppContainer } from 'react-hot-loader';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
 import enUS from 'antd/es/locale/en_US';
@@ -65,15 +64,3 @@ const getUser = async (callback) => {
 getUser(() => {
   render(<App rootStore={store} history={history} />);
 });
-
-module.hot &&
-  module.hot.accept('./App', () => {
-    const NextApp = lazy(() => import('./App'));
-    // eslint-disable-next-line import/no-extraneous-dependencies
-    const { AppContainer } = lazy(() => import('react-hot-loader'));
-    render(
-      <AppContainer>
-        <NextApp rootStore={store} history={history} />
-      </AppContainer>
-    );
-  });
