@@ -23,6 +23,7 @@ import {
   nameDomainColumns,
   transferFilterOption,
 } from 'resources/keystone/domain';
+import { roleFilterOption } from 'resources/keystone/role';
 
 export class ManageUserGroup extends ModalAction {
   static id = 'manage-group-group';
@@ -124,6 +125,7 @@ export class ManageUserGroup extends ModalAction {
         mode="multiple"
         options={this.groupRolesList(groupId)}
         defaultValue={this.defaultRoles(groupId)}
+        filterOption={roleFilterOption}
         onChange={(value, option) => {
           this.onSubChange(value, option, groupId);
         }}
@@ -204,6 +206,7 @@ export class ManageUserGroup extends ModalAction {
         onChange: this.onChangeUserGroup,
         wrapperCol: this.wrapperCol,
         loading: this.userGroupStore.list.isLoading,
+        onRowRight: () => null,
       },
     ];
   }

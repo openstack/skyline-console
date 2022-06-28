@@ -19,3 +19,8 @@ export const editable = (item) => {
   }
   return true;
 };
+
+export const roleFilterOption = (inputValue, options) => {
+  const { label = '' } = options;
+  return label.toLowerCase().includes((inputValue || '').toLowerCase());
+};

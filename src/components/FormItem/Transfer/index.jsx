@@ -24,6 +24,8 @@ const TableTransfer = ({
   rightColumns,
   pageSize,
   loading,
+  onRowLeft,
+  onRowRight,
   ...restProps
 }) => (
   <Transfer {...restProps} showSelectAll={false}>
@@ -36,6 +38,7 @@ const TableTransfer = ({
       disabled: listDisabled,
     }) => {
       const columns = direction === 'left' ? leftColumns : rightColumns;
+      const currentOnRow = direction === 'left' ? onRowLeft : onRowRight;
 
       const rowSelection = {
         getCheckboxProps: (item) => ({
@@ -59,6 +62,15 @@ const TableTransfer = ({
         pageSize,
       };
 
+      const onRowDefault = ({ key, disabled: itemDisabled }) => ({
+        onClick: () => {
+          if (itemDisabled || listDisabled) return;
+          onItemSelect(key, !listSelectedKeys.includes(key));
+        },
+      });
+
+      const onRow = currentOnRow || onRowDefault;
+
       return (
         <Table
           loading={loading}
@@ -68,12 +80,7 @@ const TableTransfer = ({
           pagination={pagination}
           size="small"
           style={{ pointerEvents: listDisabled ? 'none' : null }}
-          onRow={({ key, disabled: itemDisabled }) => ({
-            onClick: () => {
-              if (itemDisabled || listDisabled) return;
-              onItemSelect(key, !listSelectedKeys.includes(key));
-            },
-          })}
+          onRow={onRow}
         />
       );
     }}
@@ -94,6 +101,8 @@ export default class Index extends Component {
     value: PropTypes.array,
     pageSize: PropTypes.number,
     loading: PropTypes.bool,
+    onRowLeft: PropTypes.func,
+    onRowRight: PropTypes.func,
   };
 
   static defaultProps = {
@@ -154,6 +163,8 @@ export default class Index extends Component {
       titles,
       pageSize,
       loading,
+      onRowLeft,
+      onRowRight,
     } = this.props;
     const { targetKeys } = this.state;
     return (
@@ -170,6 +181,8 @@ export default class Index extends Component {
           leftColumns={leftTableColumns}
           rightColumns={rightTableColumns}
           loading={loading}
+          onRowLeft={onRowLeft}
+          onRowRight={onRowRight}
         />
       </>
     );
