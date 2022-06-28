@@ -264,11 +264,8 @@ export class ProjectStore extends Base {
       limit: ram.limit === -1 ? ram.limit : getGiBValue(ram.limit),
     };
     const renameShareQuota = Object.keys(shareQuota).reduce((pre, cur) => {
-      if (cur === 'gigabytes') {
-        pre.share_gigabytes = shareQuota[cur];
-      } else {
-        pre[cur] = shareQuota[cur];
-      }
+      const key = !cur.includes('share') ? `share_${cur}` : cur;
+      pre[key] = shareQuota[cur];
       return pre;
     }, {});
     const quota = {
