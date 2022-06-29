@@ -15,6 +15,8 @@
 import React from 'react';
 import { getOptions } from 'utils/index';
 import { FolderOutlined, FolderAddOutlined } from '@ant-design/icons';
+import globalProjectStore from 'stores/keystone/project';
+import globalBackupStore from 'stores/cinder/backup';
 
 export const backupStatus = {
   available: t('Available'),
@@ -140,3 +142,66 @@ export const restoreTip = (
     </p>
   </span>
 );
+
+// deal with quota
+export async function fetchQuota(self) {
+  self.setState({
+    quota: {},
+    quotaLoading: true,
+  });
+  const result = await globalProjectStore.fetchProjectCinderQuota();
+  self.setState({
+    quota: result,
+    quotaLoading: false,
+  });
+}
+
+export const getQuota = (cinderQuota) => {
+  const { backups = {}, backup_gigabytes: gigabytes = {} } = cinderQuota || {};
+  return {
+    backups,
+    gigabytes,
+  };
+};
+
+export const getAdd = (cinderQuota) => {
+  const { backups, gigabytes } = getQuota(cinderQuota);
+  const { left = 0 } = backups || {};
+  const { left: sizeLeft = 0, limit } = gigabytes || {};
+  const { currentVolumeSize = 0 } = globalBackupStore;
+  const add =
+    left !== 0 && (limit === -1 || sizeLeft >= currentVolumeSize) ? 1 : 0;
+  return {
+    add,
+    addSize: add === 1 ? currentVolumeSize : 0,
+  };
+};
+
+export const getQuotaInfo = (self) => {
+  const { quota = {}, quotaLoading } = self.state;
+  if (quotaLoading) {
+    return [];
+  }
+  const { backups = {}, gigabytes = {} } = getQuota(quota);
+  const { add, addSize } = getAdd(quota);
+  const backupData = {
+    ...backups,
+    add,
+    name: 'backup',
+    title: t('Backup'),
+  };
+  const sizeData = {
+    ...gigabytes,
+    add: addSize,
+    name: 'gigabytes',
+    title: t('Backup gigabytes (GiB)'),
+    type: 'line',
+  };
+  return [backupData, sizeData];
+};
+
+export const checkQuotaDisable = () => {
+  const { cinderQuota = {} } = globalProjectStore;
+  const { add } = getAdd(cinderQuota);
+  return add === 0;
+};

@@ -42,6 +42,17 @@ export default class ModalAction extends BaseForm {
     return 'small';
   }
 
+  getRightExtraSpan() {
+    const size = this.getModalSize();
+    const isLargeSize = size === 'large';
+    const left = isLargeSize ? 20 : 18;
+    const right = isLargeSize ? 4 : 6;
+    return {
+      left,
+      right,
+    };
+  }
+
   static get showQuota() {
     return false;
   }

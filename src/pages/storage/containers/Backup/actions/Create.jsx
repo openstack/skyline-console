@@ -16,34 +16,20 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalVolumeStore from 'stores/cinder/volume';
 import globalBackupStore from 'stores/cinder/backup';
-import { createTip, backupModeList, modeTip } from 'resources/cinder/backup';
+import {
+  createTip,
+  backupModeList,
+  modeTip,
+  fetchQuota,
+  getQuota,
+  getQuotaInfo,
+  checkQuotaDisable,
+} from 'resources/cinder/backup';
 import {
   isAvailableOrInUse,
   isInUse,
   volumeSelectTablePropsBackend,
 } from 'resources/cinder/volume';
-import globalProjectStore from 'stores/keystone/project';
-
-export const getQuota = (cinderQuota) => {
-  const { backups = {}, backup_gigabytes: gigabytes = {} } = cinderQuota || {};
-  return {
-    backups,
-    gigabytes,
-  };
-};
-
-export const getAdd = (cinderQuota) => {
-  const { backups, gigabytes } = getQuota(cinderQuota);
-  const { left = 0 } = backups || {};
-  const { left: sizeLeft = 0, limit } = gigabytes || {};
-  const { currentVolumeSize = 0 } = globalBackupStore;
-  const add =
-    left !== 0 && (limit === -1 || sizeLeft >= currentVolumeSize) ? 1 : 0;
-  return {
-    add,
-    addSize: add === 1 ? currentVolumeSize : 0,
-  };
-};
 
 export class Create extends ModalAction {
   static id = 'create';
@@ -66,10 +52,7 @@ export class Create extends ModalAction {
     globalBackupStore.setCurrentVolume({});
     this.store = globalBackupStore;
     this.volumeStore = globalVolumeStore;
-    this.state.quota = {};
-    this.state.quotaLoading = true;
-    this.projectStore = globalProjectStore;
-    this.getQuota();
+    fetchQuota(this);
   }
 
   get tips() {
@@ -87,9 +70,7 @@ export class Create extends ModalAction {
   static allowed = () => Promise.resolve(true);
 
   static get disableSubmit() {
-    const { cinderQuota = {} } = globalProjectStore;
-    const { add } = getAdd(cinderQuota);
-    return add === 0;
+    return checkQuotaDisable();
   }
 
   static get showQuota() {
@@ -100,38 +81,8 @@ export class Create extends ModalAction {
     return true;
   }
 
-  async getQuota() {
-    this.setState({
-      quotaLoading: true,
-    });
-    const result = await this.projectStore.fetchProjectCinderQuota();
-    this.setState({
-      quota: result,
-      quotaLoading: false,
-    });
-  }
-
   get quotaInfo() {
-    const { quota = {}, quotaLoading } = this.state;
-    if (quotaLoading) {
-      return [];
-    }
-    const { backups = {}, gigabytes = {} } = getQuota(quota);
-    const { add, addSize } = getAdd(quota);
-    const backupData = {
-      ...backups,
-      add,
-      name: 'backup',
-      title: t('Backup'),
-    };
-    const sizeData = {
-      ...gigabytes,
-      add: addSize,
-      name: 'gigabytes',
-      title: t('Backup gigabytes (GiB)'),
-      type: 'line',
-    };
-    return [backupData, sizeData];
+    return getQuotaInfo(this);
   }
 
   onVolumeChange = (value) => {
