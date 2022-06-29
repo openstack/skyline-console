@@ -15,6 +15,13 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalVolumeStore from 'stores/cinder/volume';
+import {
+  getQuotaInfo,
+  checkQuotaDisable,
+  fetchQuota,
+  onVolumeSizeChange,
+  onVolumeTypeChange,
+} from 'resources/cinder/volume';
 
 export class CreateVolume extends ModalAction {
   static id = 'create';
@@ -31,6 +38,7 @@ export class CreateVolume extends ModalAction {
     this.volumeStore = globalVolumeStore;
     this.getAvailZones();
     this.getVolumeTypes();
+    fetchQuota(this, this.item.size);
   }
 
   getAvailZones() {
@@ -56,6 +64,22 @@ export class CreateVolume extends ModalAction {
 
   get volumeTypes() {
     return this.volumeStore.volumeTypes;
+  }
+
+  static get disableSubmit() {
+    return checkQuotaDisable();
+  }
+
+  static get showQuota() {
+    return true;
+  }
+
+  get showQuota() {
+    return true;
+  }
+
+  get quotaInfo() {
+    return getQuotaInfo(this);
   }
 
   static allowed = (item) => Promise.resolve(item.status === 'available');
@@ -94,6 +118,7 @@ export class CreateVolume extends ModalAction {
         min: this.minSize,
         extra: `${t('Min size')}: ${this.minSize}GiB`,
         required: true,
+        onChange: onVolumeSizeChange,
       },
       {
         name: 'volume_type',
@@ -102,6 +127,7 @@ export class CreateVolume extends ModalAction {
         required: true,
         options: this.volumeTypes,
         placeholder: t('Please select volume type'),
+        onChange: onVolumeTypeChange,
       },
       {
         name: 'availability_zone',
