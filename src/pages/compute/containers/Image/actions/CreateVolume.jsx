@@ -16,6 +16,13 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalVolumeStore from 'stores/cinder/volume';
 import globalRootStore from 'stores/root';
+import {
+  getQuotaInfo,
+  checkQuotaDisable,
+  fetchQuota,
+  onVolumeSizeChange,
+  onVolumeTypeChange,
+} from 'resources/cinder/volume';
 
 export class CreateVolume extends ModalAction {
   static id = 'create';
@@ -25,6 +32,8 @@ export class CreateVolume extends ModalAction {
   init() {
     this.volumeStore = globalVolumeStore;
     this.getVolumeTypes();
+    const size = this.getMinSize();
+    fetchQuota(this, size);
   }
 
   static policy = 'volume:create_from_image';
@@ -55,6 +64,22 @@ export class CreateVolume extends ModalAction {
 
   get instanceName() {
     return this.values.name;
+  }
+
+  static get disableSubmit() {
+    return checkQuotaDisable();
+  }
+
+  static get showQuota() {
+    return true;
+  }
+
+  get showQuota() {
+    return true;
+  }
+
+  get quotaInfo() {
+    return getQuotaInfo(this);
   }
 
   get defaultValue() {
@@ -89,6 +114,7 @@ export class CreateVolume extends ModalAction {
         required: true,
         options: this.volumeTypes,
         placeholder: t('Please select volume type'),
+        onChange: onVolumeTypeChange,
       },
       {
         name: 'size',
@@ -97,6 +123,7 @@ export class CreateVolume extends ModalAction {
         min: minSize,
         extra: `${t('Min size')}: ${minSize}GiB`,
         required: true,
+        onChange: onVolumeSizeChange,
       },
     ];
   }
