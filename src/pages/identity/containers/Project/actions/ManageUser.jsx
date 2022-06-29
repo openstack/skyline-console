@@ -23,6 +23,7 @@ import {
   nameDomainColumns,
   transferFilterOption,
 } from 'resources/keystone/domain';
+import { roleFilterOption } from 'resources/keystone/role';
 
 export class ManageUser extends ModalAction {
   static id = 'management-user';
@@ -136,6 +137,7 @@ export class ManageUser extends ModalAction {
         mode="multiple"
         options={this.userRolesList(id)}
         defaultValue={this.defaultRoles(id)}
+        filterOption={roleFilterOption}
         onChange={(value, option) => {
           this.onSelectChange(value, option, id);
         }}
@@ -204,6 +206,7 @@ export class ManageUser extends ModalAction {
         filterOption: transferFilterOption,
         wrapperCol: this.wrapperCol,
         loading: this.userStore.list.isLoading,
+        onRowRight: () => null,
       },
     ];
   }

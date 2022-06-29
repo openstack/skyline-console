@@ -32,6 +32,7 @@ import {
   nameDomainColumns,
   transferFilterOption,
 } from 'resources/keystone/domain';
+import { roleFilterOption } from 'resources/keystone/role';
 
 export class Create extends FormAction {
   constructor(props) {
@@ -167,6 +168,7 @@ export class Create extends FormAction {
         mode="multiple"
         options={this.projectRolesList(projectId)}
         defaultValue={this.defaultRoles()}
+        filterOption={roleFilterOption}
         onChange={(value, option) => {
           this.onSelectChange(value, option, projectId);
         }}
@@ -330,6 +332,7 @@ export class Create extends FormAction {
         onChange: this.onChangeProject,
         filterOption: transferFilterOption,
         loading: this.projectStore.list.isLoading,
+        onRowRight: () => null,
       },
       {
         name: 'select_user_group',
