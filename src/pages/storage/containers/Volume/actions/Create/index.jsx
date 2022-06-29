@@ -20,17 +20,25 @@ import {
   volumeStatus,
   multiTip,
   snapshotTypeTip,
+  getQuotaInfo,
+  getAdd,
+  fetchQuota,
+  getQuota,
+  onVolumeSizeChange,
+  setCreateVolumeCount,
+  setCreateVolumeSize,
+  setCreateVolumeType,
 } from 'resources/cinder/volume';
 import globalSnapshotStore from 'stores/cinder/snapshot';
 import globalImageStore from 'stores/glance/image';
 import globalVolumeStore from 'stores/cinder/volume';
 import globalVolumeTypeStore from 'stores/cinder/volume-type';
+import globalProjectStore from 'stores/keystone/project';
 import globalBackupStore from 'stores/cinder/backup';
-import { InputNumber, Badge, message as $message } from 'antd';
+import { InputNumber, message as $message } from 'antd';
 import { toJS } from 'mobx';
 import { FormAction } from 'containers/Action';
 import classnames from 'classnames';
-import { isEmpty, isObject } from 'lodash';
 import {
   getImageSystemTabs,
   getImageOS,
@@ -44,6 +52,14 @@ import styles from './index.less';
 
 export class Create extends FormAction {
   init() {
+    this.state = {
+      ...this.state,
+      quotaLoading: true,
+      count: 1,
+      sharedDisabled: false,
+      confirmCount: 0,
+    };
+    this.message = '';
     this.snapshotStore = globalSnapshotStore;
     this.imageStore = globalImageStore;
     this.volumeStore = globalVolumeStore;
@@ -53,12 +69,6 @@ export class Create extends FormAction {
     this.getAvailZones();
     this.getImages();
     this.getVolumeTypes();
-    this.state = {
-      ...this.state,
-      count: 1,
-      sharedDisabled: false,
-      confirmCount: 0,
-    };
   }
 
   static id = 'volume-create';
@@ -81,6 +91,23 @@ export class Create extends FormAction {
     return Promise.resolve(true);
   }
 
+  get disableSubmit() {
+    const { quotaLoading } = this.state;
+    if (quotaLoading) {
+      return true;
+    }
+    const { cinderQuota = {} } = globalProjectStore;
+    const { add, error } = getAdd(cinderQuota);
+    const disable = add === 0;
+    if (!disable) {
+      this.message = '';
+    } else if (error !== this.message) {
+      $message.error(error);
+      this.message = error;
+    }
+    return disable;
+  }
+
   get instanceName() {
     const { name } = this.values || {};
     const { count = 1 } = this.state;
@@ -94,7 +121,7 @@ export class Create extends FormAction {
   }
 
   get errorText() {
-    if (this.msg) {
+    if (this.message) {
       return t(
         'Unable to create volume: insufficient quota to create resources.'
       );
@@ -107,79 +134,23 @@ export class Create extends FormAction {
   }
 
   getVolumeQuota() {
-    const quotaAll = toJS(this.volumeStore.quotaSet) || {};
-    if (isEmpty(quotaAll)) {
-      return [];
-    }
-    Object.values(quotaAll).forEach((it) => {
-      if (isObject(it)) {
-        it.used = it.in_use;
-      }
-    });
-    const { volume_type } = this.state;
-    const { name } = volume_type || {};
-    const result = {
-      volumes: quotaAll.volumes,
-      gigabytes: quotaAll.gigabytes,
-    };
-    if (name) {
-      result[`volumes_${name}`] = quotaAll[`volumes_${name}`];
-      result[`gigabytes_${name}`] = quotaAll[`gigabytes_${name}`];
-    }
-    return result;
+    const { quota = {} } = this.state;
+    return getQuota(quota);
   }
 
   get quotaInfo() {
-    const quota = this.getVolumeQuota();
-    const { volumes = {}, gigabytes = {} } = quota;
-    const { limit } = volumes || {};
-    if (!limit) {
-      return [];
-    }
+    return getQuotaInfo(this);
+  }
 
-    const { volume_type, size = 0, count = 1 } = this.state;
-    const { name } = volume_type || {};
-    const volume = {
-      ...volumes,
-      add: count,
-      name: 'volume',
-      title: t('Volume'),
-    };
-    const sizeInfo = {
-      ...gigabytes,
-      add: count * size,
-      name: 'gigabytes',
-      title: t('volume gigabytes'),
-      type: 'line',
-    };
-    if (!name) {
-      return [volume, sizeInfo];
-    }
-    const typeQuota = quota[`volumes_${name}`] || {};
-    const typeSizeQuota = quota[`gigabytes_${name}`] || {};
-    const detailInfo = {
-      ...typeQuota,
-      add: count,
-      name: `volumes_${name}`,
-      title: t('{name} type', { name }),
-      type: 'line',
-    };
-    const detailSizeInfo = {
-      ...typeSizeQuota,
-      add: count * size,
-      name: `gigabytes_${name}`,
-      title: t('{name} type gigabytes', { name }),
-      type: 'line',
-    };
-    return [volume, sizeInfo, detailInfo, detailSizeInfo];
+  get defaultSize() {
+    return this.quotaIsLimit && this.maxSize < 10 ? this.maxSize : 10;
   }
 
   get defaultValue() {
-    const size = this.quotaIsLimit && this.maxSize < 10 ? this.maxSize : 10;
     const { initVolumeType } = this.state;
     const values = {
       source: this.sourceTypes[0],
-      size,
+      size: this.defaultSize,
       project: this.currentProjectName,
       availableZone: (this.availableZones[0] || []).value,
       volume_type: initVolumeType,
@@ -237,20 +208,14 @@ export class Create extends FormAction {
     ];
   }
 
-  get quota() {
-    const { volumes = {} } = this.getVolumeQuota();
-    return volumes;
-  }
-
   get quotaIsLimit() {
     const { gigabytes: { limit } = {} } = this.getVolumeQuota();
     return limit !== -1;
   }
 
   get maxSize() {
-    const { gigabytes: { limit = 10, in_use = 0, reserved = 0 } = {} } =
-      this.getVolumeQuota();
-    return limit !== -1 ? limit - in_use - reserved : 1000;
+    const { gigabytes: { left = 0 } = {} } = this.getVolumeQuota();
+    return left === -1 ? 1000 : left;
   }
 
   getAvailZones() {
@@ -264,14 +229,17 @@ export class Create extends FormAction {
   async getVolumeTypes() {
     const types = await this.volumeTypeStore.fetchList();
     if (types.length > 0) {
+      const defaultType = types[0];
+      const { id, name } = defaultType;
       const initVolumeType = {
-        selectedRowKeys: [types[0].id],
-        selectedRows: [types[0]],
+        selectedRowKeys: [id],
+        selectedRows: [defaultType],
       };
+      setCreateVolumeType(name);
       this.setState(
         {
           initVolumeType,
-          volume_type: types[0],
+          volume_type: defaultType,
         },
         () => {
           this.updateFormValue('volume_type', initVolumeType);
@@ -282,7 +250,8 @@ export class Create extends FormAction {
   }
 
   async getQuota() {
-    await this.volumeStore.fetchQuota();
+    await fetchQuota(this, 0);
+    setCreateVolumeSize(this.defaultSize);
     this.onCountChange(1);
     this.updateDefaultValue();
   }
@@ -321,12 +290,18 @@ export class Create extends FormAction {
   onVolumeTypeChange = (value) => {
     const { selectedRows = [] } = value;
     if (selectedRows.length === 0) {
+      setCreateVolumeType('');
       this.setState({
         multiattach: false,
       });
       return;
     }
-    const { id, extra_specs: { multiattach = 'False' } = {} } = selectedRows[0];
+    const {
+      id,
+      extra_specs: { multiattach = 'False' } = {},
+      name,
+    } = selectedRows[0];
+    setCreateVolumeType(name);
     if (this.sourceTypeIsSnapshot) {
       const {
         initVolumeType: { selectedRowKeys = [] },
@@ -520,6 +495,7 @@ export class Create extends FormAction {
         description: `${minSize}GiB-${this.maxSize}GiB`,
         required: this.quotaIsLimit,
         hidden: !this.quotaIsLimit,
+        onChange: onVolumeSizeChange,
       },
       {
         name: 'size',
@@ -528,6 +504,7 @@ export class Create extends FormAction {
         min: minSize,
         hidden: this.quotaIsLimit,
         required: !this.quotaIsLimit,
+        onChange: onVolumeSizeChange,
       },
       {
         type: 'divider',
@@ -549,6 +526,7 @@ export class Create extends FormAction {
   onCountChangeCallback() {}
 
   onCountChange = (value) => {
+    setCreateVolumeCount(value);
     this.setState(
       {
         count: value,
@@ -561,69 +539,12 @@ export class Create extends FormAction {
     );
   };
 
-  checkQuotaDetail = (quota) => {
-    if (!quota || isEmpty(quota)) {
-      return true;
-    }
-    const { limit, add, reserved = 0 } = quota || {};
-    if (limit === -1) {
-      return true;
-    }
-    return limit >= add + reserved;
-  };
-
-  getQuotaErrorMsg = (quota) => {
-    const { limit, used, reserved, add, title } = quota;
-    const left = limit - used - reserved;
-    return t(
-      'Quota: Insufficient { name } quota to create resources, please adjust resource quantity or quota(left { left }, input { input }).',
-      {
-        name: title,
-        left,
-        input: add,
-      }
-    );
-  };
-
-  checkQuotaAll = () => {
-    const results = this.quotaInfo;
-    if (!results.length) {
-      return '';
-    }
-    const [quota = {}, sizeQuota = {}, typeQuota = {}, typeSizeQuota = {}] =
-      results;
-    let msg = '';
-    const quotas = [quota, sizeQuota, typeQuota, typeSizeQuota];
-    const errorQuota = quotas.find((it) => !this.checkQuotaDetail(it));
-    if (errorQuota) {
-      msg = this.getQuotaErrorMsg(errorQuota);
-    }
-    return msg;
-  };
-
-  renderBadge() {
-    const msg = this.checkQuotaAll();
-    if (!msg) {
-      this.msg = '';
-      return null;
-    }
-    if (msg && this.msg !== msg) {
-      $message.error(msg);
-      this.msg = msg;
-    }
-    return <Badge status="error" text={msg} />;
-  }
-
-  renderExtra() {
-    return this.renderBadge();
-  }
-
   getCountMax = () => {
-    const { limit, used, reserved } = this.quota;
-    if (!limit || limit === -1) {
-      return 100;
+    const { volumes: { left = 0 } = {} } = this.getVolumeQuota();
+    if (left === -1) {
+      return Infinity;
     }
-    return limit - used - reserved;
+    return left;
   };
 
   renderFooterLeft() {
@@ -644,15 +565,14 @@ export class Create extends FormAction {
           value={count}
           className={classnames(styles.input, 'volume-count')}
         />
-        {this.renderExtra()}
       </div>
     );
   }
 
   onSubmit = (data) => {
     const { count } = this.state;
-    if (this.msg) {
-      return Promise.reject(this.msg);
+    if (this.message) {
+      return Promise.reject(this.message);
     }
     const {
       backup,
