@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import { action, observable } from 'mobx';
-import { isOsDisk } from 'resources/cinder/volume';
 import { renderFilterMap } from 'utils/index';
 import client from 'client';
 import Base from 'stores/base';
@@ -31,6 +30,15 @@ export class VolumeStore extends Base {
 
   @observable
   quotaSet = {};
+
+  @observable
+  volumeTypeForCreate = '';
+
+  @observable
+  volumeSizeForCreate = 0;
+
+  @observable
+  volumeCountForCreate = 1;
 
   get client() {
     return client.cinder.volumes;
@@ -56,10 +64,15 @@ export class VolumeStore extends Base {
     return this.skylineClient.extension.volumes(params);
   }
 
+  isOsDisk(item) {
+    const { isOsDisk } = require('resources/cinder/volume');
+    return isOsDisk(item);
+  }
+
   get mapper() {
     return (volume) => ({
       ...volume,
-      disk_tag: isOsDisk(volume) ? 'os_disk' : 'data_disk',
+      disk_tag: this.isOsDisk(volume) ? 'os_disk' : 'data_disk',
       description: volume.description || (volume.origin_data || {}).description,
       delete_interval:
         volume.metadata && volume.metadata.delete_interval
@@ -213,6 +226,28 @@ export class VolumeStore extends Base {
       value: it.id,
     }));
     this.originalVolumeTypes = data || [];
+  }
+
+  @action
+  setCreateVolumeSize(size = 0) {
+    this.volumeSizeForCreate = size;
+  }
+
+  @action
+  setCreateVolumeType(type = '') {
+    this.volumeTypeForCreate = type;
+  }
+
+  @action
+  setCreateVolumeCount(count = 1) {
+    this.volumeCountForCreate = count;
+  }
+
+  @action
+  setCreateVolumeInfo({ size = 0, type = '', count = 1 } = {}) {
+    this.setCreateVolumeSize(size);
+    this.setCreateVolumeType(type);
+    this.setCreateVolumeCount(count);
   }
 }
 
