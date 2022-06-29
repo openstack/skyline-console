@@ -25,7 +25,7 @@ export class Share extends Base {
   }
 
   get policy() {
-    return 'manila:share:get_all';
+    return 'share:get_all';
   }
 
   get name() {

@@ -35,7 +35,7 @@ export class Create extends ModalAction {
     this.portStore = new PortStore();
   }
 
-  static policy = 'manila:share_network:create';
+  static policy = 'share_network:create';
 
   static allowed = () => Promise.resolve(true);
 

@@ -91,6 +91,8 @@ export default class ConfirmAction {
   // eslint-disable-next-line no-unused-vars
   policy = '';
 
+  aliasPolicy = '';
+
   unescape = (message) => unescapeHtml(message);
 
   getItemId = (data) => data.id;

@@ -24,7 +24,7 @@ export class ShareServer extends Base {
   }
 
   get policy() {
-    return 'manila:share_server:index';
+    return 'share_server:index';
   }
 
   get name() {

@@ -26,7 +26,7 @@ export class Hypervisors extends Base {
   }
 
   get policy() {
-    return 'os_compute_api:os-hypervisors';
+    return 'os_compute_api:os-hypervisors:list';
   }
 
   get name() {

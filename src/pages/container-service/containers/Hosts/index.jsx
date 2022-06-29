@@ -29,7 +29,7 @@ export class Hosts extends Base {
   }
 
   get policy() {
-    return 'container:host:get_all';
+    return 'host:get_all';
   }
 
   getColumns = () => [

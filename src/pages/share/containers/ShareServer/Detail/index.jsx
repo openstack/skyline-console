@@ -26,7 +26,7 @@ export class Detail extends Base {
   }
 
   get policy() {
-    return 'manila:share_server:show';
+    return 'share_server:show';
   }
 
   get listUrl() {

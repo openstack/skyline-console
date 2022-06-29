@@ -29,7 +29,7 @@ export class DatabaseCreate extends ModalAction {
     return t('Create Database');
   }
 
-  static policy = 'trove:instance:extension:database:create';
+  static policy = 'instance:extension:database:create';
 
   static allowed() {
     return Promise.resolve(true);

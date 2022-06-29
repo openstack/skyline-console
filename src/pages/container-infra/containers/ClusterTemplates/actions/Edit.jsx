@@ -29,7 +29,7 @@ export class Edit extends Base {
     return this.getRoutePath('clusterTemplate');
   }
 
-  static policy = 'container-infra:clustertemplate:update';
+  static policy = 'clustertemplate:update';
 
   static path = (item) => {
     const key = 'containerInfraUpdateClusterTemplate';

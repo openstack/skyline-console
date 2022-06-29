@@ -32,7 +32,7 @@ export class Backups extends Base {
   }
 
   get policy() {
-    return 'trove:backup:index';
+    return 'backup:index';
   }
 
   get searchFilters() {

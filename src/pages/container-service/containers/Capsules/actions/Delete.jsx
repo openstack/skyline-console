@@ -34,7 +34,7 @@ export default class DeleteCapsule extends ConfirmAction {
     return true;
   }
 
-  policy = 'container:capsule:delete';
+  policy = 'capsule:delete';
 
   allowedCheckFunc = () => true;
 

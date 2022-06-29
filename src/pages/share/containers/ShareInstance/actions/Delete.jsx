@@ -36,7 +36,7 @@ export default class Delete extends ConfirmAction {
     return t('Force Delete Share Instance');
   }
 
-  policy = 'manila:share_instance:force_delete';
+  policy = 'share_instance:force_delete';
 
   onSubmit = (data) => globalShareInstanceStore.forceDelete(data);
 }

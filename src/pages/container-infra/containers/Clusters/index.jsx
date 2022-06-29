@@ -29,7 +29,7 @@ export class Clusters extends Base {
   }
 
   get policy() {
-    return 'container-infra:cluster:get_all';
+    return 'cluster:get_all';
   }
 
   get actionConfigs() {

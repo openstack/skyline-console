@@ -16,6 +16,10 @@ export class ActionLog extends Base {
     return 'request_id';
   }
 
+  get policy() {
+    return 'os_compute_api:os-instance-actions:list';
+  }
+
   getColumns = () => actionColumn(this);
 
   get hideSearch() {

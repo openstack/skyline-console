@@ -36,7 +36,7 @@ export default class Delete extends ConfirmAction {
     return t('Delete Extra Specs');
   }
 
-  policy = 'manila:share_group_types_spec:delete';
+  policy = 'share_group_types_spec:delete';
 
   allowedCheckFunc = () => true;
 

@@ -34,7 +34,7 @@ export default class Delete extends ConfirmAction {
     return t('Delete');
   }
 
-  policy = 'container-infra:clustertemplate:delete';
+  policy = 'clustertemplate:delete';
 
   allowedCheckFunc = () => true;
 

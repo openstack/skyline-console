@@ -25,6 +25,10 @@ export class Detail extends Base {
   }
 
   get policy() {
+    return 'container:get';
+  }
+
+  get aliasPolicy() {
     return 'barbican:container:get';
   }
 

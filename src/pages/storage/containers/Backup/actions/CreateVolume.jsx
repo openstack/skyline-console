@@ -34,6 +34,8 @@ export class CreateVolume extends ModalAction {
 
   static policy = 'volume:create';
 
+  static aliasPolicy = 'cinder:volume:create';
+
   init() {
     this.volumeStore = globalVolumeStore;
     this.getAvailZones();

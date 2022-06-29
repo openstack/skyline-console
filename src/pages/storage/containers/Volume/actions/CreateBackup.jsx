@@ -49,6 +49,8 @@ export class CreateBackup extends ModalAction {
 
   static policy = 'backup:create';
 
+  static aliasPolicy = 'cinder:backup:create';
+
   static allowed = (item) => Promise.resolve(isAvailableOrInUse(item));
 
   get formItems() {

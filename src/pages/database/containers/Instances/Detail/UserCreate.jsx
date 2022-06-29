@@ -33,7 +33,7 @@ export class UserCreate extends ModalAction {
     return t('Create User');
   }
 
-  static policy = 'trove:instance:extension:user:create';
+  static policy = 'instance:extension:user:create';
 
   static allowed() {
     return Promise.resolve(true);

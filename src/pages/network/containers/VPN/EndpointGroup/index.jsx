@@ -40,6 +40,10 @@ export class EndpointGroup extends Base {
     return 'get_endpoint_group';
   }
 
+  get aliasPolicy() {
+    return 'neutron:get_endpoint_group';
+  }
+
   get name() {
     return t('vpn endpoint groups');
   }

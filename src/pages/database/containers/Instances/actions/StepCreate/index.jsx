@@ -31,7 +31,7 @@ export class StepCreate extends StepAction {
 
   static path = '/database/instances/create';
 
-  static policy = 'trove:instance:create';
+  static policy = 'instance:create';
 
   static allowed() {
     return Promise.resolve(true);

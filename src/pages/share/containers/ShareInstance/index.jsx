@@ -24,7 +24,7 @@ export class ShareInstance extends Base {
   }
 
   get policy() {
-    return 'manila:share_instance:index';
+    return 'share_instance:index';
   }
 
   get name() {

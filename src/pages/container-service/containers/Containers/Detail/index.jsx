@@ -31,7 +31,7 @@ export class ContainerDetail extends Base {
   }
 
   get policy() {
-    return 'container:container:get_one';
+    return 'container:get_one';
   }
 
   get actionConfigs() {

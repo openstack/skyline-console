@@ -28,6 +28,10 @@ export class QoSPolicyDetail extends Base {
     return 'get_policy';
   }
 
+  get aliasPolicy() {
+    return 'neutron:get_policy';
+  }
+
   get listUrl() {
     return this.getRoutePath('networkQos');
   }

@@ -36,7 +36,7 @@ export default class Recover extends ConfirmAction {
     return true;
   }
 
-  policy = 'os_compute_api:os-deferred-delete';
+  policy = 'os_compute_api:os-deferred-delete:restore';
 
   allowedCheckFunc = (item) => {
     if (!item) {

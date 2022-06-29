@@ -50,7 +50,7 @@ export class Create extends ModalAction {
     return this.projectStore.list.data || [];
   }
 
-  static policy = 'manila:share_group_type:create';
+  static policy = 'share_group_type:create';
 
   static allowed = () => Promise.resolve(true);
 

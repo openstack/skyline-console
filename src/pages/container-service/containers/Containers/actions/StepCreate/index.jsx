@@ -30,7 +30,9 @@ export class StepCreate extends StepAction {
 
   static path = '/container/containers/create';
 
-  static policy = 'container:container:create';
+  static policy = 'container:create';
+
+  static aliasPolicy = 'zun:container:create';
 
   static allowed() {
     return Promise.resolve(true);

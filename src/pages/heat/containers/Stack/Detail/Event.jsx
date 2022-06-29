@@ -27,6 +27,10 @@ export class Event extends Base {
     return 'events:index';
   }
 
+  get aliasPolicy() {
+    return 'heat:events:index';
+  }
+
   get name() {
     return t('stack events');
   }

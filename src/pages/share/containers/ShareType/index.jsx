@@ -24,7 +24,7 @@ export class ShareType extends Base {
   }
 
   get policy() {
-    return 'manila:share_type:index';
+    return 'share_type:index';
   }
 
   get name() {

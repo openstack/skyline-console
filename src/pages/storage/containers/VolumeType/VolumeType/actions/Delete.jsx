@@ -36,7 +36,7 @@ export default class DeleteAction extends ConfirmAction {
     return t('Delete Volume Type');
   }
 
-  policy = 'volume_extension:types_manage';
+  policy = 'volume_extension:type_delete';
 
   onSubmit = (data) => globalVolumeTypeStore.delete(data);
 }

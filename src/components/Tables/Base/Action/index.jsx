@@ -17,6 +17,7 @@ import checkItemPolicy, { systemRoleIsReader } from 'resources/skyline/policy';
 export async function checkAllowed({
   item,
   policy,
+  aliasPolicy,
   allowed,
   containerProps,
   actionName,
@@ -27,6 +28,7 @@ export async function checkAllowed({
   const { enableSystemReader } = action || {};
   const policyResult = checkItemPolicy({
     policy,
+    aliasPolicy,
     item,
     actionName,
     isAdminPage,
@@ -57,6 +59,7 @@ export async function getAllowedResults({
     const result = checkAllowed({
       item: data,
       policy: key ? it[key].policy : it.policy,
+      aliasPolicy: key ? it[key].aliasPolicy : it.aliasPolicy,
       allowed: key ? it[key].allowed : it.allowed,
       containerProps,
       actionName: key ? it[key].title : it.title,
@@ -72,11 +75,16 @@ export async function getAllowedResults({
 
 export function getPolicyResults({ actions, extra, isAdminPage }) {
   return actions.map((it) => {
-    const { policy, title, enableSystemReader } = it;
+    const { policy, aliasPolicy, title, enableSystemReader } = it;
     if (isAdminPage && !enableSystemReader && systemRoleIsReader()) {
       return false;
     }
-    const result = checkItemPolicy({ policy, actionName: title, extra });
+    const result = checkItemPolicy({
+      policy,
+      aliasPolicy,
+      actionName: title,
+      extra,
+    });
     return result;
   });
 }

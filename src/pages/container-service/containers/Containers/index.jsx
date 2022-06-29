@@ -29,7 +29,7 @@ export class Containers extends Base {
   }
 
   get policy() {
-    return 'container:container:get_all';
+    return 'container:get_all';
   }
 
   get actionConfigs() {

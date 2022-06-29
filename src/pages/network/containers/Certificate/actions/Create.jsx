@@ -30,7 +30,7 @@ export class CreateAction extends ModalAction {
 
   static title = t('Create Certificate');
 
-  static policy = ['barbican:secrets:post', 'barbican:containers:post'];
+  static policy = ['secrets:post', 'containers:post'];
 
   init() {
     this.store = globalContainersStore;

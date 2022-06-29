@@ -31,7 +31,9 @@ export default class ForceDeleteContainer extends ConfirmAction {
     return t('Force Delete');
   }
 
-  policy = 'container:container:delete_force';
+  policy = 'container:delete_force';
+
+  aliasPolicy = 'zun:container:delete_force';
 
   allowedCheckFunc = (item) => checkItemAction(item, 'delete_force');
 

@@ -36,7 +36,7 @@ export class ResetStatus extends ModalAction {
     return value;
   }
 
-  static policy = 'manila:share:reset_status';
+  static policy = 'share:reset_status';
 
   static allowed = () => Promise.resolve(true);
 

@@ -22,13 +22,13 @@ export class Create extends ModalAction {
 
   static title = t('Create QoS Policy');
 
-  policy = () => 'create_policy';
-
   get name() {
     return t('Create QoS Policy');
   }
 
   static policy = 'create_policy';
+
+  static aliasPolicy = 'neutron:create_policy';
 
   static allowed = () => Promise.resolve(true);
 

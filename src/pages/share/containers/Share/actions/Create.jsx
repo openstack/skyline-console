@@ -70,7 +70,7 @@ export class Create extends FormAction {
     this.state.shareGroups = [];
   }
 
-  static policy = 'manila:share:create';
+  static policy = 'share:create';
 
   static allowed = () => Promise.resolve(true);
 

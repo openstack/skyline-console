@@ -25,6 +25,8 @@ export class Edit extends ModalAction {
 
   static policy = 'backup:update';
 
+  static aliasPolicy = 'cinder:backup:update';
+
   static allowed() {
     return Promise.resolve(true);
   }

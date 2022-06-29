@@ -29,7 +29,7 @@ export class HostsDetail extends Base {
   }
 
   get policy() {
-    return 'container:host:get';
+    return 'host:get';
   }
 
   get detailInfos() {

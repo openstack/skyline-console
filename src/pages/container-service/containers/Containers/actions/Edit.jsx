@@ -22,7 +22,9 @@ export class EditContainer extends ModalAction {
 
   static buttonText = t('Edit');
 
-  static policy = 'container:container:update';
+  static policy = 'container:update';
+
+  static aliasPolicy = 'zun:container:update';
 
   static allowed = (item) => checkItemAction(item, 'update');
 

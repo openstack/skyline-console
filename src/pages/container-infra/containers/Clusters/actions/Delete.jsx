@@ -36,7 +36,7 @@ export default class DeleteClusters extends ConfirmAction {
     return true;
   }
 
-  policy = 'container-infra:cluster:delete';
+  policy = 'cluster:delete';
 
   allowedCheckFunc = () => true;
 

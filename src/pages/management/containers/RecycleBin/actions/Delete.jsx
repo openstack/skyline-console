@@ -36,7 +36,7 @@ export default class Delete extends ConfirmAction {
     return true;
   }
 
-  policy = 'os_compute_api:os-deferred-delete';
+  policy = 'os_compute_api:os-deferred-delete:force';
 
   allowedCheckFunc = (item) => {
     if (!item) {

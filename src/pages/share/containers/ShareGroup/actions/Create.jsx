@@ -56,7 +56,7 @@ export class Create extends ModalAction {
     this.state.showNetworks = false;
   }
 
-  static policy = 'manila:share_group:create';
+  static policy = 'share_group:create';
 
   static allowed = () => Promise.resolve(true);
 

@@ -35,6 +35,8 @@ export class Create extends ModalAction {
 
   static policy = 'create_endpoint_group';
 
+  static aliasPolicy = 'neutron:create_endpoint_group';
+
   static allowed = () => Promise.resolve(true);
 
   get name() {
