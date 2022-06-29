@@ -15,6 +15,9 @@
 import React from 'react';
 import { yesNoOptions } from 'utils/constants';
 import { toLocalTimeFilter } from 'utils/index';
+import globalProjectStore from 'stores/keystone/project';
+import globalVolumeStore from 'stores/cinder/volume';
+import { isEmpty } from 'lodash';
 
 export const volumeStatus = {
   available: t('Available'),
@@ -337,4 +340,186 @@ export const getVolumeColumnsList = (self) => {
     return columns.filter((it) => it.dataIndex !== 'attachments');
   }
   return columns;
+};
+
+// deal with quota
+export function setCreateVolumeSize(value) {
+  globalVolumeStore.setCreateVolumeSize(value);
+}
+
+export function setCreateVolumeType(value) {
+  globalVolumeStore.setCreateVolumeType(value);
+}
+
+export function setCreateVolumeCount(value) {
+  globalVolumeStore.setCreateVolumeCount(value);
+}
+
+export async function fetchQuota(self, size) {
+  setCreateVolumeCount(1);
+  setCreateVolumeSize(size);
+  setCreateVolumeType('');
+  self.setState({
+    quota: {},
+    quotaLoading: true,
+  });
+  const result = await globalProjectStore.fetchProjectCinderQuota();
+  self.setState({
+    quota: result,
+    quotaLoading: false,
+  });
+}
+
+export const getQuota = (cinderQuota) => {
+  if (isEmpty(cinderQuota)) {
+    return {};
+  }
+  const { volumeTypeForCreate } = globalVolumeStore;
+  const { volumes = {}, gigabytes = {} } = cinderQuota || {};
+  const typeQuotaKey = `volumes_${volumeTypeForCreate}`;
+  const sizeQuotaKey = `gigabytes_${volumeTypeForCreate}`;
+  const typeQuota = (cinderQuota || {})[typeQuotaKey] || {};
+  const typeSizeQuota = (cinderQuota || {})[sizeQuotaKey] || {};
+  return {
+    volumes,
+    gigabytes,
+    typeQuota,
+    typeSizeQuota,
+  };
+};
+
+const getErrorMessage = ({ name, left, input }) => {
+  const error = t(
+    'Quota: Insufficient { name } quota to create resources, please adjust resource quantity or quota(left { left }, input { input }).',
+    {
+      name,
+      left,
+      input,
+    }
+  );
+  return error;
+};
+
+export const getAdd = (cinderQuota) => {
+  if (isEmpty(cinderQuota)) {
+    return {};
+  }
+  const { volumes, gigabytes, typeQuota, typeSizeQuota } =
+    getQuota(cinderQuota);
+  const { left = 0 } = volumes || {};
+  const { left: sizeLeft = 0, limit: sizeLimit } = gigabytes || {};
+  const { left: typeLeft = 0 } = typeQuota || {};
+  const { left: typeSizeLeft = 0, limit: typeSizeLimit } = typeSizeQuota || {};
+  const {
+    volumeSizeForCreate: size = 0,
+    volumeCountForCreate: count = 1,
+    volumeTypeForCreate: type = '',
+  } = globalVolumeStore;
+  const zero = {
+    add: 0,
+    addSize: 0,
+  };
+  const totalSize = size * count;
+  const create = {
+    add: count,
+    addSize: totalSize,
+  };
+  if (left >= 0 && left < count) {
+    const error = getErrorMessage({
+      name: t('volume'),
+      left,
+      input: count,
+    });
+    return { ...zero, error };
+  }
+  if (sizeLimit !== -1 && sizeLeft < totalSize) {
+    const error = getErrorMessage({
+      name: t('gigabytes'),
+      left: sizeLeft,
+      input: totalSize,
+    });
+    return { ...zero, error };
+  }
+  if (isEmpty(typeQuota)) {
+    return create;
+  }
+  if (typeLeft >= 0 && typeLeft < count) {
+    const error = getErrorMessage({
+      name: t('{name} type', { name: type }),
+      left: typeLeft,
+      input: count,
+    });
+    return { ...zero, error };
+  }
+  if (typeSizeLimit !== -1 && typeSizeLeft < totalSize) {
+    const error = getErrorMessage({
+      name: t('{name} type gigabytes', { name: type }),
+      left: typeSizeLeft,
+      input: totalSize,
+    });
+    return { ...zero, error };
+  }
+  return create;
+};
+
+export const getQuotaInfo = (self) => {
+  const { volumeTypeForCreate: name } = globalVolumeStore;
+  const { quota = {}, quotaLoading } = self.state;
+  if (quotaLoading || isEmpty(quota)) {
+    return [];
+  }
+  const {
+    volumes = {},
+    gigabytes = {},
+    typeQuota = {},
+    typeSizeQuota = {},
+  } = getQuota(quota);
+  const { add, addSize } = getAdd(quota);
+  const volumeData = {
+    ...volumes,
+    add,
+    name: 'volume',
+    title: t('Volume'),
+  };
+  const sizeData = {
+    ...gigabytes,
+    add: addSize,
+    name: 'gigabytes',
+    title: t('Gigabytes (GiB)'),
+    type: 'line',
+  };
+  if (!name) {
+    return [volumeData, sizeData];
+  }
+  const typeData = {
+    ...typeQuota,
+    add,
+    name: 'type',
+    title: t('{name} type', { name }),
+    type: 'line',
+  };
+  const typeSizeData = {
+    ...typeSizeQuota,
+    add: addSize,
+    name: 'typeSize',
+    title: t('{name} type gigabytes', { name }),
+    type: 'line',
+  };
+  return [volumeData, sizeData, typeData, typeSizeData];
+};
+
+export const checkQuotaDisable = () => {
+  const { cinderQuota = {} } = globalProjectStore;
+  const { add } = getAdd(cinderQuota);
+  return add === 0;
+};
+
+export const onVolumeSizeChange = (value) => {
+  setCreateVolumeSize(value);
+};
+
+export const onVolumeTypeChange = (value) => {
+  const { volumeTypes = [] } = globalVolumeStore;
+  const item = volumeTypes.find((it) => it.value === value);
+  setCreateVolumeType(item.label);
 };
