@@ -26,6 +26,9 @@ export class ShareStore extends Base {
   @observable
   quotaSet = {};
 
+  @observable
+  shareSizeForCreate = 0;
+
   get client() {
     return client.manila.shares;
   }
@@ -168,6 +171,11 @@ export class ShareStore extends Base {
 
   @action
   delete = (data) => this.submitting(this.deleteItem(data));
+
+  @action
+  setCreateShareSize(size = 0) {
+    this.shareSizeForCreate = size;
+  }
 }
 
 const globalShareStore = new ShareStore();

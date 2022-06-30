@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { toJS } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import { FormAction } from 'containers/Action';
 import globalShareStore, { ShareStore } from 'stores/manila/share';
@@ -33,12 +32,27 @@ import {
   getShareNetworkColumns,
   shareNetworkFilters,
 } from 'resources/manila/share-network';
-import { shareProtocol } from 'resources/manila/share';
-import { cloneDeep } from 'lodash';
+import {
+  shareProtocol,
+  getQuota,
+  getQuotaInfo,
+  fetchShareQuota,
+  checkQuotaDisable,
+  getShareSizeInStore,
+  setCreateShareSize,
+  onShareSizeChange,
+} from 'resources/manila/share';
+import { cloneDeep, isEmpty } from 'lodash';
 import { idNameColumn } from 'utils/table';
 import { extraFormItem } from 'pages/share/containers/ShareType/actions/Create';
 import { updateAddSelectValueToObj, getOptions } from 'utils/index';
 import { checkPolicyRule } from 'resources/skyline/policy';
+
+const quotaKeys = ['shares', 'gigabytes'];
+
+const getWishes = () => {
+  return [1, getShareSizeInStore() || 1];
+};
 
 export class Create extends FormAction {
   static id = 'create';
@@ -68,16 +82,48 @@ export class Create extends FormAction {
     this.shareStore.fetchAvailableZones();
     this.state.showNetworks = false;
     this.state.shareGroups = [];
+    this.getQuota();
   }
 
   static policy = 'manila:share:create';
 
   static allowed = () => Promise.resolve(true);
 
-  get defaultValue() {
+  async getQuota() {
+    await fetchShareQuota(this);
+    setCreateShareSize(this.defaultSize);
+    this.updateDefaultValue();
+  }
+
+  get disableSubmit() {
+    const { quota, quotaLoading } = this.state;
+    if (isEmpty(quota) || quotaLoading) {
+      return true;
+    }
+    return checkQuotaDisable(quotaKeys, getWishes());
+  }
+
+  get showQuota() {
+    return true;
+  }
+
+  getShareQuota() {
+    const { quota = {} } = this.state;
+    return getQuota(quota, quotaKeys);
+  }
+
+  get quotaInfo() {
+    return getQuotaInfo(this, quotaKeys, getWishes());
+  }
+
+  get defaultSize() {
     const size = this.quotaIsLimit && this.maxSize < 10 ? this.maxSize : 10;
+    return size;
+  }
+
+  get defaultValue() {
     const values = {
-      size,
+      size: this.defaultSize,
       project: this.currentProjectName,
     };
     return values;
@@ -101,24 +147,14 @@ export class Create extends FormAction {
     });
   };
 
-  get quota() {
-    const { shares: { limit = 10, in_use = 0, reserved = 0 } = {} } =
-      toJS(this.shareStore.quotaSet) || {};
-    if (limit === -1) {
-      return Infinity;
-    }
-    return limit - in_use - reserved;
-  }
-
   get quotaIsLimit() {
-    const { gigabytes: { limit } = {} } = toJS(this.shareStore.quotaSet) || {};
+    const { gigabytes: { limit } = {} } = this.getShareQuota();
     return limit !== -1;
   }
 
   get maxSize() {
-    const { gigabytes: { limit = 10, in_use = 0, reserved = 0 } = {} } =
-      toJS(this.shareStore.quotaSet) || {};
-    return limit - in_use - reserved;
+    const { gigabytes: { left = 0 } = {} } = this.getShareQuota();
+    return left === -1 ? 1000 : left || 1;
   }
 
   get shareTypeColumns() {
@@ -195,6 +231,7 @@ export class Create extends FormAction {
         description: `${minSize}GiB-${this.maxSize}GiB`,
         required: this.quotaIsLimit,
         display: this.quotaIsLimit,
+        onChange: onShareSizeChange,
       },
       {
         name: 'size',
@@ -203,6 +240,7 @@ export class Create extends FormAction {
         min: minSize,
         display: !this.quotaIsLimit,
         required: !this.quotaIsLimit,
+        onChange: onShareSizeChange,
       },
       {
         name: 'is_public',
