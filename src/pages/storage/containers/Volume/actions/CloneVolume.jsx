@@ -15,7 +15,15 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalVolumeStore from 'stores/cinder/volume';
-import { isAvailableOrInUse } from 'resources/cinder/volume';
+import {
+  isAvailableOrInUse,
+  getQuotaInfo,
+  checkQuotaDisable,
+  fetchQuota,
+  onVolumeSizeChange,
+  onVolumeTypeChange,
+  setCreateVolumeType,
+} from 'resources/cinder/volume';
 
 export class CloneVolume extends ModalAction {
   static id = 'clone-volume';
@@ -39,37 +47,103 @@ export class CloneVolume extends ModalAction {
   init() {
     this.store = globalVolumeStore;
     this.getVolumeTypes();
+    fetchQuota(this, this.item.size);
   }
 
   async getVolumeTypes() {
     await this.store.fetchVolumeTypes();
+    const defaultType = this.volumeTypes.find(
+      (it) => it.label === this.item.volume_type
+    );
+    this.defaultType = defaultType;
+    if (defaultType) {
+      setCreateVolumeType(this.item.volume_type);
+    }
+    this.updateDefaultValue();
   }
 
   get volumeTypes() {
     return this.store.volumeTypes;
   }
 
+  static get disableSubmit() {
+    return checkQuotaDisable();
+  }
+
+  static get showQuota() {
+    return true;
+  }
+
+  get showQuota() {
+    return true;
+  }
+
+  get quotaInfo() {
+    return getQuotaInfo(this);
+  }
+
+  get defaultValue() {
+    const { name, id, volume_type, size } = this.item;
+    const value = {
+      volume: `${name || id}(${volume_type} | ${size}GiB)`,
+      volume_type: (this.defaultType || {}).value,
+      size,
+    };
+    return value;
+  }
+
+  get maxSize() {
+    const { quota: { gigabytes: { left = 0 } = {} } = {} } = this.state;
+    return left === -1 ? Infinity : left;
+  }
+
   get formItems() {
+    const { size } = this.item;
+    const { more } = this.state;
     return [
       {
         name: 'volume',
+        label: t('Volume'),
+        type: 'label',
+        iconType: 'volume',
+      },
+      {
+        name: 'name',
         label: t('Volume Name'),
         type: 'input-name',
         required: true,
       },
+      {
+        name: 'size',
+        label: t('Capacity (GiB)'),
+        type: 'input-int',
+        min: size,
+        max: this.maxSize,
+        required: true,
+        onChange: onVolumeSizeChange,
+      },
+      {
+        name: 'more',
+        type: 'more',
+        label: t('Advanced Options'),
+      },
+      {
+        name: 'volume_type',
+        label: t('Volume Type'),
+        type: 'select',
+        options: this.volumeTypes,
+        onChange: onVolumeTypeChange,
+        allowClear: false,
+        hidden: !more,
+      },
     ];
   }
 
-  onSubmit = ({ volume }) => {
-    const {
-      item: { size, id, volume_type },
-    } = this;
-    const type = this.volumeTypes.find((it) => it.label === volume_type);
+  onSubmit = (values) => {
+    const { volume, more, ...rest } = values;
     const body = {
-      name: volume,
-      size,
-      source_volid: id,
-      volume_type: type.value,
+      ...rest,
+      source_volid: this.item.id,
     };
     return this.store.create(body);
   };
