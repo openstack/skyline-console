@@ -25,7 +25,7 @@ export class ShareAccessRule extends Base {
   }
 
   get policy() {
-    return 'manila:share_access_rule:index';
+    return 'share_access_rule:index';
   }
 
   get name() {

@@ -38,7 +38,7 @@ export class Create extends ModalAction {
     return t('Create Capsule');
   }
 
-  static policy = 'container:capsule:create';
+  static policy = 'capsule:create';
 
   get formItems() {
     return [

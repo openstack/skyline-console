@@ -30,7 +30,7 @@ export class ShareGroup extends Base {
   }
 
   get policy() {
-    return 'manila:share_group:get_all';
+    return 'share_group:get_all';
   }
 
   get name() {

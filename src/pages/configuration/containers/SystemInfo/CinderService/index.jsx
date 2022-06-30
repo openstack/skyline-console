@@ -32,6 +32,10 @@ export class CinderService extends Base {
     return t('cinder services');
   }
 
+  get rowKey() {
+    return 'binary';
+  }
+
   get hasTab() {
     return true;
   }

@@ -26,7 +26,7 @@ export class Logs extends Base {
   }
 
   get policy() {
-    return 'trove:instance:guest_log_list';
+    return 'instance:guest_log_list';
   }
 
   getColumns = () => {

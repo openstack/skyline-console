@@ -25,7 +25,9 @@ export class ExecuteCommandContainer extends ModalAction {
 
   static buttonText = t('Execute Command');
 
-  static policy = 'container:container:execute';
+  static policy = 'container:execute';
+
+  static aliasPolicy = 'zun:container:execute';
 
   static allowed = (item) => checkItemAction(item, 'execute');
 

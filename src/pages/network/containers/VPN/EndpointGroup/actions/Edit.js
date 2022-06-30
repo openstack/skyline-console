@@ -25,6 +25,8 @@ export class Edit extends ModalAction {
 
   static policy = 'update_endpoint_group';
 
+  static aliasPolicy = 'neutron:update_endpoint_group';
+
   static allowed = () => Promise.resolve(true);
 
   get defaultValue() {

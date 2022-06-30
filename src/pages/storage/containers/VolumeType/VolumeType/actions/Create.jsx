@@ -74,7 +74,7 @@ export class Create extends ModalAction {
     return servicesMap;
   }
 
-  static policy = 'volume_extension:types_manage';
+  static policy = 'volume_extension:type_create';
 
   static allowed = () => Promise.resolve(true);
 

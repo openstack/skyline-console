@@ -41,9 +41,9 @@ export class ManageAccess extends ModalAction {
   }
 
   static policy = [
-    'manila:share_group_type:list_project_access',
-    'manila:share_group_type:add_project_access',
-    'manila:share_group_type:remove_project_access',
+    'share_group_type:list_project_access',
+    'share_group_type:add_project_access',
+    'share_group_type:remove_project_access',
   ];
 
   static allowed = (item) => Promise.resolve(!item.is_public);

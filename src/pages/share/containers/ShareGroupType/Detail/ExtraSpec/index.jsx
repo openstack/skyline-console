@@ -23,7 +23,7 @@ export class ExtraSpecs extends Base {
   }
 
   get policy() {
-    return 'manila:share_group_types_spec:index';
+    return 'share_group_types_spec:index';
   }
 
   get name() {

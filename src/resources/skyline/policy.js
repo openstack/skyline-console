@@ -15,26 +15,137 @@
 import { isArray, isObject, isFunction, isString, has } from 'lodash';
 import globalRootStore from 'stores/root';
 
-export const checkPolicyRule = (rule, actionName) => {
+export const policyMap = {
+  nova: ['os_compute_api'],
+  ironic: ['baremetal:'],
+  cinder: [
+    'volume:',
+    'volume_extension',
+    'backup:get',
+    'backup:restore',
+    'scheduler_extension',
+  ],
+  glance: [
+    'get_image',
+    'add_image',
+    'upload_image',
+    'delete_image',
+    'modify_image',
+    'get_members',
+    'add_member',
+    'delete_member',
+    'metadef',
+  ],
+  neutron: [
+    'get_network',
+    'create_network',
+    'update_network',
+    'delete_network',
+    'get_agent',
+    'delete_agent',
+    'update_agent',
+    'get_dhcp-agents',
+    'get_l3-agents',
+    'create_subnet',
+    'get_subnet',
+    'update_subnet',
+    'delete_subnet',
+    'create_port',
+    'get_port',
+    'update_port',
+    'delete_port',
+    'router',
+    'policy_bandwidth_limit_rule',
+    'policy_dscp_marking_rule',
+    'security_group',
+    'floatingip',
+    'vpnservice',
+    'ipsec_site_connection',
+  ],
+  octavia: ['os_load-balancer_api'],
+  // keystone: ['identity:'],
+  heat: ['stacks:', 'resource:index'],
+  magnum: ['cluster', 'clustertemplate'],
+  barbican: [
+    'secret:get',
+    'secret:decrypt',
+    'secret:delete',
+    'containers:post',
+  ],
+  zun: ['capsule:', 'container:', 'host:get'],
+  panko: ['segregation', 'telemetry:events:index'],
+  manila: ['share:', 'share_'],
+  trove: [
+    'instance:create',
+    'instance:delete',
+    'instance:backups',
+    'instance:delete',
+    'instance:extension',
+    'instance:guest_log_list',
+    'configuration:',
+    'backup:index',
+    'backup:show',
+  ],
+};
+
+export const convertPolicyMap = () => {
+  const newObj = {};
+  Object.entries(policyMap).forEach(([key, value]) => {
+    value.forEach((v) => {
+      if (newObj[v]) {
+        // eslint-disable-next-line no-console
+        console.log('policy rule prefix is repeat', `${newObj[v]}:${key}`);
+      }
+      newObj[v] = key;
+    });
+  });
+  return newObj;
+};
+
+export const changeToActualPolicy = (rule) => {
+  const policies = convertPolicyMap();
+  if (policies[rule]) {
+    return `${policies[rule]}:${rule}`;
+  }
+  const item = Object.keys(policies).filter((key) => {
+    return rule.includes(key);
+  });
+  if (item.length > 1) {
+    item.forEach((key) => {
+      // eslint-disable-next-line no-console
+      console.log(
+        'policy rule prefix is conflict or repeat',
+        `${policies[key]}:${rule}`
+      );
+    });
+  }
+  const prefix = item.length && policies[item[0]];
+  return prefix ? `${prefix}:${rule}` : rule;
+};
+
+export const checkPolicyRule = (rule, actionName, isAliasPolicy) => {
   if (!rule) {
     return true;
   }
-  const item = globalRootStore.policies.find((it) => it.rule === rule);
+  const actualRule = isAliasPolicy ? rule : changeToActualPolicy(rule);
+  const item = globalRootStore.policies.find((it) => it.rule === actualRule);
   if (!item) {
     // eslint-disable-next-line no-console
-    console.log('policy rule not exit', rule, actionName);
+    console.log('policy rule not exit', actualRule, actionName);
   }
   return item ? item.allowed : true;
 };
 
-const checkPolicyRules = (rules, every, actionName) => {
+const checkPolicyRules = (rules, every, actionName, isAliasPolicy) => {
   if (rules.length === 0) {
     return true;
   }
   if (every) {
-    return rules.every((rule) => checkPolicyRule(rule, actionName));
+    return rules.every((rule) =>
+      checkPolicyRule(rule, actionName, isAliasPolicy)
+    );
   }
-  return rules.some((rule) => checkPolicyRule(rule, actionName));
+  return rules.some((rule) => checkPolicyRule(rule, actionName, isAliasPolicy));
 };
 
 export const systemRoleIsReader = () => {
@@ -51,6 +162,7 @@ export const systemRoleIsReader = () => {
 
 const checkItemPolicy = ({
   policy,
+  aliasPolicy,
   item,
   actionName,
   isAdminPage,
@@ -65,12 +177,13 @@ const checkItemPolicy = ({
   if (isAdminPage && !enableSystemReader && systemRoleIsReader()) {
     return false;
   }
-  if (!policy) {
+  if (!policy && !aliasPolicy) {
     // eslint-disable-next-line no-console
     console.log('has no policy', policy, item, actionName);
     return true;
   }
-  const itemPolicy = isFunction(policy) ? policy(item) : policy;
+  const usePolicy = aliasPolicy || policy;
+  const itemPolicy = isFunction(usePolicy) ? usePolicy(item) : usePolicy;
   let rules = [];
   let every = true;
   if (isArray(itemPolicy)) {
@@ -85,10 +198,10 @@ const checkItemPolicy = ({
   }
   if (!rules) {
     // eslint-disable-next-line no-console
-    console.log('has no rules', policy, item, actionName, rules);
+    console.log('has no rules', usePolicy, item, actionName, rules);
     return true;
   }
-  return checkPolicyRules(rules, every, actionName);
+  return checkPolicyRules(rules, every, actionName, !!aliasPolicy);
 };
 
 export default checkItemPolicy;

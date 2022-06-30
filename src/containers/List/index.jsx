@@ -124,6 +124,10 @@ export default class BaseList extends React.Component {
     return '';
   }
 
+  get aliasPolicy() {
+    return '';
+  }
+
   get name() {
     return '';
   }
@@ -620,7 +624,13 @@ export default class BaseList extends React.Component {
     if (this.endpointError) {
       return;
     }
-    if (!checkItemPolicy({ policy: this.policy, actionName: this.name })) {
+    if (
+      !checkItemPolicy({
+        policy: this.policy,
+        aliasPolicy: this.aliasPolicy,
+        actionName: this.name,
+      })
+    ) {
       const error = {
         message: t("You don't have access to get {name}.", {
           name: this.name.toLowerCase(),

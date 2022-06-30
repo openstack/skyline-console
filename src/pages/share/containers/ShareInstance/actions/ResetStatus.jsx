@@ -40,7 +40,7 @@ export class ResetStatus extends ModalAction {
     return (this.item || {}).id;
   }
 
-  static policy = 'manila:share_instance:reset_status';
+  static policy = 'share_instance:reset_status';
 
   static allowed = () => Promise.resolve(true);
 

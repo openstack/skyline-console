@@ -66,6 +66,10 @@ export class QoSPolicy extends Base {
     return 'get_policy';
   }
 
+  get aliasPolicy() {
+    return 'neutron:get_policy';
+  }
+
   get name() {
     return t('QoS policies');
   }

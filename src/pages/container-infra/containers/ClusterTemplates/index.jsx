@@ -27,7 +27,7 @@ export class ClusterTemplates extends Base {
   }
 
   get policy() {
-    return 'container-infra:clustertemplate:get_all';
+    return 'clustertemplate:get_all';
   }
 
   get actionConfigs() {

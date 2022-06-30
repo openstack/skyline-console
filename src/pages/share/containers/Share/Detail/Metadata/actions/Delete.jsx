@@ -36,7 +36,7 @@ export default class Delete extends ConfirmAction {
     return t('Delete Share Metadata');
   }
 
-  policy = 'manila:share:delete_share_metadata';
+  policy = 'share:delete_share_metadata';
 
   allowedCheckFunc = () => true;
 

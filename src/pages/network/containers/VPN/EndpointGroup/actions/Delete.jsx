@@ -41,6 +41,8 @@ export default class DeleteAction extends ConfirmAction {
 
   policy = 'delete_endpoint_group';
 
+  aliasPolicy = 'neutron:delete_endpoint_group';
+
   allowedCheckFunc = (item) => {
     if (!item) {
       return true;

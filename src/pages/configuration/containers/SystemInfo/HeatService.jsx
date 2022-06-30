@@ -24,7 +24,11 @@ export class HeatService extends Base {
   }
 
   get policy() {
-    return 'services:index';
+    return 'service:index';
+  }
+
+  get aliasPolicy() {
+    return 'heat:service:index';
   }
 
   get name() {

@@ -33,7 +33,9 @@ export default class UnpauseContainer extends ConfirmAction {
     return t('Unpause');
   }
 
-  policy = 'container:container:unpause';
+  policy = 'container:unpause';
+
+  aliasPolicy = 'zun:container:unpause';
 
   allowedCheckFunc = (item) => checkItemAction(item, 'unpause');
 

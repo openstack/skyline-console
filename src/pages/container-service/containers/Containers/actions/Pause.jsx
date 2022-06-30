@@ -31,7 +31,9 @@ export default class PauseContainer extends ConfirmAction {
     return t('Pause');
   }
 
-  policy = 'container:container:pause';
+  policy = 'container:pause';
+
+  aliasPolicy = 'zun:container:pause';
 
   allowedCheckFunc = (item) => checkItemAction(item, 'pause');
 

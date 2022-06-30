@@ -23,7 +23,7 @@ export class Resize extends ModalAction {
 
   static title = t('Resize Cluster');
 
-  policy = 'container-infra:cluster:resize';
+  policy = 'cluster:resize';
 
   static allowed() {
     return Promise.resolve(true);

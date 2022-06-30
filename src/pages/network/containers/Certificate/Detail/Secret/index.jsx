@@ -25,7 +25,7 @@ export class Detail extends Base {
   }
 
   get policy() {
-    return 'barbican:secret:get';
+    return 'secret:get';
   }
 
   get name() {

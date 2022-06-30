@@ -62,6 +62,14 @@ export default class DetailBase extends React.Component {
     return this.props.match.params.id;
   }
 
+  get policy() {
+    return '';
+  }
+
+  get aliasPolicy() {
+    return '';
+  }
+
   get name() {
     return '';
   }
@@ -252,7 +260,13 @@ export default class DetailBase extends React.Component {
   getRouteProps = () => ({});
 
   fetchDataWithPolicy = (silent, params) => {
-    if (!checkItemPolicy({ policy: this.policy, actionName: this.name })) {
+    if (
+      !checkItemPolicy({
+        policy: this.policy,
+        aliasPolicy: this.aliasPolicy,
+        actionName: this.name,
+      })
+    ) {
       const error = {
         message: t("You don't have access to get {name}.", {
           name: this.name.toLowerCase(),

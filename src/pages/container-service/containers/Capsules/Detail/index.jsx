@@ -32,7 +32,7 @@ export class CapsulesDetail extends Base {
   }
 
   get policy() {
-    return 'container:capsule:get_one_all_projects';
+    return 'capsule:get_one_all_projects';
   }
 
   get detailInfos() {

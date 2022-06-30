@@ -51,7 +51,7 @@ export class Create extends ModalAction {
     this.store = globalShareAccessRuleStore;
   }
 
-  static policy = 'manila:share:allow_access';
+  static policy = 'share:allow_access';
 
   static allowed = () => Promise.resolve(true);
 

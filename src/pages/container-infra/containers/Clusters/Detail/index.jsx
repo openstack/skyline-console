@@ -34,7 +34,7 @@ export class ClustersDetail extends Base {
   }
 
   get policy() {
-    return 'container-infra:cluster:detail';
+    return 'cluster:detail';
   }
 
   get actionConfigs() {

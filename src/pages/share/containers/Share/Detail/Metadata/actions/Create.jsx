@@ -25,7 +25,7 @@ export class Create extends ModalAction {
     return t('Create Share Metadata');
   }
 
-  static policy = 'manila:share:update_share_metadata';
+  static policy = 'share:update_share_metadata';
 
   static allowed = () => Promise.resolve(true);
 

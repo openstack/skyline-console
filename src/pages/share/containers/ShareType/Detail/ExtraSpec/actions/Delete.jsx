@@ -36,7 +36,7 @@ export default class Delete extends ConfirmAction {
     return t('Delete Extra Specs');
   }
 
-  policy = 'manila:share_types_extra_spec:delete';
+  policy = 'share_types_extra_spec:delete';
 
   allowedCheckFunc = (data) => data.keyName !== 'driver_handles_share_servers';
 

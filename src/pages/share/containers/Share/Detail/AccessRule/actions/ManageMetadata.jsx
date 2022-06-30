@@ -39,8 +39,8 @@ export class ManageMetadata extends ModalAction {
   }
 
   static policy = [
-    'manila:share_access_metadata:update',
-    'manila:share_access_metadata:delete',
+    'share_access_metadata:update',
+    'share_access_metadata:delete',
   ];
 
   static allowed = () => Promise.resolve(true);

@@ -67,6 +67,8 @@ export class Create extends ModalAction {
 
   static policy = 'backup:create';
 
+  static aliasPolicy = 'cinder:backup:create';
+
   static allowed = () => Promise.resolve(true);
 
   static get disableSubmit() {

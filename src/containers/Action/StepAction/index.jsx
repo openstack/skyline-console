@@ -27,6 +27,10 @@ export default class StepAction extends StepForm {
 
   static path = '/';
 
+  static policy = '';
+
+  static aliasPolicy = '';
+
   static get allowed() {
     return Promise.resolve();
   }

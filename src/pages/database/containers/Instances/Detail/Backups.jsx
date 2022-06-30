@@ -26,7 +26,7 @@ export class Backups extends Base {
   }
 
   get policy() {
-    return 'trove:instance:backups';
+    return 'instance:backups';
   }
 
   getColumns = () => {

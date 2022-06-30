@@ -36,7 +36,7 @@ export default class Delete extends ConfirmAction {
     return t('Delete Share Type');
   }
 
-  policy = 'manila:share_type:delete';
+  policy = 'share_type:delete';
 
   onSubmit = (data) => globalShareTypeStore.delete(data);
 }

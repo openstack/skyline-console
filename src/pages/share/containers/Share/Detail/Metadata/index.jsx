@@ -24,7 +24,7 @@ export class Metadata extends Base {
   }
 
   get policy() {
-    return 'manila:share:get_share_metadata';
+    return 'share:get_share_metadata';
   }
 
   get name() {

@@ -30,7 +30,7 @@ export class StepCreate extends StepAction {
 
   static path = '/container-infra/clusters/create';
 
-  static policy = 'container-infra:cluster:create';
+  static policy = 'cluster:create';
 
   static allowed() {
     return Promise.resolve(true);

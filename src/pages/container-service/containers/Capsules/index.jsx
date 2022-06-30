@@ -29,7 +29,7 @@ export class Capsules extends Base {
   }
 
   get policy() {
-    return 'container:capsule:get_all';
+    return 'capsule:get_all';
   }
 
   get actionConfigs() {

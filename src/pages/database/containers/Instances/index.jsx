@@ -33,6 +33,10 @@ export class Instances extends Base {
   }
 
   get policy() {
+    return 'instance:index';
+  }
+
+  get aliasPolicy() {
     return 'trove:instance:index';
   }
 

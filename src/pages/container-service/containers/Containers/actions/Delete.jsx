@@ -37,7 +37,9 @@ export default class DeleteContainer extends ConfirmAction {
     return t('Delete');
   }
 
-  policy = 'container:container:delete';
+  policy = 'container:delete';
+
+  aliasPolicy = 'zun:container:delete';
 
   allowedCheckFunc = (item) => checkItemAction(item, 'delete');
 

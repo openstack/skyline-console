@@ -36,6 +36,10 @@ export class Certificate extends Base {
   }
 
   get policy() {
+    return ['containers:get', 'secrets:get'];
+  }
+
+  get aliasPolicy() {
     return ['barbican:containers:get', 'barbican:secrets:get'];
   }
 

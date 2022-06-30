@@ -24,7 +24,7 @@ export class ShareNetwork extends Base {
   }
 
   get policy() {
-    return 'manila:share_network:detail';
+    return 'share_network:detail';
   }
 
   get name() {

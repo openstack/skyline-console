@@ -28,6 +28,10 @@ export default class FormAction extends BaseForm {
 
   static path = '/';
 
+  static policy = '';
+
+  static aliasPolicy = '';
+
   static allowed() {
     return Promise.resolve();
   }

@@ -30,7 +30,7 @@ export class ClusterTemplateDetail extends Base {
   }
 
   get policy() {
-    return 'container-infra:clustertemplate:detail';
+    return 'clustertemplate:detail';
   }
 
   get actionConfigs() {

@@ -36,7 +36,7 @@ export default class Delete extends ConfirmAction {
     return t('Delete Share Access Rule');
   }
 
-  policy = 'manila:share:deny_access';
+  policy = 'share:deny_access';
 
   onSubmit = (data, containerProps) => {
     const { detail: { id } = {} } = containerProps;

@@ -25,7 +25,7 @@ export class Create extends ModalAction {
     return t('Create Extra Specs');
   }
 
-  static policy = 'manila:share_types_extra_spec:create';
+  static policy = 'share_types_extra_spec:create';
 
   static allowed = () => Promise.resolve(true);
 

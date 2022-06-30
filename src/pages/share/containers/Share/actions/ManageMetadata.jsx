@@ -36,7 +36,7 @@ export class ManageMetadata extends FormAction {
     return t('Manage Metadata');
   }
 
-  static policy = 'manila:share:update_share_metadata';
+  static policy = 'share:update_share_metadata';
 
   static allowed = (item) => Promise.resolve(item.isMine);
 }

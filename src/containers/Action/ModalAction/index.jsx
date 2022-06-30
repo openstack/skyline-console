@@ -26,6 +26,10 @@ export default class ModalAction extends BaseForm {
 
   static isDanger = false;
 
+  static policy = '';
+
+  static aliasPolicy = '';
+
   get name() {
     return t('Edit');
   }

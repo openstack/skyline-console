@@ -38,7 +38,7 @@ export default class DatabaseDelete extends ConfirmAction {
 
   allowedCheckFunction = () => true;
 
-  policy = 'trove:instance:extension:database:delete';
+  policy = 'instance:extension:database:delete';
 
   onSubmit = (item) => {
     const { id } = this.containerProps.detail;

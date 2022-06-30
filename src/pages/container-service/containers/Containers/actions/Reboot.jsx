@@ -31,7 +31,9 @@ export default class RebootContainer extends ConfirmAction {
     return t('Reboot');
   }
 
-  policy = 'container:container:reboot';
+  policy = 'container:reboot';
+
+  aliasPolicy = 'zun:container:reboot';
 
   allowedCheckFunc = (item) => checkItemAction(item, 'reboot');
 

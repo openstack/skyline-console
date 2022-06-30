@@ -38,6 +38,8 @@ export default class DeleteAction extends ConfirmAction {
 
   policy = 'backup:delete';
 
+  aliasPolicy = 'cinder:backup:delete';
+
   get isAsyncAction() {
     return true;
   }

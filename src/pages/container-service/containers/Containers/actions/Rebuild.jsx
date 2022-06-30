@@ -22,7 +22,9 @@ export class RebuildContainer extends ModalAction {
 
   static buttonText = t('Rebuild');
 
-  static policy = 'container:container:rebuild';
+  static policy = 'container:rebuild';
+
+  aliasPolicy = 'zun:container:rebuild';
 
   static allowed = (item) => checkItemAction(item, 'rebuild');
 

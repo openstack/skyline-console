@@ -38,6 +38,8 @@ export default class DeleteAction extends ConfirmAction {
 
   policy = 'delete_policy';
 
+  aliasPolicy = 'neutron:delete_policy';
+
   allowedCheckFunc = (item) => {
     if (!item) {
       return true;

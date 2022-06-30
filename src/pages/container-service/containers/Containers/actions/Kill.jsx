@@ -22,7 +22,9 @@ export class KillContainer extends ModalAction {
 
   static buttonText = t('Kill');
 
-  static policy = 'container:container:kill';
+  static policy = 'container:kill';
+
+  static aliasPolicy = 'zun:container:kill';
 
   static allowed = (item) => checkItemAction(item, 'kill');
 

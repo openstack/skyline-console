@@ -29,6 +29,8 @@ export class Edit extends ModalAction {
 
   static policy = 'update_policy';
 
+  static aliasPolicy = 'neutron:update_policy';
+
   static allowed = () => Promise.resolve(true);
 
   init() {

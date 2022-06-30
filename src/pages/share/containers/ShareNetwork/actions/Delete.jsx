@@ -36,7 +36,7 @@ export default class Delete extends ConfirmAction {
     return t('Delete Share Network');
   }
 
-  policy = 'manila:share_network:delete';
+  policy = 'share_network:delete';
 
   onSubmit = (data) => globalShareNetworkStore.delete(data);
 }

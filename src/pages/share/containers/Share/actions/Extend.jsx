@@ -34,7 +34,7 @@ export class ExtendShare extends ModalAction {
     return value;
   }
 
-  static policy = 'manila:share:extend';
+  static policy = 'share:extend';
 
   static allowed = (item) => Promise.resolve(item.isMine);
 

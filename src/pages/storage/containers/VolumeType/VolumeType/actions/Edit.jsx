@@ -30,7 +30,7 @@ export class EditAction extends ModalAction {
     return value;
   }
 
-  static policy = 'volume_extension:types_manage';
+  static policy = 'volume_extension:type_update';
 
   static allowed = () => Promise.resolve(true);
 

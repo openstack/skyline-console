@@ -52,7 +52,7 @@ export default class SoftDelete extends ConfirmAction {
 
   policy = [
     'os_compute_api:servers:delete',
-    'os_compute_api:os-deferred-delete',
+    'os_compute_api:os-deferred-delete:force',
   ];
 
   onChangeType(choosed, data) {

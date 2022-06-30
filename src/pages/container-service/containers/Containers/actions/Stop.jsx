@@ -33,7 +33,9 @@ export default class StopContainer extends ConfirmAction {
     return t('Stop');
   }
 
-  policy = 'container:container:stop';
+  policy = 'container:stop';
+
+  aliasPolicy = 'zun:container:stop';
 
   allowedCheckFunc = (item) => checkItemAction(item, 'stop');
 

@@ -30,7 +30,7 @@ export class Edit extends ModalAction {
     return value;
   }
 
-  static policy = 'manila:share_network:update';
+  static policy = 'share_network:update';
 
   static allowed = () => Promise.resolve(true);
 

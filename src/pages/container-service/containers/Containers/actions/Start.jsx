@@ -31,7 +31,9 @@ export default class StartContainer extends ConfirmAction {
     return t('Start');
   }
 
-  policy = 'container:container:start';
+  policy = 'container:start';
+
+  aliasPolicy = 'zun:container:start';
 
   allowedCheckFunc = (item) => checkItemAction(item, 'start');
 
