@@ -1,3 +1,7 @@
+import globalProjectStore from 'stores/keystone/project';
+import { isEmpty } from 'lodash';
+import globalShareStore from 'src/stores/manila/share';
+
 export const shareStatus = {
   creating: t('Creating'),
   creating_from_snapshot: t('Creating From Snapshot'),
@@ -71,4 +75,103 @@ export const shareAccessType = {
   cert: t('Cert'),
   user: t('User'),
   cephx: t('Cephx'),
+};
+
+// deal with quota
+export function setCreateShareSize(value) {
+  globalShareStore.setCreateShareSize(value);
+}
+
+export async function fetchShareQuota(self) {
+  self.setState({
+    quota: {},
+    quotaLoading: true,
+  });
+  const result = await globalProjectStore.fetchProjectShareQuota();
+  self.setState({
+    quota: result,
+    quotaLoading: false,
+  });
+}
+
+export const getQuota = (shareQuota, quotaKeys = ['shares', 'gigabytes']) => {
+  if (isEmpty(shareQuota)) {
+    return {};
+  }
+  return quotaKeys.reduce((pre, cur) => {
+    pre[cur] = shareQuota[cur] || {};
+    return pre;
+  }, {});
+};
+
+export const getAdd = (
+  shareQuota,
+  quotaKeys = ['shares', 'gigabytes'],
+  wishes = [1, 1]
+) => {
+  if (isEmpty(shareQuota)) {
+    return [];
+  }
+  const info = getQuota(shareQuota, quotaKeys);
+  let hasError = false;
+  quotaKeys.forEach((key, index) => {
+    if (!hasError) {
+      const quotaDetail = info[key];
+      const { left = 0 } = quotaDetail || {};
+      const wish = wishes[index];
+      if (left !== -1 && left < wish) {
+        hasError = true;
+      }
+    }
+  });
+  if (!hasError) {
+    return wishes;
+  }
+  return new Array(quotaKeys.length).fill(0);
+};
+
+const titleMap = {
+  shares: t('Share'),
+  gigabytes: t('Share Gigabytes(GiB)'),
+  share_networks: t('Share Network'),
+  share_groups: t('Share group'),
+};
+
+export const getQuotaInfo = (
+  self,
+  quotaKeys = ['shares', 'gigabytes'],
+  wishes = [1, 1]
+) => {
+  const { quota = {}, quotaLoading } = self.state;
+  if (quotaLoading || isEmpty(quota)) {
+    return [];
+  }
+  const adds = getAdd(quota, quotaKeys, wishes);
+  const infos = getQuota(quota, quotaKeys);
+  return quotaKeys.map((key, index) => {
+    const type = index === 0 ? 'ring' : 'line';
+    const title = titleMap[key];
+    const info = infos[key] || {};
+    return {
+      ...info,
+      add: adds[index],
+      name: key,
+      title,
+      type,
+    };
+  });
+};
+
+export const checkQuotaDisable = (quotaKeys, wishes) => {
+  const { shareQuota = {} } = globalProjectStore;
+  const adds = getAdd(shareQuota, quotaKeys, wishes);
+  return adds[0] === 0;
+};
+
+export const onShareSizeChange = (value) => {
+  setCreateShareSize(value);
+};
+
+export const getShareSizeInStore = () => {
+  return globalShareStore.shareSizeForCreate;
 };
