@@ -293,7 +293,7 @@ export const getVolumeColumnsList = (self) => {
               {it.device} on{' '}
               {self.getLinkRender(
                 'instanceDetail',
-                it.server_name,
+                it.server_name || it.server_id,
                 { id: it.server_id },
                 { tab: 'volumes' }
               )}
@@ -355,10 +355,10 @@ export function setCreateVolumeCount(value) {
   globalVolumeStore.setCreateVolumeCount(value);
 }
 
-export async function fetchQuota(self, size) {
+export async function fetchQuota(self, size, type = '') {
   setCreateVolumeCount(1);
   setCreateVolumeSize(size);
-  setCreateVolumeType('');
+  setCreateVolumeType(type);
   self.setState({
     quota: {},
     quotaLoading: true,
@@ -400,7 +400,7 @@ const getErrorMessage = ({ name, left, input }) => {
   return error;
 };
 
-export const getAdd = (cinderQuota) => {
+export const getAdd = (cinderQuota, withCountCheck = true) => {
   if (isEmpty(cinderQuota)) {
     return {};
   }
@@ -424,7 +424,7 @@ export const getAdd = (cinderQuota) => {
     add: count,
     addSize: totalSize,
   };
-  if (left >= 0 && left < count) {
+  if (withCountCheck && left >= 0 && left < count) {
     const error = getErrorMessage({
       name: t('volume'),
       left,
@@ -443,7 +443,7 @@ export const getAdd = (cinderQuota) => {
   if (isEmpty(typeQuota)) {
     return create;
   }
-  if (typeLeft >= 0 && typeLeft < count) {
+  if (withCountCheck && typeLeft >= 0 && typeLeft < count) {
     const error = getErrorMessage({
       name: t('{name} type', { name: type }),
       left: typeLeft,
@@ -462,7 +462,7 @@ export const getAdd = (cinderQuota) => {
   return create;
 };
 
-export const getQuotaInfo = (self) => {
+export const getQuotaInfo = (self, withCountCheck = true) => {
   const { volumeTypeForCreate: name } = globalVolumeStore;
   const { quota = {}, quotaLoading } = self.state;
   if (quotaLoading || isEmpty(quota)) {
@@ -474,7 +474,7 @@ export const getQuotaInfo = (self) => {
     typeQuota = {},
     typeSizeQuota = {},
   } = getQuota(quota);
-  const { add, addSize } = getAdd(quota);
+  const { add, addSize } = getAdd(quota, withCountCheck);
   const volumeData = {
     ...volumes,
     add,
@@ -508,10 +508,10 @@ export const getQuotaInfo = (self) => {
   return [volumeData, sizeData, typeData, typeSizeData];
 };
 
-export const checkQuotaDisable = () => {
+export const checkQuotaDisable = (withCountCheck = true) => {
   const { cinderQuota = {} } = globalProjectStore;
-  const { add } = getAdd(cinderQuota);
-  return add === 0;
+  const { add, addSize } = getAdd(cinderQuota, withCountCheck);
+  return withCountCheck ? add === 0 : addSize === 0;
 };
 
 export const onVolumeSizeChange = (value) => {

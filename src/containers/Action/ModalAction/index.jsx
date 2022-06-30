@@ -91,7 +91,7 @@ export default class ModalAction extends BaseForm {
   }
 
   get instanceName() {
-    return (this.item || {}).name || (this.values || {}).name;
+    return (this.item || {}).name || (this.values || {}).name || this.itemId;
   }
 
   get isAsyncAction() {
@@ -148,6 +148,10 @@ export default class ModalAction extends BaseForm {
   get item() {
     const { item } = this.props;
     return item || this.containerProps.detail || { name: '' };
+  }
+
+  get itemId() {
+    return (this.item || {}).id;
   }
 
   get items() {

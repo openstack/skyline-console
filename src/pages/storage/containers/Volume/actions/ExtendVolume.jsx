@@ -15,10 +15,16 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalVolumeStore, { VolumeStore } from 'stores/cinder/volume';
-import { isAvailableOrInUse } from 'resources/cinder/volume';
-import { get } from 'lodash';
-import client from 'client';
-import Notify from 'components/Notify';
+import globalProjectStore from 'stores/keystone/project';
+import globalServerStore from 'stores/nova/instance';
+import {
+  isAvailableOrInUse,
+  setCreateVolumeSize,
+  checkQuotaDisable,
+  getQuotaInfo,
+  fetchQuota,
+} from 'resources/cinder/volume';
+import { isEmpty } from 'lodash';
 
 export class ExtendVolume extends ModalAction {
   static id = 'extend-snapshot';
@@ -29,37 +35,95 @@ export class ExtendVolume extends ModalAction {
     return t('Extend volume');
   }
 
-  get defaultValue() {
-    const { name, id, volume_type, size } = this.item;
-    const value = {
-      volume: `${name || id}(${volume_type} | ${size}GiB)`,
-      new_size: size + 1,
-    };
-    return value;
-  }
-
   static policy = 'volume:extend';
 
   static allowed = (item) => Promise.resolve(isAvailableOrInUse(item));
+
+  init() {
+    this.store = globalVolumeStore;
+    this.state.showNotice = true;
+    this.volumeStore = new VolumeStore();
+    this.projectStore = globalProjectStore;
+    fetchQuota(this, 1, this.item.volume_type);
+    this.checkAttachedServer();
+  }
 
   get tips() {
     return t('After the volume is expanded, the volume cannot be reduced.');
   }
 
-  async getQuota() {
-    await this.volumeStore.fetchQuota();
-    this.updateDefaultValue();
+  static get disableSubmit() {
+    return checkQuotaDisable(false);
+  }
+
+  static get showQuota() {
+    return true;
+  }
+
+  get showQuota() {
+    return true;
+  }
+
+  get quotaInfo() {
+    const { quota = {}, quotaLoading } = this.state;
+    if (quotaLoading || isEmpty(quota)) {
+      return [];
+    }
+    // eslint-disable-next-line no-unused-vars
+    const [volumeData, sizeData, typeData, typeSizeData] = getQuotaInfo(
+      this,
+      false
+    );
+    const { type, ...rest } = sizeData;
+    return [rest, typeSizeData];
+  }
+
+  async checkAttachedServer() {
+    const instanceIds = (this.item.attachments || []).map((it) => it.server_id);
+    if (!instanceIds.length) {
+      return;
+    }
+    const reqs = instanceIds.map((id) =>
+      globalServerStore.pureFetchDetail({ id })
+    );
+    const results = await Promise.allSettled(reqs);
+    const lockedInstances = results
+      .filter(({ status }) => {
+        return status === 'fulfilled';
+      })
+      .map((it) => it.value)
+      .filter((server) => server.locked)
+      .map(({ name }) => name);
+    if (lockedInstances.length) {
+      const name = lockedInstances.join(', ');
+      const lockedError = t(
+        'The server {name} is locked. Please unlock first.',
+        { name }
+      );
+      this.setState({
+        lockedError,
+      });
+    }
   }
 
   get isQuotaLimited() {
-    const { gigabytes: { limit } = {} } = this.volumeStore.quotaSet || {};
+    const { gigabytes: { limit } = {} } = this.projectStore.cinderQuota || {};
     return limit !== -1;
   }
 
   get leftSize() {
-    const { gigabytes: { limit = 10, in_use = 0 } = {} } =
-      this.volumeStore.quotaSet || {};
-    return limit - in_use;
+    const { gigabytes: { left = 0 } = {} } =
+      this.projectStore.cinderQuota || {};
+    return left;
+  }
+
+  get itemSize() {
+    const { size } = this.item;
+    return size;
+  }
+
+  get minSize() {
+    return this.itemSize + 1;
   }
 
   get maxSize() {
@@ -67,21 +131,29 @@ export class ExtendVolume extends ModalAction {
     return currentSize + this.leftSize;
   }
 
-  isQuotaEnough() {
-    return !this.isQuotaLimited || this.leftSize >= 1;
+  get defaultValue() {
+    const { name, id, volume_type, size } = this.item;
+    const value = {
+      volume: `${name || id}(${volume_type} | ${size}GiB)`,
+      new_size: this.minSize,
+    };
+    return value;
   }
 
-  get formItems() {
-    const { size } = this.item;
-    const minSize = size + 1;
-    if (!this.isQuotaEnough()) {
-      return [
-        {
-          type: 'label',
-          component: t('Quota is not enough for extend volume.'),
-        },
-      ];
+  onSizeChange = (value) => {
+    const add = value - this.itemSize;
+    setCreateVolumeSize(add);
+  };
+
+  checkInstance = () => {
+    const { lockedError } = this.state;
+    if (!lockedError) {
+      return Promise.resolve();
     }
+    return Promise.reject(lockedError);
+  };
+
+  get formItems() {
     return [
       {
         name: 'volume',
@@ -94,63 +166,29 @@ export class ExtendVolume extends ModalAction {
         label: t('Capacity (GiB)'),
         type: 'slider-input',
         max: this.maxSize,
-        min: minSize,
-        description: `${minSize}GiB-${this.maxSize}GiB`,
+        min: this.minSize,
+        description: `${this.minSize}GiB-${this.maxSize}GiB`,
         required: true,
         display: this.isQuotaLimited,
+        onChange: this.onSizeChange,
+        validator: this.checkInstance,
       },
       {
         name: 'new_size',
         label: t('Capacity (GiB)'),
         type: 'input-int',
-        min: minSize,
+        min: this.minSize,
         required: true,
         display: !this.isQuotaLimited,
+        onChange: this.onSizeChange,
+        validator: this.checkInstance,
       },
     ];
   }
 
-  init() {
-    this.store = globalVolumeStore;
-    this.state.showNotice = true;
-    this.volumeStore = new VolumeStore();
-
-    this.getQuota();
-  }
-
-  get showNotice() {
-    return this.state.showNotice;
-  }
-
   onSubmit = async (values) => {
-    if (!this.isQuotaEnough()) {
-      this.setState({
-        showNotice: false,
-      });
-      return Promise.resolve();
-    }
-
     const { new_size } = values;
     const { id } = this.item;
-
-    const instanceId = get(this.item, 'attachments[0].server_id');
-    if (instanceId) {
-      const { server } = await client.nova.servers.show(instanceId);
-      if (server.locked) {
-        Notify.errorWithDetail(
-          t('The server {name} is locked. Please unlock first.', {
-            name: server.name,
-          }),
-          t('The server {name} is locked. Please unlock first.', {
-            name: server.name,
-          })
-        );
-        this.setState({
-          showNotice: false,
-        });
-        return;
-      }
-    }
     return this.store.extendSize(id, { new_size });
   };
 }
