@@ -14,10 +14,16 @@
 
 import DeleteUser from './UserDelete';
 import CreateUser from './UserCreate';
+import UserDatabase from './UserDatabase';
 
 const actionConfigs = {
   rowActions: {
     firstAction: DeleteUser,
+    moreActions: [
+      {
+        action: UserDatabase,
+      },
+    ],
   },
   batchActions: [DeleteUser],
   primaryActions: [CreateUser],

@@ -110,7 +110,7 @@ English | [Chinese](../../zh/develop/3-6-FormAction-introduction.md)
     ```
 
 - `allowed`
-  - Static functions 
+  - Static functions
   - Determine whether the operation needs to be disabled
   - Return `Promise`
   - Write directly without using disabled buttons

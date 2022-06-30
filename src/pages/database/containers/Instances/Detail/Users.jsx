@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import Base from 'containers/List';
 import { inject, observer } from 'mobx-react';
 import { InstancesUsersStore } from 'stores/trove/instances-user';
@@ -58,6 +59,17 @@ export class Users extends Base {
       {
         title: t('Databases'),
         dataIndex: 'databases',
+        render: (value) => {
+          return value.length ? (
+            <span>
+              {value.map((it) => (
+                <div key={it}>{it}</div>
+              ))}
+            </span>
+          ) : (
+            '-'
+          );
+        },
       },
     ];
   };
