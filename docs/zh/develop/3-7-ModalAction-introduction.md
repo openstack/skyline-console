@@ -79,12 +79,21 @@
     ```
 
 - `policy`
-  - 静态属性
+  - 静态属性 (此处填写符合openstack规范的policy)
   - 操作对应的权限，如果权限验证不通过，则不会在资源列表页面显示该操作按钮
   - 以挂载云硬盘`src/pages/compute/containers/Instance/actions/AttachVolume.jsx`为例
 
     ```javascript
     static policy = 'os_compute_api:os-volumes-attachments:create';
+    ```
+
+- `aliasPolicy`
+  - 静态属性 (此处填写带模块前缀的自定义policy)
+  - 操作对应的权限，如果权限验证不通过，则不会在资源列表页面显示该操作按钮
+  - 以挂载云硬盘`src/pages/compute/containers/Instance/actions/AttachVolume.jsx`为例
+
+    ```javascript
+    static aliasPolicy = 'nova:os_compute_api:os-volumes-attachments:create';
     ```
 
 - `allowed`

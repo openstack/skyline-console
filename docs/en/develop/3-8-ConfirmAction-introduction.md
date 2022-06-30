@@ -78,11 +78,19 @@ English | [简体中文](../../zh/develop/3-8-ConfirmAction-introduction.md)
     ```
 
 - `policy`
-  - Action permission, if the permission verify failed, the action button will not be displayed on the resource list page.
+  - Action permission, if the permission verify failed, the action button will not be displayed on the resource list page. (Fill in the policy that complies with the openstack rules here)
   - Take stop instance as an example `src/pages/compute/containers/Instance/actions/Stop.jsx` :
 
     ```javascript
     policy = 'os_compute_api:servers:stop';
+    ```
+
+- `aliasPolicy`
+  - Action permission, if the permission verify failed, the action button will not be displayed on the resource list page. (Fill in the custom policy with module prefix here)
+  - Take stop instance as an example `src/pages/compute/containers/Instance/actions/Stop.jsx` :
+
+    ```javascript
+    aliasPolicy = 'nova:os_compute_api:servers:stop';
     ```
 
 - `allowedCheckFunc`

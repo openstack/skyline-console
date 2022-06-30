@@ -70,13 +70,24 @@
 ## 通常需要复写的属性与函数
 
 - `policy`:
-  - 必须复写该函数
+  - 必须复写该函数 (此处填写符合openstack规范的policy)
   - 页面对应的权限，如果权限验证不通过，则无法请求数据。
   - 以云硬盘`src/pages/storage/containers/Volume/index.jsx`为例
 
     ```javascript
     get policy() {
       return 'volume:get_all';
+    }
+    ```
+
+- `aliasPolicy`:
+  - 可以复写该函数 (此处填写带模块前缀的自定义policy)
+  - 页面对应的权限，如果权限验证不通过，则无法请求数据。
+  - 以云硬盘`src/pages/storage/containers/Volume/index.jsx`为例
+
+    ```javascript
+    get aliasPolicy() {
+      return 'cinder:volume:get_all';
     }
     ```
 

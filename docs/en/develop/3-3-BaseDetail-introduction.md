@@ -45,13 +45,24 @@ English | [Chinese](../../zh/develop/3-3-BaseDetail-introduction.md)
 ## Properties and functions that usually need to be overridden
 
 - `policy`:
-  - The function must be overridden
+  - The function must be overridden (Fill in the policy that complies with the openstack rules here)
   - The permission corresponding to the page, if the permission verification fails, data cannot be requested.
   - Take the volume `src/pages/storage/containers/Volume/Detail/index.jsx` as an example
 
     ```javascript
     get policy() {
       return 'volume:get';
+    }
+    ```
+
+- `aliasPolicy`:
+  - The function can be overridden (Fill in the custom policy with module prefix here)
+  - The permission corresponding to the page, if the permission verification fails, data cannot be requested.
+  - Take the volume `src/pages/storage/containers/Volume/Detail/index.jsx` as an example
+
+    ```javascript
+    get aliasPolicy() {
+      return 'cinder:volume:get';
     }
     ```
 

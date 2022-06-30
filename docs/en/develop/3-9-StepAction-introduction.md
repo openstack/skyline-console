@@ -100,7 +100,7 @@ English | [简体中文](../../zh/develop/3-9-StepAction-introduction.md)
     ```
 
 - `policy`
-  - Static attribute
+  - Static attribute (Fill in the policy that complies with the openstack rules here)
   - The permission corresponding to the page, if the permission verification fails, the action button will not be displayed on the resource list page
   - Take create instance as an example `src/pages/compute/containers/Instance/actions/StepCreate/index.jsx` :
 
@@ -108,6 +108,18 @@ English | [简体中文](../../zh/develop/3-9-StepAction-introduction.md)
     static policy = [
       'os_compute_api:servers:create',
       'os_compute_api:os-availability-zone:list',
+    ];
+    ```
+
+- `aliasPolicy`
+  - Static attribute (Fill in the custom policy with module prefix here)
+  - The permission corresponding to the page, if the permission verification fails, the action button will not be displayed on the resource list page
+  - Take create instance as an example `src/pages/compute/containers/Instance/actions/StepCreate/index.jsx` :
+
+    ```javascript
+    static aliasPolicy = [
+      'nova:os_compute_api:servers:create',
+      'nova:os_compute_api:os-availability-zone:list',
     ];
     ```
 
