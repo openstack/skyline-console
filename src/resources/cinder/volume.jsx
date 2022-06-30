@@ -521,5 +521,5 @@ export const onVolumeSizeChange = (value) => {
 export const onVolumeTypeChange = (value) => {
   const { volumeTypes = [] } = globalVolumeStore;
   const item = volumeTypes.find((it) => it.value === value);
-  setCreateVolumeType(item.label);
+  setCreateVolumeType((item || {}).label || '');
 };

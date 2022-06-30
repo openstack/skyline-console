@@ -127,7 +127,8 @@ describe('The Volume Page', () => {
   it('successfully clone volume', () => {
     cy.tableSearchText(name)
       .clickActionInMore('Clone Volume')
-      .formInput('volume', cloneVolumeName)
+      .wait(10000)
+      .formInput('name', cloneVolumeName)
       .clickModalActionSubmitButton();
   });
 
