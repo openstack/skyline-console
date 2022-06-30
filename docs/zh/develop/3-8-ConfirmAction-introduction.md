@@ -78,11 +78,18 @@
     ```
 
 - `policy`
-  - 页面对应的权限，如果权限验证不通过，则不会在资源列表页面显示该操作按钮
+  - 页面对应的权限，如果权限验证不通过，则不会在资源列表页面显示该操作按钮 (此处填写符合openstack规范的policy)
   - 以停止云主机`src/pages/compute/containers/Instance/actions/Stop.jsx`为例
 
     ```javascript
     policy = 'os_compute_api:servers:stop';
+    ```
+- `aliasPolicy`
+  - 页面对应的权限，如果权限验证不通过，则不会在资源列表页面显示该操作按钮 (此处填写带模块前缀的自定义policy)
+  - 以停止云主机`src/pages/compute/containers/Instance/actions/Stop.jsx`为例
+
+    ```javascript
+    aliasPolicy = 'nova:os_compute_api:servers:stop';
     ```
 
 - `allowedCheckFunc`

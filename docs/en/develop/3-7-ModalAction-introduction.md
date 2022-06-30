@@ -79,12 +79,21 @@ English | [简体中文](../../zh/develop/3-7-ModalAction-introduction.md)
     ```
 
 - `policy`
-  - Static
+  - Static (Fill in the policy that complies with the openstack rules here)
   - Action permission, if the permission verify failed, the action button will not be displayed on the resource list page
   - Take attach volume as an example `src/pages/compute/containers/Instance/actions/AttachVolume.jsx` :
 
     ```javascript
     static policy = 'os_compute_api:os-volumes-attachments:create';
+    ```
+
+- `aliasPolicy`
+  - Static (Fill in the custom policy with module prefix here)
+  - Action permission, if the permission verify failed, the action button will not be displayed on the resource list page
+  - Take attach volume as an example `src/pages/compute/containers/Instance/actions/AttachVolume.jsx` :
+
+    ```javascript
+    static aliasPolicy = 'nova:os_compute_api:os-volumes-attachments:create';
     ```
 
 - `allowed`

@@ -100,7 +100,7 @@
     ```
 
 - `policy`
-  - 静态属性
+  - 静态属性 (此处填写符合openstack规范的policy)
   - 页面对应的权限，如果权限验证不通过，则不会在资源列表页面显示该操作按钮
   - 以创建云主机`src/pages/compute/containers/Instance/actions/StepCreate/index.jsx`为例
 
@@ -108,6 +108,17 @@
     static policy = [
       'os_compute_api:servers:create',
       'os_compute_api:os-availability-zone:list',
+    ];
+    ```
+- `aliasPolicy`
+  - 静态属性 (此处填写带模块前缀的自定义policy)
+  - 页面对应的权限，如果权限验证不通过，则不会在资源列表页面显示该操作按钮
+  - 以创建云主机`src/pages/compute/containers/Instance/actions/StepCreate/index.jsx`为例
+
+    ```javascript
+    static aliasPolicy = [
+      'nova:os_compute_api:servers:create',
+      'nova:os_compute_api:os-availability-zone:list',
     ];
     ```
 

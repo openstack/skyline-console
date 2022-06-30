@@ -92,12 +92,21 @@ English | [Chinese](../../zh/develop/3-6-FormAction-introduction.md)
     ```
 
 - `policy`
-  - Static properties
+  - Static properties (Fill in the policy that complies with the openstack rules here)
   - The permission corresponding to the page. If the permission verification fails, the operation button will not be displayed on the resource list page
   - Take the volume `src/pages/storage/containers/Volume/actions/Create/index.jsx` as an example
 
     ```javascript
     static policy = 'volume:create';
+    ```
+
+- `aliasPolicy`
+  - Static properties (Fill in the custom policy with module prefix here)
+  - The permission corresponding to the page. If the permission verification fails, the operation button will not be displayed on the resource list page
+  - Take the volume `src/pages/storage/containers/Volume/actions/Create/index.jsx` as an example
+
+    ```javascript
+    static aliasPolicy = 'cinder:volume:create';
     ```
 
 - `allowed`
