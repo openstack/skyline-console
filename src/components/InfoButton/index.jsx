@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button, Card, Tooltip, Switch } from 'antd';
 import { ExpandOutlined, CompressOutlined } from '@ant-design/icons';
 
@@ -32,14 +32,13 @@ export default function InfoButton(props) {
   } = props;
   const [collapsed, setCollapsed] = useState(defaultCollapsed);
   const [auto, setAuto] = useState(ableAuto);
-  const [timer, setTimer] = useState(null);
   const [hover, setHover] = useState(false);
+  const timer = useRef();
 
   const clearTimer = () => {
-    if (timer) {
-      clearTimeout(timer);
+    if (timer.current) {
+      clearTimeout(timer.current);
     }
-    setTimer(null);
   };
 
   const open = () => {
@@ -55,15 +54,14 @@ export default function InfoButton(props) {
     if (collapsed) {
       return;
     }
-    if (timer) {
+    if (timer.current) {
       clearTimer();
     }
-    const newTimer = setTimeout(() => {
+    timer.current = setTimeout(() => {
       if (!collapsed) {
         close();
       }
     }, seconds * 1000);
-    setTimer(newTimer);
   };
 
   useEffect(() => {
@@ -84,6 +82,9 @@ export default function InfoButton(props) {
       open();
       startTimer();
     }
+    return () => {
+      clearTimer();
+    };
   }, [checkValue]);
 
   const onChangeAuto = (checked) => {
