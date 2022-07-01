@@ -79,7 +79,7 @@ export const policyMap = {
     'instance:create',
     'instance:delete',
     'instance:backups',
-    'instance:delete',
+    'instance:resize',
     'instance:extension',
     'instance:guest_log_list',
     'configuration:',
@@ -88,9 +88,9 @@ export const policyMap = {
   ],
 };
 
-export const convertPolicyMap = () => {
+export const convertPolicyMap = (map) => {
   const newObj = {};
-  Object.entries(policyMap).forEach(([key, value]) => {
+  Object.entries(map).forEach(([key, value]) => {
     value.forEach((v) => {
       if (newObj[v]) {
         // eslint-disable-next-line no-console
@@ -102,8 +102,8 @@ export const convertPolicyMap = () => {
   return newObj;
 };
 
-export const changeToActualPolicy = (rule) => {
-  const policies = convertPolicyMap();
+export const changeToActualPolicy = (rule, map) => {
+  const policies = convertPolicyMap(map);
   if (policies[rule]) {
     return `${policies[rule]}:${rule}`;
   }
@@ -127,7 +127,9 @@ export const checkPolicyRule = (rule, actionName, isAliasPolicy) => {
   if (!rule) {
     return true;
   }
-  const actualRule = isAliasPolicy ? rule : changeToActualPolicy(rule);
+  const actualRule = isAliasPolicy
+    ? rule
+    : changeToActualPolicy(rule, policyMap);
   const item = globalRootStore.policies.find((it) => it.rule === actualRule);
   if (!item) {
     // eslint-disable-next-line no-console
