@@ -258,14 +258,10 @@ export class ProjectStore extends Base {
     ] = await Promise.all(promiseArr);
     this.isSubmitting = false;
     const { quota_set: novaQuota } = novaResult;
-    const { ram } = novaQuota;
     const { quota_set: cinderQuota = {} } = cinderResult || {};
     const { quota: neutronQuota } = neutronResult;
     const { quota_set: shareQuota = {} } = shareResult || {};
-    novaQuota.ram = {
-      in_use: getGiBValue(ram.in_use),
-      limit: ram.limit === -1 ? ram.limit : getGiBValue(ram.limit),
-    };
+    this.updateNovaQuota(novaQuota);
     const renameShareQuota = Object.keys(shareQuota).reduce((pre, cur) => {
       const key = !cur.includes('share') ? `share_${cur}` : cur;
       pre[key] = shareQuota[cur];
@@ -462,6 +458,16 @@ export class ProjectStore extends Base {
     return limit - used - reserved;
   };
 
+  updateNovaQuota = (quota) => {
+    const { ram: { limit = 0, in_use = 0, reserved = 0 } = {} } = quota || {};
+    quota.ram = {
+      in_use: getGiBValue(in_use),
+      limit: limit === -1 ? limit : getGiBValue(limit),
+      reserved: getGiBValue(reserved),
+    };
+    return quota;
+  };
+
   updateQuotaData = (quota) => {
     const newData = JSON.parse(JSON.stringify(quota));
     Object.keys(newData).forEach((it) => {
@@ -479,6 +485,7 @@ export class ProjectStore extends Base {
   async fetchProjectNovaQuota() {
     const result = await this.novaQuotaClient.detail(this.currentProjectId);
     const { quota_set: quota } = result;
+    this.updateNovaQuota(quota);
     const novaQuota = this.updateQuotaData(quota);
     this.novaQuota = novaQuota;
     return novaQuota;

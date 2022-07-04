@@ -22,12 +22,13 @@ import globalProjectStore from 'stores/keystone/project';
 import classnames from 'classnames';
 import { isEmpty, isFinite, isString } from 'lodash';
 import { getUserData } from 'resources/nova/instance';
+import { getGiBValue } from 'utils/index';
 import Notify from 'components/Notify';
-import styles from './index.less';
 import ConfirmStep from './ConfirmStep';
 import SystemStep from './SystemStep';
 import NetworkStep from './NetworkStep';
 import BaseStep from './BaseStep';
+import styles from './index.less';
 
 export class StepCreate extends StepAction {
   static id = 'instance-create';
@@ -63,19 +64,28 @@ export class StepCreate extends StepAction {
   }
 
   async getQuota() {
-    await this.projectStore.fetchProjectQuota({
-      project_id: this.currentProjectId,
-    });
+    await Promise.all([
+      this.projectStore.fetchProjectNovaQuota(),
+      this.projectStore.fetchProjectCinderQuota(),
+    ]);
     this.onCountChange(1);
   }
 
-  get quota() {
-    const { instances = {} } = toJS(this.projectStore.quota) || {};
-    const { limit = 10, used = 0 } = instances;
-    if (limit === -1) {
+  get disableNext() {
+    return !!this.errorMsg;
+  }
+
+  get disableSubmit() {
+    return !!this.errorMsg;
+  }
+
+  get instanceQuota() {
+    const { instances: { left = 0 } = {} } =
+      toJS(this.projectStore.novaQuota) || {};
+    if (left === -1) {
       return Infinity;
     }
-    return limit - used;
+    return left;
   }
 
   get name() {
@@ -150,7 +160,11 @@ export class StepCreate extends StepAction {
   }
 
   get quotaInfo() {
-    const { instances = {} } = toJS(this.projectStore.quota) || {};
+    const {
+      instances = {},
+      cores = {},
+      ram = {},
+    } = toJS(this.projectStore.novaQuota) || {};
     const { limit } = instances || {};
     if (!limit) {
       return [];
@@ -163,6 +177,23 @@ export class StepCreate extends StepAction {
       name: 'instance',
       title: t('Instance'),
       // type: 'line',
+    };
+
+    const { newCPU, newRam } = this.getFlavorInput();
+    const cpuQuotaInfo = {
+      ...cores,
+      add: newCPU,
+      name: 'cpu',
+      title: t('CPU'),
+      type: 'line',
+    };
+
+    const ramQuotaInfo = {
+      ...ram,
+      add: newRam,
+      name: 'ram',
+      title: t('Memory (GiB)'),
+      type: 'line',
     };
 
     const volumeQuota = this.getVolumeQuota();
@@ -181,7 +212,13 @@ export class StepCreate extends StepAction {
       title: t('Volume Size'),
       type: 'line',
     };
-    return [instanceQuotaInfo, volumeQuotaInfo, volumeSizeQuotaInfo];
+    return [
+      instanceQuotaInfo,
+      cpuQuotaInfo,
+      ramQuotaInfo,
+      volumeQuotaInfo,
+      volumeSizeQuotaInfo,
+    ];
   }
 
   get errorText() {
@@ -203,27 +240,16 @@ export class StepCreate extends StepAction {
 
   onCountChange = (value) => {
     const { data } = this.state;
-    let msg = t('Quota: Project quotas sufficient resources can be created');
-    let status = 'success';
-    if (isFinite(this.quota) && value > this.quota) {
-      msg = t(
-        'Quota: Insufficient quota to create resources, please adjust resource quantity or quota(left { quota }, input { input }).',
-        { quota: this.quota, input: value }
-      );
-      status = 'error';
-    }
-    this.msg = msg;
     this.setState({
       data: {
         ...data,
         count: value,
       },
-      status,
     });
   };
 
   getVolumeQuota() {
-    const quotaAll = toJS(this.projectStore.quota) || {};
+    const quotaAll = toJS(this.projectStore.cinderQuota) || {};
     const result = {};
     Object.keys(quotaAll).forEach((key) => {
       if (key.includes('volumes') || key.includes('gigabytes')) {
@@ -233,11 +259,11 @@ export class StepCreate extends StepAction {
     return result;
   }
 
-  getVolumeQuotaMsg(value, quota, name) {
-    if (!quota || quota.limit === -1) {
+  getQuotaMessage(value, quota, name) {
+    const { left = 0 } = quota || {};
+    if (left === -1) {
       return '';
     }
-    const left = quota.limit - quota.in_use;
     if (value > left) {
       return t(
         'Insufficient {name} quota to create resources(left { quota }, input { input }).',
@@ -292,7 +318,7 @@ export class StepCreate extends StepAction {
     const { totalNewCount, totalNewSize, newCountMap, newSizeMap } =
       this.getVolumeInputMap();
     const quotaAll = this.getVolumeQuota();
-    const totalCountMsg = this.getVolumeQuotaMsg(
+    const totalCountMsg = this.getQuotaMessage(
       totalNewCount,
       quotaAll.volumes,
       t('volume')
@@ -300,7 +326,7 @@ export class StepCreate extends StepAction {
     if (totalCountMsg) {
       return totalCountMsg;
     }
-    const totalSizeMsg = this.getVolumeQuotaMsg(
+    const totalSizeMsg = this.getQuotaMessage(
       totalNewSize,
       quotaAll.gigabytes,
       t('volume gigabytes')
@@ -309,7 +335,7 @@ export class StepCreate extends StepAction {
       return totalSizeMsg;
     }
     Object.keys(newCountMap).forEach((key) => {
-      const countMsg = this.getVolumeQuotaMsg(
+      const countMsg = this.getQuotaMessage(
         newCountMap[key],
         quotaAll[`volumes_${key}`],
         t('volume type {type}', { type: key })
@@ -322,7 +348,7 @@ export class StepCreate extends StepAction {
       return msg;
     }
     Object.keys(newSizeMap).forEach((key) => {
-      const sizeMsg = this.getVolumeQuotaMsg(
+      const sizeMsg = this.getQuotaMessage(
         newSizeMap[key],
         quotaAll[`gigabytes_${key}`],
         t('volume type {type} gigabytes', { type: key })
@@ -334,20 +360,48 @@ export class StepCreate extends StepAction {
     return msg;
   }
 
+  getFlavorInput() {
+    const { data } = this.state;
+    const { flavor = {}, count = 1 } = data;
+    const { selectedRows = [] } = flavor;
+    const { vcpus = 0, ram = 0 } = selectedRows[0] || {};
+    const ramGiB = getGiBValue(ram);
+    const newCPU = vcpus * count;
+    const newRam = ramGiB * count;
+    return {
+      newCPU,
+      newRam,
+    };
+  }
+
+  checkFlavorQuota() {
+    const { newCPU, newRam } = this.getFlavorInput();
+    const { cores = {}, ram = {} } = this.projectStore.novaQuota;
+    const { left = 0 } = cores || {};
+    const { left: leftRam = 0 } = ram || {};
+    if (left !== -1 && left < newCPU) {
+      return this.getQuotaMessage(newCPU, cores, t('CPU'));
+    }
+    if (leftRam !== -1 && leftRam < newRam) {
+      return this.getQuotaMessage(newRam, ram, t('Memory'));
+    }
+    return '';
+  }
+
   get badgeStyle() {
     return { marginTop: 8, marginBottom: 8, marginLeft: 10, maxWidth: 600 };
   }
 
   renderBadge() {
-    const { status = 'success' } = this.state;
+    const flavorMsg = this.checkFlavorQuota();
     const volumeMsg = this.checkVolumeQuota();
-    if (!volumeMsg && status === 'success') {
+    if (!flavorMsg && !volumeMsg) {
       this.status = 'success';
       this.errorMsg = '';
       return null;
     }
     this.status = 'error';
-    const msg = status === 'error' ? this.msg : volumeMsg;
+    const msg = flavorMsg || volumeMsg;
     if (this.errorMsg !== msg) {
       $message.error(msg);
     }
@@ -371,8 +425,8 @@ export class StepCreate extends StepAction {
       max:
         sourceValue === 'bootableVolume'
           ? 1
-          : isFinite(this.quota)
-          ? this.quota
+          : isFinite(this.instanceQuota)
+          ? this.instanceQuota
           : 100,
       precision: 0,
       onChange: this.onCountChange,

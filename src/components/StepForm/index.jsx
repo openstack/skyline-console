@@ -220,6 +220,14 @@ export default class BaseStepForm extends React.Component {
     return null;
   }
 
+  get disableNext() {
+    return false;
+  }
+
+  get disableSubmit() {
+    return false;
+  }
+
   setFormRefs() {
     this.formRefs = this.steps.map(() => React.createRef());
   }
@@ -297,7 +305,11 @@ export default class BaseStepForm extends React.Component {
     }
     const { title } = this.steps[current + 1];
     return (
-      <Button type="primary" onClick={() => this.next()}>
+      <Button
+        type="primary"
+        onClick={() => this.next()}
+        disabled={this.disableNext}
+      >
         {`${t('Next')}: ${title}`}
       </Button>
     );
@@ -381,7 +393,11 @@ export default class BaseStepForm extends React.Component {
           {this.getPrevBtn()}
           {this.getNextBtn()}
           {current === this.steps.length - 1 && (
-            <Button type="primary" onClick={this.onClickSubmit}>
+            <Button
+              type="primary"
+              onClick={this.onClickSubmit}
+              disabled={this.disableSubmit}
+            >
               {t('Confirm')}
             </Button>
           )}
