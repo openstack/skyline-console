@@ -517,7 +517,7 @@ export default class BaseForm extends React.Component {
   renderTips() {
     if (this.tips) {
       return (
-        <div className={styles.tips} ref={this.tipRef}>
+        <div className={styles.tips} ref={this.tipRef} id="tips">
           <InfoCircleOutlined className={styles['tips-icon']} />
           {this.tips}
         </div>
@@ -534,8 +534,14 @@ export default class BaseForm extends React.Component {
     if (this.isStep || this.isModal) {
       return null;
     }
+    const footerStyle = {};
+    if (this.tips) {
+      const height =
+        ((document.getElementById('tips') || {}).clientHeight || 35) + 16;
+      footerStyle.bottom = height;
+    }
     return (
-      <div className={styles.footer}>
+      <div className={styles.footer} style={footerStyle}>
         <div className={styles['footer-left']}>{this.renderFooterLeft()}</div>
         <div className={classnames(styles.btns, 'footer-btns')}>
           <Button
