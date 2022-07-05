@@ -33,7 +33,6 @@ import ResumeAction from './Resume';
 import AttachVolume from './AttachVolume';
 import DetachVolume from './DetachVolume';
 import Resize from './Resize';
-import ResizeOnline from './ResizeOnline';
 import MigrateAction from './Migrate';
 import Console from './Console';
 import Edit from './Edit';
@@ -79,7 +78,6 @@ const configActions = [
   ConfirmResize,
   RevertResize,
   Resize,
-  ResizeOnline,
   ChangePassword,
   Rebuild,
 ];

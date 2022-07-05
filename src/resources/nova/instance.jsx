@@ -433,13 +433,6 @@ export const instanceStatusFilter = {
   ],
 };
 
-export const hasOnlineResizeFlavor = (item) => {
-  const {
-    extra_specs: { 'hw:live_resize': liveResize = false },
-  } = (item || {}).flavor_info || {};
-  return !!liveResize;
-};
-
 export const actionMap = {
   attach_interface: t('Attach Interface'),
   detach_interface: t('Detach Interface'),
