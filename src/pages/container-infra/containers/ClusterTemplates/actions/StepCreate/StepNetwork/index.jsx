@@ -19,10 +19,8 @@ import globalSubnetStore from 'src/stores/neutron/subnet';
 
 export class StepNetwork extends Base {
   async init() {
-    const { extra: { fixed_network } = {} } = this.props;
-    this.state.selectedSubnetId = fixed_network || '';
-    this.getFloatingIps();
-    this.getSubnets();
+    this.getNetworkList();
+    this.getSubnetList();
   }
 
   get title() {
@@ -41,11 +39,11 @@ export class StepNetwork extends Base {
     return !!this.props.extra;
   }
 
-  async getFloatingIps() {
-    globalNetworkStore.fetchList();
+  async getNetworkList() {
+    await globalNetworkStore.fetchList();
   }
 
-  get getFloatingIpList() {
+  get externalNetworks() {
     return (globalNetworkStore.list.data || [])
       .filter(
         (it) =>
@@ -58,7 +56,7 @@ export class StepNetwork extends Base {
       }));
   }
 
-  get getPrivateFloatingIpList() {
+  get privateNetworks() {
     return (globalNetworkStore.list.data || [])
       .filter(
         (it) =>
@@ -68,60 +66,44 @@ export class StepNetwork extends Base {
       .map((it) => ({
         value: it.id,
         label: it.name,
-        subnetId: it.subnets,
       }));
   }
 
-  async getSubnets() {
-    globalSubnetStore.fetchList();
+  async getSubnetList() {
+    await globalSubnetStore.fetchList();
   }
 
-  get getSubnetList() {
+  get subnetList() {
+    const { fixed_network } = this.state;
     return (globalSubnetStore.list.data || [])
-      .filter((it) => this.state.selectedSubnetId === it.network_id)
+      .filter((it) => fixed_network === it.network_id)
       .map((it) => ({
         value: it.id,
         label: it.name,
       }));
   }
 
-  onSelectChangeFixedNetwork(value) {
-    this.setState({
-      selectedSubnetId: value,
-    });
-    this.resetFormValue(['fixed_subnet']);
+  get networkDrivers() {
+    const { context: { coe = '' } = {} } = this.props;
+    let acceptedDrivers = [];
+    if (coe === 'kubernetes') {
+      acceptedDrivers = [
+        { value: 'calico', label: 'Calico' },
+        { value: 'flannel', label: 'Flannel' },
+      ];
+    } else if (['swarm', 'swarm-mode'].includes(coe)) {
+      acceptedDrivers = [
+        { value: 'docker', label: 'Docker' },
+        { value: 'flannel', label: 'Flannel' },
+      ];
+    } else if (['mesos', 'dcos'].includes(coe)) {
+      acceptedDrivers = [{ value: 'docker', label: 'Docker' }];
+    }
+    return acceptedDrivers;
   }
 
-  get getNetworkDriver() {
-    const { context = {} } = this.props;
-    const { coeSelectRows = '', coe = '' } = context;
-    const networkDriver = [];
-    if (!coeSelectRows || !coe) {
-      networkDriver.push(
-        { val: 'docker', name: 'Docker' },
-        { val: 'flannel', name: 'Flannel' },
-        { val: 'calico', name: 'Calico' }
-      );
-    }
-    if (coeSelectRows === 'swarm' || coeSelectRows === 'swarm-mode') {
-      networkDriver.push(
-        { val: 'docker', name: 'Docker' },
-        { val: 'flannel', name: 'Flannel' }
-      );
-    }
-    if (coeSelectRows === 'kubernetes') {
-      networkDriver.push(
-        { val: 'calico', name: 'Calico' },
-        { val: 'flannel', name: 'Flannel' }
-      );
-    }
-    if (coeSelectRows === 'mesos' || coeSelectRows === 'dcos') {
-      networkDriver.push({ val: 'docker', name: 'Docker' });
-    }
-    return (networkDriver || []).map((it) => ({
-      value: it.val,
-      label: it.name,
-    }));
+  get nameForStateUpdate() {
+    return ['fixed_network'];
   }
 
   get defaultValue() {
@@ -159,14 +141,14 @@ export class StepNetwork extends Base {
   }
 
   get formItems() {
-    const { extra: { network_driver, external_network_id } = {} } = this.props;
+    const { extra: { network_driver } = {} } = this.props;
     return [
       {
         name: 'network_driver',
         label: t('Network Driver'),
         placeholder: t('Choose a Network Driver'),
         type: 'select',
-        options: this.getNetworkDriver,
+        options: this.networkDrivers,
         disabled: network_driver && this.isEdit,
       },
       {
@@ -192,23 +174,26 @@ export class StepNetwork extends Base {
         label: t('External Network'),
         placeholder: t('Choose a External Network'),
         type: 'select',
-        options: this.getFloatingIpList,
-        disabled: external_network_id && this.isEdit,
+        options: this.externalNetworks,
+        disabled: this.isEdit,
+        required: true,
       },
       {
         name: 'fixed_network',
         label: t('Fixed Network'),
         placeholder: t('Choose a Private Network'),
         type: 'select',
-        options: this.getPrivateFloatingIpList,
-        onChange: (val) => this.onSelectChangeFixedNetwork(val),
+        options: this.privateNetworks,
+        onChange: () => {
+          this.updateFormValue('fixed_subnet', null);
+        },
       },
       {
         name: 'fixed_subnet',
         label: t('Fixed Subnet'),
         placeholder: t('Choose a Private Network at first'),
         type: 'select',
-        options: this.getSubnetList,
+        options: this.subnetList,
       },
       {
         name: 'dns_nameserver',

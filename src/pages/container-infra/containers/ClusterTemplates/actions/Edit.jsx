@@ -19,7 +19,7 @@ import { StepCreate as Base } from './StepCreate';
 export class Edit extends Base {
   static id = 'update-cluster-template';
 
-  static title = t('Update Cluster Template');
+  static title = t('Edit');
 
   get name() {
     return t('Update Cluster Template');

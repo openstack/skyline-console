@@ -21,8 +21,8 @@ import FlavorSelectTable from 'src/pages/compute/containers/Instance/components/
 
 export class StepNodeSpec extends Base {
   init() {
-    this.getImageOsDistro();
-    this.getKeypairs();
+    this.getImageList();
+    this.getKeypairsList();
   }
 
   get title() {
@@ -33,10 +33,6 @@ export class StepNodeSpec extends Base {
     return t('Node Spec');
   }
 
-  async getImageOsDistro() {
-    globalImageStore.fetchList();
-  }
-
   get isStep() {
     return true;
   }
@@ -45,46 +41,53 @@ export class StepNodeSpec extends Base {
     return !!this.props.extra;
   }
 
-  get getImageOsDistroList() {
+  async getImageList() {
+    await globalImageStore.fetchList();
+  }
+
+  get imageList() {
+    const { context: { coe = '' } = {} } = this.props;
+    let acceptedOs = [];
+    if (coe === 'kubernetes') {
+      acceptedOs = ['fedora', 'coreos'];
+    } else if (['swarm', 'swarm-mode'].includes(coe)) {
+      acceptedOs = ['fedora'];
+    } else if (['mesos', 'dcos'].includes(coe)) {
+      acceptedOs = ['ubuntu'];
+    }
+
     return (globalImageStore.list.data || [])
-      .filter((it) => it.name.indexOf('coreos') >= 0)
-      .filter((it) => it.owner === this.currentProjectId)
+      .filter(
+        (it) =>
+          it.owner === this.currentProjectId &&
+          acceptedOs.includes(it.os_distro)
+      )
       .map((it) => ({
         value: it.id,
         label: it.name,
       }));
   }
 
-  async getKeypairs() {
-    globalKeypairStore.fetchList();
+  async getKeypairsList() {
+    await globalKeypairStore.fetchList();
   }
 
-  get getKeypairList() {
+  get keypairsList() {
     return (globalKeypairStore.list.data || []).map((it) => ({
       value: it.name,
       label: it.name,
     }));
   }
 
-  get getVolumeDriver() {
-    const { context = {} } = this.props;
-    const { coeSelectRows = '', coe = '' } = context;
-    const volumeDriver = [];
-    if (!coeSelectRows || !coe) {
-      volumeDriver.push(
-        { val: 'cinder', name: 'Cinder' },
-        { val: 'rexray', name: 'Rexray' }
-      );
+  get volumeDrivers() {
+    const { context: { coe = '' } = {} } = this.props;
+    let acceptedVolumeDriver = [];
+    if (coe === 'kubernetes') {
+      acceptedVolumeDriver = [{ value: 'cinder', label: 'Cinder' }];
+    } else if (['swarm', 'mesos'].includes(coe)) {
+      acceptedVolumeDriver = [{ value: 'rexray', label: 'Rexray' }];
     }
-    if (coeSelectRows === 'kubernetes') {
-      volumeDriver.push({ val: 'cinder', name: 'Cinder' });
-    } else if (coeSelectRows) {
-      volumeDriver.push({ val: 'rexray', name: 'Rexray' });
-    }
-    return (volumeDriver || []).map((it) => ({
-      value: it.val,
-      label: it.name,
-    }));
+    return acceptedVolumeDriver;
   }
 
   onFlavorChange = (value) => {
@@ -125,20 +128,29 @@ export class StepNodeSpec extends Base {
     return values;
   }
 
+  get minVolumeSize() {
+    const { docker_storage_driver } = this.state;
+    return docker_storage_driver === 'devicemapper' ? 3 : 1;
+  }
+
+  get nameForStateUpdate() {
+    return ['docker_storage_driver'];
+  }
+
   get formItems() {
     return [
       {
         name: 'image_id',
         label: t('Image'),
         type: 'select',
-        options: this.getImageOsDistroList,
+        options: this.imageList,
         required: true,
       },
       {
         name: 'keypair_id',
         label: t('Keypair'),
         type: 'select',
-        options: this.getKeypairList,
+        options: this.keypairsList,
       },
       {
         name: 'flavor',
@@ -156,13 +168,17 @@ export class StepNodeSpec extends Base {
         name: 'volume_driver',
         label: t('Volume Driver'),
         type: 'select',
-        options: this.getVolumeDriver,
+        options: this.volumeDrivers,
       },
       {
         name: 'docker_storage_driver',
         label: t('Docker Storage Driver'),
         type: 'select',
         options: [
+          {
+            label: t('Devicemapper'),
+            value: 'devicemapper',
+          },
           {
             label: t('Overlay'),
             value: 'overlay',
@@ -172,13 +188,29 @@ export class StepNodeSpec extends Base {
             value: 'overlay2',
           },
         ],
+        onChange: () => {
+          this.resetFormValue(['docker_volume_size']);
+        },
       },
       {
         name: 'docker_volume_size',
         label: t('Docker Volume Size (GiB)'),
         type: 'input-int',
-        min: 1,
+        min: this.minVolumeSize,
         placeholder: t('Spec'),
+        validator: (rule, value) => {
+          if (
+            this.minVolumeSize === 3 &&
+            (!value || value < this.minVolumeSize)
+          ) {
+            return Promise.reject(
+              new Error(
+                t('The min size is {size} GiB', { size: this.minVolumeSize })
+              )
+            );
+          }
+          return Promise.resolve();
+        },
       },
     ];
   }
