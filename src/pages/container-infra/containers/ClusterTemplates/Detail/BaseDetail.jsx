@@ -20,6 +20,12 @@ export class BaseDetail extends Base {
     return [this.baseInfoCard, this.networkCard];
   }
 
+  get leftCardsStyle() {
+    return {
+      flex: 1,
+    };
+  }
+
   get rightCards() {
     return [this.specCard, this.labelCard];
   }
