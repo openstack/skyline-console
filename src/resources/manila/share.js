@@ -134,7 +134,7 @@ const titleMap = {
   shares: t('Share'),
   gigabytes: t('Share Gigabytes(GiB)'),
   share_networks: t('Share Network'),
-  share_groups: t('Share group'),
+  share_groups: t('Share Group'),
 };
 
 export const getQuotaInfo = (

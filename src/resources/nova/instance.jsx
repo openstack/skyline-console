@@ -23,7 +23,15 @@ import { projectTagsColors } from 'src/utils/constants';
 import lockSvg from 'asset/image/lock.svg';
 import unlockSvg from 'asset/image/unlock.svg';
 
-const lockIcon = <img src={lockSvg} alt="lock" style={{ width: '12px' }} />;
+const lockIcon = (
+  <Tooltip
+    title={t(
+      'The instance has been locked. If you want to do more, please unlock it first.'
+    )}
+  >
+    <img src={lockSvg} alt="lock" style={{ width: '12px' }} />
+  </Tooltip>
+);
 const unlockIcon = (
   <img src={unlockSvg} alt="unlock" style={{ width: '12px' }} />
 );
