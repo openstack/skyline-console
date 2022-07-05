@@ -329,7 +329,7 @@ export class FlavorSelectTable extends Component {
   }
 
   render() {
-    const { value } = this.props;
+    const { value, disabledFunc } = this.props;
     const isLoading =
       this.settingStore.list.isLoading && this.flavorStore.list.isLoading;
     const props = {
@@ -345,6 +345,7 @@ export class FlavorSelectTable extends Component {
       ],
       value,
       onChange: this.onChange,
+      disabledFunc,
     };
     return <SelectTable {...props} />;
   }
