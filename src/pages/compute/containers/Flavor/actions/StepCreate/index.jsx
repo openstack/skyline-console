@@ -94,7 +94,7 @@ export class StepCreate extends StepAction {
     return type === 'custom' ? value : type;
   }
 
-  onSubmit = (values) => {
+  getSubmitData(values) {
     const {
       architecture,
       category,
@@ -179,7 +179,6 @@ export class StepCreate extends StepAction {
         memPageSizeMore,
         memPageSizeValueMore
       );
-      extraSpecs['hw:live_resize'] = 'True';
     }
     if (isBareMetal(architecture)) {
       resourceProps.forEach((it) => {
@@ -191,11 +190,16 @@ export class StepCreate extends StepAction {
         extraSpecs[`trait:${value}`] = 'required';
       });
     }
-    return this.store.create(
+    return {
       body,
       extraSpecs,
-      !isPublic && (accessControl.selectedRowKeys || [])
-    );
+      accessControl: !isPublic && (accessControl.selectedRowKeys || []),
+    };
+  }
+
+  onSubmit = (data) => {
+    const { body, extraSpecs, accessControl } = data;
+    return this.store.create(body, extraSpecs, accessControl);
   };
 }
 
