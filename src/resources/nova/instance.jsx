@@ -152,11 +152,11 @@ export const isLocked = (instance) => !!instance.locked;
 
 export const lockRender = (value) => (value ? lockIcon : unlockIcon);
 
-export const checkStatus = (statusList = [], instance) => {
+export const checkStatus = (statusList = [], instance, checkState = true) => {
   const { status, vm_state } = instance;
   return (
     statusList.includes(status.toLowerCase()) ||
-    (vm_state && statusList.includes(vm_state.toLowerCase()))
+    (checkState && vm_state && statusList.includes(vm_state.toLowerCase()))
   );
 };
 

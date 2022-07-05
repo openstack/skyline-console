@@ -22,7 +22,95 @@ import {
   checkStatus,
   isIronicInstance,
 } from 'resources/nova/instance';
+import globalProjectStore from 'stores/keystone/project';
+import { isEmpty } from 'lodash';
+import { getGiBValue, formatSize } from 'utils/index';
 import FlavorSelectTable from '../components/FlavorSelectTable';
+
+export async function fetchQuota(self) {
+  self.setState({
+    quota: {},
+    quotaLoading: true,
+  });
+  const result = await globalProjectStore.fetchProjectNovaQuota();
+  self.setState({
+    quota: result,
+    quotaLoading: false,
+  });
+}
+
+export const getQuota = (novaQuota) => {
+  if (isEmpty(novaQuota)) {
+    return {};
+  }
+  const { cores = {}, ram = {} } = novaQuota || {};
+  return {
+    cores,
+    ram,
+  };
+};
+
+export const getAdd = (self, flavor) => {
+  if (isEmpty(flavor)) {
+    return {};
+  }
+  const { vcpus: itemVcpus, ram: itemRam } = self.item.flavor_info || {};
+  const { vcpus, ram: flavorRam } = flavor || {};
+  const newVcpu = vcpus - itemVcpus;
+  const newRamGiB = getGiBValue(flavorRam - itemRam);
+  return {
+    vcpuAdd: newVcpu,
+    ramAdd: newRamGiB,
+  };
+};
+
+export const checkFlavorDisable = (flavor, self) => {
+  const { quotaLoading = true, quota } = self.state;
+  if (quotaLoading || isEmpty(quota)) {
+    return false;
+  }
+  const {
+    cores: { left },
+    ram: { left: ramLeft },
+  } = getQuota(quota);
+  const { vcpuAdd, ramAdd } = getAdd(self, flavor);
+  const vcpuOK = left === -1 || left >= vcpuAdd;
+  const ramOK = ramLeft === -1 || ramLeft >= ramAdd;
+  return !vcpuOK || !ramOK;
+};
+
+export const getQuotaInfo = (self) => {
+  const { quota = {}, quotaLoading, flavor = {} } = self.state;
+  if (quotaLoading || isEmpty(quota)) {
+    return [];
+  }
+  const { cores = {}, ram = {} } = getQuota(quota);
+  const { vcpuAdd = 0, ramAdd = 0 } = getAdd(self, flavor || {});
+
+  const cpuQuotaInfo = {
+    ...cores,
+    add: vcpuAdd,
+    name: 'cpu',
+    title: t('CPU'),
+  };
+
+  const ramQuotaInfo = {
+    ...ram,
+    add: ramAdd,
+    name: 'ram',
+    title: t('Memory (GiB)'),
+    type: 'line',
+  };
+  return [cpuQuotaInfo, ramQuotaInfo];
+};
+
+export const getFlavorLabel = (self) => {
+  const { flavor, flavor_info: { vcpus, ram } = {} } = self.item;
+  return `${flavor} (${t('VCPUs')}: ${vcpus}, ${t('Memory')}: ${formatSize(
+    ram,
+    2
+  )})`;
+};
 
 export class Resize extends ModalAction {
   static id = 'resize';
@@ -33,6 +121,7 @@ export class Resize extends ModalAction {
 
   init() {
     this.store = globalFlavorStore;
+    fetchQuota(this);
   }
 
   get name() {
@@ -71,8 +160,17 @@ export class Resize extends ModalAction {
     );
   }
 
+  get showQuota() {
+    return true;
+  }
+
+  get quotaInfo() {
+    return getQuotaInfo(this);
+  }
+
   get defaultValue() {
-    const { name, flavor } = this.item;
+    const { name } = this.item;
+    const flavor = getFlavorLabel(this);
     const value = {
       instance: name,
       flavor,
@@ -82,7 +180,8 @@ export class Resize extends ModalAction {
 
   static policy = 'os_compute_api:servers:resize';
 
-  static isActiveOrShutOff = (item) => checkStatus(['active', 'shutoff'], item);
+  static isActiveOrShutOff = (item) =>
+    checkStatus(['active', 'shutoff'], item, false);
 
   static allowed = (item, containerProps) => {
     const { isAdminPage } = containerProps;
@@ -92,6 +191,17 @@ export class Resize extends ModalAction {
         isNotLockedOrAdmin(item, isAdminPage) &&
         !isIronicInstance(item)
     );
+  };
+
+  onFlavorChange = (flavor) => {
+    const { selectedRows = [] } = flavor || {};
+    this.setState({
+      flavor: selectedRows[0],
+    });
+  };
+
+  disabledFlavor = (flavor) => {
+    return checkFlavorDisable(flavor, this);
   };
 
   get formItems() {
@@ -114,7 +224,11 @@ export class Resize extends ModalAction {
         label: t('Flavor'),
         type: 'select-table',
         component: (
-          <FlavorSelectTable flavor={flavor} onChange={this.onFlavorChange} />
+          <FlavorSelectTable
+            flavor={flavor}
+            onChange={this.onFlavorChange}
+            disabledFunc={this.disabledFlavor}
+          />
         ),
         required: true,
         wrapperCol: {
