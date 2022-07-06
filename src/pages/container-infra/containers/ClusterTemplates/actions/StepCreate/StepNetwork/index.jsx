@@ -12,14 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import Base from 'components/Form';
 import { inject, observer } from 'mobx-react';
-import globalNetworkStore from 'src/stores/neutron/network';
-import globalSubnetStore from 'src/stores/neutron/subnet';
+import { NetworkStore } from 'src/stores/neutron/network';
+import { SubnetStore } from 'src/stores/neutron/subnet';
+import { getLinkRender } from 'utils/route-map';
+import { networkColumns } from 'resources/neutron/network';
 
 export class StepNetwork extends Base {
   async init() {
-    this.getNetworkList();
+    this.externalNetworkStore = new NetworkStore();
+    this.privateNetworkStore = new NetworkStore();
+    this.subnetNetworkStore = new SubnetStore();
     this.getSubnetList();
   }
 
@@ -39,48 +44,16 @@ export class StepNetwork extends Base {
     return !!this.props.extra;
   }
 
-  async getNetworkList() {
-    await globalNetworkStore.fetchList();
-  }
-
-  get externalNetworks() {
-    return (globalNetworkStore.list.data || [])
-      .filter(
-        (it) =>
-          it['router:external'] === true &&
-          it.project_id === this.currentProjectId
-      )
-      .map((it) => ({
-        value: it.id,
-        label: it.name,
-      }));
-  }
-
-  get privateNetworks() {
-    return (globalNetworkStore.list.data || [])
-      .filter(
-        (it) =>
-          it['router:external'] === false &&
-          it.project_id === this.currentProjectId
-      )
-      .map((it) => ({
-        value: it.id,
-        label: it.name,
-      }));
-  }
-
   async getSubnetList() {
-    await globalSubnetStore.fetchList();
+    await this.subnetNetworkStore.fetchList();
+    this.updateDefaultValue();
   }
 
   get subnetList() {
-    const { fixed_network } = this.state;
-    return (globalSubnetStore.list.data || [])
-      .filter((it) => fixed_network === it.network_id)
-      .map((it) => ({
-        value: it.id,
-        label: it.name,
-      }));
+    const { fixedNetwork: { selectedRowKeys = [] } = {} } = this.state;
+    return (this.subnetNetworkStore.list.data || []).filter(
+      (it) => selectedRowKeys[0] === it.network_id
+    );
   }
 
   get networkDrivers() {
@@ -103,7 +76,7 @@ export class StepNetwork extends Base {
   }
 
   get nameForStateUpdate() {
-    return ['fixed_network'];
+    return ['fixedNetwork'];
   }
 
   get defaultValue() {
@@ -129,19 +102,40 @@ export class StepNetwork extends Base {
         http_proxy,
         https_proxy,
         no_proxy,
-        external_network_id,
+        externalNetwork: {
+          selectedRowKeys: [external_network_id],
+        },
         fixed_network,
         fixed_subnet,
         dns_nameserver,
         master_lb_enabled,
         floating_ip_enabled,
       };
+      if (fixed_network) {
+        values.fixedNetwork = {
+          selectedRowKeys: [fixed_network],
+        };
+      }
+      if (fixed_subnet) {
+        const { subnetInitValue } = this.state;
+
+        if (subnetInitValue) {
+          values.fixedSubnet = subnetInitValue;
+        } else {
+          values.fixedSubnet = {
+            selectedRowKeys: [fixed_subnet],
+          };
+        }
+      }
     }
+
     return values;
   }
 
   get formItems() {
     const { extra: { network_driver } = {} } = this.props;
+    const { subnetInitValue } = this.state;
+
     return [
       {
         name: 'network_driver',
@@ -170,30 +164,100 @@ export class StepNetwork extends Base {
         type: 'input',
       },
       {
-        name: 'external_network_id',
+        name: 'externalNetwork',
         label: t('External Network'),
-        placeholder: t('Choose a External Network'),
-        type: 'select',
-        options: this.externalNetworks,
-        disabled: this.isEdit,
+        type: 'select-table',
+        backendPageStore: this.externalNetworkStore,
+        extraParams: {
+          'router:external': true,
+          project_id: this.currentProjectId,
+        },
         required: true,
+        loading: this.externalNetworkStore.list.isLoading,
+        filterParams: [
+          {
+            label: t('Name'),
+            name: 'name',
+          },
+        ],
+        columns: networkColumns(this),
       },
       {
-        name: 'fixed_network',
+        name: 'fixedNetwork',
         label: t('Fixed Network'),
-        placeholder: t('Choose a Private Network'),
-        type: 'select',
-        options: this.privateNetworks,
-        onChange: () => {
-          this.updateFormValue('fixed_subnet', null);
+        type: 'select-table',
+        backendPageStore: this.privateNetworkStore,
+        extraParams: {
+          'router:external': false,
+          project_id: this.currentProjectId,
+        },
+        loading: this.privateNetworkStore.list.isLoading,
+        header: (
+          <div>
+            {t(' You can go to the console to ')}
+            {getLinkRender({
+              key: 'network',
+              value: `${t('create a new network/subnet')} > `,
+            })}
+          </div>
+        ),
+        filterParams: [
+          {
+            label: t('Name'),
+            name: 'name',
+          },
+        ],
+        columns: networkColumns(this),
+        onChange: (value) => {
+          this.setState(
+            {
+              fixedNetwork: value,
+              subnetInitValue: {
+                selectedRowKeys: [],
+                selectedRows: [],
+              },
+            },
+            () => {
+              this.formRef.current.resetFields(['fixedSubnet']);
+            }
+          );
         },
       },
       {
-        name: 'fixed_subnet',
+        name: 'fixedSubnet',
         label: t('Fixed Subnet'),
-        placeholder: t('Choose a Private Network at first'),
-        type: 'select',
-        options: this.subnetList,
+        type: 'select-table',
+        data: this.subnetList,
+        initValue: subnetInitValue,
+        filterParams: [
+          {
+            label: t('Name'),
+            name: 'name',
+          },
+        ],
+        columns: [
+          {
+            title: t('Name'),
+            dataIndex: 'name',
+          },
+          {
+            title: t('CIDR'),
+            dataIndex: 'cidr',
+          },
+          {
+            title: t('Gateway IP'),
+            dataIndex: 'gateway_ip',
+          },
+          {
+            title: t('IP Version'),
+            dataIndex: 'ip_version',
+          },
+          {
+            title: t('Created At'),
+            dataIndex: 'created_at',
+            valueRender: 'toLocalTime',
+          },
+        ],
       },
       {
         name: 'dns_nameserver',

@@ -12,17 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
+import { inject, observer } from 'mobx-react';
+import Base from 'components/Form';
 import globalImageStore from 'src/stores/glance/image';
 import globalKeypairStore from 'src/stores/nova/keypair';
-import Base from 'components/Form';
-import { inject, observer } from 'mobx-react';
-import React from 'react';
 import FlavorSelectTable from 'src/pages/compute/containers/Instance/components/FlavorSelectTable';
+import {
+  getImageColumns,
+  getImageSystemTabs,
+  getImageOS,
+} from 'resources/glance/image';
 
 export class StepNodeSpec extends Base {
   init() {
     this.getImageList();
-    this.getKeypairsList();
   }
 
   get title() {
@@ -43,9 +47,10 @@ export class StepNodeSpec extends Base {
 
   async getImageList() {
     await globalImageStore.fetchList();
+    this.updateDefaultValue();
   }
 
-  get imageList() {
+  get acceptedImageOs() {
     const { context: { coe = '' } = {} } = this.props;
     let acceptedOs = [];
     if (coe === 'kubernetes') {
@@ -55,28 +60,33 @@ export class StepNodeSpec extends Base {
     } else if (['mesos', 'dcos'].includes(coe)) {
       acceptedOs = ['ubuntu'];
     }
+    return acceptedOs;
+  }
 
+  get imageColumns() {
+    return getImageColumns(this);
+  }
+
+  get systemTabs() {
+    const imageTabs = getImageSystemTabs();
+    return imageTabs.filter((it) => this.acceptedImageOs.includes(it.value));
+  }
+
+  onImageTabChange = (value) => {
+    this.setState({
+      imageTab: value,
+    });
+  };
+
+  get imageList() {
+    const { imageTab } = this.state;
     return (globalImageStore.list.data || [])
       .filter(
         (it) =>
           it.owner === this.currentProjectId &&
-          acceptedOs.includes(it.os_distro)
+          this.acceptedImageOs.includes(it.os_distro)
       )
-      .map((it) => ({
-        value: it.id,
-        label: it.name,
-      }));
-  }
-
-  async getKeypairsList() {
-    await globalKeypairStore.fetchList();
-  }
-
-  get keypairsList() {
-    return (globalKeypairStore.list.data || []).map((it) => ({
-      value: it.name,
-      label: it.name,
-    }));
+      .filter((it) => getImageOS(it) === imageTab);
   }
 
   get volumeDrivers() {
@@ -112,8 +122,6 @@ export class StepNodeSpec extends Base {
         } = {},
       } = this.props;
       values = {
-        image_id,
-        keypair_id,
         volume_driver,
         docker_storage_driver,
         docker_volume_size,
@@ -123,6 +131,12 @@ export class StepNodeSpec extends Base {
       }
       if (master_flavor_id) {
         values.masterFlavor = { selectedRowKeys: [master_flavor_id] };
+      }
+      if (image_id) {
+        values.images = { selectedRowKeys: [image_id] };
+      }
+      if (keypair_id) {
+        values.keypairs = { selectedRowKeys: [keypair_id] };
       }
     }
     return values;
@@ -140,17 +154,49 @@ export class StepNodeSpec extends Base {
   get formItems() {
     return [
       {
-        name: 'image_id',
+        name: 'images',
         label: t('Image'),
-        type: 'select',
-        options: this.imageList,
+        type: 'select-table',
+        data: this.imageList,
         required: true,
+        isLoading: globalImageStore.list.isLoading,
+        filterParams: [
+          {
+            label: t('Name'),
+            name: 'name',
+          },
+        ],
+        columns: this.imageColumns,
+        tabs: this.systemTabs,
+        defaultTabValue: this.systemTabs[0].value,
+        onTabChange: this.onImageTabChange,
+        imageTabAuto: true,
       },
       {
-        name: 'keypair_id',
+        name: 'keypairs',
         label: t('Keypair'),
-        type: 'select',
-        options: this.keypairsList,
+        type: 'select-table',
+        data: this.keypairsList,
+        isLoading: globalKeypairStore.list.isLoading,
+        tip: t(
+          'The SSH key is a way to remotely log in to the instance. The cloud platform only helps to keep the public key. Please keep your private key properly.'
+        ),
+        filterParams: [
+          {
+            label: t('Name'),
+            name: 'name',
+          },
+        ],
+        columns: [
+          {
+            title: t('Name'),
+            dataIndex: 'name',
+          },
+          {
+            title: t('Fingerprint'),
+            dataIndex: 'fingerprint',
+          },
+        ],
       },
       {
         name: 'flavor',
@@ -197,6 +243,7 @@ export class StepNodeSpec extends Base {
         label: t('Docker Volume Size (GiB)'),
         type: 'input-int',
         min: this.minVolumeSize,
+        required: this.minVolumeSize === 3,
         placeholder: t('Spec'),
         validator: (rule, value) => {
           if (

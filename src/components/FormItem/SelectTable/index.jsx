@@ -83,6 +83,7 @@ export default class SelectTable extends React.Component {
     defaultSortOrder: PropTypes.string,
     onRow: PropTypes.func,
     childrenColumnName: PropTypes.string,
+    imageTabAuto: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -107,6 +108,7 @@ export default class SelectTable extends React.Component {
     defaultSortKey: '',
     defaultSortOrder: '',
     childrenColumnName: 'children',
+    imageTabAuto: false,
   };
 
   constructor(props) {
@@ -706,12 +708,16 @@ export default class SelectTable extends React.Component {
   }
 
   renderImageTabs() {
-    const { tabs, defaultTabValue } = this.props;
+    const { tabs, defaultTabValue, imageTabAuto } = this.props;
     const { tab } = this.state;
     const items = tabs.map((it) => {
       const { value, image, component, label } = it;
       return (
-        <Radio.Button className={styles['image-tab']} value={value} key={value}>
+        <Radio.Button
+          className={imageTabAuto ? '' : styles['image-tab']}
+          value={value}
+          key={value}
+        >
           {image && <img src={image} alt={label} />}
           {component}
           <span className={styles['image-tab-label']}>{label}</span>
