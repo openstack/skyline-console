@@ -12,10 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { action, observable } from 'mobx';
 import client from 'client';
 import Base from 'stores/base';
 
 export class KeypairStore extends Base {
+  @observable
+  createdItem = null;
+
   get client() {
     return client.nova.keypairs;
   }
@@ -35,6 +39,14 @@ export class KeypairStore extends Base {
       item.id = item.name;
       return item;
     };
+  }
+
+  @action
+  async create(data) {
+    const body = {};
+    body[this.responseKey] = data;
+    this.createdItem = data;
+    return this.submitting(this.client.create(body));
   }
 }
 

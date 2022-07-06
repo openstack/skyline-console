@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { inject, observer } from 'mobx-react';
 import globalKeyPairStore from 'stores/nova/keypair';
 import globalServerStore from 'stores/nova/instance';
@@ -26,6 +27,9 @@ import {
 } from 'resources/nova/hypervisor';
 import { physicalNodeTypes } from 'resources/nova/instance';
 import { getOptions } from 'utils';
+import CreateKeyPair from 'pages/compute/containers/Keypair/actions/Create';
+import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
+import styles from '../index.less';
 
 export class SystemStep extends Base {
   init() {
@@ -151,6 +155,13 @@ export class SystemStep extends Base {
         selectedRows: this.serverGroups.filter((it) => it.id === servergroup),
       };
     }
+    const { initKeyPair, name } = this.state;
+    if (initKeyPair) {
+      data.keypair = initKeyPair;
+    }
+    if (name) {
+      data.name = name;
+    }
     return data;
   }
 
@@ -170,8 +181,8 @@ export class SystemStep extends Base {
 
   allowed = () => Promise.resolve();
 
-  getKeypairs() {
-    this.keyPairStore.fetchList();
+  async getKeypairs() {
+    return this.keyPairStore.fetchList();
   }
 
   getHypervisors() {
@@ -185,6 +196,7 @@ export class SystemStep extends Base {
 
   get nameForStateUpdate() {
     return [
+      'name',
       'loginType',
       'password',
       'confirmPassword',
@@ -197,17 +209,60 @@ export class SystemStep extends Base {
     return this.sourceInfo && this.sourceInfo.os_admin_user;
   }
 
+  onFinishCreateKeyPair = async () => {
+    const { createdItem } = this.keyPairStore;
+    const result = await this.getKeypairs();
+    const newItem = result.find((it) => it.name === (createdItem || {}).name);
+    if (newItem) {
+      const initKeyPair = {
+        selectedRowKeys: [newItem.id],
+        selectedRows: [newItem],
+      };
+      this.setState(
+        {
+          initKeyPair,
+        },
+        () => {
+          this.updateDefaultValue();
+        }
+      );
+    }
+  };
+
+  getKeyPairHeader() {
+    const { isLoading } = this.keyPairStore.list || {};
+    if (isLoading) {
+      return null;
+    }
+    return (
+      <div style={{ marginBottom: 10 }}>
+        <span>
+          {t(
+            'The key pair allows you to SSH into your newly created instance. You can select an existing key pair, import a key pair, or generate a new key pair.'
+          )}
+        </span>
+        <span className={styles['action-wrapper']}>
+          <ItemActionButtons
+            actions={{ moreActions: [{ action: CreateKeyPair }] }}
+            onFinishAction={this.onFinishCreateKeyPair}
+          />
+        </span>
+      </div>
+    );
+  }
+
   get formItems() {
     const { loginType, more = false, physicalNodeType } = this.state;
     const isPassword = loginType === this.loginTypes[1].value;
     const isManually = physicalNodeType === physicalNodeTypes[1].value;
+
+    const { initKeyPair } = this.state;
 
     return [
       {
         name: 'name',
         label: t('Name'),
         type: 'input-name',
-        placeholder: t('Please input name'),
         required: true,
         isInstance: true,
       },
@@ -237,9 +292,10 @@ export class SystemStep extends Base {
         type: 'select-table',
         data: this.keypairs,
         isLoading: this.keyPairStore.list.isLoading,
-        isMulti: false,
         required: !isPassword,
         hidden: isPassword,
+        header: this.getKeyPairHeader(),
+        initValue: initKeyPair,
         tip: t(
           'The SSH key is a way to remotely log in to the instance. The cloud platform only helps to keep the public key. Please keep your private key properly.'
         ),
