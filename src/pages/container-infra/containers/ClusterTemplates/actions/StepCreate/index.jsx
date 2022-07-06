@@ -93,7 +93,17 @@ export class StepCreate extends StepAction {
   }
 
   onSubmit = (values) => {
-    const { flavor, masterFlavor, additionalLabels, ...rest } = values;
+    const {
+      flavor,
+      masterFlavor,
+      additionalLabels,
+      images,
+      keypairs,
+      externalNetwork,
+      fixedNetwork,
+      fixedSubnet,
+      ...rest
+    } = values;
     const requestLabels = {};
     if (additionalLabels) {
       additionalLabels.forEach((item) => {
@@ -105,6 +115,7 @@ export class StepCreate extends StepAction {
 
     const body = {
       labels: requestLabels,
+      external_network_id: externalNetwork.selectedRowKeys[0],
       ...rest,
     };
     if (flavor) {
@@ -112,6 +123,18 @@ export class StepCreate extends StepAction {
     }
     if (masterFlavor) {
       body.master_flavor_id = masterFlavor.selectedRowKeys[0];
+    }
+    if (images) {
+      body.image_id = images.selectedRowKeys[0];
+    }
+    if (keypairs) {
+      body.keypair_id = keypairs.selectedRowKeys[0];
+    }
+    if (fixedNetwork) {
+      body.fixed_network = fixedNetwork.selectedRowKeys[0];
+    }
+    if (fixedSubnet) {
+      body.fixed_subnet = fixedSubnet.selectedRowKeys[0];
     }
     if (this.isEdit) {
       return this.store.update({ id: this.params.id }, body);
