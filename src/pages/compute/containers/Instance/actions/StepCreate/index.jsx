@@ -592,7 +592,7 @@ export class StepCreate extends StepAction {
     if (this.enableCinder) {
       server.block_device_mapping_v2 = volumes;
     }
-    if (imageRef) {
+    if (imageRef && !volumes) {
       server.imageRef = imageRef;
     }
     if (loginType.value === 'keypair') {
