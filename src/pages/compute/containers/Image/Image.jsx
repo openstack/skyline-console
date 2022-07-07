@@ -52,7 +52,7 @@ export class Image extends Base {
   }
 
   get isFilterByBackend() {
-    return true;
+    return false;
   }
 
   get isSortByBackend() {
@@ -67,7 +67,7 @@ export class Image extends Base {
     return !this.isAdminPage;
   }
 
-  updateFetchParamsByPage = (params) => {
+  updateFetchParams = (params) => {
     if (this.isAdminPage) {
       return {
         ...params,

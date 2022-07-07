@@ -373,6 +373,8 @@ export class ServerStore extends Base {
         name: image,
         metadata: {
           usage_type: 'common',
+          image_type: 'snapshot',
+          instance_id: id,
         },
       },
     };

@@ -28,6 +28,7 @@ import { toJS } from 'mobx';
 import BaseDetail from './BaseDetail';
 import SecurityGroup from './SecurityGroup';
 import ActionLog from './ActionLog';
+import Snapshots from '../../InstanceSnapshot';
 import actionConfigs from '../actions';
 
 export class InstanceDetail extends Base {
@@ -44,8 +45,7 @@ export class InstanceDetail extends Base {
   }
 
   get isRecycleBinDetail() {
-    const { pathname } = this.props.location;
-    return pathname.indexOf('recycle-bin') >= 0;
+    return this.path.includes('recycle-bin');
   }
 
   get listUrl() {
@@ -122,6 +122,11 @@ export class InstanceDetail extends Base {
         title: t('BaseDetail'),
         key: 'BaseDetail',
         component: BaseDetail,
+      },
+      {
+        title: t('Instance Snapshot'),
+        key: 'snapshots',
+        component: Snapshots,
       },
       {
         title: t('Interface'),

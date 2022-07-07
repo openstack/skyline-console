@@ -15,6 +15,8 @@
 import { inject, observer } from 'mobx-react';
 import { imageStatus } from 'resources/glance/image';
 import { ImageStore } from 'stores/glance/image';
+import { InstanceSnapshotStore } from 'stores/glance/instance-snapshot';
+import actionConfigsSnapshot from 'pages/compute/containers/InstanceSnapshot/actions';
 import Base from 'containers/TabDetail';
 import BaseDetail from './BaseDetail';
 import actionConfigs from '../actions';
@@ -29,18 +31,25 @@ export class ImageDetail extends Base {
   }
 
   get isImageDetail() {
-    const { pathname } = this.props.location;
-    return pathname.indexOf('image') >= 0;
+    return this.path.includes('image');
   }
 
   get listUrl() {
+    if (!this.isImageDetail) {
+      return this.getRoutePath('instanceSnapshot');
+    }
     return this.getRoutePath('image');
   }
 
   get actionConfigs() {
+    if (this.isImageDetail) {
+      return this.isAdminPage
+        ? actionConfigs.actionConfigsAdmin
+        : actionConfigs.actionConfigs;
+    }
     return this.isAdminPage
-      ? actionConfigs.actionConfigsAdmin
-      : actionConfigs.actionConfigs;
+      ? actionConfigsSnapshot.adminConfigs
+      : actionConfigsSnapshot.actionConfigs;
   }
 
   get detailInfos() {
@@ -87,7 +96,9 @@ export class ImageDetail extends Base {
   }
 
   init() {
-    this.store = new ImageStore();
+    this.store = this.isImageDetail
+      ? new ImageStore()
+      : new InstanceSnapshotStore();
   }
 }
 

@@ -62,6 +62,21 @@ const renderMenu = (t) => {
           ],
         },
         {
+          path: '/compute/instance-snapshot-admin',
+          name: t('Instance Snapshot'),
+          key: 'instanceSnapshotAdmin',
+          level: 1,
+          children: [
+            {
+              path: /^\/compute\/instance-snapshot-admin\/detail\/[^/]+$/,
+              name: t('Instance Snapshot Detail'),
+              key: 'instanceSnapshotDetailAdmin',
+              level: 2,
+              routePath: '/compute/instance-snapshot-admin/detail/:id',
+            },
+          ],
+        },
+        {
           path: '/compute/flavor-admin',
           name: t('Flavor'),
           key: 'flavorAdmin',

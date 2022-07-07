@@ -24,8 +24,7 @@ import { isObject, isArray } from 'lodash';
 
 export class BaseDetail extends Base {
   get isImageDetail() {
-    const { pathname } = this.props.location;
-    return pathname.indexOf('image') >= 0;
+    return this.path.includes('image');
   }
 
   get leftCards() {

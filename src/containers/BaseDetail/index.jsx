@@ -66,6 +66,11 @@ export default class BaseDetail extends React.Component {
     return this.props.rootStore.routing;
   }
 
+  get path() {
+    const { location: { pathname = '' } = {} } = this.props;
+    return pathname || '';
+  }
+
   get leftCards() {
     return [];
   }

@@ -15,7 +15,7 @@
 import { action, observable } from 'mobx';
 import client from 'client';
 import Base from 'stores/base';
-import { imageOS } from 'resources/glance/image';
+import { imageOS, isSnapshot } from 'resources/glance/image';
 import { isString } from 'lodash';
 
 export class ImageStore extends Base {
@@ -41,12 +41,13 @@ export class ImageStore extends Base {
     }
   };
 
+  updateParamsSort = this.updateParamsSortPage;
+
   get paramsFuncPage() {
     return (params) => {
       const { current, all_projects, ...rest } = params;
       return {
         ...rest,
-        // image_type: 'image',
       };
     };
   }
@@ -78,6 +79,13 @@ export class ImageStore extends Base {
         os_distro: os,
       };
     };
+  }
+
+  listDidFetch(items) {
+    if (items.length === 0) {
+      return items;
+    }
+    return items.filter((it) => !isSnapshot(it));
   }
 
   @action

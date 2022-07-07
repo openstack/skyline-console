@@ -78,6 +78,11 @@ export default class DetailBase extends React.Component {
     return this.props.rootStore.routing;
   }
 
+  get path() {
+    const { location: { pathname = '' } = {} } = this.props;
+    return pathname || '';
+  }
+
   get isAdminPage() {
     const { pathname } = this.props.location;
     return isAdminPage(pathname);

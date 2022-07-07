@@ -24,6 +24,7 @@ import CreateIronic from '../containers/Instance/actions/CreateIronic';
 import TabImage from '../containers/Image';
 import ImageAdmin from '../containers/Image/Image';
 import ImageCreate from '../containers/Image/actions/Create';
+import InstanceSnapshot from '../containers/InstanceSnapshot';
 import Keypair from '../containers/Keypair';
 import KeypairDetail from '../containers/Keypair/Detail';
 import ServerGroup from '../containers/ServerGroup';
@@ -58,6 +59,26 @@ export default [
       {
         path: `${PATH}/ironic-instance/create`,
         component: CreateIronic,
+        exact: true,
+      },
+      {
+        path: `${PATH}/instance-snapshot`,
+        component: InstanceSnapshot,
+        exact: true,
+      },
+      {
+        path: `${PATH}/instance-snapshot-admin`,
+        component: InstanceSnapshot,
+        exact: true,
+      },
+      {
+        path: `${PATH}/instance-snapshot/detail/:id`,
+        component: ImageDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/instance-snapshot-admin/detail/:id`,
+        component: ImageDetail,
         exact: true,
       },
       { path: `${PATH}/flavor`, component: Flavor, exact: true },

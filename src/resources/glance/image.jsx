@@ -123,10 +123,12 @@ export const isOwner = (item) => {
 };
 
 export const isSnapshot = (item) => {
-  const { block_device_mapping: bdm = '[]', image_type } = item;
+  // bfv vm has bdm; non-bfv has instance_uuid, image_type is added by frontend
+  const { block_device_mapping: bdm = '[]', image_type, instance_uuid } = item;
   return (
     image_type === 'snapshot' ||
-    get(JSON.parse(bdm)[0] || {}, 'source_type') === 'snapshot'
+    get(JSON.parse(bdm)[0] || {}, 'source_type') === 'snapshot' ||
+    instance_uuid
   );
 };
 
