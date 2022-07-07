@@ -26,7 +26,7 @@ export class StepMiscellaneous extends Base {
   get formItems() {
     return [
       {
-        name: 'workingDirectory',
+        name: 'workdir',
         label: t('Working Directory'),
         type: 'input',
         placeholder: t('The working directory for commands to run in'),
@@ -39,7 +39,7 @@ export class StepMiscellaneous extends Base {
         addText: t('Add Environment Variable'),
       },
       {
-        name: 'enableInteractiveMode',
+        name: 'interactive',
         label: t('Enable interactive mode'),
         type: 'check',
       },
@@ -59,9 +59,9 @@ export class StepMiscellaneous extends Base {
       {
         name: 'hints',
         label: t('Scheduler Hints'),
-        type: 'select',
-        mode: 'tags',
-        placeholder: t('Type to Scheduler Hints and press enter'),
+        type: 'add-select',
+        itemComponent: KeyValueInput,
+        addText: t('Add scheduler hints'),
       },
     ];
   }

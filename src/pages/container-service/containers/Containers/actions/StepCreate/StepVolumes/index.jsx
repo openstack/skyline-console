@@ -13,25 +13,25 @@
 import Base from 'components/Form';
 import { inject, observer } from 'mobx-react';
 import ZunVolume from 'src/components/FormItem/ZunVolume';
-import globalVolumeStore from 'src/stores/cinder/volume';
+import { VolumeStore } from 'src/stores/cinder/volume';
 
 export class StepVolumes extends Base {
   init() {
-    this.globalVolumeStore = globalVolumeStore;
-    this.getVolumeStore();
+    this.volumeStore = new VolumeStore();
+    this.getVolumes();
   }
 
-  get cinderVolume() {
-    return (this.globalVolumeStore.list.data || [])
+  get volumes() {
+    return (this.volumeStore.list.data || [])
       .filter((it) => it.status === 'available')
       .map((it) => ({
         value: it.id,
-        label: it.name === '' ? it.id : it.name,
+        label: `${it.name || it.id} (${it.id})`,
       }));
   }
 
-  getVolumeStore() {
-    this.globalVolumeStore.fetchList();
+  async getVolumes() {
+    await this.volumeStore.fetchList();
   }
 
   get formItems() {
@@ -41,10 +41,10 @@ export class StepVolumes extends Base {
         label: t('Type'),
         type: 'add-select',
         optionsType: [
-          { label: 'Existing Cinder Volume', value: 'cinder-available' },
-          { label: 'New Cinder Volume', value: 'cinder-new' },
+          { label: t('Existing Volume'), value: 'bind' },
+          { label: t('New Volume'), value: 'volume' },
         ],
-        optionsSource: this.cinderVolume,
+        optionsSource: this.volumes,
         itemComponent: ZunVolume,
       },
     ];

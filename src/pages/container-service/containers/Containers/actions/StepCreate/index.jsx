@@ -76,90 +76,110 @@ export class StepCreate extends StepAction {
   }
 
   onSubmit = (values) => {
-    const { environmentVariables, labels, mounts } = values;
+    const {
+      environmentVariables,
+      labels,
+      mounts,
+      images,
+      exitPolicy,
+      maxRetry,
+      networks,
+      ports,
+      hints,
+      securityGroup,
+      ...rest
+    } = values;
 
-    const requestEnviranment = {};
+    const requestEnvironment = {};
     const requestLabels = {};
-    const requestValumes = [];
-
-    environmentVariables !== undefined
-      ? environmentVariables.forEach((item) => {
-          const labelKey = item.value.key.toLowerCase().trim();
-          const labelValue = item.value.value.toLowerCase().trim();
-          requestEnviranment[labelKey] = labelValue;
-        })
-      : undefined;
-
-    labels !== undefined
-      ? labels.forEach((item) => {
-          const key = item.value.key.toLowerCase().trim();
-          const value = item.value.value.toLowerCase().trim();
-          requestLabels[key] = value;
-        })
-      : undefined;
-
-    mounts !== undefined
-      ? mounts.forEach((item) => {
-          const { destination } = item.value;
-          const { source } = item.value;
-          const { type } = item.value;
-          const { cinderVolumeSize } = item.value;
-          item.value.isCinderVolume !== true
-            ? requestValumes.push({
-                destination,
-                source,
-                type,
-              })
-            : requestValumes.push({
-                destination,
-                cinderVolumeSize,
-                type,
-              });
-        })
-      : undefined;
-
-    const networks = [];
+    const requestVolumes = [];
+    const requestHints = {};
+    const nets = [];
     const securityGroups = [];
 
-    values.networkSelect &&
-      values.networkSelect.selectedRowKeys.forEach((item) => {
-        networks.push({ network: item });
+    if (environmentVariables) {
+      environmentVariables.forEach((item) => {
+        const labelKey = item.value.key.toLowerCase().trim();
+        const labelValue = item.value.value.toLowerCase().trim();
+        requestEnvironment[labelKey] = labelValue;
       });
+    }
 
-    values.ports &&
-      values.ports.selectedRowKeys.forEach((item) => {
-        networks.push({ port: item });
+    if (labels) {
+      labels.forEach((item) => {
+        const key = item.value.key.toLowerCase().trim();
+        const value = item.value.value.toLowerCase().trim();
+        requestLabels[key] = value;
       });
+    }
 
-    values.securityGroup &&
-      values.securityGroup.selectedRowKeys.forEach((item) => {
-        securityGroups.push(item);
+    if (mounts) {
+      mounts.forEach((item) => {
+        const { type, source, size, destination, isNewVolume } = item.value;
+        if (isNewVolume) {
+          requestVolumes.push({
+            type,
+            size,
+            destination,
+          });
+        } else {
+          requestVolumes.push({
+            type,
+            source,
+            destination,
+          });
+        }
       });
+    }
 
-    return this.store.create({
-      name: values.containerName,
-      image: values.image,
-      command: values.command,
-      cpu: values.cpu,
-      memory: values.memory,
-      workdir: values.workingDirectory,
+    if (networks) {
+      (networks.selectedRowKeys || []).forEach((it) => {
+        nets.push({ network: it });
+      });
+    }
+
+    if (ports) {
+      (ports.selectedRowKeys || []).forEach((it) => {
+        nets.push({ port: it });
+      });
+    }
+
+    if (securityGroup) {
+      (securityGroup.selectedRows || []).forEach((it) => {
+        securityGroups.push(it.name);
+      });
+    }
+
+    if (hints) {
+      hints.forEach((item) => {
+        const key = item.value.key.toLowerCase().trim();
+        const value = item.value.value.toLowerCase().trim();
+        requestHints[key] = value;
+      });
+    }
+
+    const body = {
+      environment: requestEnvironment,
       labels: requestLabels,
-      environment: requestEnviranment,
-      restart_policy: {
-        Name: values.exitPolicy === undefined ? 'no' : values.exitPolicy,
-        MaximumRetryCount: values.maxRetry === undefined ? 0 : values.maxRetry,
-      },
-      interactive: values.enableInteractiveMode,
-      image_driver: values.imageDriver,
+      mounts: requestVolumes,
+      hints: requestHints,
+      nets,
       security_groups: securityGroups,
-      nets: networks,
-      runtime: values.runtime,
-      hostname: values.hostname,
-      auto_heal: values.enableAutoHeal,
-      availability_zone: values.availableZone,
-      hints: values.hints,
-      mounts: values.mounts,
-    });
+      ...rest,
+    };
+
+    if (images) {
+      body.image = (images.selectedRows[0] || {}).name;
+    }
+
+    if (exitPolicy) {
+      body.restart_policy = {
+        Name: exitPolicy,
+        ...(maxRetry ? { MaximumRetryCount: maxRetry } : {}),
+      };
+    }
+
+    return this.store.create(body);
   };
 }
 
