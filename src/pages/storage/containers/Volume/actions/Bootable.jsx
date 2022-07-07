@@ -29,6 +29,11 @@ export class Bootable extends ModalAction {
     return Promise.resolve(true);
   }
 
+  get name() {
+    const { bootable } = this.values;
+    return bootable ? t('Bootable') : t('Unbootable');
+  }
+
   get defaultValue() {
     const { item } = this.props;
     return {

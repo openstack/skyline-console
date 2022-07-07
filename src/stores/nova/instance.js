@@ -400,16 +400,6 @@ export class ServerStore extends Base {
   }
 
   @action
-  async liveResize({ id, flavor }) {
-    const body = {
-      liveResize: {
-        flavorRef: flavor,
-      },
-    };
-    return this.operation({ body, id });
-  }
-
-  @action
   async migrate({ id, body }) {
     if (body) {
       const newBody = {

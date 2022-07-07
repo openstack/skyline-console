@@ -106,7 +106,6 @@ export class FlavorSelectTable extends Component {
   get flavors() {
     const {
       flavor,
-      online,
       isIronic = false,
       filterIronic = true,
       excludeFlavors = [],
@@ -126,16 +125,6 @@ export class FlavorSelectTable extends Component {
       .filter((it) => {
         if (!flavor) {
           return true;
-        }
-        if (online) {
-          const currentFlavor = (toJS(this.flavorStore.list.data) || []).find(
-            (f) => f.name === flavor
-          );
-          return (
-            it.vcpus >= currentFlavor.vcpus &&
-            it.ram >= currentFlavor.ram &&
-            it.name !== flavor
-          );
         }
         return it.name !== flavor;
       })
