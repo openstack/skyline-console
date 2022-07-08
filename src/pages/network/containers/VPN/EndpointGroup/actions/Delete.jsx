@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { ConfirmAction } from 'containers/Action';
-import { checkPolicyRule } from 'resources/skyline/policy';
+import { checkSystemAdmin } from 'resources/skyline/policy';
 import globalVPNEndPointGroupStore from 'stores/neutron/vpn-endpoint-group';
 import globalVpnIPsecConnectionStore from 'stores/neutron/vpn-ipsec-connection';
 import globalRootStore from 'stores/root';
@@ -52,10 +52,7 @@ export default class DeleteAction extends ConfirmAction {
 
   isCurrentProject(item) {
     const rootStore = globalRootStore;
-    if (
-      !checkPolicyRule('skyline:system_admin') &&
-      item.project_id !== rootStore.user.project.id
-    ) {
+    if (!checkSystemAdmin() && item.project_id !== rootStore.user.project.id) {
       return false;
     }
     return true;

@@ -152,8 +152,8 @@ const checkPolicyRules = (rules, every, actionName, isAliasPolicy) => {
 
 export const systemRoleIsReader = () => {
   const { roles = [] } = globalRootStore.user || {};
-  const readerRole = 'system_reader';
-  const adminRoles = ['system_admin', 'admin'];
+  const readerRole = 'reader';
+  const adminRoles = ['admin'];
   const hasReaderRole = roles.some((it) => it.name === readerRole);
   if (!hasReaderRole) {
     return false;
@@ -209,40 +209,25 @@ const checkItemPolicy = ({
 export default checkItemPolicy;
 
 export const allCanReadPolicy = {
-  rules: [
-    'skyline:system_admin',
-    'skyline:system_reader',
-    'skyline:project_admin',
-    'skyline:project_member',
-    'skyline:project_reader',
-  ],
-  every: false,
-};
-
-export const onlyProjectCanReadPolicy = {
-  rules: [
-    'skyline:project_admin',
-    'skyline:project_member',
-    'skyline:project_reader',
-  ],
+  rules: ['admin', 'reader', 'member'],
   every: false,
 };
 
 export const allCanChangePolicy = {
-  rules: [
-    'skyline:system_admin',
-    'skyline:project_admin',
-    'skyline:project_member',
-  ],
-  every: false,
-};
-
-export const onlyProjectCanChangePolicy = {
-  rules: ['skyline:project_admin', 'skyline:project_member'],
+  rules: ['admin', 'member'],
   every: false,
 };
 
 export const onlyAdminCanReadPolicy = {
-  rules: ['skyline:system_admin', 'skyline:system_reader'],
+  rules: ['admin', 'reader'],
   every: false,
+};
+
+export const onlyAdminCanChangePolicy = {
+  rules: ['admin'],
+  every: false,
+};
+
+export const checkSystemAdmin = () => {
+  return globalRootStore.hasAdminRole;
 };

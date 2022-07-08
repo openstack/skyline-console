@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalNetworkStore from 'stores/neutron/network';
-import { checkPolicyRule } from 'resources/skyline/policy';
+import { checkSystemAdmin } from 'resources/skyline/policy';
 import globalRootStore from 'stores/root';
 import { getYesNoList } from 'utils/index';
 
@@ -57,7 +57,7 @@ export class Edit extends ModalAction {
   };
 
   get isSystemAdmin() {
-    return checkPolicyRule('skyline:system_admin');
+    return checkSystemAdmin();
   }
 
   get formItems() {

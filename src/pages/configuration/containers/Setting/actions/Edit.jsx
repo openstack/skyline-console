@@ -17,6 +17,7 @@ import { ModalAction } from 'containers/Action';
 import globalSettingStore from 'stores/skyline/setting';
 import CodeEditor from 'components/CodeEditor';
 import { inject, observer } from 'mobx-react';
+import { onlyAdminCanChangePolicy } from 'resources/skyline/policy';
 
 export class Edit extends ModalAction {
   get id() {
@@ -27,7 +28,7 @@ export class Edit extends ModalAction {
     return this.item.key;
   }
 
-  static policy = 'skyline:system_admin';
+  static policy = onlyAdminCanChangePolicy;
 
   static allowed() {
     return Promise.resolve(true);
