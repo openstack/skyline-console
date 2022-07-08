@@ -19,7 +19,7 @@ import globalNetworkStore from 'stores/neutron/network';
 import globalProjectStore from 'stores/keystone/project';
 import { isEmpty, isFunction } from 'lodash';
 import Notify from 'components/Notify';
-import { checkPolicyRule } from 'resources/skyline/policy';
+import { checkSystemAdmin } from 'resources/skyline/policy';
 import globalNeutronStore from 'stores/neutron/neutron';
 import { subnetIpv6Tip } from 'resources/neutron/network';
 import networkUtil from './networkUtil';
@@ -73,7 +73,7 @@ export class CreateNetwork extends ModalAction {
   }
 
   get isSystemAdmin() {
-    return checkPolicyRule('skyline:system_admin');
+    return checkSystemAdmin();
   }
 
   static get disableSubmit() {

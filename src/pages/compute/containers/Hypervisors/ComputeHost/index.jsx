@@ -16,7 +16,6 @@ import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { serviceStatus, serviceState } from 'resources/nova/service';
 import globalComputeHostStore from 'stores/nova/compute-host';
-import { onlyAdminCanReadPolicy } from 'resources/skyline/policy';
 import { getOptions } from 'utils';
 import actionConfigs from './actions';
 
@@ -26,7 +25,7 @@ export class ComputeHost extends Base {
   }
 
   get policy() {
-    return onlyAdminCanReadPolicy;
+    return 'os_compute_api:os-services:list';
   }
 
   get name() {

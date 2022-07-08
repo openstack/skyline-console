@@ -14,6 +14,7 @@
 
 import { ConfirmAction } from 'containers/Action';
 import globalSettingStore from 'stores/skyline/setting';
+import { onlyAdminCanChangePolicy } from 'resources/skyline/policy';
 
 export default class Reset extends ConfirmAction {
   get id() {
@@ -38,7 +39,7 @@ export default class Reset extends ConfirmAction {
 
   getItemName = (data) => data.key;
 
-  policy = 'skyline:system_admin';
+  policy = onlyAdminCanChangePolicy;
 
   onSubmit = (item) => {
     const { key: id } = item || this.item;
