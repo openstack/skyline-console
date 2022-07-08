@@ -12,8 +12,18 @@
 
 import Base from 'components/Form';
 import { inject, observer } from 'mobx-react';
+import globalImageStore from 'src/stores/glance/image';
+import {
+  getImageColumns,
+  getImageSystemTabs,
+  getImageOS,
+} from 'resources/glance/image';
 
 export class StepInfo extends Base {
+  init() {
+    this.getImageList();
+  }
+
   get title() {
     return t('Info');
   }
@@ -22,24 +32,61 @@ export class StepInfo extends Base {
     return t('Info');
   }
 
+  async getImageList() {
+    await globalImageStore.fetchList();
+    this.updateDefaultValue();
+  }
+
+  get imageList() {
+    const { imageTab } = this.state;
+    return (globalImageStore.list.data || [])
+      .filter((it) => it.owner === this.currentProjectId)
+      .filter((it) => getImageOS(it) === imageTab);
+  }
+
+  get imageColumns() {
+    return getImageColumns(this);
+  }
+
+  get systemTabs() {
+    const imageTabs = getImageSystemTabs();
+    return imageTabs;
+  }
+
+  onImageTabChange = (value) => {
+    this.setState({
+      imageTab: value,
+    });
+  };
+
   get formItems() {
     return [
       {
-        name: 'containerName',
+        name: 'name',
         label: t('Container Name'),
         type: 'input',
         placeholder: t('Container Name'),
-        required: true,
       },
       {
-        name: 'image',
+        name: 'images',
         label: t('Image'),
-        type: 'input',
-        placeholder: t('Name or ID og the container image'),
+        type: 'select-table',
+        data: this.imageList,
         required: true,
+        isLoading: globalImageStore.list.isLoading,
+        filterParams: [
+          {
+            label: t('Name'),
+            name: 'name',
+          },
+        ],
+        columns: this.imageColumns,
+        tabs: this.systemTabs,
+        defaultTabValue: this.systemTabs[0].value,
+        onTabChange: this.onImageTabChange,
       },
       {
-        name: 'imageDriver',
+        name: 'image_driver',
         label: t('Image Driver'),
         placeholder: t('Image Driver'),
         type: 'select',

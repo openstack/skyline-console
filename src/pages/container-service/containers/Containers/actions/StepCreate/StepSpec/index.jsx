@@ -12,12 +12,12 @@
 
 import Base from 'components/Form';
 import { inject, observer } from 'mobx-react';
-import globalAvailabilityZoneStore from 'src/stores/nova/zone';
+import globalAvailabilityZoneStore from 'stores/nova/zone';
 
 export class StepSpec extends Base {
   init() {
     this.getAvailabilityZones();
-    this.state.isMaxRetry = true;
+    this.state.disableRetry = true;
   }
 
   get title() {
@@ -32,7 +32,7 @@ export class StepSpec extends Base {
     await globalAvailabilityZoneStore.fetchListWithoutDetail();
   }
 
-  get getAvailabilityZoneList() {
+  get availabilityZoneList() {
     return (globalAvailabilityZoneStore.list.data || [])
       .filter((it) => it.zoneState.available)
       .map((it) => ({
@@ -41,11 +41,8 @@ export class StepSpec extends Base {
       }));
   }
 
-  onExitPolicyChange(value) {
-    this.setState({ isMaxRetry: value !== 'on-failure' });
-  }
-
   get formItems() {
+    const { disableRetry } = this.state;
     return [
       {
         name: 'hostname',
@@ -57,36 +54,34 @@ export class StepSpec extends Base {
         name: 'runtime',
         label: t('Runtime'),
         type: 'input',
-        placeholder: t('The runtime to create container with'),
+        placeholder: t('The container runtime tool to create container with'),
       },
       {
         name: 'cpu',
         label: t('CPU'),
         type: 'input-int',
-        placeholder: t('The number of virtual cpu for this container'),
+        tip: t('The number of virtual cpu for this container'),
         min: 1,
       },
       {
         name: 'memory',
         label: t('Memory (MiB)'),
         type: 'input-int',
-        placeholder: t('The container memory size in MiB'),
+        tip: t('The container memory size in MiB'),
         min: 4,
       },
       {
         name: 'disk',
         label: t('Disk'),
         type: 'input-int',
-        placeholder: t('The disk size in GiB for per container'),
+        tip: t('The disk size in GiB for per container'),
         min: 1,
       },
       {
-        name: 'availableZone',
+        name: 'availability_zone',
         label: t('Availability Zone'),
         type: 'select',
-        options: this.getAvailabilityZoneList,
-        allowClear: true,
-        showSearch: true,
+        options: this.availabilityZoneList,
       },
       {
         name: 'exitPolicy',
@@ -110,20 +105,21 @@ export class StepSpec extends Base {
             value: 'unless-stopped',
           },
         ],
-        onChange: (val) => this.onExitPolicyChange(val),
-        allowClear: true,
-        showSearch: true,
+        onChange: (value) =>
+          this.setState({
+            disableRetry: value !== 'on-failure',
+          }),
       },
       {
         name: 'maxRetry',
         label: t('Max Retry'),
         type: 'input-number',
-        placeholder: t("Retry times for 'Restart on failure' policy"),
+        tip: t('Retry times for restart on failure policy'),
         min: 1,
-        disabled: this.state.isMaxRetry,
+        disabled: disableRetry,
       },
       {
-        name: 'enableAutoHeal',
+        name: 'auto_heal',
         label: t('Enable auto heal'),
         type: 'check',
       },

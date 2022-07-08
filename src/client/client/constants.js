@@ -111,7 +111,7 @@ export const apiVersionMaps = {
   },
   zun: {
     key: 'OpenStack-API-Version',
-    value: 'container 1.7',
+    value: 'container 1.11',
   },
 };
 
