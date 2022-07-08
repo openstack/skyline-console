@@ -49,6 +49,7 @@ export class Credentials extends Base {
       {
         title: t('ID/Name'),
         dataIndex: 'name',
+        isName: true,
         hasNoDetail: true,
       },
       {
