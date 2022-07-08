@@ -96,6 +96,12 @@ export class SystemStep extends Base {
       }));
   }
 
+  get serverGroupRequired() {
+    const { more } = this.state;
+    const { servergroup } = this.locationParams;
+    return !!servergroup && more;
+  }
+
   get inputHelp() {
     const { input = '' } = this.state;
     const maxCount = 1000;
@@ -370,6 +376,7 @@ export class SystemStep extends Base {
         hidden: !more,
         data: this.serverGroups,
         isLoading: this.serverGroupStore.list.isLoading,
+        required: this.serverGroupRequired,
         extra: t(
           'Using server groups, you can create cloud hosts on the same/different physical nodes as much as possible to meet the affinity/non-affinity requirements of business applications.'
         ),

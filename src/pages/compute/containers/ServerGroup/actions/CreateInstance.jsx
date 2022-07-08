@@ -1,4 +1,4 @@
-// Copyright 2021 99cloud
+// Copyright 2022 99cloud
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,29 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Create from './Create';
-import Delete from './Delete';
-import CreateInstance from './CreateInstance';
+import { inject, observer } from 'mobx-react';
+import CreateInstance from 'pages/compute/containers/Instance/actions/StepCreate';
 
-const actionConfigs = {
-  rowActions: {
-    firstAction: Delete,
-    moreActions: [
-      {
-        action: CreateInstance,
-      },
-    ],
-  },
-  batchActions: [Delete],
-  primaryActions: [Create],
-};
+export class StepCreate extends CreateInstance {
+  static id = 'instance-create';
 
-const actionConfigsAdmin = {
-  rowActions: {
-    firstAction: Delete,
-  },
-  batchActions: [Delete],
-  primaryActions: [],
-};
+  static title = t('Create Instance');
 
-export default { actionConfigs, actionConfigsAdmin };
+  static path(item) {
+    return `/compute/instance/create?servergroup=${item.id}`;
+  }
+
+  static policy = 'os_compute_api:servers:create';
+
+  static allowed() {
+    return true;
+  }
+}
+
+export default inject('rootStore')(observer(StepCreate));
