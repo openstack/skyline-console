@@ -58,9 +58,6 @@ export class RootStore {
   oldPassword = {};
 
   @observable
-  license = null;
-
-  @observable
   info = {};
 
   @observable
@@ -149,28 +146,15 @@ export class RootStore {
     this.policies = policies;
     const {
       endpoints = {},
-      license = {},
       version = '',
       project: { id: projectId, name: projectName } = {},
     } = user || {};
     this.projectId = projectId;
     this.projectName = projectName;
-    this.license = license || {};
     this.version = version;
     this.endpoints = endpoints;
     this.updateUserRoles(user);
     this.setKeystoneToken(user);
-  }
-
-  checkLicense(key) {
-    if (!key) {
-      return true;
-    }
-    const { features = [] } = this.license || {};
-    const addonItem = features.find((it) => !!it.addons) || {};
-    const { addons: addonStr = '' } = addonItem || {};
-    const addons = addonStr.split(';');
-    return addons.indexOf(key) >= 0;
   }
 
   checkEndpoint(key) {
@@ -209,7 +193,6 @@ export class RootStore {
     this.roles = [];
     this.hasAdminRole = false;
     this.hasAdminPageRole = false;
-    this.license = null;
     this.version = '';
     this.noticeCount = 0;
     this.goToLoginPage();

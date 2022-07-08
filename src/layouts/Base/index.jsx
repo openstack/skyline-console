@@ -95,7 +95,7 @@ export class BaseLayout extends Component {
 
   get menu() {
     const menu = this.filterMenuByHidden(this.originMenu);
-    const newMenu = this.getMenuByLicense(menu);
+    const newMenu = this.getMenuAllowed(menu);
     const filteredMenu = newMenu.filter((it) => {
       const { hasChildren = true, children } = it;
       return !hasChildren || (hasChildren && children.length);
@@ -105,7 +105,7 @@ export class BaseLayout extends Component {
 
   get menuAll() {
     // include hide menu
-    return this.getMenuByLicense(this.originMenu);
+    return this.getMenuAllowed(this.originMenu);
   }
 
   getRouteName(routeName) {
@@ -128,34 +128,9 @@ export class BaseLayout extends Component {
     return newMenu;
   };
 
-  checkLicenseKey = (key) => this.rootStore.checkLicense(key);
-
   checkItemEndpoints = (key) => this.rootStore.checkEndpoint(key);
 
-  updateMenuItemByAllowed = (menuItem) => {
-    const { licenseKey, policy, endpoints, children = [], ...rest } = menuItem;
-    if (licenseKey && !this.checkLicenseKey(licenseKey)) {
-      return null;
-    }
-    if (policy && !checkItemPolicy({ policy })) {
-      return null;
-    }
-    if (endpoints && !this.checkItemEndpoints(endpoints)) {
-      return null;
-    }
-    if (children.length === 0) {
-      return menuItem;
-    }
-    const newChildren = children
-      .map((it) => this.updateMenuItemByAllowed(it))
-      .filter((it) => !!it);
-    return {
-      ...rest,
-      children: newChildren,
-    };
-  };
-
-  getMenuByLicense = (menu) => {
+  getMenuAllowed = (menu) => {
     // update menu according to license addons
     const newMenu = [];
     menu.forEach((it) => {
@@ -224,6 +199,26 @@ export class BaseLayout extends Component {
     }
     this.rootStore.clearNoticeCount();
   };
+
+  updateMenuItemByAllowed(menuItem) {
+    const { policy, endpoints, children = [], ...rest } = menuItem;
+    if (policy && !checkItemPolicy({ policy })) {
+      return null;
+    }
+    if (endpoints && !this.checkItemEndpoints(endpoints)) {
+      return null;
+    }
+    if (children.length === 0) {
+      return menuItem;
+    }
+    const newChildren = children
+      .map((it) => this.updateMenuItemByAllowed(it))
+      .filter((it) => !!it);
+    return {
+      ...rest,
+      children: newChildren,
+    };
+  }
 
   init() {
     if (this.isAdminPage && !this.hasAdminPageRole) {
