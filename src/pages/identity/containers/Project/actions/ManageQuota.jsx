@@ -21,6 +21,7 @@ import {
   quotaCardList,
   getVolumeTypeCards,
   shareQuotaCard,
+  zunQuotaCard,
 } from 'pages/base/containers/Overview/components/QuotaOverview';
 
 export class ManageQuota extends ModalAction {
@@ -45,6 +46,10 @@ export class ManageQuota extends ModalAction {
 
   get enableShare() {
     return this.props.rootStore.checkEndpoint('manilav2');
+  }
+
+  get enableZun() {
+    return this.props.rootStore.checkEndpoint('zun');
   }
 
   async getData() {
@@ -130,10 +135,14 @@ export class ManageQuota extends ModalAction {
   }
 
   get quotaCardList() {
+    const newQuotaCardList = [...quotaCardList];
     if (this.enableShare) {
-      return [...quotaCardList, shareQuotaCard];
+      newQuotaCardList.push(shareQuotaCard);
     }
-    return quotaCardList;
+    if (this.enableZun) {
+      newQuotaCardList.push(zunQuotaCard);
+    }
+    return newQuotaCardList;
   }
 
   getFormItemsByCards(cardType) {
@@ -184,6 +193,9 @@ export class ManageQuota extends ModalAction {
     if (this.enableShare) {
       form.push(...this.getFormItemsByCards('share'));
     }
+    if (this.enableZun) {
+      form.push(...this.getFormItemsByCards('zun'));
+    }
     if (this.enableCinder) {
       const cinderFormItems = this.getFormItemsByCards('storage');
       const volumeTypeFormItems = this.getVolumeTypeFormItems();
@@ -202,8 +214,16 @@ export class ManageQuota extends ModalAction {
 
   getSubmitData(values) {
     const { id: project_id } = this.item;
-    const { more, compute, storage, networks, volumeTypes, share, ...others } =
-      values;
+    const {
+      more,
+      compute,
+      storage,
+      networks,
+      volumeTypes,
+      share,
+      zun,
+      ...others
+    } = values;
     return {
       project_id,
       data: others,

@@ -104,6 +104,20 @@ export const shareQuotaCard = {
   ],
 };
 
+export const zunQuotaCard = {
+  text: t('Containers Management'),
+  type: 'zun',
+  value: [
+    {
+      text: t('Containers'),
+      key: 'zun_containers',
+    },
+    { text: t('CPU'), key: 'zun_cpu' },
+    { text: t('Memory (MiB)'), key: 'zun_memory' },
+    { text: t('Disk (GiB)'), key: 'zun_disk' },
+  ],
+};
+
 export const getVolumeTypeCards = (data) => {
   const value = data.map((item, index) => {
     return {
@@ -177,6 +191,10 @@ export class QuotaOverview extends Component {
     return globalRootStore.checkEndpoint('manilav2');
   }
 
+  get enableZun() {
+    return globalRootStore.checkEndpoint('zun');
+  }
+
   get volumeTypeData() {
     const { volumeTypeData } = this.props;
     return volumeTypeData || this.volumeTypeStore.list.data;
@@ -194,6 +212,9 @@ export class QuotaOverview extends Component {
     }
     if (this.enableShare) {
       newList.push(shareQuotaCard);
+    }
+    if (this.enableZun) {
+      newList.push(zunQuotaCard);
     }
     return newList;
   }
