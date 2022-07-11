@@ -139,7 +139,7 @@ const getLinkUrl = (prefix, id) => {
   return `${prefix}/${id}`;
 };
 
-export const getNameRender = (render, column) => {
+export const getNameRender = (render, column, rowKey) => {
   if (render) {
     return render;
   }
@@ -151,7 +151,6 @@ export const getNameRender = (render, column) => {
     linkFunc,
     hasNoDetail = false,
   } = column;
-  const { rowKey } = this.props;
   return (value, record) => {
     const idValue = get(record, idKey || rowKey);
     let url = null;

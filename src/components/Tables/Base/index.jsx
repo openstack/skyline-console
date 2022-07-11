@@ -434,7 +434,8 @@ export class BaseTable extends React.Component {
         newRender = getNameRenderByRouter(newRender, column, rowKey);
       }
       if ((dataIndex === 'name' && linkPrefix) || isName) {
-        newRender = getNameRender(newRender, column);
+        const { rowKey } = this.props;
+        newRender = getNameRender(newRender, column, rowKey);
       }
       if (dataIndex === 'cost' || isPrice) {
         newRender = this.getPriceRender(newRender, column);
