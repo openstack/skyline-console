@@ -24,7 +24,6 @@ import { emptyActionConfig } from 'utils/constants';
 import { Col, Popover, Row } from 'antd';
 import { FileTextOutlined } from '@ant-design/icons';
 import { qosEndpoint } from 'client/client/constants';
-import { enablePFW } from 'resources/neutron/neutron';
 import { getOptions } from 'utils';
 import styles from './styles.less';
 import actionConfigs from './actions';
@@ -95,7 +94,6 @@ export class FloatingIps extends Base {
 
   updateFetchParams = (params) => {
     if (this.inQosDetail) {
-      console.log('params', params);
       const { id, ...rest } = params;
       return {
         qos_policy_id: id,
@@ -145,6 +143,73 @@ export class FloatingIps extends Base {
     return true;
   }
 
+  getRecordPortForwarding(record) {
+    return (record.port_forwardings || []).sort(
+      (a, b) => a.external_port - b.external_port
+    );
+  }
+
+  getPortForwardingRender(record) {
+    const data = this.getRecordPortForwarding(record);
+    if (!data.length) {
+      return null;
+    }
+    return (
+      <Popover
+        content={
+          <Row className={styles['popover-row']} gutter={[8, 8]}>
+            {data.map((i, idx) => (
+              <Col span={24} key={`pfw-${idx}`}>
+                {`${record.floating_ip_address}:${i.external_port} => ${i.internal_ip_address}:${i.internal_port}`}
+              </Col>
+            ))}
+          </Row>
+        }
+        title={t('Port Forwarding')}
+        destroyTooltipOnHide
+      >
+        {t('{number} port forwarding rules', {
+          number: data.length,
+        })}
+        &nbsp;
+        <FileTextOutlined />
+      </Popover>
+    );
+  }
+
+  getPortForwardingStringify(record) {
+    const data = this.getRecordPortForwarding(record);
+    if (!data.length) {
+      return '';
+    }
+    const ret = data.map(
+      (i) =>
+        `${record.floating_ip_address}:${i.external_port} => ${i.internal_ip_address}:${i.internal_port}`
+    );
+    const total = t('{number} port forwarding rules', {
+      number: data.length,
+    });
+    return [total, ...ret].join('\n');
+  }
+
+  getResourceRender(value, record) {
+    const hasResource = value ? value !== '-' : false;
+    if (hasResource) {
+      return value;
+    }
+    const pfsRender = this.getPortForwardingRender(record);
+    return pfsRender || '-';
+  }
+
+  geResourceStringify(value, record) {
+    const hasResource = value ? value !== '-' : false;
+    if (hasResource) {
+      return value;
+    }
+    const portForwarding = this.getPortForwardingStringify(record);
+    return portForwarding || '-';
+  }
+
   getColumns() {
     return [
       {
@@ -177,51 +242,11 @@ export class FloatingIps extends Base {
       {
         title: t('Associated Resource'),
         dataIndex: 'resource_name',
-        render: (resource_name, record) => {
-          if (
-            !resource_name &&
-            enablePFW() &&
-            record.port_forwardings.length !== 0
-          ) {
-            return (
-              <>
-                {t('{number} port forwarding rules', {
-                  number: record.port_forwardings.length,
-                })}
-                &nbsp;
-                <Popover
-                  content={
-                    <Row className={styles['popover-row']} gutter={[8, 8]}>
-                      {record.port_forwardings
-                        .sort((a, b) => a.external_port - b.external_port)
-                        .map((i, idx) => (
-                          <Col span={24} key={`pfw-${idx}`}>
-                            {`${record.floating_ip_address}:${i.external_port} => ${i.internal_ip_address}:${i.internal_port}`}
-                          </Col>
-                        ))}
-                    </Row>
-                  }
-                  title={t('Port Forwarding')}
-                  destroyTooltipOnHide
-                >
-                  <FileTextOutlined />
-                </Popover>
-              </>
-            );
-          }
-          return resource_name || '';
+        render: (value, record) => {
+          return this.getResourceRender(value, record);
         },
-        stringify: (resource_name, record) => {
-          if (!resource_name && (record.port_forwardings || []).length !== 0) {
-            const ret = record.port_forwardings
-              .sort((a, b) => a.external_port - b.external_port)
-              .map(
-                (i) =>
-                  `${record.floating_ip_address}:${i.external_port} => ${i.internal_ip_address}:${i.internal_port}`
-              );
-            return ret.join('\n');
-          }
-          return resource_name;
+        stringify: (value, record) => {
+          return this.geResourceStringify(value, record);
         },
         isHideable: true,
         sorter: false,
