@@ -103,6 +103,10 @@ export function getPortFormItem(device_owner) {
           label: t('Name'),
           name: 'name',
         },
+        {
+          label: t('Fixed IP'),
+          name: 'fixedIP',
+        },
       ],
       columns: [
         {

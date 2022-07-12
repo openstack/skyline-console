@@ -30,6 +30,17 @@ export class PortStore extends Base {
     return client.neutron.routers;
   }
 
+  get paramsFuncPage() {
+    return (params) => {
+      const { current, fixedIP, ...rest } = params;
+      const newParams = { ...rest };
+      if (fixedIP) {
+        newParams.fixed_ips = `ip_address=${fixedIP}`;
+      }
+      return newParams;
+    };
+  }
+
   async detailDidFetch(item) {
     const { network_id } = item;
     try {
