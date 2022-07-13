@@ -62,6 +62,10 @@ export class StepSpec extends Base {
         type: 'input-int',
         tip: t('The number of virtual cpu for this container'),
         min: 1,
+        onChange: (val) =>
+          this.updateContext({
+            cpu: val,
+          }),
       },
       {
         name: 'memory',
@@ -69,13 +73,21 @@ export class StepSpec extends Base {
         type: 'input-int',
         tip: t('The container memory size in MiB'),
         min: 4,
+        onChange: (val) =>
+          this.updateContext({
+            memory: val,
+          }),
       },
       {
         name: 'disk',
-        label: t('Disk'),
+        label: t('Disk (GiB)'),
         type: 'input-int',
         tip: t('The disk size in GiB for per container'),
         min: 1,
+        onChange: (val) =>
+          this.updateContext({
+            disk: val,
+          }),
       },
       {
         name: 'availability_zone',

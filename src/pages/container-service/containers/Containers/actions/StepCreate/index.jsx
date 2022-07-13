@@ -11,8 +11,10 @@
 // limitations under the License.
 
 import { inject, observer } from 'mobx-react';
+import { message as $message } from 'antd';
 import { StepAction } from 'src/containers/Action';
-import globalContainersStore from 'src/stores/zun/containers';
+import globalContainersStore from 'stores/zun/containers';
+import globalProjectStore from 'stores/keystone/project';
 import StepInfo from './StepInfo';
 import StepSpec from './StepSpec';
 import StepVolumes from './StepVolumes';
@@ -22,6 +24,9 @@ import StepMiscellaneous from './StepMiscellaneous';
 export class StepCreate extends StepAction {
   init() {
     this.store = globalContainersStore;
+    this.projectStore = globalProjectStore;
+    this.getQuota();
+    this.errorMsg = '';
   }
 
   static id = 'create-container';
@@ -73,6 +78,120 @@ export class StepCreate extends StepAction {
         component: StepMiscellaneous,
       },
     ];
+  }
+
+  get showQuota() {
+    return true;
+  }
+
+  get quotaInfo() {
+    const {
+      containers = {},
+      cpu = {},
+      memory = {},
+      disk = {},
+    } = this.projectStore.zunQuota;
+    const { limit } = containers || {};
+    if (!limit) {
+      return [];
+    }
+    const {
+      data: { cpu: cpuCount, memory: memoryCount, disk: diskCount } = {},
+    } = this.state;
+    const containersQuotaInfo = {
+      ...containers,
+      add: 1,
+      name: 'containers',
+      title: t('Containers'),
+    };
+
+    const cpuQuotaInfo = {
+      ...cpu,
+      add: cpuCount,
+      name: 'cpu',
+      title: t('CPU'),
+      type: 'line',
+    };
+
+    const memoryQuotaInfo = {
+      ...memory,
+      add: memoryCount,
+      name: 'memory',
+      title: t('Memory (MiB)'),
+      type: 'line',
+    };
+
+    const diskQuotaInfo = {
+      ...disk,
+      add: diskCount,
+      name: 'disk',
+      title: t('Disk (GiB)'),
+      type: 'line',
+    };
+
+    this.checkQuota(this.state.data, this.projectStore.zunQuota);
+
+    return [containersQuotaInfo, cpuQuotaInfo, memoryQuotaInfo, diskQuotaInfo];
+  }
+
+  async getQuota() {
+    await this.projectStore.fetchProjectZunQuota();
+  }
+
+  getQuotaMessage(input, left, name) {
+    if (left === -1) {
+      return '';
+    }
+    if (input > left) {
+      return t(
+        'Insufficient {name} quota to create resources(left { quota }, input { input }).',
+        { name, quota: left, input }
+      );
+    }
+    return '';
+  }
+
+  checkQuota(data, quota) {
+    const { containers = {}, cpu = {}, memory = {}, disk = {} } = quota || {};
+    const { cpu: cpuCount, memory: memoryCount, disk: diskCount } = data || {};
+
+    const { left: containerLeft = 0 } = containers;
+    const containerMsg = this.getQuotaMessage(
+      1,
+      containerLeft,
+      t('Containers')
+    );
+
+    const { left: cpuLeft = 0 } = cpu;
+    const cpuMsg = this.getQuotaMessage(cpuCount, cpuLeft, t('CPU'));
+
+    const { left: memoryLeft = 0 } = memory;
+    const memoryMsg = this.getQuotaMessage(
+      memoryCount,
+      memoryLeft,
+      t('Memory')
+    );
+
+    const { left: diskLeft = 0 } = disk;
+    const diskMsg = this.getQuotaMessage(diskCount, diskLeft, t('Disk'));
+
+    if (!containerMsg && !cpuMsg && !memoryMsg && !diskMsg) {
+      this.errorMsg = '';
+    } else {
+      const msg = containerMsg || cpuMsg || memoryMsg || diskMsg;
+      if (this.errorMsg !== msg) {
+        $message.error(msg);
+      }
+      this.errorMsg = msg;
+    }
+  }
+
+  get disableNext() {
+    return !!this.errorMsg;
+  }
+
+  get disableSubmit() {
+    return !!this.errorMsg;
   }
 
   onSubmit = (values) => {
