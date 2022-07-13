@@ -61,14 +61,11 @@ export const networkColumns = (self) => [
     title: t('Subnet Count'),
     dataIndex: 'subnets',
     render: (value, record) => {
-      return (
-        <>
-          {(value && value.length) || 0}{' '}
-          {value && value.length !== 0 && (
-            <PopoverSubnets subnetIds={record.subnets} />
-          )}
-        </>
-      );
+      const count = (value || []).length;
+      if (count === 0) {
+        return count;
+      }
+      return <PopoverSubnets subnetIds={record.subnets} title={count} />;
     },
     stringify: (subnets) => `${subnets.length}(${subnets.join(',')})`,
     sorter: false,

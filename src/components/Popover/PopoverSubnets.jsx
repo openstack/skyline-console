@@ -17,7 +17,7 @@ import { SubnetStore } from 'stores/neutron/subnet';
 import IPopover from './Popover';
 
 export default function PopoverSubnets(props) {
-  const { subnetIds = [] } = props;
+  const { subnetIds = [], title = '' } = props;
   if (!subnetIds.length) {
     return null;
   }
@@ -34,5 +34,5 @@ export default function PopoverSubnets(props) {
       title: t('CIDR'),
     },
   ];
-  return <IPopover columns={columns} getRequests={getRequests} />;
+  return <IPopover columns={columns} getRequests={getRequests} title={title} />;
 }

@@ -27,15 +27,21 @@ const getColumn = (column) => {
   };
 };
 
-function PopupResources({ getRequests, columns }) {
+function PopupResources({ getRequests, getData, columns, pagination }) {
   const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
-      const requests = getRequests();
-      const ret = await Promise.all(requests);
-      setData(ret);
-      setLoading(false);
+      if (getData) {
+        const ret = await getData();
+        setData(ret);
+        setLoading(false);
+      } else if (getRequests) {
+        const requests = getRequests();
+        const ret = await Promise.all(requests);
+        setData(ret);
+        setLoading(false);
+      }
     };
     fetchData();
   }, []);
@@ -44,20 +50,37 @@ function PopupResources({ getRequests, columns }) {
   }
   const currentColumns = columns.map((c) => getColumn(c));
   return (
-    <Table columns={currentColumns} dataSource={data} pagination={false} />
+    <Table columns={currentColumns} dataSource={data} pagination={pagination} />
   );
 }
 
 const IPopoverProps = {
   columns: PropTypes.array.isRequired,
-  getRequests: PropTypes.func.isRequired,
+  getRequests: PropTypes.func,
+  getData: PropTypes.func,
+  title: PropTypes.any,
   placement: PropTypes.string,
+  pagination: PropTypes.any,
+  icon: PropTypes.any,
 };
 
 export default function IPopover(props) {
-  const { columns = [], getRequests, ...rest } = props;
+  const {
+    columns = [],
+    getRequests,
+    getData,
+    title,
+    pagination = false,
+    icon = <FileTextOutlined style={{ cursor: 'pointer' }} />,
+    ...rest
+  } = props;
   const content = (
-    <PopupResources columns={columns} getRequests={getRequests} />
+    <PopupResources
+      columns={columns}
+      getRequests={getRequests}
+      getData={getData}
+      pagination={pagination}
+    />
   );
   return (
     <>
@@ -67,7 +90,7 @@ export default function IPopover(props) {
         mouseEnterDelay={0.5}
         {...rest}
       >
-        <FileTextOutlined style={{ cursor: 'pointer' }} />
+        {title}&nbsp;{icon}
       </Popover>
     </>
   );
