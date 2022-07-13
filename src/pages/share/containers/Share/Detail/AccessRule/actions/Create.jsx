@@ -63,14 +63,24 @@ export class Create extends ModalAction {
     return getOptions(shareAccessLevel);
   }
 
-  get defaultValue() {
-    return { isPublic: true };
-  }
-
   get typeTip() {
     return t(
       "'ip' rule represents IPv4 or IPv6 address, 'cert' rule represents TLS certificate, 'user' rule represents username or usergroup, 'cephx' rule represents ceph auth ID."
     );
+  }
+
+  get nameForStateUpdate() {
+    return ['access_type'];
+  }
+
+  getAccessExtra() {
+    const { access_type: type } = this.state;
+    const { detail: { share_proto: proto } = {} } = this.containerProps || {};
+    const ipTipTypes = ['NFS', 'CIFS'];
+    if (ipTipTypes.includes(proto) && type === 'ip') {
+      return t('All network segments are indicated by "*", not "0.0.0.0/0"');
+    }
+    return '';
   }
 
   get formItems() {
@@ -95,6 +105,7 @@ export class Create extends ModalAction {
         label: t('Access To'),
         type: 'input',
         required: true,
+        extra: this.getAccessExtra(),
       },
       metadataFormItem,
     ];
