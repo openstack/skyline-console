@@ -16,6 +16,7 @@ import globalPortStore from 'stores/neutron/port';
 import globalNetworkStore from 'stores/neutron/network';
 import { ipValidate } from 'utils/validate';
 import globalFloatingIpsStore from 'stores/neutron/floatingIp';
+import { enablePFW } from 'resources/neutron/neutron';
 
 const { isIPv4 } = ipValidate;
 
@@ -256,3 +257,96 @@ export async function handleFixedIPChange(e) {
     fipLoading: false,
   });
 }
+
+export const getFixedIPFormItemForAssociate = (label, self) => {
+  const { portLoading } = self.state;
+  return {
+    name: 'fixed_ip',
+    label,
+    type: 'select-table',
+    required: true,
+    data: self.ports,
+    isLoading: portLoading,
+    isMulti: false,
+    filterParams: [
+      {
+        label: t('Ip Address'),
+        name: 'name',
+      },
+    ],
+    columns: [
+      {
+        title: t('Ip Address'),
+        dataIndex: 'name',
+      },
+      {
+        title: t('Mac Address'),
+        dataIndex: 'mac_address',
+      },
+      {
+        title: t('Network'),
+        dataIndex: 'network_name',
+      },
+      {
+        title: t('Subnet ID'),
+        dataIndex: 'subnet_id',
+      },
+      {
+        title: t('Reason'),
+        dataIndex: 'reason',
+      },
+    ],
+    disabledFunc: (record) => !record.available,
+    onChange: self.handleFixedIPChange,
+  };
+};
+
+export const getFIPFormItemExtra = () => {
+  if (enablePFW()) {
+    return t(
+      'The floating IP configured with port forwarding rules cannot be bound'
+    );
+  }
+  return '';
+};
+
+export const disableFIPAssociate = (record) => {
+  const pfws = record.port_forwardings || [];
+  return !!pfws.length;
+};
+
+export const getFIPFormItemForAssociate = (self) => {
+  const { canAssociateFloatingIPs, fipLoading } = self.state;
+  return {
+    name: 'fip',
+    label: t('Floating Ip Address'),
+    type: 'select-table',
+    required: true,
+    data: canAssociateFloatingIPs,
+    isLoading: fipLoading,
+    isMulti: false,
+    extra: self.getFIPFormItemExtra(),
+    disabledFunc: self.disableFIPAssociate,
+    filterParams: [
+      {
+        label: t('Floating Ip Address'),
+        name: 'name',
+      },
+    ],
+    columns: [
+      {
+        title: t('Floating Ip Address'),
+        dataIndex: 'name',
+      },
+      {
+        title: t('Network'),
+        dataIndex: 'network_name',
+      },
+      {
+        title: t('Created At'),
+        dataIndex: 'created_at',
+        valueRender: 'sinceTime',
+      },
+    ],
+  };
+};
