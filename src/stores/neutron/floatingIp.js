@@ -12,12 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import client from 'client';
+import Base from 'stores/base';
 import { action, observable } from 'mobx';
 import globalRouterStore from 'stores/neutron/router';
 import globalServerStore from 'stores/nova/instance';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
-import client from 'client';
-import Base from 'stores/base';
+import globalQoSPolicyStore from 'stores/neutron/qos-policy';
 
 export class FloatingIpStore extends Base {
   get client() {
@@ -69,17 +70,24 @@ export class FloatingIpStore extends Base {
     timeFilter,
     ...filters
   } = {}) {
-    const allData = await this.fetchListByPage({
-      limit,
-      page,
-      sortKey,
-      sortOrder,
-      conditions,
-      timeFilter,
-      ...filters,
-    });
+    const [qosPolicies, allData] = await Promise.all([
+      globalQoSPolicyStore.fetchList(),
+      this.fetchListByPage({
+        limit,
+        page,
+        sortKey,
+        sortOrder,
+        conditions,
+        timeFilter,
+        ...filters,
+      }),
+    ]);
     const promises = [];
     allData.forEach((data) => {
+      const qos = qosPolicies.find((it) => it.id === data.qos_policy_id);
+      if (qos) {
+        data.qos_policy_name = qos.name;
+      }
       if (
         data.port_details &&
         data.port_details.device_owner === 'network:router_gateway'
