@@ -84,6 +84,10 @@ export class QoSPolicy extends Base {
     return emptyActionConfig;
   }
 
+  get hasTab() {
+    return !this.isAdminPage;
+  }
+
   get isFilterByBackend() {
     return true;
   }
