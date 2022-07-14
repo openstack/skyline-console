@@ -21,6 +21,10 @@ import { getCanReachSubnetIdsWithRouterIdInComponent } from 'resources/neutron/r
 import {
   getInterfaceWithReason,
   handleFixedIPChange,
+  getFixedIPFormItemForAssociate,
+  getFIPFormItemForAssociate,
+  getFIPFormItemExtra,
+  disableFIPAssociate,
 } from 'resources/neutron/floatingip';
 
 export class AssociateFip extends ModalAction {
@@ -104,8 +108,17 @@ export class AssociateFip extends ModalAction {
     });
   };
 
+  getFIPFormItemExtra() {
+    return getFIPFormItemExtra();
+  }
+
+  disableFIPAssociate(record) {
+    return disableFIPAssociate(record);
+  }
+
   get formItems() {
-    const { canAssociateFloatingIPs, portLoading, fipLoading } = this.state;
+    const fixedIpFormItem = getFixedIPFormItemForAssociate(t('Fixed IP'), this);
+    const fipFormItem = getFIPFormItemForAssociate(this);
     return [
       {
         name: 'virtualAdapter',
@@ -113,67 +126,8 @@ export class AssociateFip extends ModalAction {
         type: 'label',
         iconType: 'instance',
       },
-      {
-        name: 'fixed_ip',
-        label: t('Fixed IP'),
-        type: 'select-table',
-        required: true,
-        data: this.ports,
-        isLoading: portLoading,
-        disabledFunc: (record) => !record.available,
-        onChange: this.handleFixedIPChange,
-        isMulti: false,
-        filterParams: [
-          {
-            label: t('Ip Address'),
-            name: 'name',
-          },
-        ],
-        columns: [
-          {
-            title: t('Ip Address'),
-            dataIndex: 'name',
-          },
-          {
-            title: t('Subnet ID'),
-            dataIndex: 'subnet_id',
-          },
-          {
-            title: t('Reason'),
-            dataIndex: 'reason',
-          },
-        ],
-      },
-      {
-        name: 'fip',
-        label: t('Floating Ip Address'),
-        type: 'select-table',
-        required: true,
-        data: canAssociateFloatingIPs,
-        isLoading: fipLoading,
-        isMulti: false,
-        filterParams: [
-          {
-            label: t('Floating Ip Address'),
-            name: 'name',
-          },
-        ],
-        columns: [
-          {
-            title: t('Floating Ip Address'),
-            dataIndex: 'name',
-          },
-          {
-            title: t('Network'),
-            dataIndex: 'network_name',
-          },
-          {
-            title: t('Created At'),
-            dataIndex: 'created_at',
-            valueRender: 'sinceTime',
-          },
-        ],
-      },
+      fixedIpFormItem,
+      fipFormItem,
     ];
   }
 }

@@ -2225,6 +2225,7 @@
   "The entire inspection process takes 5 to 10 minutes, so you need to be patient. After the registration is completed, the node configuration status will return to the manageable status.": "检查的整个过程需要耗费 5 到 10 分钟时间，您需要耐心等待。在完成注册后，节点配置状态会重新回到可管理状态。",
   "The feasible configuration of cloud-init or cloudbase-init service in the image is not synced to image's properties, so the Login Name is unknown.": "镜像中的cloud-init或cloudbase-init服务的预制配置未同步至镜像属性, 登录名未知",
   "The file with the same name will be overwritten.": "对同名文件将会进行文件覆盖操作。",
+  "The floating IP configured with port forwarding rules cannot be bound": "不允许绑定配置了端口转发规则的浮动IP",
   "The format of the certificate content is: by \"----BEGIN CERTIFICATE-----\" as the beginning,\"-----END CERTIFICATE----\" as the end, 64 characters per line, the last line does not exceed 64 characters, and there cannot be blank lines.": "证书内容格式为：以”-----BEGIN CERTIFICATE-----”作为开头，以“-----END CERTIFICATE----”作为结尾，每行64字符，最后一行不超过64字符，不能有空行。",
   "The host name of this container": "容器的主机名",
   "The http_proxy address to use for nodes in cluster": "用于集群中节点的 http_proxy 地址",
