@@ -83,6 +83,7 @@ export const qosEndpoint = () => getOriginEndpoint('neutron_qos');
 export const swiftEndpoint = () => getOriginEndpoint('swift');
 export const cinderEndpoint = () => getOriginEndpoint('cinder');
 export const manilaEndpoint = () => getOriginEndpoint('manilav2');
+export const zunEndpoint = () => getOriginEndpoint('zun');
 
 export const apiVersionMaps = {
   nova: {

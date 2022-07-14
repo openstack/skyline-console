@@ -37,6 +37,9 @@ export class ProjectStore extends Base {
   shareQuota = {};
 
   @observable
+  zunQuota = {};
+
+  @observable
   groupRoleList = [];
 
   get client() {
@@ -73,6 +76,10 @@ export class ProjectStore extends Base {
 
   get shareQuotaClient() {
     return client.manila.quotaSets;
+  }
+
+  get zunQuotaClient() {
+    return client.zun.quotas;
   }
 
   listFetchByClient(params, originParams) {
@@ -202,6 +209,10 @@ export class ProjectStore extends Base {
     return globalRootStore.checkEndpoint('manilav2');
   }
 
+  get enableZun() {
+    return globalRootStore.checkEndpoint('zun');
+  }
+
   @action
   async enable({ id }) {
     const reqBody = {
@@ -248,12 +259,20 @@ export class ProjectStore extends Base {
     promiseArr.push(
       this.enableShare ? this.shareQuotaClient.showDetail(project_id) : null
     );
+    promiseArr.push(
+      this.enableZun
+        ? this.zunQuotaClient.show(project_id, {
+            usages: true,
+          })
+        : null
+    );
     promiseArr.push(withKeyPair ? globalKeypairStore.fetchList() : null);
     const [
       novaResult,
       neutronResult,
       cinderResult,
       shareResult,
+      zunResult,
       keyPairResult,
     ] = await Promise.all(promiseArr);
     this.isSubmitting = false;
@@ -261,10 +280,16 @@ export class ProjectStore extends Base {
     const { quota_set: cinderQuota = {} } = cinderResult || {};
     const { quota: neutronQuota } = neutronResult;
     const { quota_set: shareQuota = {} } = shareResult || {};
+    const zunQuota = zunResult || {};
     this.updateNovaQuota(novaQuota);
     const renameShareQuota = Object.keys(shareQuota).reduce((pre, cur) => {
       const key = !cur.includes('share') ? `share_${cur}` : cur;
       pre[key] = shareQuota[cur];
+      return pre;
+    }, {});
+    const renameZunQuota = Object.keys(zunQuota).reduce((pre, cur) => {
+      const key = `zun_${cur}`;
+      pre[key] = zunQuota[cur];
       return pre;
     }, {});
     const quota = {
@@ -272,6 +297,7 @@ export class ProjectStore extends Base {
       ...cinderQuota,
       ...neutronQuota,
       ...renameShareQuota,
+      ...renameZunQuota,
     };
     if (withKeyPair) {
       const keyPairCount = (keyPairResult || []).length;
@@ -381,11 +407,26 @@ export class ProjectStore extends Base {
     return shareReqBody;
   }
 
+  getZunQuotaBody(data) {
+    if (!this.enableZun) {
+      return {};
+    }
+    const { zun_containers, zun_cpu, zun_memory, zun_disk } = data;
+    const zunReqBody = this.omitNil({
+      containers: zun_containers,
+      cpu: zun_cpu,
+      memory: zun_memory,
+      disk: zun_disk,
+    });
+    return zunReqBody;
+  }
+
   async updateQuota(project_id, data) {
     const novaReqBody = this.getNovaQuotaBody(data);
     const cinderReqBody = this.getCinderQuotaBody(data);
     const neutronReqBody = this.getNeutronQuotaBody(data);
     const shareReqBody = this.getShareQuotaBody(data);
+    const zunReqBody = this.getZunQuotaBody(data);
     const reqs = [];
     if (!isEmpty(novaReqBody.quota_set)) {
       reqs.push(client.nova.quotaSets.update(project_id, novaReqBody));
@@ -398,6 +439,9 @@ export class ProjectStore extends Base {
     }
     if (!isEmpty(shareReqBody.quota_set)) {
       reqs.push(client.manila.quotaSets.update(project_id, shareReqBody));
+    }
+    if (!isEmpty(zunReqBody)) {
+      reqs.push(client.zun.quotas.update(project_id, zunReqBody));
     }
     const result = await Promise.all(reqs);
     return result;
@@ -523,6 +567,19 @@ export class ProjectStore extends Base {
     const shareQuota = this.updateQuotaData(quota);
     this.shareQuota = shareQuota;
     return shareQuota;
+  }
+
+  @action
+  async fetchProjectZunQuota(projectId) {
+    const quotas = await this.zunQuotaClient.show(
+      projectId || this.currentProjectId,
+      {
+        usages: true,
+      }
+    );
+    const zunQuota = this.updateQuotaData(quotas);
+    this.zunQuota = zunQuota;
+    return zunQuota;
   }
 }
 

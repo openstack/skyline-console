@@ -12,12 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { zunBase } from 'client/client/constants';
+import { zunBase, zunEndpoint } from 'client/client/constants';
 import Base from '../client/base';
 
 export class ZunClient extends Base {
   get baseUrl() {
     return zunBase();
+  }
+
+  get enable() {
+    return !!zunEndpoint();
   }
 
   get resources() {
@@ -70,6 +74,10 @@ export class ZunClient extends Base {
         name: 'hosts',
         key: 'hosts',
         responseKey: 'host',
+      },
+      {
+        name: 'quotas',
+        key: 'quotas',
       },
     ];
   }
