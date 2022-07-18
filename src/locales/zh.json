@@ -2236,6 +2236,7 @@
   "The instance deleted immediately cannot be restored": "立即删除的云主机无法恢复",
   "The instance has been locked. If you want to do more, please unlock it first.": "该云主机已被锁定。如果要做更多操作，请先解锁。",
   "The instance is not shut down, unable to restore.": "云主机不处于关机状态，不支持恢复备份操作。",
+  "The instance which is boot from volume will create snapshots for each mounted volumes.": "从卷启动的云主机将为每个挂载的卷创建快照。",
   "The instances in the affinity group are allocated to the same physical machine as much as possible, and when there are no more physical machines to allocate, the normal allocation strategy is returned.": "将亲和组内的云主机尽量分配到不同物理机上，当没有更多物理机可分配时，回归普通分配策略。",
   "The instances in the affinity group are strictly allocated to the same physical machine. When there are no more physical machines to allocate, the allocation fails.": "将亲和组内的云主机严格分配到同一物理机上，当没有更多物理机可分配时，则分配失败。",
   "The instances in the anti-affinity group are allocated to different physical machines as much as possible. When there are no more physical machines to allocate, the normal allocation strategy is returned.": "将反亲和组内的云主机尽量分配到不同物理机上，当没有更多物理机可分配时，回归普通分配策略。",
