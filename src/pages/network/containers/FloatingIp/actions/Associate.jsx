@@ -28,7 +28,10 @@ import globalFloatingIpsStore from 'stores/neutron/floatingIp';
 import { PortStore } from 'stores/neutron/port';
 import { instanceSelectTablePropsBackend } from 'resources/nova/instance';
 import { getPortFormItem, getPortsAndReasons } from 'resources/neutron/port';
-import { getInterfaceWithReason } from 'resources/neutron/floatingip';
+import {
+  getInterfaceWithReason,
+  disableFIPAssociate,
+} from 'resources/neutron/floatingip';
 
 export class Associate extends ModalAction {
   static id = 'associate';
@@ -180,7 +183,8 @@ export class Associate extends ModalAction {
 
   static allowed = (item) =>
     Promise.resolve(
-      isNull(item.fixed_ip_address) &&
+      !disableFIPAssociate(item) &&
+        isNull(item.fixed_ip_address) &&
         item.status === 'DOWN' &&
         isNull(item.port_details)
     );
