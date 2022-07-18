@@ -32,6 +32,9 @@ export class ServerStore extends Base {
   @observable
   serverSnapshots = [];
 
+  @observable
+  volumesForSnapshot = [];
+
   get client() {
     return client.nova.servers;
   }
@@ -469,6 +472,11 @@ export class ServerStore extends Base {
         volumes.map((item) => this.client.volumeAttachments.delete(id, item))
       )
     );
+  }
+
+  @action
+  setVolumesForSnapshot(volumes) {
+    this.volumesForSnapshot = volumes;
   }
 }
 

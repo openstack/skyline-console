@@ -22,6 +22,7 @@ import { projectTagsColors } from 'src/utils/constants';
 
 import lockSvg from 'asset/image/lock.svg';
 import unlockSvg from 'asset/image/unlock.svg';
+import { isEmpty } from 'lodash';
 
 const lockIcon = (
   <Tooltip
@@ -636,3 +637,11 @@ export const SimpleTag = ({ tag, index }) => {
 };
 
 export const allowAttachInterfaceStatus = ['active', 'paused', 'stopped'];
+
+export const isBootFromVolume = (item) => {
+  const { origin_data: originData } = item || {};
+  if (originData && !isEmpty(originData)) {
+    return !originData.image;
+  }
+  return !item.image;
+};
