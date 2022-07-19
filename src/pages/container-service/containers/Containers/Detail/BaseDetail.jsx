@@ -15,6 +15,8 @@
 import Base from 'containers/BaseDetail';
 import React from 'react';
 import { inject, observer } from 'mobx-react';
+import { containerStatus } from 'resources/zun/container';
+import { isEmpty } from 'lodash';
 
 export class BaseDetail extends Base {
   get leftCards() {
@@ -26,11 +28,23 @@ export class BaseDetail extends Base {
     return [this.specCard];
   }
 
+  get stringifyContent() {
+    return (value) =>
+      isEmpty(value) ? (
+        '-'
+      ) : (
+        <div>
+          <pre>{JSON.stringify(value, null, 4)}</pre>
+        </div>
+      );
+  }
+
   get baseInfoCard() {
     const options = [
       {
         label: t('Status Detail'),
         dataIndex: 'status_detail',
+        render: (value) => containerStatus[value] || value,
       },
       {
         label: t('Status Reason'),
@@ -43,6 +57,7 @@ export class BaseDetail extends Base {
       {
         label: t('Command'),
         dataIndex: 'command',
+        render: this.stringifyContent,
       },
     ];
 
@@ -53,12 +68,6 @@ export class BaseDetail extends Base {
   }
 
   get miscellaneousCard() {
-    const content = (
-      <div>
-        <pre>{JSON.stringify(this.detailData.environment, null, 4)}</pre>
-      </div>
-    );
-
     const options = [
       {
         label: t('Host'),
@@ -71,7 +80,7 @@ export class BaseDetail extends Base {
       {
         label: t('Environment'),
         dataIndex: 'environment',
-        content,
+        render: this.stringifyContent,
       },
       {
         label: t('Interactive'),
@@ -81,16 +90,7 @@ export class BaseDetail extends Base {
       {
         label: t('Labels'),
         dataIndex: 'labels',
-        render: (value) => value['cloud-shell'] || '-',
-      },
-      {
-        label: t('Links'),
-        dataIndex: 'links',
-        render: (value) => (
-          <div>
-            <pre>{JSON.stringify(value, null, 4)}</pre>
-          </div>
-        ),
+        render: this.stringifyContent,
       },
     ];
 
@@ -123,25 +123,21 @@ export class BaseDetail extends Base {
         dataIndex: 'runtime',
       },
       {
-        label: t('CPU'),
+        label: t('CPU (Core)'),
         dataIndex: 'cpu',
       },
       {
-        label: t('Memory'),
+        label: t('Memory (MiB)'),
         dataIndex: 'memory',
       },
       {
-        label: t('Disk'),
+        label: t('Disk (GiB)'),
         dataIndex: 'disk',
       },
       {
         label: t('Restart Policy'),
         dataIndex: 'restart_policy',
-        render: (value) => (
-          <div>
-            <pre>{JSON.stringify(value, null, 4)}</pre>
-          </div>
-        ),
+        render: this.stringifyContent,
       },
       {
         label: t('Auto Remove'),
@@ -154,29 +150,17 @@ export class BaseDetail extends Base {
       {
         label: t('Addresses'),
         dataIndex: 'addresses',
-        render: (value) => (
-          <div>
-            <pre>{JSON.stringify(value, null, 4)}</pre>
-          </div>
-        ),
+        render: this.stringifyContent,
       },
       {
         label: t('Ports'),
         dataIndex: 'ports',
-        render: (value) => (
-          <div>
-            <pre>{JSON.stringify(value, null, 4)}</pre>
-          </div>
-        ),
+        render: this.stringifyContent,
       },
       {
         label: t('Security Groups'),
         dataIndex: 'security_groups',
-        render: (value) => (
-          <div>
-            <pre>{JSON.stringify(value, null, 4)}</pre>
-          </div>
-        ),
+        render: this.stringifyContent,
       },
     ];
 
