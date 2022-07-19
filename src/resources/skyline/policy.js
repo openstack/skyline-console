@@ -28,7 +28,6 @@ export const policyMap = {
   glance: [
     'get_image',
     'add_image',
-    'upload_image',
     'delete_image',
     'modify_image',
     'get_members',

@@ -66,6 +66,8 @@ export class CreateForm extends FormAction {
 
   static policy = ['add_image', 'upload_image'];
 
+  static aliasPolicy = ['glance:add_image', 'glance:upload_image'];
+
   static allowed() {
     return Promise.resolve(true);
   }
