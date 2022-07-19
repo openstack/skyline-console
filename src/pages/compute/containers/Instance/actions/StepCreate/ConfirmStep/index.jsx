@@ -49,10 +49,18 @@ export class ConfirmStep extends Base {
   getSystemDisk() {
     if (!this.enableCinder) return null;
     const { context } = this.props;
-    const { systemDisk, source } = context;
-    return source.value === 'bootableVolume'
-      ? this.getBootableVolumeDisk()
-      : this.getDisk(systemDisk);
+    const {
+      systemDisk,
+      source: { value } = {},
+      instanceSnapshotDisk,
+    } = context;
+    if (value === 'bootableVolume') {
+      return this.getBootableVolumeDisk();
+    }
+    if (value === 'instanceSnapshot' && instanceSnapshotDisk !== null) {
+      return this.getDisk(instanceSnapshotDisk);
+    }
+    return this.getDisk(systemDisk);
   }
 
   getDataDisk() {
