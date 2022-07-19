@@ -17,6 +17,14 @@ import { toJS } from 'mobx';
 import { ModalAction } from 'containers/Action';
 import globalVolumeStore from 'stores/cinder/volume';
 import { InstanceSnapshotStore } from 'stores/glance/instance-snapshot';
+import {
+  getQuotaInfo,
+  checkQuotaDisable,
+  fetchQuota,
+  setCreateVolumeType,
+  onVolumeSizeChange,
+  onVolumeTypeChange,
+} from 'resources/cinder/volume';
 
 export class CreateVolume extends ModalAction {
   static id = 'create';
@@ -42,6 +50,22 @@ export class CreateVolume extends ModalAction {
 
   static allowed = () => Promise.resolve(true);
 
+  static get disableSubmit() {
+    return checkQuotaDisable();
+  }
+
+  static get showQuota() {
+    return true;
+  }
+
+  get showQuota() {
+    return true;
+  }
+
+  get quotaInfo() {
+    return getQuotaInfo(this);
+  }
+
   async getVolumeTypes() {
     const { id } = this.item;
     // eslint-disable-next-line no-unused-vars
@@ -53,6 +77,7 @@ export class CreateVolume extends ModalAction {
     const typeItem = this.volumeTypes.find((it) => it.label === volumeType);
     if (typeItem) {
       this.volumeType = typeItem.value;
+      setCreateVolumeType(volumeType);
     }
     this.updateFormValue('volume_type', this.volumeType);
   }
@@ -60,9 +85,11 @@ export class CreateVolume extends ModalAction {
   async getMinSize() {
     const { id } = this.item;
     if (this.snapshot && this.snapshot.volume_size) {
+      fetchQuota(this, this.minSize);
       return;
     }
     await this.snapshotStore.fetchDetail({ id });
+    fetchQuota(this, this.minSize);
     this.updateDefaultValue();
   }
 
@@ -134,6 +161,7 @@ export class CreateVolume extends ModalAction {
         min: this.minSize,
         extra: `${t('Min size')}: ${this.minSize}GiB`,
         required: true,
+        onChange: onVolumeSizeChange,
       },
       {
         name: 'more',
@@ -147,6 +175,7 @@ export class CreateVolume extends ModalAction {
         options: this.volumeTypes,
         placeholder: t('Please select volume type'),
         hidden: !more,
+        onChange: onVolumeTypeChange,
       },
     ];
   }
