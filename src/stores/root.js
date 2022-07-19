@@ -110,11 +110,8 @@ export class RootStore {
   }
 
   async getUserSystemRoles(user) {
-    // only user admin or system roles has admin/reader can go to administrator
-    const { id, name } = user;
-    if (name === 'admin') {
-      return true;
-    }
+    // only scope system roles has admin/reader can go to administrator
+    const { id } = user;
     try {
       const result = await client.keystone.systemUsers.roles.list(id);
       const { roles = [] } = result;
