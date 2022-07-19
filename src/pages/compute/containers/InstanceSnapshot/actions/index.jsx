@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import CreateVolume from './CreateVolume';
+import CreateInstance from './CreateInstance';
 import Edit from './Edit';
 import Delete from './Delete';
 
@@ -20,6 +21,9 @@ const actionConfigs = {
   rowActions: {
     firstAction: Edit,
     moreActions: [
+      {
+        action: CreateInstance,
+      },
       {
         action: CreateVolume,
       },

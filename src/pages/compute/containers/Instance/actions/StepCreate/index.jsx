@@ -275,12 +275,28 @@ export class StepCreate extends StepAction {
 
   getVolumeInputMap() {
     const { data } = this.state;
-    const { systemDisk = {}, dataDisk = [], count = 1 } = data;
+    const {
+      systemDisk = {},
+      dataDisk = [],
+      count = 1,
+      source: { value: sourceValue } = {},
+      instanceSnapshotDisk = {},
+    } = data;
     const newCountMap = {};
     const newSizeMap = {};
     let totalNewCount = 0;
     let totalNewSize = 0;
-    if (systemDisk.type) {
+    if (sourceValue === 'instanceSnapshot' && instanceSnapshotDisk) {
+      const { size, typeOption: { label } = {} } = instanceSnapshotDisk;
+      if (label) {
+        newCountMap[label] = !newCountMap[label] ? 1 : newCountMap[label] + 1;
+        newSizeMap[label] = !newSizeMap[label]
+          ? size
+          : newSizeMap[label] + size;
+        totalNewCount += 1 * count;
+        totalNewSize += size * count;
+      }
+    } else if (systemDisk.type) {
       const { size } = systemDisk;
       const { label } = systemDisk.typeOption || {};
       newCountMap[label] = !newCountMap[label] ? 1 : newCountMap[label] + 1;
@@ -460,6 +476,7 @@ export class StepCreate extends StepAction {
       dataDisk,
       image,
       instanceSnapshot,
+      instanceSnapshotDisk,
       source,
       systemDisk,
     } = values;
@@ -477,7 +494,7 @@ export class StepCreate extends StepAction {
     }
     let rootVolume = {};
     if (sourceValue !== 'bootableVolume') {
-      const { deleteType, type, size } = systemDisk;
+      const { deleteType, type, size } = systemDisk || {};
       rootVolume = {
         boot_index: 0,
         uuid: imageRef,
@@ -487,6 +504,13 @@ export class StepCreate extends StepAction {
         volume_type: type,
         delete_on_termination: deleteType === 1,
       };
+      if (sourceValue === 'instanceSnapshot') {
+        if (instanceSnapshotDisk) {
+          delete rootVolume.volume_size;
+          delete rootVolume.volume_type;
+          delete rootVolume.delete_on_termination;
+        }
+      }
     } else {
       rootVolume = {
         boot_index: 0,
