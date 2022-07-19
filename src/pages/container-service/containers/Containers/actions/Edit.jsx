@@ -52,16 +52,16 @@ export class EditContainer extends ModalAction {
       },
       {
         name: 'cpu',
-        label: t('CPU'),
+        label: t('CPU (Core)'),
         type: 'input-int',
-        placeholder: t('The number of virtual cpu for this container'),
+        tip: t('The number of virtual cpu for this container'),
         min: 1,
       },
       {
         name: 'memory',
         label: t('Memory (MiB)'),
         type: 'input-int',
-        placeholder: t('The container memory size in MiB'),
+        tip: t('The container memory size in MiB'),
         min: 4,
       },
     ];

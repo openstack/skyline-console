@@ -58,7 +58,7 @@ export class StepSpec extends Base {
       },
       {
         name: 'cpu',
-        label: t('CPU'),
+        label: t('CPU (Core)'),
         type: 'input-int',
         tip: t('The number of virtual cpu for this container'),
         min: 1,
