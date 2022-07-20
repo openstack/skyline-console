@@ -2,3 +2,4 @@ dist
 node_modules
 coverage
 test/e2e/report
+skyline_console/static
