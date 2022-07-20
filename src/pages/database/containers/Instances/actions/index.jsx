@@ -13,13 +13,19 @@
 // limitations under the License.
 
 import Delete from './Delete';
-import StepCreate from './StepCreate';
+import Create from './StepCreate';
+import Edit from './Edit';
 
 const actionConfigs = {
   rowActions: {
     firstAction: Delete,
+    moreActions: [
+      {
+        action: Edit,
+      },
+    ],
   },
-  primaryActions: [StepCreate],
+  primaryActions: [Create],
   batchActions: [Delete],
 };
 

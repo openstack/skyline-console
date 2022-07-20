@@ -77,6 +77,7 @@ export const policyMap = {
   trove: [
     'instance:create',
     'instance:delete',
+    'instance:update',
     'instance:backups',
     'instance:resize',
     'instance:extension',
