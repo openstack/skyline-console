@@ -589,6 +589,8 @@
               - ^.zuul.yaml$
               # markdown
               - ^.*\.md$
+              # rst
+              - ^.*\.rst$
               # releasenotes
               - ^releasenotes/.*$
         - skyline-console-devstack-e2etests-network:
@@ -638,6 +640,8 @@
               - ^.zuul.yaml$
               # markdown
               - ^.*\.md$
+              # rst
+              - ^.*\.rst$
               # releasenotes
               - ^releasenotes/.*$
         - skyline-console-devstack-e2etests-other:
@@ -673,6 +677,8 @@
               - ^.zuul.yaml$
               # markdown
               - ^.*\.md$
+              # rst
+              - ^.*\.rst$
               # releasenotes
               - ^releasenotes/.*$
         - skyline-console-devstack-e2etests-storage:
@@ -724,6 +730,8 @@
               - ^.zuul.yaml$
               # markdown
               - ^.*\.md$
+              # rst
+              - ^.*\.rst$
               # releasenotes
               - ^releasenotes/.*$
     gate:
