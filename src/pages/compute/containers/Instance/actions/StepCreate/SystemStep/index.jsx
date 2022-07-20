@@ -29,6 +29,7 @@ import { physicalNodeTypes } from 'resources/nova/instance';
 import { getOptions } from 'utils';
 import CreateKeyPair from 'pages/compute/containers/Keypair/actions/Create';
 import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
+import { has } from 'lodash';
 import styles from '../index.less';
 
 export class SystemStep extends Base {
@@ -85,15 +86,10 @@ export class SystemStep extends Base {
   }
 
   get serverGroups() {
-    return (this.serverGroupStore.list.data || [])
-      .filter((it) => {
-        const { servergroup } = this.locationParams;
-        return servergroup ? it.id === servergroup : true;
-      })
-      .map((it) => ({
-        ...it,
-        key: it.id,
-      }));
+    return (this.serverGroupStore.list.data || []).filter((it) => {
+      const { servergroup } = this.locationParams;
+      return servergroup ? it.id === servergroup : true;
+    });
   }
 
   get serverGroupRequired() {
@@ -198,6 +194,10 @@ export class SystemStep extends Base {
   async getServerGroups() {
     await this.serverGroupStore.fetchList();
     this.updateDefaultValue();
+    const { servergroup } = this.locationParams;
+    if (servergroup) {
+      this.onServerGroupChange({ selectedRows: this.serverGroups });
+    }
   }
 
   get nameForStateUpdate() {
@@ -208,6 +208,7 @@ export class SystemStep extends Base {
       'confirmPassword',
       'more',
       'physicalNodeType',
+      'serverGroup',
     ];
   }
 
@@ -233,6 +234,19 @@ export class SystemStep extends Base {
         }
       );
     }
+  };
+
+  onValuesChange = (changedFields) => {
+    if (has(changedFields, 'serverGroup')) {
+      this.onServerGroupChange(changedFields.serverGroup);
+    }
+  };
+
+  onServerGroupChange = (value) => {
+    const { selectedRows = [] } = value || {};
+    this.updateContext({
+      serverGroupRow: selectedRows[0] || null,
+    });
   };
 
   getKeyPairHeader() {
@@ -377,6 +391,7 @@ export class SystemStep extends Base {
         data: this.serverGroups,
         isLoading: this.serverGroupStore.list.isLoading,
         required: this.serverGroupRequired,
+        // onChange: this.onServerGroupChange,
         extra: t(
           'Using server groups, you can create cloud hosts on the same/different physical nodes as much as possible to meet the affinity/non-affinity requirements of business applications.'
         ),
