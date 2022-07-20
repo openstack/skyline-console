@@ -15,6 +15,7 @@
 import Delete from './Delete';
 import Create from './StepCreate';
 import Edit from './Edit';
+import Restart from './Restart';
 
 const actionConfigs = {
   rowActions: {
@@ -22,6 +23,10 @@ const actionConfigs = {
     moreActions: [
       {
         action: Edit,
+      },
+      {
+        title: t('Database Instance Status'),
+        actions: [Restart],
       },
     ],
   },

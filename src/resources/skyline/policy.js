@@ -79,6 +79,7 @@ export const policyMap = {
     'instance:delete',
     'instance:update',
     'instance:backups',
+    'instance:restart',
     'instance:resize',
     'instance:extension',
     'instance:guest_log_list',

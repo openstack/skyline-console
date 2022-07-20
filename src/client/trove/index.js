@@ -61,6 +61,10 @@ export class TroveClient extends Base {
               );
             },
           },
+          {
+            key: 'action',
+            method: 'post',
+          },
         ],
       },
       {

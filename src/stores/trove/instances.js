@@ -43,6 +43,26 @@ export class InstancesStore extends Base {
   }
 
   @action
+  update(id, body) {
+    return this.submitting(this.client.action(id, body));
+  }
+
+  @action
+  async operation({ body, id, key = '' }) {
+    let requestBody = body;
+    if (!requestBody) {
+      requestBody = {};
+      requestBody[key] = {};
+    }
+    return this.update(id, requestBody);
+  }
+
+  @action
+  async restart({ id }) {
+    return this.operation({ key: 'restart', id });
+  }
+
+  @action
   async listDatastores() {
     const result = await this.clientDatastore.list();
     const data = result.datastores;
