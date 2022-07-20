@@ -550,20 +550,20 @@ const renderMenu = (t) => {
       children: [
         {
           path: '/database/instances',
-          name: t('Instances'),
+          name: t('Database Instance'),
           key: 'databaseInstances',
           level: 1,
           children: [
             {
               path: /^\/database\/instances\/detail\/.[^/]+$/,
-              name: t('Instance Detail'),
+              name: t('Database Instance Detail'),
               key: 'databaseInstanceDetail',
               level: 2,
               routePath: '/database/instances/detail/:id',
             },
             {
               path: '/database/instances/create',
-              name: t('Create Instance'),
+              name: t('Create Database Instance'),
               key: 'databaseInstanceCreate',
               level: 2,
             },

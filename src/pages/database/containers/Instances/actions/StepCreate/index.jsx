@@ -25,9 +25,9 @@ export class StepCreate extends StepAction {
     this.store = globalInstancesStore;
   }
 
-  static id = 'create-instance';
+  static id = 'create-database-instance';
 
-  static title = t('Create Instance');
+  static title = t('Create Database Instance');
 
   static path = '/database/instances/create';
 
@@ -38,7 +38,7 @@ export class StepCreate extends StepAction {
   }
 
   get name() {
-    return t('Create Instance');
+    return t('Create Database Instance');
   }
 
   get listUrl() {
