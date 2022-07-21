@@ -346,17 +346,31 @@ export class Create extends FormAction {
     return Math.max(imageSize, 1);
   }
 
-  onSnapshotChange = (value) => {
+  onSnapshotChange = async (value) => {
     const { selectedRows = [] } = value || {};
+    let volumeTypeId = '';
+    let volumeType = null;
     if (selectedRows.length) {
       const { origin_data: { volume_type_id } = {}, id } =
         selectedRows[0] || {};
-      const volumeType = this.volumeTypes.find(
-        (it) => it.id === volume_type_id
-      );
+      if (!volume_type_id) {
+        try {
+          const detail = await this.snapshotStore.fetchDetail({ id });
+          const {
+            volume: { volume_type },
+          } = detail || {};
+          volumeType = this.volumeTypes.find((it) => it.name === volume_type);
+          volumeTypeId = volumeType.id;
+        } catch (e) {
+          console.log('volume already not exist', e);
+        }
+      } else {
+        volumeTypeId = volume_type_id;
+        volumeType = this.volumeTypes.find((it) => it.id === volumeTypeId);
+      }
       if (volumeType) {
         const newValue = {
-          selectedRowKeys: [volume_type_id],
+          selectedRowKeys: [volumeTypeId],
           selectedRows: [volumeType],
           snapshotId: id,
         };
