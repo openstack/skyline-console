@@ -15,6 +15,7 @@
 import { action } from 'mobx';
 import client from 'client';
 import Base from 'stores/base';
+import { isEmpty } from 'lodash';
 
 export class PortForwardingStore extends Base {
   get client() {
@@ -38,7 +39,10 @@ export class PortForwardingStore extends Base {
     if (items.length === 0) {
       return items;
     }
-    const { fipInfo } = filters;
+    const { fipInfo = {} } = filters;
+    if (isEmpty(fipInfo)) {
+      return items;
+    }
     const { floating_ip_address } = fipInfo;
     items.forEach((item) => {
       item.fip = fipInfo;
