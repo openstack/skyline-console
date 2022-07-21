@@ -131,6 +131,10 @@ export class CreateDNAT extends ModalAction {
     });
   };
 
+  get nameForStateUpdate() {
+    return ['protocol'];
+  }
+
   get formItems() {
     const { fixed_ip_address = { selectedRows: [] } } = this.state;
     const ret = [
@@ -169,8 +173,10 @@ export class CreateDNAT extends ModalAction {
               new Error(`${t('Please input')} ${t('External Port')}`)
             );
           }
-          const { alreadyUsedPorts } = this.state;
-          const flag = alreadyUsedPorts.some((pf) => pf.external_port === val);
+          const { alreadyUsedPorts, protocol } = this.state;
+          const flag = alreadyUsedPorts.some(
+            (pf) => pf.external_port === val && pf.protocol === protocol
+          );
           if (flag) {
             return Promise.reject(
               new Error(
@@ -180,6 +186,7 @@ export class CreateDNAT extends ModalAction {
           }
           return Promise.resolve(true);
         },
+        dependencies: ['protocol'],
       },
       {
         name: 'internal_port',
@@ -202,13 +209,14 @@ export class CreateDNAT extends ModalAction {
           const internal_ip_address =
             formData.fixed_ip_address.selectedRows[0].fixed_ip_address;
           const internal_port_id = formData.virtual_adapter.selectedRows[0].id;
-          const { alreadyUsedPorts } = this.state;
+          const { alreadyUsedPorts, protocol } = this.state;
           // determine whether the FIP has been bound to the port of the port
           const flag = alreadyUsedPorts.some(
             (pf) =>
               pf.internal_port === val &&
               pf.internal_port_id === internal_port_id &&
-              pf.internal_ip_address === internal_ip_address
+              pf.internal_ip_address === internal_ip_address &&
+              pf.protocol === protocol
           );
           if (flag) {
             return Promise.reject(
@@ -221,6 +229,7 @@ export class CreateDNAT extends ModalAction {
           }
           return Promise.resolve(true);
         },
+        dependencies: ['protocol'],
       },
     ];
     const extraColumn = getPortFormItem.call(this, ['compute:nova', '']);
