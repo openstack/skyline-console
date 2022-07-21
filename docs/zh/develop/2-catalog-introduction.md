@@ -14,7 +14,7 @@
 - `jsconfig.json`: js 代码的配置文件
 - `package.json`: 安装包、命令等配置文件
 - `yarn.lock`: 包的版本锁定文件
-- `.babelrc`: bebel 配置文件
+- `.babelrc`: babel 配置文件
 - `.dockerignore`: docker 忽略的文件配置
 - `.eslintignore`: eslint 忽略的文件配置
 - `.eslint`: eslint 配置
