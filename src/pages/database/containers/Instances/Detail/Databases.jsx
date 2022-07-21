@@ -31,11 +31,7 @@ export class Databases extends Base {
   }
 
   get policy() {
-    return 'instance:detail';
-  }
-
-  get aliasPolicy() {
-    return 'trove:instance:detail';
+    return 'instance:extension:database:index';
   }
 
   get actionConfigs() {
