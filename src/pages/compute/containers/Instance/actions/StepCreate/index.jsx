@@ -212,13 +212,18 @@ export class StepCreate extends StepAction {
       title: t('Volume Size'),
       type: 'line',
     };
-    return [
+    const serverGroupQuota = this.getServerGroupQuota();
+    const quotaInfo = [
       instanceQuotaInfo,
       cpuQuotaInfo,
       ramQuotaInfo,
       volumeQuotaInfo,
       volumeSizeQuotaInfo,
     ];
+    if (serverGroupQuota) {
+      quotaInfo.push(serverGroupQuota);
+    }
+    return quotaInfo;
   }
 
   get errorText() {
@@ -404,6 +409,40 @@ export class StepCreate extends StepAction {
     return '';
   }
 
+  getServerGroupQuota() {
+    const { data } = this.state;
+    const { serverGroupRow, count = 1 } = data;
+    if (!serverGroupRow) {
+      return null;
+    }
+    const { server_group_members: { limit = 0 } = {} } =
+      this.projectStore.novaQuota;
+    const { members = [] } = serverGroupRow || {};
+    const used = members.length;
+    const left = limit === -1 ? -1 : limit - used;
+    return {
+      add: count,
+      used,
+      limit,
+      left,
+      title: t('Server Group Member'),
+      name: 'serverGroupMember',
+      type: 'line',
+    };
+  }
+
+  checkSeverGroupQuota() {
+    const quota = this.getServerGroupQuota();
+    if (!quota) {
+      return '';
+    }
+    const { add, left } = quota || {};
+    if (left !== -1 && left < add) {
+      return this.getQuotaMessage(add, quota, t('Server Group Member'));
+    }
+    return '';
+  }
+
   get badgeStyle() {
     return { marginTop: 8, marginBottom: 8, marginLeft: 10, maxWidth: 600 };
   }
@@ -411,13 +450,14 @@ export class StepCreate extends StepAction {
   renderBadge() {
     const flavorMsg = this.checkFlavorQuota();
     const volumeMsg = this.checkVolumeQuota();
-    if (!flavorMsg && !volumeMsg) {
+    const serverGroupMsg = this.checkSeverGroupQuota();
+    if (!flavorMsg && !volumeMsg && !serverGroupMsg) {
       this.status = 'success';
       this.errorMsg = '';
       return null;
     }
     this.status = 'error';
-    const msg = flavorMsg || volumeMsg;
+    const msg = flavorMsg || volumeMsg || serverGroupMsg;
     if (this.errorMsg !== msg) {
       $message.error(msg);
     }
