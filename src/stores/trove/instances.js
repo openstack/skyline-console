@@ -32,6 +32,10 @@ export class InstancesStore extends Base {
     return client.trove.configurations;
   }
 
+  get adminClient() {
+    return client.trove.instancesAdmin;
+  }
+
   @action
   async create(newbody) {
     return this.submitting(this.client.create(newbody));
@@ -60,6 +64,11 @@ export class InstancesStore extends Base {
   @action
   async restart({ id }) {
     return this.operation({ key: 'restart', id });
+  }
+
+  @action
+  async stop({ id }) {
+    return this.submitting(this.adminClient.action(id, { stop: {} }));
   }
 
   @action

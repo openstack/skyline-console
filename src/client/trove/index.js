@@ -97,6 +97,17 @@ export class TroveClient extends Base {
           },
         ],
       },
+      {
+        name: 'instancesAdmin',
+        key: 'mgmt/instances',
+        responseKey: 'instance',
+        extendOperations: [
+          {
+            key: 'action',
+            method: 'post',
+          },
+        ],
+      },
     ];
   }
 }
