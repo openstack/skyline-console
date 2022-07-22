@@ -114,7 +114,22 @@ export const zunQuotaCard = {
     },
     { text: t('CPUs'), key: 'zun_cpu' },
     { text: t('Memory (MiB)'), key: 'zun_memory' },
-    { text: t('Disk (GiB)'), key: 'zun_disk' },
+    { text: t('Containers Disk (GiB)'), key: 'zun_disk' },
+  ],
+};
+
+export const troveQuotaCard = {
+  text: t('Database'),
+  type: 'trove',
+  value: [
+    {
+      text: t('Database Instance'),
+      key: 'trove_instances',
+    },
+    {
+      text: t('Database Disk (GiB)'),
+      key: 'trove_volumes',
+    },
   ],
 };
 
@@ -195,6 +210,12 @@ export class QuotaOverview extends Component {
     return globalRootStore.checkEndpoint('zun');
   }
 
+  get enableTrove() {
+    return (
+      globalRootStore.checkEndpoint('trove') && globalRootStore.hasAdminOnlyRole
+    );
+  }
+
   get volumeTypeData() {
     const { volumeTypeData } = this.props;
     return volumeTypeData || this.volumeTypeStore.list.data;
@@ -215,6 +236,9 @@ export class QuotaOverview extends Component {
     }
     if (this.enableZun) {
       newList.push(zunQuotaCard);
+    }
+    if (this.enableTrove) {
+      newList.push(troveQuotaCard);
     }
     return newList;
   }

@@ -40,6 +40,9 @@ export class ProjectStore extends Base {
   zunQuota = {};
 
   @observable
+  troveQuota = {};
+
+  @observable
   groupRoleList = [];
 
   get client() {
@@ -80,6 +83,10 @@ export class ProjectStore extends Base {
 
   get zunQuotaClient() {
     return client.zun.quotas;
+  }
+
+  get troveQuotaClient() {
+    return client.trove.quotas;
   }
 
   listFetchByClient(params, originParams) {
@@ -213,6 +220,12 @@ export class ProjectStore extends Base {
     return globalRootStore.checkEndpoint('zun');
   }
 
+  get enableTrove() {
+    return (
+      globalRootStore.checkEndpoint('trove') && globalRootStore.hasAdminOnlyRole
+    );
+  }
+
   @action
   async enable({ id }) {
     const reqBody = {
@@ -266,6 +279,9 @@ export class ProjectStore extends Base {
           })
         : null
     );
+    promiseArr.push(
+      this.enableTrove ? this.troveQuotaClient.show(project_id) : null
+    );
     promiseArr.push(withKeyPair ? globalKeypairStore.fetchList() : null);
     const [
       novaResult,
@@ -273,6 +289,7 @@ export class ProjectStore extends Base {
       cinderResult,
       shareResult,
       zunResult,
+      troveResult,
       keyPairResult,
     ] = await Promise.all(promiseArr);
     this.isSubmitting = false;
@@ -281,6 +298,7 @@ export class ProjectStore extends Base {
     const { quota: neutronQuota } = neutronResult;
     const { quota_set: shareQuota = {} } = shareResult || {};
     const zunQuota = zunResult || {};
+    const { quotas: troveQuota = [] } = troveResult || {};
     this.updateNovaQuota(novaQuota);
     const renameShareQuota = Object.keys(shareQuota).reduce((pre, cur) => {
       const key = !cur.includes('share') ? `share_${cur}` : cur;
@@ -292,12 +310,18 @@ export class ProjectStore extends Base {
       pre[key] = zunQuota[cur];
       return pre;
     }, {});
+    const renameTroveQuota = troveQuota.reduce((pre, cur) => {
+      const key = `trove_${cur.resource}`;
+      pre[key] = cur;
+      return pre;
+    }, {});
     const quota = {
       ...novaQuota,
       ...cinderQuota,
       ...neutronQuota,
       ...renameShareQuota,
       ...renameZunQuota,
+      ...renameTroveQuota,
     };
     if (withKeyPair) {
       const keyPairCount = (keyPairResult || []).length;
@@ -353,7 +377,8 @@ export class ProjectStore extends Base {
         (key.includes('volumes') ||
           key.includes('gigabytes') ||
           key.includes('snapshots')) &&
-        !key.includes('share')
+        !key.includes('share') &&
+        !key.includes('trove')
       ) {
         rest[key] = others[key];
       }
@@ -421,12 +446,27 @@ export class ProjectStore extends Base {
     return zunReqBody;
   }
 
+  getTroveQuotaBody(data) {
+    if (!this.enableTrove) {
+      return {};
+    }
+    const { trove_instances, trove_volumes } = data;
+    const troveReqBody = this.omitNil({
+      quotas: {
+        instances: trove_instances,
+        volumes: trove_volumes,
+      },
+    });
+    return troveReqBody;
+  }
+
   async updateQuota(project_id, data) {
     const novaReqBody = this.getNovaQuotaBody(data);
     const cinderReqBody = this.getCinderQuotaBody(data);
     const neutronReqBody = this.getNeutronQuotaBody(data);
     const shareReqBody = this.getShareQuotaBody(data);
     const zunReqBody = this.getZunQuotaBody(data);
+    const troveReqBody = this.getTroveQuotaBody(data);
     const reqs = [];
     if (!isEmpty(novaReqBody.quota_set)) {
       reqs.push(client.nova.quotaSets.update(project_id, novaReqBody));
@@ -442,6 +482,9 @@ export class ProjectStore extends Base {
     }
     if (!isEmpty(zunReqBody)) {
       reqs.push(client.zun.quotas.update(project_id, zunReqBody));
+    }
+    if (!isEmpty(troveReqBody)) {
+      reqs.push(client.trove.quotas.update(project_id, troveReqBody));
     }
     const result = await Promise.all(reqs);
     return result;
@@ -580,6 +623,20 @@ export class ProjectStore extends Base {
     const zunQuota = this.updateQuotaData(quotas);
     this.zunQuota = zunQuota;
     return zunQuota;
+  }
+
+  @action
+  async fetchProjectTroveQuota(projectId) {
+    const { quotas = [] } = await this.troveQuotaClient.show(
+      projectId || this.currentProjectId
+    );
+    const quotasObject = quotas.reduce((pre, cur) => {
+      pre[cur.resource] = cur;
+      return pre;
+    }, {});
+    const troveQuota = this.updateQuotaData(quotasObject);
+    this.troveQuota = troveQuota;
+    return troveQuota;
   }
 }
 

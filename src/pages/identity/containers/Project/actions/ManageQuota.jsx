@@ -22,6 +22,7 @@ import {
   getVolumeTypeCards,
   shareQuotaCard,
   zunQuotaCard,
+  troveQuotaCard,
 } from 'pages/base/containers/Overview/components/QuotaOverview';
 
 export class ManageQuota extends ModalAction {
@@ -50,6 +51,13 @@ export class ManageQuota extends ModalAction {
 
   get enableZun() {
     return this.props.rootStore.checkEndpoint('zun');
+  }
+
+  get enableTrove() {
+    return (
+      this.props.rootStore.checkEndpoint('trove') &&
+      this.props.rootStore.hasAdminOnlyRole
+    );
   }
 
   async getData() {
@@ -142,6 +150,9 @@ export class ManageQuota extends ModalAction {
     if (this.enableZun) {
       newQuotaCardList.push(zunQuotaCard);
     }
+    if (this.enableTrove) {
+      newQuotaCardList.push(troveQuotaCard);
+    }
     return newQuotaCardList;
   }
 
@@ -195,6 +206,9 @@ export class ManageQuota extends ModalAction {
     }
     if (this.enableZun) {
       form.push(...this.getFormItemsByCards('zun'));
+    }
+    if (this.enableTrove) {
+      form.push(...this.getFormItemsByCards('trove'));
     }
     if (this.enableCinder) {
       const cinderFormItems = this.getFormItemsByCards('storage');
