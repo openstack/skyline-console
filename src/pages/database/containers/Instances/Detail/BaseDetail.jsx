@@ -34,11 +34,11 @@ export class BaseDetail extends Base {
       },
       {
         label: t('Datastore'),
-        dataIndex: 'datastore.type',
+        dataIndex: 'type',
       },
       {
         label: t('Datastore Version'),
-        dataIndex: 'datastore.version',
+        dataIndex: 'version',
       },
       {
         label: t('Status'),
@@ -62,13 +62,13 @@ export class BaseDetail extends Base {
     const options = [
       {
         label: t('Flavor'),
-        dataIndex: 'flavor.id',
+        dataIndex: 'flavor',
         render: (value) => {
           return this.getLinkRender(
             'flavorDetail',
-            value,
+            value.name,
             {
-              id: value,
+              id: value.id,
             },
             null
           );
@@ -76,7 +76,8 @@ export class BaseDetail extends Base {
       },
       {
         label: t('Volume Size'),
-        dataIndex: 'volume.size',
+        dataIndex: 'size',
+        render: (value) => (value ? `${value}GiB` : '-'),
       },
       {
         label: t('Created'),
@@ -119,7 +120,7 @@ export class BaseDetail extends Base {
       },
       {
         label: t('Database Port'),
-        dataIndex: 'datastore.type',
+        dataIndex: 'type',
         render: (value) => {
           switch (value) {
             case 'mysql':

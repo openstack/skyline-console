@@ -15,6 +15,8 @@
 import Base from 'stores/base';
 import client from 'client';
 import { action, observable } from 'mobx';
+import globalFlavorStore from 'stores/nova/flavor';
+import { get as _get } from 'lodash';
 
 export class InstancesStore extends Base {
   @observable
@@ -34,6 +36,33 @@ export class InstancesStore extends Base {
 
   get adminClient() {
     return client.trove.instancesAdmin;
+  }
+
+  get mapper() {
+    return (data) => ({
+      ...data,
+      type: _get(data, 'datastore.type'),
+      version: _get(data, 'datastore.version'),
+      size: _get(data, 'volume.size'),
+    });
+  }
+
+  async detailDidFetch(item) {
+    const flavor = await globalFlavorStore.fetchDetail({
+      id: _get(item, 'flavor.id'),
+    });
+    return {
+      ...item,
+      flavor: { ...item.flavor, ...flavor },
+    };
+  }
+
+  listDidFetch(items) {
+    if (items.length === 0) return items;
+    return items.map((it) => ({
+      ...it,
+      project_id: it.tenant_id,
+    }));
   }
 
   @action
