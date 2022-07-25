@@ -29,7 +29,10 @@ export class Instances extends Base {
   }
 
   get actionConfigs() {
-    return actions;
+    if (this.isAdminPage) {
+      return actions.actionConfigsAdmin;
+    }
+    return actions.actionConfigs;
   }
 
   get policy() {
@@ -54,6 +57,12 @@ export class Instances extends Base {
       title: t('Instance Name'),
       dataIndex: 'name',
       routeName: this.getRouteName('databaseInstanceDetail'),
+    },
+    {
+      title: t('Project ID/Name'),
+      dataIndex: 'project_name',
+      isHideable: true,
+      hidden: !this.isAdminPage,
     },
     {
       title: t('Datastore'),

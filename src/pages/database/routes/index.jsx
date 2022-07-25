@@ -29,6 +29,7 @@ export default [
     component: BaseLayout,
     routes: [
       { path: `${PATH}/instances`, component: Instances, exact: true },
+      { path: `${PATH}/instances-admin`, component: Instances, exact: true },
       { path: `${PATH}/instances/create`, component: StepCreate, exact: true },
       { path: `${PATH}/backups`, component: Backups, exact: true },
       {
@@ -38,6 +39,11 @@ export default [
       },
       {
         path: `${PATH}/instances/detail/:id`,
+        component: InstancesDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/instances-admin/detail/:id`,
         component: InstancesDetail,
         exact: true,
       },

@@ -24,6 +24,7 @@ import {
   AppstoreOutlined,
   SwitcherOutlined,
   ContainerOutlined,
+  DatabaseFilled,
 } from '@ant-design/icons';
 
 const renderMenu = (t) => {
@@ -710,6 +711,30 @@ const renderMenu = (t) => {
               key: 'stackEditAdmin',
               level: 2,
               routePath: '/heat/stack-admin/edit/:id/:name',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      path: '/database',
+      name: t('Database'),
+      key: 'databaseAdmin',
+      endpoints: 'trove',
+      icon: <DatabaseFilled />,
+      children: [
+        {
+          path: '/database/instances-admin',
+          name: t('Database Instance'),
+          key: 'databaseInstancesAdmin',
+          level: 1,
+          children: [
+            {
+              path: /^\/database\/instances-admin\/detail\/.[^/]+$/,
+              name: t('Database Instance Detail'),
+              key: 'databaseInstanceDetailAdmin',
+              level: 2,
+              routePath: '/database/instances-admin/detail/:id',
             },
           ],
         },

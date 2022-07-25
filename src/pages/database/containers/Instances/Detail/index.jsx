@@ -22,6 +22,7 @@ import Databases from './Databases';
 import Backups from './Backups';
 import Logs from './Logs';
 import Defaults from './Defaults';
+import actions from '../actions';
 
 export class InstancesDetail extends Base {
   init() {
@@ -100,6 +101,13 @@ export class InstancesDetail extends Base {
         component: Defaults,
       },
     ];
+  }
+
+  get actionConfigs() {
+    if (this.isAdminPage) {
+      return actions.actionConfigsAdmin;
+    }
+    return actions.actionConfigs;
   }
 }
 

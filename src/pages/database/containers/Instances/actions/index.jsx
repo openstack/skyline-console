@@ -35,4 +35,12 @@ const actionConfigs = {
   batchActions: [Delete],
 };
 
-export default actionConfigs;
+const actionConfigsAdmin = {
+  rowActions: {
+    firstAction: Delete,
+  },
+  primaryActions: [],
+  batchActions: [Delete],
+};
+
+export default { actionConfigs, actionConfigsAdmin };
