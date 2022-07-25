@@ -149,6 +149,13 @@ export class FloatingIps extends Base {
     );
   }
 
+  getPortForwardingDetail(record, detail) {
+    const { floating_ip_address: fip } = record;
+    const { protocol, external_port, internal_ip_address, internal_port } =
+      detail;
+    return `${protocol}: ${fip}:${external_port} => ${internal_ip_address}:${internal_port}`;
+  }
+
   getPortForwardingRender(record) {
     const data = this.getRecordPortForwarding(record);
     if (!data.length) {
@@ -160,7 +167,7 @@ export class FloatingIps extends Base {
           <Row className={styles['popover-row']} gutter={[8, 8]}>
             {data.map((i, idx) => (
               <Col span={24} key={`pfw-${idx}`}>
-                {`${record.floating_ip_address}:${i.external_port} => ${i.internal_ip_address}:${i.internal_port}`}
+                {this.getPortForwardingDetail(record, i)}
               </Col>
             ))}
           </Row>
@@ -182,10 +189,7 @@ export class FloatingIps extends Base {
     if (!data.length) {
       return '';
     }
-    const ret = data.map(
-      (i) =>
-        `${record.floating_ip_address}:${i.external_port} => ${i.internal_ip_address}:${i.internal_port}`
-    );
+    const ret = data.map((i) => this.getPortForwardingDetail(record, i));
     const total = t('{number} port forwarding rules', {
       number: data.length,
     });
