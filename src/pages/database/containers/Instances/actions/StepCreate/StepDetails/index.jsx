@@ -73,23 +73,17 @@ export class StepDetails extends Base {
     globalInstancesStore.listDatastores();
   }
 
-  onChangeDatastoresTypeChange = (value) => {
-    this.setState({
-      datastoreType: value,
-    });
-    this.resetFormValue(['datastore_version']);
-  };
-
   get datastoresVersion() {
-    const dizi = this.datastores
-      .filter((item) => item.label === this.state.datastore_type)
-      .map((it) => {
-        return it.originData.versions.map((e) => ({
-          label: e.name,
-          value: e.name,
-        }));
-      });
-    return dizi[0];
+    if (!this.state.datastore_type) {
+      return [];
+    }
+    const current = this.datastores.find(
+      (item) => item.label === this.state.datastore_type
+    );
+    return (current.originData.versions || []).map((it) => ({
+      label: it.name,
+      value: it.name,
+    }));
   }
 
   getFlavorComponent() {
@@ -99,26 +93,6 @@ export class StepDetails extends Base {
   onFlavorChange = (value) => {
     this.updateContext({
       flavor: value,
-    });
-  };
-
-  checkSystemDisk = (rule, value) => {
-    if (!value.type) {
-      // eslint-disable-next-line prefer-promise-reject-errors
-      return Promise.reject('');
-    }
-    return Promise.resolve();
-  };
-
-  getSystemDiskMinSize() {
-    const flavorSize = (this.state.flavor || {}).disk || 0;
-    const imageSize = 0;
-    return Math.max(flavorSize, imageSize, 1);
-  }
-
-  onSystemDiskChange = (value) => {
-    this.updateContext({
-      volume_type: value,
     });
   };
 
@@ -151,7 +125,6 @@ export class StepDetails extends Base {
         label: t('Size (GiB)'),
         type: 'input-int',
         min: 1,
-        max: 50,
         placeholder: t('Size'),
         required: true,
         wrapperCol: {
@@ -162,6 +135,10 @@ export class StepDetails extends Base {
             span: 18,
           },
         },
+        onChange: (val) =>
+          this.updateContext({
+            size: val,
+          }),
       },
       {
         type: 'divider',
@@ -171,8 +148,8 @@ export class StepDetails extends Base {
         label: t('Datastore Type'),
         type: 'select',
         options: this.datastores,
-        onChange: (value) => {
-          this.onChangeDatastoresTypeChange(value);
+        onChange: () => {
+          this.resetFormValue(['datastore_version']);
         },
         required: true,
         tip: t('Type of datastore'),
@@ -200,7 +177,6 @@ export class StepDetails extends Base {
             span: 18,
           },
         },
-        tip: t('Size of image to launch'),
         required: true,
       },
       {
