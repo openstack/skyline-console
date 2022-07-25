@@ -91,14 +91,10 @@ export class Volume extends Base {
 
   updateFetchParams = (params) => {
     if (this.inDetailPage) {
-      const { match, detail } = this.props;
-      const { id } = match.params;
-      const { tenant_id: projectId, name } = detail || {};
+      const { id, ...rest } = params;
       return {
-        ...params,
+        ...rest,
         serverId: id,
-        serverName: name,
-        projectId,
       };
     }
     return params;

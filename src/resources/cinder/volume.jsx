@@ -14,7 +14,7 @@
 
 import React from 'react';
 import { yesNoOptions } from 'utils/constants';
-import { toLocalTimeFilter } from 'utils/index';
+import { toLocalTimeFilter, renderFilterMap } from 'utils/index';
 import globalProjectStore from 'stores/keystone/project';
 import globalVolumeStore from 'stores/cinder/volume';
 import { isEmpty } from 'lodash';
@@ -73,6 +73,19 @@ export const isOsDisk = (item) => {
     return true;
   }
   return false;
+};
+
+export const updateVolume = (volume) => {
+  return {
+    ...volume,
+    disk_tag: isOsDisk(volume) ? 'os_disk' : 'data_disk',
+    description: volume.description || (volume.origin_data || {}).description,
+    delete_interval:
+      volume.metadata && volume.metadata.delete_interval
+        ? new Date(renderFilterMap.toLocalTime(volume.updated_at)).getTime() +
+          Number(volume.metadata.delete_interval) * 1000
+        : null,
+  };
 };
 
 export const isAttachIsoVolume = (item) => {
@@ -239,7 +252,6 @@ export const getVolumeColumnsList = (self) => {
       title: t('ID/Name'),
       dataIndex: 'name',
       routeName: self.getRouteName('volumeDetail'),
-      stringify: (name, record) => name || record.id,
       sortKey: 'name',
     },
     {

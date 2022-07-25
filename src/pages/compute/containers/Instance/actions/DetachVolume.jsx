@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { inject, observer } from 'mobx-react';
-import { VolumeStore } from 'stores/cinder/volume';
+import { InstanceVolumeStore } from 'stores/nova/instance-volume';
 import globalServerStore from 'stores/nova/instance';
 import globalRootStore from 'stores/root';
 import { ModalAction } from 'containers/Action';
@@ -27,7 +27,7 @@ export class DetachVolume extends ModalAction {
 
   init() {
     this.store = globalServerStore;
-    this.volumeStore = new VolumeStore();
+    this.volumeStore = new InstanceVolumeStore();
     this.getVolumes();
   }
 
