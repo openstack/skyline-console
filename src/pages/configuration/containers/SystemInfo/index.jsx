@@ -25,6 +25,10 @@ export class Service extends Base {
     return this.props.rootStore.checkEndpoint('cinder');
   }
 
+  get enableHeat() {
+    return this.props.rootStore.checkEndpoint('heat');
+  }
+
   get tabs() {
     const tabs = [
       {
@@ -42,17 +46,19 @@ export class Service extends Base {
         key: 'neutronAgent',
         component: NeutronAgent,
       },
-      {
-        title: t('Orchestration Services'),
-        key: 'heatService',
-        component: HeatService,
-      },
     ];
     if (this.enableCinder) {
-      tabs.splice(3, 0, {
+      tabs.push({
         title: t('Block Storage Services'),
         key: 'cinderService',
         component: CinderService,
+      });
+    }
+    if (this.enableHeat) {
+      tabs.push({
+        title: t('Orchestration Services'),
+        key: 'heatService',
+        component: HeatService,
       });
     }
     return tabs;
