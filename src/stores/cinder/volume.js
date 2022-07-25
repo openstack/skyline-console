@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import { action, observable } from 'mobx';
-import { renderFilterMap } from 'utils/index';
 import client from 'client';
 import Base from 'stores/base';
 import globalVolumeTypeStore from 'stores/cinder/volume-type';
@@ -64,22 +63,9 @@ export class VolumeStore extends Base {
     return this.skylineClient.extension.volumes(params);
   }
 
-  isOsDisk(item) {
-    const { isOsDisk } = require('resources/cinder/volume');
-    return isOsDisk(item);
-  }
-
   get mapper() {
-    return (volume) => ({
-      ...volume,
-      disk_tag: this.isOsDisk(volume) ? 'os_disk' : 'data_disk',
-      description: volume.description || (volume.origin_data || {}).description,
-      delete_interval:
-        volume.metadata && volume.metadata.delete_interval
-          ? new Date(renderFilterMap.toLocalTime(volume.updated_at)).getTime() +
-            Number(volume.metadata.delete_interval) * 1000
-          : null,
-    });
+    const { updateVolume } = require('resources/cinder/volume');
+    return (volume) => updateVolume(volume);
   }
 
   get paramsFunc() {

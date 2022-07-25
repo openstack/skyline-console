@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { isOsDisk } from 'resources/cinder/volume';
 import client from 'client';
 import Base from 'stores/base';
+import { groupArray } from 'utils/index';
+import { updateVolume } from 'resources/cinder/volume';
 
 export class InstanceVolumeStore extends Base {
   get client() {
@@ -46,42 +47,30 @@ export class InstanceVolumeStore extends Base {
   }
 
   get mapper() {
-    return (volume) => ({
-      ...volume,
-      disk_tag: isOsDisk(volume) ? 'os_disk' : 'data_disk',
-      host: volume['os-vol-host-attr:host'],
-    });
+    return (volume) => updateVolume(volume);
   }
 
-  async listDidFetch(items, allProjects, filters) {
+  get groupArraySize() {
+    return 10;
+  }
+
+  async listDidFetch(items, allProjects) {
     if (items.length === 0) {
       return items;
     }
-    const { serverName, serverId } = filters;
-    const { project_id, project_name } = items[0];
+    const volumeIds = items.map((it) => it.volumeId);
+    const idArray = groupArray(volumeIds, this.groupArraySize);
     const results = await Promise.all(
-      items.map((it) => {
-        const { volumeId } = it;
-        return client.cinder.volumes.show(volumeId);
+      idArray.map((it) => {
+        const newParams = { uuid: it, all_projects: allProjects };
+        return this.skylineClient.extension.volumes(newParams);
       })
     );
-    const volumes = results.map((result) => {
-      const { volume } = result;
-      const { attachments = [] } = volume;
-      const newAttachments = attachments.filter(
-        (it) => it.server_id === serverId
-      );
-      newAttachments.forEach((it) => {
-        it.server_name = serverName;
-      });
-      volume.attachments = newAttachments;
-      return {
-        ...volume,
-        project_id,
-        project_name,
-      };
+    const resultVolumes = [];
+    results.forEach((result) => {
+      resultVolumes.push(...result.volumes);
     });
-    return volumes;
+    return resultVolumes;
   }
 }
 
