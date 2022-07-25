@@ -18,11 +18,11 @@ import globalTroveInstanceStore from 'stores/trove/instances';
 
 export default class StartAction extends ConfirmAction {
   get id() {
-    return 'restart';
+    return 'stop';
   }
 
   get title() {
-    return t('Restart Database Service');
+    return t('Stop Database Service');
   }
 
   get isDanger() {
@@ -30,24 +30,23 @@ export default class StartAction extends ConfirmAction {
   }
 
   get buttonText() {
-    return t('Restart');
+    return t('Stop');
   }
 
   get actionName() {
-    return t('Restart Database Service');
+    return t('Stop Database Service');
   }
 
   get isAsyncAction() {
     return true;
   }
 
-  policy = 'instance:restart';
+  policy = 'instance:stop';
 
-  allowedCheckFunc = (item) =>
-    checkStatus(['active', 'shutoff', 'shutdown'], item);
+  allowedCheckFunc = (item) => checkStatus(['active'], item);
 
   onSubmit = (item) => {
     const { id } = item || this.item;
-    return globalTroveInstanceStore.restart({ id });
+    return globalTroveInstanceStore.stop({ id });
   };
 }
