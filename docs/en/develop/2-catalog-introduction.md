@@ -5,11 +5,11 @@ English | [Chinese](../../zh/develop/2-catalog-introduction.md)
 - `Gruntfile.js`：Used to collect i18n
 - `LICENSE`: This project uses Apache License
 - `Makefile`:
-- `README.md`: A brief description of the front-end startup, please refer to the docs for details
+- `README.rst`: A brief description of the front-end startup, please refer to the docs for details
 - `config`: webpack configuration, which contains webpack configuration in public, development environment, test environment, and build environment
 - `cypress.json`: E2E test configuration file
 - `docker`: Contains the docker configuration used in the development environment, generation environment, and test environment
-- `docs`: Documentation introduction, including Chinese, English, development documentation, testing documentation, the en documentation is temporarily missing
+- `docs`: Documentation introduction, including Chinese, English, development documentation, testing documentation
 - `jest.config.js`: Unit test configuration file
 - `jsconfig.json`: javascript code configuration file
 - `package.json`: Configuration files such as installation packages and commands
@@ -99,7 +99,7 @@ English | [Chinese](../../zh/develop/2-catalog-introduction.md)
 ├── Gruntfile.js (Used to collect i18n)
 ├── LICENSE
 ├── Makefile
-├── README.md
+├── README.rst
 ├── config
 │   ├── theme.js
 │   ├── webpack.common.js
