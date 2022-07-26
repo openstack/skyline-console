@@ -22,6 +22,7 @@ env:
     - ironic
     - swift
     - zun
+    - manila
 testFiles:
   - pages/login.spec.js
   - pages/error.spec.js
@@ -69,3 +70,5 @@ testFiles:
   # zun
   - pages/zun/container.spec.js
   - pages/zun/capsule.spec.js
+  # manila
+  - pages/manila/share-type.spec.js

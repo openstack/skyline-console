@@ -568,16 +568,20 @@
               - ^src/pages/identity/.*$
               - ^src/pages/management/.*$
               - ^src/pages/user-center/.*$
+              - ^src/pages/share/.*$
               - ^src/stores/heat/.*$
               - ^src/stores/zun/.*$
               - ^src/stores/keystone/.*$
+              - ^src/stores/manila/.*$
               - ^src/resources/heat/.*$
               - ^src/resources/zun/.*$
               - ^src/resources/keystone/.*$
+              - ^src/resources/manila/.*$
               - ^test/e2e/integration/pages/configuration/.*$
               - ^test/e2e/integration/pages/heat/.*$
               - ^test/e2e/integration/pages/zun/.*$
               - ^test/e2e/integration/pages/identity/.*$
+              - ^test/e2e/integration/pages/manila/.*$
               - ^test/e2e/integration/pages/error.spec.js
               - ^test/e2e/integration/pages/login.spec.js
               # no run
@@ -619,16 +623,20 @@
               - ^src/pages/identity/.*$
               - ^src/pages/management/.*$
               - ^src/pages/user-center/.*$
+              - ^src/pages/share/.*$
               - ^src/stores/heat/.*$
               - ^src/stores/zun/.*$
+              - ^src/stores/manila/.*$
               - ^src/stores/keystone/.*$
               - ^src/resources/heat/.*$
               - ^src/resources/zun/.*$
               - ^src/resources/keystone/.*$
+              - ^src/resources/manila/.*$
               - ^test/e2e/integration/pages/configuration/.*$
               - ^test/e2e/integration/pages/heat/.*$
               - ^test/e2e/integration/pages/zun/.*$
               - ^test/e2e/integration/pages/identity/.*$
+              - ^test/e2e/integration/pages/manila/.*$
               - ^test/e2e/integration/pages/error.spec.js
               - ^test/e2e/integration/pages/login.spec.js
               # no run
@@ -709,16 +717,20 @@
               - ^src/pages/identity/.*$
               - ^src/pages/management/.*$
               - ^src/pages/user-center/.*$
+              - ^src/pages/share/.*$
               - ^src/stores/heat/.*$
               - ^src/stores/zun/.*$
               - ^src/stores/keystone/.*$
+              - ^src/stores/manila/.*$
               - ^src/resources/heat/.*$
               - ^src/resources/zun/.*$
               - ^src/resources/keystone/.*$
+              - ^src/resources/manila/.*$
               - ^test/e2e/integration/pages/configuration/.*$
               - ^test/e2e/integration/pages/heat/.*$
               - ^test/e2e/integration/pages/zun/.*$
               - ^test/e2e/integration/pages/identity/.*$
+              - ^test/e2e/integration/pages/manila/.*$
               - ^test/e2e/integration/pages/error.spec.js
               - ^test/e2e/integration/pages/login.spec.js
               # no run

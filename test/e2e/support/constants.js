@@ -65,6 +65,9 @@ export const stackListUrl = '/heat/stack';
 export const zunContainerListUrl = '/container/containers';
 export const zunCapsuleListUrl = '/container/capsules';
 
+// manila
+export const shareTypeListUrl = '/share/share-type-admin';
+
 export default {
   // compute
   instance: instanceListUrl,
