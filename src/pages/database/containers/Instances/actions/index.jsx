@@ -17,6 +17,7 @@ import Create from './StepCreate';
 import Edit from './Edit';
 import Restart from './Restart';
 import Stop from './Stop';
+import Reboot from './Reboot';
 
 const actionConfigs = {
   rowActions: {
@@ -27,7 +28,7 @@ const actionConfigs = {
       },
       {
         title: t('Database Instance Status'),
-        actions: [Restart, Stop],
+        actions: [Restart, Stop, Reboot],
       },
     ],
   },
