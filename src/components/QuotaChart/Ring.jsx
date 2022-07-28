@@ -46,6 +46,11 @@ export const getUsedValueColor = (percent) => {
   return typeColors.used;
 };
 
+const testChinese = (str) => {
+  const reg = /[\u4e00-\u9fa5]+/g;
+  return str.match(reg);
+};
+
 export default function Ring(props) {
   const {
     used = 0,
@@ -109,6 +114,15 @@ export default function Ring(props) {
     tipTitle = tips.join(' / ');
   }
 
+  const titleLength = title.length;
+  const titleFontSize = testChinese(title)
+    ? titleLength > 6
+      ? 10
+      : 14
+    : titleLength > 12
+    ? 10
+    : 14;
+
   const chart = (
     <Chart placeholder={false} height={height} padding="auto" autoFit>
       <Legend visible={showTip && hasLabel} />
@@ -126,8 +140,8 @@ export default function Ring(props) {
           position={['50%', '30%']}
           content={title}
           style={{
-            lineHeight: '240px',
-            fontSize: '14',
+            lineHeight: 1.5,
+            fontSize: titleFontSize,
             fill: '#000',
             textAlign: 'center',
           }}
@@ -136,8 +150,8 @@ export default function Ring(props) {
           position={['50%', '50%']}
           content={secondTitle}
           style={{
-            lineHeight: '240px',
-            fontSize: '14',
+            lineHeight: 1.5,
+            fontSize: 14,
             fill: '#000',
             textAlign: 'center',
           }}
@@ -146,8 +160,8 @@ export default function Ring(props) {
           position={['50%', '70%']}
           content={`${allCount}/${limitStr}`}
           style={{
-            lineHeight: '240px',
-            fontSize: '14',
+            lineHeight: 1.5,
+            fontSize: 14,
             fill: getUsedValueColor(percent),
             textAlign: 'center',
             fontWeight: 'bold',
