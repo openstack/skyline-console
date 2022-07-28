@@ -1,7 +1,7 @@
 使用说明
 ========
 
-简体中文 \| `English <./README.md>`__
+简体中文 \| `English <./README.rst>`__
 
 **目录**
 

@@ -5,11 +5,11 @@
 - `Gruntfile.js`：用于收集 i18n
 - `LICENSE`: 该项目使用 Apache License
 - `Makefile`:
-- `README.md`: 前端启动的简单说明，详细信息请参考 docs 文档
+- `README-zh_CN.rst`: 前端启动的简单中文说明，详细信息请参考 docs 文档
 - `config`目录: webpack 配置，其内包含公用、开发环境、测试环境、生成环境下的 webpack 配置
 - `cypress.json`: e2e 测试的配置文件
 - `docker`: 内含开发环境、生成环境、测试环境使用的 docker 配置
-- `docs`目录: 文档介绍，包含中文、英文、开发说明文档、测试说明文档，其中 en 文档暂缺失
+- `docs`目录: 文档介绍，包含中文、英文、开发说明文档、测试说明文档
 - `jest.config.js`: 单元测试的配置文件
 - `jsconfig.json`: js 代码的配置文件
 - `package.json`: 安装包、命令等配置文件
@@ -99,7 +99,7 @@
 ├── Gruntfile.js (用于收集i18n)
 ├── LICENSE
 ├── Makefile
-├── README.md
+├── README.rst
 ├── config
 │   ├── theme.js
 │   ├── webpack.common.js
