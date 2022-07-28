@@ -21,11 +21,15 @@ export default class Delete extends ConfirmAction {
   }
 
   get title() {
-    return t('Delete Backup');
+    return t('Delete Database Backup');
   }
 
   get actionName() {
-    return t('Delete Backup');
+    return t('Delete Database Backup');
+  }
+
+  get buttonText() {
+    return t('Delete');
   }
 
   get isDanger() {

@@ -116,7 +116,7 @@ export class StepDetails extends Base {
       },
       {
         name: 'instance_name',
-        label: t('Instance Name'),
+        label: t('Database Instance Name'),
         type: 'input',
         required: true,
       },
@@ -152,7 +152,6 @@ export class StepDetails extends Base {
           this.resetFormValue(['datastore_version']);
         },
         required: true,
-        tip: t('Type of datastore'),
       },
       {
         name: 'datastore_version',
@@ -160,14 +159,13 @@ export class StepDetails extends Base {
         type: 'select',
         options: this.datastoresVersion,
         required: true,
-        tip: t('Version of datastore'),
       },
       {
         type: 'divider',
       },
       {
         name: 'flavor',
-        label: t('Flavor'),
+        label: t('Database Flavor'),
         component: this.getFlavorComponent(),
         wrapperCol: {
           xs: {

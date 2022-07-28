@@ -23,9 +23,9 @@ export class Create extends ModalAction {
     this.getDatabaseInstance();
   }
 
-  static id = 'create-backups';
+  static id = 'create-database-backup';
 
-  static title = t('Create Backups');
+  static title = t('Create Database Backup');
 
   static get modalSize() {
     return 'middle';
@@ -36,7 +36,7 @@ export class Create extends ModalAction {
   }
 
   get name() {
-    return t('Create Backups');
+    return t('Create Database Backup');
   }
 
   static policy = 'backup:create';
@@ -62,7 +62,7 @@ export class Create extends ModalAction {
     return [
       {
         name: 'name',
-        label: t('Backup Name'),
+        label: t('Name'),
         type: 'input',
         required: true,
       },

@@ -23,7 +23,7 @@ export class BackupsDetail extends Base {
   }
 
   get name() {
-    return 'Backup Detail';
+    return t('Database Backup Detail');
   }
 
   get listUrl() {

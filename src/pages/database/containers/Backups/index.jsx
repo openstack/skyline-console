@@ -24,7 +24,7 @@ export class Backups extends Base {
   }
 
   get name() {
-    return t('backups');
+    return t('database backups');
   }
 
   get actionConfigs() {
@@ -46,7 +46,7 @@ export class Backups extends Base {
 
   getColumns = () => [
     {
-      title: t('Backup Name'),
+      title: t('Name'),
       dataIndex: 'name',
       routeName: this.getRouteName('databaseBackupDetail'),
     },

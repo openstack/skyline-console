@@ -61,7 +61,7 @@ export class BaseDetail extends Base {
   get specsCard() {
     const options = [
       {
-        label: t('Flavor'),
+        label: t('Database Flavor'),
         dataIndex: 'flavor',
         render: (value) => {
           return this.getLinkRender(

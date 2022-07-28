@@ -25,7 +25,7 @@ export class Instances extends Base {
   }
 
   get name() {
-    return t('Instances');
+    return t('database instances');
   }
 
   get actionConfigs() {
@@ -54,7 +54,7 @@ export class Instances extends Base {
 
   getColumns = () => [
     {
-      title: t('Instance Name'),
+      title: t('ID/Name'),
       dataIndex: 'name',
       routeName: this.getRouteName('databaseInstanceDetail'),
     },
