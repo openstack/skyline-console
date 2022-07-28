@@ -21,7 +21,7 @@ import { getSinceTime } from 'utils/time';
 export class RestoreAction extends ModalAction {
   static id = 'Restore from snapshot';
 
-  static title = t('Restore from snapshot');
+  static title = t('Restore From Snapshot');
 
   init() {
     this.store = new VolumeStore();
@@ -55,7 +55,7 @@ export class RestoreAction extends ModalAction {
       },
       {
         name: 'snapshot',
-        label: t('Select Snapshot'),
+        label: t('Select Volume Snapshot'),
         type: 'select-table',
         backendPageStore: this.snapshotStore,
         extraParams: { volume_id: id },

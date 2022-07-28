@@ -94,12 +94,12 @@ export class VolumeDetail extends Base {
         component: BaseDetail,
       },
       {
-        title: t('Backup'),
+        title: t('Volume Backup'),
         key: 'backup',
         component: Backup,
       },
       {
-        title: t('Snapshot'),
+        title: t('Volume Snapshot'),
         key: 'snapshot',
         component: Snapshot,
       },

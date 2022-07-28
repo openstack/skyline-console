@@ -22,7 +22,7 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   get title() {
-    return t('Delete Snapshot');
+    return t('Delete Volume Snapshot');
   }
 
   get isDanger() {
@@ -34,7 +34,7 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   get actionName() {
-    return t('delete snapshot');
+    return t('delete volume snapshot');
   }
 
   policy = 'volume:delete_snapshot';

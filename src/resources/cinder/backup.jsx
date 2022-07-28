@@ -188,13 +188,13 @@ export const getQuotaInfo = (self) => {
     ...backups,
     add,
     name: 'backup',
-    title: t('Backup'),
+    title: t('Volume Backup'),
   };
   const sizeData = {
     ...gigabytes,
     add: addSize,
     name: 'gigabytes',
-    title: t('Backup gigabytes (GiB)'),
+    title: t('Volume Backup Gigabytes (GiB)'),
     type: 'line',
   };
   return [backupData, sizeData];

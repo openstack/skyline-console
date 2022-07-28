@@ -203,7 +203,7 @@ export class Create extends FormAction {
     return [
       { label: t('Blank Volume'), value: 'blank-volume' },
       { label: t('Image'), value: 'image' },
-      { label: t('Snapshot'), value: 'snapshot' },
+      { label: t('Volume Snapshot'), value: 'snapshot' },
       // { label: t('Backup'), value: 'backup' },
     ];
   }
@@ -438,7 +438,7 @@ export class Create extends FormAction {
       },
       {
         name: 'snapshot',
-        label: t('Snapshot'),
+        label: t('Volume Snapshot'),
         type: 'select-table',
         backendPageStore: this.snapshotStore,
         required: this.sourceTypeIsSnapshot,

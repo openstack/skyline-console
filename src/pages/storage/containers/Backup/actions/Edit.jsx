@@ -19,7 +19,7 @@ import globalBackupStore from 'stores/cinder/backup';
 export class Edit extends ModalAction {
   static id = 'edit-backup';
 
-  static title = t('Edit Backup');
+  static title = t('Edit Volume Backup');
 
   static buttonText = t('Edit');
 

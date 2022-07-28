@@ -21,7 +21,7 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   get title() {
-    return t('Delete Backup');
+    return t('Delete Volume Backup');
   }
 
   get isDanger() {
@@ -33,7 +33,7 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   get actionName() {
-    return t('delete backup');
+    return t('delete volume backup');
   }
 
   policy = 'backup:delete';

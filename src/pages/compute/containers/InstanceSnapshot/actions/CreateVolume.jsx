@@ -143,7 +143,7 @@ export class CreateVolume extends ModalAction {
     return [
       {
         name: 'snapshot',
-        label: t('Snapshot'),
+        label: t('Volume Snapshot'),
         type: 'label',
         iconType: 'snapshot',
       },

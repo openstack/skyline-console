@@ -62,15 +62,15 @@ export const quotaCardList = [
         key: 'gigabytes',
       },
       {
-        text: t('Snapshots'),
+        text: t('Volume Snapshots'),
         key: 'snapshots',
       },
       {
-        text: t('Backups'),
+        text: t('Volume Backups'),
         key: 'backups',
       },
       {
-        text: t('Backup gigabytes (GiB)'),
+        text: t('Volume Backup Gigabytes (GiB)'),
         key: 'backup_gigabytes',
       },
     ],

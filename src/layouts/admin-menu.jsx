@@ -211,14 +211,14 @@ const renderMenu = (t) => {
         },
         {
           path: '/storage/backup-admin',
-          name: t('Backups'),
+          name: t('Volume Backups'),
           key: 'backupAdmin',
           level: 1,
           endpoints: 'cinder',
           children: [
             {
               path: /^\/storage\/backup-admin\/detail\/.[^/]+$/,
-              name: t('Backup Detail'),
+              name: t('Volume Backup Detail'),
               key: 'backupDetailAdmin',
               level: 2,
               routePath: '/storage/backup-admin/detail/:id',
@@ -234,7 +234,7 @@ const renderMenu = (t) => {
           children: [
             {
               path: /^\/storage\/snapshot-admin\/detail\/.[^/]+$/,
-              name: t('Snapshot Detail'),
+              name: t('Volume Snapshot Detail'),
               key: 'snapshotDetailAdmin',
               level: 2,
               routePath: '/storage/snapshot-admin/detail/:id',
