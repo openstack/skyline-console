@@ -50,7 +50,9 @@ describe('The Volume Snapshot Page', () => {
     cy.visitPage(volumeListUrl)
       .tableSearchText(volumeName)
       .goToDetail()
-      .clickDetailTab('Snapshot', 'snapshot');
+      .clickDetailTab('Volume Snapshot', 'snapshot')
+      .tableSearchText(name)
+      .goToDetail();
   });
 
   it('successfully create volume', () => {

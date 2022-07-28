@@ -28,10 +28,12 @@ import {
 export class CreateBackup extends ModalAction {
   static id = 'create-backup';
 
-  static title = t('Create Backup');
+  static title = t('Create Volume Backup');
+
+  static buttonText = t('Create Backup');
 
   get name() {
-    return t('Create backup');
+    return t('Create volume backup');
   }
 
   get tips() {
@@ -63,7 +65,7 @@ export class CreateBackup extends ModalAction {
       },
       {
         name: 'name',
-        label: t('Backup Name'),
+        label: t('Volume Backup Name'),
         type: 'input-name',
         required: true,
       },

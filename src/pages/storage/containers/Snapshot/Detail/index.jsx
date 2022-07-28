@@ -21,7 +21,7 @@ import actionConfigs from '../actions';
 
 export class Detail extends Base {
   get name() {
-    return t('snapshot');
+    return t('volume snapshot');
   }
 
   get policy() {

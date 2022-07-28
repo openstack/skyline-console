@@ -34,10 +34,10 @@ import {
 export class Create extends ModalAction {
   static id = 'create';
 
-  static title = t('Create Backup');
+  static title = t('Create Volume Backup');
 
   get name() {
-    return t('Create Backup');
+    return t('Create Volume Backup');
   }
 
   static get modalSize() {
@@ -115,7 +115,7 @@ export class Create extends ModalAction {
     return [
       {
         name: 'name',
-        label: t('Backup Name'),
+        label: t('Volume Backup Name'),
         type: 'input-name',
         required: true,
       },

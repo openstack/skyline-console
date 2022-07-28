@@ -71,7 +71,9 @@ onlyOn(backupServiceEnabled, () => {
       cy.visitPage(volumeListUrl)
         .tableSearchText(volumeName)
         .goToDetail()
-        .clickDetailTab('Backup', 'backup');
+        .clickDetailTab('Volume Backup', 'backup')
+        .tableSearchText(name)
+        .goToDetail();
     });
 
     it('successfully restore by backup', () => {

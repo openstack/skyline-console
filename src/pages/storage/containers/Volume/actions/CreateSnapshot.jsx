@@ -38,7 +38,9 @@ const getAdd = (cinderQuota) => {
 export class CreateSnapshot extends ModalAction {
   static id = 'create-snapshot';
 
-  static title = t('Create Snapshot');
+  static title = t('Create Volume Snapshot');
+
+  static buttonText = t('Create Snapshot');
 
   init() {
     globalSnapshotStore.setCurrentVolumeType(this.item);
@@ -50,7 +52,7 @@ export class CreateSnapshot extends ModalAction {
   }
 
   get name() {
-    return t('create snapshot');
+    return t('create volume snapshot');
   }
 
   get defaultValue() {
@@ -101,7 +103,7 @@ export class CreateSnapshot extends ModalAction {
       ...snapshotQuota,
       add,
       name: 'snapshot',
-      title: t('Snapshots'),
+      title: t('Volume Snapshot'),
     };
     const { volume_type } = this.item;
     const typeData = {
@@ -124,7 +126,7 @@ export class CreateSnapshot extends ModalAction {
       },
       {
         name: 'name',
-        label: t('Snapshot Name'),
+        label: t('Volume Snapshot Name'),
         type: 'input-name',
         placeholder: t('Please input snapshot name'),
         required: true,

@@ -64,7 +64,7 @@ export const getZero = (cinderQuota) => {
   const allQuota = getQuota(cinderQuota) || {};
   const { snapshotQuota = {} } = allQuota;
   const zero = [
-    { ...snapshotQuota, add: 0, name: 'snapshot', title: t('Snapshot') },
+    { ...snapshotQuota, add: 0, name: 'snapshot', title: t('Volume Snapshot') },
   ];
   Object.keys(types).forEach((type) => {
     const typeQuota = allQuota[type] || {};
@@ -109,7 +109,9 @@ export const getAdd = (cinderQuota) => {
 export class CreateSnapshot extends ModalAction {
   static id = 'create-snapshot';
 
-  static title = t('Create Snapshot');
+  static title = t('Create Instance Snapshot');
+
+  static buttonText = t('Create Snapshot');
 
   init() {
     this.store = globalServerStore;
@@ -261,7 +263,7 @@ export class CreateSnapshot extends ModalAction {
       },
       {
         name: 'snapshot',
-        label: t('Snapshot Name'),
+        label: t('Instance Snapshot Name'),
         type: 'input-name',
         isImage: true,
         required: true,

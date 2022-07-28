@@ -21,7 +21,7 @@ import actionConfigs from './actions';
 
 export class Backup extends Base {
   get name() {
-    return t('Backups');
+    return t('volume backups');
   }
 
   get policy() {
