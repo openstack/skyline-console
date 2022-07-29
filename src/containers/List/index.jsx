@@ -945,9 +945,32 @@ export default class BaseList extends React.Component {
     }
   };
 
+  getPureParamsByFrontend = (params) => {
+    const { page, limit, sortKey, sortOrder, ...rest } = params;
+    const pureParams = { page, limit };
+    if (this.isSortByBackend) {
+      pureParams.sortKey = sortKey;
+      pureParams.sortOrder = sortOrder;
+    }
+    if (!this.searchFilters.length) {
+      const { keywords, ...others } = rest;
+      return {
+        ...pureParams,
+        ...others,
+      };
+    }
+    Object.keys(rest).forEach((key) => {
+      const item = this.searchFilters.find((it) => it.name === key);
+      if (!item) {
+        pureParams[key] = rest[key];
+      }
+    });
+    return pureParams;
+  };
+
   handleFetch = (params, refresh) => {
     if (refresh && !this.isFilterByBackend) {
-      this.getDataWithPolicy(params);
+      this.getDataWithPolicy(this.getPureParamsByFrontend(params));
       return;
     }
     // eslint-disable-next-line no-unused-vars
