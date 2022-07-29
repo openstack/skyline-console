@@ -26,7 +26,7 @@ export class HostAggregate extends Base {
         component: Aggregate,
       },
       {
-        title: t('Availability Zone'),
+        title: t('Availability Zones'),
         key: 'availabilityZone',
         component: AvailabilityZone,
       },

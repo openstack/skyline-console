@@ -119,17 +119,17 @@ export class InstanceDetail extends Base {
   get tabs() {
     const tabs = [
       {
-        title: t('BaseDetail'),
-        key: 'BaseDetail',
+        title: t('Detail'),
+        key: 'detail',
         component: BaseDetail,
       },
       {
-        title: t('Instance Snapshot'),
+        title: t('Instance Snapshots'),
         key: 'snapshots',
         component: Snapshots,
       },
       {
-        title: t('Interface'),
+        title: t('Interfaces'),
         key: 'interface',
         component: VirtualAdapter,
       },
@@ -139,19 +139,19 @@ export class InstanceDetail extends Base {
         component: FloatingIps,
       },
       {
-        title: t('Security Group'),
+        title: t('Security Groups'),
         key: 'securityGroup',
         component: SecurityGroup,
       },
       {
-        title: t('Action Log'),
+        title: t('Action Logs'),
         key: 'action',
         component: ActionLog,
       },
     ];
     if (this.enableCinder) {
       tabs.splice(1, 0, {
-        title: t('Volume'),
+        title: t('Volumes'),
         key: 'volumes',
         component: Volumes,
       });

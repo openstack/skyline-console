@@ -87,8 +87,8 @@ export class ImageDetail extends Base {
   get tabs() {
     const tabs = [
       {
-        title: t('BaseDetail'),
-        key: 'BaseDetail',
+        title: t('Detail'),
+        key: 'detail',
         component: BaseDetail,
       },
     ];

@@ -76,7 +76,7 @@ export class Detail extends Base {
         component: Metadata,
       },
       {
-        title: t('Access Rule'),
+        title: t('Access Rules'),
         key: 'rule',
         component: AccessRule,
       },

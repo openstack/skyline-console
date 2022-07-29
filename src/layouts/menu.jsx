@@ -47,7 +47,7 @@ const renderMenu = (t) => {
       children: [
         {
           path: '/compute/instance',
-          name: t('Instance'),
+          name: t('Instances'),
           key: 'instance',
           level: 1,
           children: [
@@ -74,7 +74,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/compute/instance-snapshot',
-          name: t('Instance Snapshot'),
+          name: t('Instance Snapshots'),
           key: 'instanceSnapshot',
           level: 1,
           children: [
@@ -89,7 +89,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/compute/flavor',
-          name: t('Flavor'),
+          name: t('Flavors'),
           key: 'flavor',
           level: 1,
           children: [
@@ -104,7 +104,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/compute/server-group',
-          name: t('Server Group'),
+          name: t('Server Groups'),
           key: 'serverGroup',
           level: 1,
           children: [
@@ -119,7 +119,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/compute/image',
-          name: t('Image'),
+          name: t('Images'),
           key: 'image',
           level: 1,
           children: [
@@ -163,7 +163,7 @@ const renderMenu = (t) => {
       children: [
         {
           path: '/storage/volume',
-          name: t('Volume'),
+          name: t('Volumes'),
           key: 'volume',
           level: 1,
           endpoints: 'cinder',
@@ -201,7 +201,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/storage/snapshot',
-          name: t('Volume Snapshot'),
+          name: t('Volume Snapshots'),
           key: 'snapshot',
           level: 1,
           endpoints: 'cinder',
@@ -263,7 +263,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/network/virtual_adapter',
-          name: t('Virtual Adapter'),
+          name: t('Virtual Adapters'),
           key: 'virtualAdapter',
           level: 1,
           children: [
@@ -278,7 +278,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/network/qos-policy',
-          name: t('QoS Policy'),
+          name: t('QoS Policies'),
           key: 'networkQos',
           endpoints: 'neutron_qos',
           level: 1,
@@ -367,7 +367,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/network/certificate',
-          name: t('Certificate Management'),
+          name: t('Certificates'),
           key: 'certificate',
           endpoints: 'barbican',
           level: 1,
@@ -390,7 +390,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/network/vpn',
-          name: t('VPN'),
+          name: t('VPNs'),
           key: 'vpn',
           endpoints: 'neutron_vpn',
           level: 1,
@@ -430,7 +430,7 @@ const renderMenu = (t) => {
       children: [
         {
           path: '/share/share',
-          name: t('Share'),
+          name: t('Shares'),
           key: 'share',
           level: 1,
           children: [
@@ -451,7 +451,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/share/share-network',
-          name: t('Share Network'),
+          name: t('Share Networks'),
           key: 'shareNetwork',
           level: 1,
           children: [
@@ -466,7 +466,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/share/share-group',
-          name: t('Share Group'),
+          name: t('Share Groups'),
           key: 'shareGroup',
           level: 1,
           children: [
@@ -550,7 +550,7 @@ const renderMenu = (t) => {
       children: [
         {
           path: '/database/instances',
-          name: t('Database Instance'),
+          name: t('Database Instances'),
           key: 'databaseInstances',
           level: 1,
           children: [
@@ -669,7 +669,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/container-infra/cluster-template',
-          name: t('Cluster Template'),
+          name: t('Cluster Templates'),
           key: 'clusterTemplate',
           endpoints: 'magnum',
           level: 1,

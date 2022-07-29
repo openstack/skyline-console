@@ -77,8 +77,8 @@ describe('The Volume Page', () => {
       .checkTableFirstRow(name)
       .goToDetail()
       .checkDetailName(name);
-    cy.clickDetailTab('Volume Backup', 'backup').clickDetailTab(
-      'Volume Snapshot',
+    cy.clickDetailTab('Volume Backups', 'backup').clickDetailTab(
+      'Volume Snapshots',
       'snapshot'
     );
     cy.goBackToList(listUrl);
@@ -94,7 +94,7 @@ describe('The Volume Page', () => {
 
     cy.tableSearchText(name)
       .goToDetail()
-      .clickDetailTab('Volume Snapshot')
+      .clickDetailTab('Volume Snapshots')
       .tableSearchText(snapshotName)
       .checkTableFirstRow(snapshotName);
 

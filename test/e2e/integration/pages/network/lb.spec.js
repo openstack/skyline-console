@@ -184,7 +184,7 @@ onlyOn(lbServiceEnabled, () => {
         .goToDetail(1, 2000)
         .tableSearchText(listener)
         .goToDetail(0, 2000)
-        .clickDetailTab('Member', 'members');
+        .clickDetailTab('Members', 'members');
     });
 
     it('successfully create listener member', () => {
@@ -192,7 +192,7 @@ onlyOn(lbServiceEnabled, () => {
         .goToDetail(1, 2000)
         .tableSearchText(listener)
         .goToDetail(0, 2000)
-        .clickDetailTab('Member')
+        .clickDetailTab('Members')
         .clickHeaderButton(1)
         .formButtonClick('extMembers')
         .get('.ant-form-item')
@@ -209,7 +209,7 @@ onlyOn(lbServiceEnabled, () => {
         .goToDetail(1, 2000)
         .tableSearchText(listener)
         .goToDetail(0, 2000)
-        .clickDetailTab('Member')
+        .clickDetailTab('Members')
         .clickFirstActionButton()
         .wait(2000)
         .formInput('weight', 2)
@@ -222,7 +222,7 @@ onlyOn(lbServiceEnabled, () => {
         .goToDetail(1, 2000)
         .tableSearchText(listener)
         .goToDetail(0, 2000)
-        .clickDetailTab('Member')
+        .clickDetailTab('Members')
         .clickConfirmActionButton('Delete')
         .goBackToList()
         .tableSearchText(listener)

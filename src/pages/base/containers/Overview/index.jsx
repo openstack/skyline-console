@@ -28,25 +28,25 @@ import ProjectInfo from './components/ProjectInfo';
 const actions = [
   {
     key: 'instance',
-    label: t('Instance'),
+    label: t('Instances'),
     avatar: overviewInstance,
     to: '/compute/instance',
   },
   {
     key: 'volume',
-    label: t('Volume'),
+    label: t('Volumes'),
     avatar: overviewVolume,
     to: '/storage/volume',
   },
   {
     key: 'network',
-    label: t('Network'),
+    label: t('Networks'),
     avatar: overviewNetwork,
     to: '/network/networks',
   },
   {
     key: 'router',
-    label: t('Router'),
+    label: t('Routers'),
     avatar: overviewRouter,
     to: '/network/router',
   },

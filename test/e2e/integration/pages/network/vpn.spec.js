@@ -59,7 +59,7 @@ onlyOn(vpnServiceEnabled, () => {
     });
 
     it('successfully create local endpoint', () => {
-      cy.clickTab('VPN EndPoint Group', 'vpn_endpoint_groups')
+      cy.clickTab('VPN EndPoint Groups', 'vpn_endpoint_groups')
         .clickHeaderButton(1)
         .wait(5000)
         .formInput('name', endpointLocal)
@@ -72,7 +72,7 @@ onlyOn(vpnServiceEnabled, () => {
     });
 
     it('successfully create peer endpoint', () => {
-      cy.clickTab('VPN EndPoint Group', 'vpn_endpoint_groups')
+      cy.clickTab('VPN EndPoint Groups', 'vpn_endpoint_groups')
         .clickHeaderButton(1)
         .formInput('name', endpointPeer)
         .formText('description', endpointPeer)
@@ -83,7 +83,7 @@ onlyOn(vpnServiceEnabled, () => {
     });
 
     it('successfully create ike policy', () => {
-      cy.clickTab('IKE Policy', 'ike_policy')
+      cy.clickTab('IKE Policies', 'ike_policy')
         .clickHeaderButton(1)
         .formInput('name', ikePolicy)
         .formText('description', ikePolicy)
@@ -91,7 +91,7 @@ onlyOn(vpnServiceEnabled, () => {
     });
 
     it('successfully create ipsec policy', () => {
-      cy.clickTab('IPsec Policy', 'ipsec_policy')
+      cy.clickTab('IPsec Policies', 'ipsec_policy')
         .clickHeaderButton(1)
         .formInput('name', ipsecPolicy)
         .formText('description', ipsecPolicy)
@@ -118,7 +118,10 @@ onlyOn(vpnServiceEnabled, () => {
     });
 
     it('successfully detail ipsec site connection', () => {
-      cy.clickTab('IPsec Site Connections', 'ipsec_site_connections').tableSearchText(ipsecSiteConnection);
+      cy.clickTab(
+        'IPsec Site Connections',
+        'ipsec_site_connections'
+      ).tableSearchText(ipsecSiteConnection);
       cy.goToDetail().wait(30000);
       cy.goBackToList(listUrl);
     });
@@ -138,7 +141,7 @@ onlyOn(vpnServiceEnabled, () => {
     });
 
     it('successfully edit ipsec policy', () => {
-      cy.clickTab('IPsec Policy')
+      cy.clickTab('IPsec Policies')
         .tableSearchText(ipsecPolicy)
         .clickFirstActionButton()
         .formText('description', 'description')
@@ -146,13 +149,13 @@ onlyOn(vpnServiceEnabled, () => {
     });
 
     it('successfully delete ipsec policy', () => {
-      cy.clickTab('IPsec Policy')
+      cy.clickTab('IPsec Policies')
         .tableSearchText(ipsecPolicy)
         .clickConfirmActionButton('Delete');
     });
 
     it('successfully edit ike policy', () => {
-      cy.clickTab('IKE Policy')
+      cy.clickTab('IKE Policies')
         .tableSearchText(ikePolicy)
         .clickFirstActionButton()
         .formText('description', 'description')
@@ -160,13 +163,13 @@ onlyOn(vpnServiceEnabled, () => {
     });
 
     it('successfully delete ike policy', () => {
-      cy.clickTab('IKE Policy')
+      cy.clickTab('IKE Policies')
         .tableSearchText(ikePolicy)
         .clickConfirmActionButton('Delete');
     });
 
     it('successfully edit endpoint', () => {
-      cy.clickTab('VPN EndPoint Group')
+      cy.clickTab('VPN EndPoint Groups')
         .tableSearchText(endpointLocal)
         .clickFirstActionButton()
         .formText('description', 'description')
@@ -174,7 +177,7 @@ onlyOn(vpnServiceEnabled, () => {
     });
 
     it('successfully delete endpoint', () => {
-      cy.clickTab('VPN EndPoint Group')
+      cy.clickTab('VPN EndPoint Groups')
         .tableSearchText(endpointLocal)
         .clickConfirmActionButton('Delete')
         .wait(5000)

@@ -62,12 +62,12 @@ export class RoleDetail extends Base {
         component: BaseDetail,
       },
       {
-        title: t('Binding User'),
+        title: t('Binding Users'),
         key: 'user',
         component: User,
       },
       {
-        title: t('Binding Group'),
+        title: t('Binding Groups'),
         key: 'group',
         component: Group,
       },

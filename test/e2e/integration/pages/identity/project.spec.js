@@ -42,7 +42,7 @@ describe('The Project Page', () => {
     cy.tableSearchText(name)
       .goToDetail()
       .checkDetailName(name)
-      .clickDetailTab('Project User Group', 'userGroup')
+      .clickDetailTab('Project User Groups', 'userGroup')
       .clickDetailTab('Project Quota', 'quota');
     cy.goBackToList(listUrl);
   });

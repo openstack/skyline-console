@@ -57,18 +57,18 @@ export class NetworkSelectTable extends Component {
 
   get networkTabs() {
     const tabs = [
-      { title: t('Current Project Network'), key: 'project' },
-      { title: t('Shared Network'), key: 'shared' },
+      { title: t('Current Project Networks'), key: 'project' },
+      { title: t('Shared Networks'), key: 'shared' },
     ];
     if (this.showExternal) {
       tabs.push({
-        title: t('External Network'),
+        title: t('External Networks'),
         key: 'external',
       });
     }
     if (this.hasAdminRole) {
       tabs.push({
-        title: t('All Network'),
+        title: t('All Networks'),
         key: 'all',
       });
     }

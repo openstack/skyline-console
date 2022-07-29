@@ -86,12 +86,12 @@ export class QoSPolicyDetail extends Base {
   get tabs() {
     const tabs = [
       {
-        title: t('BaseDetail'),
-        key: 'BaseDetail',
+        title: t('Detail'),
+        key: 'detail',
         component: BaseDetail,
       },
       {
-        title: t('Floating IP'),
+        title: t('Floating IPs'),
         key: 'fip',
         component: FloatingIp,
       },

@@ -82,9 +82,9 @@ onlyOn(ironicServiceEnabled, () => {
     it('successfully detail', () => {
       cy.tableSearchText(name).checkTableFirstRow(name).goToDetail();
       cy.checkDetailName(name);
-      cy.clickDetailTab('Interface', 'interface')
+      cy.clickDetailTab('Interfaces', 'interface')
         .clickDetailTab('Floating IPs', 'floatingIps')
-        .clickDetailTab('Security Group', 'securityGroup');
+        .clickDetailTab('Security Groups', 'securityGroup');
       cy.goBackToList(listUrl);
     });
 

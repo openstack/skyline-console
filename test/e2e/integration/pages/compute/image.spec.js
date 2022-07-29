@@ -48,7 +48,7 @@ describe('The Image Page', () => {
   });
 
   it('successfully list', () => {
-    cy.clickTab('Public Image', 'public').clickTab('Shared Image', 'shared');
+    cy.clickTab('Public Images', 'public').clickTab('Shared Images', 'shared');
   });
 
   it('successfully create', () => {

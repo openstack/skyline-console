@@ -29,19 +29,19 @@ export class QoSPolicy extends Base {
   get tabs() {
     const tabs = [
       {
-        title: t('Current Project QoS Policy'),
+        title: t('Current Project QoS Policies'),
         key: 'projectQoSPolicy',
         component: QoSPolicyComponent,
       },
       {
-        title: t('Shared QoS Policy'),
+        title: t('Shared QoS Policies'),
         key: 'sharedQoSPolicy',
         component: QoSPolicyComponent,
       },
     ];
     if (this.hasAdminRole) {
       tabs.push({
-        title: t('All QoS Policy'),
+        title: t('All QoS Policies'),
         key: 'allQoSPolicy',
         component: QoSPolicyComponent,
       });

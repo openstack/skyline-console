@@ -50,15 +50,15 @@ onlyOn(manilaServiceEnabled, () => {
       cy.tableSimpleSearchText(name)
         .goToDetail()
         .checkDetailName(name)
-        .clickDetailTab('Extra Spec', 'ExtraSpec')
-        .clickDetailTab('Share', 'share');
+        .clickDetailTab('Extra Specs', 'ExtraSpec')
+        .clickDetailTab('Shares', 'share');
       cy.goBackToList(listUrl);
     });
 
     it('successfully create extra specs', () => {
       cy.tableSimpleSearchText(name)
         .goToDetail()
-        .clickDetailTab('Extra Spec')
+        .clickDetailTab('Extra Specs')
         .wait(5000)
         .clickHeaderButton(1)
         .formInput('keyName', extraKeyName)
@@ -69,7 +69,7 @@ onlyOn(manilaServiceEnabled, () => {
     it('successfully edit extra specs', () => {
       cy.tableSimpleSearchText(name)
         .goToDetail()
-        .clickDetailTab('Extra Spec')
+        .clickDetailTab('Extra Specs')
         .wait(5000)
         .tableSearchText(extraKeyName)
         .clickActionButtonByTitle('Edit')
@@ -80,7 +80,7 @@ onlyOn(manilaServiceEnabled, () => {
     it('successfully delete extra specs', () => {
       cy.tableSimpleSearchText(name)
         .goToDetail()
-        .clickDetailTab('Extra Spec')
+        .clickDetailTab('Extra Specs')
         .wait(5000)
         .tableSearchText(extraKeyName)
         .clickFirstActionButton()

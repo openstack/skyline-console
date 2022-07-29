@@ -19,7 +19,7 @@ describe('The Qos Specs Page', () => {
   const name = `e2e-qos-${Cypress._.random(0, 1e6)}`;
 
   beforeEach(() => {
-    cy.loginAdmin(listUrl).clickTab('QoS');
+    cy.loginAdmin(listUrl).clickTab('QoS Specs');
   });
 
   it('successfully create', () => {

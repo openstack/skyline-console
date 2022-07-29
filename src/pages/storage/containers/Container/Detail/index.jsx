@@ -211,14 +211,14 @@ export class ContainerObject extends Base {
       valueRender: 'sinceTime',
     },
     {
-      title: t('Detail Info'),
+      title: t('Detail'),
       dataIndex: 'detail',
       isHideable: true,
       render: (_, data) => {
         const content = <PopUpContent item={data} />;
         return (
           <Popover content={content} destroyTooltipOnHide trigger="click">
-            <span className="link-class">{t('Detail Info')}</span>
+            <span className="link-class">{t('Detail')}</span>
           </Popover>
         );
       },

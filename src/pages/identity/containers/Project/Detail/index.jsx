@@ -80,12 +80,12 @@ export class Detail extends Base {
   get tabs() {
     const tabs = [
       {
-        title: t('Project User'),
+        title: t('Project Users'),
         key: 'user',
         component: User,
       },
       {
-        title: t('Project User  Group'),
+        title: t('Project User Groups'),
         key: 'userGroup',
         component: UserGroup,
       },

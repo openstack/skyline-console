@@ -20,24 +20,24 @@ export class Network extends Base {
   get tabs() {
     const tabs = [
       {
-        title: t('Current Project Network'),
+        title: t('Current Project Networks'),
         key: 'projectNetwork',
         component: NetworkTab,
       },
       {
-        title: t('Shared Network'),
+        title: t('Shared Networks'),
         key: 'sharedNetwork',
         component: NetworkTab,
       },
       {
-        title: t('External Network'),
+        title: t('External Networks'),
         key: 'externalNetwork',
         component: NetworkTab,
       },
     ];
     if (this.hasAdminRole) {
       tabs.push({
-        title: t('All Network'),
+        title: t('All Networks'),
         key: 'allNetwork',
         component: NetworkTab,
       });

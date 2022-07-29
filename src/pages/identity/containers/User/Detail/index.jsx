@@ -92,12 +92,12 @@ export class UserDetail extends Base {
   get tabs() {
     const tabs = [
       {
-        title: t('Subordinate Project'),
+        title: t('Subordinate Projects'),
         key: 'user',
         component: Project,
       },
       {
-        title: t('Subordinate User Group'),
+        title: t('Subordinate User Groups'),
         key: 'userGroup',
         component: UserGroup,
       },

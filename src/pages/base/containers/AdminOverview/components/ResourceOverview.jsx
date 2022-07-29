@@ -28,13 +28,13 @@ import styles from '../style.less';
 export const card = [
   {
     key: 'serviceNum',
-    label: t('Instance'),
+    label: t('Instances'),
     avatar: adminInstance,
     to: '/compute/instance-admin',
   },
   {
     key: 'volumeNum',
-    label: t('Volume'),
+    label: t('Volumes'),
     avatar: adminVolume,
     to: '/storage/volume-admin',
   },

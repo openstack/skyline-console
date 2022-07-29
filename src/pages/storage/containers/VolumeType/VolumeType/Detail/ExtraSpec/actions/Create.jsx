@@ -19,10 +19,10 @@ import globalExtraSpecStore from 'stores/cinder/extra-spec';
 export class Create extends ModalAction {
   static id = 'create';
 
-  static title = t('Create Extra Specs');
+  static title = t('Create Extra Spec');
 
   get name() {
-    return t('Create Extra Specs');
+    return t('Create Extra Spec');
   }
 
   static policy = 'volume_extension:types_extra_specs:create';

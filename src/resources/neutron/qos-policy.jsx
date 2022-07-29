@@ -145,7 +145,7 @@ export function getQoSPolicyTabs(extraProps = {}) {
   };
   const ret = [
     {
-      title: t('Current Project QoS Policy'),
+      title: t('Current Project QoS Policies'),
       key: 'project',
       props: merge({}, baseProps, {
         ...getQosPolicySelectTableProps({ self: this }),
@@ -155,7 +155,7 @@ export function getQoSPolicyTabs(extraProps = {}) {
       }),
     },
     {
-      title: t('Shared QoS Policy'),
+      title: t('Shared QoS Policies'),
       key: 'shared',
       props: merge({}, baseProps, {
         ...getQosPolicySelectTableProps({ shared: true, self: this }),
@@ -168,7 +168,7 @@ export function getQoSPolicyTabs(extraProps = {}) {
 
   if (this.hasAdminRole) {
     ret.push({
-      title: t('All QoS Policy'),
+      title: t('All QoS Policies'),
       key: 'all',
       props: merge({}, baseProps, {
         ...getQosPolicySelectTableProps({ all: true, self: this }),

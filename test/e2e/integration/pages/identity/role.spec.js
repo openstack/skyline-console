@@ -25,8 +25,8 @@ describe('The Role Page', () => {
   it('successfully detail', () => {
     cy.tableSearchText(name)
       .goToDetail()
-      .clickDetailTab('Binding User', 'user')
-      .clickDetailTab('Binding Group', 'group');
+      .clickDetailTab('Binding Users', 'user')
+      .clickDetailTab('Binding Groups', 'group');
     cy.goBackToList(listUrl);
   });
 });
