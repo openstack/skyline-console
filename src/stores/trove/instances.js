@@ -96,6 +96,11 @@ export class InstancesStore extends Base {
   }
 
   @action
+  async reboot({ id }) {
+    return this.operation({ key: 'reboot', id });
+  }
+
+  @action
   async stop({ id }) {
     return this.submitting(this.adminClient.action(id, { stop: {} }));
   }

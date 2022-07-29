@@ -16,13 +16,13 @@ import { ConfirmAction } from 'containers/Action';
 import { checkStatus } from 'resources/nova/instance';
 import globalTroveInstanceStore from 'stores/trove/instances';
 
-export default class RestartAction extends ConfirmAction {
+export default class RebootAction extends ConfirmAction {
   get id() {
-    return 'restart';
+    return 'reboot';
   }
 
   get title() {
-    return t('Restart Database Service');
+    return t('Reboot Database Instance');
   }
 
   get isDanger() {
@@ -30,20 +30,20 @@ export default class RestartAction extends ConfirmAction {
   }
 
   get actionName() {
-    return t('Restart Database Service');
+    return t('Reboot Database Instance');
   }
 
   get isAsyncAction() {
     return true;
   }
 
-  policy = 'instance:restart';
+  policy = 'instance:reboot';
 
   allowedCheckFunc = (item) =>
     checkStatus(['active', 'shutoff', 'shutdown'], item);
 
   onSubmit = (item) => {
     const { id } = item || this.item;
-    return globalTroveInstanceStore.restart({ id });
+    return globalTroveInstanceStore.reboot({ id });
   };
 }
