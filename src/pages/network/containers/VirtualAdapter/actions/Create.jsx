@@ -83,9 +83,9 @@ export class CreateAction extends ModalAction {
 
   static get disableSubmit() {
     const {
-      neutronQuota: { port: { left = 0 } = {} },
+      neutronQuota: { port: { used = 0, limit = 0 } = {} },
     } = globalProjectStore;
-    return left === 0;
+    return limit !== -1 && used >= limit;
   }
 
   static get showQuota() {
@@ -113,13 +113,13 @@ export class CreateAction extends ModalAction {
     if (quotaLoading) {
       return [];
     }
-    const { left = 0 } = quota;
-    const add = left === 0 ? 0 : 1;
+    const { used = 0, limit = 0 } = quota;
+    const add = limit !== -1 && used >= limit ? 0 : 1;
     const data = {
       ...quota,
       add,
       name: 'port',
-      title: t('Port'),
+      title: t('Ports'),
     };
     return [data];
   }
