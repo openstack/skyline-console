@@ -26,6 +26,7 @@ export class StepCreate extends StepAction {
     this.store = globalContainersStore;
     this.projectStore = globalProjectStore;
     this.getQuota();
+    this.state.isLoading = true;
     this.errorMsg = '';
   }
 
@@ -85,22 +86,26 @@ export class StepCreate extends StepAction {
   }
 
   get quotaInfo() {
+    if (this.state.isLoading) {
+      return [];
+    }
     const {
       containers = {},
       cpu = {},
       memory = {},
       disk = {},
     } = this.projectStore.zunQuota;
-    const { limit } = containers || {};
-    if (!limit) {
-      return [];
-    }
+    const { left = 0 } = containers || {};
     const {
-      data: { cpu: cpuCount, memory: memoryCount, disk: diskCount } = {},
+      data: {
+        cpu: cpuCount = 0,
+        memory: memoryCount = 0,
+        disk: diskCount = 0,
+      } = {},
     } = this.state;
     const containersQuotaInfo = {
       ...containers,
-      add: 1,
+      add: left ? 1 : 0,
       name: 'containers',
       title: t('Containers'),
     };
@@ -136,6 +141,9 @@ export class StepCreate extends StepAction {
 
   async getQuota() {
     await this.projectStore.fetchProjectZunQuota();
+    this.setState({
+      isLoading: false,
+    });
   }
 
   getQuotaMessage(input, left, name) {
@@ -153,7 +161,11 @@ export class StepCreate extends StepAction {
 
   checkQuota(data, quota) {
     const { containers = {}, cpu = {}, memory = {}, disk = {} } = quota || {};
-    const { cpu: cpuCount, memory: memoryCount, disk: diskCount } = data || {};
+    const {
+      cpu: cpuCount = 0,
+      memory: memoryCount = 0,
+      disk: diskCount = 0,
+    } = data || {};
 
     const { left: containerLeft = 0 } = containers;
     const containerMsg = this.getQuotaMessage(

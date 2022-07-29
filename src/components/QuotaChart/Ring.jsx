@@ -54,7 +54,7 @@ const testChinese = (str) => {
 export default function Ring(props) {
   const {
     used = 0,
-    add = 1,
+    add = 0,
     reserved = 0,
     limit = 1,
     title = '',
