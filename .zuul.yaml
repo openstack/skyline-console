@@ -540,6 +540,9 @@
       release_python: python3
 
 - project:
+    templates:
+      - release-notes-jobs-python3
+      - publish-openstack-docs-pti
     check:
       jobs:
         - skyline-nodejs14-run-lint-src

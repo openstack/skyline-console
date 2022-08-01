@@ -19,6 +19,8 @@ skyline_console.egg-info/
 AUTHORS
 ChangeLog
 RELEASENOTES.rst
+doc/build
+doc/source/_static
 
 # config
 test/e2e/config/local_config.yaml
