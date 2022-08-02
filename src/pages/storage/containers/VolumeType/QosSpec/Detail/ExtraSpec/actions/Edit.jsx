@@ -19,12 +19,12 @@ import globalQosSpecKeyStore from 'stores/cinder/qos-spec-key';
 export class Edit extends ModalAction {
   static id = 'edit';
 
-  static title = t('Edit Extra Specs');
+  static title = t('Edit Extra Spec');
 
   static buttonText = t('Edit');
 
   get name() {
-    return t('Edit Extra Specs');
+    return t('Edit Extra Spec');
   }
 
   get defaultValue() {

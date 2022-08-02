@@ -28,10 +28,10 @@ describe('The Network Page', () => {
   });
 
   it('successfully fetch List', () => {
-    cy.clickTab('Shared Network', 'sharedNetwork');
-    cy.clickTab('External Network', 'externalNetwork');
+    cy.clickTab('Shared Networks', 'sharedNetwork');
+    cy.clickTab('External Networks', 'externalNetwork');
     // cy.clickTab('All Network', 'allNetwork');
-    cy.clickTab('Current Project Network', 'projectNetwork');
+    cy.clickTab('Current Project Networks', 'projectNetwork');
   });
 
   it('successfully create with subnet', () => {

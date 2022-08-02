@@ -20,12 +20,12 @@ export class Certificate extends Base {
   get tabs() {
     const tabs = [
       {
-        title: t('Server Certificate'),
+        title: t('Server Certificates'),
         key: 'SERVER',
         component: CertificateTab,
       },
       {
-        title: t('CA Certificate'),
+        title: t('CA Certificates'),
         key: 'CA',
         component: CertificateTab,
       },

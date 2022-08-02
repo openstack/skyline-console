@@ -81,7 +81,7 @@ export class ListenerDetail extends Base {
         component: BaseDetail,
       },
       {
-        title: t('Member'),
+        title: t('Members'),
         key: 'members',
         component: Members,
       },

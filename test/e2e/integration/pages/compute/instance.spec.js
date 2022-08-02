@@ -74,10 +74,10 @@ describe('The Instance Page', () => {
   it('successfully detail', () => {
     cy.tableSearchText(name).checkTableFirstRow(name).goToDetail();
     cy.checkDetailName(name);
-    cy.clickDetailTab('Volume', 'volumes')
-      .clickDetailTab('Interface', 'interface')
+    cy.clickDetailTab('Volumes', 'volumes')
+      .clickDetailTab('Interfaces', 'interface')
       .clickDetailTab('Floating IPs', 'floatingIps')
-      .clickDetailTab('Security Group', 'securityGroup');
+      .clickDetailTab('Security Groups', 'securityGroup');
     cy.goBackToList(listUrl);
   });
 

@@ -21,7 +21,7 @@ import globalQosSpecStore from 'stores/cinder/qos-spec';
 export class ManageQos extends ModalAction {
   static id = 'manage-qos';
 
-  static title = t('Manage QoS');
+  static title = t('Manage QoS Spec');
 
   get name() {
     return t('manage qos spec');
@@ -73,7 +73,7 @@ export class ManageQos extends ModalAction {
       },
       {
         name: 'qosSpec',
-        label: t('QoS'),
+        label: t('QoS Spec'),
         type: 'select-table',
         required: false,
         data: this.QosMap,

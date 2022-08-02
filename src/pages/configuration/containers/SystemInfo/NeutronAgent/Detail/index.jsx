@@ -79,20 +79,20 @@ export class KeypairDetail extends Base {
   get tabs() {
     const tabs = [
       {
-        title: t('BaseDetail'),
-        key: 'BaseDetail',
+        title: t('Detail'),
+        key: 'detail',
         component: BaseDetail,
       },
     ];
     if (this.detailData.agent_type === 'L3 agent') {
       tabs.push({
-        title: t('Router'),
+        title: t('Routers'),
         key: 'router',
         component: Router,
       });
     } else if (this.detailData.agent_type === 'DHCP agent') {
       tabs.push({
-        title: t('Network'),
+        title: t('Networks'),
         key: 'network',
         component: Network,
       });

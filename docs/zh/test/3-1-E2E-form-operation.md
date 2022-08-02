@@ -260,7 +260,7 @@
       // check attach successful
       cy.tableSearchText(name)
         .goToDetail()
-        .clickDetailTab('Volume')
+        .clickDetailTab('Volumes')
         .tableSearchText(volumeName)
         .checkColumnValue(2, 'In-use');
     });
@@ -490,7 +490,7 @@
 
       cy.tableSearchText(name)
         .goToDetail()
-        .clickDetailTab('Sub User', 'userGroup');
+        .clickDetailTab('Sub Users', 'userGroup');
     });
     ```
 

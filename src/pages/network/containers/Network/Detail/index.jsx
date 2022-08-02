@@ -133,8 +133,8 @@ export class NetworkDetail extends Base {
   get tabs() {
     const tabs = [
       {
-        title: t('BaseDetail'),
-        key: 'BaseDetail',
+        title: t('Detail'),
+        key: 'detail',
         component: Detail,
       },
       {

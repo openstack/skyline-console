@@ -9,7 +9,7 @@ export class ActionLog extends Base {
   }
 
   get name() {
-    return t('Action Log');
+    return t('Action Logs');
   }
 
   get rowKey() {

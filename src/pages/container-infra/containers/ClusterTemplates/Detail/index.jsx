@@ -59,7 +59,7 @@ export class ClusterTemplateDetail extends Base {
   get tabs() {
     return [
       {
-        title: t('General Info'),
+        title: t('Detail'),
         key: 'general_info',
         component: BaseDetail,
       },

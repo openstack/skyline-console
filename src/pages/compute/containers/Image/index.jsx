@@ -20,24 +20,24 @@ export class TabImage extends Base {
   get tabs() {
     const tabs = [
       {
-        title: t('Current Project Image'),
+        title: t('Current Project Images'),
         key: 'project',
         component: Image,
       },
       {
-        title: t('Public Image'),
+        title: t('Public Images'),
         key: 'public',
         component: Image,
       },
       {
-        title: t('Shared Image'),
+        title: t('Shared Images'),
         key: 'shared',
         component: Image,
       },
     ];
     if (this.hasAdminRole) {
       tabs.push({
-        title: t('All Image'),
+        title: t('All Images'),
         key: 'all',
         component: Image,
       });

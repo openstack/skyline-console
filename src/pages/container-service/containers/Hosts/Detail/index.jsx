@@ -60,8 +60,8 @@ export class HostsDetail extends Base {
   get tabs() {
     return [
       {
-        title: t('BaseDetail'),
-        key: 'BaseDetail',
+        title: t('Detail'),
+        key: 'detail',
         component: BaseDetail,
       },
     ];

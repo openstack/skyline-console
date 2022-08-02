@@ -49,7 +49,7 @@ const renderMenu = (t) => {
       children: [
         {
           path: '/compute/instance-admin',
-          name: t('Instance'),
+          name: t('Instances'),
           key: 'instanceAdmin',
           level: 1,
           children: [
@@ -64,7 +64,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/compute/instance-snapshot-admin',
-          name: t('Instance Snapshot'),
+          name: t('Instance Snapshots'),
           key: 'instanceSnapshotAdmin',
           level: 1,
           children: [
@@ -79,7 +79,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/compute/flavor-admin',
-          name: t('Flavor'),
+          name: t('Flavors'),
           key: 'flavorAdmin',
           level: 1,
           children: [
@@ -100,7 +100,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/compute/server-group-admin',
-          name: t('Server Group'),
+          name: t('Server Groups'),
           key: 'serverGroupAdmin',
           level: 1,
           children: [
@@ -115,7 +115,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/compute/image-admin',
-          name: t('Image'),
+          name: t('Images'),
           key: 'imageAdmin',
           level: 1,
           children: [
@@ -158,7 +158,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/compute/baremetal-node-admin',
-          name: t('Bare Metal Setting'),
+          name: t('Bare Metal Nodes'),
           key: 'baremetalNodeAdmin',
           endpoints: 'ironic',
           level: 1,
@@ -178,7 +178,7 @@ const renderMenu = (t) => {
             },
             {
               path: /^\/compute\/baremetal-node-admin\/edit\/.[^/]+$/,
-              name: t('Bare Metal Node Edit'),
+              name: t('Edit Bare Metal Node'),
               key: 'baremetalNodeEditAdmin',
               routePath: '/compute/baremetal-node-admin/detail/:id',
               level: 2,
@@ -195,7 +195,7 @@ const renderMenu = (t) => {
       children: [
         {
           path: '/storage/volume-admin',
-          name: t('Volume'),
+          name: t('Volumes'),
           key: 'volumeAdmin',
           level: 1,
           endpoints: 'cinder',
@@ -227,7 +227,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/storage/snapshot-admin',
-          name: t('Volume Snapshot'),
+          name: t('Volume Snapshots'),
           key: 'snapshotAdmin',
           level: 1,
           endpoints: 'cinder',
@@ -243,7 +243,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/storage/volume-type-admin',
-          name: t('Volume Type'),
+          name: t('Volume Types'),
           key: 'volumeTypeAdmin',
           level: 1,
           endpoints: 'cinder',
@@ -266,7 +266,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/storage/storage-admin',
-          name: t('Storage Backend'),
+          name: t('Storage Backends'),
           key: 'storageBackendAdmin',
           level: 1,
           endpoints: 'cinder',
@@ -297,7 +297,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/network/virtual_adapter_admin',
-          name: t('Virtual Adapter'),
+          name: t('Virtual Adapters'),
           key: 'virtualAdapterAdmin',
           level: 1,
           children: [
@@ -312,7 +312,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/network/qos-policy-admin',
-          name: t('QoS Policy'),
+          name: t('QoS Policies'),
           key: 'networkQosAdmin',
           endpoints: 'neutron_qos',
           level: 1,
@@ -389,7 +389,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/network/vpn-admin',
-          name: t('VPN'),
+          name: t('VPNs'),
           key: 'vpnAdmin',
           endpoints: 'neutron_vpn',
           level: 1,
@@ -429,7 +429,7 @@ const renderMenu = (t) => {
       children: [
         {
           path: '/share/share-admin',
-          name: t('Share'),
+          name: t('Shares'),
           key: 'shareAdmin',
           level: 1,
           children: [
@@ -444,7 +444,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/share/share-type-admin',
-          name: t('Share Type'),
+          name: t('Share Types'),
           key: 'shareTypeAdmin',
           level: 1,
           children: [
@@ -459,7 +459,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/share/share-group-type-admin',
-          name: t('Share Group Type'),
+          name: t('Share Group Types'),
           key: 'shareGroupTypeAdmin',
           level: 1,
           children: [
@@ -474,7 +474,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/share/share-network-admin',
-          name: t('Share Network'),
+          name: t('Share Networks'),
           key: 'shareNetworkAdmin',
           level: 1,
           children: [
@@ -489,7 +489,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/share/share-server-admin',
-          name: t('Share Server'),
+          name: t('Share Servers'),
           key: 'shareServerAdmin',
           level: 1,
           children: [
@@ -504,7 +504,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/share/share-instance-admin',
-          name: t('Share Instance'),
+          name: t('Share Instances'),
           key: 'shareInstanceAdmin',
           level: 1,
           children: [
@@ -519,7 +519,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/share/share-group-admin',
-          name: t('Share Group'),
+          name: t('Share Groups'),
           key: 'shareGroupAdmin',
           level: 1,
           children: [
@@ -725,7 +725,7 @@ const renderMenu = (t) => {
       children: [
         {
           path: '/database/instances-admin',
-          name: t('Database Instance'),
+          name: t('Database Instances'),
           key: 'databaseInstancesAdmin',
           level: 1,
           children: [
@@ -756,7 +756,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/monitor-center/physical-node-admin',
-          name: t('Physical Node'),
+          name: t('Physical Nodes'),
           key: 'monitorPhysicalNodeAdmin',
           level: 1,
           children: [],
@@ -764,7 +764,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/monitor-center/storage-cluster-admin',
-          name: t('Storage Cluster'),
+          name: t('Storage Clusters'),
           key: 'monitorStorageClusterAdmin',
           level: 1,
           children: [],
@@ -772,7 +772,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/monitor-center/openstack-service-admin',
-          name: t('OpenStack Service'),
+          name: t('OpenStack Services'),
           key: 'monitorOpenstackServiceAdmin',
           level: 1,
           children: [],
@@ -780,7 +780,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/monitor-center/other-service-admin',
-          name: t('Other Service'),
+          name: t('Other Services'),
           key: 'monitorOtherServiceAdmin',
           level: 1,
           children: [],
@@ -863,7 +863,7 @@ const renderMenu = (t) => {
           children: [
             {
               path: /^\/container\/hosts-admin\/detail\/.[^/]+$/,
-              name: t('Hosts Detail'),
+              name: t('Host Detail'),
               key: 'zuHostsDetailAdmin',
               level: 2,
               routePath: '/container/hosts-admin/detail/:id',

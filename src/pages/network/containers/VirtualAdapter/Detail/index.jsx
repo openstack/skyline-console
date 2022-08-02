@@ -90,8 +90,8 @@ export class VirtualAdapterDetail extends Base {
   get tabs() {
     const tabs = [
       {
-        title: t('BaseDetail'),
-        key: 'BaseDetail',
+        title: t('Detail'),
+        key: 'detail',
         component: BaseDetail,
       },
       {
@@ -105,7 +105,7 @@ export class VirtualAdapterDetail extends Base {
         component: SecurityGroups,
       },
       {
-        title: t('Allowed Address Pair'),
+        title: t('Allowed Address Pairs'),
         key: 'allowed_address_pair',
         component: AllowedAddressPair,
       },

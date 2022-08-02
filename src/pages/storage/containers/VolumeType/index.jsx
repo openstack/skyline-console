@@ -21,12 +21,12 @@ export class VolumeTypaAll extends Base {
   get tabs() {
     const tabs = [
       {
-        title: t('Volume Type'),
+        title: t('Volume Types'),
         key: 'volume-type',
         component: VolumeType,
       },
       {
-        title: t('QoS'),
+        title: t('QoS Specs'),
         key: 'qos',
         component: QosSpec,
       },

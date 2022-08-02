@@ -27,7 +27,7 @@ describe('The Volume Type Page', () => {
   });
 
   it('successfully prepare resource', () => {
-    cy.clickTab('QoS')
+    cy.clickTab('QoS Specs')
       .clickHeaderButton(1)
       .formInput('name', qosName)
       .formSelect('consumer')
@@ -51,7 +51,7 @@ describe('The Volume Type Page', () => {
   it('successfully create extra specs', () => {
     cy.tableSearchText(name)
       .goToDetail()
-      .clickDetailTab('Extra Spec')
+      .clickDetailTab('Extra Specs')
       .wait(5000)
       .clickHeaderButton(1)
       .formInput('keyname', extraKeyName)
@@ -62,7 +62,7 @@ describe('The Volume Type Page', () => {
   it('successfully edit extra specs', () => {
     cy.tableSearchText(name)
       .goToDetail()
-      .clickDetailTab('Extra Spec')
+      .clickDetailTab('Extra Specs')
       .wait(5000)
       .tableSearchText(extraKeyName)
       .clickActionButtonByTitle('Edit')
@@ -73,7 +73,7 @@ describe('The Volume Type Page', () => {
   it('successfully delete extra specs', () => {
     cy.tableSearchText(name)
       .goToDetail()
-      .clickDetailTab('Extra Spec')
+      .clickDetailTab('Extra Specs')
       .wait(5000)
       .tableSearchText(extraKeyName)
       .clickFirstActionButton()

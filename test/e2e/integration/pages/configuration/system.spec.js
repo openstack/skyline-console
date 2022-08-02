@@ -101,14 +101,14 @@ describe('The System Info Page', () => {
     cy.clickTab(NeutronAgentsTab)
       .tableSearchText('l3')
       .goToDetail(0)
-      .clickDetailTab('Router', 'router');
+      .clickDetailTab('Routers', 'router');
   });
 
   it('successfully neutron agent l3 remove router', () => {
     cy.clickTab(NeutronAgentsTab)
       .tableSearchText('l3')
       .goToDetail(0)
-      .clickDetailTab('Router')
+      .clickDetailTab('Routers')
       .tableSearchText(routerName)
       .clickActionButtonByTitle('Remove')
       .clickConfirmActionSubmitButton(10000);
@@ -129,14 +129,14 @@ describe('The System Info Page', () => {
     cy.clickTab(NeutronAgentsTab)
       .tableSearchText('dhcp')
       .goToDetail(0)
-      .clickDetailTab('Network', 'network');
+      .clickDetailTab('Networks', 'network');
   });
 
   it('successfully neutron agent dhcp remove network', () => {
     cy.clickTab(NeutronAgentsTab)
       .tableSearchText('dhcp')
       .goToDetail(0)
-      .clickDetailTab('Network')
+      .clickDetailTab('Networks')
       .tableSearchText(networkName)
       .clickActionButtonByTitle('Remove')
       .clickConfirmActionSubmitButton();
@@ -146,7 +146,7 @@ describe('The System Info Page', () => {
     cy.clickTab(NeutronAgentsTab)
       .tableSearchText('dhcp')
       .goToDetail(0)
-      .clickDetailTab('Network')
+      .clickDetailTab('Networks')
       .clickHeaderButton(1)
       .wait(5000)
       .formTableSelectBySearch('network', networkName)

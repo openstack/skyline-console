@@ -68,8 +68,8 @@ describe('The User Page', () => {
   it('successfully detail', () => {
     cy.tableSearchText(name)
       .goToDetail()
-      .clickDetailTab('Subordinate User Group', 'userGroup')
-      .clickDetailTab('Subordinate Project', 'user');
+      .clickDetailTab('Subordinate User Groups', 'userGroup')
+      .clickDetailTab('Subordinate Projects', 'user');
     cy.goBackToList(listUrl);
   });
 

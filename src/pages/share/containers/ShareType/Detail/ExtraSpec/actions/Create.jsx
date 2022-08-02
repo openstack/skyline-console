@@ -19,10 +19,10 @@ import globalExtraSpecStore from 'stores/manila/extra-spec';
 export class Create extends ModalAction {
   static id = 'create';
 
-  static title = t('Create Extra Specs');
+  static title = t('Create Extra Spec');
 
   get name() {
-    return t('Create Extra Specs');
+    return t('Create Extra Spec');
   }
 
   static policy = 'share_types_extra_spec:create';

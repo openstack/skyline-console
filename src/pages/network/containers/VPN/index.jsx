@@ -37,22 +37,22 @@ export class VPN extends Base {
   get tabs() {
     return [
       {
-        title: t('VPN Gateway'),
+        title: t('VPN Gateways'),
         key: 'vpn_gateway',
         component: VPNGateway,
       },
       {
-        title: t('VPN EndPoint Group'),
+        title: t('VPN EndPoint Groups'),
         key: 'vpn_endpoint_groups',
         component: EndPointGroup,
       },
       {
-        title: t('IKE Policy'),
+        title: t('IKE Policies'),
         key: 'ike_policy',
         component: IKEPolicy,
       },
       {
-        title: t('IPsec Policy'),
+        title: t('IPsec Policies'),
         key: 'ipsec_policy',
         component: IPsecPolicy,
       },

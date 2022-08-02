@@ -54,7 +54,7 @@ export class Detail extends Base {
         valueRender: 'yesNo',
       },
       {
-        title: t('QoS Specs ID'),
+        title: t('QoS Spec ID'),
         dataIndex: 'qos_specs_id',
         valueRender: 'noValue',
       },
@@ -65,7 +65,7 @@ export class Detail extends Base {
     const { encryption } = this.detailData;
     const tabs = [
       {
-        title: t('Extra Spec'),
+        title: t('Extra Specs'),
         key: 'ExtraSpec',
         component: ExtraSpec,
       },

@@ -50,7 +50,7 @@ describe('The Flavor Page', () => {
       .checkTableFirstRow(name)
       .goToDetail()
       .checkDetailName(name)
-      .clickDetailTab('Instance', 'members');
+      .clickDetailTab('Instances', 'members');
     cy.goBackToList(listUrl);
   });
 

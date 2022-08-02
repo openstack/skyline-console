@@ -56,7 +56,7 @@ export class AllowedAddressPair extends Base {
   }
 
   get name() {
-    return t('Allowed Address Pair');
+    return t('Allowed Address Pairs');
   }
 
   get actionConfigs() {

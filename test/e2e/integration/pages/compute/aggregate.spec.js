@@ -77,6 +77,6 @@ describe('The Aggregate Page', () => {
   });
 
   it('successfully availability zone', () => {
-    cy.clickTab('Availability Zone', 'availabilityZone');
+    cy.clickTab('Availability Zones', 'availabilityZone');
   });
 });

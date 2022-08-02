@@ -71,7 +71,7 @@ onlyOn(backupServiceEnabled, () => {
       cy.visitPage(volumeListUrl)
         .tableSearchText(volumeName)
         .goToDetail()
-        .clickDetailTab('Volume Backup', 'backup')
+        .clickDetailTab('Volume Backups', 'backup')
         .tableSearchText(name)
         .goToDetail();
     });

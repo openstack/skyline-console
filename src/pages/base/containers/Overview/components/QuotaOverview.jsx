@@ -30,7 +30,7 @@ const colors = {
 
 const keyPairTitle = (
   <span>
-    {t('Key Pair')}
+    {t('Key Pairs')}
     <Tooltip title={t('The number of allowed key pairs for each user.')}>
       <QuestionCircleOutlined style={{ marginLeft: 4 }} />
     </Tooltip>
@@ -46,7 +46,7 @@ export const quotaCardList = [
       { text: t('vCPUs'), key: 'cores' },
       { text: t('Memory (GiB)'), key: 'ram' },
       { text: keyPairTitle, key: 'key_pairs' },
-      { text: t('Server Group'), key: 'server_groups' },
+      { text: t('Server Groups'), key: 'server_groups' },
     ],
   },
   {
@@ -79,13 +79,13 @@ export const quotaCardList = [
     text: t('Network'),
     type: 'networks',
     value: [
-      { text: t('Router'), key: 'router' },
-      { text: t('Network'), key: 'network' },
-      { text: t('Subnet'), key: 'subnet' },
-      { text: t('Floating IP'), key: 'floatingip' },
-      { text: t('Port'), key: 'port' },
-      { text: t('Security Group'), key: 'security_group' },
-      { text: t('Security Group Rule'), key: 'security_group_rule' },
+      { text: t('Routers'), key: 'router' },
+      { text: t('Networks'), key: 'network' },
+      { text: t('Subnets'), key: 'subnet' },
+      { text: t('Floating IPs'), key: 'floatingip' },
+      { text: t('Ports'), key: 'port' },
+      { text: t('Security Groups'), key: 'security_group' },
+      { text: t('Security Group Rules'), key: 'security_group_rule' },
     ],
   },
 ];
@@ -94,13 +94,13 @@ export const shareQuotaCard = {
   text: t('Share'),
   type: 'share',
   value: [
-    { text: t('Share'), key: 'shares' },
+    { text: t('Shares'), key: 'shares' },
     {
       text: t('Share Gigabytes(GiB)'),
       key: 'share_gigabytes',
     },
-    { text: t('Share Network'), key: 'share_networks' },
-    { text: t('Share Group'), key: 'share_groups' },
+    { text: t('Share Networks'), key: 'share_networks' },
+    { text: t('Share Groups'), key: 'share_groups' },
   ],
 };
 
@@ -112,7 +112,7 @@ export const zunQuotaCard = {
       text: t('Containers'),
       key: 'zun_containers',
     },
-    { text: t('CPU'), key: 'zun_cpu' },
+    { text: t('CPUs'), key: 'zun_cpu' },
     { text: t('Memory (MiB)'), key: 'zun_memory' },
     { text: t('Disk (GiB)'), key: 'zun_disk' },
   ],

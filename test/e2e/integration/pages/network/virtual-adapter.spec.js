@@ -66,15 +66,15 @@ describe('The Virtual Adapter Page', () => {
       .checkDetailName(name)
       .clickDetailTab('Fixed IPs', 'ips')
       .clickDetailTab('Security Groups', 'groups')
-      .clickDetailTab('Allowed Address Pair', 'allowed_address_pair')
-      .clickDetailTab('BaseDetail', 'BaseDetail');
+      .clickDetailTab('Allowed Address Pairs', 'allowed_address_pair')
+      .clickDetailTab('Detail', 'detail');
     cy.goBackToList(listUrl);
   });
 
   it('successfully create allowed address pair', () => {
     cy.tableSearchText(name)
       .goToDetail()
-      .clickDetailTab('Allowed Address Pair')
+      .clickDetailTab('Allowed Address Pairs')
       .clickHeaderButton(1)
       .formSelect('ip_version')
       .formInput('ip_address', '10.10.10.1/24')
@@ -86,7 +86,7 @@ describe('The Virtual Adapter Page', () => {
   it('successfully delete allowed address pair', () => {
     cy.tableSearchText(name)
       .goToDetail()
-      .clickDetailTab('Allowed Address Pair')
+      .clickDetailTab('Allowed Address Pairs')
       .clickConfirmActionInFirst();
   });
 

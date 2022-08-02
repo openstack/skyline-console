@@ -70,7 +70,7 @@ export class Detail extends Base {
         component: BaseDetail,
       },
       {
-        title: t('Share'),
+        title: t('Shares'),
         key: 'share',
         component: Share,
       },

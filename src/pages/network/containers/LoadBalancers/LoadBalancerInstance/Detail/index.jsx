@@ -92,7 +92,7 @@ export class LoadBalancerDetail extends Base {
   get tabs() {
     const tabs = [
       {
-        title: t('Listener'),
+        title: t('Listeners'),
         key: 'listener',
         component: Listeners,
       },
