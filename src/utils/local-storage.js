@@ -44,3 +44,16 @@ export const setLocalStorageItem = (
     );
   } catch (e) {}
 };
+
+export const clearLocalStorage = (expectKeys = []) => {
+  if (!expectKeys.length) {
+    localStorage.clear();
+    return;
+  }
+  const keys = Object.keys(localStorage);
+  keys.forEach((key) => {
+    if (!expectKeys.includes(key)) {
+      localStorage.removeItem(key);
+    }
+  });
+};

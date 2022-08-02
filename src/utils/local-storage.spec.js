@@ -12,7 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { getLocalStorageItem, setLocalStorageItem } from './local-storage';
+import {
+  getLocalStorageItem,
+  setLocalStorageItem,
+  clearLocalStorage,
+} from './local-storage';
 
 describe('test localstorage', () => {
   it('getLocalStorageItem', () => {
@@ -39,6 +43,32 @@ describe('test localstorage', () => {
     expect(getLocalStorageItem('key')).toBe('value');
     setLocalStorageItem('key', 'value', -1);
     expect(getLocalStorageItem('key')).toBe(null);
+    localStorage.clear();
+  });
+
+  it('clearLocalStorage - clear all', () => {
+    expect(getLocalStorageItem('key1')).toBe(null);
+    expect(getLocalStorageItem('key2')).toBe(null);
+    setLocalStorageItem('key1', 'value1');
+    setLocalStorageItem('key2', 'value2');
+    expect(getLocalStorageItem('key1')).toBe('value1');
+    expect(getLocalStorageItem('key2')).toBe('value2');
+    clearLocalStorage();
+    expect(getLocalStorageItem('key1')).toBe(null);
+    expect(getLocalStorageItem('key2')).toBe(null);
+    localStorage.clear();
+  });
+
+  it('clearLocalStorage - clear with expect', () => {
+    expect(getLocalStorageItem('key1')).toBe(null);
+    expect(getLocalStorageItem('key2')).toBe(null);
+    setLocalStorageItem('key1', 'value1');
+    setLocalStorageItem('key2', 'value2');
+    expect(getLocalStorageItem('key1')).toBe('value1');
+    expect(getLocalStorageItem('key2')).toBe('value2');
+    clearLocalStorage(['key1']);
+    expect(getLocalStorageItem('key1')).toBe('value1');
+    expect(getLocalStorageItem('key2')).toBe(null);
     localStorage.clear();
   });
 });
