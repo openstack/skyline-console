@@ -48,6 +48,7 @@ export class StepCreate extends StepAction {
   init() {
     this.store = globalServerStore;
     this.projectStore = globalProjectStore;
+    this.state.quotaLoading = true;
     this.getQuota();
     this.status = 'success';
     this.errorMsg = '';
@@ -64,10 +65,16 @@ export class StepCreate extends StepAction {
   }
 
   async getQuota() {
+    this.setState({
+      quotaLoading: true,
+    });
     await Promise.all([
       this.projectStore.fetchProjectNovaQuota(),
       this.projectStore.fetchProjectCinderQuota(),
     ]);
+    this.setState({
+      quotaLoading: false,
+    });
     this.onCountChange(1);
   }
 
@@ -160,20 +167,21 @@ export class StepCreate extends StepAction {
   }
 
   get quotaInfo() {
+    const { quotaLoading } = this.state;
+    if (quotaLoading) {
+      return [];
+    }
     const {
       instances = {},
       cores = {},
       ram = {},
     } = toJS(this.projectStore.novaQuota) || {};
-    const { limit } = instances || {};
-    if (!limit) {
-      return [];
-    }
     const { data = {} } = this.state;
     const { count = 1 } = data;
+    const quotaError = this.checkQuotaInput();
     const instanceQuotaInfo = {
       ...instances,
-      add: count,
+      add: quotaError ? 0 : count,
       name: 'instance',
       title: t('Instance'),
       // type: 'line',
@@ -182,7 +190,7 @@ export class StepCreate extends StepAction {
     const { newCPU, newRam } = this.getFlavorInput();
     const cpuQuotaInfo = {
       ...cores,
-      add: newCPU,
+      add: quotaError ? 0 : newCPU,
       name: 'cpu',
       title: t('CPU'),
       type: 'line',
@@ -190,7 +198,7 @@ export class StepCreate extends StepAction {
 
     const ramQuotaInfo = {
       ...ram,
-      add: newRam,
+      add: quotaError ? 0 : newRam,
       name: 'ram',
       title: t('Memory (GiB)'),
       type: 'line',
@@ -200,14 +208,14 @@ export class StepCreate extends StepAction {
     const { totalNewCount, totalNewSize } = this.getVolumeInputMap();
     const volumeQuotaInfo = {
       ...volumeQuota.volumes,
-      add: totalNewCount,
+      add: quotaError ? 0 : totalNewCount,
       name: 'volume',
       title: t('Volume'),
       type: 'line',
     };
     const volumeSizeQuotaInfo = {
       ...volumeQuota.gigabytes,
-      add: totalNewSize,
+      add: quotaError ? 0 : totalNewSize,
       name: 'volumeSize',
       title: t('Volume Size'),
       type: 'line',
@@ -221,7 +229,12 @@ export class StepCreate extends StepAction {
       volumeSizeQuotaInfo,
     ];
     if (serverGroupQuota) {
-      quotaInfo.push(serverGroupQuota);
+      const { add, ...rest } = serverGroupQuota;
+      const quota = {
+        ...rest,
+        add: quotaError ? 0 : add,
+      };
+      quotaInfo.push(quota);
     }
     return quotaInfo;
   }
@@ -447,24 +460,45 @@ export class StepCreate extends StepAction {
     return { marginTop: 8, marginBottom: 8, marginLeft: 10, maxWidth: 600 };
   }
 
-  renderBadge() {
+  checkInstanceQuota() {
+    const { quotaLoading } = this.state;
+    if (quotaLoading) {
+      return '';
+    }
+    const { instances = {} } = this.projectStore.novaQuota || {};
+    if (this.instanceQuota === 0) {
+      return this.getQuotaMessage(1, instances, t('Instance'));
+    }
+    return '';
+  }
+
+  checkQuotaInput() {
+    const instanceMsg = this.checkInstanceQuota();
     const flavorMsg = this.checkFlavorQuota();
     const volumeMsg = this.checkVolumeQuota();
     const serverGroupMsg = this.checkSeverGroupQuota();
-    if (!flavorMsg && !volumeMsg && !serverGroupMsg) {
+    const error = instanceMsg || flavorMsg || volumeMsg || serverGroupMsg;
+    if (!error) {
       this.status = 'success';
       this.errorMsg = '';
-      return null;
+      return '';
     }
     this.status = 'error';
-    const msg = flavorMsg || volumeMsg || serverGroupMsg;
-    if (this.errorMsg !== msg) {
-      $message.error(msg);
+    if (this.errorMsg !== error) {
+      $message.error(error);
     }
-    this.errorMsg = msg;
+    this.errorMsg = error;
+    return error;
+  }
+
+  renderBadge() {
+    const error = this.checkQuotaInput();
+    if (this.status === 'success') {
+      return null;
+    }
     return (
       <div style={this.badgeStyle}>
-        <Badge status="error" text={msg} />
+        <Badge status="error" text={error} />
       </div>
     );
   }
