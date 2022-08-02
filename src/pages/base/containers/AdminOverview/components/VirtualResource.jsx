@@ -21,12 +21,12 @@ export const resourceCircle = [
   {
     resource: 'vcpus',
     used: 'vcpus_used',
-    label: t('CPU usage Num (Core)'),
+    label: t('CPU Usages (Core)'),
   },
   {
     resource: 'memory_mb',
     used: 'memory_mb_used',
-    label: t('Memory usage Num (GiB)'),
+    label: t('Memory Usages (GiB)'),
   },
 ];
 
@@ -88,7 +88,7 @@ export class ResourceCircle extends Component {
                 backgroundColor: circleColor,
               }}
             />
-            {`${t('Used Resource')}: ${used}`}
+            {`${t('Used')}: ${used}`}
           </Col>
           <Col span={12} style={{ textAlign: 'left', paddingLeft: 20 }}>
             <Avatar
@@ -113,7 +113,7 @@ export class ResourceCircle extends Component {
       <Card
         loading={isLoading}
         className={styles.chart}
-        title={t('Virtual Resource Num')}
+        title={t('Virtual Resources Used')}
         bordered={false}
       >
         <Descriptions column={1}>

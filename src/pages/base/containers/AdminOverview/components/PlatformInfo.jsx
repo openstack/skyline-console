@@ -27,21 +27,21 @@ import styles from '../style.less';
 export const actions = [
   {
     key: 'projectNum',
-    label: t('Project Num'),
+    label: t('Projects'),
     avatar: <AppstoreAddOutlined />,
     color: '#000000',
     to: '/identity/project-admin',
   },
   {
     key: 'userNum',
-    label: t('User Num'),
+    label: t('Users'),
     avatar: <UserOutlined />,
     color: '#000000',
     to: '/identity/user-admin',
   },
   {
     key: 'nodeNum',
-    label: t('Node Num'),
+    label: t('Nodes'),
     avatar: <DatabaseOutlined />,
     color: '#000000',
     to: '/compute/hypervisors-admin?tab=ComputeHost',
