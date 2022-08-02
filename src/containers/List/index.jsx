@@ -401,7 +401,8 @@ export default class BaseList extends React.Component {
   }
 
   get pageSizeOptions() {
-    return undefined;
+    // should be array of numbers
+    return [10, 20, 50, 100];
   }
 
   get hideTotal() {
@@ -483,7 +484,7 @@ export default class BaseList extends React.Component {
     const pagination = {
       total,
       current: Number(page),
-      pageSize: limit || 10,
+      pageSize: this.getTablePageSize(limit),
       // eslint-disable-next-line no-shadow
       showTotal: (total) => t('Total {total} items', { total }),
       showSizeChanger: true,
@@ -607,6 +608,10 @@ export default class BaseList extends React.Component {
       newParams[this.allProjectsKey] = true;
     }
     if (this.isFilterByBackend) {
+      const { limit } = newParams;
+      if (limit) {
+        newParams.limit = this.getTablePageSize(limit);
+      }
       this.fetchListWithTry(() =>
         this.fetchDataByPage(this.updateFetchParamsByPage(newParams))
       );
@@ -1051,6 +1056,12 @@ export default class BaseList extends React.Component {
   };
 
   onCloseSuccessHint = () => {};
+
+  getTablePageSize = (limit) => {
+    const defaultOptions = [10, 20, 50, 100];
+    const options = this.pageSizeOptions || defaultOptions;
+    return options.includes(limit) ? limit : options[0] || defaultOptions[0];
+  };
 
   debounceSetTableHeight() {
     return debounce(this.setTableHeight, 1000);
