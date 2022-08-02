@@ -17,7 +17,7 @@ import { RouterStore } from 'mobx-react-router';
 import { parse } from 'qs';
 import client from 'client';
 import { getQueryString } from 'utils/index';
-import { setLocalStorageItem } from 'utils/local-storage';
+import { setLocalStorageItem, clearLocalStorage } from 'utils/local-storage';
 import { isEmpty, values } from 'lodash';
 
 export class RootStore {
@@ -258,8 +258,8 @@ export class RootStore {
     stores.forEach((store) => {
       store.clearData();
     });
-    // clear keystone_token in the local storage
-    localStorage.clear();
+    // clear all local storage expect language
+    clearLocalStorage(['lang']);
   }
 }
 
