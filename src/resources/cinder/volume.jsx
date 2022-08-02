@@ -401,6 +401,11 @@ export const getQuota = (cinderQuota) => {
 };
 
 const getErrorMessage = ({ name, left, input }) => {
+  if (left === 0) {
+    return t('Quota: Insufficient { name } quota to create resources.', {
+      name,
+    });
+  }
   const error = t(
     'Quota: Insufficient { name } quota to create resources, please adjust resource quantity or quota(left { left }, input { input }).',
     {
@@ -444,7 +449,7 @@ export const getAdd = (cinderQuota, withCountCheck = true) => {
     });
     return { ...zero, error };
   }
-  if (sizeLimit !== -1 && sizeLeft < totalSize) {
+  if ((sizeLimit !== -1 && sizeLeft < totalSize) || sizeLeft === 0) {
     const error = getErrorMessage({
       name: t('gigabytes'),
       left: sizeLeft,
@@ -463,7 +468,10 @@ export const getAdd = (cinderQuota, withCountCheck = true) => {
     });
     return { ...zero, error };
   }
-  if (typeSizeLimit !== -1 && typeSizeLeft < totalSize) {
+  if (
+    (typeSizeLimit !== -1 && typeSizeLeft < totalSize) ||
+    typeSizeLeft === 0
+  ) {
     const error = getErrorMessage({
       name: t('{name} type gigabytes', { name: type }),
       left: typeSizeLeft,

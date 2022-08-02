@@ -13,7 +13,11 @@
 // limitations under the License.
 
 import { onlyOn } from '@cypress/skip-test';
-import { volumeListUrl, volumeTypeListUrl } from '../../../support/constants';
+import {
+  volumeListUrl,
+  volumeTypeListUrl,
+  imageListUrl,
+} from '../../../support/constants';
 
 describe('The Volume Page', () => {
   const listUrl = volumeListUrl;
@@ -157,6 +161,9 @@ describe('The Volume Page', () => {
       .formInput('image_name', imageName)
       .clickModalActionSubmitButton();
     cy.tableSearchText(name).waitStatusActiveByRefresh();
+    cy.visit(imageListUrl)
+      .tableSearchText(imageName)
+      .checkTableFirstRow(imageName);
   });
 
   it('successfully extend volume', () => {
