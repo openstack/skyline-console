@@ -20,7 +20,7 @@ import { isEmpty } from 'lodash';
 
 export class BaseDetail extends Base {
   get leftCards() {
-    const cards = [this.baseInfoCard, this.miscellaneousCard];
+    const cards = [this.baseInfoCard, this.statsCard, this.miscellaneousCard];
     return cards;
   }
 
@@ -167,6 +167,43 @@ export class BaseDetail extends Base {
     return {
       title: t('Spec'),
       labelCol: 4,
+      options,
+    };
+  }
+
+  get statsCard() {
+    const options = [
+      {
+        label: t('BLOCK I/O(B)'),
+        dataIndex: 'BLOCK I/O(B)',
+      },
+      {
+        label: t('NET I/O(B)'),
+        dataIndex: 'NET I/O(B)',
+      },
+      {
+        label: t('CPU %'),
+        dataIndex: 'CPU %',
+        render: (value = 0) => value.toFixed(4),
+      },
+      {
+        label: t('MEM LIMIT(MiB)'),
+        dataIndex: 'MEM LIMIT(MiB)',
+      },
+      {
+        label: t('MEM USAGE(MiB)'),
+        dataIndex: 'MEM USAGE(MiB)',
+        render: (value = 0) => value.toFixed(4),
+      },
+      {
+        label: t('MEM %'),
+        dataIndex: 'MEM %',
+        render: (value = 0) => value.toFixed(4),
+      },
+    ];
+
+    return {
+      title: t('Stats Information'),
       options,
     };
   }

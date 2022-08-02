@@ -27,12 +27,10 @@ export class ZunClient extends Base {
   get resources() {
     return [
       {
-        name: 'capsules',
         key: 'capsules',
         responseKey: 'capsule',
       },
       {
-        name: 'containers',
         key: 'containers',
         responseKey: 'container',
         extendOperations: [
@@ -69,14 +67,17 @@ export class ZunClient extends Base {
             method: 'post',
           },
         ],
+        subResources: [
+          {
+            key: 'stats',
+          },
+        ],
       },
       {
-        name: 'hosts',
         key: 'hosts',
         responseKey: 'host',
       },
       {
-        name: 'quotas',
         key: 'quotas',
       },
     ];
