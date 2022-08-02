@@ -75,6 +75,12 @@ export class ContainersStore extends Base {
   async execute(id, data) {
     return this.client.execute(id, data);
   }
+
+  async detailDidFetch(item) {
+    const { uuid } = item;
+    const stats = (await this.client.stats.list(uuid)) || {};
+    return { ...item, ...stats };
+  }
 }
 
 const globalContainersStore = new ContainersStore();
