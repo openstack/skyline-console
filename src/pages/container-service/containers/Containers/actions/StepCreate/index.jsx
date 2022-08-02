@@ -110,9 +110,18 @@ export class StepCreate extends StepAction {
       title: t('Containers'),
     };
 
+    const { left: cpuLeft = 0 } = cpu;
+    const { left: memoryLeft = 0 } = memory;
+    const { left: diskLeft = 0 } = disk;
+    const canAdd =
+      left &&
+      (cpuLeft === -1 || cpuCount <= cpuLeft) &&
+      (memoryLeft === -1 || memoryCount <= memoryLeft) &&
+      (diskLeft === -1 || diskCount <= diskLeft);
+
     const cpuQuotaInfo = {
       ...cpu,
-      add: cpuCount,
+      add: canAdd ? cpuCount : 0,
       name: 'cpu',
       title: t('CPU'),
       type: 'line',
@@ -120,7 +129,7 @@ export class StepCreate extends StepAction {
 
     const memoryQuotaInfo = {
       ...memory,
-      add: memoryCount,
+      add: canAdd ? memoryCount : 0,
       name: 'memory',
       title: t('Memory (MiB)'),
       type: 'line',
@@ -128,7 +137,7 @@ export class StepCreate extends StepAction {
 
     const diskQuotaInfo = {
       ...disk,
-      add: diskCount,
+      add: canAdd ? diskCount : 0,
       name: 'disk',
       title: t('Disk (GiB)'),
       type: 'line',
