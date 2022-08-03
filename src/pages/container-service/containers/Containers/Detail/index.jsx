@@ -16,6 +16,7 @@ import globalContainersStore from 'src/stores/zun/containers';
 import { containerStatus } from 'resources/zun/container';
 import actionConfigs from '../actions';
 import BaseDetail from './BaseDetail';
+import ActionLogs from './ActionLogs';
 
 export class ContainerDetail extends Base {
   init() {
@@ -61,6 +62,11 @@ export class ContainerDetail extends Base {
         title: t('Detail'),
         key: 'general_info',
         component: BaseDetail,
+      },
+      {
+        title: t('Action Logs'),
+        key: 'action_logs',
+        component: ActionLogs,
       },
     ];
   }

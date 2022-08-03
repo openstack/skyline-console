@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import ImageType from 'components/ImageType';
-import { getLocalTimeStr } from 'utils/time';
-import { Table, Popover, Tag, Tooltip } from 'antd';
-import globalActionLogStore from 'stores/nova/action-log';
+import { Tag, Tooltip } from 'antd';
+import { ActionLogStore } from 'stores/nova/action-log';
 import { ironicOriginEndpoint } from 'client/client/constants';
 import { projectTagsColors } from 'src/utils/constants';
-
+import PopActionEvent from 'src/components/Popover/PopActionEvent';
 import lockSvg from 'asset/image/lock.svg';
 import unlockSvg from 'asset/image/unlock.svg';
 import { isEmpty } from 'lodash';
@@ -506,64 +505,6 @@ export const actionEvent = {
   compute_reboot_instance: t('Compute Reboot Instance'),
 };
 
-function PopUpContent({ id, requestId }) {
-  const [event, setEvent] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    let timeout = null;
-    (async function () {
-      setLoading(true);
-      const cb = await globalActionLogStore.fetchDetail({ id, requestId });
-      const { events = [] } = cb;
-      timeout = setTimeout(() => {
-        setLoading(false);
-        setEvent(events.slice().reverse());
-      }, 200);
-    })();
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, []);
-  const columns = [
-    {
-      title: t('Operation Name'),
-      dataIndex: 'event',
-      key: 'event',
-      render: (value) => actionEvent[value],
-    },
-    {
-      title: t('Start Time'),
-      dataIndex: 'start_time',
-      key: 'start_time',
-      render: (value) => getLocalTimeStr(value),
-    },
-    {
-      title: t('End Time'),
-      dataIndex: 'finish_time',
-      key: 'finish_time',
-      render: (value) => (value ? getLocalTimeStr(value) : '-'),
-    },
-    {
-      title: t('Execution Result'),
-      dataIndex: 'result',
-      key: 'result',
-      render: (value) => (value === 'Success' ? t('Success') : '-'),
-    },
-  ];
-  const table = (
-    <Table
-      columns={columns}
-      dataSource={event}
-      pagination={false}
-      loading={loading}
-      size="small"
-      rowKey="event"
-    />
-  );
-  return table;
-}
-
 export const actionColumn = (self) => {
   return [
     {
@@ -586,20 +527,17 @@ export const actionColumn = (self) => {
       title: t('Request ID'),
       dataIndex: 'request_id',
       isHideable: true,
-      render: (value, record) => {
-        const content = (
-          <PopUpContent id={record.instance_uuid} requestId={value} />
-        );
-        return (
-          <>
-            {value && (
-              <Popover content={content} destroyTooltipOnHide trigger="click">
-                <span className="link-class">{value}</span>
-              </Popover>
-            )}
-          </>
-        );
-      },
+      render: (value, record) => (
+        <>
+          <span>{value}</span>
+          <PopActionEvent
+            id={record.instance_uuid}
+            requestId={value}
+            store={new ActionLogStore()}
+            actionEvent={actionEvent}
+          />
+        </>
+      ),
     },
     {
       title: t('User ID'),

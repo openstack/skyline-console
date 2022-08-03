@@ -71,6 +71,11 @@ export class ZunClient extends Base {
           {
             key: 'stats',
           },
+          {
+            name: 'actions',
+            key: 'container_actions',
+            responseKey: 'containerAction',
+          },
         ],
       },
       {
