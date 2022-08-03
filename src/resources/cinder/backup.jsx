@@ -169,8 +169,10 @@ export const getAdd = (cinderQuota) => {
   const { left = 0 } = backups || {};
   const { left: sizeLeft = 0, limit } = gigabytes || {};
   const { currentVolumeSize = 0 } = globalBackupStore;
-  const add =
-    left !== 0 && (limit === -1 || sizeLeft >= currentVolumeSize) ? 1 : 0;
+  const leftOk = left !== 0;
+  const sizeOk =
+    sizeLeft !== 0 && (limit === -1 || sizeLeft >= currentVolumeSize);
+  const add = leftOk && sizeOk ? 1 : 0;
   return {
     add,
     addSize: add === 1 ? currentVolumeSize : 0,
