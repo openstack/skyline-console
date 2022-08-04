@@ -24,24 +24,33 @@ import KillContainer from './Kill';
 import ForceDeleteContainer from './ForceDelete';
 import ExecuteCommandContainer from './ExecuteCommand';
 
-const moreActions = [
-  { action: StartContainer },
-  { action: StopContainer },
-  { action: RebootContainer },
-  { action: KillContainer },
-  { action: RebuildContainer },
-  { action: DeleteContainer },
-  { action: ForceDeleteContainer },
+const statusActions = [
+  StartContainer,
+  StopContainer,
+  RebootContainer,
+  KillContainer,
+  RebuildContainer,
 ];
 
 const actionConfigs = {
   rowActions: {
-    firstAction: EditContainer,
+    firstAction: DeleteContainer,
     moreActions: [
-      { action: PauseContainer },
-      { action: UnpauseContainer },
-      { action: ExecuteCommandContainer },
-      ...moreActions,
+      {
+        title: t('Container Status'),
+        actions: [
+          ...statusActions,
+          PauseContainer,
+          UnpauseContainer,
+          ExecuteCommandContainer,
+        ],
+      },
+      {
+        action: EditContainer,
+      },
+      {
+        action: ForceDeleteContainer,
+      },
     ],
   },
   batchActions: [DeleteContainer],
@@ -49,8 +58,19 @@ const actionConfigs = {
 };
 const actionConfigsAdmin = {
   rowActions: {
-    firstAction: EditContainer,
-    moreActions,
+    firstAction: DeleteContainer,
+    moreActions: [
+      {
+        title: t('Container Status'),
+        actions: statusActions,
+      },
+      {
+        action: EditContainer,
+      },
+      {
+        action: ForceDeleteContainer,
+      },
+    ],
   },
   batchActions: [DeleteContainer],
   primaryActions: [],

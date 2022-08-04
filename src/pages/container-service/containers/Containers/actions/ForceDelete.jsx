@@ -31,6 +31,10 @@ export default class ForceDeleteContainer extends ConfirmAction {
     return t('Force Delete');
   }
 
+  get isDanger() {
+    return true;
+  }
+
   policy = 'container:delete_force';
 
   aliasPolicy = 'zun:container:delete_force';
