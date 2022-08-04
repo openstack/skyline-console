@@ -89,7 +89,10 @@ describe('The Volume Page', () => {
   });
 
   it('successfully create snapshot', () => {
-    cy.tableSearchText(name).clickFirstActionButton();
+    cy.tableSearchText(name).clickActionInMoreSub(
+      'Create Snapshot',
+      'Data Protection'
+    );
     cy.wait(2000)
       .formInput('name', snapshotName)
       .clickModalActionSubmitButton()
@@ -108,7 +111,7 @@ describe('The Volume Page', () => {
   onlyOn(backupServiceEnabled, () => {
     it('successfully create backup', () => {
       cy.tableSearchText(name)
-        .clickActionInMore('Create Backup')
+        .clickActionInMoreSub('Create Backup', 'Data Protection')
         .formInput('name', backupName)
         .clickModalActionSubmitButton()
         .tableSearchText(name)
@@ -117,7 +120,7 @@ describe('The Volume Page', () => {
 
     it('successfully create backup inc', () => {
       cy.tableSearchText(name)
-        .clickActionInMore('Create Backup')
+        .clickActionInMoreSub('Create Backup', 'Data Protection')
         .formInput('name', backupIncName)
         .formRadioChoose('incremental', 1)
         .clickModalActionSubmitButton()
@@ -130,7 +133,7 @@ describe('The Volume Page', () => {
 
   it('successfully clone volume', () => {
     cy.tableSearchText(name)
-      .clickActionInMore('Clone Volume')
+      .clickActionInMoreSub('Clone Volume', 'Data Protection')
       .wait(10000)
       .formInput('name', cloneVolumeName)
       .clickModalActionSubmitButton();
@@ -138,7 +141,7 @@ describe('The Volume Page', () => {
 
   it('successfully attach', () => {
     cy.tableSearchText(name)
-      .clickActionInMore('Attach')
+      .clickActionInMoreSub('Attach', 'Instance Related')
       .wait(5000)
       .formTableSelectBySearch('instance', instanceName)
       .clickModalActionSubmitButton()
@@ -148,7 +151,7 @@ describe('The Volume Page', () => {
 
   it('successfully detach', () => {
     cy.tableSearchText(name)
-      .clickActionInMore('Detach')
+      .clickActionInMoreSub('Detach', 'Instance Related')
       .wait(5000)
       .formTableSelect('instance')
       .clickModalActionSubmitButton();
@@ -157,7 +160,7 @@ describe('The Volume Page', () => {
 
   it('successfully create image', () => {
     cy.tableSearchText(name)
-      .clickActionInMore('Create Image')
+      .clickActionInMoreSub('Create Image', 'Data Protection')
       .formInput('image_name', imageName)
       .clickModalActionSubmitButton();
     cy.tableSearchText(name).waitStatusActiveByRefresh();
@@ -168,14 +171,14 @@ describe('The Volume Page', () => {
 
   it('successfully extend volume', () => {
     cy.tableSearchText(name)
-      .clickActionInMore('Extend Volume')
+      .clickActionInMoreSub('Extend Volume', 'Capacity & Type')
       .clickModalActionSubmitButton();
     cy.tableSearchText(name).waitStatusActiveByRefresh();
   });
 
   it('successfully change type', () => {
     cy.tableSearchText(name)
-      .clickActionInMore('Change Type')
+      .clickActionInMoreSub('Change Type', 'Capacity & Type')
       .formSelect('new_type')
       .clickModalActionSubmitButton();
     cy.tableSearchText(name).waitStatusActiveByRefresh();
@@ -183,7 +186,7 @@ describe('The Volume Page', () => {
 
   it('successfully edit', () => {
     cy.tableSearchText(name)
-      .clickActionInMore('Edit')
+      .clickFirstActionButton('Edit')
       .formInput('name', newname)
       .clickModalActionSubmitButton();
   });

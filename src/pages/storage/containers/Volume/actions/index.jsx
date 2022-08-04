@@ -32,51 +32,36 @@ import CancelTransfer from './CancelTransfer';
 import CreateInstance from './CreateInstance';
 import Bootable from './Bootable';
 
+const dataProtectionActions = {
+  title: t('Data Protection'),
+  actions: [CreateSnapshot, CreateBackup, CreateImage, CloneVolume, Restore],
+};
+
+const instanceRelated = {
+  title: t('Instance Related'),
+  actions: [Bootable, CreateInstance, Attach, Detach],
+};
+
+const capacityAndSize = {
+  title: t('Capacity & Type'),
+  actions: [ExtendVolume, ChangeType],
+};
+
 const actionConfigs = {
   rowActions: {
-    firstAction: CreateSnapshot,
+    firstAction: Edit,
     moreActions: [
+      dataProtectionActions,
+      instanceRelated,
+      capacityAndSize,
       {
-        action: Edit,
-      },
-      {
-        action: Bootable,
-      },
-      {
-        action: CreateInstance,
-      },
-      {
-        action: CreateImage,
-      },
-      {
-        action: CreateBackup,
-      },
-      {
-        action: Attach,
-      },
-      {
-        action: Detach,
-      },
-      {
-        action: ExtendVolume,
-      },
-      {
-        action: ChangeType,
-      },
-      {
-        action: CloneVolume,
+        action: Delete,
       },
       {
         action: CreateTransfer,
       },
       {
         action: CancelTransfer,
-      },
-      {
-        action: Delete,
-      },
-      {
-        action: Restore,
       },
     ],
   },
@@ -86,43 +71,19 @@ const actionConfigs = {
 
 const instanceDetailConfig = {
   rowActions: {
-    firstAction: CreateSnapshot,
+    firstAction: Edit,
     moreActions: [
+      dataProtectionActions,
+      instanceRelated,
+      capacityAndSize,
       {
-        action: Edit,
-      },
-      {
-        action: CreateInstance,
-      },
-      {
-        action: CreateImage,
-      },
-      // {
-      //   action: CreateBackup,
-      // },
-      {
-        action: Attach,
-      },
-      {
-        action: Detach,
-      },
-      {
-        action: ExtendVolume,
-      },
-      {
-        action: ChangeType,
-      },
-      {
-        action: CloneVolume,
+        action: Delete,
       },
       {
         action: CreateTransfer,
       },
       {
         action: CancelTransfer,
-      },
-      {
-        action: Delete,
       },
     ],
   },

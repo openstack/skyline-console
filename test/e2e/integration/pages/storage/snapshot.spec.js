@@ -36,7 +36,7 @@ describe('The Volume Snapshot Page', () => {
   it('successfully create', () => {
     cy.visitPage(volumeListUrl)
       .tableSearchText(volumeName)
-      .clickFirstActionButton()
+      .clickActionInMoreSub('Create Snapshot', 'Data Protection')
       .formInput('name', name)
       .clickModalActionSubmitButton();
 
