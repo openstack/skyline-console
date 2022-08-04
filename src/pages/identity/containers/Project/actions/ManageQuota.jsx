@@ -127,7 +127,7 @@ export class ManageQuota extends ModalAction {
       name,
       label,
       type: 'input-number',
-      labelCol: { span: 12 },
+      labelCol: { span: 14 },
       colNum: 2,
       validator: this.checkMin,
       hidden,
@@ -163,7 +163,7 @@ export class ManageQuota extends ModalAction {
     const formItems = this.getFormItemsByCards('compute');
     const memberItem = this.getInputItem(
       'server_group_members',
-      t('Server Group Member')
+      t('Members of Each Server Group')
     );
     return [...formItems, memberItem];
   }

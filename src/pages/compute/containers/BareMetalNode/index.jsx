@@ -80,7 +80,7 @@ export class BareMetalNode extends Base {
       tip: (value, record) => record.maintenance_reason,
     },
     {
-      title: t('Number Of Ports'),
+      title: t('Number of Ports'),
       dataIndex: 'portCount',
       isHideable: true,
     },

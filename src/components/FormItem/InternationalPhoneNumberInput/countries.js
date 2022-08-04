@@ -282,7 +282,7 @@ const i18nDict = {
   CX: t('Christmas Island'),
   CC: t('Cocos (Keeling) Islands'),
   CO: t('Colombia'),
-  CG: t('Republic Of The Congo'),
+  CG: t('Republic of the Congo'),
   ZR: t('Democratic Republic of the Congo'),
   CR: t('Costa Rica'),
   CI: t("Cote D'Ivoire"),
