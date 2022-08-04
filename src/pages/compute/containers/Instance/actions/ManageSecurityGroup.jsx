@@ -16,8 +16,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalServerStore from 'stores/nova/instance';
-import { VirtualAdapterStore } from 'stores/neutron/virtual-adapter';
-import { PortStore } from 'stores/neutron/port';
+import { PortStore } from 'stores/neutron/port-extension';
 import { SecurityGroupStore } from 'stores/neutron/security-group';
 import { portStatus } from 'resources/neutron/port';
 import {
@@ -36,8 +35,7 @@ export class ManageSecurityGroup extends ModalAction {
   init() {
     this.store = globalServerStore;
     this.securityGroupStore = new SecurityGroupStore();
-    this.portStore = new VirtualAdapterStore();
-    this.portStoreOrigin = new PortStore();
+    this.portStore = new PortStore();
     this.getPorts();
     this.securityGroupMap = {};
   }
@@ -45,21 +43,16 @@ export class ManageSecurityGroup extends ModalAction {
   static policy = 'update_port';
 
   getPorts() {
-    Promise.all([
-      this.portStore.fetchList({ device_id: this.item.id }),
-      this.portStoreOrigin.fetchList({ device_id: this.item.id }),
-    ]);
+    this.portStore.fetchList({ device_id: this.item.id });
   }
 
   get ports() {
     const portsBeauty = toJS(this.portStore.list.data) || [];
-    const portsOrigin = toJS(this.portStoreOrigin.list.data) || [];
     return portsBeauty.map((port) => {
-      const originPort = portsOrigin.find((it) => it.id === port.id);
       return {
         ...port,
         name: port.id,
-        security_groups: originPort.security_groups,
+        security_groups: port.origin_data.security_groups,
       };
     });
   }
@@ -140,8 +133,7 @@ export class ManageSecurityGroup extends ModalAction {
         type: 'select-table',
         required: true,
         data: this.ports,
-        isLoading:
-          this.portStore.list.isLoading && this.portStoreOrigin.list.isLoading,
+        isLoading: this.portStore.list.isLoading,
         isMulti: false,
         onChange: this.onPortChange,
         filterParams: [

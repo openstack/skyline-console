@@ -16,7 +16,7 @@ import { inject, observer } from 'mobx-react';
 import Base from 'containers/TabDetail';
 import { NetworkStore } from 'stores/neutron/network';
 import { networkStatus } from 'resources/neutron/network';
-import VirtualAdapter from 'src/pages/network/containers/VirtualAdapter';
+import Port from 'src/pages/network/containers/Port';
 import globalRootStore from 'stores/root';
 import Subnets from './Subnets';
 import Detail from './Detail';
@@ -145,7 +145,7 @@ export class NetworkDetail extends Base {
       {
         title: t('Ports'),
         key: 'ports',
-        component: VirtualAdapter,
+        component: Port,
       },
     ];
     return tabs;

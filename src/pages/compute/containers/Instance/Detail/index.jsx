@@ -22,7 +22,7 @@ import { ServerStore } from 'stores/nova/instance';
 import Base from 'containers/TabDetail';
 import Volumes from 'pages/storage/containers/Volume';
 import FloatingIps from 'pages/network/containers/FloatingIp';
-import VirtualAdapter from 'pages/network/containers/VirtualAdapter';
+import VirtualAdapter from 'pages/network/containers/Port';
 import actionConfigsRecycleBin from 'pages/management/containers/RecycleBin/actions';
 import { toJS } from 'mobx';
 import BaseDetail from './BaseDetail';

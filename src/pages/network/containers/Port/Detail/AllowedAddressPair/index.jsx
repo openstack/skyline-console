@@ -14,13 +14,13 @@
 
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import globalVirtualAdapterStore from 'stores/neutron/virtual-adapter';
+import globalPortStore from 'stores/neutron/port-extension';
 import List from 'stores/base-list';
 import actionConfigs from './actions';
 
 export class AllowedAddressPair extends Base {
   init() {
-    this.store = globalVirtualAdapterStore;
+    this.store = globalPortStore;
     // because of the father component use new Store
     // so set detail to globalStore to share data
     this.store.setDetail(this.props.detail);

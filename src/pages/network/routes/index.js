@@ -22,9 +22,9 @@ import FloatingIp from '../containers/FloatingIp';
 import FloatingIpDetail from '../containers/FloatingIp/Detail';
 import Topology from '../containers/Topology';
 import RouterDetail from '../containers/Router/Detail';
-import PortDetail from '../containers/Router/Port/Detail';
-import VirtualAdapter from '../containers/VirtualAdapter';
-import VirtualAdapterDetail from '../containers/VirtualAdapter/Detail';
+import RouterPortDetail from '../containers/Router/Port/Detail';
+import Port from '../containers/Port';
+import PortDetail from '../containers/Port/Detail';
 import QoSPolicy from '../containers/QoSPolicy';
 import AdminQoSPolicy from '../containers/QoSPolicy/QoSPolicy';
 import QoSPolicyDetail from '../containers/QoSPolicy/Detail';
@@ -72,12 +72,12 @@ export default [
       },
       {
         path: `${PATH}/router/:routerId/port/:id`,
-        component: PortDetail,
+        component: RouterPortDetail,
         exact: true,
       },
       {
         path: `${PATH}/router-admin/:routerId/port/:id`,
-        component: PortDetail,
+        component: RouterPortDetail,
         exact: true,
       },
       { path: `${PATH}/floatingip`, component: FloatingIp, exact: true },
@@ -93,23 +93,23 @@ export default [
         exact: true,
       },
       {
-        path: `${PATH}/virtual_adapter`,
-        component: VirtualAdapter,
+        path: `${PATH}/port`,
+        component: Port,
         exact: true,
       },
       {
-        path: `${PATH}/virtual_adapter_admin`,
-        component: VirtualAdapter,
+        path: `${PATH}/port-admin`,
+        component: Port,
         exact: true,
       },
       {
-        path: `${PATH}/virtual_adapter/detail/:id`,
-        component: VirtualAdapterDetail,
+        path: `${PATH}/port/detail/:id`,
+        component: PortDetail,
         exact: true,
       },
       {
-        path: `${PATH}/virtual_adapter_admin/detail/:id`,
-        component: VirtualAdapterDetail,
+        path: `${PATH}/port-admin/detail/:id`,
+        component: PortDetail,
         exact: true,
       },
       { path: `${PATH}/qos-policy`, component: QoSPolicy, exact: true },

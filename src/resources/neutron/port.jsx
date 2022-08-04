@@ -112,7 +112,7 @@ export function getPortFormItem(device_owner) {
         {
           title: t('ID/Name'),
           dataIndex: 'name',
-          routeName: this.getRouteName('virtualAdapterDetail'),
+          routeName: this.getRouteName('portDetail'),
         },
         {
           title: t('Description'),

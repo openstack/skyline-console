@@ -16,7 +16,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import { QoSPolicyStore } from 'stores/neutron/qos-policy';
-import globalVirtualAdapterStore from 'stores/neutron/virtual-adapter';
+import globalPortStore from 'stores/neutron/port-extension';
 import { getQoSPolicyTabs } from 'resources/neutron/qos-policy';
 import { qosEndpoint } from 'client/client/constants';
 
@@ -103,7 +103,7 @@ export class ModifyQoS extends ModalAction {
             ? null
             : qos_policy_id.selectedRowKeys[0]);
     }
-    return globalVirtualAdapterStore.update({ id }, data);
+    return globalPortStore.update({ id }, data);
   };
 
   get formItems() {

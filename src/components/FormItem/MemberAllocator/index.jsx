@@ -71,7 +71,7 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
               dataIndex: 'name',
               render: (n, record) => (
                 <div>
-                  <div>{getLink('virtualAdapterDetail', record)}</div>
+                  <div>{getLink('portDetail', record)}</div>
                   <div>{n || '-'}</div>
                 </div>
               ),

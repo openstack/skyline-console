@@ -13,42 +13,36 @@
 // limitations under the License.
 
 import { ConfirmAction } from 'containers/Action';
-import globalVirtualAdapter from 'stores/neutron/virtual-adapter';
+import globalServerStore from 'stores/nova/instance';
 
-export default class DeleteAction extends ConfirmAction {
+export default class Detach extends ConfirmAction {
   get id() {
-    return 'delete';
+    return 'detach_instance';
   }
 
   get title() {
-    return t('Delete Virtual Adapter');
-  }
-
-  get isDanger() {
-    return true;
+    return t('Detach Instance');
   }
 
   get buttonText() {
-    return t('Delete');
+    return t('Detach');
   }
 
   get actionName() {
-    return t('delete virtual adapter');
+    return t('detach instance');
   }
 
-  policy = 'delete_port';
-
-  allowedCheckFunc = (item) => {
-    if (!item) {
-      return true;
-    }
-    return this.isOwnerOrAdmin(item);
-  };
-
-  isOwnerOrAdmin() {
-    // TODO: check owner
+  get isAsyncAction() {
     return true;
   }
 
-  onSubmit = (data) => globalVirtualAdapter.delete(data);
+  policy = 'os_compute_api:os-attach-interfaces:delete';
+
+  allowedCheckFunc = (item) =>
+    !!item.device_id && item.device_owner === 'compute:nova';
+
+  onSubmit = async () => {
+    const { id, device_id } = this.item;
+    return globalServerStore.detachInterface({ id: device_id, ports: [id] });
+  };
 }

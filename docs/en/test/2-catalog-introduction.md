@@ -46,7 +46,7 @@ test
 │   │       │   ├── router.spec.js  (Router)
 │   │       │   ├── security-group.spec.js  (Security group)
 │   │       │   ├── topology.spec.js    (Network topology)
-│   │       │   ├── virtual-adapter.spec.js (Virtual Adapter)
+│   │       │   ├── port.spec.js (Virtual Adapter)
 │   │       │   └── vpn.spec.js (VPN)
 │   │       └── storage (Storage)
 │   │           ├── backup.spec.js  (Backup)

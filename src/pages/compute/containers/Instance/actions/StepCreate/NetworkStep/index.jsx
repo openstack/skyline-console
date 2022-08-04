@@ -18,7 +18,7 @@ import { isEmpty, isArray } from 'lodash';
 import { NetworkStore } from 'stores/neutron/network';
 import { SubnetStore } from 'stores/neutron/subnet';
 import { SecurityGroupStore } from 'stores/neutron/security-group';
-import { VirtualAdapterStore } from 'stores/neutron/virtual-adapter';
+import { PortStore } from 'stores/neutron/port-extension';
 import { ipValidate } from 'utils/validate';
 import Base from 'components/Form';
 import NetworkSelect from 'components/FormItem/NetworkSelect';
@@ -38,7 +38,7 @@ export class NetworkStep extends Base {
     this.networkStore = new NetworkStore();
     this.subnetStore = new SubnetStore();
     this.securityGroupStore = new SecurityGroupStore();
-    this.portStore = new VirtualAdapterStore();
+    this.portStore = new PortStore();
     this.subnetMap = {};
   }
 

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { ConfirmAction } from 'containers/Action';
-import globalVirtualAdapterStore from 'stores/neutron/virtual-adapter';
+import globalPortStore from 'stores/neutron/port-extension';
 
 export default class DeleteAction extends ConfirmAction {
   get id() {
@@ -64,7 +64,7 @@ export default class DeleteAction extends ConfirmAction {
         (it) => it.ip_address !== ip_address || it.subnet_id !== subnet_id
       );
     }
-    return globalVirtualAdapterStore.update(
+    return globalPortStore.update(
       { id },
       {
         fixed_ips: newFixedIps,

@@ -13,18 +13,18 @@
 // limitations under the License.
 
 import { onlyOn } from '@cypress/skip-test';
-import { virtualAdapterListUrl } from '../../../support/constants';
+import { portListUrl } from '../../../support/constants';
 
-describe('The Virtual Adapter Page', () => {
-  const listUrl = virtualAdapterListUrl;
+describe('The Port Page', () => {
+  const listUrl = portListUrl;
   const uuid = Cypress._.random(0, 1e6);
-  const name = `e2e-virtual-adapter-${uuid}`;
+  const name = `e2e-port-${uuid}`;
   const newname = `${name}-1`;
-  const securityGroupName = `e2e-sg-for-virtual-adapter-${uuid}`;
-  const policyName = `e2e-policy-for-virtual-adapter-${uuid}`;
-  const networkName = `e2e-network-for-virtual-adapter-${uuid}`;
-  const instanceName = `e2e-instance-for-virtual-adapter-${uuid}`;
-  const routerName = `e2e-router-for-virtual-adapter-${uuid}`;
+  const securityGroupName = `e2e-sg-for-port-${uuid}`;
+  const policyName = `e2e-policy-for-port-${uuid}`;
+  const networkName = `e2e-network-for-port-${uuid}`;
+  const instanceName = `e2e-instance-for-port-${uuid}`;
+  const routerName = `e2e-router-for-port-${uuid}`;
   const qosServiceEnabled = (Cypress.env('extensions') || []).includes(
     'neutron::qos'
   );

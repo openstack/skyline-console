@@ -164,7 +164,7 @@ export class BaseDetail extends Base {
           <>
             {value.length
               ? value.map((it) => {
-                  const link = this.getLinkRender('virtualAdapterDetail', it, {
+                  const link = this.getLinkRender('portDetail', it, {
                     id: it,
                   });
                   return <div key={it}>{link}</div>;

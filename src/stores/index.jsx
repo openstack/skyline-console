@@ -12,7 +12,7 @@ import globalServerGroupStore from 'stores/nova/server-group';
 import globalSnapshotStore from 'stores/cinder/snapshot';
 import globalStaticRouteStore from 'stores/neutron/static-route';
 import globalSubnetStore from 'stores/neutron/subnet';
-import globalVirtualAdapterStore from 'stores/neutron/virtual-adapter';
+import globalPortStore from 'stores/neutron/port-extension';
 import globalVolumeStore from 'stores/cinder/volume';
 import globalComputeHostStore from 'stores/nova/compute-host';
 import globalHypervisorStore from 'stores/nova/hypervisor';
@@ -33,9 +33,9 @@ export default {
   globalSnapshotStore,
   globalStaticRouteStore,
   globalSubnetStore,
-  globalVirtualAdapterStore,
   globalVolumeStore,
   globalComputeHostStore,
   globalHypervisorStore,
   globalStackStore,
+  globalPortStore,
 };

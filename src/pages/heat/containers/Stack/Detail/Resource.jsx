@@ -70,7 +70,7 @@ export class Resource extends Base {
       },
       {
         key: 'OS::Ironic::Port',
-        routeName: 'virtualAdapterDetail',
+        routeName: 'portDetail',
       },
       {
         key: 'OS::Keystone::Domain',
@@ -111,7 +111,7 @@ export class Resource extends Base {
       },
       {
         key: 'OS::Neutron::Port',
-        routeName: 'virtualAdapterDetail',
+        routeName: 'portDetail',
       },
       {
         key: 'OS::Neutron::QoSPolicy',

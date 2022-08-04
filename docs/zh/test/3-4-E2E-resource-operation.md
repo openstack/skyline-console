@@ -36,7 +36,7 @@
 - `createNetworkPolicy`
   - 创建网络QoS策略
   - 参数`name`，策略的名称
-  - 以虚拟网卡修改QoS为例`test/e2e/integration/pages/network/virtual-adapter.spec.js`为例
+  - 以端口修改QoS为例`test/e2e/integration/pages/network/port.spec.js`为例
     - 创建了名称为`policyName`的策略，为修改QoS做准备
 
     ```javascript
@@ -119,7 +119,7 @@
 - `createSecurityGroup`
   - 创建安全组
   - 参数`name`，安全组的名称
-  - 以虚拟网卡`test/e2e/integration/pages/network/virtual-adapter.spec.js`为例
+  - 以虚拟网卡`test/e2e/integration/pages/network/port.spec.js`为例
     - 测试管理安全组，需要先准备好安全组
 
     ```javascript
@@ -249,7 +249,7 @@
       router: routerListUrl,
       networkQosPolicy: policyListUrl,
       fip: fipListUrl,
-      virtualAdapter: virtualAdapterListUrl,
+      port: portListUrl,
 
       // security
       securityGroup: securityGroupListUrl,

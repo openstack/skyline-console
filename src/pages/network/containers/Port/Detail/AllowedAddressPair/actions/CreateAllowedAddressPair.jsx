@@ -14,7 +14,7 @@
 
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import globalVirtualAdapterStore from 'stores/neutron/virtual-adapter';
+import globalPortStore from 'stores/neutron/port-extension';
 import { ipValidate } from 'utils/validate';
 import { isEmpty } from 'lodash';
 
@@ -28,7 +28,7 @@ export class CreateAllowedAddressPair extends ModalAction {
   static policy = 'update_port';
 
   init() {
-    this.store = globalVirtualAdapterStore;
+    this.store = globalPortStore;
   }
 
   get name() {
@@ -62,12 +62,12 @@ export class CreateAllowedAddressPair extends ModalAction {
       ip_address,
     };
     mac_address.type === 'manual' && (data.mac_address = mac_address.mac);
-    return globalVirtualAdapterStore
+    return globalPortStore
       .update(this.item, {
         allowed_address_pairs: [data, ...allowed_address_pairs],
       })
       .then((ret) => {
-        globalVirtualAdapterStore.setDetail(ret.port);
+        globalPortStore.setDetail(ret.port);
       });
   };
 
@@ -137,7 +137,7 @@ export class CreateAllowedAddressPair extends ModalAction {
         type: 'mac-address',
         options: [
           {
-            label: t('VirtualAdapter Mac'),
+            label: t('From port'),
             value: 'auto',
           },
           {

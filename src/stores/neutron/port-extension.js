@@ -19,8 +19,9 @@ import globalFloatingIpsStore from 'stores/neutron/floatingIp';
 import client from 'client';
 import List from 'stores/base-list';
 import Base from 'stores/base';
+import { isString } from 'lodash';
 
-export class VirtualAdapterStore extends Base {
+export class PortStore extends Base {
   get client() {
     return client.neutron.ports;
   }
@@ -39,6 +40,24 @@ export class VirtualAdapterStore extends Base {
       params.sort_dirs = sortOrder === 'descend' ? 'desc' : 'asc';
     }
   };
+
+  get paramsFuncPage() {
+    return (params, all_projects) => {
+      const { current, device_owner, ...rest } = params;
+      const newParams = { ...rest };
+      if (device_owner && isString(device_owner)) {
+        if (device_owner === 'none') {
+          newParams.device_owner = [''];
+        } else {
+          newParams.device_owner = device_owner.split(',');
+        }
+      }
+      if (!all_projects) {
+        newParams.tenant_id = this.currentProjectId;
+      }
+      return newParams;
+    };
+  }
 
   @observable
   fixed_ips = new List();
@@ -133,6 +152,6 @@ export class VirtualAdapterStore extends Base {
   }
 }
 
-const globalVirtualAdapterStore = new VirtualAdapterStore();
+const globalPortStore = new PortStore();
 
-export default globalVirtualAdapterStore;
+export default globalPortStore;

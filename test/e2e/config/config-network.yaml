@@ -21,7 +21,7 @@ testFiles:
   # network
   - pages/network/router.spec.js
   - pages/network/network.spec.js
-  - pages/network/virtual-adapter.spec.js
+  - pages/network/port.spec.js
   - pages/network/qos-policy.spec.js
   - pages/network/floatingip.spec.js
   - pages/network/security-group.spec.js

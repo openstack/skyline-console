@@ -16,7 +16,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import { PoolMemberStore } from 'stores/octavia/pool-member';
-import { VirtualAdapterStore } from 'stores/neutron/virtual-adapter';
+import { PortStore } from 'stores/neutron/port-extension';
 import { toJS } from 'mobx';
 import { uniqWith, get } from 'lodash';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
@@ -39,7 +39,7 @@ export class CreateAction extends ModalAction {
     );
 
   init() {
-    this.store = new VirtualAdapterStore();
+    this.store = new PortStore();
     this.memberStore = new PoolMemberStore();
     this.lbDetail = {};
     this.state = {

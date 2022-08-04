@@ -14,9 +14,9 @@
 
 import React from 'react';
 import { observer, inject } from 'mobx-react';
-import { VirtualAdapterStore } from 'stores/neutron/virtual-adapter';
+import { PortStore } from 'stores/neutron/port-extension';
 import { Button, Table, Collapse, Divider, Col, Row, Spin, Empty } from 'antd';
-import ManageSecurityGroup from 'pages/network/containers/VirtualAdapter/actions/ManageSecurityGroup';
+import ManageSecurityGroup from 'pages/network/containers/Port/actions/ManageSecurityGroup';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { toJS } from 'mobx';
@@ -34,7 +34,7 @@ const { Panel } = Collapse;
 export class SecurityGroup extends React.Component {
   constructor(props) {
     super(props);
-    this.store = new VirtualAdapterStore();
+    this.store = new PortStore();
   }
 
   componentDidMount() {

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { inject, observer } from 'mobx-react';
-import { VirtualAdapterStore } from 'stores/neutron/virtual-adapter';
+import { PortStore } from 'stores/neutron/port-extension';
 import Base from 'containers/TabDetail';
 import { networkStatus } from 'resources/neutron/network';
 import FixedIPs from './FixedIPs';
@@ -22,9 +22,9 @@ import AllowedAddressPair from './AllowedAddressPair';
 import BaseDetail from './BaseDetail';
 import actionConfigs from '../actions';
 
-export class VirtualAdapterDetail extends Base {
+export class PortDetail extends Base {
   get name() {
-    return t('virtual adapter');
+    return t('port');
   }
 
   get policy() {
@@ -32,7 +32,7 @@ export class VirtualAdapterDetail extends Base {
   }
 
   get listUrl() {
-    return this.getRoutePath('virtualAdapter');
+    return this.getRoutePath('port');
   }
 
   get actionConfigs() {
@@ -118,8 +118,8 @@ export class VirtualAdapterDetail extends Base {
   }
 
   init() {
-    this.store = new VirtualAdapterStore();
+    this.store = new PortStore();
   }
 }
 
-export default inject('rootStore')(observer(VirtualAdapterDetail));
+export default inject('rootStore')(observer(PortDetail));

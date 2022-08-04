@@ -1,4 +1,4 @@
-// Copyright 2021 99cloud
+// Copyright 2022 99cloud
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,15 +15,15 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import { VirtualAdapterStore } from 'stores/neutron/virtual-adapter';
+import { PortStore } from 'stores/neutron/port-extension';
 import { portStatus } from 'resources/neutron/port';
 import { emptyActionConfig } from 'utils/constants';
 import actionConfigs from './actions';
 
-export class VirtualAdapter extends Base {
+export class Port extends Base {
   init() {
-    this.store = new VirtualAdapterStore();
-    this.downloadStore = new VirtualAdapterStore();
+    this.store = new PortStore();
+    this.downloadStore = new PortStore();
   }
 
   get isInstanceDetail() {
@@ -61,8 +61,6 @@ export class VirtualAdapter extends Base {
       newParams.device_id = id;
     } else if (this.isNetworkDetail) {
       newParams.network_id = id;
-    } else {
-      newParams.device_owner = ['compute:nova', ''];
     }
     return newParams;
   };
@@ -72,7 +70,7 @@ export class VirtualAdapter extends Base {
   }
 
   get name() {
-    return t('virtual adapters');
+    return t('ports');
   }
 
   get adminPageHasProjectFilter() {
@@ -99,16 +97,56 @@ export class VirtualAdapter extends Base {
     return actionConfigs.actionConfigs;
   }
 
-  // get hideCustom () {
-  //   return true;
-  // }
+  renderResource = (serverName, item) => {
+    const { device_id, device_owner } = item;
+    if (!device_owner) {
+      return device_id || '-';
+    }
+    let value = device_id;
+    let link = null;
+    if (device_owner === 'compute:nova') {
+      value = serverName ? `${device_id} (${serverName})` : device_id;
+      link = this.getLinkRender(
+        'instanceDetail',
+        value,
+        { id: device_id },
+        { tab: 'interface' }
+      );
+    } else if (
+      [
+        'network:router_interface',
+        'network:ha_router_replicated_interface',
+        'network:router_ha_interface',
+      ].includes(device_owner)
+    ) {
+      link = this.getLinkRender('routerDetail', value, { id: device_id });
+    } else if (device_owner === 'network:floatingip') {
+      link = this.getLinkRender('fipDetail', value, { id: device_id });
+    }
+    if (link) {
+      return (
+        <>
+          {device_owner}
+          <br />
+          {link}
+        </>
+      );
+    }
+    return (
+      <>
+        {device_owner}
+        <br />
+        {device_id || '-'}
+      </>
+    );
+  };
 
   getColumns = () => {
     const columns = [
       {
         title: t('ID/Name'),
         dataIndex: 'name',
-        routeName: this.getRouteName('virtualAdapterDetail'),
+        routeName: this.getRouteName('portDetail'),
       },
       {
         title: t('Project ID/Name'),
@@ -120,43 +158,17 @@ export class VirtualAdapter extends Base {
       {
         title: t('Bind Resource'),
         dataIndex: 'server_name',
-        stringify: (server_name, item) => {
-          if (item.device_id && item.device_owner === 'compute:nova') {
-            return `${item.device_owner} \n ${item.device_id} (${server_name})`;
+        stringify: (serverName, item) => {
+          const { device_id, device_owner } = item;
+          if (device_id && device_owner === 'compute:nova' && serverName) {
+            return `${device_owner} \n ${device_id} (${serverName})`;
           }
           return `
-            ${item.device_owner} ${item.device_owner && `\n`}
-            ${item.device_id || '-'}
+            ${device_owner} ${device_owner && `\n`}
+            ${device_id || '-'}
           `;
         },
-        render: (server_name, item) => {
-          const { device_id, device_owner } = item;
-          if (device_id && device_owner === 'compute:nova') {
-            const value = server_name
-              ? `${device_id} (${server_name})`
-              : device_id;
-            const link = this.getLinkRender(
-              'instanceDetail',
-              value,
-              { id: item.device_id },
-              { tab: 'interface' }
-            );
-            return (
-              <>
-                {item.device_owner}
-                <br />
-                {link}
-              </>
-            );
-          }
-          return (
-            <>
-              {item.device_owner}
-              {item.device_owner && <br />}
-              {item.device_id || '-'}
-            </>
-          );
-        },
+        render: this.renderResource,
         isHideable: true,
         sorter: false,
       },
@@ -228,8 +240,38 @@ export class VirtualAdapter extends Base {
         name: 'network_name',
       });
     }
+    const deviceOwner = {
+      label: t('Device Owner'),
+      name: 'device_owner',
+      options: [
+        {
+          label: t('Instance'),
+          key: 'compute:nova',
+          checkLabel: t('View virtual adapters'),
+          isQuick: true,
+        },
+        {
+          label: t('Router'),
+          key: 'network:router_ha_interface,network:ha_router_replicated_interface,network:router_interface,network:router_gateway,network:router_interface_distributed,network:router_centralized_snat',
+        },
+        {
+          label: t('Floating IP'),
+          key: 'network:floatingip,network:floatingip_agent_gateway,',
+        },
+        { label: t('DHCP Agent'), key: 'network:dhcp' },
+        {
+          label: t('Others'),
+          key: 'network:local_ip,network:routed,network:distributed',
+        },
+        {
+          label: t('Unbounded'),
+          key: 'none',
+        },
+      ],
+    };
+    ret.push(deviceOwner);
     return ret;
   }
 }
 
-export default inject('rootStore')(observer(VirtualAdapter));
+export default inject('rootStore')(observer(Port));

@@ -36,7 +36,7 @@ export const networkListUrl = '/network/networks';
 export const routerListUrl = '/network/router';
 export const policyListUrl = '/network/qos-policy-admin';
 export const fipListUrl = '/network/floatingip';
-export const virtualAdapterListUrl = '/network/virtual_adapter';
+export const portListUrl = '/network/port';
 export const vpnListUrl = '/network/vpn';
 export const lbListUrl = '/network/load-balancers';
 export const topologyUrl = '/network/topo';
@@ -85,7 +85,7 @@ export default {
   router: routerListUrl,
   networkQosPolicy: policyListUrl,
   fip: fipListUrl,
-  virtualAdapter: virtualAdapterListUrl,
+  port: portListUrl,
 
   // security
   securityGroup: securityGroupListUrl,

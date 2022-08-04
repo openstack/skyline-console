@@ -36,7 +36,7 @@ In the E2E process, when creating a resource, it is often necessary to create th
 - `createNetworkPolicy`
   - Create network QoS policy
   - Parameter `name`, the name of the strategy
-  - Take virtual adapter modification QoS as an example: `test/e2e/integration/pages/network/virtual-adapter.spec.js`
+  - Take virtual adapter modification QoS as an example: `test/e2e/integration/pages/network/port.spec.js`
     - Created a policy named `policyName` in preparation for modifying QoS
 
     ```javascript
@@ -119,7 +119,7 @@ In the E2E process, when creating a resource, it is often necessary to create th
 - `createSecurityGroup`
   - Create a security group
   - Parameter `name`, the name of the security group
-  - Take the virtual adapter card as an example: `test/e2e/integration/pages/network/virtual-adapter.spec.js`
+  - Take the virtual adapter card as an example: `test/e2e/integration/pages/network/port.spec.js`
      -To test management security group, you need to prepare the security group first
 
     ```javascript
@@ -249,7 +249,7 @@ In the E2E process, when creating a resource, it is often necessary to create th
       router: routerListUrl,
       networkQosPolicy: policyListUrl,
       fip: fipListUrl,
-      virtualAdapter: virtualAdapterListUrl,
+      port: portListUrl,
 
       // security
       securityGroup: securityGroupListUrl,

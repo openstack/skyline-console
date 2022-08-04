@@ -12,7 +12,7 @@
 
 import React from 'react';
 import { SecurityGroupStore } from 'stores/neutron/security-group';
-import { VirtualAdapterStore } from 'stores/neutron/virtual-adapter';
+import { PortStore } from 'stores/neutron/port-extension';
 import Base from 'components/Form';
 import { inject, observer } from 'mobx-react';
 import { portColumns, portFilters } from 'src/resources/neutron/port';
@@ -24,7 +24,7 @@ import { getLinkRender } from 'utils/route-map';
 
 export class StepNetworks extends Base {
   init() {
-    this.portStore = new VirtualAdapterStore();
+    this.portStore = new PortStore();
     this.securityGroupStore = new SecurityGroupStore();
   }
 

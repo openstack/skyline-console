@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { ConfirmAction } from 'containers/Action';
-import globalVirtualAdapterStore from 'stores/neutron/virtual-adapter';
+import globalPortStore from 'stores/neutron/port-extension';
 
 export default class DeleteAction extends ConfirmAction {
   get id() {
@@ -21,7 +21,7 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   get title() {
-    return t('Delete Allowed Address Pair');
+    return t('Delete Virtual Adapter');
   }
 
   get isDanger() {
@@ -33,12 +33,10 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   get actionName() {
-    return t('delete allowed address pair');
+    return t('delete virtual adapter');
   }
 
-  getItemName = (data) => data.ip_address;
-
-  policy = 'update_port';
+  policy = 'delete_port';
 
   allowedCheckFunc = (item) => {
     if (!item) {
@@ -52,20 +50,5 @@ export default class DeleteAction extends ConfirmAction {
     return true;
   }
 
-  onSubmit = async (data, containerProps) => {
-    const { allowed_address_pairs = [], id } = containerProps.detail;
-    const newData = allowed_address_pairs.filter(
-      (i) => i.ip_address !== data.ip_address
-    );
-    return globalVirtualAdapterStore
-      .update(
-        { id },
-        {
-          allowed_address_pairs: newData,
-        }
-      )
-      .then((ret) => {
-        globalVirtualAdapterStore.setDetail(ret.port);
-      });
-  };
+  onSubmit = (data) => globalPortStore.delete(data);
 }

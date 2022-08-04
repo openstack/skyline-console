@@ -20,7 +20,7 @@ import { Button } from 'antd';
 import { NetworkStore } from 'stores/neutron/network';
 import { SecurityGroupStore } from 'stores/neutron/security-group';
 import { QoSPolicyStore } from 'stores/neutron/qos-policy';
-import globalVirtualAdapterStore from 'stores/neutron/virtual-adapter';
+import globalPortStore from 'stores/neutron/port-extension';
 import globalProjectStore from 'stores/keystone/project';
 import { SubnetStore } from 'stores/neutron/subnet';
 import { getQoSPolicyTabs } from 'resources/neutron/qos-policy';
@@ -200,7 +200,7 @@ export class CreateAction extends ModalAction {
       (data.security_groups = security_groups.selectedRowKeys || undefined);
     data.project_id = this.currentProjectId;
     bindingProfile && (data['binding:profile'] = JSON.parse(bindingProfile));
-    return globalVirtualAdapterStore.create(data);
+    return globalPortStore.create(data);
   };
 
   get formItems() {

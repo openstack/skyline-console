@@ -14,7 +14,7 @@
 
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import globalVirtualAdapterStore from 'stores/neutron/virtual-adapter';
+import globalPortStore from 'stores/neutron/port-extension';
 import { NetworkStore } from 'stores/neutron/network';
 import { SubnetStore } from 'stores/neutron/subnet';
 
@@ -79,7 +79,7 @@ export class AllocateIP extends ModalAction {
       }
       return ret;
     });
-    return globalVirtualAdapterStore.update(this.item, {
+    return globalPortStore.update(this.item, {
       fixed_ips: [...data, ...this.item.fixed_ips],
     });
   };

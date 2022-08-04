@@ -14,7 +14,7 @@
 
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import globalVirtualAdapterStore from 'stores/neutron/virtual-adapter';
+import globalPortStore from 'stores/neutron/port-extension';
 import { SecurityGroupStore } from 'stores/neutron/security-group';
 import {
   securityGroupColumns,
@@ -74,7 +74,7 @@ export class ManageSecurityGroup extends ModalAction {
     const { id, security_groups, port_security_enabled } = this.item;
     let sgs = security_groups;
     if (!security_groups) {
-      const detail = await globalVirtualAdapterStore.fetchDetail({ id });
+      const detail = await globalPortStore.fetchDetail({ id });
       sgs = detail.security_groups;
     }
     const results = await Promise.all(

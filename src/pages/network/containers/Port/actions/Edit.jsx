@@ -14,7 +14,7 @@
 
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import globalVirtualAdapterStore from 'stores/neutron/virtual-adapter';
+import globalPortStore from 'stores/neutron/port-extension';
 
 const portTypes =
   'normal,macvtap,direct,baremetal,direct-physical,virtio-forwarder,smart-nic';
@@ -60,7 +60,7 @@ export class Edit extends ModalAction {
     if (type && type !== 'auto') {
       data.mac_address = mac;
     }
-    return globalVirtualAdapterStore.update({ id }, data);
+    return globalPortStore.update({ id }, data);
   };
 
   get formItems() {

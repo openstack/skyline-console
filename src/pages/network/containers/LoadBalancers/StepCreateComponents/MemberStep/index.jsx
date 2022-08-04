@@ -14,14 +14,12 @@
 
 import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
-import { PortStore } from 'stores/neutron/port';
-import { VirtualAdapterStore } from 'stores/neutron/virtual-adapter';
+import { PortStore } from 'stores/neutron/port-extension';
 import { get } from 'lodash';
 
 export class MemberStep extends Base {
   init() {
-    this.store = new VirtualAdapterStore();
-    this.portStore = new PortStore();
+    this.store = new PortStore();
     this.state = {
       ports: [],
     };

@@ -12,19 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import ManageSecurityGroup from 'pages/network/containers/VirtualAdapter/actions/ManageSecurityGroup';
+import AllocateIP from 'pages/network/containers/Port/actions/AllocateIP';
+import ReleaseIP from './ReleaseIP';
 
 const actionConfigs = {
   rowActions: {
-    // firstAction: EditAction,
+    firstAction: ReleaseIP,
     // moreActions: [{
     //   action: Attach,
     // }],
   },
-  batchActions: [
-    //   DeleteAction,
-  ],
-  primaryActions: [ManageSecurityGroup],
+  batchActions: [ReleaseIP],
+  primaryActions: [AllocateIP],
 };
 
-export default actionConfigs;
+const adminConfigs = {
+  rowActions: {
+    firstAction: ReleaseIP,
+  },
+  batchActions: [],
+  primaryActions: [],
+};
+
+export default { actionConfigs, adminConfigs };

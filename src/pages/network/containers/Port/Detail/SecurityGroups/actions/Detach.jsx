@@ -13,15 +13,19 @@
 // limitations under the License.
 
 import { ConfirmAction } from 'containers/Action';
-import globalServerStore from 'stores/nova/instance';
+import globalPortStore from 'stores/neutron/port-extension';
 
-export default class Detach extends ConfirmAction {
+export default class DetachAction extends ConfirmAction {
   get id() {
-    return 'detach_instance';
+    return 'detach';
   }
 
   get title() {
-    return t('Detach Instance');
+    return t('Detach Security Group');
+  }
+
+  get isDanger() {
+    return true;
   }
 
   get buttonText() {
@@ -29,19 +33,18 @@ export default class Detach extends ConfirmAction {
   }
 
   get actionName() {
-    return t('detach instance');
+    return t('detach security group');
   }
 
-  get isAsyncAction() {
-    return true;
-  }
+  policy = 'update_port';
 
-  policy = 'os_compute_api:os-attach-interfaces:delete';
+  allowedCheckFunc = () => true;
 
-  allowedCheckFunc = (item) => !!item.device_id;
-
-  onSubmit = async () => {
-    const { id, device_id } = this.item;
-    return globalServerStore.detachInterface({ id: device_id, ports: [id] });
+  onSubmit = (item) => {
+    const { port: { id, security_groups = [] } = {} } = item;
+    const data = {
+      security_groups: security_groups.filter((it) => it !== item.id),
+    };
+    return globalPortStore.update({ id }, data);
   };
 }
