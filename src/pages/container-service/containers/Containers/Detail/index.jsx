@@ -14,9 +14,11 @@ import { inject, observer } from 'mobx-react';
 import Base from 'containers/TabDetail';
 import globalContainersStore from 'src/stores/zun/containers';
 import { containerStatus } from 'resources/zun/container';
+import { checkPolicyRule } from 'resources/skyline/policy';
 import actionConfigs from '../actions';
 import BaseDetail from './BaseDetail';
 import ActionLogs from './ActionLogs';
+import Logs from './Logs';
 
 export class ContainerDetail extends Base {
   init() {
@@ -56,8 +58,12 @@ export class ContainerDetail extends Base {
     ];
   }
 
+  get showLogs() {
+    return checkPolicyRule('container:logs');
+  }
+
   get tabs() {
-    return [
+    const items = [
       {
         title: t('Detail'),
         key: 'general_info',
@@ -69,6 +75,14 @@ export class ContainerDetail extends Base {
         component: ActionLogs,
       },
     ];
+    if (this.showLogs) {
+      items.push({
+        title: t('Logs'),
+        key: 'logs',
+        component: Logs,
+      });
+    }
+    return items;
   }
 }
 

@@ -76,6 +76,9 @@ export class ZunClient extends Base {
             key: 'container_actions',
             responseKey: 'containerAction',
           },
+          {
+            key: 'logs',
+          },
         ],
       },
       {

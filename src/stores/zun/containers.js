@@ -81,6 +81,11 @@ export class ContainersStore extends Base {
     const stats = (await this.client.stats.list(uuid)) || {};
     return { ...item, ...stats };
   }
+
+  async fetchLogs(id) {
+    const logs = await this.client.logs.list(id);
+    return logs;
+  }
 }
 
 const globalContainersStore = new ContainersStore();
