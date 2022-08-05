@@ -33,6 +33,10 @@ export default class StopContainer extends ConfirmAction {
     return t('Stop');
   }
 
+  get isAsyncAction() {
+    return true;
+  }
+
   policy = 'container:stop';
 
   aliasPolicy = 'zun:container:stop';
