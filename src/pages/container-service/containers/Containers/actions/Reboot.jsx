@@ -31,6 +31,10 @@ export default class RebootContainer extends ConfirmAction {
     return t('Reboot');
   }
 
+  get isAsyncAction() {
+    return true;
+  }
+
   policy = 'container:reboot';
 
   aliasPolicy = 'zun:container:reboot';

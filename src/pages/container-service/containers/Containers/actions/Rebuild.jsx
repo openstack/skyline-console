@@ -32,6 +32,10 @@ export class RebuildContainer extends ModalAction {
     return t('Rebuild Container');
   }
 
+  get isAsyncAction() {
+    return true;
+  }
+
   get defaultValue() {
     const { name, image, image_driver } = this.item;
     return {

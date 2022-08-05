@@ -31,6 +31,10 @@ export default class StartContainer extends ConfirmAction {
     return t('Start');
   }
 
+  get isAsyncAction() {
+    return true;
+  }
+
   policy = 'container:start';
 
   aliasPolicy = 'zun:container:start';
