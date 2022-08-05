@@ -77,9 +77,12 @@ export class ContainersStore extends Base {
   }
 
   async detailDidFetch(item) {
-    const { uuid } = item;
-    const stats = (await this.client.stats.list(uuid)) || {};
-    return { ...item, ...stats };
+    const { uuid, status } = item;
+    let stats = {};
+    if (status === 'Running') {
+      stats = (await this.client.stats.list(uuid)) || {};
+    }
+    return { ...item, stats };
   }
 
   async fetchLogs(id) {
