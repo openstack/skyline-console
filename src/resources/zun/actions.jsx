@@ -24,7 +24,6 @@ export const actionEvent = {
   compute__do_container_restart: t('Restart Container'),
   compute__do_container_pause: t('Pause Container'),
   compute__do_container_unpause: t('Unpause Container'),
-  compute__do_container_resize: t('Resize Container'),
   compute__do_container_rebuild: t('Rebuild Container'),
   compute__do_container_kill: t('Kill Container'),
   compute__do_container_delete: t('Delete Container'),
