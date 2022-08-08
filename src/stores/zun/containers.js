@@ -15,6 +15,7 @@
 import Base from 'stores/base';
 import client from 'client';
 import { action } from 'mobx';
+import { isEmpty } from 'lodash';
 
 export class ContainersStore extends Base {
   get client() {
@@ -77,12 +78,22 @@ export class ContainersStore extends Base {
   }
 
   async detailDidFetch(item) {
-    const { uuid, status } = item;
+    const { uuid, status, addresses = {} } = item;
     let stats = {};
     if (status === 'Running') {
       stats = (await this.client.stats.list(uuid)) || {};
     }
-    return { ...item, stats };
+    const networks = Object.keys(addresses);
+    let { ports = [] } = item;
+    if (isEmpty(ports)) {
+      ports = Object.values(addresses)
+        .reduce((ret, cur) => {
+          ret = ret.concat(cur);
+          return ret;
+        }, [])
+        .map((it) => it.port);
+    }
+    return { ...item, stats, networks, ports };
   }
 
   async fetchLogs(id) {
