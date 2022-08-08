@@ -171,7 +171,7 @@ function DropdownActionButton({
       dividerElement = <Divider type="vertical" />;
     }
 
-    if (allowedFatherCount === 1 && allowedAll === 1) {
+    if (allowedFatherCount === 1 && allowedAll === 1 && actionButton) {
       const className = isWide ? '' : styles['single-more-action'];
       moreElement = <span className={className}>{actionButton}</span>;
     } else if (allowedFatherCount > 0) {
@@ -235,7 +235,6 @@ function getActionList(actions, item, containerProps) {
       actionList.push(newAction);
     }
   });
-
   return {
     actionList,
     firstAction: newFirst,
