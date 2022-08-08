@@ -44,11 +44,11 @@ export class BaseDetail extends Base {
         valueRender: 'bytes',
       },
       {
-        label: t('Min System Disk(GiB)'),
+        label: t('Min System Disk (GiB)'),
         dataIndex: 'min_disk',
       },
       {
-        label: t('Min Memory(GiB)'),
+        label: t('Min Memory (GiB)'),
         dataIndex: 'min_ram',
         valueRender: 'GiBValue',
       },

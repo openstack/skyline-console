@@ -132,7 +132,7 @@ export const getAdd = (
 
 const titleMap = {
   shares: t('Share'),
-  gigabytes: t('Share Gigabytes(GiB)'),
+  gigabytes: t('Share Capacity (GiB)'),
   share_networks: t('Share Network'),
   share_groups: t('Share Group'),
 };

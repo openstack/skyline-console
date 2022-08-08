@@ -146,7 +146,7 @@ export default class ZunVolume extends React.Component {
             {selectSource}
           </Col>
           <Col span={8} hidden={!isNewVolume}>
-            <span className={styles.label}>{t('Size(GiB)')}</span>
+            <span className={styles.label}>{t('Size (GiB)')}</span>
             {inputSize}
           </Col>
           <Col span={8}>
