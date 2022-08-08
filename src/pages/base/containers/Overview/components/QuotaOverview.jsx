@@ -58,7 +58,7 @@ export const quotaCardList = [
         key: 'volumes',
       },
       {
-        text: t('Gigabytes (GiB)'),
+        text: t('Volume Capacity (GiB)'),
         key: 'gigabytes',
       },
       {
@@ -70,7 +70,7 @@ export const quotaCardList = [
         key: 'backups',
       },
       {
-        text: t('Volume Backup Gigabytes (GiB)'),
+        text: t('Volume Backup Capacity (GiB)'),
         key: 'backup_gigabytes',
       },
     ],
@@ -96,7 +96,7 @@ export const shareQuotaCard = {
   value: [
     { text: t('Shares'), key: 'shares' },
     {
-      text: t('Share Gigabytes(GiB)'),
+      text: t('Share Capacity (GiB)'),
       key: 'share_gigabytes',
     },
     { text: t('Share Networks'), key: 'share_networks' },
@@ -128,7 +128,7 @@ export const getVolumeTypeCards = (data) => {
           key: `volumes_${item.name}`,
         },
         {
-          text: t('{name} type gigabytes(GiB)', { name: item.name }),
+          text: t('{name} type capacity (GiB)', { name: item.name }),
           key: `gigabytes_${item.name}`,
         },
         {

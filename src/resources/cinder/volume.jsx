@@ -451,7 +451,7 @@ export const getAdd = (cinderQuota, withCountCheck = true) => {
   }
   if ((sizeLimit !== -1 && sizeLeft < totalSize) || sizeLeft === 0) {
     const error = getErrorMessage({
-      name: t('gigabytes'),
+      name: t('volume capacity'),
       left: sizeLeft,
       input: totalSize,
     });
@@ -473,7 +473,7 @@ export const getAdd = (cinderQuota, withCountCheck = true) => {
     typeSizeLeft === 0
   ) {
     const error = getErrorMessage({
-      name: t('{name} type gigabytes', { name: type }),
+      name: t('{name} type capacity', { name: type }),
       left: typeSizeLeft,
       input: totalSize,
     });
@@ -505,7 +505,7 @@ export const getQuotaInfo = (self, withCountCheck = true) => {
     ...gigabytes,
     add: addSize,
     name: 'gigabytes',
-    title: t('Gigabytes (GiB)'),
+    title: t('Volume Capacity (GiB)'),
     type: 'line',
   };
   if (!name) {
@@ -522,7 +522,7 @@ export const getQuotaInfo = (self, withCountCheck = true) => {
     ...typeSizeQuota,
     add: addSize,
     name: 'typeSize',
-    title: t('{name} type gigabytes', { name }),
+    title: t('{name} type capacity', { name }),
     type: 'line',
   };
   return [volumeData, sizeData, typeData, typeSizeData];

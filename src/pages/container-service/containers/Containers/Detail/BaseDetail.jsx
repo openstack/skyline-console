@@ -191,11 +191,11 @@ export class BaseDetail extends Base {
         render: (value = 0) => value.toFixed(4),
       },
       {
-        label: t('MEM LIMIT(MiB)'),
+        label: t('MEM LIMIT (MiB)'),
         dataIndex: 'stats[MEM LIMIT(MiB)]',
       },
       {
-        label: t('MEM USAGE(MiB)'),
+        label: t('MEM USAGE (MiB)'),
         dataIndex: 'stats[MEM USAGE(MiB)]',
         render: (value = 0) => value.toFixed(4),
       },

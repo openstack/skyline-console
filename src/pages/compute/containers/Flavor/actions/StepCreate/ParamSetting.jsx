@@ -360,7 +360,7 @@ export class ParamSetting extends Base {
       },
       {
         name: 'memoryGb',
-        label: t('Ram Size(GiB)'),
+        label: t('Ram Size (GiB)'),
         type: 'input-int',
         min: 1,
         required: true,
@@ -374,14 +374,14 @@ export class ParamSetting extends Base {
       },
       {
         name: 'ephemeral',
-        label: t('Ephemeral Disk(GiB)'),
+        label: t('Ephemeral Disk (GiB)'),
         type: 'input-int',
         min: 0,
         hidden: !hasEphemeral,
       },
       {
         name: 'ephemeralTmp',
-        label: t('Ephemeral Disk(GiB)'),
+        label: t('Ephemeral Disk (GiB)'),
         type: 'input-int',
         min: 0,
         hidden: isBareMetal || hasEphemeral,
@@ -389,7 +389,7 @@ export class ParamSetting extends Base {
       },
       {
         name: 'disk',
-        label: t('Root Disk(GiB)'),
+        label: t('Root Disk (GiB)'),
         type: 'input-int',
         min: 0,
         hidden: this.enableCinder,

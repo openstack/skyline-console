@@ -116,7 +116,7 @@ export class BaseDetail extends Base {
     ];
     if (hasEphemeral) {
       options.push({
-        label: t('Ephemeral Disk(GiB)'),
+        label: t('Ephemeral Disk (GiB)'),
         dataIndex: 'OS-FLV-EXT-DATA:ephemeral',
       });
     }
@@ -154,7 +154,7 @@ export class BaseDetail extends Base {
   get diskCard() {
     const options = [
       {
-        label: t('Root Disk(GiB)'),
+        label: t('Root Disk (GiB)'),
         dataIndex: 'disk',
       },
     ];

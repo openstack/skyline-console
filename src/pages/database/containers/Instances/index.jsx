@@ -101,7 +101,7 @@ export class Instances extends Base {
         isHideable: true,
       },
       {
-        title: t('Volume Size'),
+        title: t('Volume Capacity (GiB)'),
         dataIndex: 'size',
         isHideable: true,
         render: (value) => (value ? `${value}GiB` : '-'),

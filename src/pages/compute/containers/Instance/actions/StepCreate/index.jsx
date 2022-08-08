@@ -217,7 +217,7 @@ export class StepCreate extends StepAction {
       ...volumeQuota.gigabytes,
       add: quotaError ? 0 : totalNewSize,
       name: 'volumeSize',
-      title: t('Volume Size'),
+      title: t('Volume Capacity (GiB)'),
       type: 'line',
     };
     const serverGroupQuota = this.getServerGroupQuota();
@@ -363,7 +363,7 @@ export class StepCreate extends StepAction {
     const totalSizeMsg = this.getQuotaMessage(
       totalNewSize,
       quotaAll.gigabytes,
-      t('volume gigabytes')
+      t('volume capacity')
     );
     if (totalSizeMsg) {
       return totalSizeMsg;
@@ -385,7 +385,7 @@ export class StepCreate extends StepAction {
       const sizeMsg = this.getQuotaMessage(
         newSizeMap[key],
         quotaAll[`gigabytes_${key}`],
-        t('volume type {type} gigabytes', { type: key })
+        t('volume type {type} capacity', { type: key })
       );
       if (sizeMsg) {
         msg = sizeMsg;
