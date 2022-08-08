@@ -63,6 +63,7 @@ export class UpdateStatus extends ModalAction {
         name: 'status',
         label: t('Status'),
         type: 'select',
+        required: true,
         options: statusList,
         onChange: this.handleStatusChange,
         extra:
