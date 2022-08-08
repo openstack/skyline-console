@@ -572,14 +572,21 @@
               - ^src/pages/management/.*$
               - ^src/pages/user-center/.*$
               - ^src/pages/share/.*$
+              - ^src/pages/container-infra/.*$
+              - ^src/pages/container-service/.*$
+              - ^src/pages/database/.*$
               - ^src/stores/heat/.*$
               - ^src/stores/zun/.*$
               - ^src/stores/keystone/.*$
               - ^src/stores/manila/.*$
+              - ^src/stores/magnum/.*$
+              - ^src/stores/trove/.*$
               - ^src/resources/heat/.*$
               - ^src/resources/zun/.*$
               - ^src/resources/keystone/.*$
               - ^src/resources/manila/.*$
+              - ^src/resources/magnum/.*$
+              - ^src/resources/trove/.*$
               - ^test/e2e/integration/pages/configuration/.*$
               - ^test/e2e/integration/pages/heat/.*$
               - ^test/e2e/integration/pages/zun/.*$
@@ -627,14 +634,21 @@
               - ^src/pages/management/.*$
               - ^src/pages/user-center/.*$
               - ^src/pages/share/.*$
+              - ^src/pages/container-infra/.*$
+              - ^src/pages/container-service/.*$
+              - ^src/pages/database/.*$
               - ^src/stores/heat/.*$
               - ^src/stores/zun/.*$
               - ^src/stores/manila/.*$
               - ^src/stores/keystone/.*$
+              - ^src/stores/magnum/.*$
+              - ^src/stores/trove/.*$
               - ^src/resources/heat/.*$
               - ^src/resources/zun/.*$
               - ^src/resources/keystone/.*$
               - ^src/resources/manila/.*$
+              - ^src/resources/magnum/.*$
+              - ^src/resources/trove/.*$
               - ^test/e2e/integration/pages/configuration/.*$
               - ^test/e2e/integration/pages/heat/.*$
               - ^test/e2e/integration/pages/zun/.*$
@@ -721,14 +735,21 @@
               - ^src/pages/management/.*$
               - ^src/pages/user-center/.*$
               - ^src/pages/share/.*$
+              - ^src/pages/container-infra/.*$
+              - ^src/pages/container-service/.*$
+              - ^src/pages/database/.*$
               - ^src/stores/heat/.*$
               - ^src/stores/zun/.*$
               - ^src/stores/keystone/.*$
               - ^src/stores/manila/.*$
+              - ^src/stores/magnum/.*$
+              - ^src/stores/trove/.*$
               - ^src/resources/heat/.*$
               - ^src/resources/zun/.*$
               - ^src/resources/keystone/.*$
               - ^src/resources/manila/.*$
+              - ^src/resources/magnum/.*$
+              - ^src/resources/trove/.*$
               - ^test/e2e/integration/pages/configuration/.*$
               - ^test/e2e/integration/pages/heat/.*$
               - ^test/e2e/integration/pages/zun/.*$
