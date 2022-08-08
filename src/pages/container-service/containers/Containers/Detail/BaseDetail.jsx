@@ -157,14 +157,46 @@ export class BaseDetail extends Base {
         render: this.stringifyContent,
       },
       {
+        label: t('Networks'),
+        dataIndex: 'networks',
+        render: (value = []) => (
+          <>
+            {value.map((it) => {
+              const link = this.getLinkRender('networkDetail', it, {
+                id: it,
+              });
+              return <div key={it}>{link}</div>;
+            })}
+          </>
+        ),
+      },
+      {
         label: t('Ports'),
         dataIndex: 'ports',
-        render: this.stringifyContent,
+        render: (value = []) => (
+          <>
+            {value.map((it) => {
+              const link = this.getLinkRender('virtualAdapterDetail', it, {
+                id: it,
+              });
+              return <div key={it}>{link}</div>;
+            })}
+          </>
+        ),
       },
       {
         label: t('Security Groups'),
         dataIndex: 'security_groups',
-        render: this.stringifyContent,
+        render: (value = []) => (
+          <>
+            {value.map((it) => {
+              const link = this.getLinkRender('securityGroupDetail', it, {
+                id: it,
+              });
+              return <div key={it}>{link}</div>;
+            })}
+          </>
+        ),
       },
     ];
 
