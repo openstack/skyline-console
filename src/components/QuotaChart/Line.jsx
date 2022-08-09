@@ -30,7 +30,7 @@ export default function Line(props) {
   let left = isLimit ? limit - used - reserved - add : 1;
   left = left < 0 ? 0 : left;
   const usedTip = `${t('Used')}: ${used}`;
-  const reservedTip = reserved ? '' : `${t('Reserved')}: ${reserved}`;
+  const reservedTip = reserved ? `${t('Reserved')}: ${reserved}` : '';
   const newTip = `${t('New')}: ${add}`;
   const leftTip = `${t('Left')}: ${left}`;
   const tips = isLimit ? [usedTip, newTip, leftTip] : [usedTip, newTip];
