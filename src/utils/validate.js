@@ -170,11 +170,11 @@ const isIpInRangeAll = (ipStr, start, end) => {
 const compareIpv6 = (ip1, ip2) => {
   const ip1s = ip1.split(':');
   const ip2s = ip2.split(':');
-  // 循环比较对应的项
+  // loop to compare the corresponding items
   for (let i = 0; i < ip1s.length; i++) {
     if (ip1s[i] === '') {
       if (ip2s[i] === '') {
-        // 对应的项都位空，往下比较
+        // The corresponding items are all empty, compare next
         // eslint-disable-next-line no-continue
         continue;
       } else {
@@ -183,7 +183,7 @@ const compareIpv6 = (ip1, ip2) => {
     } else if (ip2s[i] === '') {
       return 1;
     } else {
-      // 确定对应的项不位空，讲字符串转换位整数进行比较
+      // make sure the corresponding item is not empty, convert the string to an integer for comparison
       const value1 = parseInt(ip1s[i], 16);
       const value2 = parseInt(ip2s[i], 16);
       if (value1 > value2) {
@@ -196,7 +196,7 @@ const compareIpv6 = (ip1, ip2) => {
       continue;
     }
   }
-  // 循环结束，表示两个串表示的地址相同
+  // the loop ends, indicating that both strings represent the same address
   return 0;
 };
 

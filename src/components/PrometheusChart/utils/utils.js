@@ -67,7 +67,7 @@ export function fetchPrometheus(
   return Promise.resolve();
 }
 
-// 给query串增加数据，如hostname等。
+// Add params to the query string, such as hostname, etc
 export function getRequestUrl(url, params, finalFormatFunc, baseParams) {
   const totalParams = { ...params, ...baseParams };
   return finalFormatFunc(
@@ -120,31 +120,31 @@ export function getInterval(currentRange) {
 
 const maskAndTicketCountDict = [
   {
-    // 一小时内的
+    // Format used within an hour
     // mask: 'HH:mm:ss',
     formatter: (d) => getStrFromTimestamp(d, 'HH:mm:ss'),
     ticketCount: 6,
   },
   {
-    // 一天内的
+    // Format used within an day
     // mask: 'HH:mm:ss',
     formatter: (d) => getStrFromTimestamp(d, 'HH:mm:ss'),
     ticketCount: 6,
   },
   {
-    // 7天内的
+    // Format used within 7 days
     // mask: 'MM-DD HH:mm',
     formatter: (d) => getStrFromTimestamp(d, 'MM-DD HH:mm'),
     ticketCount: 3,
   },
   {
-    // 14天内的
+    // Format used within 14 days
     // mask: 'MM-DD HH:mm',
     formatter: (d) => getStrFromTimestamp(d, 'MM-DD HH:mm'),
     ticketCount: 6,
   },
   {
-    // 以上
+    // Other
     // mask: 'MM-DD HH:mm',
     formatter: (d) => getStrFromTimestamp(d, 'MM-DD HH:mm'),
     ticketCount: 6,
@@ -201,10 +201,10 @@ export const range2IntervalsDict = [
 export const getPromises = (metricKey) => {
   const queries = get(METRICDICT, metricKey);
   return queries.url.map((u, idx) => {
-    // 按顺序取聚合函数
+    // get aggregate data in order
     const finalFormatFunc =
       (queries.finalFormatFunc || [])[idx] || baseReturnFunc;
-    // 按顺序获取基础参数
+    // get base params in order
     const baseParams = (queries.baseParams || [])[idx] || {};
     const finalUrl = getRequestUrl(u, {}, finalFormatFunc, baseParams);
     return fetchPrometheus(finalUrl, 'current');

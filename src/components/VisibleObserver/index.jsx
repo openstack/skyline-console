@@ -46,7 +46,7 @@ export default class Observer extends Component {
 
   render() {
     return (
-      // 这里也可以使用 findDOMNode 实现，但是不建议
+      // The findDOMNode implementation could also be used here, but is not recommended
       <div
         ref={(div) => {
           this.container = div;

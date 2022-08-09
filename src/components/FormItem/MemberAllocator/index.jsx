@@ -245,7 +245,6 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
                           {
                             required: true,
                             validator: (rule, value1) => {
-                              // 校验值存在
                               const member = members.filter(
                                 (it) =>
                                   it.address === value1.ip_address.ip &&

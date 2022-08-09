@@ -118,14 +118,8 @@ module.exports = (env) => {
       ],
     },
     plugins: [
-      // 热更新没必要。
-      // new webpack.HotModuleReplacementPlugin(),
-      // new OpenBrowserPlugin({
-      //   url: 'http://localhost:8080',
-      //   browser: "Google Chrome",
-      // }),
       new webpack.DefinePlugin({
-        // 为项目注入环境变量
+        // Inject environment variables for the project
         'process.env.API': JSON.stringify(API),
       }),
       new HtmlWebPackPlugin({

@@ -103,7 +103,7 @@ export class HypervisorStore extends Base {
     const provider = (resource_providers || []).filter((it) => it.uuid !== id);
     const promiseArr = [this.providerClient.inventories.list(id)];
     if (provider.length) {
-      // 如果有provider，说明有VGPU
+      // If there is a provider, the VGPU is available
       promiseArr.push(
         this.providerClient.inventories.list(provider[0].uuid),
         this.providerClient.usages.list(provider[0].uuid)

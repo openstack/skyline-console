@@ -132,7 +132,7 @@ export class Associate extends ModalAction {
       });
     }
     const { id } = data.selectedRows[0];
-    // 获取云主机所有的interface
+    // Get all the interfaces of the instance
     const instanceInterfaces = await globalServerStore.fetchInterfaceList({
       id,
     });

@@ -19,7 +19,7 @@ import { isEqual } from 'lodash';
 import ActionButton from '../ActionButton';
 import { getAllowedResults, getAction } from '../Action';
 
-// 表格上面的按钮
+// The buttons above the table
 export default class TablePrimaryButtons extends Component {
   static propTypes() {
     return {

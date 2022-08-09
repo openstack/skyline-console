@@ -557,7 +557,6 @@ export class CreateNetwork extends ModalAction {
       {
         name: 'cidr',
         label: t('CIDR'),
-        // TODO 子网掩码待完善
         type: 'input',
         placeholder: isIpv4 ? '192.168.0.0/24' : '1001:1001::/64',
         required: create_subnet,

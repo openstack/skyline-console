@@ -42,7 +42,7 @@ export default class CircleChart extends React.Component {
 
   render() {
     const { data, legendFontSize, legendOffsetX, middleFontSize } = this.props;
-    const sliceNumber = 0.01; // 自定义 other 的图形，增加两条线
+    const sliceNumber = 0.01; // Customize Other's graph by adding two lines
 
     registerShape('interval', 'sliceShape', {
       draw(cfg, container) {

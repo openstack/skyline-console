@@ -55,7 +55,7 @@ export class BaseStep extends Base {
       () => {
         // Reset owned subnets after change owned network
         const { network_id } = this.state;
-        // 如果是分步表单的前进后退触发的change，没有old_network_id则不会触发刷新
+        // The change triggered by the forward and backward step of the form will not trigger the refresh without old_network_id
         if (old_network_id && old_network_id !== network_id) {
           this.formRef.current.setFieldsValue({
             vip_address: undefined,

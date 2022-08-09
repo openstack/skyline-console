@@ -44,7 +44,7 @@ function getIsAllowedValue(alloweds, index) {
   return result;
 }
 
-// 第一个action一定保留， action | 更多
+// The first action must be reserved, shown as: first action | more actions
 function DropdownActionButton({
   firstAction = null,
   moreActions = [],

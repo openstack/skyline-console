@@ -167,7 +167,7 @@ export class NetworkStore extends Base {
       projectName: projectDetail.name,
     };
 
-    // 处理使用IP数量，只有管理员或者当前网络所有者才能查看
+    // Only the administrator or the current network owner can view the number of IP addresses used
     if (isAdminPage || currentProjectId === originData.project_id) {
       const used = await this.ipClient.show(id);
       this.detail = {

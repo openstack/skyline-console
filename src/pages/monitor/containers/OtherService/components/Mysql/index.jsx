@@ -30,7 +30,7 @@ const topCardList = [
     },
     renderContent: ({ data }) => (
       <div className={styles['top-content']}>
-        {/* 转化为毫秒 */}
+        {/* convert to milliseconds */}
         {formatUsedTime(get(data, '[0].y', 0) * 1000)}
       </div>
     ),

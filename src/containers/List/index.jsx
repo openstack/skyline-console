@@ -307,7 +307,10 @@ export default class BaseList extends React.Component {
   }
 
   get isCourier() {
-    // 如果是courier的并且是后端分页的，那么需要带数字的分页脚标，因为Courier自带分页且能跳页，而openstack的不支持跳页。
+    /* If it is courier and it is back-end paging, 
+     then a page footer with a number is required, 
+     because Courier has its own paging and can jump pages, 
+     while openstack does not support page jumping. */
     return false;
   }
 

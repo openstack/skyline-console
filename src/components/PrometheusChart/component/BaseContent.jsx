@@ -60,7 +60,7 @@ const BaseContent = (props) => {
       if (!node || refresh) {
         setNode(ret[0]);
       }
-      // 非自选时间段刷新时间
+      // refresh data by force(not in the selected )
       if (refresh && groupIndex !== 4) {
         setRange(getRange(groupIndex));
       }
