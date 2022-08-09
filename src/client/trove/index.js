@@ -108,6 +108,11 @@ export class TroveClient extends Base {
           },
         ],
       },
+      {
+        name: 'quotas',
+        key: 'mgmt/quotas',
+        responseKey: 'quota',
+      },
     ];
   }
 }

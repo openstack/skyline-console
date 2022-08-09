@@ -49,6 +49,9 @@ export class RootStore {
   hasAdminPageRole = false;
 
   @observable
+  hasAdminOnlyRole = false;
+
+  @observable
   openKeys = [];
 
   @observable
@@ -135,6 +138,7 @@ export class RootStore {
     this.baseDomains = base_domains;
     this.hasAdminPageRole = await this.getUserSystemRoles(userInfo);
     this.hasAdminRole = this.hasAdminPageRole;
+    this.hasAdminOnlyRole = roles.some((it) => it.name === 'admin');
   }
 
   @action
