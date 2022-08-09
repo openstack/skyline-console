@@ -106,6 +106,16 @@ export class InstancesStore extends Base {
   }
 
   @action
+  async resizeVolume({ id, size }) {
+    const body = {
+      resize: {
+        volume: { size },
+      },
+    };
+    return this.operation({ body, id });
+  }
+
+  @action
   async listDatastores() {
     const result = await this.clientDatastore.list();
     const data = result.datastores;

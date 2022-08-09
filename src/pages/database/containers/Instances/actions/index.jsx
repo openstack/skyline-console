@@ -18,6 +18,7 @@ import Edit from './Edit';
 import Restart from './Restart';
 import Stop from './Stop';
 import Reboot from './Reboot';
+import ResizeVolume from './ResizeVolume';
 
 const actionConfigs = {
   rowActions: {
@@ -29,6 +30,10 @@ const actionConfigs = {
       {
         title: t('Database Instance Status'),
         actions: [Restart, Stop, Reboot],
+      },
+      {
+        title: t('Configuration Update'),
+        actions: [ResizeVolume],
       },
     ],
   },
