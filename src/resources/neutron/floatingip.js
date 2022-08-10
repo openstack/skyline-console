@@ -298,7 +298,7 @@ export const getFixedIPFormItemForAssociate = (label, self) => {
 export const getFIPFormItemExtra = () => {
   if (enablePFW()) {
     return t(
-      'The floating IP configured with port forwarding rules cannot be bound'
+      'The floating IP configured with port forwardings cannot be bound'
     );
   }
   return '';

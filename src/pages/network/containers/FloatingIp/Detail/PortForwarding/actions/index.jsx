@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Create from 'pages/network/containers/FloatingIp/actions/CreateDNAT';
+import Create from './Create';
 import Edit from './Edit';
 import Delete from './Delete';
 

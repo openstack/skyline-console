@@ -15,13 +15,13 @@
 import { ConfirmAction } from 'containers/Action';
 import globalPortForwardingStore from 'stores/neutron/port-forwarding';
 
-export default class DeleteAction extends ConfirmAction {
+export default class Delete extends ConfirmAction {
   get id() {
     return 'delete';
   }
 
   get title() {
-    return t('Delete DNAT Rule');
+    return t('Delete Port Forwarding');
   }
 
   get isDanger() {
@@ -33,7 +33,7 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   get actionName() {
-    return t('delete DNAT rule');
+    return t('delete port forwarding');
   }
 
   policy = 'delete_floatingip_port_forwarding';

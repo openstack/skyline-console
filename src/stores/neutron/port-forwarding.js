@@ -35,6 +35,13 @@ export class PortForwardingStore extends Base {
     };
   }
 
+  updateParamsSortPage = (params, sortKey, sortOrder) => {
+    if (sortKey && sortOrder) {
+      params.sort_key = sortKey;
+      params.sort_dir = sortOrder === 'descend' ? 'desc' : 'asc';
+    }
+  };
+
   listDidFetch(items, allProjects, filters) {
     if (items.length === 0) {
       return items;
