@@ -82,7 +82,7 @@ export class DomainPermission extends ModalAction {
         name: 'roles',
         label: t('Role'),
         type: 'select',
-        // TODO:域管理员/域只读管理员
+        // TODO: domain admin / domain reader
         mode: 'multiple',
         options: this.rolesList,
       },

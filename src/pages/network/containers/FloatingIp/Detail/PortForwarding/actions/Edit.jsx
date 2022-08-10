@@ -277,7 +277,7 @@ export class Edit extends ModalAction {
           const internal_port_id = formData.virtual_adapter.selectedRows[0].id;
           const { internal_port } = this.item;
           const { alreadyUsedPorts } = this.state;
-          // 判断是否本FIP已经绑定了本虚拟网卡的本端口
+          // check whether the port has been used
           const flag = alreadyUsedPorts.some(
             (pf) =>
               pf.internal_port !== internal_port &&

@@ -88,7 +88,7 @@ export class SystemPermission extends ModalAction {
         name: 'roles',
         label: t('Role'),
         type: 'select',
-        // TODO:平台管理员平台只读管理员
+        // TODO: platform admin / platform reader
         mode: 'multiple',
         options: this.rolesList,
       },

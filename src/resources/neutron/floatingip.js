@@ -39,7 +39,7 @@ export const resourceType = {
 export const transitionStatuses = ['PENDING'];
 
 /**
- * 通过port和router信息，构建subnet_id => router_id的映射关系
+ * Make a mapping between subnet_id => router_id based on the port and router information
  * @param portsWithFixedIPs
  * @param routerIdWithExternalNetworkInfo
  * @param shouldHaveExternalGateway
@@ -51,7 +51,7 @@ export function getSubnetToRouter(
   shouldHaveExternalGateway = true
 ) {
   const canReachSubnetIdsWithRouterId = [];
-  // 将有子网的信息保存下来，建立router_id => subnet_id的映射
+  // Save the information of all subnets and create a mapping of router_id => subnet_id
   portsWithFixedIPs.forEach((type) => {
     type.forEach((port) => {
       const router = routerIdWithExternalNetworkInfo.find((r) => {
@@ -123,7 +123,7 @@ export async function saveAndBuildPromisesFromInterfaces(interfaces) {
     const port_id = i.port_id || i.id;
     const mac_address = i.mac_addr || i.mac_address || '';
     const network_id = i.net_id || i.network_id;
-    // 保存interface的子网信息
+    // Save the subnet information of the interface
     i.fixed_ips.forEach((fixed_ip) => {
       instanceIPs.push({
         // params before '||' used for build self, after is used for list by backend
@@ -152,13 +152,13 @@ export async function getReasonForExternalNetworkPortOrAlreadyBindFip(
   floatingIPPromises
 ) {
   const ret = [...interfaces];
-  // 获取网络名称
+  // get the network names
   const networkDetails = await Promise.all(networkPromises);
   networkDetails.forEach((network, index) => {
     ret[index].network_name = network.name;
     // ret[index]['router:external'] = network['router:external'];
   });
-  // 提供判断是否为外部网络的网卡
+  // check whether it is the port of the external network
   const externalNetworks = await globalNetworkStore.pureFetchList({
     'router:external': true,
   });
@@ -175,7 +175,7 @@ export async function getReasonForExternalNetworkPortOrAlreadyBindFip(
     }
   });
 
-  // 提供判断是否已经绑定了浮动ip
+  // check whether a FIP has been bound
   const floatingIPs = await Promise.all(floatingIPPromises);
   floatingIPs.forEach((floatingip, index) => {
     ret[index].floatingIP =
@@ -194,7 +194,7 @@ export async function getReasonForExternalNetworkPortOrAlreadyBindFip(
  */
 export async function getFipsFromRouterId(router) {
   const { routerIdWithExternalNetworkInfo } = this.state;
-  // 从路由id获取路由的external_network_id
+  // get the external_network_id of the route from the current router
   const info = routerIdWithExternalNetworkInfo.find(
     (i) => i.id === router.router_id
   );
@@ -202,13 +202,13 @@ export async function getFipsFromRouterId(router) {
     return [];
   }
   const external_network_id = info.external_gateway_info.network_id;
-  // 获取所有network_id === 从路由id获取路由的external_network_id的浮动ip
+  // get all the FIPs of the external network which connected to the current router
   const fips = await globalFloatingIpsStore.pureFetchList({
     floating_network_id: external_network_id,
     status: 'DOWN',
     project_id: this.currentProjectId,
   });
-  // 获取外部网络的名称
+  // get the external network's name
   const external_network_info = await globalNetworkStore.fetchDetail({
     id: external_network_id,
   });
@@ -235,8 +235,8 @@ export async function handleFixedIPChange(e) {
   }
   const item = e.selectedRows[0];
   const totalFips = [];
-  // 考虑单subnet连接多个路由，并且路由开启了不同的公网网关。
-  // 从interface的子网获取到子网所在路由的id
+  // Consider that one subnet can connect to multi routes, and the routes can open diffent external gateways.
+  // Get the id of the route where the subnet is located from the subnet of the interface
   const routerIds = canReachSubnetIdsWithRouterId.filter(
     (i) => i.subnet_id === item.subnet_id
   );

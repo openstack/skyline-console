@@ -51,7 +51,7 @@ const getLocale = () => {
     localStorageLocaleKey: 'lang',
   });
 
-  // 如果没找到，则默认为汉语
+  // If not found, the default is Chinese
   if (!_.find(SUPPORT_LOCALES, { value: currentLocale })) {
     currentLocale = 'zh-cn';
     // currentLocale = 'en';

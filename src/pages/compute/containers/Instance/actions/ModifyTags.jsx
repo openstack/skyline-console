@@ -58,7 +58,7 @@ export class ModifyTags extends ModalAction {
           }
 
           let errorTag = '';
-          // 检测是否包含 / 和 ，
+          // check includes / or ,
           if (
             val.some((tag) => {
               const ret = tag.includes('/') || tag.includes(',');
@@ -70,7 +70,7 @@ export class ModifyTags extends ModalAction {
               new Error(t('Invalid Tag Value: {tag}', { tag: errorTag }))
             );
           }
-          // 检测大小写
+          // case detection: case independent
           if (initialTags.some(checkEqual)) {
             return Promise.reject(
               new Error(t('Duplicate tag name: {tag}', { tag: errorTag }))
@@ -80,7 +80,7 @@ export class ModifyTags extends ModalAction {
 
           function checkEqual(tag) {
             return val.some((v) => {
-              // 不是原始值，并且新值大小写不敏感
+              // It is case insensitive when compared to other values
               const flag = tag !== v && v.toLowerCase() === tag.toLowerCase();
               if (flag) {
                 errorTag = v;

@@ -127,7 +127,6 @@ export default function Ring(props) {
     <Chart placeholder={false} height={height} padding="auto" autoFit>
       <Legend visible={showTip && hasLabel} />
       <Tooltip visible={showTip} />
-      {/* 绘制图形 */}
       <View data={data}>
         <Coordinate type="theta" innerRadius={0.75} />
         <Interval

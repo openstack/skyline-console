@@ -214,7 +214,7 @@ export const getYesNoList = () => [
 ];
 
 /**
- * 生成一个从 start 到 end 的连续数组，左闭右开，
+ * Create a contiguous array from start to end, closed on the left and open on the right
  * @param start
  * @param end
  */

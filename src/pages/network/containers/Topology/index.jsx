@@ -68,7 +68,7 @@ export class Topology extends React.Component {
   }
 
   bindEvents = () => {
-    // 监听node上面mouse事件mouseleave
+    // listen for the mouse enter event on the node
     graph.on('node:mouseenter', (evt) => {
       const { item } = evt;
       const { nodeType } = item._cfg.model;
@@ -127,7 +127,6 @@ export class Topology extends React.Component {
     const nodeXY = [];
     routers.forEach((router, index) => {
       const { id, external_gateway_info, subnets, name } = router;
-      // TODO: 起始位置
       const routerX = parseFloat(
         ((width / 10) * index + (width / 20) * 3).toFixed(0)
       );
@@ -272,7 +271,7 @@ export class Topology extends React.Component {
             type: 'rect',
             // x: width / 2,
             // y: 150,
-            size: [width - 40, 30], // Combo 的最小大小
+            size: [width - 40, 30], // mininimum size of Combo
             style: {
               // fill: combosBackground[combosIndex % colorNum],
               fill: combosBackground[0],
@@ -298,7 +297,6 @@ export class Topology extends React.Component {
     const nodeXY = [];
     servers.forEach((server, index) => {
       const { fixed_addresses, fixed_networks } = server;
-      // TODO: 起始位置
       let insX = parseFloat(((width / 10) * 2).toFixed(0));
       let insY = null;
       // const subnetNum = fixed_ip_address.length;
@@ -537,7 +535,7 @@ export class Topology extends React.Component {
 
     const width = document.getElementById('container').scrollWidth;
 
-    // 渲染图所需数据
+    // data required for rendering
     let data = {
       nodes: [
         {
@@ -547,7 +545,7 @@ export class Topology extends React.Component {
           img: image,
           type: 'image',
           size: 56,
-          // 裁剪图片配置
+          // crop picture configuration
           clipCfg: {
             show: false,
             type: 'circle',
@@ -624,7 +622,7 @@ export class Topology extends React.Component {
       // });
     }
 
-    // 初始化G6图
+    // initialize the G6 graph
     if (graph) {
       graph.clear();
       graph.destroy();
@@ -635,7 +633,7 @@ export class Topology extends React.Component {
       width: width + extendWidth,
       height: Y,
       nodeStateStyles: {
-        // 鼠标 hover 上节点，即 hover 状态为 true 时的样式
+        // the style for hover
         hover: {
           lineWidth: 3,
         },
@@ -701,7 +699,6 @@ export class Topology extends React.Component {
       width: updateWidth,
       height: Y,
       nodeStateStyles: {
-        // 鼠标 hover 上节点，即 hover 状态为 true 时的样式
         hover: {
           lineWidth: 3,
         },

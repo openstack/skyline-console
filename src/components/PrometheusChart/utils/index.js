@@ -9,10 +9,10 @@ export function createFetchPrometheusClient(createParams) {
 
   return async function ({ params = {}, currentRange, interval }) {
     const promises = queryParams.url.map((u, idx) => {
-      // 按顺序取聚合函数
+      // get aggregate data in order
       const finalFormatFunc =
         (queryParams.finalFormatFunc || [])[idx] || baseReturnFunc;
-      // 按顺序获取基础参数
+      // get base params in order
       const baseParams = (queryParams.baseParams || [])[idx] || {};
       const finalUrl = getRequestUrl(u, params, finalFormatFunc, baseParams);
       return fetchPrometheus(finalUrl, requestType, currentRange, interval);

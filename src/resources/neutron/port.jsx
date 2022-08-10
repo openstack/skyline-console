@@ -50,19 +50,19 @@ export function getPortsAndReasons(
     let available = true;
     let reason = '';
     const name = it.fixed_ip_address;
-    // ipv6不可绑定浮动ip
+    // IPv6 cannot bind to floating ip
     if (!isIPv4(name)) {
       reason = `${t('It is IPv6 type.')}`;
       available = false;
-      // 外部网络
+      // external network
     } else if (it['router:external']) {
       reason = t('Is external network port');
       available = false;
-      // 绑定过浮动ip了
+      // already has FIP
     } else if (it.floatingIP) {
       reason = `${t('Is associate to floating ip: ')} ${it.floatingIP}`;
       available = false;
-      // 所有浮动ip均不可达的子网
+      // subnet unreachable by all FIPs
     } else if (
       canReachSubnetIdsWithRouterId.findIndex(
         (item) => item.subnet_id === it.subnet_id

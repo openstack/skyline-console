@@ -75,8 +75,8 @@ const RenderTabs = () => {
         const itemIndex = newData.findIndex(
           (p) => p[primaryKey] === metric[primaryKey]
         );
-        // 特殊处理计算表达式没有metric.__name__的情况，
-        // 此处usage是details的第3个查询表达式，所以判断index===3, 两个Tab放一起处理了，都放在第3个。
+        // Special handling of expressions that do not have metric.__name__
+        // Usage is the third query expression of details, so it is determined that index===3. The other two tabs are processed together
         // console.log(metric.__name__);
         if (index === 3) {
           newData[itemIndex].usage = parseFloat(

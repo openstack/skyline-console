@@ -139,7 +139,7 @@ export async function getLinkedRouterIdsByFip(project_id, item) {
 }
 
 /**
- * 获取当前项目下所有的subnet=>router的映射
+ * Get all subnet=>router mappings under the current project
  * @param project_id
  * @returns {Promise<[]>}
  */
@@ -147,8 +147,8 @@ export async function getCanReachSubnetIdsWithRouterId(
   project_id,
   routerFilterFunc
 ) {
-  // 获取所有路由器的id和external_gateway_info
-  // 并保存router_id => external_network_id的映射
+  // get the router's id and external gateway
+  // make a map: router_id => external_network_id
   let routerIdWithExternalNetworkInfo = await getRoutersWithIDAndExtInfo(
     project_id
   );
@@ -157,7 +157,7 @@ export async function getCanReachSubnetIdsWithRouterId(
       routerIdWithExternalNetworkInfo.filter(routerFilterFunc);
   }
   const portsWithFixedIPs = await getPortsWithFixedIPs();
-  // 获取所有路由器所绑定的子网的Gateway info => 即获取所有路由器绑定的子网IP
+  // Get the gateways of the subnets bound to the routers, can get the subnet IPs bound to the routers.
   const canReachSubnetIdsWithRouterId = getSubnetToRouter(
     portsWithFixedIPs,
     routerIdWithExternalNetworkInfo

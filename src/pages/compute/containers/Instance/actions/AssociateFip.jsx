@@ -60,7 +60,7 @@ export class AssociateFip extends ModalAction {
 
   async getInterfaces() {
     const { id } = this.item;
-    // 获取云主机所有的interface
+    // get all the interfaces of the instance
     const instanceInterfaces = await globalServerStore.fetchInterfaceList({
       id,
     });
