@@ -36,6 +36,7 @@ import {
   LoadingOutlined,
   TeamOutlined,
   ProjectOutlined,
+  AimOutlined,
 } from '@ant-design/icons';
 import styles from './index.less';
 
@@ -70,6 +71,7 @@ const iconTypeMap = {
   lb: LBIcon,
   group: <TeamOutlined />,
   project: <ProjectOutlined />,
+  floatingIp: <AimOutlined />,
 };
 
 export default class index extends Component {

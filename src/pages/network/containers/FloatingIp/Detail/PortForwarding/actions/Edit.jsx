@@ -12,14 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
 import { inject, observer } from 'mobx-react';
 import globalPortForwardingStore from 'stores/neutron/port-forwarding';
 import globalPortStore, { PortStore } from 'stores/neutron/port';
 import { getCanReachSubnetIdsWithRouterIdInComponent } from 'resources/neutron/router';
 import { getInterfaceWithReason } from 'resources/neutron/floatingip';
 import { getPortFormItem, getPortsAndReasons } from 'resources/neutron/port';
-import { DesktopOutlined } from '@ant-design/icons';
 import { ModalAction } from 'containers/Action';
 
 export class Edit extends ModalAction {
@@ -204,7 +202,7 @@ export class Edit extends ModalAction {
         name: 'floatingIp',
         label: t('Floating Ip'),
         type: 'label',
-        icon: <DesktopOutlined />,
+        iconType: 'floatingIp',
       },
       {
         name: 'protocol',
