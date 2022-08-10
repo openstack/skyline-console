@@ -122,7 +122,7 @@ export class StepDetails extends Base {
       },
       {
         name: 'size',
-        label: t('Size (GiB)'),
+        label: t('Database Disk (GiB)'),
         type: 'input-int',
         min: 1,
         placeholder: t('Size'),
