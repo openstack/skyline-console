@@ -21,6 +21,7 @@ import ContainersDetail from '../containers/Containers/Detail';
 import CapsulesDetail from '../containers/Capsules/Detail';
 import HostsDetail from '../containers/Hosts/Detail';
 import StepCreateContainer from '../containers/Containers/actions/StepCreate';
+import Services from '../containers/Services';
 
 const PATH = '/container';
 export default [
@@ -64,6 +65,11 @@ export default [
       {
         path: `${PATH}/hosts-admin/detail/:id`,
         component: HostsDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/services-admin`,
+        component: Services,
         exact: true,
       },
       // All
