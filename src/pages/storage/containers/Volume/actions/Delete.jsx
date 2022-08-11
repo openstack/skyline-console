@@ -12,8 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { ConfirmAction } from 'containers/Action';
 import globalVolumeStore from 'stores/cinder/volume';
+import { Checkbox, Tooltip } from 'antd';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import { isArray } from 'lodash';
 
 export default class DeleteAction extends ConfirmAction {
   get id() {
@@ -47,5 +51,71 @@ export default class DeleteAction extends ConfirmAction {
 
   allowedCheckFunc = (item) => this.canDelete(item);
 
-  onSubmit = ({ id }) => globalVolumeStore.delete({ id });
+  onSubmit = (item) => {
+    const { id, isCascadeDeleted = true } = item || this.item;
+    if (isCascadeDeleted) {
+      return globalVolumeStore.cascadeDelete({ id });
+    }
+    return globalVolumeStore.delete({ id });
+  };
+
+  onChangeCascade(choosed, data) {
+    if (isArray(data)) {
+      data.forEach((it) => {
+        it.isCascadeDeleted = choosed;
+      });
+    } else {
+      data.isCascadeDeleted = choosed;
+    }
+  }
+
+  initCascadeValue = (data) => {
+    this.onChangeCascade(true, data);
+  };
+
+  renderCascadeDeletion(data) {
+    const checkbox = (
+      <Checkbox
+        defaultChecked
+        onChange={(e) => {
+          this.onChangeCascade(e.target.checked, data);
+        }}
+      >
+        {t('Cascading deletion')}
+      </Checkbox>
+    );
+    return checkbox;
+  }
+
+  get cascadeDeletionTip() {
+    return t(
+      'Using cascading deletion, when the volume has snapshots, the associated snapshot will be automatically deleted first, and then the volume will be deleted, thereby improving the success rate of deleting the volume.'
+    );
+  }
+
+  renderCascadeDeletionTip() {
+    return (
+      <Tooltip title={this.cascadeDeletionTip}>
+        <QuestionCircleOutlined />
+      </Tooltip>
+    );
+  }
+
+  confirmContext = (data) => {
+    const name = this.getName(data);
+    this.initCascadeValue(data);
+    return (
+      <div>
+        <p style={{ marginBottom: '16px' }}>
+          {this.unescape(
+            t('Are you sure to delete volume { name }? ', { name })
+          )}
+        </p>
+        <div>
+          {this.renderCascadeDeletion(data)}
+          {this.renderCascadeDeletionTip()}
+        </div>
+      </div>
+    );
+  };
 }

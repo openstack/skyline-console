@@ -180,6 +180,14 @@ export class VolumeStore extends Base {
     return this.operation(id, data, 'os-recycle');
   }
 
+  @action
+  async cascadeDelete({ id }) {
+    const params = {
+      cascade: true,
+    };
+    return this.submitting(this.client.delete(id, null, params));
+  }
+
   restore(id) {
     return this.operation(id, {}, 'os-restore-recycle');
   }
