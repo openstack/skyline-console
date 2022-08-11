@@ -146,7 +146,7 @@ export class BaseDetail extends Base {
       {
         label: t('VNIC Type'),
         dataIndex: 'binding__vnic_type',
-        render: (value) => bindingTypes[value] || '-',
+        render: (value) => bindingTypes[value] || value,
       },
     ];
     if (this.detailData.binding__host_id) {

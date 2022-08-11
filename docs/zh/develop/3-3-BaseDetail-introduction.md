@@ -140,7 +140,7 @@
         {
             title: t('Status'),
             dataIndex: 'status',
-            render: (value) => volumeStatus[value] || '-',
+            render: (value) => volumeStatus[value] || value,
         },
         {
             title: t('Size'),

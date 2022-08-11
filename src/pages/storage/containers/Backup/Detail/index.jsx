@@ -66,7 +66,7 @@ export class Detail extends Base {
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (value) => backupStatus[value] || '-',
+        render: (value) => backupStatus[value] || value,
       },
       {
         title: t('Project ID'),

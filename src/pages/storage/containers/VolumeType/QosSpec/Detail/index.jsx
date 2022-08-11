@@ -49,7 +49,7 @@ export class Detail extends Base {
       {
         title: t('Consumer'),
         dataIndex: 'consumer',
-        render: (value) => consumerTypes[value] || '-',
+        render: (value) => consumerTypes[value] || value,
       },
     ];
   }

@@ -208,12 +208,12 @@ export const getImageColumns = (self) => [
   {
     title: t('Access Control'),
     dataIndex: 'visibility',
-    render: (value) => imageVisibility[value] || '-',
+    render: (value) => imageVisibility[value] || value,
   },
   {
     title: t('Format'),
     dataIndex: 'disk_format',
-    render: (value) => imageFormats[value] || '-',
+    render: (value) => imageFormats[value] || value,
   },
   {
     title: t('Image Size'),

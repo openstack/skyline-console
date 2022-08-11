@@ -50,7 +50,7 @@ export class QosSpecs extends Base {
       title: t('Consumer'),
       dataIndex: 'consumer',
       isHideable: true,
-      render: (value) => consumerTypes[value] || '-',
+      render: (value) => consumerTypes[value] || value,
     },
     {
       title: t('Specs'),

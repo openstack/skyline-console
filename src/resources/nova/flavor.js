@@ -224,19 +224,19 @@ export const gpuColumns = [
     title: t('CPU Policy'),
     dataIndex: 'hw:cpu_policy',
     isHideable: true,
-    render: (value) => cpuPolicyList[value] || '-',
+    render: (value) => cpuPolicyList[value] || value,
   },
   {
     title: t('CPU Thread Policy'),
     dataIndex: 'hw:cpu_thread_policy',
     isHideable: true,
-    render: (value) => cpuThreadPolicyMap[value] || '-',
+    render: (value) => cpuThreadPolicyMap[value] || value,
   },
   {
     title: t('Memory Page'),
     dataIndex: 'hw:mem_page_size',
     isHideable: true,
-    render: (value) => pageTypeMap[value] || '-',
+    render: (value) => pageTypeMap[value] || value,
   },
 ];
 

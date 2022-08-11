@@ -109,7 +109,7 @@ export class ManageHost extends ModalAction {
             title: t('Admin Status'),
             dataIndex: 'status',
             isHideable: true,
-            render: (value) => serviceStatus[value] || '-',
+            render: (value) => serviceStatus[value] || value,
             tip: (value, record) => {
               const { disabled_reason } = record || {};
               if (disabled_reason) {
@@ -122,7 +122,7 @@ export class ManageHost extends ModalAction {
             title: t('State'),
             dataIndex: 'state',
             isHideable: true,
-            render: (value) => serviceState[value] || '-',
+            render: (value) => serviceState[value] || value,
           },
           {
             title: t('Last Updated'),

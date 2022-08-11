@@ -60,7 +60,7 @@ export class BaseDetail extends Base {
       {
         label: t('OS'),
         dataIndex: 'os_distro',
-        render: (value) => imageOS[value] || '-',
+        render: (value) => imageOS[value] || value,
       },
       {
         label: t('OS Version'),
@@ -93,7 +93,7 @@ export class BaseDetail extends Base {
       {
         label: t('Visibility'),
         dataIndex: 'visibility',
-        render: (value) => imageVisibility[value] || '-',
+        render: (value) => imageVisibility[value] || value,
       },
       {
         label: t('Protected'),

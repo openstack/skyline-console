@@ -483,7 +483,7 @@ export class BaseStep extends Base {
       {
         title: t('Disk Format'),
         dataIndex: 'disk_format',
-        render: (value) => imageFormats[value] || '-',
+        render: (value) => imageFormats[value] || value,
       },
       {
         title: t('Min System Disk'),
@@ -498,7 +498,7 @@ export class BaseStep extends Base {
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (value) => imageStatus[value] || '-',
+        render: (value) => imageStatus[value] || value,
       },
       {
         title: t('Created At'),
@@ -524,7 +524,7 @@ export class BaseStep extends Base {
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (value) => volumeStatus[value] || '-',
+        render: (value) => volumeStatus[value] || value,
         width: 80,
       },
       {

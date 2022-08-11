@@ -52,7 +52,7 @@ export class ServerGroupDetail extends Base {
       {
         title: t('Policy'),
         dataIndex: 'policy',
-        render: (value) => policyType[value] || '-',
+        render: (value) => policyType[value] || value,
       },
       {
         title: t('Member Count'),

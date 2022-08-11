@@ -55,7 +55,7 @@ export const networkColumns = (self) => [
   {
     title: t('Status'),
     dataIndex: 'status',
-    render: (value) => networkStatus[value] || '-',
+    render: (value) => networkStatus[value] || value,
   },
   {
     title: t('Subnet Count'),

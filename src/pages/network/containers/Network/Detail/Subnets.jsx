@@ -115,7 +115,7 @@ export class Subnets extends Base {
       {
         //   title: t('Status'),
         //   dataIndex: 'status',
-        //   render: value => networkStatus[value] || '-',
+        //   render: value => networkStatus[value] || value,
         //   isHideable: true,
         // }, {
         title: t('Created At'),

@@ -43,7 +43,7 @@ export default function PopoverNetworks(props) {
     {
       title: t('Status'),
       dataIndex: 'status',
-      render: (value) => networkStatus[value] || '-',
+      render: (value) => networkStatus[value] || value,
     },
   ];
   return <IPopover columns={columns} getRequests={getRequests} />;
