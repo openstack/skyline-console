@@ -14,7 +14,6 @@
 
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { DesktopOutlined } from '@ant-design/icons';
 import { ModalAction } from 'containers/Action';
 import globalServerStore, { ServerStore } from 'stores/nova/instance';
 import globalRouterStore, { RouterStore } from 'stores/neutron/router';
@@ -231,7 +230,7 @@ export class Associate extends ModalAction {
         name: 'floatingIp',
         label: t('Floating Ip'),
         type: 'label',
-        icon: <DesktopOutlined />,
+        iconType: 'floatingIp',
       },
       {
         name: 'resourceType',

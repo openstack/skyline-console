@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { DesktopOutlined } from '@ant-design/icons';
 import { ModalAction } from 'containers/Action';
 import { isNull } from 'lodash';
 import { getCanReachSubnetIdsWithRouterIdInComponent } from 'resources/neutron/router';
@@ -142,7 +140,7 @@ export class CreateDNAT extends ModalAction {
         name: 'floatingIp',
         label: t('Floating Ip'),
         type: 'label',
-        icon: <DesktopOutlined />,
+        iconType: 'floatingIp',
       },
       {
         name: 'protocol',
