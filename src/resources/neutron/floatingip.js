@@ -52,23 +52,21 @@ export function getSubnetToRouter(
 ) {
   const canReachSubnetIdsWithRouterId = [];
   // Save the information of all subnets and create a mapping of router_id => subnet_id
-  portsWithFixedIPs.forEach((type) => {
-    type.forEach((port) => {
-      const router = routerIdWithExternalNetworkInfo.find((r) => {
-        if (shouldHaveExternalGateway && !r.external_gateway_info) {
-          return false;
-        }
-        return r.id === port.device_id;
-      });
-      if (router && router.id === port.device_id) {
-        port.fixed_ips.forEach((item) => {
-          canReachSubnetIdsWithRouterId.push({
-            subnet_id: item.subnet_id,
-            router_id: port.device_id,
-          });
-        });
+  portsWithFixedIPs.forEach((port) => {
+    const router = routerIdWithExternalNetworkInfo.find((r) => {
+      if (shouldHaveExternalGateway && !r.external_gateway_info) {
+        return false;
       }
+      return r.id === port.device_id;
     });
+    if (router) {
+      port.fixed_ips.forEach((item) => {
+        canReachSubnetIdsWithRouterId.push({
+          subnet_id: item.subnet_id,
+          router_id: port.device_id,
+        });
+      });
+    }
   });
   return canReachSubnetIdsWithRouterId;
 }
@@ -79,14 +77,10 @@ export async function getPortsWithFixedIPs() {
     'network:router_interface',
     'network:ha_router_replicated_interface',
   ];
-  const portsWithFixedIPs = await Promise.all(
-    deviceOwnerList.map((item) =>
-      globalPortStore.pureFetchList({
-        device_owner: item,
-        fields: ['fixed_ips', 'device_id'],
-      })
-    )
-  );
+  const portsWithFixedIPs = await globalPortStore.pureFetchList({
+    device_owner: deviceOwnerList,
+    fields: ['fixed_ips', 'device_id', 'device_owner'],
+  });
   return portsWithFixedIPs;
 }
 
