@@ -142,7 +142,7 @@ export class Resize extends ModalAction {
 
   get tips() {
     return (
-      <div style={{ display: 'inline-table' }}>
+      <div>
         <p style={{ color: '#0068FF' }}>
           {t('The current operation requires the instance to be shut down:')}
         </p>
