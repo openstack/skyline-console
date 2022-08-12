@@ -59,7 +59,7 @@ export const getSelfColumns = (self) => [
   {
     title: t('Direction'),
     dataIndex: 'direction',
-    render: (value) => directions[value] || '-',
+    render: (value) => directions[value] || value,
   },
   {
     title: t('Ether Type'),

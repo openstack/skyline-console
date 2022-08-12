@@ -60,7 +60,7 @@ export class ServerGroup extends Base {
     {
       title: t('Policy'),
       dataIndex: 'policy',
-      render: (value) => policyType[value] || '-',
+      render: (value) => policyType[value] || value,
     },
   ];
 

@@ -258,7 +258,7 @@ export class FloatingIps extends Base {
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (value) => floatingIpStatus[value] || '-',
+        render: (value) => floatingIpStatus[value] || value,
       },
       {
         title: t('Created At'),

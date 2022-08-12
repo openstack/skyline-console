@@ -204,7 +204,7 @@
         title: t('Use Type'),
         dataIndex: 'usage_type',
         isHideable: true,
-        render: (value) => imageUsage[value] || '-',
+        render: (value) => imageUsage[value] || value,
         sorter: false,
       },
       {
@@ -218,19 +218,19 @@
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (value) => imageStatus[value] || '-',
+        render: (value) => imageStatus[value] || value,
       },
       {
         title: t('Visibility'),
         dataIndex: 'visibility',
-        render: (value) => imageVisibility[value] || '-',
+        render: (value) => imageVisibility[value] || value,
         sorter: false,
       },
       {
         title: t('Disk Format'),
         dataIndex: 'disk_format',
         isHideable: true,
-        render: (value) => imageFormats[value] || '-',
+        render: (value) => imageFormats[value] || value,
       },
       {
         title: t('Size'),

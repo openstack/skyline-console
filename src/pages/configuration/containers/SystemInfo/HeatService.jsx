@@ -57,7 +57,7 @@ export class HeatService extends Base {
     {
       title: t('Status'),
       dataIndex: 'status',
-      render: (value) => serviceState[value] || '-',
+      render: (value) => serviceState[value] || value,
     },
     {
       title: t('Last Updated'),

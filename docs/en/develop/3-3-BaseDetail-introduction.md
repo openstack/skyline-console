@@ -140,7 +140,7 @@ English | [Chinese](../../zh/develop/3-3-BaseDetail-introduction.md)
         {
             title: t('Status'),
             dataIndex: 'status',
-            render: (value) => volumeStatus[value] || '-',
+            render: (value) => volumeStatus[value] || value,
         },
         {
             title: t('Size'),

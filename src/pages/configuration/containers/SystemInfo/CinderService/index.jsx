@@ -62,7 +62,7 @@ export class CinderService extends Base {
     {
       title: t('Service Status'),
       dataIndex: 'status',
-      render: (value) => serviceStatus[value] || '-',
+      render: (value) => serviceStatus[value] || value,
       tip: (value, record) => {
         if (value === 'enabled') {
           return '';
@@ -77,7 +77,7 @@ export class CinderService extends Base {
     {
       title: t('Service State'),
       dataIndex: 'state',
-      render: (value) => serviceState[value] || '-',
+      render: (value) => serviceState[value] || value,
     },
     {
       title: t('Last Updated'),

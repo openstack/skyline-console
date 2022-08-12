@@ -67,7 +67,7 @@ export default class NodeCard extends React.Component {
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (value) => routerStatus[value] || '-',
+        render: (value) => routerStatus[value] || value,
       },
       {
         title: t('External Fixed IP'),
