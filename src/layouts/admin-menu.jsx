@@ -870,6 +870,13 @@ const renderMenu = (t) => {
             },
           ],
         },
+        {
+          path: '/container/services-admin',
+          name: t('Services'),
+          key: 'zunServicesAdmin',
+          endpoints: 'zun',
+          level: 1,
+        },
       ],
     },
   ];

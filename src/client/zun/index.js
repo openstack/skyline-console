@@ -88,6 +88,10 @@ export class ZunClient extends Base {
       {
         key: 'quotas',
       },
+      {
+        key: 'services',
+        responseKey: 'service',
+      },
     ];
   }
 }
