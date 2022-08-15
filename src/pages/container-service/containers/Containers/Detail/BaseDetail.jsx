@@ -16,6 +16,7 @@ import Base from 'containers/BaseDetail';
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { containerStatus } from 'resources/zun/container';
+import { stringifyContent } from 'utils/content';
 import { isEmpty } from 'lodash';
 
 export class BaseDetail extends Base {
@@ -30,17 +31,6 @@ export class BaseDetail extends Base {
 
   get rightCards() {
     return [this.specCard];
-  }
-
-  get stringifyContent() {
-    return (value) =>
-      isEmpty(value) ? (
-        '-'
-      ) : (
-        <div>
-          <pre>{JSON.stringify(value, null, 4)}</pre>
-        </div>
-      );
   }
 
   get baseInfoCard() {
@@ -61,7 +51,7 @@ export class BaseDetail extends Base {
       {
         label: t('Command'),
         dataIndex: 'command',
-        render: this.stringifyContent,
+        render: stringifyContent,
       },
     ];
 
@@ -84,17 +74,12 @@ export class BaseDetail extends Base {
       {
         label: t('Environment'),
         dataIndex: 'environment',
-        render: this.stringifyContent,
+        render: stringifyContent,
       },
       {
         label: t('Interactive'),
         dataIndex: 'interactive',
         valueRender: 'yesNo',
-      },
-      {
-        label: t('Labels'),
-        dataIndex: 'labels',
-        render: this.stringifyContent,
       },
     ];
 
@@ -141,7 +126,7 @@ export class BaseDetail extends Base {
       {
         label: t('Restart Policy'),
         dataIndex: 'restart_policy',
-        render: this.stringifyContent,
+        render: stringifyContent,
       },
       {
         label: t('Auto Remove'),
@@ -154,19 +139,21 @@ export class BaseDetail extends Base {
       {
         label: t('Addresses'),
         dataIndex: 'addresses',
-        render: this.stringifyContent,
+        render: stringifyContent,
       },
       {
         label: t('Networks'),
         dataIndex: 'networks',
         render: (value = []) => (
           <>
-            {value.map((it) => {
-              const link = this.getLinkRender('networkDetail', it, {
-                id: it,
-              });
-              return <div key={it}>{link}</div>;
-            })}
+            {value.length
+              ? value.map((it) => {
+                  const link = this.getLinkRender('networkDetail', it, {
+                    id: it,
+                  });
+                  return <div key={it}>{link}</div>;
+                })
+              : '-'}
           </>
         ),
       },
@@ -175,12 +162,14 @@ export class BaseDetail extends Base {
         dataIndex: 'ports',
         render: (value = []) => (
           <>
-            {value.map((it) => {
-              const link = this.getLinkRender('virtualAdapterDetail', it, {
-                id: it,
-              });
-              return <div key={it}>{link}</div>;
-            })}
+            {value.length
+              ? value.map((it) => {
+                  const link = this.getLinkRender('virtualAdapterDetail', it, {
+                    id: it,
+                  });
+                  return <div key={it}>{link}</div>;
+                })
+              : '-'}
           </>
         ),
       },
@@ -189,12 +178,14 @@ export class BaseDetail extends Base {
         dataIndex: 'security_groups',
         render: (value = []) => (
           <>
-            {value.map((it) => {
-              const link = this.getLinkRender('securityGroupDetail', it, {
-                id: it,
-              });
-              return <div key={it}>{link}</div>;
-            })}
+            {value.length
+              ? value.map((it) => {
+                  const link = this.getLinkRender('securityGroupDetail', it, {
+                    id: it,
+                  });
+                  return <div key={it}>{link}</div>;
+                })
+              : '-'}
           </>
         ),
       },

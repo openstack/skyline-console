@@ -21,11 +21,6 @@ export class BaseDetail extends Base {
     return cards;
   }
 
-  get rightCards() {
-    const cards = [this.miscellaneousCard];
-    return cards;
-  }
-
   get containersInfoCard() {
     const options = [
       {
@@ -62,26 +57,6 @@ export class BaseDetail extends Base {
 
     return {
       title: t('System Info'),
-      options,
-    };
-  }
-
-  get miscellaneousCard() {
-    const options = [
-      {
-        label: t('Labels'),
-        dataIndex: 'labels',
-        render: (value = {}) => JSON.stringify(value),
-      },
-      {
-        label: t('Links'),
-        dataIndex: 'links',
-        render: (value = []) => JSON.stringify(value),
-      },
-    ];
-
-    return {
-      title: t('Miscellaneous'),
       options,
     };
   }

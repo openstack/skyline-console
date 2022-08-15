@@ -13,10 +13,16 @@
 import Base from 'containers/BaseDetail';
 import React from 'react';
 import { inject, observer } from 'mobx-react';
+import { Row, Col } from 'antd';
+import { stringifyContent } from 'utils/content';
 
 export class BaseDetail extends Base {
   get leftCards() {
-    const cards = [this.baseInfoCard, this.containersCard];
+    const { containers = [] } = this.detailData;
+    const cards = [this.baseInfoCard];
+    if (containers.length) {
+      cards.push(this.containersCard);
+    }
     return cards;
   }
 
@@ -54,18 +60,20 @@ export class BaseDetail extends Base {
         render: (value) =>
           value.map((it) => {
             return (
-              <div key={it.uuid}>
-                <b>{t('Container Name')}</b> : {it.name}
-                <br />
-                <b>{t('Container ID')}</b>: {it.uuid}
-              </div>
+              <Row key={it.uuid}>
+                <Col style={{ marginRight: 8 }}>{t('ID/Name')}:</Col>
+                <Col>
+                  <p>{it.name}</p>
+                  <p>{it.uuid}</p>
+                </Col>
+              </Row>
             );
           }),
       },
     ];
 
     return {
-      title: t('Containers'),
+      title: t('Containers Info'),
       options,
       labelCol: 0,
       contentCol: 24,
@@ -79,7 +87,7 @@ export class BaseDetail extends Base {
         dataIndex: 'cpu',
       },
       {
-        label: t('Memory'),
+        label: t('Memory (MiB)'),
         dataIndex: 'memory',
       },
       {
@@ -87,26 +95,9 @@ export class BaseDetail extends Base {
         dataIndex: 'restart_policy',
       },
       {
-        label: t('Labels'),
-        dataIndex: 'labels',
-        render: (value) => value || ' - ',
-      },
-      {
-        label: t('Links'),
-        dataIndex: 'links',
-        render: (value) =>
-          value.map((it) => {
-            return (
-              <div key={it.href}>
-                {it.href} : {it.rel}
-              </div>
-            );
-          }),
-      },
-      {
         label: t('Addresses'),
         dataIndex: 'addresses',
-        render: (value) => (value.length != null ? value : '-'),
+        render: stringifyContent,
       },
     ];
 
