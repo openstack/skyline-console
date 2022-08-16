@@ -209,22 +209,26 @@ export class Edit extends ModalAction {
       newValues.min_ram = min_ram * 1024;
     }
     if (hw_cpu_policy !== NoSetValue) {
-      newValues.hw_cpu_policy = hw_cpu_policy || this.item.hw_cpu_policy;
+      newValues.hw_cpu_policy =
+        hw_cpu_policy || this.item.originData.hw_cpu_policy;
     }
     if (hw_cpu_thread_policy !== NoSetValue) {
       newValues.hw_cpu_thread_policy =
-        hw_cpu_thread_policy || this.item.hw_cpu_thread_policy;
+        hw_cpu_thread_policy || this.item.originData.hw_cpu_thread_policy;
     }
     const changeValues = [];
     Object.keys(newValues).forEach((key) => {
-      if (has(this.item, key) && get(this.item, key) !== newValues[key]) {
+      if (
+        has(this.item.originData, key) &&
+        get(this.item.originData, key) !== newValues[key]
+      ) {
         const item = {
           op: 'replace',
           path: `/${key}`,
           value: newValues[key],
         };
         changeValues.push(item);
-      } else if (!has(this.item, key) && newValues[key]) {
+      } else if (!has(this.item.originData, key) && newValues[key]) {
         const item = {
           op: 'add',
           path: `/${key}`,
@@ -233,13 +237,16 @@ export class Edit extends ModalAction {
         changeValues.push(item);
       }
     });
-    if (this.item.hw_cpu_policy && hw_cpu_policy === NoSetValue) {
+    if (this.item.originData.hw_cpu_policy && hw_cpu_policy === NoSetValue) {
       changeValues.push({
         op: 'remove',
         path: '/hw_cpu_policy',
       });
     }
-    if (this.item.hw_cpu_thread_policy && hw_cpu_thread_policy === NoSetValue) {
+    if (
+      this.item.originData.hw_cpu_thread_policy &&
+      hw_cpu_thread_policy === NoSetValue
+    ) {
       changeValues.push({
         op: 'remove',
         path: '/hw_cpu_thread_policy',

@@ -25,10 +25,11 @@ const parseValue = (value) => {
     return value;
   }
   if (value.includes('<html>')) {
-    const reg = /<\/h1>[\r\n]([\s\S]*)<br \/><br \/>/;
+    const reg = /<\/h1>[\r\n]([\s\S]*)<\/body>/;
     const results = reg.exec(value);
     if (results) {
-      return results[1];
+      const newValue = results[1].replace(/<br \/>/g, '');
+      return newValue;
     }
   }
   try {
