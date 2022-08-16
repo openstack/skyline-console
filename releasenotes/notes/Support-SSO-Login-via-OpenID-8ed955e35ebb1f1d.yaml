@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    Support SSO login via OpenID connect.
+
+    1. If Web SSO login is successfully configured on the back-end, you can
+    select a login mode on the login page based on the configuration. The
+    default login mode is Keystone authentication. If you select the Web SSO
+    login mode, click Login button will switch to the Web SSO configuration page.
+
+    2. If SSO is not configured on the back-end, the front-end will directly
+    display the user + password login mode (Keystone authentication). You do
+    not need to select the login mode.

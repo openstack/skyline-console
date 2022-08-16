@@ -31,12 +31,14 @@ export class Login extends Component {
       error: false,
       message: '',
       loading: false,
+      loginTypeOption: this.passwordOption,
     };
   }
 
   componentDidMount() {
     this.getDomains();
     this.getRegions();
+    this.getSSO();
   }
 
   async getDomains() {
@@ -47,6 +49,14 @@ export class Login extends Component {
   async getRegions() {
     await this.store.fetchRegionList();
     this.updateDefaultValue();
+  }
+
+  async getSSO() {
+    try {
+      this.store.fetchSSO();
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   get rootStore() {
@@ -89,8 +99,67 @@ export class Login extends Component {
     return '/base/overview';
   }
 
+  get enableSSO() {
+    const { sso: { enable_sso = false } = {} } = this.store;
+    return enable_sso;
+  }
+
+  get ssoProtocols() {
+    return {
+      openid: t('OpenID Connect'),
+    };
+  }
+
+  get SSOOptions() {
+    if (!this.enableSSO) {
+      return [];
+    }
+    const { sso: { protocols = [] } = {} } = this.store;
+    return protocols.map((it) => {
+      const { protocol, url } = it;
+      return {
+        label: this.ssoProtocols[protocol] || protocol,
+        value: url,
+        ...it,
+      };
+    });
+  }
+
+  get passwordOption() {
+    return {
+      label: t('Keystone Credentials'),
+      value: 'password',
+    };
+  }
+
+  get loginTypeOptions() {
+    if (!this.enableSSO) {
+      return [];
+    }
+    return [this.passwordOption, ...this.SSOOptions];
+  }
+
+  onLoginTypeChange = (value, option) => {
+    this.setState({ loginTypeOption: option });
+  };
+
+  get currentLoginType() {
+    const { loginTypeOption: { value } = {} } = this.state;
+    if (value === 'password') {
+      return 'password';
+    }
+    return 'sso';
+  }
+
+  get currentSSOLink() {
+    const { loginTypeOption: { value } = {} } = this.state;
+    return value;
+  }
+
   get defaultValue() {
-    const data = {};
+    const data = {
+      loginType: 'password',
+    };
     if (this.regions.length === 1) {
       data.region = this.regions[0].value;
     }
@@ -107,84 +176,150 @@ export class Login extends Component {
       block: true,
       type: 'primary',
     };
-    return [
-      {
-        name: 'error',
-        hidden: !error,
-        render: () => (
-          <div className={styles['login-error']}>
-            <InfoCircleFilled />
-            {this.getErrorMessage()}
-          </div>
-        ),
-      },
-      {
-        name: 'region',
-        required: true,
-        message: t('Please select your Region!'),
-        render: () => (
-          <Select placeholder={t('Select a region')} options={this.regions} />
-        ),
-      },
-      {
-        name: 'domain',
-        required: true,
-        message: t('Please select your Domain!'),
-        render: () => (
-          <Select placeholder={t('Select a domain')} options={this.domains} />
-        ),
-      },
-      {
-        name: 'username',
-        required: true,
-        message: t('Please input your Username!'),
-        render: () => <Input placeholder={t('Username')} />,
-      },
-      {
-        name: 'password',
-        required: true,
-        message: t('Please input your Password!'),
-        render: () => <Input.Password placeholder={t('Password')} />,
-      },
-      {
-        name: 'extra',
-        hidden: true,
-        render: () => (
-          <Row gutter={8}>
-            <Col span={12}>
-              <Link to="password">{t('Forgot your password?')}</Link>
-            </Col>
-            <Col span={12}>
-              <Link to="register" className={styles.register}>
-                {t('Sign up')}
-              </Link>
-            </Col>
-          </Row>
-        ),
-      },
-      {
-        name: 'submit',
-        render: () => (
-          <Row gutter={8}>
-            <Col span={12}>
-              <Button
-                loading={loading}
-                type="primary"
-                htmlType="submit"
-                className="login-form-button"
-              >
-                {t('Log in')}
-              </Button>
-            </Col>
-          </Row>
-        ),
-      },
+    const loginType = this.currentLoginType;
+    const errorItem = {
+      name: 'error',
+      hidden: !error,
+      render: () => (
+        <div className={styles['login-error']}>
+          <InfoCircleFilled />
+          {this.getErrorMessage()}
+        </div>
+      ),
+    };
+    const regionItem = {
+      name: 'region',
+      required: true,
+      message: t('Please select your Region!'),
+      render: () => (
+        <Select placeholder={t('Select a region')} options={this.regions} />
+      ),
+    };
+    const domainItem = {
+      name: 'domain',
+      required: true,
+      message: t('Please select your Domain!'),
+      render: () => (
+        <Select placeholder={t('Select a domain')} options={this.domains} />
+      ),
+    };
+    const usernameItem = {
+      name: 'username',
+      required: true,
+      message: t('Please input your Username!'),
+      render: () => <Input placeholder={t('Username')} />,
+    };
+    const passwordItem = {
+      name: 'password',
+      required: true,
+      message: t('Please input your Password!'),
+      render: () => <Input.Password placeholder={t('Password')} />,
+    };
+    const extraItem = {
+      name: 'extra',
+      hidden: true,
+      render: () => (
+        <Row gutter={8}>
+          <Col span={12}>
+            <Link to="password">{t('Forgot your password?')}</Link>
+          </Col>
+          <Col span={12}>
+            <Link to="register" className={styles.register}>
+              {t('Sign up')}
+            </Link>
+          </Col>
+        </Row>
+      ),
+    };
+    const submitItem = {
+      name: 'submit',
+      render: () => (
+        <Row gutter={8}>
+          <Col span={12}>
+            <Button
+              loading={loading}
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+            >
+              {t('Log in')}
+            </Button>
+          </Col>
+        </Row>
+      ),
+    };
+    const namePasswordItems = [
+      errorItem,
+      regionItem,
+      domainItem,
+      usernameItem,
+      passwordItem,
+      extraItem,
     ];
+    const typeItem = {
+      name: 'loginType',
+      required: true,
+      message: t('Please select login type!'),
+      extra: t(
+        'If you are not sure which authentication method to use, please contact your administrator.'
+      ),
+      render: () => (
+        <Select
+          placeholder={t('Select a login type')}
+          options={this.loginTypeOptions}
+          onChange={this.onLoginTypeChange}
+        />
+      ),
+    };
+    if (this.enableSSO) {
+      if (loginType === 'password') {
+        return [typeItem, ...namePasswordItems, submitItem];
+      }
+
+      return [typeItem, submitItem];
+    }
+    return [...namePasswordItems, submitItem];
   }
 
   getUserId = (str) => str.split(':')[1].trim().split('.')[0];
 
+  onLoginFailed = (error, values) => {
+    this.setState({
+      loading: false,
+    });
+    const {
+      data: { detail = '' },
+    } = error.response;
+    const message = detail || '';
+    if (
+      message.includes(
+        'The password is expired and needs to be changed for user'
+      )
+    ) {
+      this.dealWithChangePassword(message, values);
+    } else {
+      this.setState({
+        error: true,
+        message,
+      });
+    }
+  };
+
+  onLoginSuccess = () => {
+    this.setState({
+      loading: false,
+      error: false,
+    });
+    if (this.rootStore.user && !isEmpty(this.rootStore.user)) {
+      this.rootStore.routing.push(this.nextPage);
+    }
+  };
+
   onFinish = (values) => {
+    if (this.currentLoginType === 'sso') {
+      document.location.href = this.currentSSOLink;
+      return;
+    }
     this.setState({
       loading: true,
       message: '',
@@ -194,40 +329,10 @@ export class Login extends Component {
     const body = { domain, password, region, username };
     this.rootStore.login(body).then(
       () => {
-        this.setState({
-          loading: false,
-          error: false,
-        });
-        if (this.rootStore.user && !isEmpty(this.rootStore.user)) {
-          this.rootStore.routing.push(this.nextPage);
-        }
+        this.onLoginSuccess();
       },
       (error) => {
-        this.setState({
-          loading: false,
-        });
-        const {
-          data: { detail },
-        } = error.response;
-        if (
-          detail.includes(
-            'The password is expired and needs to be changed for user'
-          )
-        ) {
-          const userId = this.getUserId(detail);
-          const data = {
-            region: values.region,
-            oldPassword: values.password,
-            userId,
-          };
-          this.rootStore.setPasswordInfo(data);
-          this.rootStore.routing.push('/auth/change-password');
-        } else {
-          this.setState({
-            error: true,
-            message: detail,
-          });
-        }
+        this.onLoginFailed(error, values);
       }
     );
   };
@@ -251,6 +356,17 @@ export class Login extends Component {
     }
     return t('Username or password is incorrect');
   }
+
+  dealWithChangePassword = (detail, values) => {
+    const userId = this.getUserId(detail);
+    const data = {
+      region: values.region,
+      oldPassword: values.password,
+      userId,
+    };
+    this.rootStore.setPasswordInfo(data);
+    this.rootStore.routing.push('/auth/change-password');
+  };
 
   updateDefaultValue = () => {
     this.formRef.current.resetFields();

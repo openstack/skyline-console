@@ -126,6 +126,9 @@ export class SkylineClient extends Base {
         name: 'queryRange',
         key: 'query_range',
       },
+      {
+        key: 'sso',
+      },
     ];
   }
 }
