@@ -79,8 +79,8 @@ export class FloatingIpDetail extends Base {
     ];
     if (enablePFW() && isNull(this.detailData.fixed_ip_address)) {
       tabs.push({
-        title: t('Port Forwarding Rules'),
-        key: 'port_forwarding_rules',
+        title: t('Port Forwardings'),
+        key: 'port_forwarding',
         component: PortForwarding,
       });
     }

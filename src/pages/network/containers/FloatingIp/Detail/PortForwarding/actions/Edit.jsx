@@ -21,12 +21,12 @@ import { getPortFormItem, getPortsAndReasons } from 'resources/neutron/port';
 import { ModalAction } from 'containers/Action';
 
 export class Edit extends ModalAction {
-  static id = 'editDnat';
+  static id = 'edit';
 
   static title = t('Edit');
 
   get name() {
-    return t('Edit DNAT Rule');
+    return t('Edit Port Forwarding');
   }
 
   init() {
@@ -287,7 +287,7 @@ export class Edit extends ModalAction {
             return Promise.reject(
               new Error(
                 t(
-                  'A DNAT rule has been created for this port of this IP, please choose another port.'
+                  'A port forwarding has been created for this port of this FIP, please choose another port.'
                 )
               )
             );

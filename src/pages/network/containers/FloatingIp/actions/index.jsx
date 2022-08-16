@@ -18,7 +18,7 @@ import Associate from './Associate';
 import Release from './Release';
 import Disassociate from './Disassociate';
 import Edit from './Edit';
-import CreateDNAT from './CreateDNAT';
+import CreatePortForwarding from '../Detail/PortForwarding/actions/Create';
 
 const rowActions = {
   firstAction: Edit,
@@ -30,7 +30,7 @@ const rowActions = {
       action: Disassociate,
     },
     {
-      action: CreateDNAT,
+      action: CreatePortForwarding,
     },
     {
       action: Release,

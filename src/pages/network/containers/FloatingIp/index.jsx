@@ -21,11 +21,11 @@ import {
 } from 'resources/neutron/floatingip';
 import { FloatingIpStore } from 'stores/neutron/floatingIp';
 import { emptyActionConfig } from 'utils/constants';
-import { Col, Popover, Row } from 'antd';
+import { Popover, List } from 'antd';
 import { FileTextOutlined } from '@ant-design/icons';
 import { qosEndpoint } from 'client/client/constants';
 import { getOptions } from 'utils';
-import styles from './styles.less';
+import { isEmpty } from 'lodash';
 import actionConfigs from './actions';
 
 export class FloatingIps extends Base {
@@ -150,33 +150,78 @@ export class FloatingIps extends Base {
   }
 
   getPortForwardingDetail(record, detail) {
+    const { key, ...rest } = detail;
+    if (isEmpty(rest)) {
+      return '';
+    }
     const { floating_ip_address: fip } = record;
-    const { protocol, external_port, internal_ip_address, internal_port } =
-      detail;
-    return `${protocol}: ${fip}:${external_port} => ${internal_ip_address}:${internal_port}`;
+    const {
+      protocol,
+      external_port,
+      external_port_range,
+      internal_ip_address,
+      internal_port,
+      internal_port_range,
+    } = detail;
+    return `${protocol}: ${fip}:${
+      external_port || external_port_range
+    } => ${internal_ip_address}:${internal_port || internal_port_range}`;
+  }
+
+  get portForwardingResourceName() {
+    return t('Port Forwarding');
+  }
+
+  get portForwardingResourcesName() {
+    return t('Port Forwardings');
   }
 
   getPortForwardingRender(record) {
     const data = this.getRecordPortForwarding(record);
-    if (!data.length) {
+    const { length } = data;
+    if (!length) {
       return null;
     }
+    const pageSize = 10;
+    const zeroLength =
+      length > pageSize ? pageSize - (length % pageSize) : pageSize;
+    const zeroData = Array.from({ length: zeroLength }, (i) => ({
+      key: `zero-${i}`,
+    }));
+    const dataWithKey = data.map((d) => ({
+      ...d,
+      key: d.external_port || d.external_port_range,
+    }));
+    const newData = [...dataWithKey, ...zeroData];
+    const content = (
+      <List
+        itemLayout="vertical"
+        size="small"
+        pagination={{
+          hideOnSinglePage: true,
+          pageSize,
+          size: 'small',
+        }}
+        dataSource={newData}
+        renderItem={(item) => {
+          return (
+            <div style={{ height: '30px', lineHeight: '30px' }}>
+              {this.getPortForwardingDetail(record, item)}
+            </div>
+          );
+        }}
+      />
+    );
     return (
       <Popover
-        content={
-          <Row className={styles['popover-row']} gutter={[8, 8]}>
-            {data.map((i, idx) => (
-              <Col span={24} key={`pfw-${idx}`}>
-                {this.getPortForwardingDetail(record, i)}
-              </Col>
-            ))}
-          </Row>
-        }
-        title={t('Port Forwarding')}
+        content={content}
+        title={this.portForwardingResourceName}
         destroyTooltipOnHide
+        placement="right"
       >
-        {t('{number} port forwarding rules', {
+        {t('{number} {resource}', {
           number: data.length,
+          resource: this.portForwardingResourcesName,
         })}
         &nbsp;
         <FileTextOutlined />
@@ -190,8 +235,9 @@ export class FloatingIps extends Base {
       return '';
     }
     const ret = data.map((i) => this.getPortForwardingDetail(record, i));
-    const total = t('{number} port forwarding rules', {
+    const total = t('{number} {resource}', {
       number: data.length,
+      resource: this.portForwardingResourcesName,
     });
     return [total, ...ret].join('\n');
   }

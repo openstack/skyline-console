@@ -44,6 +44,18 @@ export class PortForwarding extends Base {
     return true;
   }
 
+  get isSortByBackend() {
+    return true;
+  }
+
+  get defaultSortKey() {
+    return 'external_port';
+  }
+
+  get defaultSortOrder() {
+    return 'ascend';
+  }
+
   get actionConfigs() {
     return this.isAdminPage
       ? actionConfigs.actionConfigsAdmin
@@ -52,22 +64,40 @@ export class PortForwarding extends Base {
 
   getColumns = () => [
     {
-      title: t('External Port'),
+      title: t('ID'),
+      dataIndex: 'id',
+    },
+    {
+      title: t('External Port/Port Range'),
       dataIndex: 'external_port',
+      render: (value, record) => {
+        return value || record.external_port_range;
+      },
     },
     {
       title: t('Internal Ip Address'),
       dataIndex: 'internal_ip_address',
       isHideable: true,
+      sorter: false,
     },
     {
-      title: t('Internal Port'),
+      title: t('Internal Port/Port Range'),
       dataIndex: 'internal_port',
       isHideable: true,
+      sorter: false,
+      render: (value, record) => {
+        return value || record.internal_port_range;
+      },
     },
     {
       title: t('Protocol'),
       dataIndex: 'protocol',
+      isHideable: true,
+    },
+    {
+      title: t('Description'),
+      dataIndex: 'description',
+      sorter: false,
       isHideable: true,
     },
   ];
@@ -91,6 +121,14 @@ export class PortForwarding extends Base {
       {
         label: t('External Port'),
         name: 'external_port',
+      },
+      {
+        label: t('External Port Range'),
+        name: 'external_port_range',
+      },
+      {
+        label: t('Description'),
+        name: 'description',
       },
     ];
   }

@@ -49,7 +49,7 @@ describe('The Router Page', () => {
       'Static Routes',
       'staticRoutes'
     );
-    // .clickDetailTab('DNAT Rules', 'dnat');
+    // .clickDetailTab('Port Forwardings', 'port_forwarding');
     cy.goBackToList(listUrl);
   });
 
