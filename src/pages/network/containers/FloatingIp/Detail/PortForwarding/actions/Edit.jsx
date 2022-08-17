@@ -14,10 +14,14 @@
 
 import { inject, observer } from 'mobx-react';
 import globalPortForwardingStore from 'stores/neutron/port-forwarding';
-import globalPortStore, { PortStore } from 'stores/neutron/port';
+import globalPortStore, { PortStore } from 'stores/neutron/port-extension';
 import { getCanReachSubnetIdsWithRouterIdInComponent } from 'resources/neutron/router';
 import { getInterfaceWithReason } from 'resources/neutron/floatingip';
-import { getPortFormItem, getPortsAndReasons } from 'resources/neutron/port';
+import {
+  getPortFormItem,
+  getPortsAndReasons,
+  getPortsForPortFormItem,
+} from 'resources/neutron/port';
 import { ModalAction } from 'containers/Action';
 
 export class Edit extends ModalAction {
@@ -45,6 +49,7 @@ export class Edit extends ModalAction {
         this.getInitialPortFixedIPs();
       });
     this.getFipAlreadyUsedPorts();
+    this.getPorts();
     this.state = {
       alreadyUsedPorts: [],
       instanceFixedIPs: [],
@@ -52,6 +57,14 @@ export class Edit extends ModalAction {
       canReachSubnetIdsWithRouterId: [],
       routerIdWithExternalNetworkInfo: [],
     };
+  }
+
+  get portDeviceOwner() {
+    return ['compute:nova', ''];
+  }
+
+  getPorts() {
+    getPortsForPortFormItem.call(this, this.portDeviceOwner);
   }
 
   async getFipAlreadyUsedPorts() {
@@ -296,7 +309,7 @@ export class Edit extends ModalAction {
         },
       },
     ];
-    const extraColumn = getPortFormItem.call(this, ['compute:nova', '']);
+    const extraColumn = getPortFormItem.call(this);
     const portIndex = extraColumn.findIndex(
       (i) => i.name === 'virtual_adapter'
     );

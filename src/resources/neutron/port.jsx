@@ -14,6 +14,7 @@
 
 import React from 'react';
 import { ipValidate } from 'utils/validate';
+import { getOptions } from 'utils/index';
 
 const { isIPv4 } = ipValidate;
 
@@ -83,8 +84,102 @@ export function getPortsAndReasons(
   });
 }
 
-export function getPortFormItem(device_owner) {
+export function getPortsForPortFormItem(device_owner) {
+  this.portStore.fetchList({ device_owner, project_id: this.currentProjectId });
+}
+
+export function getPortFormItem(withResourceNameAndStatusFilter = true) {
   const { portFixedIPs, fixedIpLoading } = this.state;
+  const portFilters = [
+    {
+      label: t('Name'),
+      name: 'name',
+    },
+    {
+      label: t('Fixed IP'),
+      name: 'fixed_ips',
+      filterFunc: (record, val) => {
+        return (record || []).some((it) => it.ip_address.includes(val));
+      },
+    },
+  ];
+  if (withResourceNameAndStatusFilter) {
+    portFilters.push(
+      ...[
+        {
+          label: t('Bind Resource Name'),
+          name: 'server_name',
+        },
+        {
+          label: t('Status'),
+          name: 'status',
+          options: getOptions(portStatus).filter((it) =>
+            ['ACTIVE', 'DOWN'].includes(it.key)
+          ),
+        },
+      ]
+    );
+  }
+  const portColumns = [
+    {
+      title: t('ID/Name'),
+      dataIndex: 'name',
+      routeName: this.getRouteName('portDetail'),
+    },
+    {
+      title: t('Description'),
+      dataIndex: 'description',
+    },
+    {
+      title: t('Fixed IPs'),
+      dataIndex: 'fixed_ips',
+      render: (data) => (
+        <>
+          {data.map((d, idx) => (
+            <div key={`ip_address_${idx}`}>{d.ip_address}</div>
+          ))}
+        </>
+      ),
+    },
+    {
+      title: t('Created At'),
+      dataIndex: 'created_at',
+      valueRender: 'sinceTime',
+    },
+  ];
+  if (withResourceNameAndStatusFilter) {
+    const extraColumns = [
+      {
+        title: t('Status'),
+        dataIndex: 'status',
+        render: (value) => portStatus[value] || value,
+      },
+      {
+        title: t('Bind Resource'),
+        dataIndex: 'server_name',
+        render: (server_name, item) => {
+          const { device_id } = item;
+          if (!device_id) {
+            return '-';
+          }
+          const link = this.getLinkRender(
+            'instanceDetail',
+            device_id,
+            { id: device_id },
+            { tab: 'interface' }
+          );
+          return (
+            <>
+              {link}
+              <br />
+              {server_name || '-'}
+            </>
+          );
+        },
+      },
+    ];
+    portColumns.splice(4, 0, ...extraColumns);
+  }
   return [
     {
       name: 'virtual_adapter',
@@ -92,58 +187,13 @@ export function getPortFormItem(device_owner) {
       type: 'select-table',
       required: true,
       rowKey: 'id',
-      backendPageStore: this.portStore,
+      data: this.portStore.list.data || [],
+      isLoading: this.portStore.list.isLoading,
       disabledFunc: this.portsDisableFunc,
       onChange: this.handlePortSelect,
-      extraParams: { device_owner, project_id: this.currentProjectId },
       isMulti: false,
-      ...portSortProps,
-      filterParams: [
-        {
-          label: t('Name'),
-          name: 'name',
-        },
-        {
-          label: t('Fixed IP'),
-          name: 'fixedIP',
-        },
-      ],
-      columns: [
-        {
-          title: t('ID/Name'),
-          dataIndex: 'name',
-          routeName: this.getRouteName('portDetail'),
-        },
-        {
-          title: t('Description'),
-          dataIndex: 'description',
-          sorter: false,
-        },
-        {
-          title: t('Fixed IPs'),
-          dataIndex: 'fixed_ips',
-          sorter: false,
-          render: (data) => (
-            <>
-              {data.map((d, idx) => (
-                <div key={`ip_address_${idx}`}>{d.ip_address}</div>
-              ))}
-            </>
-          ),
-        },
-        {
-          title: t('Status'),
-          dataIndex: 'status',
-          render: (value) => portStatus[value] || value,
-        },
-        {
-          title: t('Created At'),
-          dataIndex: 'created_at',
-          valueRender: 'sinceTime',
-          isHideable: true,
-          sorter: false,
-        },
-      ],
+      filterParams: portFilters,
+      columns: portColumns,
     },
     {
       name: 'fixed_ip_address',

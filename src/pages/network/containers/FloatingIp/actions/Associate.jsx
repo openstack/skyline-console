@@ -26,7 +26,11 @@ import {
 import globalFloatingIpsStore from 'stores/neutron/floatingIp';
 import { PortStore } from 'stores/neutron/port';
 import { instanceSelectTablePropsBackend } from 'resources/nova/instance';
-import { getPortFormItem, getPortsAndReasons } from 'resources/neutron/port';
+import {
+  getPortFormItem,
+  getPortsAndReasons,
+  getPortsForPortFormItem,
+} from 'resources/neutron/port';
 import {
   getInterfaceWithReason,
   disableFIPAssociate,
@@ -58,6 +62,7 @@ export class Associate extends ModalAction {
       canReachSubnetIdsWithRouterId: [],
       routerIdWithExternalNetworkInfo: [],
     };
+    this.getPorts();
   }
 
   get instanceName() {
@@ -104,6 +109,14 @@ export class Associate extends ModalAction {
       resourceType: 'instance',
     };
     return value;
+  }
+
+  get portDeviceOwner() {
+    return [''];
+  }
+
+  getPorts() {
+    getPortsForPortFormItem.call(this, this.portDeviceOwner);
   }
 
   onValuesChange = (changedFields) => {
@@ -391,7 +404,7 @@ export class Associate extends ModalAction {
         );
         break;
       case 'port':
-        ret.push(...getPortFormItem.call(this, ['']));
+        ret.push(...getPortFormItem.call(this, false));
         break;
       default:
         break;

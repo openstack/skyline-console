@@ -17,8 +17,12 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import { isNull, isObject } from 'lodash';
 import { getCanReachSubnetIdsWithRouterIdInComponent } from 'resources/neutron/router';
-import { PortStore } from 'stores/neutron/port';
-import { getPortFormItem, getPortsAndReasons } from 'resources/neutron/port';
+import { PortStore } from 'stores/neutron/port-extension';
+import {
+  getPortFormItem,
+  getPortsAndReasons,
+  getPortsForPortFormItem,
+} from 'resources/neutron/port';
 import { getInterfaceWithReason } from 'resources/neutron/floatingip';
 import globalPortForwardingStore from 'stores/neutron/port-forwarding';
 import { enablePFW } from 'resources/neutron/neutron';
@@ -53,6 +57,7 @@ export class CreatePortForwarding extends ModalAction {
       routerIdWithExternalNetworkInfo: [],
       supportRange: true,
     };
+    this.getPorts();
     this.getRangeSupport();
     this.getFipAlreadyUsedPorts();
     getCanReachSubnetIdsWithRouterIdInComponent.call(this, (router) => {
@@ -153,6 +158,14 @@ export class CreatePortForwarding extends ModalAction {
 
   get nameForStateUpdate() {
     return ['protocol'];
+  }
+
+  get portDeviceOwner() {
+    return ['compute:nova', ''];
+  }
+
+  getPorts() {
+    getPortsForPortFormItem.call(this, this.portDeviceOwner);
   }
 
   async getRangeSupport() {
@@ -565,10 +578,7 @@ export class CreatePortForwarding extends ModalAction {
         extra: internalPortExtra,
       },
     ];
-    const [virtualAdapterItem, fixedIpItem] = getPortFormItem.call(this, [
-      'compute:nova',
-      '',
-    ]);
+    const [virtualAdapterItem, fixedIpItem] = getPortFormItem.call(this);
     virtualAdapterItem.label = t('Target Port');
     fixedIpItem.label = t('Target IP Address');
     fixedIpItem.onChange = this.onFixedIpChange;

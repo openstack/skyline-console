@@ -183,8 +183,7 @@ export class FloatingIps extends Base {
       return null;
     }
     const pageSize = 10;
-    const zeroLength =
-      length > pageSize ? pageSize - (length % pageSize) : pageSize;
+    const zeroLength = length > pageSize ? pageSize - (length % pageSize) : 0;
     const zeroData = Array.from({ length: zeroLength }, (i) => ({
       key: `zero-${i}`,
     }));
