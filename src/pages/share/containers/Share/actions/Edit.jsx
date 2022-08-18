@@ -37,7 +37,7 @@ export class Edit extends ModalAction {
   static allowed = (item) => Promise.resolve(item.isMine);
 
   checkShowPublic() {
-    return checkPolicyRule('manila:share:set_public_share');
+    return checkPolicyRule('share:set_public_share');
   }
 
   get formItems() {

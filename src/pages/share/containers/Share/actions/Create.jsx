@@ -177,7 +177,7 @@ export class Create extends FormAction {
   }
 
   checkShowPublic() {
-    return checkPolicyRule('manila:share:create_public_share');
+    return checkPolicyRule('share:create_public_share');
   }
 
   get formItems() {
