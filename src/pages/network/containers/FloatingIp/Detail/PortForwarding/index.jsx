@@ -15,6 +15,8 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { PortForwardingStore } from 'stores/neutron/port-forwarding';
+import { getOptions } from 'utils/index';
+import { portForwardingProtocols } from 'resources/neutron/floatingip';
 import actionConfigs from './actions';
 
 export class PortForwarding extends Base {
@@ -93,6 +95,7 @@ export class PortForwarding extends Base {
       title: t('Protocol'),
       dataIndex: 'protocol',
       isHideable: true,
+      render: (value) => portForwardingProtocols[value] || value,
     },
     {
       title: t('Description'),
@@ -107,16 +110,7 @@ export class PortForwarding extends Base {
       {
         label: t('Protocol'),
         name: 'protocol',
-        options: [
-          {
-            label: 'TCP',
-            key: 'tcp',
-          },
-          {
-            label: 'UDP',
-            key: 'udp',
-          },
-        ],
+        options: getOptions(portForwardingProtocols),
       },
       {
         label: t('External Port'),

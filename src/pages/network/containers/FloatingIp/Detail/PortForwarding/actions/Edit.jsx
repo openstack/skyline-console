@@ -14,17 +14,16 @@
 
 import { inject, observer } from 'mobx-react';
 import globalPortForwardingStore from 'stores/neutron/port-forwarding';
-import globalPortStore, { PortStore } from 'stores/neutron/port-extension';
+import globalPortStore from 'stores/neutron/port-extension';
 import { getCanReachSubnetIdsWithRouterIdInComponent } from 'resources/neutron/router';
-import { getInterfaceWithReason } from 'resources/neutron/floatingip';
 import {
-  getPortFormItem,
-  getPortsAndReasons,
-  getPortsForPortFormItem,
-} from 'resources/neutron/port';
-import { ModalAction } from 'containers/Action';
+  getInterfaceWithReason,
+  getPortForwardingName,
+} from 'resources/neutron/floatingip';
+import { getPortsAndReasons } from 'resources/neutron/port';
+import { CreatePortForwarding as Base } from './Create';
 
-export class Edit extends ModalAction {
+export class Edit extends Base {
   static id = 'edit';
 
   static title = t('Edit');
@@ -33,8 +32,20 @@ export class Edit extends ModalAction {
     return t('Edit Port Forwarding');
   }
 
-  init() {
-    this.portStore = new PortStore();
+  get instanceName() {
+    const { floating_ip_address: fip } = this.item;
+    return getPortForwardingName(this.item, fip);
+  }
+
+  get tips() {
+    return '';
+  }
+
+  get fipId() {
+    return this.item.fip.id;
+  }
+
+  getExtraInfo() {
     getCanReachSubnetIdsWithRouterIdInComponent
       .call(this, (router) => {
         const {
@@ -48,32 +59,6 @@ export class Edit extends ModalAction {
       .then(() => {
         this.getInitialPortFixedIPs();
       });
-    this.getFipAlreadyUsedPorts();
-    this.getPorts();
-    this.state = {
-      alreadyUsedPorts: [],
-      instanceFixedIPs: [],
-      portFixedIPs: [],
-      canReachSubnetIdsWithRouterId: [],
-      routerIdWithExternalNetworkInfo: [],
-    };
-  }
-
-  get portDeviceOwner() {
-    return ['compute:nova', ''];
-  }
-
-  getPorts() {
-    getPortsForPortFormItem.call(this, this.portDeviceOwner);
-  }
-
-  async getFipAlreadyUsedPorts() {
-    const detail = await globalPortForwardingStore.fetchList({
-      fipId: this.item.fip.id,
-    });
-    this.setState({
-      alreadyUsedPorts: detail || [],
-    });
   }
 
   async getInitialPortFixedIPs() {
@@ -93,20 +78,10 @@ export class Edit extends ModalAction {
           selectedRowKeys: tmp.map((i) => i.id),
           selectedRows: tmp,
         };
-        this.formRef.current &&
-          this.formRef.current.setFields([
-            {
-              name: 'virtual_adapter',
-              value: {
-                selectedRowKeys: [portDetail.id],
-                selectedRows: [portDetail],
-              },
-            },
-            // {
-            //   name: 'fixed_ip_address',
-            //   value: fixed_ip_address,
-            // },
-          ]);
+        this.updateFormValue('virtual_adapter', {
+          selectedRowKeys: [portDetail.id],
+          selectedRows: [portDetail],
+        });
         return fixed_ip_address;
       })
       .then((fixed_ip_address) => {
@@ -115,26 +90,6 @@ export class Edit extends ModalAction {
         });
       });
   }
-
-  get instanceName() {
-    const {
-      floating_ip_address,
-      external_port,
-      internal_ip_address,
-      internal_port,
-    } = this.item;
-    return `${floating_ip_address}:${external_port} => ${internal_ip_address}:${internal_port}`;
-  }
-
-  static get modalSize() {
-    return 'large';
-  }
-
-  getModalSize() {
-    return 'large';
-  }
-
-  portsDisableFunc = (i) => i.fixed_ips.length === 0;
 
   get defaultValue() {
     const {
@@ -187,21 +142,37 @@ export class Edit extends ModalAction {
 
   static allowed = () => true;
 
-  onSubmit = (values) => {
+  getSubmitData(values) {
     const {
       floatingIp,
       virtual_adapter: { selectedRows = [] } = {},
       fixed_ip_address: { selectedRows: fixedIPAddressSelectedRows = [] } = {},
+      external_port,
+      internal_port,
       ...rest
     } = values;
     const data = {
       ...rest,
     };
+    if (external_port.toString().includes(':')) {
+      data.external_port_range = external_port;
+    } else {
+      data.external_port = external_port;
+    }
+    if (internal_port.toString().includes(':')) {
+      data.internal_port_range = internal_port;
+    } else {
+      data.internal_port = internal_port;
+    }
     data.internal_ip_address = fixedIPAddressSelectedRows[0].fixed_ip_address;
     data.internal_port_id = selectedRows[0].id;
+    return data;
+  }
+
+  onSubmit = (data) => {
     return globalPortForwardingStore.edit(
       {
-        fipId: this.item.fip.id,
+        fipId: this.fipId,
         id: this.item.id,
       },
       data
@@ -209,130 +180,61 @@ export class Edit extends ModalAction {
   };
 
   get formItems() {
-    const { fixed_ip_address = { selectedRows: [] } } = this.state;
-    const ret = [
-      {
-        name: 'floatingIp',
-        label: t('Floating Ip'),
-        type: 'label',
-        iconType: 'floatingIp',
-      },
-      {
-        name: 'protocol',
-        label: t('Protocol'),
-        type: 'select',
-        options: [
-          {
-            label: 'TCP',
-            value: 'tcp',
-          },
-          {
-            label: 'UDP',
-            value: 'udp',
-          },
-        ],
-        required: true,
-      },
-      {
-        name: 'external_port',
-        label: t('External Port'),
-        type: 'input-number',
-        min: 1,
-        max: 65535,
-        required: true,
-        validator: (_, val) => {
-          if (!val) {
-            return Promise.reject(
-              new Error(`${t('Please input')} ${t('External Port')}`)
-            );
-          }
-          const { alreadyUsedPorts } = this.state;
-          const { external_port: initialExternalPort } = this.item;
-          const flag = alreadyUsedPorts.some(
-            (pf) =>
-              pf.external_port !== initialExternalPort &&
-              pf.external_port === val
-          );
-          if (flag) {
-            return Promise.reject(
-              new Error(
-                t('The port of this fip is in use, Please change another port.')
-              )
-            );
-          }
-          return Promise.resolve(true);
-        },
-      },
-      {
-        name: 'internal_port',
-        label: t('Internal Port'),
-        type: 'input-number',
-        hidden: fixed_ip_address.selectedRows.length === 0,
-        min: 1,
-        max: 65535,
-        required: true,
-        validator: (_, val) => {
-          if (!val) {
-            return Promise.reject(
-              new Error(`${t('Please input')} ${t('Internal Port')}`)
-            );
-          }
-          const formData = this.formRef.current.getFieldsValue([
-            'virtual_adapter',
-            'fixed_ip_address',
-          ]);
-          const selectedFixedIPAddress = (formData.fixed_ip_address &&
-            formData.fixed_ip_address.selectedRows) || [''];
-          const internal_ip_address =
-            selectedFixedIPAddress[0].fixed_ip_address;
-          const internal_port_id = formData.virtual_adapter.selectedRows[0].id;
-          const { internal_port } = this.item;
-          const { alreadyUsedPorts } = this.state;
-          // check whether the port has been used
-          const flag = alreadyUsedPorts.some(
-            (pf) =>
-              pf.internal_port !== internal_port &&
-              pf.internal_port === val &&
-              pf.internal_port_id === internal_port_id &&
-              pf.internal_ip_address === internal_ip_address
-          );
-          if (flag) {
-            return Promise.reject(
-              new Error(
-                t(
-                  'A port forwarding has been created for this port of this FIP, please choose another port.'
-                )
-              )
-            );
-          }
-          return Promise.resolve(true);
-        },
-      },
-    ];
-    const extraColumn = getPortFormItem.call(this);
-    const portIndex = extraColumn.findIndex(
-      (i) => i.name === 'virtual_adapter'
-    );
-    extraColumn[portIndex].label = t('Target Port');
-
-    const fixedIPAddressIndex = extraColumn.findIndex(
-      (i) => i.name === 'fixed_ip_address'
-    );
-    extraColumn[fixedIPAddressIndex].label = t('Target IP Address');
-    extraColumn[fixedIPAddressIndex].onChange = (e) => {
-      this.setState(
-        {
-          fixed_ip_address: e,
-        },
-        () => {
-          this.formRef.current.resetFields(['internal_port']);
-        }
-      );
+    const items = super.formItems;
+    if (this.supportRange) {
+      return items;
+    }
+    const externalPortItem = items.find((it) => it.name === 'external_port');
+    const internalPortItem = items.find((it) => it.name === 'internal_port');
+    externalPortItem.label = t('External Port');
+    internalPortItem.label = t('Internal Port');
+    const inputConfig = {
+      type: 'input-int',
+      min: 1,
+      max: 65535,
+      extra: t('Enter an integer value between 1 and 65535.'),
     };
-
-    ret.splice(3, 0, ...extraColumn);
-    return ret;
+    Object.assign(externalPortItem, inputConfig);
+    Object.assign(internalPortItem, inputConfig);
+    return items;
   }
+
+  checkPortUsedBase = (pf, type, port, protocol) => {
+    const {
+      external_port,
+      internal_port,
+      external_port_range,
+      internal_port_range,
+    } = pf;
+    const range =
+      type === 'external' ? external_port_range : internal_port_range;
+    if (range) {
+      const [start, end] = this.getRangeFromString(range);
+      return port >= start && port <= end && pf.protocol === protocol;
+    }
+    const pfPort = type === 'external' ? external_port : internal_port;
+    return (
+      this.item.id !== pf.id && port === pfPort && pf.protocol === protocol
+    );
+  };
+
+  checkPortUsedInternal = (baseCheck, pf) => {
+    if (!baseCheck) {
+      return false;
+    }
+    const formData = this.formRef.current.getFieldsValue([
+      'virtual_adapter',
+      'fixed_ip_address',
+    ]);
+    const internalIpAddress =
+      formData.fixed_ip_address.selectedRows[0].fixed_ip_address;
+    const internalPortId = formData.virtual_adapter.selectedRows[0].id;
+    return (
+      this.item.id !== pf.id &&
+      pf.internal_port_id === internalPortId &&
+      pf.internal_ip_address === internalIpAddress
+    );
+  };
 }
 
 export default inject('rootStore')(observer(Edit));

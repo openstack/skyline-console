@@ -17,6 +17,7 @@ import globalNetworkStore from 'stores/neutron/network';
 import { ipValidate } from 'utils/validate';
 import globalFloatingIpsStore from 'stores/neutron/floatingIp';
 import { enablePFW } from 'resources/neutron/neutron';
+import { isEmpty } from 'lodash';
 
 const { isIPv4 } = ipValidate;
 
@@ -343,4 +344,29 @@ export const getFIPFormItemForAssociate = (self) => {
       },
     ],
   };
+};
+
+export const portForwardingProtocols = {
+  tcp: t('TCP'),
+  udp: t('UDP'),
+};
+
+export const getPortForwardingName = (portForwarding = {}, fip = '') => {
+  if (isEmpty(portForwarding)) {
+    return '';
+  }
+  const {
+    protocol,
+    external_port,
+    external_port_range,
+    internal_ip_address,
+    internal_port,
+    internal_port_range,
+  } = portForwarding;
+  const protocolLabel = portForwardingProtocols[protocol] || protocol;
+  const name = `${
+    external_port || external_port_range
+  } => ${internal_ip_address}:${internal_port || internal_port_range}`;
+  const longName = fip ? `${fip}:${name}` : name;
+  return `${protocolLabel}: ${longName}`;
 };

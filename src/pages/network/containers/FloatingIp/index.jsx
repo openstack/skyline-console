@@ -18,6 +18,7 @@ import Base from 'containers/List';
 import {
   floatingIpStatus,
   transitionStatuses,
+  getPortForwardingName,
 } from 'resources/neutron/floatingip';
 import { FloatingIpStore } from 'stores/neutron/floatingIp';
 import { emptyActionConfig } from 'utils/constants';
@@ -155,17 +156,7 @@ export class FloatingIps extends Base {
       return '';
     }
     const { floating_ip_address: fip } = record;
-    const {
-      protocol,
-      external_port,
-      external_port_range,
-      internal_ip_address,
-      internal_port,
-      internal_port_range,
-    } = detail;
-    return `${protocol}: ${fip}:${
-      external_port || external_port_range
-    } => ${internal_ip_address}:${internal_port || internal_port_range}`;
+    return getPortForwardingName(rest, fip);
   }
 
   get portForwardingResourceName() {
@@ -183,7 +174,10 @@ export class FloatingIps extends Base {
       return null;
     }
     const pageSize = 10;
-    const zeroLength = length > pageSize ? pageSize - (length % pageSize) : 0;
+    let zeroLength = 0;
+    if (length > pageSize && length % pageSize) {
+      zeroLength = pageSize - (length % pageSize);
+    }
     const zeroData = Array.from({ length: zeroLength }, (i) => ({
       key: `zero-${i}`,
     }));

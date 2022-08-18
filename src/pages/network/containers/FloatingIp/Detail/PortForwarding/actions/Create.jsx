@@ -15,7 +15,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import { isNull, isObject } from 'lodash';
+import { isNull, isObject, isString } from 'lodash';
 import { getCanReachSubnetIdsWithRouterIdInComponent } from 'resources/neutron/router';
 import { PortStore } from 'stores/neutron/port-extension';
 import {
@@ -23,10 +23,15 @@ import {
   getPortsAndReasons,
   getPortsForPortFormItem,
 } from 'resources/neutron/port';
-import { getInterfaceWithReason } from 'resources/neutron/floatingip';
+import {
+  getInterfaceWithReason,
+  portForwardingProtocols,
+  getPortForwardingName,
+} from 'resources/neutron/floatingip';
 import globalPortForwardingStore from 'stores/neutron/port-forwarding';
 import { enablePFW } from 'resources/neutron/neutron';
 import { regex } from 'utils/validate';
+import { getOptions } from 'utils/index';
 
 const { portRangeRegex } = regex;
 
@@ -60,6 +65,10 @@ export class CreatePortForwarding extends ModalAction {
     this.getPorts();
     this.getRangeSupport();
     this.getFipAlreadyUsedPorts();
+    this.getExtraInfo();
+  }
+
+  getExtraInfo() {
     getCanReachSubnetIdsWithRouterIdInComponent.call(this, (router) => {
       const { item } = this;
       return (
@@ -69,9 +78,13 @@ export class CreatePortForwarding extends ModalAction {
     });
   }
 
+  get fipId() {
+    return this.item.id;
+  }
+
   async getFipAlreadyUsedPorts() {
     const detail = await globalPortForwardingStore.fetchList({
-      fipId: this.item.id,
+      fipId: this.fipId,
     });
     this.setState({
       alreadyUsedPorts: detail || [],
@@ -79,7 +92,10 @@ export class CreatePortForwarding extends ModalAction {
   }
 
   get instanceName() {
-    return this.item.floating_ip_address || this.values.name;
+    return getPortForwardingName(
+      this.submitData || this.values,
+      this.item.floating_ip_address
+    );
   }
 
   static get modalSize() {
@@ -130,6 +146,7 @@ export class CreatePortForwarding extends ModalAction {
     }
     data.internal_ip_address = fixedIPAddressSelectedRows[0].fixed_ip_address;
     data.internal_port_id = selectedRows[0].id;
+    this.submitData = data;
     return data;
   }
 
@@ -172,7 +189,7 @@ export class CreatePortForwarding extends ModalAction {
     try {
       await globalPortForwardingStore.fetchListByPage({
         limit: 1,
-        fipId: this.item.id,
+        fipId: this.fipId,
         external_port_range: '80:81',
       });
       this.setState({
@@ -210,43 +227,48 @@ export class CreatePortForwarding extends ModalAction {
       this.formRef.current.resetFields(['fixed_ip_address', 'internal_port']);
   };
 
+  checkPortUsedBase = (pf, type, port, protocol) => {
+    const {
+      external_port,
+      internal_port,
+      external_port_range,
+      internal_port_range,
+    } = pf;
+    const range =
+      type === 'external' ? external_port_range : internal_port_range;
+    if (range) {
+      const [start, end] = this.getRangeFromString(range);
+      return port >= start && port <= end && pf.protocol === protocol;
+    }
+    const pfPort = type === 'external' ? external_port : internal_port;
+    return port === pfPort && pf.protocol === protocol;
+  };
+
+  checkPortUsedInternal = (baseCheck, pf) => {
+    if (!baseCheck) {
+      return false;
+    }
+    const formData = this.formRef.current.getFieldsValue([
+      'virtual_adapter',
+      'fixed_ip_address',
+    ]);
+    const internalIpAddress =
+      formData.fixed_ip_address.selectedRows[0].fixed_ip_address;
+    const internalPortId = formData.virtual_adapter.selectedRows[0].id;
+    return (
+      pf.internal_port_id === internalPortId &&
+      pf.internal_ip_address === internalIpAddress
+    );
+  };
+
   checkPortUsed = (val, type) => {
     const { alreadyUsedPorts: usedPorts, protocol } = this.state;
     const port = parseInt(val, 10);
-    const checkInternal = (baseCheck, pf) => {
-      if (!baseCheck) {
-        return false;
-      }
-      const formData = this.formRef.current.getFieldsValue([
-        'virtual_adapter',
-        'fixed_ip_address',
-      ]);
-      const internalIpAddress =
-        formData.fixed_ip_address.selectedRows[0].fixed_ip_address;
-      const internalPortId = formData.virtual_adapter.selectedRows[0].id;
-      return (
-        pf.internal_port_id === internalPortId &&
-        pf.internal_ip_address === internalIpAddress
-      );
-    };
     return usedPorts.find((pf) => {
-      const {
-        external_port,
-        internal_port,
-        external_port_range,
-        internal_port_range,
-      } = pf;
-      const range =
-        type === 'external' ? external_port_range : internal_port_range;
-      const pfPort = type === 'external' ? external_port : internal_port;
-      if (range) {
-        const [start, end] = this.getRangeFromString(range);
-        const baseCheck =
-          port >= start && port <= end && pf.protocol === protocol;
-        return type === 'external' ? baseCheck : checkInternal(baseCheck, pf);
-      }
-      const baseCheck = port === pfPort && pf.protocol === protocol;
-      return type === 'external' ? baseCheck : checkInternal(baseCheck, pf);
+      const baseCheck = this.checkPortUsedBase(pf, type, port, protocol);
+      return type === 'external'
+        ? baseCheck
+        : this.checkPortUsedInternal(baseCheck, pf);
     });
   };
 
@@ -389,13 +411,18 @@ export class CreatePortForwarding extends ModalAction {
   };
 
   validateExternalPort = (rule, val) => {
+    const value =
+      val === undefined ? '' : isString(val) ? val : val.toString() || '';
     const { internal_port: internalPort } = this.formRef.current.getFieldsValue(
       ['internal_port']
     );
-    if (!portRangeRegex.test(val)) {
+    if (!portRangeRegex.test(value)) {
       return Promise.resolve(true);
     }
-    const result = this.checkExternalPortInput(val, internalPort || '');
+    const result = this.checkExternalPortInput(
+      value,
+      (internalPort || '').toString() || ''
+    );
     if (result) {
       return Promise.reject(result);
     }
@@ -442,13 +469,18 @@ export class CreatePortForwarding extends ModalAction {
   };
 
   validateInternalPort = (_, val) => {
-    if (!portRangeRegex.test(val)) {
+    const value =
+      val === undefined ? '' : isString(val) ? val : val.toString() || '';
+    if (!portRangeRegex.test(value)) {
       return Promise.resolve(true);
     }
     const { external_port: externalPort } = this.formRef.current.getFieldsValue(
       ['external_port']
     );
-    const result = this.checkInternalPortInput(externalPort || '', val);
+    const result = this.checkInternalPortInput(
+      (externalPort || '').toString() || '',
+      value
+    );
     if (result) {
       return Promise.reject(result);
     }
@@ -544,16 +576,7 @@ export class CreatePortForwarding extends ModalAction {
         name: 'protocol',
         label: t('Protocol'),
         type: 'select',
-        options: [
-          {
-            label: 'TCP',
-            value: 'tcp',
-          },
-          {
-            label: 'UDP',
-            value: 'udp',
-          },
-        ],
+        options: getOptions(portForwardingProtocols),
         required: true,
       },
       {

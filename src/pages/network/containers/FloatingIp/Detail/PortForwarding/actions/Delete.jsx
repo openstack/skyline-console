@@ -14,6 +14,7 @@
 
 import { ConfirmAction } from 'containers/Action';
 import globalPortForwardingStore from 'stores/neutron/port-forwarding';
+import { getPortForwardingName } from 'resources/neutron/floatingip';
 
 export default class Delete extends ConfirmAction {
   get id() {
@@ -39,13 +40,7 @@ export default class Delete extends ConfirmAction {
   policy = 'delete_floatingip_port_forwarding';
 
   getItemName = (data) => {
-    const {
-      floating_ip_address,
-      external_port,
-      internal_ip_address,
-      internal_port,
-    } = data;
-    return `${floating_ip_address}:${external_port}-->${internal_ip_address}:${internal_port}`;
+    return getPortForwardingName(data, data.floating_ip_address);
   };
 
   onSubmit = (data) => {
