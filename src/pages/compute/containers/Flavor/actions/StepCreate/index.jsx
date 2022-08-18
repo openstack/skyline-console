@@ -132,7 +132,7 @@ export class StepCreate extends StepAction {
     };
     const isPublic = accessType === 'public';
     body['os-flavor-access:is_public'] = isPublic;
-    if (categoryHasEphemeral) {
+    if (categoryHasEphemeral(category)) {
       body['OS-FLV-EXT-DATA:ephemeral'] = ephemeral;
     }
     const properties = this.getProperties(architecture, category, settings);
