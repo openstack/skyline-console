@@ -64,7 +64,6 @@ export class Create extends ModalAction {
   static policy = 'identity:create_application_credential';
 
   get roleOptions() {
-    // const baseRoles = toJS(globalRootStore.baseRoles);
     const roles = toJS(globalRootStore.roles);
 
     return roles.map((i) => ({
