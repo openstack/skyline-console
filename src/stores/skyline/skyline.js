@@ -23,6 +23,9 @@ export class SkylineStore extends Base {
   @observable
   regions = [];
 
+  @observable
+  sso = {};
+
   get client() {
     return client.skyline.contrib;
   }
@@ -37,6 +40,12 @@ export class SkylineStore extends Base {
   async fetchRegionList() {
     const result = await this.client.regions();
     this.regions = result;
+  }
+
+  @action
+  async fetchSSO() {
+    const result = await client.skyline.sso.list();
+    this.sso = result;
   }
 }
 
