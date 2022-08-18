@@ -68,6 +68,7 @@ export class VolumeDetail extends Base {
       {
         title: t('Size'),
         dataIndex: 'size',
+        render: (value) => `${value}GiB`,
       },
       {
         title: t('Created At'),
