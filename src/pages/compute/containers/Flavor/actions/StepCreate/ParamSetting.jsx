@@ -378,6 +378,7 @@ export class ParamSetting extends Base {
         type: 'input-int',
         min: 0,
         hidden: !hasEphemeral,
+        required: hasEphemeral,
       },
       {
         name: 'ephemeralTmp',
