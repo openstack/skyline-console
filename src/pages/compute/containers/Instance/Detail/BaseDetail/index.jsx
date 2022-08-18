@@ -362,7 +362,7 @@ export class BaseDetail extends Base {
         },
         {
           label: t('Size'),
-          value: `${item.size}GiB`,
+          value: item.size ? `${item.size}GiB` : '-',
         },
         {
           label: t('Volume Type'),
