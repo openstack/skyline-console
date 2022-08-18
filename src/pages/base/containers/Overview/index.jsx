@@ -113,7 +113,7 @@ export class Overview extends Component {
             {this.renderQuota()}
           </Col>
           <Col span={8} className={styles.right}>
-            <ProjectInfo />
+            {this.renderProject()}
             {this.renderExtra()}
           </Col>
         </Row>
