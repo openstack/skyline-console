@@ -13,33 +13,11 @@
 // limitations under the License.
 
 import React, { Component } from 'react';
-import { Card, Descriptions, Button } from 'antd';
+import { Card, Descriptions } from 'antd';
 import { inject, observer } from 'mobx-react';
-import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import styles from '../style.less';
 
 export class ProjectInfo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      collapsed: true,
-    };
-  }
-
-  onCollapsedCallback = () => {};
-
-  handleDetailInfo = () => {
-    const { collapsed } = this.state;
-    this.setState(
-      {
-        collapsed: !collapsed,
-      },
-      () => {
-        this.onCollapsedCallback(!collapsed);
-      }
-    );
-  };
-
   get rootStore() {
     return this.props.rootStore || {};
   }
@@ -49,14 +27,9 @@ export class ProjectInfo extends Component {
     return user || {};
   }
 
-  get showRoles() {
-    const { roles = [], baseRoles = [] } = this.rootStore;
-    return roles.filter((it) => baseRoles.indexOf(it.name) === -1);
-  }
-
-  get baseRoles() {
-    const { roles = [], baseRoles = [] } = this.rootStore;
-    return roles.filter((it) => baseRoles.indexOf(it.name) !== -1);
+  get roles() {
+    const { roles = [] } = this.rootStore;
+    return roles;
   }
 
   renderAccount() {
@@ -71,14 +44,14 @@ export class ProjectInfo extends Component {
     );
   }
 
-  renderShowRole() {
+  renderRoles() {
     return (
       <Descriptions.Item
         label={t('My Role')}
         labelStyle={{ fontSize: 14 }}
         contentStyle={{ fontSize: 14 }}
       >
-        {this.showRoles.map((item) => item.name).join(', ')}
+        {this.roles.map((item) => item.name).join(', ')}
       </Descriptions.Item>
     );
   }
@@ -95,36 +68,6 @@ export class ProjectInfo extends Component {
     );
   }
 
-  renderBaseRole() {
-    const { collapsed } = this.state;
-    if (collapsed) {
-      return null;
-    }
-
-    return (
-      <Descriptions.Item
-        label={t('Base Role')}
-        labelStyle={{ fontSize: 14 }}
-        contentStyle={{ fontSize: 14 }}
-      >
-        {this.baseRoles.map((item) => item.name).join(', ')}
-      </Descriptions.Item>
-    );
-  }
-
-  renderButton() {
-    const { collapsed } = this.state;
-    const icon = collapsed ? <DownOutlined /> : <UpOutlined />;
-    return (
-      <Button
-        onClick={this.handleDetailInfo}
-        icon={icon}
-        type="link"
-        className={styles['role-button']}
-      />
-    );
-  }
-
   render() {
     if (!this.currentUser.name) {
       return null;
@@ -132,16 +75,14 @@ export class ProjectInfo extends Component {
     return (
       <Card
         className={styles.project}
-        title={`Hello, ${this.currentUser.name}`}
+        title={t('Hello, {name}', { name: this.currentUser.name })}
         bordered={false}
       >
         <Descriptions column={1}>
           {this.renderAccount()}
-          {this.renderShowRole()}
+          {this.renderRoles()}
           {this.renderDomain()}
-          {this.renderBaseRole()}
         </Descriptions>
-        {this.renderButton()}
       </Card>
     );
   }

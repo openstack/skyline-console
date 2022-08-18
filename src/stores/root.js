@@ -34,9 +34,6 @@ export class RootStore {
   roles = [];
 
   @observable
-  baseRoles = [];
-
-  @observable
   baseDomains = [];
 
   @observable
@@ -127,14 +124,8 @@ export class RootStore {
 
   @action
   async updateUserRoles(user) {
-    const {
-      roles = [],
-      base_roles = [],
-      base_domains,
-      user: userInfo = {},
-    } = user || {};
+    const { roles = [], base_domains, user: userInfo = {} } = user || {};
     this.roles = roles;
-    this.baseRoles = base_roles;
     this.baseDomains = base_domains;
     this.hasAdminPageRole = await this.getUserSystemRoles(userInfo);
     this.hasAdminRole = this.hasAdminPageRole;
