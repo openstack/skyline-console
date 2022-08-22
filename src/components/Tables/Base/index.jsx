@@ -82,6 +82,7 @@ export class BaseTable extends React.Component {
     timeFilter: PropTypes.any,
     isPageByBack: PropTypes.bool,
     isSortByBack: PropTypes.bool,
+    ableSkipPageByBackend: PropTypes.bool,
     autoRefresh: PropTypes.bool,
     hideRefresh: PropTypes.bool,
     hideAutoRefresh: PropTypes.bool,
@@ -120,6 +121,7 @@ export class BaseTable extends React.Component {
     hideDownload: false,
     primaryActionsExtra: null,
     isAdminPage: false,
+    ableSkipPageByBackend: false,
   };
 
   constructor(props) {
@@ -199,9 +201,9 @@ export class BaseTable extends React.Component {
       sortOrder: sorter.order,
       ...filters,
     };
-    const { isCourier, isPageByBack } = this.props;
+    const { ableSkipPageByBackend, isPageByBack } = this.props;
     if (action === 'sort') {
-      if (!(isCourier || !isPageByBack)) {
+      if (isPageByBack && !ableSkipPageByBackend) {
         const { pagination: propsPagination } = this.props;
         params = {
           ...params,
@@ -866,7 +868,7 @@ export class BaseTable extends React.Component {
       scrollY,
       expandable,
       isPageByBack = true,
-      isCourier,
+      ableSkipPageByBackend,
       childrenColumnName,
       // scrollX,
     } = this.props;
@@ -875,7 +877,7 @@ export class BaseTable extends React.Component {
 
     const props = {};
     const newPagination =
-      isCourier || !isPageByBack
+      ableSkipPageByBackend || !isPageByBack
         ? {
             ...pagination,
             size: 'small',
@@ -885,7 +887,7 @@ export class BaseTable extends React.Component {
     if (!hideHeader) {
       props.title = this.renderTableTitle;
     }
-    const footer = !(isCourier || !isPageByBack)
+    const footer = !(ableSkipPageByBackend || !isPageByBack)
       ? this.renderTableFooter
       : null;
 
