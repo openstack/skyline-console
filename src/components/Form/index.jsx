@@ -474,7 +474,7 @@ export default class BaseForm extends React.Component {
   getUploadRequestConf = () => {
     return {
       onUploadProgress: this.onUploadProgress,
-      canToken: this.cancelToken,
+      cancelToken: this.cancelToken,
     };
   };
 
@@ -637,6 +637,17 @@ export default class BaseForm extends React.Component {
     );
   }
 
+  renderAbortButton() {
+    if (!this.isSubmitting || this.isModal) {
+      return null;
+    }
+    return (
+      <Button className={styles.cancel} onClick={this.onClickCancel}>
+        {t('Abort Upload')}
+      </Button>
+    );
+  }
+
   renderSubmittingTip() {
     if (!this.hasRequestCancelCallback) {
       return;
@@ -648,6 +659,7 @@ export default class BaseForm extends React.Component {
         <div className={styles['progress-wrapper']}>
           <Progress percent={percent} size="small" />
         </div>
+        {this.renderAbortButton()}
       </div>
     );
   }

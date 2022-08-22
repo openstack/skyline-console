@@ -42,6 +42,7 @@
   "ARM Architecture": "ARM架构",
   "Abandon Stack": "废弃堆栈",
   "Abandoning this stack will preserve the resources deployed by the stack.": "废弃此堆栈将保留堆栈部署的资源。",
+  "Abort Upload": "取消上传",
   "Accept Volume Transfer": "接受云硬盘转让",
   "Access Control": "访问控制",
   "Access Key": "访问密钥",
