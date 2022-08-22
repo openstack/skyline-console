@@ -111,6 +111,11 @@ export class VolumeStore extends Base {
       item.itemInList = result[0];
       item.attachmentsContrib = result[0].attachments;
     } catch (e) {}
+    const { snapshot_id } = item;
+    if (snapshot_id) {
+      const snapshot = await client.cinder.snapshots.show(snapshot_id);
+      item.snapshot = snapshot.snapshot;
+    }
     return item;
   }
 

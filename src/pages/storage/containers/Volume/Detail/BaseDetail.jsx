@@ -19,10 +19,14 @@ import Base from 'containers/BaseDetail';
 export class BaseDetail extends Base {
   get leftCards() {
     const cards = [this.attachmentsCard];
-    if (this.detailData.volume_image_metadata) {
+    const { snapshot_id, volume_image_metadata, transfer } = this.detailData;
+    if (snapshot_id) {
+      cards.push(this.snapshotCard);
+    }
+    if (volume_image_metadata) {
       cards.push(this.imageCard);
     }
-    if (this.detailData.transfer) {
+    if (transfer) {
       cards.push(this.transferCard);
     }
     return cards;
@@ -42,7 +46,7 @@ export class BaseDetail extends Base {
               {it.device} on{' '}
               {this.getLinkRender(
                 'instanceDetail',
-                it.server_name,
+                it.server_name || it.server_id,
                 { id: it.server_id },
                 { tab: 'volumes' }
               )}
@@ -60,6 +64,7 @@ export class BaseDetail extends Base {
   get imageCard() {
     const {
       volume_image_metadata: { image_id, image_name },
+      snapshot_id,
     } = this.detailData;
     const options = [
       {
@@ -67,6 +72,29 @@ export class BaseDetail extends Base {
         dataIndex: 'volume_image_metadata.image_name',
         render: () =>
           this.getLinkRender('imageDetail', image_name, { id: image_id }, null),
+      },
+    ];
+    const title = snapshot_id ? t('Image Info') : t('Volume Source');
+
+    return {
+      title,
+      options,
+    };
+  }
+
+  get snapshotCard() {
+    const { snapshot_id } = this.detailData;
+    const options = [
+      {
+        label: t('Volume Snapshot'),
+        dataIndex: 'snapshot.name',
+        render: (value) =>
+          this.getLinkRender(
+            'snapshotDetail',
+            value || snapshot_id,
+            { id: snapshot_id },
+            null
+          ),
       },
     ];
 
