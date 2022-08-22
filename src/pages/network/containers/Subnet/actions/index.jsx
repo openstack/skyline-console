@@ -12,21 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import CreateSubnet from '../../actions/CreateSubnet';
-import DeleteAction from './DeleteSubnet';
-import EditSubnet from './EditSubnet';
+import Create from '../../Network/actions/CreateSubnet';
+import Delete from './Delete';
+import Edit from './Edit';
 
 const actionConfigs = {
   rowActions: {
-    firstAction: EditSubnet,
+    firstAction: Edit,
     moreActions: [
       {
-        action: DeleteAction,
+        action: Delete,
       },
     ],
   },
-  batchActions: [DeleteAction],
-  primaryActions: [CreateSubnet],
+  batchActions: [Delete],
+  primaryActions: [Create],
 };
 
 export default actionConfigs;

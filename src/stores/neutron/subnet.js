@@ -25,6 +25,17 @@ export class SubnetStore extends Base {
     return false;
   }
 
+  get portClient() {
+    return client.neutron.ports;
+  }
+
+  get paramsFunc() {
+    return (params) => {
+      const { network, ...rest } = params;
+      return rest;
+    };
+  }
+
   @action
   async update({ id }, values) {
     const {
@@ -46,6 +57,62 @@ export class SubnetStore extends Base {
       gateway_ip,
     };
     return this.submitting(this.client.update(id, { subnet: data }));
+  }
+
+  async listDidFetch(items, allProjects, filters) {
+    if (!items.length) {
+      return items;
+    }
+    const {
+      network: { id: networkId, subnet_ip_availability: ipUsage = [] } = {},
+    } = filters;
+    const portParams = {
+      network_id: networkId,
+    };
+    if (!allProjects) {
+      portParams.tenant_id = this.currentProjectId;
+    }
+    const { ports = [] } = await this.portClient.list(portParams);
+    return items.map((it) => {
+      const ipInfo = ipUsage.find((u) => u.subnet_id === it.id);
+      const subnetPorts = ports.filter((port) => {
+        return port.fixed_ips.find((ip) => ip.subnet_id === it.id);
+      });
+      const { total_ips, used_ips } = ipInfo || {};
+      return {
+        ...it,
+        total_ips,
+        used_ips,
+        subnetPorts,
+      };
+    });
+  }
+
+  async detailDidFetch(item, allProjects, filters) {
+    const { inDetail = false } = filters;
+    if (!inDetail) {
+      return item;
+    }
+    const { network_id, id } = item;
+    const networkParams = {
+      id: network_id,
+      isAdminPage: allProjects,
+      currentProjectId: this.currentProjectId,
+    };
+    const { NetworkStore } = require('stores/neutron/network');
+    const network =
+      await new NetworkStore().fetchDetailWithAvailabilityAndUsage(
+        networkParams
+      );
+    const { subnet_ip_availability = [] } = network;
+    const ipAvailability = subnet_ip_availability.find(
+      (it) => it.subnet_id === id
+    );
+    return {
+      ...item,
+      network,
+      ...ipAvailability,
+    };
   }
 }
 

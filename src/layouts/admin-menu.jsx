@@ -293,6 +293,13 @@ const renderMenu = (t) => {
               level: 2,
               routePath: '/network/networks-admin/detail/:id',
             },
+            {
+              path: /^\/network\/networks-admin\/detail\/.[^/]+\/subnet\/.[^/]+$/,
+              name: t('Subnet Detail'),
+              key: 'subnetDetailAdmin',
+              level: 2,
+              routePath: '/network/networks-admin/detail/:networkId/subnet/:id',
+            },
           ],
         },
         {
@@ -307,6 +314,28 @@ const renderMenu = (t) => {
               key: 'portDetailAdmin',
               level: 2,
               routePath: '/network/port-admin/detail/:id',
+            },
+            {
+              path: /^\/network\/networks-admin\/detail\/.[^/]+\/port\/.[^/]+$/,
+              name: t('Port Detail'),
+              key: 'networkPortDetailAdmin',
+              level: 2,
+              routePath: '/network/networks-admin/detail/:networkId/port/:id',
+            },
+            {
+              path: /^\/network\/networks-admin\/detail\/.[^/]+\/subnet\/.[^/]+\/port\/.[^/]+$/,
+              name: t('Port Detail'),
+              key: 'subnetPortDetailAdmin',
+              level: 2,
+              routePath:
+                '/network/networks-admin/detail/:networkId/subnet/:subnetId/port/:id',
+            },
+            {
+              path: /^\/network\/instance-admin\/detail\/.[^/]+\/port\/.[^/]+$/,
+              name: t('Port Detail'),
+              key: 'instancePortDetailAdmin',
+              level: 2,
+              routePath: '/network/instance-admin/detail/:instanceId/port/:id',
             },
           ],
         },

@@ -38,20 +38,29 @@ export class Port extends Base {
     return (
       this.inDetailPage &&
       (this.path.includes('networks/detail') ||
-        this.path.includes('networks-admin/detail'))
+        this.path.includes('networks-admin/detail')) &&
+      !this.isSubnetDetail
     );
   }
 
+  get isSubnetDetail() {
+    return this.inDetailPage && this.path.includes('subnet');
+  }
+
+  get isRecycleBinDetail() {
+    return this.inDetailPage && this.path.includes('recycle-bin');
+  }
+
   get isFilterByBackend() {
-    return true;
+    return !this.isSubnetDetail;
   }
 
   get isSortByBackend() {
-    return true;
+    return this.isFilterByBackend;
   }
 
   get defaultSortKey() {
-    return 'status';
+    return this.isFilterByBackend ? 'status' : '';
   }
 
   updateFetchParamsByPage = (params) => {
@@ -65,6 +74,15 @@ export class Port extends Base {
     return newParams;
   };
 
+  updateFetchParams = (params) => {
+    const { id, networkId, ...rest } = params;
+    return {
+      network_id: networkId,
+      subnetId: id,
+      ...rest,
+    };
+  };
+
   get policy() {
     return 'get_port';
   }
@@ -75,10 +93,6 @@ export class Port extends Base {
 
   get adminPageHasProjectFilter() {
     return true;
-  }
-
-  get isRecycleBinDetail() {
-    return this.inDetailPage && this.path.includes('recycle-bin');
   }
 
   get actionConfigs() {
@@ -141,12 +155,44 @@ export class Port extends Base {
     );
   };
 
+  getPortDetailRoute = () => {
+    if (this.isSubnetDetail) {
+      return {
+        routeName: this.getRouteName('subnetPortDetail'),
+        routeParamsFunc: (data) => ({
+          networkId: data.network_id,
+          subnetId: data.subnet_id,
+          id: data.id,
+        }),
+      };
+    }
+    if (this.isNetworkDetail) {
+      return {
+        routeName: this.getRouteName('networkPortDetail'),
+        routeParamsFunc: (data) => ({
+          networkId: data.network_id,
+          id: data.id,
+        }),
+      };
+    }
+    if (this.isInstanceDetail) {
+      return {
+        routeName: this.getRouteName('instancePortDetail'),
+        routeParamsFunc: (data) => ({
+          instanceId: data.device_id,
+          id: data.id,
+        }),
+      };
+    }
+    return { routeName: this.getRouteName('portDetail') };
+  };
+
   getColumns = () => {
     const columns = [
       {
         title: t('ID/Name'),
         dataIndex: 'name',
-        routeName: this.getRouteName('portDetail'),
+        ...this.getPortDetailRoute(),
       },
       {
         title: t('Project ID/Name'),
@@ -261,7 +307,7 @@ export class Port extends Base {
         { label: t('DHCP Agent'), key: 'network:dhcp' },
         {
           label: t('Others'),
-          key: 'network:local_ip,network:routed,network:distributed',
+          key: 'network:local_ip,network:routed,network:distributed,compute:kuryr',
         },
         {
           label: t('Unbounded'),
@@ -269,7 +315,18 @@ export class Port extends Base {
         },
       ],
     };
-    ret.push(deviceOwner);
+    if (this.isSubnetDetail) {
+      deviceOwner.filterFunc = (value, filter) => {
+        if (filter === 'none') {
+          return !value;
+        }
+        return value && filter.includes(value);
+      };
+    }
+    if (!this.isInstanceDetail) {
+      ret.push(deviceOwner);
+    }
+
     return ret;
   }
 }

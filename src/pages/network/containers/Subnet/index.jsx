@@ -12,53 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { SubnetStore } from 'stores/neutron/subnet';
-import { toJS } from 'mobx';
-import globalRootStore from 'stores/root';
-import actionConfigs from './subnetActions';
+import actionConfigs from './actions';
 // import { networkStatus } from 'resources/network';
 
 export class Subnets extends Base {
   init() {
     this.store = new SubnetStore();
-    const { detail: { subnet_ip_availability = [] } = {} } = this.props;
-    this.subnet_ip_availability = subnet_ip_availability;
   }
-
-  getDataSource = () => {
-    const { data, filters = {}, timeFilter = {} } = this.list;
-    const { id, tab, ...rest } = filters;
-    const newFilters = rest;
-    let items = [];
-    if (this.isFilterByBackend) {
-      items = toJS(data);
-    } else {
-      items = (toJS(data) || []).filter((it) =>
-        this.filterData(it, toJS(newFilters), toJS(timeFilter))
-      );
-      this.updateList({ total: items.length });
-    }
-    const hasTransData = items.some((item) =>
-      this.itemInTransitionFunction(item)
-    );
-    if (hasTransData) {
-      this.setRefreshDataTimerTransition();
-    } else {
-      this.setRefreshDataTimerAuto();
-    }
-    const ret = items.map((item) => {
-      const usageDetail = this.subnet_ip_availability.find(
-        (i) => i.subnet_id === item.id
-      );
-      return {
-        ...usageDetail,
-        ...item,
-      };
-    });
-    return ret;
-  };
 
   get policy() {
     return 'get_subnet';
@@ -77,16 +41,16 @@ export class Subnets extends Base {
   }
 
   updateFetchParams = () => {
-    const { id } = this.props.match.params;
     return {
-      network_id: id,
+      network_id: this.id,
+      network: this.props.detail,
+      all_projects: this.isAdminPage,
     };
   };
 
   get canAddNetworkIPUsageInfo() {
     return (
-      this.isAdminPage ||
-      globalRootStore.user.project.id === this.props.detail.project_id
+      this.isAdminPage || this.currentProjectId === this.props.detail.project_id
     );
   }
 
@@ -96,6 +60,11 @@ export class Subnets extends Base {
         title: t('Name'),
         dataIndex: 'name',
         stringify: (name, record) => name || record.id,
+        routeName: this.getRouteName('subnetDetail'),
+        routeParamsFunc: (data) => ({
+          networkId: data.network_id,
+          id: data.id,
+        }),
       },
       {
         title: t('CIDR'),
@@ -113,11 +82,25 @@ export class Subnets extends Base {
         isHideable: true,
       },
       {
-        //   title: t('Status'),
-        //   dataIndex: 'status',
-        //   render: value => networkStatus[value] || value,
-        //   isHideable: true,
-        // }, {
+        title: t('Port Count'),
+        dataIndex: 'subnetPorts',
+        isHideable: true,
+        stringify: (value) => (value || []).length,
+        render: (value, record) => {
+          const count = (value || []).length;
+          if (!count) {
+            return '-';
+          }
+          const link = this.getLinkRender(
+            'subnetDetail',
+            count,
+            { id: record.id, networkId: record.network_id },
+            { tab: 'ports' }
+          );
+          return <>{link}</>;
+        },
+      },
+      {
         title: t('Created At'),
         dataIndex: 'created_at',
         valueRender: 'toLocalTime',
@@ -126,7 +109,7 @@ export class Subnets extends Base {
     ];
     if (this.canAddNetworkIPUsageInfo) {
       ret.splice(
-        4,
+        5,
         0,
         {
           title: t('Total IPs'),

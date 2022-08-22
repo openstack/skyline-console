@@ -16,7 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import { ipValidate } from 'utils/validate';
 import globalSubnetStore from 'stores/neutron/subnet';
-import networkUtil from '../../actions/networkUtil';
+import networkUtil from '../../Network/actions/networkUtil';
 
 const {
   checkAllocation_pools,
