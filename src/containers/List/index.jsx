@@ -306,11 +306,11 @@ export default class BaseList extends React.Component {
     return false;
   }
 
-  get isCourier() {
-    /* If it is courier and it is back-end paging, 
-     then a page footer with a number is required, 
-     because Courier has its own paging and can jump pages, 
-     while openstack does not support page jumping. */
+  get ableSkipPageByBackend() {
+    /* If th back-end api can skip page and it is back-end paging,
+     then a page footer with a number is required, the front-end can
+     show all pages and can skip to any page number,
+     while most openstack api does not support page jumping. */
     return false;
   }
 
@@ -527,7 +527,7 @@ export default class BaseList extends React.Component {
       filterTimeDefaultValue: this.filterTimeDefaultValue,
       isPageByBack: this.isFilterByBackend,
       isSortByBack: this.isSortByBackend,
-      isCourier: this.isCourier,
+      ableSkipPageByBackend: this.ableSkipPageByBackend,
       autoRefresh,
       startRefreshAuto: this.startRefreshAuto,
       stopRefreshAuto: this.onStopRefreshAuto,
