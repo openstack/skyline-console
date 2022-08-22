@@ -125,7 +125,7 @@ export default class FormItem extends React.Component {
     mode: PropTypes.string,
     onChange: PropTypes.func,
     dependencies: PropTypes.array,
-    formRef: PropTypes.object,
+    formref: PropTypes.object,
   };
 
   static defaultProps = {

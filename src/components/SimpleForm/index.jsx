@@ -26,7 +26,7 @@ export default class index extends Component {
     onFinish: PropTypes.func,
     size: PropTypes.string,
     formItems: PropTypes.array,
-    formRef: PropTypes.any,
+    formref: PropTypes.any,
   };
 
   static defaultProps = {
@@ -95,10 +95,10 @@ export default class index extends Component {
   };
 
   render() {
-    const { formItems, formRef, className, ...rest } = this.props;
+    const { formItems, formref, className, ...rest } = this.props;
     return (
       <Form
-        ref={formRef}
+        ref={formref}
         className={classnames(className, 'simple-form')}
         {...rest}
       >

@@ -394,7 +394,7 @@ export class Login extends Component {
           className={styles['login-form']}
           initialValues={this.defaultValue}
           onFinish={this.onFinish}
-          formRef={this.formRef}
+          formref={this.formRef}
           size="large"
         />
         {this.renderExtra()}

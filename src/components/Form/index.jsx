@@ -583,7 +583,7 @@ export default class BaseForm extends React.Component {
               {...rest}
               name={name}
               key={`form-item-${index}`}
-              formRef={this.formRef}
+              formref={this.formRef}
             />
           </Col>
         );
@@ -610,7 +610,7 @@ export default class BaseForm extends React.Component {
           key={`form-item-col-${index}`}
           id={`form-item-col-${name}`}
         >
-          <FormItem {...it} key={`form-item-${index}`} formRef={this.formRef} />
+          <FormItem {...it} key={`form-item-${index}`} formref={this.formRef} />
         </Col>
       );
       // return null;

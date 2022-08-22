@@ -200,7 +200,7 @@ export class Password extends Component {
       <>
         <h1 className={styles.welcome}>{t('Welcome')}</h1>
         <SimpleForm
-          formRef={this.formRef}
+          formref={this.formRef}
           formItems={this.formItems}
           name="reset_password"
           className={styles.reset}
