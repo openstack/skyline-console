@@ -39,6 +39,19 @@ const filterParam = PropTypes.shape({
   isTime: PropTypes.bool,
 });
 
+const getCheckOptionValue = (name, key) => {
+  return `${name}--${key}`;
+};
+
+const getCheckValueInfo = (value = '') => {
+  const name = value.split('--')[0];
+  const key = value.split('--')[1];
+  return {
+    name,
+    key,
+  };
+};
+
 export const getTags = (initValue, filterParams) => {
   if (!initValue || isEmpty(initValue)) {
     return {};
@@ -56,7 +69,7 @@ export const getTags = (initValue, filterParams) => {
       if (options.length) {
         const optionItem = options.find((op) => op.key === value);
         if (optionItem && optionItem.isQuick) {
-          checkValues.push(`${item.name}--${value}`);
+          checkValues.push(getCheckOptionValue(item.name, value));
         }
       }
       tags.push({
@@ -188,7 +201,7 @@ class MagicInput extends PureComponent {
     const { tags, checkValues } = this.state;
     const newTags = tags.filter((it) => it.filter.name !== name);
     const leftCheckValues = checkValues.filter(
-      (it) => it.split('--')[0] !== name
+      (it) => getCheckValueInfo(it).name !== name
     );
     this.setState(
       {
@@ -406,11 +419,20 @@ class MagicInput extends PureComponent {
     this.clearInputValue();
     const newTags = tags.filter((it) => it.filter.name !== newTag.filter.name);
     newTags.push(newTag);
+    const quickTags = newTags.filter((it) => {
+      const { value: tagValue, filter: { options = [] } = {} } = it;
+      const quickOption = options.find((o) => o.key === tagValue && o.isQuick);
+      return !!quickOption;
+    });
+    const checkValues = quickTags.map((it) => {
+      return getCheckOptionValue(it.filter.name, it.value);
+    });
     this.setState(
       {
         tags: newTags,
         currentFilter: null,
         inputValue: '',
+        checkValues,
       },
       () => {
         this.onTagsChange();
@@ -464,7 +486,7 @@ class MagicInput extends PureComponent {
     });
     const checkValuesNames = Array.from(
       new Set([...checkValues, ...values])
-    ).map((it) => it.split('--')[0]);
+    ).map((it) => getCheckValueInfo(it).name);
     const { filterParams } = this.props;
     const { tags } = this.state;
     const otherTags = tags.filter(
@@ -474,8 +496,7 @@ class MagicInput extends PureComponent {
     changedValues.forEach((it) => {
       const { key, value } = it;
       if (value) {
-        const name = key.split('--')[0];
-        const realValue = key.split('--')[1];
+        const { name, key: realValue } = getCheckValueInfo(key);
         const filter = filterParams.find((tt) => tt.name === name);
         newTags.push({
           value: realValue,
@@ -504,7 +525,7 @@ class MagicInput extends PureComponent {
       const { checkLabel, key, father } = it;
       return {
         label: checkLabel,
-        value: `${father.name}--${key}`,
+        value: getCheckOptionValue(father.name, key),
       };
     });
     return (
