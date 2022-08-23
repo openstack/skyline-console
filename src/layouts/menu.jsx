@@ -259,6 +259,13 @@ const renderMenu = (t) => {
               level: 2,
               routePath: '/network/networks/detail/:id',
             },
+            {
+              path: /^\/network\/networks\/detail\/.[^/]+\/subnet\/.[^/]+$/,
+              name: t('Subnet Detail'),
+              key: 'subnetDetail',
+              level: 2,
+              routePath: '/network/networks/detail/:networkId/subnet/:id',
+            },
           ],
         },
         {
@@ -273,6 +280,28 @@ const renderMenu = (t) => {
               key: 'portDetail',
               level: 2,
               routePath: '/network/port/detail/:id',
+            },
+            {
+              path: /^\/network\/networks\/detail\/.[^/]+\/port\/.[^/]+$/,
+              name: t('Port Detail'),
+              key: 'networkPortDetail',
+              level: 2,
+              routePath: '/network/networks/detail/:networkId/port/:id',
+            },
+            {
+              path: /^\/network\/networks\/detail\/.[^/]+\/subnet\/.[^/]+\/port\/.[^/]+$/,
+              name: t('Port Detail'),
+              key: 'subnetPortDetail',
+              level: 2,
+              routePath:
+                '/network/networks/detail/:networkId/subnet/:subnetId/port/:id',
+            },
+            {
+              path: /^\/network\/instance\/detail\/.[^/]+\/port\/.[^/]+$/,
+              name: t('Port Detail'),
+              key: 'instancePortDetail',
+              level: 2,
+              routePath: '/network/instance/detail/:instanceId/port/:id',
             },
           ],
         },

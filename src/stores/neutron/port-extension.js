@@ -59,6 +59,24 @@ export class PortStore extends Base {
     };
   }
 
+  get paramsFunc() {
+    return (params, all_projects) => {
+      const { current, device_owner, subnetId, networkId, ...rest } = params;
+      const newParams = { ...rest };
+      if (device_owner && isString(device_owner)) {
+        if (device_owner === 'none') {
+          newParams.device_owner = [''];
+        } else {
+          newParams.device_owner = device_owner.split(',');
+        }
+      }
+      if (!all_projects) {
+        newParams.tenant_id = this.currentProjectId;
+      }
+      return newParams;
+    };
+  }
+
   @observable
   fixed_ips = new List();
 
@@ -149,6 +167,37 @@ export class PortStore extends Base {
     }
     item.itemInList = itemContrib;
     return item;
+  }
+
+  async listDidFetch(items, allProjects, filters) {
+    if (!items.length) {
+      return items;
+    }
+    const { subnetId } = filters;
+    if (!subnetId) {
+      return items;
+    }
+    const newItems = [];
+    items.forEach((it) => {
+      const { fixed_ips = [] } = it;
+      const newFixedIps = fixed_ips.filter((ip) => ip.subnet_id === subnetId);
+      if (newFixedIps.length) {
+        const ipv4 = it.ipv4.filter((ip) =>
+          newFixedIps.some((newIp) => newIp.ip_address === ip)
+        );
+        const ipv6 = it.ipv6.filter((ip) =>
+          newFixedIps.some((newIp) => newIp.ip_address === ip)
+        );
+        newItems.push({
+          ...it,
+          fixed_ips: newFixedIps,
+          ipv4,
+          ipv6,
+          subnet_id: subnetId,
+        });
+      }
+    });
+    return newItems;
   }
 }
 

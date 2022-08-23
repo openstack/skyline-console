@@ -17,6 +17,7 @@ import E404 from 'pages/base/containers/404';
 import Network from '../containers/Network';
 import AdminNetwork from '../containers/Network/Network';
 import NetworkDetail from '../containers/Network/Detail';
+import SubnetDetail from '../containers/Subnet/Detail';
 import Router from '../containers/Router';
 import FloatingIp from '../containers/FloatingIp';
 import FloatingIpDetail from '../containers/FloatingIp/Detail';
@@ -56,6 +57,46 @@ export default [
       {
         path: `${PATH}/networks-admin/detail/:id`,
         component: NetworkDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/networks/detail/:networkId/subnet/:id`,
+        component: SubnetDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/networks-admin/detail/:networkId/subnet/:id`,
+        component: SubnetDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/networks/detail/:networkId/port/:id`,
+        component: PortDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/networks-admin/detail/:networkId/port/:id`,
+        component: PortDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/networks/detail/:networkId/subnet/:subnetId/port/:id`,
+        component: PortDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/networks-admin/detail/:networkId/subnet/:subnetId/port/:id`,
+        component: PortDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/instance/detail/:instanceId/port/:id`,
+        component: PortDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/instance-admin/detail/:instanceId/port/:id`,
+        component: PortDetail,
         exact: true,
       },
       { path: `${PATH}/router`, component: Router, exact: true },

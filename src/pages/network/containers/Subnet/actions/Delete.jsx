@@ -15,7 +15,7 @@
 import { ConfirmAction } from 'containers/Action';
 import globalSubnetStore from 'stores/neutron/subnet';
 
-export default class DeleteAction extends ConfirmAction {
+export default class Delete extends ConfirmAction {
   get id() {
     return 'delete';
   }

@@ -32,7 +32,41 @@ export class PortDetail extends Base {
   }
 
   get listUrl() {
+    const { networkId, subnetId, instanceId } = this.params;
+    if (this.isSubnetPortDetail) {
+      return this.getRoutePath(
+        'subnetDetail',
+        { id: subnetId, networkId },
+        { tab: 'ports' }
+      );
+    }
+    if (this.isNetworkPortDetail) {
+      return this.getRoutePath(
+        'networkDetail',
+        { id: networkId },
+        { tab: 'ports' }
+      );
+    }
+    if (this.isInstancePortDetail) {
+      return this.getRoutePath(
+        'instanceDetail',
+        { id: instanceId },
+        { tab: 'interface' }
+      );
+    }
     return this.getRoutePath('port');
+  }
+
+  get isSubnetPortDetail() {
+    return this.path.includes('subnet');
+  }
+
+  get isNetworkPortDetail() {
+    return this.path.includes('networks') && !this.isSubnetPortDetail;
+  }
+
+  get isInstancePortDetail() {
+    return this.path.includes('instance');
   }
 
   get actionConfigs() {
