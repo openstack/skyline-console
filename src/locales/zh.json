@@ -2140,6 +2140,7 @@
   "Snapshot Failed": "生成快照失败",
   "Snapshot In Progress": "快照进行中",
   "Snapshot Instance": "创建云主机快照",
+  "Snapshot Source": "快照源",
   "Snapshots can be converted into volume and used to create an instance from the volume.": "快照可以转换成云硬盘，用于从云硬盘启动云主机。",
   "Snapshotting": "创建快照中",
   "Soft Delete Instance": "软删除云主机",

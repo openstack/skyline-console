@@ -24,16 +24,15 @@ export class BaseDetail extends Base {
     const options = [
       {
         label: t('Volume'),
-        dataIndex: 'volume',
-        render: (value) => {
+        dataIndex: 'volume_id',
+        render: (value, record) => {
           if (!value) {
             return '-';
           }
-          const { id, name } = value;
           const link = this.getLinkRender(
             'volumeDetail',
-            name || id,
-            { id },
+            record.volume_name || value,
+            { id: value },
             { tab: 'snapshot' }
           );
           return link;
@@ -41,7 +40,7 @@ export class BaseDetail extends Base {
       },
     ];
     return {
-      title: t('Volume Info'),
+      title: t('Snapshot Source'),
       options,
     };
   }
