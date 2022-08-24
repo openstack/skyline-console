@@ -14,12 +14,18 @@
 
 import React from 'react';
 import AceEditor from 'react-ace';
+import ace from 'ace-builds';
 import 'ace-builds/src-noconflict/mode-json';
 // import 'ace-builds/src-noconflict/mode-yaml';
 // import 'ace-builds/src-noconflict/mode-groovy';
 import 'ace-builds/src-noconflict/theme-github';
 
 import './custom.less';
+
+// eslint-disable-next-line import/no-webpack-loader-syntax,import/no-unresolved
+const worker = require('file-loader?esModule=false!ace-builds/src-noconflict/worker-json');
+
+ace.config.setModuleUrl('ace/mode/json_worker', worker);
 
 export default class AceEditorWrapper extends React.Component {
   render() {

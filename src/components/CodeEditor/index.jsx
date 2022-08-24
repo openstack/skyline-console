@@ -60,7 +60,11 @@ const getCodeValue = (value, mode) => {
 
 class CodeEditor extends PureComponent {
   static propTypes = {
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    value: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object,
+      PropTypes.array,
+    ]),
     mode: PropTypes.string,
     options: PropTypes.object,
     onChange: PropTypes.func,
