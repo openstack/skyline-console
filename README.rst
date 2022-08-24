@@ -66,7 +66,7 @@ Take CentOS as an example
       npm install -g yarn
 
 -  Install the project dependency under the root directory, with
-   ``package.json``\ in the same place.
+   ``package.json`` in the same place.
 
    .. code:: shell
 
@@ -83,7 +83,7 @@ Under the root directory, with ``package.json`` in the same place.
 -  ``yarn run mock``: Use the mock interface of
    `rap2 <http://rap2.taobao.org/>`__
 -  ``yarn run dev``: To use the actual interface, please change the
-   “http://pre.xxx.com” in line 47 into the real address in file
+   "http://pre.xxx.com" in line 47 into the real address in file
    ``webpack.dev.js``.
 -  ``yarn run build``: Build packages and then you can hand over the
    contents of the generated *dist* directory to the back end.
