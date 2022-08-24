@@ -52,11 +52,16 @@ export class SnapshotStore extends Base {
     return data;
   }
 
-  async detailDidFetch(item) {
-    const { volume_id } = item;
-    const { volume } = await this.volumeClient.show(volume_id);
-    item.volume = volume;
-    return item;
+  async detailDidFetch(item, allProjects) {
+    const params = {
+      uuid: item.id,
+    };
+    if (allProjects) {
+      params.all_projects = true;
+    }
+    const { volume_snapshots = [] } = await this.listFetchByClient(params);
+    const { child_volumes = [], volume_name } = volume_snapshots[0] || {};
+    return { ...item, child_volumes, volume_name };
   }
 
   updateParamsSortPage = (params, sortKey, sortOrder) => {

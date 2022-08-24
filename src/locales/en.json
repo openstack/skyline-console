@@ -2140,6 +2140,7 @@
   "Snapshot Failed": "Snapshot Failed",
   "Snapshot In Progress": "Snapshot In Progress",
   "Snapshot Instance": "Snapshot Instance",
+  "Snapshot Source": "Snapshot Source",
   "Snapshots can be converted into volume and used to create an instance from the volume.": "Snapshots can be converted into volume and used to create an instance from the volume.",
   "Snapshotting": "Snapshotting",
   "Soft Delete Instance": "Soft Delete Instance",
