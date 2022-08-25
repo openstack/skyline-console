@@ -712,7 +712,7 @@ const renderMenu = (t) => {
       path: '/heat',
       name: t('Orchestration'),
       key: 'heatAdmin',
-      endpoints: 'heats',
+      endpoints: 'heat',
       icon: <AppstoreOutlined />,
       children: [
         {
