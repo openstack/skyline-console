@@ -126,6 +126,7 @@ export default class FormItem extends React.Component {
     onChange: PropTypes.func,
     dependencies: PropTypes.array,
     formref: PropTypes.object,
+    hasRequiredCheck: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -289,11 +290,11 @@ export default class FormItem extends React.Component {
       validator,
       type = '',
       otherRule,
-      tip,
       name,
       hidden,
       label,
       placeholder,
+      hasRequiredCheck = true,
     } = this.props;
     if (hidden) {
       return [];
@@ -312,10 +313,10 @@ export default class FormItem extends React.Component {
       } else if (type && type.includes('select')) {
         requiredRule.required = true;
         requiredRule.message = placeholder || `${t('Please select') + label}!`;
-      } else if (tip) {
+      } else if (hasRequiredCheck) {
         requiredRule.required = true;
         requiredRule.message = placeholder || `${t('Please input') + label}!`;
-      } else {
+      } else if (validator) {
         newRule.required = required;
       }
     }

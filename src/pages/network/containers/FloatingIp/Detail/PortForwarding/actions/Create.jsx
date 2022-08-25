@@ -15,7 +15,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import { isNull, isObject, isString } from 'lodash';
+import { isNull, isObject } from 'lodash';
 import { getCanReachSubnetIdsWithRouterIdInComponent } from 'resources/neutron/router';
 import { PortStore } from 'stores/neutron/port-extension';
 import {
@@ -411,8 +411,7 @@ export class CreatePortForwarding extends ModalAction {
   };
 
   validateExternalPort = (rule, val) => {
-    const value =
-      val === undefined ? '' : isString(val) ? val : val.toString() || '';
+    const value = val === undefined || val === null ? '' : `${val}`;
     const { internal_port: internalPort } = this.formRef.current.getFieldsValue(
       ['internal_port']
     );
@@ -469,8 +468,7 @@ export class CreatePortForwarding extends ModalAction {
   };
 
   validateInternalPort = (_, val) => {
-    const value =
-      val === undefined ? '' : isString(val) ? val : val.toString() || '';
+    const value = val === undefined || val === null ? '' : `${val}`;
     if (!portRangeRegex.test(value)) {
       return Promise.resolve(true);
     }
@@ -588,6 +586,7 @@ export class CreatePortForwarding extends ModalAction {
         dependencies: ['protocol', 'internal_port'],
         placeholder: externalPortExtra,
         extra: externalPortExtra,
+        hasRequiredCheck: false,
       },
       {
         name: 'internal_port',
@@ -599,6 +598,7 @@ export class CreatePortForwarding extends ModalAction {
         dependencies: ['protocol', 'external_port'],
         placeholder: internalPortExtra,
         extra: internalPortExtra,
+        hasRequiredCheck: false,
       },
     ];
     const [virtualAdapterItem, fixedIpItem] = getPortFormItem.call(this);

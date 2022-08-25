@@ -558,8 +558,12 @@ export const macAddressValidate = (rule, value) => {
 };
 
 export const portRangeValidate = (rule, value) => {
-  if (!value && !rule.required) {
+  const { required, message } = rule || {};
+  if (!value && !required) {
     return Promise.resolve();
+  }
+  if (!value && required) {
+    return Promise.reject(message || t('Please input'));
   }
   if (portRangeRegex.test(value)) {
     const ports = value.split(':');

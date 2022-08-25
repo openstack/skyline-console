@@ -193,9 +193,14 @@ export class Edit extends Base {
       min: 1,
       max: 65535,
       extra: t('Enter an integer value between 1 and 65535.'),
+      hasRequiredCheck: true,
     };
-    Object.assign(externalPortItem, inputConfig);
-    Object.assign(internalPortItem, inputConfig);
+    Object.assign(externalPortItem, inputConfig, {
+      placeholder: t('Please input') + externalPortItem.label,
+    });
+    Object.assign(internalPortItem, inputConfig, {
+      placeholder: t('Please input') + internalPortItem.label,
+    });
     return items;
   }
 
