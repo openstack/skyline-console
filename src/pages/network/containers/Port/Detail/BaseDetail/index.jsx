@@ -57,7 +57,7 @@ export class BaseDetail extends Base {
       {
         label: t('VNIC Type'),
         dataIndex: 'binding:vnic_type',
-        render: (value) => bindingTypes[value] || value,
+        valueMap: bindingTypes,
       },
     ];
     if (this.qosEndpoint) {

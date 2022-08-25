@@ -468,7 +468,7 @@ export class Create extends FormAction {
           {
             title: t('Status'),
             dataIndex: 'status',
-            render: (value) => volumeStatus[value] || value,
+            valueMap: volumeStatus,
           },
           {
             title: t('Description'),

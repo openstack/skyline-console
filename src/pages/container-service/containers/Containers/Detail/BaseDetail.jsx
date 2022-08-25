@@ -38,7 +38,7 @@ export class BaseDetail extends Base {
       {
         label: t('Status Detail'),
         dataIndex: 'status_detail',
-        render: (value) => containerStatus[value] || value,
+        valueMap: containerStatus,
       },
       {
         label: t('Status Reason'),

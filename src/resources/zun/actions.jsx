@@ -48,7 +48,7 @@ export const actionColumn = (self) => {
     {
       title: t('Operation Name'),
       dataIndex: 'action',
-      render: (value) => actionMap[value] || value,
+      valueMap: actionMap,
     },
     {
       title: t('Project ID/Name'),

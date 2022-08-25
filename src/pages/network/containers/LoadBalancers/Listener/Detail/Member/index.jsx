@@ -75,7 +75,7 @@ export class Members extends Base {
     {
       title: t('Status'),
       dataIndex: 'provisioning_status',
-      render: (data) => provisioningStatusCodes[data],
+      valueMap: provisioningStatusCodes,
       isHideable: true,
     },
     {

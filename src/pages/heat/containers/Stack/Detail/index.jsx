@@ -52,7 +52,7 @@ export class StackDetail extends Base {
       {
         title: t('Stack Status'),
         dataIndex: 'stack_status',
-        render: (value) => stackStatus[value] || value,
+        valueMap: stackStatus,
       },
       {
         title: t('Description'),

@@ -27,6 +27,7 @@ import checkItemPolicy from 'resources/skyline/policy';
 import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
 import { emptyActionConfig } from 'utils/constants';
 import { getPath, getLinkRender } from 'utils/route-map';
+import { getValueMapRender } from 'utils/table';
 import styles from './index.less';
 
 export default class DetailBase extends React.Component {
@@ -230,19 +231,22 @@ export default class DetailBase extends React.Component {
   };
 
   getDesc = (data, dataConf) => {
-    const { dataIndex, render, valueRender } = dataConf;
+    const { dataIndex, render, valueRender, valueMap } = dataConf;
+    const value = get(data, dataIndex);
     if (render) {
-      return render(data[dataIndex], data);
+      return render(value, data);
     }
     if (valueRender) {
       const renderFunc = renderFilterMap[valueRender];
-      return renderFunc && renderFunc(data[dataIndex]);
+      return renderFunc && renderFunc(value);
     }
-    const desc = get(data, dataIndex);
-    if (desc === undefined || desc === '') {
+    if (valueMap) {
+      return getValueMapRender(dataConf)(value);
+    }
+    if (value === undefined || value === '') {
       return '-';
     }
-    return desc;
+    return value;
   };
 
   getActionData() {

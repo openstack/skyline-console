@@ -48,7 +48,7 @@ export class Capsules extends Base {
       title: t('Status'),
       isHideable: true,
       dataIndex: 'status',
-      render: (value) => capsuleStatus[value] || value,
+      valueMap: capsuleStatus,
     },
     {
       title: t('CPU'),

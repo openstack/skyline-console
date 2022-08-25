@@ -123,7 +123,7 @@ export class Share extends Base {
       {
         title: t('Protocol'),
         dataIndex: 'share_proto',
-        render: (value) => shareProtocol[value] || value,
+        valueMap: shareProtocol,
       },
       {
         title: t('Public'),
@@ -135,7 +135,7 @@ export class Share extends Base {
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (value) => shareStatus[value] || value,
+        valueMap: shareStatus,
       },
       {
         title: t('Share Network'),

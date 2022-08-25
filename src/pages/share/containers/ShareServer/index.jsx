@@ -56,7 +56,7 @@ export class ShareServer extends Base {
     {
       title: t('Status'),
       dataIndex: 'status',
-      render: (value) => shareServerStatus[value] || value,
+      valueMap: shareServerStatus,
     },
     {
       title: t('Share Network'),

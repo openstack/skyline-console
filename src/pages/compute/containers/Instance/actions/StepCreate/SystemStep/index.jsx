@@ -408,7 +408,7 @@ export class SystemStep extends Base {
           {
             title: t('Policy'),
             dataIndex: 'policy',
-            render: (value) => policyType[value] || value,
+            valueMap: policyType,
           },
         ],
         filterParams: [

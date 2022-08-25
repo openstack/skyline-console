@@ -52,7 +52,7 @@ export class Detail extends Base {
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (value) => shareGroupStatus[value] || value,
+        valueMap: shareGroupStatus,
       },
       {
         title: t('Created At'),

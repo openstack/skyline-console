@@ -48,12 +48,12 @@ export class Detail extends Base {
       {
         title: t('Architecture'),
         dataIndex: 'architecture',
-        render: (value) => flavorArchitectures[value] || value,
+        valueMap: flavorArchitectures,
       },
       {
         title: t('Category'),
         dataIndex: 'category',
-        render: (value) => flavorCategoryList[value] || value,
+        valueMap: flavorCategoryList,
       },
       {
         title: t('CPU'),

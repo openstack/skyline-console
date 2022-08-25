@@ -53,7 +53,7 @@ export class ContainerDetail extends Base {
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (value) => containerStatus[value] || value,
+        valueMap: containerStatus,
       },
     ];
   }

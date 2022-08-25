@@ -48,7 +48,7 @@ export const getRouterColumns = (self) => [
   {
     title: t('Status'),
     dataIndex: 'status',
-    render: (value) => routerStatus[value] || value,
+    valueMap: routerStatus,
   },
   {
     title: t('Open External Gateway'),

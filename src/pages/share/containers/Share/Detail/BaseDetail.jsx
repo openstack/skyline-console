@@ -57,7 +57,7 @@ export class BaseDetail extends Base {
       {
         label: t('Protocol'),
         dataIndex: 'share_proto',
-        render: (value) => shareProtocol[value] || value,
+        valueMap: shareProtocol,
       },
       {
         label: t('Public'),

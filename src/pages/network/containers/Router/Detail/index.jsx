@@ -49,7 +49,7 @@ export class RouterDetail extends Base {
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (data) => routerStatus[data] || '-',
+        valueMap: routerStatus,
       },
       {
         title: t('Admin State'),

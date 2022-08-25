@@ -88,7 +88,7 @@ export class Certificate extends Base {
       {
         title: t('Certificate Type'),
         dataIndex: 'mode',
-        render: (value) => certificateMode[value] || value,
+        valueMap: certificateMode,
         isHideable: true,
       },
       {
@@ -130,7 +130,7 @@ export class Certificate extends Base {
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (value) => certificateStatus[value] || value,
+        valueMap: certificateStatus,
       },
       {
         title: t('Created At'),

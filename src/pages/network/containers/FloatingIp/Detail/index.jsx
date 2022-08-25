@@ -50,7 +50,7 @@ export class FloatingIpDetail extends Base {
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (data) => floatingIpStatus[data] || '-',
+        valueMap: floatingIpStatus,
       },
       {
         title: t('Project ID'),

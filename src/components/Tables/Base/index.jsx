@@ -41,6 +41,7 @@ import {
   getNameRenderByRouter,
   getNameRender,
   columnRender,
+  getValueMapRender,
 } from 'utils/table';
 import { getNoValue } from 'utils/index';
 import { getLocalStorageItem, setLocalStorageItem } from 'utils/local-storage';
@@ -416,12 +417,16 @@ export class BaseTable extends React.Component {
         routeName,
         linkPrefix,
         isPrice,
+        valueMap,
         ...rest
       } = column;
       const newSorter = getColumnSorter(column, this.props);
       const newSortOrder =
         sortOrder || newSorter ? getSortOrder(dataIndex, this.props) : null;
       let newRender = render || getRender(valueRender);
+      if (valueMap) {
+        newRender = getValueMapRender(column);
+      }
       if (checkIsStatusColumn(dataIndex, isStatus)) {
         newRender = getStatusRender(newRender);
       }

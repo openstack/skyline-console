@@ -30,7 +30,7 @@ export class BaseDetail extends Base {
       {
         label: t('Control Location'),
         dataIndex: 'encryption.control_location',
-        render: (value) => controls[value] || value,
+        valueMap: controls,
       },
       {
         label: t('Cipher'),

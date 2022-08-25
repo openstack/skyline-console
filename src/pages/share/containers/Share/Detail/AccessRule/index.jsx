@@ -59,12 +59,12 @@ export class ShareAccessRule extends Base {
     {
       title: t('Access Level'),
       dataIndex: 'access_level',
-      render: (value) => shareAccessLevel[value] || value,
+      valueMap: shareAccessLevel,
     },
     {
       title: t('State'),
       dataIndex: 'state',
-      render: (value) => shareAccessRuleState[value] || value,
+      valueMap: shareAccessRuleState,
     },
     {
       title: t('Access Key'),

@@ -79,7 +79,7 @@ export class Stack extends Base {
       title: t('Stack Status'),
       dataIndex: 'stack_status',
       isHideable: true,
-      render: (value) => stackStatus[value] || value,
+      valueMap: stackStatus,
     },
     {
       title: t('Created At'),

@@ -105,7 +105,7 @@ export class DetachVolume extends ModalAction {
           {
             title: t('Status'),
             dataIndex: 'status',
-            render: (value) => volumeStatus[value] || value,
+            valueMap: volumeStatus,
           },
           {
             title: t('Type'),

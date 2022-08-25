@@ -55,7 +55,7 @@ export class Containers extends Base {
       title: t('Status'),
       isHideable: true,
       dataIndex: 'status',
-      render: (value) => containerStatus[value] || value,
+      valueMap: containerStatus,
     },
     {
       title: t('Image'),
@@ -66,7 +66,7 @@ export class Containers extends Base {
       title: t('Task State'),
       isHideable: true,
       dataIndex: 'task_state',
-      render: (value) => containerTaskStatus[value] || value,
+      valueMap: containerTaskStatus,
     },
   ];
 }

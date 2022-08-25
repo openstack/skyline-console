@@ -189,7 +189,7 @@ export const getImageColumns = (self) => [
   {
     title: t('System'),
     dataIndex: 'os_distro',
-    render: (value) => imageOS[value] || value,
+    valueMap: imageOS,
   },
   {
     title: t('OS Version'),
@@ -208,12 +208,12 @@ export const getImageColumns = (self) => [
   {
     title: t('Access Control'),
     dataIndex: 'visibility',
-    render: (value) => imageVisibility[value] || value,
+    valueMap: imageVisibility,
   },
   {
     title: t('Format'),
     dataIndex: 'disk_format',
-    render: (value) => imageFormats[value] || value,
+    valueMap: imageFormats,
   },
   {
     title: t('Image Size'),

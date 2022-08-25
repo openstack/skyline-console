@@ -73,7 +73,7 @@ export class SetGateway extends ModalAction {
           {
             title: t('Status'),
             dataIndex: 'status',
-            render: (value) => networkStatus[value] || value,
+            valueMap: networkStatus,
           },
           {
             title: t('Created At'),

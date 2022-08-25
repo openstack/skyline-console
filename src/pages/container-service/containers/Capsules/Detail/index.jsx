@@ -44,7 +44,7 @@ export class CapsulesDetail extends Base {
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (value) => capsuleStatus[value] || value,
+        valueMap: capsuleStatus,
       },
       {
         title: t('Created At'),

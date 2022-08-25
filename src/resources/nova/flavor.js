@@ -146,7 +146,7 @@ export const getBaseColumns = (self) => [
   {
     title: t('Category'),
     dataIndex: 'category',
-    render: (value) => flavorCategoryList[value] || value,
+    valueMap: flavorCategoryList,
   },
   {
     title: t('CPU'),
@@ -224,19 +224,19 @@ export const gpuColumns = [
     title: t('CPU Policy'),
     dataIndex: 'hw:cpu_policy',
     isHideable: true,
-    render: (value) => cpuPolicyList[value] || value,
+    valueMap: cpuPolicyList,
   },
   {
     title: t('CPU Thread Policy'),
     dataIndex: 'hw:cpu_thread_policy',
     isHideable: true,
-    render: (value) => cpuThreadPolicyMap[value] || value,
+    valueMap: cpuThreadPolicyMap,
   },
   {
     title: t('Memory Page'),
     dataIndex: 'hw:mem_page_size',
     isHideable: true,
-    render: (value) => pageTypeMap[value] || value,
+    valueMap: pageTypeMap,
   },
 ];
 

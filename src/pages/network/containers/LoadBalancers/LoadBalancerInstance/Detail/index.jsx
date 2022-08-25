@@ -60,7 +60,7 @@ export class LoadBalancerDetail extends Base {
       {
         title: t('Status'),
         dataIndex: 'provisioning_status',
-        render: (data) => provisioningStatusCodes[data],
+        valueMap: provisioningStatusCodes,
       },
       {
         title: t('Network'),

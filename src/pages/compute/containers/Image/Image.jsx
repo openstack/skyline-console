@@ -138,7 +138,7 @@ export class Image extends Base {
       title: t('Use Type'),
       dataIndex: 'usage_type',
       isHideable: true,
-      render: (value) => imageUsage[value] || value,
+      valueMap: imageUsage,
       sorter: false,
     },
     {
@@ -152,19 +152,19 @@ export class Image extends Base {
     {
       title: t('Status'),
       dataIndex: 'status',
-      render: (value) => imageStatus[value] || value,
+      valueMap: imageStatus,
     },
     {
       title: t('Visibility'),
       dataIndex: 'visibility',
-      render: (value) => imageVisibility[value] || value,
+      valueMap: imageVisibility,
       sorter: false,
     },
     {
       title: t('Disk Format'),
       dataIndex: 'disk_format',
       isHideable: true,
-      render: (value) => imageFormats[value] || value,
+      valueMap: imageFormats,
     },
     {
       title: t('Size'),

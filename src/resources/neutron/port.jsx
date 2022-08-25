@@ -152,7 +152,7 @@ export function getPortFormItem(withResourceNameAndStatusFilter = true) {
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (value) => portStatus[value] || value,
+        valueMap: portStatus,
       },
       {
         title: t('Bind Resource'),
@@ -268,7 +268,7 @@ export const portColumns = [
   {
     title: t('Status'),
     dataIndex: 'status',
-    render: (value) => portStatus[value] || value,
+    valueMap: portStatus,
     sorter: false,
   },
 ];

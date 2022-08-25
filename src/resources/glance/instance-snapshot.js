@@ -37,12 +37,12 @@ export const getBaseSnapshotColumns = (self) => [
     title: t('Disk Format'),
     dataIndex: 'disk_format',
     isHideable: true,
-    render: (value) => imageFormats[value] || value,
+    valueMap: imageFormats,
   },
   {
     title: t('Status'),
     dataIndex: 'status',
-    render: (value) => imageStatus[value] || value,
+    valueMap: imageStatus,
   },
   {
     title: t('Created At'),

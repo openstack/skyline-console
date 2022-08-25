@@ -76,7 +76,7 @@ export class NetworkDetail extends Base {
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (data) => networkStatus[data] || '-',
+        valueMap: networkStatus,
       },
       {
         title: t('Admin State'),
