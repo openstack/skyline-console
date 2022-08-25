@@ -19,22 +19,27 @@ import { portRangeValidate, portRangeMessage } from 'utils/validate';
 export default class index extends Component {
   static isFormItem = true;
 
-  getRules(rules) {
+  getRules(rules, required, requiredMessage) {
     const newRules = {
       validator: portRangeValidate,
     };
+    if (required) {
+      newRules.required = required;
+      newRules.message = requiredMessage;
+    }
     return [newRules, ...rules];
   }
 
   render() {
     const { componentProps, formItemProps } = this.props;
-    const placeholder = t('Please input port range');
+    const { required, label } = componentProps || {};
+    const placeholder = t('Please input') + label;
     const props = {
       placeholder,
       ...componentProps,
     };
     const { rules, extra, ...rest } = formItemProps;
-    const newRules = this.getRules(rules);
+    const newRules = this.getRules(rules, required, placeholder);
     const newFormItemProps = {
       ...rest,
       rules: newRules,
