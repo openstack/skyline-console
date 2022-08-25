@@ -33,7 +33,6 @@ import Notify from 'components/Notify';
 import { checkTimeIn } from 'utils/time';
 import checkItemPolicy from 'resources/skyline/policy';
 import NotFound from 'components/Cards/NotFound';
-import { getTags } from 'components/MagicInput';
 import { getPath, getLinkRender } from 'utils/route-map';
 import styles from './index.less';
 
@@ -83,8 +82,7 @@ export default class BaseList extends React.Component {
         location.key === this.props.location.key
       ) {
         const params = this.initFilter;
-        const { tags = [] } = getTags(params, this.searchFilters);
-        if (!tags.length && !this.filterTimeKey) {
+        if (!this.filterTimeKey) {
           const { limit, page } = this.store.list;
           this.list.filters = {};
           this.handleFetch({ ...params, limit, page }, true);
