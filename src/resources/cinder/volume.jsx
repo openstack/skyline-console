@@ -317,7 +317,10 @@ export const getVolumeColumnsList = (self) => {
       stringify: (value) => {
         if (value && value.length) {
           return value
-            .map((it) => `${it.server_name}(${it.server_id})`)
+            .map((it) => {
+              const { device, server_name, server_id } = it;
+              return `${device} on ${server_name || '-'}(${server_id})`;
+            })
             .join(',');
         }
         return '-';
