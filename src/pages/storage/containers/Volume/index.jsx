@@ -20,13 +20,16 @@ import {
   getVolumeColumnsList,
 } from 'resources/cinder/volume';
 import globalVolumeStore, { VolumeStore } from 'stores/cinder/volume';
+import { SnapshotVolumeStore } from 'stores/cinder/snapshot-volume';
 import { InstanceVolumeStore } from 'stores/nova/instance-volume';
 import { emptyActionConfig } from 'utils/constants';
 import actionConfigs from './actions';
 
 export class Volume extends Base {
   init() {
-    if (this.inDetailPage) {
+    if (this.isVolumeSnapshotDetail) {
+      this.store = new SnapshotVolumeStore();
+    } else if (this.inDetailPage) {
       this.store = new InstanceVolumeStore();
       this.downloadStore = this.store;
     } else {
@@ -47,12 +50,16 @@ export class Volume extends Base {
     return this.inDetailPage && this.path.includes('recycle-bin');
   }
 
+  get isVolumeSnapshotDetail() {
+    return this.inDetailPage && this.path.includes('storage/snapshot');
+  }
+
   get actionConfigs() {
     if (this.isRecycleBinDetail) {
       return emptyActionConfig;
     }
     if (this.isAdminPage) {
-      return this.inDetailPage
+      return this.inDetailPage && !this.isVolumeSnapshotDetail
         ? actionConfigs.instanceDetailAdminConfig
         : actionConfigs.adminConfig;
     }
@@ -90,6 +97,15 @@ export class Volume extends Base {
   }
 
   updateFetchParams = (params) => {
+    if (this.isVolumeSnapshotDetail) {
+      const { child_volumes = [] } = this.props.detail || {};
+      const volumeIds = child_volumes.map((it) => it.volume_id);
+      const { id, ...rest } = params;
+      return {
+        ...rest,
+        volumeIds,
+      };
+    }
     if (this.inDetailPage) {
       const { id, ...rest } = params;
       return {
