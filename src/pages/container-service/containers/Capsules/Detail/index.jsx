@@ -17,6 +17,7 @@ import Base from 'containers/TabDetail';
 import globalCapsulesStore from 'src/stores/zun/capsules';
 import { capsuleStatus } from 'resources/zun/capsule';
 import BaseDetail from './BaseDetail';
+import actionConfigs from '../actions';
 
 export class CapsulesDetail extends Base {
   init() {
@@ -33,6 +34,10 @@ export class CapsulesDetail extends Base {
 
   get policy() {
     return 'capsule:get_one_all_projects';
+  }
+
+  get actionConfigs() {
+    return actionConfigs;
   }
 
   get detailInfos() {
