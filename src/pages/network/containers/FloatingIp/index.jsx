@@ -268,6 +268,7 @@ export class FloatingIps extends Base {
         routeName: this.getRouteName('networkQosDetail'),
         idKey: 'qos_policy_id',
         hidden: !this.qosEndpoint || this.inQosDetail,
+        sorter: false,
       },
       {
         title: t('Project ID/Name'),
