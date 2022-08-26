@@ -16,6 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { SnapshotStore } from 'stores/cinder/snapshot';
 import Base from 'containers/TabDetail';
 import { volumeStatus } from 'resources/cinder/volume';
+import Volumes from 'pages/storage/containers/Volume';
 import BaseDetail from './BaseDetail';
 import actionConfigs from '../actions';
 
@@ -68,6 +69,7 @@ export class Detail extends Base {
   }
 
   get tabs() {
+    const { child_volumes = [] } = this.detailData || {};
     const tabs = [
       {
         title: t('Detail'),
@@ -75,6 +77,13 @@ export class Detail extends Base {
         component: BaseDetail,
       },
     ];
+    if (child_volumes && child_volumes.length) {
+      tabs.push({
+        title: t('Created Volumes'),
+        key: 'volumes',
+        component: Volumes,
+      });
+    }
     return tabs;
   }
 

@@ -539,6 +539,7 @@
   "Created": "已创建",
   "Created At": "创建于",
   "Created Time": "创建时间",
+  "Created Volumes": "创建的云硬盘",
   "Creating": "创建中",
   "Creating From Snapshot": "正在从快照创建共享",
   "Creation Timeout (Minutes)": "创建超时（分钟）",
