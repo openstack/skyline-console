@@ -1,6 +1,10 @@
-========================================
+==================
 User Documentation
-========================================
+==================
 
 .. toctree::
-   :maxdepth: 1
+   dashboard
+   network
+   compute
+   storage
+   supported-browsers
