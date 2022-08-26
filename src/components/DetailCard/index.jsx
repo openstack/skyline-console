@@ -19,6 +19,7 @@ import { has, get, isNumber } from 'lodash';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { renderFilterMap } from 'utils/index';
+import { getValueMapRender } from 'utils/table';
 import Status from 'components/Status';
 import styles from './index.less';
 
@@ -46,7 +47,8 @@ const getContentValue = (value, dataIndex, data, copyable) => {
 };
 
 const getContent = (data, option) => {
-  const { content, dataIndex, render, valueRender, copyable } = option;
+  const { content, dataIndex, render, valueRender, copyable, valueMap } =
+    option;
   if (has(option, 'content')) {
     return copyable ? (
       <Paragraph copyable={copyable}>{content}</Paragraph>
@@ -59,6 +61,8 @@ const getContent = (data, option) => {
     if (valueRender) {
       const renderFunc = renderFilterMap[valueRender];
       value = renderFunc && renderFunc(value);
+    } else if (valueMap) {
+      value = getValueMapRender(option)(value);
     }
   } else {
     value = render(value, data);

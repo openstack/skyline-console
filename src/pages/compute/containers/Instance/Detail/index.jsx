@@ -91,7 +91,7 @@ export class InstanceDetail extends Base {
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (data) => instanceStatus[data] || data,
+        valueMap: instanceStatus,
       },
       {
         title: t('Lock Status'),

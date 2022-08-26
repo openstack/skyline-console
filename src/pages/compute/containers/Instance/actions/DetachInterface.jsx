@@ -118,7 +118,7 @@ export class DetachInterface extends ModalAction {
           {
             title: t('State'),
             dataIndex: 'port_state',
-            render: (value) => portStatus[value] || value,
+            valueMap: portStatus,
           },
           {
             title: t('Mac Address'),

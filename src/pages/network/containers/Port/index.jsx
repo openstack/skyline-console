@@ -250,7 +250,7 @@ export class Port extends Base {
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (value) => portStatus[value] || value,
+        valueMap: portStatus,
       },
     ];
     if (this.isInstanceDetail) {

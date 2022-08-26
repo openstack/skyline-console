@@ -26,6 +26,7 @@ import {
   getRender,
   getNameRender,
   getNameRenderByRouter,
+  getValueMapRender,
 } from 'utils/table';
 import { Link } from 'react-router-dom';
 import { getNoValue } from 'utils/index';
@@ -85,6 +86,7 @@ export default class SimpleTable extends React.Component {
         isLink,
         routeName,
         linkPrefix,
+        valueMap,
         ...rest
       } = column;
       if (column.key === 'operation') {
@@ -94,6 +96,9 @@ export default class SimpleTable extends React.Component {
       const newSortOrder =
         sortOrder || newSorter ? getSortOrder(dataIndex, this.props) : null;
       let newRender = render || getRender(valueRender);
+      if (valueMap) {
+        newRender = getValueMapRender(column);
+      }
       if (checkIsStatusColumn(dataIndex, isStatus)) {
         newRender = getStatusRender(newRender);
       }

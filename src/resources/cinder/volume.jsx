@@ -167,7 +167,7 @@ export const volumeColumns = [
   {
     title: t('Status'),
     dataIndex: 'status',
-    render: (value) => volumeStatus[value] || value,
+    valueMap: volumeStatus,
   },
   {
     title: t('Shared'),
@@ -277,7 +277,7 @@ export const getVolumeColumnsList = (self) => {
     {
       title: t('Status'),
       dataIndex: 'status',
-      render: (value) => volumeStatus[value] || value,
+      valueMap: volumeStatus,
     },
     {
       title: t('Type'),
@@ -290,7 +290,7 @@ export const getVolumeColumnsList = (self) => {
       title: t('Disk Tag'),
       dataIndex: 'disk_tag',
       isHideable: true,
-      render: (value) => diskTag[value] || value,
+      valueMap: diskTag,
       sorter: false,
     },
     {
@@ -333,7 +333,7 @@ export const getVolumeColumnsList = (self) => {
       ),
       dataIndex: 'bootable',
       isHideable: true,
-      render: (value) => bootableType[value] || value,
+      valueMap: bootableType,
     },
     {
       title: t('Shared'),

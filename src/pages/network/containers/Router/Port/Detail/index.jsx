@@ -45,7 +45,7 @@ export class PortDetail extends Base {
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (data) => portStatus[data] || '-',
+        valueMap: portStatus,
       },
       {
         title: t('Project ID'),

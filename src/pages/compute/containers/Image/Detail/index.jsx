@@ -61,7 +61,7 @@ export class ImageDetail extends Base {
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (data) => imageStatus[data] || '-',
+        valueMap: imageStatus,
       },
       {
         title: t('Project ID'),

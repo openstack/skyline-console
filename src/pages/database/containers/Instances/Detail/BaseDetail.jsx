@@ -43,12 +43,12 @@ export class BaseDetail extends Base {
       {
         label: t('Status'),
         dataIndex: 'status',
-        render: (value) => InstanceStatus[value] || value,
+        valueMap: InstanceStatus,
       },
       {
         label: t('Locality'),
         dataIndex: 'locality',
-        render: (value) => policyType[value] || value,
+        valueMap: policyType,
       },
     ];
 

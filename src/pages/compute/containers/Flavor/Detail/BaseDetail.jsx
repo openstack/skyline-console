@@ -227,17 +227,17 @@ export class BaseDetail extends Base {
       {
         label: t('CPU Policy'),
         dataIndex: 'hw:cpu_policy',
-        render: (value) => cpuPolicyList[value] || value,
+        valueMap: cpuPolicyList,
       },
       {
         label: t('CPU Thread Policy'),
         dataIndex: 'hw:cpu_thread_policy',
-        render: (value) => cpuThreadPolicyMap[value] || value,
+        valueMap: cpuThreadPolicyMap,
       },
       {
         label: t('Memory Page Size'),
         dataIndex: 'hw:mem_page_size',
-        render: (value) => pageTypeMap[value] || value,
+        valueMap: pageTypeMap,
       },
     ];
     const options = [...numa, ...others];

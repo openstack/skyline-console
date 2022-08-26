@@ -67,7 +67,7 @@ export class Event extends Base {
       title: t('Resource Status'),
       dataIndex: 'resource_status',
       isHideable: true,
-      render: (value) => stackStatus[value] || value,
+      valueMap: stackStatus,
     },
     {
       title: t('Resource Status Reason'),

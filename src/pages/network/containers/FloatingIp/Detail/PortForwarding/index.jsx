@@ -95,7 +95,7 @@ export class PortForwarding extends Base {
       title: t('Protocol'),
       dataIndex: 'protocol',
       isHideable: true,
-      render: (value) => portForwardingProtocols[value] || value,
+      valueMap: portForwardingProtocols,
     },
     {
       title: t('Description'),

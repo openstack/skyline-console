@@ -52,7 +52,7 @@ export class Detail extends Base {
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (data) => volumeStatus[data] || '-',
+        valueMap: volumeStatus,
       },
       {
         title: t('Size'),

@@ -50,7 +50,7 @@ export const getCertificateColumns = (self) => [
   {
     title: t('Certificate Type'),
     dataIndex: 'mode',
-    render: (value) => certificateMode[value] || value,
+    valueMap: certificateMode,
   },
   {
     title: t('Expires At'),
@@ -86,7 +86,7 @@ export const getCertificateColumns = (self) => [
   {
     title: t('Status'),
     dataIndex: 'status',
-    render: (value) => certificateStatus[value] || value,
+    valueMap: certificateStatus,
   },
   {
     title: t('Created At'),

@@ -60,7 +60,7 @@ export class ClustersDetail extends Base {
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (value) => clusterStatus[value] || value,
+        valueMap: clusterStatus,
       },
       {
         title: t('Status Reason'),
@@ -69,7 +69,7 @@ export class ClustersDetail extends Base {
       {
         title: t('Health Status'),
         dataIndex: 'health_status',
-        render: (value) => healthStatus[value] || value || '-',
+        valueMap: healthStatus,
       },
       {
         title: t('Health Status Reason'),

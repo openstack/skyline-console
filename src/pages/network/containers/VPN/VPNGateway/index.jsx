@@ -88,7 +88,7 @@ export class VPNGateway extends Base {
     {
       title: t('Status'),
       dataIndex: 'status',
-      render: (v) => vpnStatus[v],
+      valueMap: vpnStatus,
     },
   ];
 

@@ -112,7 +112,7 @@ export class Snapshots extends Base {
     {
       title: t('Status'),
       dataIndex: 'status',
-      render: (value) => volumeStatus[value] || value,
+      valueMap: volumeStatus,
     },
     {
       title: t('Volume ID/Name'),

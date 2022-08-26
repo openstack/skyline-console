@@ -58,7 +58,7 @@ export class InstancesDetail extends Base {
       {
         title: t('Status'),
         dataIndex: 'status',
-        render: (value) => InstanceStatus[value] || value,
+        valueMap: InstanceStatus,
       },
       {
         title: t('Project ID'),

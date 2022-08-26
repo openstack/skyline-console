@@ -66,12 +66,12 @@ export class BareMetalNode extends Base {
     {
       title: t('Power State'),
       dataIndex: 'power_state',
-      render: (value) => powerState[value] || value,
+      valueMap: powerState,
     },
     {
       title: t('Provision State'),
       dataIndex: 'provision_state',
-      render: (value) => provisioningState[value] || value,
+      valueMap: provisioningState,
     },
     {
       title: t('Maintained'),

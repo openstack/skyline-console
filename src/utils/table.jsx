@@ -14,7 +14,15 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { isArray, get, isString, isBoolean, isNil, isObjectLike } from 'lodash';
+import {
+  isArray,
+  get,
+  isString,
+  isBoolean,
+  isNil,
+  isObjectLike,
+  isObject,
+} from 'lodash';
 import Status from 'components/Status';
 import { renderFilterMap } from 'utils/index';
 import { getLinkRender } from 'utils/route-map';
@@ -234,4 +242,15 @@ export const idNameColumn = {
       </>
     );
   },
+};
+
+export const getValueMapRender = (column) => {
+  const { valueMap, render } = column;
+  if (render) {
+    return render;
+  }
+  if (valueMap && isObject(valueMap)) {
+    return (value) => valueMap[value] || value;
+  }
+  return null;
 };

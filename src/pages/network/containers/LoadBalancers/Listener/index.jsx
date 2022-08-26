@@ -74,7 +74,7 @@ export class Listeners extends Base {
     {
       title: t('Status'),
       dataIndex: 'provisioning_status',
-      render: (t) => provisioningStatusCodes[t],
+      valueMap: provisioningStatusCodes,
       isHideable: true,
     },
     {

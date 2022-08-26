@@ -93,7 +93,7 @@ export class ManageQos extends ModalAction {
           {
             title: t('Consumer'),
             dataIndex: 'consumer',
-            render: (value) => consumerTypes[value] || value,
+            valueMap: consumerTypes,
           },
           {
             title: t('Specs'),

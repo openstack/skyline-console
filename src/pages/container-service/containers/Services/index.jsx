@@ -67,7 +67,7 @@ export class Services extends Base {
     {
       title: t('Service State'),
       dataIndex: 'state',
-      render: (value) => serviceState[value] || value,
+      valueMap: serviceState,
     },
     {
       title: t('Last Updated'),

@@ -89,7 +89,7 @@ export class Ports extends Base {
     {
       title: t('Status'),
       dataIndex: 'status',
-      render: (value) => portStatus[value] || value,
+      valueMap: portStatus,
     },
     {
       title: t('Created At'),

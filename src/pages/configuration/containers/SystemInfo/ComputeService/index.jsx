@@ -62,7 +62,7 @@ export class ComputeService extends Base {
     {
       title: t('Service Status'),
       dataIndex: 'status',
-      render: (value) => serviceStatus[value] || value,
+      valueMap: serviceStatus,
       tip: (value, record) => {
         const { disabled_reason } = record || {};
         if (disabled_reason) {
@@ -74,7 +74,7 @@ export class ComputeService extends Base {
     {
       title: t('Service State'),
       dataIndex: 'state',
-      render: (value) => serviceState[value] || value,
+      valueMap: serviceState,
     },
     {
       title: t('Last Updated'),

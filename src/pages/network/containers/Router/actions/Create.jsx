@@ -181,12 +181,12 @@ export class Create extends ModalAction {
           {
             title: t('State'),
             dataIndex: 'state',
-            render: (value) => availabilityZoneState[value] || value,
+            valueMap: availabilityZoneState,
           },
           {
             title: t('Resource Type'),
             dataIndex: 'resource',
-            render: (value) => availabilityZoneResource[value] || value,
+            valueMap: availabilityZoneResource,
           },
         ],
       },
@@ -218,7 +218,7 @@ export class Create extends ModalAction {
           {
             title: t('Status'),
             dataIndex: 'status',
-            render: (value) => networkStatus[value] || value,
+            valueMap: networkStatus,
           },
           {
             title: t('Created At'),

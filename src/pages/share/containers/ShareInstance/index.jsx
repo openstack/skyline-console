@@ -55,7 +55,7 @@ export class ShareInstance extends Base {
     {
       title: t('Status'),
       dataIndex: 'status',
-      render: (value) => shareStatus[value] || value,
+      valueMap: shareStatus,
     },
     {
       title: t('Availability Zone'),

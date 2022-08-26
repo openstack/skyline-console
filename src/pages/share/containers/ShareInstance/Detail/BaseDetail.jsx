@@ -52,7 +52,7 @@ export class BaseDetail extends Base {
       {
         label: t('Access Rules Status'),
         dataIndex: 'access_rules_status',
-        render: (value) => accessRuleStatus[value] || value,
+        valueMap: accessRuleStatus,
       },
       {
         label: t('Progress'),

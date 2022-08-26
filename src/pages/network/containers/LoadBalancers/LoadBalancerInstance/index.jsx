@@ -118,7 +118,7 @@ export class LoadBalancerInstance extends Base {
       {
         title: t('Operating Status'),
         dataIndex: 'operating_status',
-        render: (t) => operatingStatusCodes[t],
+        valueMap: operatingStatusCodes,
         titleTip: (
           <Row>
             <Col>
@@ -135,7 +135,7 @@ export class LoadBalancerInstance extends Base {
       {
         title: t('Provisioning Status'),
         dataIndex: 'provisioning_status',
-        render: (t) => provisioningStatusCodes[t],
+        valueMap: provisioningStatusCodes,
       },
       {
         title: t('Listener Number'),

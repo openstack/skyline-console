@@ -105,7 +105,7 @@ export class Backup extends Base {
         title: t('Status'),
         dataIndex: 'status',
         isHideable: true,
-        render: (value) => backupStatus[value] || value,
+        valueMap: backupStatus,
       },
       {
         title: t('Created At'),
