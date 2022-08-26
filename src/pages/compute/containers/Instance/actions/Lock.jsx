@@ -70,7 +70,7 @@ export default class LockAction extends ConfirmAction {
         name,
       }) +
       t(
-        'Lock instance will lock the operations that have a direct impact on the operation of the instance, such as shutdown, restart, delete, etc. It does not involve the mounting, unmounting and capacity expansion of volume.'
+        'Lock instance will lock the operations that have a direct impact on the operation of the instance, such as: shutdown, restart, delete, the mounting and unmounting of volume, etc. It does not involve the capacity expansion and change type of volume.'
       )
     );
   };
