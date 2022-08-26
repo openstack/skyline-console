@@ -1,8 +1,8 @@
 .. _configuration-settings:
 
-==================
-Settings Reference
-==================
+==================================
+Skyline Console Settings Reference
+==================================
 
 - Prepare a usable backend
   - Prepare an accessible backend, for example: `https://172.20.154.250`

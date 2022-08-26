@@ -5,4 +5,5 @@ Configuration Guide
 .. toctree::
    :maxdepth: 1
 
-   settings
+   skyline-settings
+   skyline-console-settings
