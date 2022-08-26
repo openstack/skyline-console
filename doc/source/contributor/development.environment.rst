@@ -38,8 +38,6 @@ Grab the code::
 Setup Your Local Development Env
 --------------------------------
 
-Take CentOS as an example
-
 -  Install nvm ( version control system for nodejs )
 
    .. code:: shell
