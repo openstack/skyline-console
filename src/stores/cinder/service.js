@@ -30,6 +30,14 @@ export class ServiceStore extends Base {
   disable(body) {
     return this.submitting(this.client.reason(body));
   }
+
+  listDidFetch(items) {
+    if (!items.length) return items;
+    return items.map((it, index) => ({
+      ...it,
+      id: index,
+    }));
+  }
 }
 
 const globalServiceStore = new ServiceStore();
