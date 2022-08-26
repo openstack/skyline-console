@@ -35,7 +35,6 @@ IRC
     answered: http://eavesdrop.openstack.org/irclogs/%23openstack-skyline/
 
 weekly meeting
-
     .. note::
 
       Now we have not weekly meeting, we will have it in the future.
