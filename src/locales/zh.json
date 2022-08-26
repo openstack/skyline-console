@@ -1371,7 +1371,7 @@
   "Lock": "锁定",
   "Lock Instance": "锁定云主机",
   "Lock Status": "锁定状态",
-  "Lock instance will lock the operations that have a direct impact on the operation of the instance, such as shutdown, restart, delete, etc. It does not involve the mounting, unmounting and capacity expansion of volume.": "云主机锁定操作会锁定对云主机运行有直接影响的操作, 例如: 关机, 重启, 删除等，不涉及云硬盘的挂载卸载和扩容。",
+  "Lock instance will lock the operations that have a direct impact on the operation of the instance, such as: shutdown, restart, delete, the mounting and unmounting of volume, etc. It does not involve the capacity expansion and change type of volume.": "云主机锁定操作会锁定对云主机运行有直接影响的操作, 例如: 关机、重启、删除，云硬盘的挂载、卸载等，不涉及到云硬盘的扩容与变更类型。",
   "Locked": "锁定",
   "Log": "日志",
   "Log in": "登录",

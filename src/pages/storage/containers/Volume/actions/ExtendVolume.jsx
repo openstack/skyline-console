@@ -16,7 +16,6 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalVolumeStore, { VolumeStore } from 'stores/cinder/volume';
 import globalProjectStore from 'stores/keystone/project';
-import globalServerStore from 'stores/nova/instance';
 import {
   isAvailableOrInUse,
   setCreateVolumeSize,
@@ -45,7 +44,6 @@ export class ExtendVolume extends ModalAction {
     this.volumeStore = new VolumeStore();
     this.projectStore = globalProjectStore;
     fetchQuota(this, 1, this.item.volume_type);
-    this.checkAttachedServer();
   }
 
   get tips() {
@@ -76,34 +74,6 @@ export class ExtendVolume extends ModalAction {
     );
     const { type, ...rest } = sizeData;
     return [rest, typeSizeData];
-  }
-
-  async checkAttachedServer() {
-    const instanceIds = (this.item.attachments || []).map((it) => it.server_id);
-    if (!instanceIds.length) {
-      return;
-    }
-    const reqs = instanceIds.map((id) =>
-      globalServerStore.pureFetchDetail({ id })
-    );
-    const results = await Promise.allSettled(reqs);
-    const lockedInstances = results
-      .filter(({ status }) => {
-        return status === 'fulfilled';
-      })
-      .map((it) => it.value)
-      .filter((server) => server.locked)
-      .map(({ name }) => name);
-    if (lockedInstances.length) {
-      const name = lockedInstances.join(', ');
-      const lockedError = t(
-        'The server {name} is locked. Please unlock first.',
-        { name }
-      );
-      this.setState({
-        lockedError,
-      });
-    }
   }
 
   get isQuotaLimited() {
