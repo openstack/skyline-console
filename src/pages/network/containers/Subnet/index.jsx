@@ -57,9 +57,8 @@ export class Subnets extends Base {
   getColumns = () => {
     const ret = [
       {
-        title: t('Name'),
+        title: t('Subnet ID/Name'),
         dataIndex: 'name',
-        stringify: (name, record) => name || record.id,
         routeName: this.getRouteName('subnetDetail'),
         routeParamsFunc: (data) => ({
           networkId: data.network_id,
@@ -118,6 +117,9 @@ export class Subnets extends Base {
         {
           title: t('Used IPs'),
           dataIndex: 'used_ips',
+          titleTip: this.isAdminPage
+            ? ''
+            : t('Number of IPs used by all projects'),
         }
       );
     }
