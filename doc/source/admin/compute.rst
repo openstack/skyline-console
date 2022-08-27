@@ -1,5 +1,7 @@
-Manage instances (Compute)
-==========================
+Manage instances (Compute tab)
+==============================
+
+For more information, refer to the :ref:`compute-tab`.
 
 Manage compute nodes
 --------------------

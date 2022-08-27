@@ -1,8 +1,8 @@
 Openstack Dashboard
 ===================
 
-User tab
---------
+User page
+----------
 
-Console tab
------------
+Console page
+-------------
