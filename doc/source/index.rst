@@ -42,6 +42,8 @@ Contributor Docs
    :maxdepth: 2
 
    contributor/index
+   development/index
+   test/index
 
 Release Notes
 =============

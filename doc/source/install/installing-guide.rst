@@ -1,3 +1,5 @@
+.. _skyline-installation-guide:
+
 =====================================
 Skyline Installation Guide for Ubuntu
 =====================================
