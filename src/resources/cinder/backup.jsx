@@ -13,8 +13,6 @@
 // limitations under the License.
 
 import React from 'react';
-import { getOptions } from 'utils/index';
-import { FolderOutlined, FolderAddOutlined } from '@ant-design/icons';
 import globalProjectStore from 'stores/keystone/project';
 import globalBackupStore from 'stores/cinder/backup';
 
@@ -56,76 +54,6 @@ export const backupModeList = [
 export const modeTip = t(
   'Create a full backup, the system will automatically create a new backup chain, the full backup name is the backup chain name; Create an incremental backup, the system will automatically create an incremental backup under the newly created backup chain.'
 );
-
-export const backupColumns = [];
-
-export const backupPointColumns = [
-  {
-    title: t('Name'),
-    dataIndex: 'name',
-    ellipsis: true,
-  },
-  {
-    title: t('Size'),
-    dataIndex: 'size',
-    isHideable: true,
-    render: (value) => `${value} GiB`,
-  },
-  {
-    title: t('Status'),
-    dataIndex: 'status',
-    valueMap: backupStatus,
-  },
-  {
-    title: t('Backup Mode'),
-    dataIndex: 'is_incremental',
-    isHideable: true,
-    render: (value) => {
-      if (value) {
-        return (
-          <>
-            {' '}
-            <FolderAddOutlined />
-            <span style={{ marginLeft: 8 }}>{t('Incremental Backup')}</span>
-          </>
-        );
-      }
-      return (
-        <>
-          {' '}
-          <FolderOutlined />
-          <span style={{ marginLeft: 8 }}>{t('Full Backup')}</span>
-        </>
-      );
-    },
-    stringify: (value) => (value ? t('Incremental Backup') : t('Full Backup')),
-  },
-  {
-    title: t('description'),
-    dataIndex: 'description',
-    ellipsis: true,
-    isHideable: true,
-  },
-  {
-    title: t('Created At'),
-    dataIndex: 'created_at',
-    isHideable: true,
-    valueRender: 'sinceTime',
-  },
-];
-
-export const backupPointFilters = [
-  {
-    label: t('Name'),
-    name: 'name',
-    ellipsis: true,
-  },
-  {
-    label: t('Status'),
-    name: 'status',
-    options: getOptions(backupStatus),
-  },
-];
 
 export const restoreTip = (
   <span>

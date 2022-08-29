@@ -73,15 +73,6 @@ export class Restore extends ModalAction {
 
   static allowed = () => Promise.resolve(true);
 
-  get backupPoints() {
-    return this.backupPointStore.list.data || [];
-  }
-
-  async getBackupPoints() {
-    const { id } = this.item;
-    await this.backupPointStore.fetchList({ id });
-  }
-
   async getVolume() {
     let enable = false;
     const { volume_id } = this.item;
