@@ -78,7 +78,7 @@ export class RestoreAction extends ModalAction {
           {
             title: t('Size'),
             dataIndex: 'size',
-            render: (value) => `${value}GiB`,
+            unit: 'GiB',
             sorter: false,
           },
           {

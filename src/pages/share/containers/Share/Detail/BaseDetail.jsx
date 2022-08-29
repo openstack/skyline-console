@@ -52,7 +52,7 @@ export class BaseDetail extends Base {
       {
         label: t('Size'),
         dataIndex: 'size',
-        render: (value) => `${value}GiB`,
+        unit: 'GiB',
       },
       {
         label: t('Protocol'),

@@ -98,7 +98,7 @@ export class Backup extends Base {
         title: t('Size'),
         dataIndex: 'size',
         isHideable: true,
-        render: (value) => `${value}GiB`,
+        unit: 'GiB',
         sorter: false,
       },
       {

@@ -100,7 +100,7 @@ export class DetachVolume extends ModalAction {
           {
             title: t('Size'),
             dataIndex: 'size',
-            render: (value) => `${value}GiB`,
+            unit: 'GiB',
           },
           {
             title: t('Status'),

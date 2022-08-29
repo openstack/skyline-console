@@ -462,7 +462,7 @@ export class Create extends FormAction {
           {
             title: t('Size'),
             dataIndex: 'size',
-            render: (value) => `${value}GiB`,
+            unit: 'GiB',
             sorter: false,
           },
           {
