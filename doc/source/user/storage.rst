@@ -54,8 +54,8 @@ Create a volume
 
 #. Click :guilabel:`Confirm`.
 
-You have successfully created the volume. You can view the volume from
-the :guilabel:`Volumes` tab.
+   You have successfully created the volume. You can view the volume from
+   the :guilabel:`Volumes` tab.
 
 Attach a volume to an instance
 -------------------------------
@@ -104,7 +104,7 @@ Detach a volume from an instance
 
 #. Click :guilabel:`OK`.
 
-A message indicates whether the action was successful.
+   A message indicates whether the action was successful.
 
 Create a snapshot from a volume
 --------------------------------

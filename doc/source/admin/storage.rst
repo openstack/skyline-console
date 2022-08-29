@@ -8,7 +8,7 @@ and delete volumes. For more information, refer to the :ref:`storage-tab`.
 Create a volume type
 --------------------
 
-#. Log in to the dashboard.
+#. Log into the OpenStack Dashboard as the Admin user.
 
 #. On the :guilabel:`Administrator` page, open the :guilabel:`Storage` tab and
    click :guilabel:`Volume Types` category.
@@ -25,19 +25,21 @@ Create a volume type
 
    :guilabel:`Public`: Select this check box to make the volume type publicly visible.
 
-    If you do not choose this check box, a new field for :guilabel:`Access Control`
-    displays. You can select projects from the list to determine which projects are
-    visible to the volume type.
+   .. note::
+
+     If you do not choose this check box, a new field for
+     :guilabel:`Access Control` displays. You can select projects from the
+     list to determine which projects are visible to the volume type.
 
 #. Click :guilabel:`OK`.
 
-You have successfully created the volume type. You can view the volume type from
-the :guilabel:`Volume Types` tab.
+   You have successfully created the volume type. You can view the volume
+   type from the :guilabel:`Volume Types` tab.
 
 Delete a volume type
 --------------------
 
-#. Log in to the dashboard.
+#. Log into the OpenStack Dashboard as the Admin user.
 
 #. On the :guilabel:`Administrator` page, open the :guilabel:`Storage` tab and
    click :guilabel:`Volume Types` category.
