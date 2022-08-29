@@ -159,10 +159,6 @@ export class FloatingIps extends Base {
     return getPortForwardingName(rest, fip);
   }
 
-  get portForwardingResourceName() {
-    return t('Port Forwarding');
-  }
-
   get portForwardingResourcesName() {
     return t('Port Forwardings');
   }
@@ -194,6 +190,7 @@ export class FloatingIps extends Base {
           hideOnSinglePage: true,
           pageSize,
           size: 'small',
+          showSizeChanger: false,
         }}
         dataSource={newData}
         renderItem={(item) => {
@@ -208,7 +205,7 @@ export class FloatingIps extends Base {
     return (
       <Popover
         content={content}
-        title={this.portForwardingResourceName}
+        title={this.portForwardingResourcesName}
         destroyTooltipOnHide
         placement="right"
       >
