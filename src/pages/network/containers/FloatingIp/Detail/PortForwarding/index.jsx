@@ -33,7 +33,7 @@ export class PortForwarding extends Base {
     return t('port forwardings');
   }
 
-  updateFetchParamsByPage = (params) => {
+  updateFetchParams = (params) => {
     const { id, all_projects, ...rest } = params;
     return {
       fipId: id,
@@ -43,19 +43,7 @@ export class PortForwarding extends Base {
   };
 
   get isFilterByBackend() {
-    return true;
-  }
-
-  get isSortByBackend() {
-    return true;
-  }
-
-  get defaultSortKey() {
-    return 'external_port';
-  }
-
-  get defaultSortOrder() {
-    return 'ascend';
+    return false;
   }
 
   get actionConfigs() {
@@ -80,13 +68,11 @@ export class PortForwarding extends Base {
       title: t('Internal Ip Address'),
       dataIndex: 'internal_ip_address',
       isHideable: true,
-      sorter: false,
     },
     {
       title: t('Internal Port/Port Range'),
       dataIndex: 'internal_port',
       isHideable: true,
-      sorter: false,
       render: (value, record) => {
         return value || record.internal_port_range;
       },
@@ -100,7 +86,6 @@ export class PortForwarding extends Base {
     {
       title: t('Description'),
       dataIndex: 'description',
-      sorter: false,
       isHideable: true,
     },
   ];

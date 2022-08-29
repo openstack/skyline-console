@@ -26,21 +26,14 @@ export class PortForwardingStore extends Base {
     return true;
   }
 
-  getFatherResourceId = (params) => params.fipId;
+  getFatherResourceId = (params) => (params || {}).fipId;
 
-  get paramsFuncPage() {
+  get paramsFunc() {
     return (params) => {
       const { fipId, fipInfo, current, ...rest } = params;
       return rest;
     };
   }
-
-  updateParamsSortPage = (params, sortKey, sortOrder) => {
-    if (sortKey && sortOrder) {
-      params.sort_key = sortKey;
-      params.sort_dir = sortOrder === 'descend' ? 'desc' : 'asc';
-    }
-  };
 
   listDidFetch(items, allProjects, filters) {
     if (items.length === 0) {
