@@ -33,16 +33,21 @@ export const poolColumns = [
     title: t('Storage Capacity(GiB)'),
     dataIndex: 'usedGBPercent',
     isHideable: true,
-    render: (value, record) => (
-      <Progress
-        value={value}
-        label={`${record.usedGB} / ${record.total_capacity_gb}`}
-      />
-    ),
+    render: (value, record) =>
+      value ? (
+        <Progress
+          value={value}
+          label={`${record.usedGB} / ${record.total_capacity_gb}`}
+        />
+      ) : (
+        '-'
+      ),
     stringify: (value, record) =>
-      `${value}% (${t('Used')}: ${record.usedGB} / ${t('Total')}: ${
-        record.total_capacity_gb
-      })`,
+      value
+        ? `${value}% (${t('Used')}: ${record.usedGB} / ${t('Total')}: ${
+            record.total_capacity_gb
+          })`
+        : '-',
   },
 ];
 

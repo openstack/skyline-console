@@ -561,6 +561,13 @@ const renderMenu = (t) => {
             },
           ],
         },
+        {
+          path: '/share/storage-admin',
+          name: t('Storage Backends'),
+          key: 'shareStorageBackendAdmin',
+          level: 1,
+          children: [],
+        },
       ],
     },
     {

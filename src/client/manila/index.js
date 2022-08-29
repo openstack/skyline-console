@@ -178,6 +178,11 @@ export class ManilaClient extends Base {
         key: 'share-servers',
         responseKey: 'share_server',
       },
+      {
+        name: 'pools',
+        key: 'scheduler-stats/pools/detail',
+        responseKey: 'pool',
+      },
     ];
   }
 }
