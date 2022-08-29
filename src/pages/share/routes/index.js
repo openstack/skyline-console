@@ -29,6 +29,7 @@ import ShareDetail from '../containers/Share/Detail';
 import ShareCreate from '../containers/Share/actions/Create';
 import ShareServer from '../containers/ShareServer';
 import ShareServerDetail from '../containers/ShareServer/Detail';
+import Storage from '../containers/Storage';
 
 const PATH = '/share';
 export default [
@@ -137,6 +138,7 @@ export default [
         component: ShareServerDetail,
         exact: true,
       },
+      { path: `${PATH}/storage-admin`, component: Storage, exact: true },
       { path: '*', component: E404 },
     ],
   },
