@@ -1,5 +1,0 @@
-Openstack Dashboard
-====================
-
-Administrator page
--------------------

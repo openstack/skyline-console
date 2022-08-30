@@ -1,2 +1,0 @@
-Skyline Configuration
-=====================
