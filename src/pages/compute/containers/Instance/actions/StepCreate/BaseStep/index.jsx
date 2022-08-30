@@ -488,7 +488,7 @@ export class BaseStep extends Base {
       {
         title: t('Min System Disk'),
         dataIndex: 'min_disk',
-        render: (text) => `${text}GiB`,
+        unit: 'GiB',
       },
       {
         title: t('Min Memory'),
@@ -518,7 +518,7 @@ export class BaseStep extends Base {
       {
         title: t('Size'),
         dataIndex: 'size',
-        render: (value) => `${value}GiB`,
+        unit: 'GiB',
         width: 80,
       },
       {

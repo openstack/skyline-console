@@ -42,6 +42,7 @@ import {
   getNameRender,
   columnRender,
   getValueMapRender,
+  getUnitRender,
 } from 'utils/table';
 import { getNoValue } from 'utils/index';
 import { getLocalStorageItem, setLocalStorageItem } from 'utils/local-storage';
@@ -418,6 +419,7 @@ export class BaseTable extends React.Component {
         linkPrefix,
         isPrice,
         valueMap,
+        unit,
         ...rest
       } = column;
       const newSorter = getColumnSorter(column, this.props);
@@ -426,6 +428,9 @@ export class BaseTable extends React.Component {
       let newRender = render || getRender(valueRender);
       if (valueMap) {
         newRender = getValueMapRender(column);
+      }
+      if (unit) {
+        newRender = getUnitRender(column);
       }
       if (checkIsStatusColumn(dataIndex, isStatus)) {
         newRender = getStatusRender(newRender);

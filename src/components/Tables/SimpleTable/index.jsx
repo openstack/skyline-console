@@ -27,6 +27,7 @@ import {
   getNameRender,
   getNameRenderByRouter,
   getValueMapRender,
+  getUnitRender,
 } from 'utils/table';
 import { Link } from 'react-router-dom';
 import { getNoValue } from 'utils/index';
@@ -87,6 +88,7 @@ export default class SimpleTable extends React.Component {
         routeName,
         linkPrefix,
         valueMap,
+        unit,
         ...rest
       } = column;
       if (column.key === 'operation') {
@@ -98,6 +100,9 @@ export default class SimpleTable extends React.Component {
       let newRender = render || getRender(valueRender);
       if (valueMap) {
         newRender = getValueMapRender(column);
+      }
+      if (unit) {
+        newRender = getUnitRender(column);
       }
       if (checkIsStatusColumn(dataIndex, isStatus)) {
         newRender = getStatusRender(newRender);

@@ -77,7 +77,7 @@ export class BaseDetail extends Base {
       {
         label: t('Volume Size'),
         dataIndex: 'size',
-        render: (value) => (value ? `${value}GiB` : '-'),
+        unit: 'GiB',
       },
       {
         label: t('Created'),

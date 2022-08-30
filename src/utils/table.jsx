@@ -254,3 +254,19 @@ export const getValueMapRender = (column) => {
   }
   return null;
 };
+
+export const getUnitRender = (column) => {
+  const { unit, render } = column;
+  if (render) {
+    return render;
+  }
+  if (unit) {
+    return (value) => {
+      if (value === undefined || value === null) {
+        return '-';
+      }
+      return `${value}${unit}`;
+    };
+  }
+  return null;
+};

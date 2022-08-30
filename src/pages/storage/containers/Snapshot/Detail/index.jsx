@@ -58,7 +58,7 @@ export class Detail extends Base {
       {
         title: t('Size'),
         dataIndex: 'size',
-        render: (data) => `${data} GiB`,
+        unit: 'GiB',
       },
       {
         title: t('Created At'),
