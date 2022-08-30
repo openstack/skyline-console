@@ -8,10 +8,10 @@ operate by users, and has higher concurrency performance.
 
 .. toctree::
 
-   skyline-configuration
-   dashboard
    compute
    storage
    identity
 
+For more information about dashboard, see :ref:`skyline-dashboard`.
 To deploy skyline, see :ref:`skyline-installation-guide`.
+To configure skyline, see :ref:`skyline-settings`.

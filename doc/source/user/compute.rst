@@ -50,9 +50,63 @@ Launch an instance
 
 #. On the :guilabel:`Create Instance` page, enter the instance values.
 
+   :guilabel:`Available Zone`: The availability zone from which to launch the server.
+
+   :guilabel:`Specification`: Select a flavor for your server instance.
+
+   :guilabel:`Start Source`: Select one of the following options:
+
+   * Image: If choose this option, a new field for :guilabel:`Operating System`
+     displays. You can select the image from the list. And enter the size of the
+     volume used as :guilabel:`System Disk` of the instance.
+
+     .. note::
+
+        click the :guilabel:`Deleted with the instance` option to delete
+        the volume on deleting the instance.
+
+   * Instance Snapshot: Using this option, you can boot from a volume
+     snapshot and create a new volume by choosing :guilabel:`Instance Snapshot`
+     from a list.
+
+   * Bootable Volume: If you choose this option, a new field for
+     :guilabel:`Bootable Volume` displays. You can select the volume from the list.
+
+   :guilabel:`Data Disk`: The disks mounted on the instance.
+
 #. Click :guilabel:`Next: Network Config`.
 
+   You can choose :guilabel:`Networks`, :guilabel:`Ports` or a mix of both for
+   the instance network config.
+
+   :guilabel:`Networks`: Add a network to the instance. If you specify the networks,
+   :guilabel:`Virtual LAN` and :guilabel:`Security Group` are required fields.
+
+   :guilabel:`Virtual LAN`: Specify a subnet of the network and assign fixed IP
+   address automatically or manually for the instance.
+
+   :guilabel:`Security Group`: Security groups are a kind of cloud firewall that
+   define which incoming network traffic is forwarded to instances.
+
+   :guilabel:`Ports`: Activate the ports that you want to assign to the instance.
+
+   .. note::
+
+     The port executes its own security group rules by default.
+
 #. Click :guilabel:`Next: System Config`.
+
+   :guilabel:`Name`: The server name.
+
+   :guilabel:`Login Type`: Select one of the following options:
+
+   * Keypair: If you choose this option, a new field for
+     :guilabel:`Keypair` displays. The key pair allows you to SSH into your
+     newly created instance. You can select an existing key pair, import a
+     key pair, or generate a new key pair.
+
+   * Password: Enter the :guilabel:`Login Password` and confirm it. And you
+     can login to the instance by using password.
 
 #. Click :guilabel:`Next: Confirm Config` and confirm your choice.
 

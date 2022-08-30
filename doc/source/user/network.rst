@@ -114,9 +114,7 @@ create a port
 #. Select the appropriate project from the Switch Project menu at the top left.
 
 #. On the :guilabel:`Console` page, open the :guilabel:`Network` tab and
-
-#. On the :guilabel:`Project` tab, click :guilabel:`Networks` category.
-click :guilabel:`Ports` category.
+   click :guilabel:`Ports` category.
 
 #. Click :guilabel:`Create Virtual Adapter`.
 
