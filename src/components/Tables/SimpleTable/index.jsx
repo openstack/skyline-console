@@ -267,7 +267,7 @@ export default class SimpleTable extends React.Component {
 
       const { filterFunc } = searchFilters.find((i) => i.name === key);
       if (filterFunc) {
-        return !filterFunc(value, filterValue);
+        return !filterFunc(value, filterValue, data);
       }
 
       const isInclude = this.checkFilterInclude(key);

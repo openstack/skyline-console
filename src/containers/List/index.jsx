@@ -843,7 +843,7 @@ export default class BaseList extends React.Component {
         (i) => i.name === key
       );
       if (filterFunc) {
-        return !filterFunc(value, filterValue);
+        return !filterFunc(value, filterValue, data);
       }
 
       const isInclude = this.checkFilterInclude(key);

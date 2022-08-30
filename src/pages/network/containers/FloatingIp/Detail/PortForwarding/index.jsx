@@ -98,12 +98,33 @@ export class PortForwarding extends Base {
         options: getOptions(portForwardingProtocols),
       },
       {
-        label: t('External Port'),
+        label: t('External Port/Port Range'),
         name: 'external_port',
+        filterFunc: (_, filter, data) => {
+          const { external_port, external_port_range } = data || {};
+          return (
+            `${external_port || ''}`.includes(filter) ||
+            `${external_port_range || ''}`.includes(filter)
+          );
+        },
       },
       {
-        label: t('External Port Range'),
-        name: 'external_port_range',
+        label: t('Internal Ip Address'),
+        name: 'internal_ip_address',
+        filterFunc: (value, filter) => {
+          return value.includes(filter);
+        },
+      },
+      {
+        label: t('Internal Port/Port Range'),
+        name: 'internal_port',
+        filterFunc: (_, filter, data) => {
+          const { internal_port, internal_port_range } = data || {};
+          return (
+            `${internal_port || ''}`.includes(filter) ||
+            `${internal_port_range || ''}`.includes(filter)
+          );
+        },
       },
       {
         label: t('Description'),
