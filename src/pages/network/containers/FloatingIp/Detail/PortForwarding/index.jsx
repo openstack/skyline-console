@@ -22,7 +22,6 @@ import actionConfigs from './actions';
 export class PortForwarding extends Base {
   init() {
     this.store = new PortForwardingStore();
-    this.downloadStore = new PortForwardingStore();
   }
 
   get policy() {
@@ -60,6 +59,7 @@ export class PortForwarding extends Base {
     {
       title: t('External Port/Port Range'),
       dataIndex: 'external_port',
+      splitColumnForDownload: false,
       render: (value, record) => {
         return value || record.external_port_range;
       },
@@ -72,6 +72,7 @@ export class PortForwarding extends Base {
     {
       title: t('Internal Port/Port Range'),
       dataIndex: 'internal_port',
+      splitColumnForDownload: false,
       isHideable: true,
       render: (value, record) => {
         return value || record.internal_port_range;
