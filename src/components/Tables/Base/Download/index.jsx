@@ -106,9 +106,12 @@ export default class index extends Component {
   };
 
   getColumnData = (data, column) => {
-    const { dataIndex, render, valueRender, stringify } = column;
+    const { dataIndex, render, valueRender, stringify, valueMap } = column;
     const { getValueRenderFunc } = this.props;
     const value = get(data, dataIndex);
+    if (valueMap) {
+      return valueMap[value] || value;
+    }
     if (!render && !valueRender && !stringify) {
       return this.getSimpleValue(value, data, dataIndex);
     }
