@@ -106,15 +106,10 @@ export default class index extends Component {
   };
 
   getColumnData = (data, column) => {
-    const { dataIndex, render, valueRender, stringify, valueMap } = column;
+    const { dataIndex, render, valueRender, stringify, valueMap, unit } =
+      column;
     const { getValueRenderFunc } = this.props;
     const value = get(data, dataIndex);
-    if (valueMap) {
-      return valueMap[value] || value;
-    }
-    if (!render && !valueRender && !stringify) {
-      return this.getSimpleValue(value, data, dataIndex);
-    }
     if (stringify) {
       return stringify(value, data);
     }
@@ -125,6 +120,13 @@ export default class index extends Component {
     if (render) {
       return this.getSimpleValue(render(value, data), data, dataIndex);
     }
+    if (unit) {
+      return `${value}${unit}`;
+    }
+    if (valueMap) {
+      return valueMap[value] || value;
+    }
+    return this.getSimpleValue(value, data, dataIndex);
   };
 
   getDownloadData() {
