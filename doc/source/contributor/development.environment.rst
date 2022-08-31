@@ -50,9 +50,8 @@ Setup Your Local Development Env
 
    .. code:: shell
 
-      NODE_VERSION=erbium
-      nvm install --lts=$NODE_VERSION
-      nvm alias default lts/$NODE_VERSION
+      nvm install --lts=Erbium
+      nvm alias default lts/erbium
       nvm use default
 
 -  Verify nodejs and npm versions
@@ -89,6 +88,8 @@ You can also use the following commands:
    ``webpack.dev.js``.
 -  ``yarn run build``: Build packages and then you can hand over the
    contents of the generated *dist* directory to the back end.
+
+For more information about configuration, see :ref:`configuration-settings`.
 
 Running tests
 -------------
