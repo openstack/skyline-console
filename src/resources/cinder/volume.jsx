@@ -247,7 +247,7 @@ export const snapshotTypeTip = (
 );
 
 export const getVolumeColumnsList = (self) => {
-  const columns = [
+  return [
     {
       title: t('ID/Name'),
       dataIndex: 'name',
@@ -298,6 +298,7 @@ export const getVolumeColumnsList = (self) => {
       dataIndex: 'attachments',
       isHideable: true,
       sorter: false,
+      hidden: self.isInstanceDetail,
       render: (value) => {
         if (value && value.length > 0) {
           return value.map((it) => (
@@ -351,10 +352,6 @@ export const getVolumeColumnsList = (self) => {
       stringify: (value) => toLocalTimeFilter(value),
     },
   ];
-  if (self.inDetailPage) {
-    return columns.filter((it) => it.dataIndex !== 'attachments');
-  }
-  return columns;
 };
 
 // deal with quota
