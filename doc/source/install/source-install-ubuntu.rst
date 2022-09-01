@@ -19,7 +19,7 @@ Prerequisites
    .. code-block:: shell
 
       sudo apt update
-      sudo apt install -y git python3-pip nginx make
+      sudo apt install -y git python3-pip nginx make ssl-cert
       sudo apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
 
 #. Install nvm ( version control system for nodejs )
@@ -86,6 +86,12 @@ We will install the Skyline Console service from source code.
    .. code-block:: shell
 
       skyline-nginx-generator -o /etc/nginx/nginx.conf
+      sudo sed -i "s/server .* fail_timeout=0;/server 0.0.0.0:28000 fail_timeout=0;/g" /etc/nginx/nginx.conf
+
+   .. note::
+
+      We need to change the ``upstream skyline`` value in ``/etc/nginx/nginx.conf`` to ``0.0.0.0:28000``.
+      Default value is ``unix:/var/lib/skyline/skyline.sock``.
 
 Finalize installation
 ---------------------
@@ -95,3 +101,4 @@ Finalize installation
    .. code-block:: shell
 
       sudo systemctl start nginx.service
+      sudo systemctl enable nginx.service
