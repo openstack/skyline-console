@@ -54,6 +54,10 @@ export class Volume extends Base {
     return this.inDetailPage && this.path.includes('storage/snapshot');
   }
 
+  get isInstanceDetail() {
+    return this.inDetailPage && this.path.includes('compute/instance');
+  }
+
   get actionConfigs() {
     if (this.isRecycleBinDetail) {
       return emptyActionConfig;

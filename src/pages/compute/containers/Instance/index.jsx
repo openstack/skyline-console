@@ -198,6 +198,7 @@ export class Instance extends Base {
         dataIndex: 'tags',
         render: (tags) => tags.map((tag, index) => SimpleTag({ tag, index })),
         isHideable: true,
+        sorter: false,
       },
       {
         title: t('Locked'),
