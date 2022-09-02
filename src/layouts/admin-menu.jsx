@@ -21,7 +21,6 @@ import {
   MonitorOutlined,
   SettingOutlined,
   HomeOutlined,
-  AppstoreOutlined,
   SwitcherOutlined,
   ContainerOutlined,
   DatabaseFilled,
@@ -715,43 +714,47 @@ const renderMenu = (t) => {
     //     },
     //   ],
     // },
-    {
-      path: '/heat',
-      name: t('Orchestration'),
-      key: 'heatAdmin',
-      endpoints: 'heat',
-      icon: <AppstoreOutlined />,
-      children: [
-        {
-          path: '/heat/stack-admin',
-          name: t('Stacks'),
-          key: 'stackAdmin',
-          level: 1,
-          children: [
-            {
-              path: /^\/heat\/stack-admin\/detail\/.[^/]+\/.[^/]+$/,
-              name: t('Stack Detail'),
-              key: 'stackDetailAdmin',
-              level: 2,
-              routePath: '/heat/stack-admin/detail/:id/:name',
-            },
-            {
-              path: '/heat/stack-admin/create',
-              name: t('Create Stack'),
-              key: 'stackCreateAdmin',
-              level: 2,
-            },
-            {
-              path: /^\/heat\/stack-admin\/edit\/.[^/]+\/.[^/]+$/,
-              name: t('Update Template'),
-              key: 'stackEditAdmin',
-              level: 2,
-              routePath: '/heat/stack-admin/edit/:id/:name',
-            },
-          ],
-        },
-      ],
-    },
+
+    // remove heat menu in the administrator,
+    // because the heat api has a problem with the permission determination
+    // of the scope.system.all=true level.
+    // {
+    //   path: '/heat',
+    //   name: t('Orchestration'),
+    //   key: 'heatAdmin',
+    //   endpoints: 'heat',
+    //   icon: <AppstoreOutlined />,
+    //   children: [
+    //     {
+    //       path: '/heat/stack-admin',
+    //       name: t('Stacks'),
+    //       key: 'stackAdmin',
+    //       level: 1,
+    //       children: [
+    //         {
+    //           path: /^\/heat\/stack-admin\/detail\/.[^/]+\/.[^/]+$/,
+    //           name: t('Stack Detail'),
+    //           key: 'stackDetailAdmin',
+    //           level: 2,
+    //           routePath: '/heat/stack-admin/detail/:id/:name',
+    //         },
+    //         {
+    //           path: '/heat/stack-admin/create',
+    //           name: t('Create Stack'),
+    //           key: 'stackCreateAdmin',
+    //           level: 2,
+    //         },
+    //         {
+    //           path: /^\/heat\/stack-admin\/edit\/.[^/]+\/.[^/]+$/,
+    //           name: t('Update Template'),
+    //           key: 'stackEditAdmin',
+    //           level: 2,
+    //           routePath: '/heat/stack-admin/edit/:id/:name',
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
     {
       path: '/database',
       name: t('Database'),

@@ -25,20 +25,9 @@ export default [
     component: BaseLayout,
     routes: [
       { path: `${PATH}/stack`, component: Stack, exact: true },
-      { path: `${PATH}/stack-admin`, component: Stack, exact: true },
       { path: `${PATH}/stack/create`, component: CreateStack, exact: true },
       {
-        path: `${PATH}/stack-admin/create`,
-        component: CreateStack,
-        exact: true,
-      },
-      {
         path: `${PATH}/stack/edit/:id/:name`,
-        component: CreateStack,
-        exact: true,
-      },
-      {
-        path: `${PATH}/stack-admin/edit/:id/:name`,
         component: CreateStack,
         exact: true,
       },
@@ -47,11 +36,25 @@ export default [
         component: StackDetail,
         exact: true,
       },
-      {
-        path: `${PATH}/stack-admin/detail/:id/:name`,
-        component: StackDetail,
-        exact: true,
-      },
+      // remove heat page in the administrator,
+      // because the heat api has a problem with the permission determination
+      // of the scope.system.all=true level.
+      // { path: `${PATH}/stack-admin`, component: Stack, exact: true },
+      // {
+      //   path: `${PATH}/stack-admin/create`,
+      //   component: CreateStack,
+      //   exact: true,
+      // },
+      // {
+      //   path: `${PATH}/stack-admin/edit/:id/:name`,
+      //   component: CreateStack,
+      //   exact: true,
+      // },
+      // {
+      //   path: `${PATH}/stack-admin/detail/:id/:name`,
+      //   component: StackDetail,
+      //   exact: true,
+      // },
       { path: '*', component: E404 },
     ],
   },
