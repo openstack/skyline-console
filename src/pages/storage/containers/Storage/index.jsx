@@ -37,7 +37,20 @@ export class Storage extends Base {
   getColumns = () => poolColumns;
 
   get searchFilters() {
-    return [];
+    return [
+      {
+        label: t('Name'),
+        name: 'name',
+      },
+      {
+        label: t('Protocol'),
+        name: 'storage_protocol',
+      },
+      {
+        label: t('Backend Name'),
+        name: 'volume_backend_name',
+      },
+    ];
   }
 
   updateFetchParams = (params) => {

@@ -31,6 +31,14 @@ export class Storage extends Base {
     columns[2].dataIndex = 'share_backend_name';
     return columns;
   };
+
+  get searchFilters() {
+    const filters = super.searchFilters;
+    return filters.slice(0, 2).concat({
+      label: t('Backend Name'),
+      name: 'share_backend_name',
+    });
+  }
 }
 
 export default inject('rootStore')(observer(Storage));
