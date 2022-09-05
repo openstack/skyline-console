@@ -68,6 +68,7 @@ export class ResetStatus extends ModalAction {
         label: t('New Status'),
         type: 'select',
         options: this.statusOptions,
+        required: true,
       },
     ];
   }
