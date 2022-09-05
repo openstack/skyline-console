@@ -799,7 +799,7 @@ export class BaseTable extends React.Component {
 
   renderNormalTitle() {
     return (
-      <div className={styles['table-header']}>
+      <div className={styles['table-header']} id="sl-table-header-search">
         <div
           className={classnames(
             styles['table-header-btns'],

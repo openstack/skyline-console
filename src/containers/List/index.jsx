@@ -36,10 +36,14 @@ import NotFound from 'components/Cards/NotFound';
 import { getPath, getLinkRender } from 'utils/route-map';
 import styles from './index.less';
 
-const tabOtherHeight = 326;
-const otherHeight = 272;
 const hintHeight = 50;
-const subTabHeight = 50;
+const navHeight = 40;
+const breadcrumbHeight = 50;
+const padding = 16;
+const tabHeight = 44;
+const footerHeight = 50;
+const defaultTableSearchHeight = 50;
+const defaultTableHeaderHeight = 51;
 
 export default class BaseList extends React.Component {
   constructor(props, options = {}) {
@@ -274,22 +278,36 @@ export default class BaseList extends React.Component {
   }
 
   get tableTopHeight() {
+    const tableSearchHeader = document.getElementById('sl-table-header-search');
+    const tableSearchHeight = tableSearchHeader
+      ? tableSearchHeader.scrollHeight
+      : defaultTableSearchHeight;
+    const topTotal = navHeight + breadcrumbHeight + tableSearchHeight + padding;
     if (this.hasSubTab) {
-      return tabOtherHeight + subTabHeight;
+      return topTotal + tabHeight * 2;
     }
     if (this.hasTab) {
-      return tabOtherHeight;
+      return topTotal + tabHeight;
     }
-    return otherHeight;
+    return topTotal;
   }
 
   getTableHeight() {
     const height = window.innerHeight;
-    const id = this.params && this.params.id;
-    if (id) {
+    if (this.inDetailPage) {
       return -1;
     }
-    return height - this.tableTopHeight - this.hintHeight;
+    const tableHeader = document.getElementsByClassName('ant-table-header')[0];
+    const tableHeaderHeight = tableHeader
+      ? tableHeader.offsetHeight
+      : defaultTableHeaderHeight;
+    const newHeight =
+      height -
+      this.tableTopHeight -
+      this.hintHeight -
+      footerHeight -
+      tableHeaderHeight;
+    return newHeight > 0 ? newHeight : 1;
   }
 
   get tableWidth() {
@@ -655,6 +673,9 @@ export default class BaseList extends React.Component {
   }
 
   setTableHeight() {
+    if (this.inAction) {
+      return;
+    }
     const currentTableHeight = this.getTableHeight();
     const { tableHeight } = this.state;
     if (currentTableHeight !== tableHeight) {
