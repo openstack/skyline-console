@@ -569,6 +569,7 @@ export class BaseTable extends React.Component {
             {
               title: fTitle,
               dataIndex: fIndex,
+              render: (_, record) => this.getProjectId(record),
             },
             {
               ...it,
