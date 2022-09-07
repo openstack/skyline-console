@@ -559,17 +559,19 @@ export class BaseTable extends React.Component {
             sName = `${fTitle.split('ID')[0]}${sTitle}`;
           }
           let fIndex = it.idKey || rowKey;
+          let render = null;
           if (
             it.title.includes(t('Project')) &&
             it.dataIndex === 'project_name'
           ) {
             fIndex = 'project_id';
+            render = (_, record) => this.getProjectId(record);
           }
           return [
             {
               title: fTitle,
               dataIndex: fIndex,
-              render: (_, record) => this.getProjectId(record),
+              render,
             },
             {
               ...it,
