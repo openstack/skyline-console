@@ -29,6 +29,13 @@ export class BackupStore extends Base {
     return true;
   }
 
+  get mapperBeforeFetchProject() {
+    return (data) => ({
+      ...data,
+      project_id: data.project_id || data['os-backup-project-attr:project_id'],
+    });
+  }
+
   updateParamsSortPage = (params, sortKey, sortOrder) => {
     if (sortKey && sortOrder) {
       params.sort = `${sortKey}:${sortOrder === 'descend' ? 'desc' : 'asc'}`;
