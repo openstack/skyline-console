@@ -14,7 +14,7 @@
 
 import React from 'react';
 import { yesNoOptions } from 'utils/constants';
-import { toLocalTimeFilter, renderFilterMap } from 'utils/index';
+import { renderFilterMap } from 'utils/index';
 import globalProjectStore from 'stores/keystone/project';
 import globalVolumeStore from 'stores/cinder/volume';
 import { isEmpty } from 'lodash';
@@ -349,7 +349,6 @@ export const getVolumeColumnsList = (self) => {
       dataIndex: 'created_at',
       isHideable: true,
       valueRender: 'sinceTime',
-      stringify: (value) => toLocalTimeFilter(value),
     },
   ];
 };

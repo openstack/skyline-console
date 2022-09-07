@@ -114,7 +114,9 @@ export default class index extends Component {
       return stringify(value, data);
     }
     if (valueRender) {
-      const renderFunc = getValueRenderFunc(valueRender);
+      const newValueRender =
+        valueRender === 'sinceTime' ? 'toLocalTime' : valueRender;
+      const renderFunc = getValueRenderFunc(newValueRender);
       return this.getSimpleValue(renderFunc(value, data), data, dataIndex);
     }
     if (render) {
