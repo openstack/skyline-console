@@ -302,7 +302,7 @@ export class Port extends Base {
         },
         {
           label: t('Floating IP'),
-          key: 'network:floatingip,network:floatingip_agent_gateway,',
+          key: 'network:floatingip,network:floatingip_agent_gateway',
         },
         { label: t('DHCP Agent'), key: 'network:dhcp' },
         {
