@@ -13,118 +13,128 @@ The following is an introduction, taking the instance use case
 Generally, when testing the corresponding functions of a resource,
 follow the following order
 
-#. Prepare relevant variables in text
+1. Prepare relevant variables in text
+-------------------------------------
 
-   -  Required parameters when creating a resource, such as: name, password
+-  Required parameters when creating a resource, such as: name, password
 
-   -  Required parameters when editing resources, such as: new name
+-  Required parameters when editing resources, such as: new name
 
-   -  When creating an associated resource, the name of the associated resource,
-      such as: network name, router name, volume name
+-  When creating an associated resource, the name of the associated resource,
+   such as: network name, router name, volume name
 
-   .. code-block:: javascript
+.. code-block:: javascript
 
-    const uuid = Cypress._.random(0, 1e6);
-    const name = `e2e-instance-${uuid}`;
-    const newname = `${name}-1`;
-    const password = 'passW0rd_1';
-    const volumeName = `e2e-instance-attach-volume-${uuid}`;
-    const networkName = `e2e-network-for-instance-${uuid}`;
-    const routerName = `e2e-router-for-instance-${uuid}`;
+   const uuid = Cypress._.random(0, 1e6);
+   const name = `e2e-instance-${uuid}`;
+   const newname = `${name}-1`;
+   const password = 'passW0rd_1';
+   const volumeName = `e2e-instance-attach-volume-${uuid}`;
+   const networkName = `e2e-network-for-instance-${uuid}`;
+   const routerName = `e2e-router-for-instance-${uuid}`;
 
-#. Login before operation
+2. Login before operation
+-------------------------
 
-   -  If you are operating console resources, please use :guilabel:`cy.login`
+-  If you are operating console resources, please use :guilabel:`cy.login`
 
-   -  If you are operating administrator resource, please use :guilabel:`cy.loginAdmin`
+-  If you are operating administrator resource, please use :guilabel:`cy.loginAdmin`
 
-   -  Generally, the variable :guilabel:`listUrl` is used in the
-      :guilabel:`login` and :guilabel:`loginAdmin` functions, that is,
-      directly access the page where the resource is located after logging in
+-  Generally, the variable :guilabel:`listUrl` is used in the
+   :guilabel:`login` and :guilabel:`loginAdmin` functions, that is,
+   directly access the page where the resource is located after logging in
 
-   .. code-block:: javascript
+.. code-block:: javascript
 
-    beforeEach(() => {
-        cy.login(listUrl);
-    });
+   beforeEach(() => {
+      cy.login(listUrl);
+   });
 
-#. Create associated resources, use the resource creation function provided in
-   ``resource-commands.js``, take the test instance as an example
+3. Create associated resources
+------------------------------
 
-   -  Create a network for testing to create a instance, attach interface
+Create associated resources, use the resource creation function provided in
+``resource-commands.js``, take the test instance as an example
 
-   .. code-block:: javascript
+-  Create a network for testing to create a instance, attach interface
 
-    cy.createNetwork({ name: networkName });
+.. code-block:: javascript
 
-   -  Create router :guilabel:`cy.createRouter` to ensure that the
-      floating IP is reachable when testing the associated floating IP
+ cy.createNetwork({ name: networkName });
 
-      -  The router created in the following way will open the external network
-         gateway and bind the subnet of the :guilabel:`networkName` network
+-  Create router :guilabel:`cy.createRouter` to ensure that the
+   floating IP is reachable when testing the associated floating IP
 
-   .. code-block:: javascript
+   -  The router created in the following way will open the external network
+      gateway and bind the subnet of the :guilabel:`networkName` network
 
-    cy.createRouter({ name: routerName, network: networkName });
+.. code-block:: javascript
 
-   -  Create floating ip :guilabel:`cy.createFip`,
-      Used to test associate floating ip
+ cy.createRouter({ name: routerName, network: networkName });
 
-   .. code-block:: javascript
+-  Create floating ip :guilabel:`cy.createFip`,
+   Used to test associate floating ip
 
-    cy.createFip();
+.. code-block:: javascript
 
-   -  Create volume :guilabel:`cy.createVolume` (Used to test attach volume)
+ cy.createFip();
 
-   .. code-block:: javascript
+-  Create volume :guilabel:`cy.createVolume` (Used to test attach volume)
 
-    cy.createVolume(volumeName);
+.. code-block:: javascript
 
-#. Write cases for creating resources
+ cy.createVolume(volumeName);
 
-#. Write use cases for accessing resource details
+4. Write cases
+--------------
 
-#. Write use cases corresponding to all operations of resources separately
+-  Write cases for creating resources
+-  Write use cases for accessing resource details
+-  Write use cases corresponding to all operations of resources separately
 
    Generally, the use case of the :guilabel:`edit` operation is written later,
    and then the use case of the :guilabel:`delete` operation is written,
    so that you can test whether the editing is effective
 
-#. To delete associated resources, use the resource-deleting function provided
-   in ``resource-commands.js``, this is to make the resources in the test
-   account as clean as possible after the test case is executed
+5. delete associated resources
+-------------------------------
 
-   -  Delete Floating IP
+To delete associated resources, use the resource-deleting function provided
+in ``resource-commands.js``, this is to make the resources in the test
+account as clean as possible after the test case is executed
 
-   .. code-block:: javascript
+-  Delete Floating IP
 
-    cy.deleteAll('fip');
+.. code-block:: javascript
 
-   -  Delete Router :guilabel:`routerName`
+ cy.deleteAll('fip');
 
-   .. code-block:: javascript
+-  Delete Router :guilabel:`routerName`
 
-    cy.deleteRouter(routerName, networkName);
+.. code-block:: javascript
 
-   -  Delete Network :guilabel:`networkName`
+ cy.deleteRouter(routerName, networkName);
 
-   .. code-block:: javascript
+-  Delete Network :guilabel:`networkName`
 
-    cy.deleteAll('network', networkName);
+.. code-block:: javascript
 
-   -  Delete Volume :guilabel:`volumeName`
+ cy.deleteAll('network', networkName);
 
-   .. code-block:: javascript
+-  Delete Volume :guilabel:`volumeName`
 
-    cy.deleteAll('volume', volumeName);
+.. code-block:: javascript
 
-   -  Delete all available volume
+ cy.deleteAll('volume', volumeName);
 
-   .. code-block:: javascript
+-  Delete all available volume
 
-    cy.deleteAllAvailableVolume();
+.. code-block:: javascript
 
-The ``4``, ``5``, and ``6`` in the above steps are mainly used
+ cy.deleteAllAvailableVolume();
+
+Reference
+----------
 
 - The function operation form in ``test/e2e/support/form-commands.js``,
   please refer to the detailed introduction
