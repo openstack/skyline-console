@@ -51,6 +51,10 @@ export class Certificate extends Base {
     return t('certificate');
   }
 
+  get hasTab() {
+    return true;
+  }
+
   get actionConfigs() {
     return this.currentMode === 'SERVER'
       ? actionConfigs.actionConfigsContainer
