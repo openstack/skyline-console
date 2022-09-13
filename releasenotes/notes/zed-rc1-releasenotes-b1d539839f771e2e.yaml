@@ -1,0 +1,36 @@
+---
+features:
+  - |
+    Support to integrate with keystone, such as users, projects, roles,
+    user groups, etc.
+  - |
+    Support to integrate with nova, such as instances, instance snapshots,
+    flavors, instance groups, hypervisors, host aggregates, etc.
+  - |
+    Support to integrate with cinder, such as volumes, volume snapshots,
+    volume backups, volume types, etc.
+  - |
+    Support to integrate with glance, such as images, etc.
+  - |
+    Support to integrate with neutron, such as networks, floating ips, ports,
+    routers, security groups, etc.
+  - |
+    Support to integrate with octavia, such as loadbalancers, listeners,
+    pools, members, etc.
+  - |
+    Support to integrate with manila, such as shares, share types, share group
+    types, share networks, share servers, share instances, share groups, etc.
+  - |
+    Support to integrate with ironic, such as nodes, etc.
+  - |
+    Support to integrate with heat, such as stacks, etc.
+  - |
+    Support to integrate with zun, such as containers, capsules, etc.
+  - |
+    Support to integrate with magnum, such as clusters, clustertemplates, etc.
+  - |
+    Support to integrate with trove, such as instances, backups,
+    configurations, etc.
+  - |
+    Support to integrate with skyline, such as login, profile, sso(openid),
+    prometheus, etc.
