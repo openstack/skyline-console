@@ -79,7 +79,8 @@ We will install the Skyline Console service from source code.
 
    .. note::
       Ensure that skyline.yaml file is available in /etc/skyline folder.
-      For more information about skyline.yml, see :ref:`skyline-settings`.
+      For more information about skyline.yml, see
+      `OpenStack Skyline Settings <https://docs.openstack.org/skyline-apiserver/latest/configuration/settings.html>`__.
 
 #. Generate nginx configuration file
 
