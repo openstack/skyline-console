@@ -96,9 +96,9 @@ We will install the Skyline Console service from source code.
 Finalize installation
 ---------------------
 
-#. Start nginx service
+Start nginx service
 
-   .. code-block:: shell
+.. code-block:: shell
 
-      sudo systemctl start nginx.service
-      sudo systemctl enable nginx.service
+   sudo systemctl start nginx.service
+   sudo systemctl enable nginx.service

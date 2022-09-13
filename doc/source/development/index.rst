@@ -8,4 +8,3 @@ This section describes how to develop the Skyline Console.
 
    ready-to-work
    catalog-introduction
-   how-to-develop

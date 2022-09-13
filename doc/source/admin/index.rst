@@ -13,5 +13,7 @@ operate by users, and has higher concurrency performance.
    identity
 
 For more information about dashboard, see :ref:`skyline-dashboard`.
+
 To deploy skyline, see :ref:`skyline-installation-guide`.
+
 To configure skyline, see :ref:`skyline-settings`.

@@ -57,8 +57,3 @@ Information
    :maxdepth: 1
 
    glossary
-
-.. only:: html
-
-   * :ref:`genindex`
-   * :ref:`modindex`

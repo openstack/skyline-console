@@ -132,21 +132,3 @@ account as clean as possible after the test case is executed
 .. code-block:: javascript
 
  cy.deleteAllAvailableVolume();
-
-Reference
-----------
-
-- The function operation form in ``test/e2e/support/form-commands.js``,
-  please refer to the detailed introduction
-
-- The functions in ``test/e2e/support/table-commands.js``,
-  click on the buttons in the operation table, search, and enter for details.
-  please refer to the detailed introduction
-
-- The functions in ``test/e2e/support/detail-commands.js``, the operation
-  returns the list page, the detection details, and the switching details Tab.
-  please refer to the detailed introduction
-
-Create and delete associated resources mainly use the functions in
-``test/e2e/support/resource-commands.js``, please refer to the detailed
-introduction

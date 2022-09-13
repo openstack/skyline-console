@@ -4,9 +4,11 @@
 Skyline Console Settings Reference
 ==================================
 
-- Prepare a usable backend
-  - Prepare an accessible backend, for example: `https://172.20.154.250`
-  - Modify the corresponding configuration in `config/webpack.dev.js`:
+-  Prepare a usable backend
+
+   -  Prepare an accessible backend, for example: ``https://172.20.154.250``
+
+   -  Modify the corresponding configuration in ``config/webpack.dev.js``:
 
    .. code:: javascript
 
@@ -20,9 +22,11 @@ Skyline Console Settings Reference
       };
     }
 
-- Configure access host and port
-  - Modify `devServer.host` and `devServer.port`
-  - Modify the corresponding configuration in `config/webpack.dev.js`
+-  Configure access host and port
+
+   -  Modify ``devServer.host`` and ``devServer.port``
+
+   -  Modify the corresponding configuration in ``config/webpack.dev.js``
 
    .. code:: javascript
 
@@ -39,12 +43,12 @@ Skyline Console Settings Reference
       // progress: true
     };
 
-- Execute in the project root directory, which is the same level as `package.json`
+-  Execute in the project root directory, which is the same level as ``package.json``
 
    .. code:: shell
 
     yarn run dev
 
+-  Use the ``host`` and ``port`` configured in ``config/webpack.dev.js`` to access, such as ``http://localhost:8088``
 
-- Use the `host` and `port` configured in `config/webpack.dev.js` to access, such as `http://localhost:8088`
-- The front-end real-time update environment used for development is done.
+-  The front-end real-time update environment used for development is done.
