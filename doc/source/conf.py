@@ -209,7 +209,7 @@ htmlhelp_basename = 'SkylineConsoledoc'
 # (source start file, target name, title, author, documentclass
 # [howto/manual]).
 latex_documents = [
-    ('index', 'SkylineConsoledoc.tex', u'Skyline Console Developer Documentation',
+    ('index', 'doc-skyline-console.tex', u'Skyline Console Developer Documentation',
      u'Skyline Console contributors', 'manual'),
 ]
 
