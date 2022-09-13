@@ -101,13 +101,13 @@ We will install Skyline service from docker image.
 
       $ sudo mkdir -p /etc/skyline /var/log/skyline /var/lib/skyline /var/log/nginx
 
-#. Set all value from :ref:`skyline-settings` into the configuration file
-   ``/etc/skyline/skyline.yaml``
+#. Configure ``/etc/skyline/skyline.yaml`` file
 
    .. note::
 
       Change the related configuration in ``/etc/skyline/skyline.yaml``. Detailed introduction
-      of the configuration can be found in :ref:`skyline-settings`.
+      of the configuration can be found in
+      `OpenStack Skyline Settings <https://docs.openstack.org/skyline-apiserver/latest/configuration/settings.html>`__.
 
       .. code-block:: yaml
 

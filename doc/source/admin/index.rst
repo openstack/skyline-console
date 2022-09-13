@@ -16,4 +16,5 @@ For more information about dashboard, see :ref:`skyline-dashboard`.
 
 To deploy skyline, see :ref:`skyline-installation-guide`.
 
-To configure skyline, see :ref:`skyline-settings`.
+To configure skyline, see
+`OpenStack Skyline Settings <https://docs.openstack.org/skyline-apiserver/latest/configuration/settings.html>`__.
