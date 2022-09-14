@@ -123,6 +123,7 @@ export class Snapshots extends Base {
       routeQuery: { tab: 'snapshot' },
       isHideable: true,
       sorter: false,
+      hidden: this.inDetailPage,
     },
     {
       title: t('Created At'),
