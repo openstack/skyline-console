@@ -307,7 +307,7 @@ export class Port extends Base {
         { label: t('DHCP Agent'), key: 'network:dhcp' },
         {
           label: t('Others'),
-          key: 'network:local_ip,network:routed,network:distributed,compute:kuryr',
+          key: 'network:local_ip,network:routed,network:distributed,compute:kuryr,Octavia',
         },
         {
           label: t('Unbounded'),
