@@ -19,6 +19,7 @@ import globalRouterStore from 'stores/neutron/router';
 import globalServerStore from 'stores/nova/instance';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
 import globalQoSPolicyStore from 'stores/neutron/qos-policy';
+import { qosEndpoint } from 'client/client/constants';
 
 export class FloatingIpStore extends Base {
   get client() {
@@ -27,6 +28,10 @@ export class FloatingIpStore extends Base {
 
   get listFilterByProject() {
     return true;
+  }
+
+  get enableQos() {
+    return !!qosEndpoint();
   }
 
   get mapper() {
@@ -70,8 +75,9 @@ export class FloatingIpStore extends Base {
     timeFilter,
     ...filters
   } = {}) {
-    const [qosPolicies, allData] = await Promise.all([
-      globalQoSPolicyStore.fetchList(),
+    const qosReq = this.enableQos ? globalQoSPolicyStore.fetchList() : null;
+    const [qosResult, allData] = await Promise.all([
+      qosReq,
       this.fetchListByPage({
         limit,
         page,
@@ -82,6 +88,7 @@ export class FloatingIpStore extends Base {
         ...filters,
       }),
     ]);
+    const qosPolicies = qosResult || [];
     const promises = [];
     allData.forEach((data) => {
       const qos = qosPolicies.find((it) => it.id === data.qos_policy_id);
