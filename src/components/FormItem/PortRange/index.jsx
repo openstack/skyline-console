@@ -33,7 +33,7 @@ export default class index extends Component {
   render() {
     const { componentProps, formItemProps } = this.props;
     const { required, label } = componentProps || {};
-    const placeholder = t('Please input') + label;
+    const placeholder = t('Please input {label}', { label });
     const props = {
       placeholder,
       ...componentProps,

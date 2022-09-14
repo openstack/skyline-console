@@ -265,7 +265,9 @@ export default class FormItem extends React.Component {
     const { selectedRowKeys = [] } = value || {};
     if (selectedRowKeys.length === 0) {
       return Promise.reject(
-        new Error(rule.placeholder || `${t('Please select')}${rule.label}!`)
+        new Error(
+          rule.placeholder || t('Please select {label}!', { label: rule.label })
+        )
       );
     }
     return Promise.resolve();
@@ -313,10 +315,12 @@ export default class FormItem extends React.Component {
           this.getSelectTableValidator({ ...rule, ...this.props }, value);
       } else if (type && type.includes('select')) {
         requiredRule.required = true;
-        requiredRule.message = placeholder || `${t('Please select') + label}!`;
+        requiredRule.message =
+          placeholder || t('Please select {label}!', { label });
       } else if (hasRequiredCheck) {
         requiredRule.required = true;
-        requiredRule.message = placeholder || `${t('Please input') + label}!`;
+        requiredRule.message =
+          placeholder || t('Please input {label}!', { label });
       } else if (validator) {
         newRule.required = required;
       }

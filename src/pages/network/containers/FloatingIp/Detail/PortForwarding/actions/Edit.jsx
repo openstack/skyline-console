@@ -196,10 +196,10 @@ export class Edit extends Base {
       hasRequiredCheck: true,
     };
     Object.assign(externalPortItem, inputConfig, {
-      placeholder: t('Please input') + externalPortItem.label,
+      placeholder: t('Please input {label}', { label: externalPortItem.label }),
     });
     Object.assign(internalPortItem, inputConfig, {
-      placeholder: t('Please input') + internalPortItem.label,
+      placeholder: t('Please input {label}', { label: internalPortItem.label }),
     });
     return items;
   }
