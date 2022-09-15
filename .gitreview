@@ -2,4 +2,4 @@
 host=review.opendev.org
 port=29418
 project=openstack/skyline-console.git
-defaultbranch=master
+defaultbranch=stable/zed
