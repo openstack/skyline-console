@@ -1,0 +1,20 @@
+---
+features:
+  - |
+    Support Flavor add CPU and memory search filters:
+
+    * In the Console, Compute - Flavors page, support cpu and memory fuzzy search.
+
+    * In the Administrator, Compute - Flavors page, support cpu and memory fuzzy search.
+
+    * In the Console, Compute - Instances - Create Instance/Create Ironic, support cpu and
+      memory fuzzy search in the Specification setting in the first step.
+
+    * In the Console, Compute - Instances - Resize, support cpu and memory fuzzy
+      search in the Specification setting.
+
+    * In the Console, Database - Database Instances - Create Database Instance, support cpu
+      and memory fuzzy search in the Database Flavor setting in the first step.
+
+    * In the Console, Capsules - Clusters - Create Cluster Template/Edit Cluster Template,
+      support cpu and memory fuzzy search in the Flavor / Master Flavor setting in the Spec step.

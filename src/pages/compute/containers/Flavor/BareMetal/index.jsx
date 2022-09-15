@@ -20,6 +20,7 @@ import {
   flavorArchitectures,
   getBaseColumns,
   extraColumns,
+  getFlavorSearchFilters,
 } from 'resources/nova/flavor';
 import actionConfigs from './actions';
 
@@ -60,12 +61,7 @@ export class Flavor extends Base {
   });
 
   get searchFilters() {
-    return [
-      {
-        label: t('Name'),
-        name: 'name',
-      },
-    ];
+    return getFlavorSearchFilters();
   }
 }
 

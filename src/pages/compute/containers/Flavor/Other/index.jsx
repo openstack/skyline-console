@@ -16,7 +16,11 @@ import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { FlavorStore } from 'stores/nova/flavor';
 import { emptyActionConfig } from 'utils/constants';
-import { getBaseColumns, extraColumns } from 'resources/nova/flavor';
+import {
+  getBaseColumns,
+  extraColumns,
+  getFlavorSearchFilters,
+} from 'resources/nova/flavor';
 import actionConfigs from './actions';
 
 export class Flavor extends Base {
@@ -52,12 +56,7 @@ export class Flavor extends Base {
   }
 
   get searchFilters() {
-    return [
-      {
-        label: t('Name'),
-        name: 'name',
-      },
-    ];
+    return getFlavorSearchFilters();
   }
 }
 
