@@ -321,6 +321,7 @@ export class CreateForm extends FormAction {
         type: 'select',
         options: getOptionsWithNoSet(cpuPolicyList),
         hidden: !more,
+        required: more,
       },
       {
         name: 'hw_cpu_thread_policy',
@@ -328,6 +329,7 @@ export class CreateForm extends FormAction {
         type: 'select',
         options: getOptionsWithNoSet(cpuThreadPolicyList),
         hidden: !more,
+        required: more,
       },
     ];
   }

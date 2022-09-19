@@ -1132,6 +1132,7 @@
   "If nova-compute on the host is disabled, it will be forbidden to be selected as the target host.": "如果计算节点上的nova-compute被禁用，将禁止其作为目标节点。",
   "If set then all tenants will be able to see this share.": "如果设置，则所有租户都将能够看到此共享。",
   "If the capacity of the disk is large,the type modify operation may takes several hours. Please be cautious.": "如果云硬盘容量较大，修改云硬盘类型可能需要花费几个小时，请您谨慎操作。",
+  "If the value is set to 0, it means unlimited": "如果值为0，则表示无限制",
   "If the volume associated with the snapshot has changed the volume type, please modify this option manually; if the volume associated with the snapshot keeps the volume type unchanged, please ignore this option. (no need to change).": "若快照关联的云硬盘修改过云硬盘类型，请手动修改此选项；若快照关联的云硬盘保持云硬盘类型不变，请忽略此选项（不需要做变更）。",
   "If you are not authorized to access any project, or if the project you are involved in has been deleted or disabled, contact the platform administrator to reassign the project": "您未被授权访问任何项目，或您参与中的项目已被删除或禁用，可联系平台管理员重新分配项目",
   "If you are not sure which authentication method to use, please contact your administrator.": "如果您不确定使用哪种认证方式，请联系管理员。",
