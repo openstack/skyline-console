@@ -16,7 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalImageStore from 'stores/glance/image';
 import { imageOS, isOwner } from 'resources/glance/image';
-import { has, get } from 'lodash';
+import { has, get, isNumber } from 'lodash';
 import { isActive } from 'resources/nova/instance';
 import { NoSetValue, getOptionsWithNoSet } from 'utils/index';
 import { cpuPolicyList, cpuThreadPolicyList } from 'resources/nova/flavor';
@@ -93,6 +93,7 @@ export class Edit extends ModalAction {
 
   get formItems() {
     const { more } = this.state;
+    const zeroTip = t('If the value is set to 0, it means unlimited');
     return [
       {
         name: 'name',
@@ -130,6 +131,8 @@ export class Edit extends ModalAction {
         min: 0,
         max: 500,
         display: this.enableCinder,
+        required: this.enableCinder,
+        extra: this.enableCinder ? zeroTip : null,
       },
       {
         name: 'min_ram',
@@ -137,6 +140,8 @@ export class Edit extends ModalAction {
         type: 'input-int',
         min: 0,
         max: 500,
+        required: true,
+        extra: zeroTip,
       },
       {
         name: 'visibility',
@@ -179,6 +184,7 @@ export class Edit extends ModalAction {
         type: 'select',
         options: getOptionsWithNoSet(cpuPolicyList),
         hidden: !more,
+        required: more,
       },
       {
         name: 'hw_cpu_thread_policy',
@@ -186,6 +192,7 @@ export class Edit extends ModalAction {
         type: 'select',
         options: getOptionsWithNoSet(cpuThreadPolicyList),
         hidden: !more,
+        required: more,
       },
     ];
   }
@@ -198,6 +205,7 @@ export class Edit extends ModalAction {
       hw_cpu_policy,
       hw_cpu_thread_policy,
       min_ram,
+      min_disk,
       ...rest
     } = values;
     const newValues = {
@@ -205,7 +213,7 @@ export class Edit extends ModalAction {
       visibility: visibility ? 'public' : 'private',
       ...rest,
     };
-    if (min_ram) {
+    if (isNumber(min_ram)) {
       newValues.min_ram = min_ram * 1024;
     }
     if (hw_cpu_policy !== NoSetValue) {
