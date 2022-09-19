@@ -1775,7 +1775,7 @@
   "Please select {name} first": "Please select {name} first",
   "Please set CPU && Ram first.": "Please set CPU && Ram first.",
   "Please set MUNA": "Please set MUNA",
-  "Please upload files smaller than { size }G on the page. It is recommended to upload files over { size }G using API.": "Please upload files smaller than { size }G on the page. It is recommended to upload files over { size }G using API.",
+  "Please upload files smaller than { size }GiB on the page. It is recommended to upload files over { size }GiB using API.": "Please upload files smaller than { size }GiB on the page. It is recommended to upload files over { size }GiB using API.",
   "Poland": "Poland",
   "Policy": "Policy",
   "Policy Name": "Policy Name",

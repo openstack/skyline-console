@@ -1775,7 +1775,7 @@
   "Please select {name} first": "请先选择{name}",
   "Please set CPU && Ram first.": "请先设置CPU、内存。",
   "Please set MUNA": "请设置NUMA节点",
-  "Please upload files smaller than { size }G on the page. It is recommended to upload files over { size }G using API.": "页面请上传小于{ size }G的文件，超过{ size }G的文件建议使用API上传。",
+  "Please upload files smaller than { size }GiB on the page. It is recommended to upload files over { size }GiB using API.": "页面请上传小于{ size }GiB的文件，超过{ size }GiB的文件建议使用API上传。",
   "Poland": "波兰",
   "Policy": "策略",
   "Policy Name": "策略名称",
