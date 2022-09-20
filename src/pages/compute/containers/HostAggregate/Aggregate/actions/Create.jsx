@@ -87,6 +87,7 @@ export class Create extends ModalAction {
         options: this.azList,
         tip: azNewTip,
         hidden: isCreate,
+        required: !isCreate,
       },
       {
         name: 'newAz',
@@ -94,6 +95,7 @@ export class Create extends ModalAction {
         type: 'input',
         help: azTip,
         hidden: !isCreate,
+        required: isCreate,
       },
     ];
   }
