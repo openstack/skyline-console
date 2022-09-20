@@ -31,7 +31,7 @@ export class SubnetStore extends Base {
 
   get paramsFunc() {
     return (params) => {
-      const { network, ...rest } = params;
+      const { network, all_projects, ...rest } = params;
       return rest;
     };
   }
