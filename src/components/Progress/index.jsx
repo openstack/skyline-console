@@ -59,7 +59,7 @@ export default class index extends Component {
     if (label) {
       options.showInfo = false;
     }
-    const tip = value === undefined ? '-' : `${value}%`;
+    const tip = [undefined, null, ''].includes(value) ? '-' : `${value}%`;
     return (
       <Tooltip title={tip} placement="top">
         <Progress {...options} />
