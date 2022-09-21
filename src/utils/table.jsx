@@ -262,7 +262,7 @@ export const getUnitRender = (column) => {
   }
   if (unit) {
     return (value) => {
-      if (value === undefined || value === null) {
+      if ([undefined, null, ''].includes(value)) {
         return '-';
       }
       return `${value}${unit}`;

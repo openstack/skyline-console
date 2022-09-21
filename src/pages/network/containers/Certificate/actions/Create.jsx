@@ -68,7 +68,7 @@ export class CreateAction extends ModalAction {
   }
 
   validateDomain = (rule, value) => {
-    if (value === undefined || value === '') return Promise.resolve();
+    if ([undefined, null, ''].includes(value)) return Promise.resolve();
     const domains = value.split(',');
     const allCorrect = domains.every((it) => it.length <= 100 && isDomain(it));
     if (domains.length > 30 || !allCorrect) {
