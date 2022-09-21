@@ -116,25 +116,30 @@ export class FlavorStore extends Base {
   async create(data, extraSpecs, accessControl) {
     const body = {};
     body[this.responseKey] = data;
-    this.isSubmitting = true;
-    const result = await this.client.create(body);
-    const { id } = result.flavor;
-    const extraBody = {
-      extra_specs: extraSpecs,
-    };
-    if (accessControl && accessControl.length > 0) {
-      await Promise.all(
-        accessControl.map((it) => {
-          const accessBody = {
-            addTenantAccess: {
-              tenant: it,
-            },
-          };
-          return this.client.action(id, accessBody);
-        })
-      );
+    try {
+      this.isSubmitting = true;
+      const result = await this.client.create(body);
+      const { id } = result.flavor;
+      const extraBody = {
+        extra_specs: extraSpecs,
+      };
+      if (accessControl && accessControl.length > 0) {
+        await Promise.all(
+          accessControl.map((it) => {
+            const accessBody = {
+              addTenantAccess: {
+                tenant: it,
+              },
+            };
+            return this.client.action(id, accessBody);
+          })
+        );
+      }
+      return this.submitting(this.client.extraSpecs.create(id, extraBody));
+    } catch (error) {
+      this.isSubmitting = false;
+      return Promise.reject(error);
     }
-    return this.submitting(this.client.extraSpecs.create(id, extraBody));
   }
 
   @action
