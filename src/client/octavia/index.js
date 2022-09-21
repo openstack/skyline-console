@@ -20,6 +20,40 @@ export class OctaviaClient extends Base {
     return octaviaBase();
   }
 
+  get request() {
+    const request = this.originRequest;
+    if (!this.enable) {
+      return super.request;
+    }
+    const updateConfig = (conf) => {
+      const { headers = {}, ...rest } = conf || {};
+      const newConf = {
+        headers: {
+          accept: 'application/json',
+          ...headers,
+        },
+        ...rest,
+      };
+      return newConf;
+    };
+    return {
+      get: (url, params, conf) =>
+        request.get(this.getUrl(url), params, updateConfig(conf)),
+      post: (url, data, params, conf) =>
+        request.post(this.getUrl(url), data, params, updateConfig(conf)),
+      put: (url, data, params, conf) =>
+        request.put(this.getUrl(url), data, params, updateConfig(conf)),
+      delete: (url, data, params, conf) =>
+        request.delete(this.getUrl(url), data, params, updateConfig(conf)),
+      patch: (url, data, params, conf) =>
+        request.patch(this.getUrl(url), data, params, updateConfig(conf)),
+      head: (url, params, conf) =>
+        request.head(this.getUrl(url), params, updateConfig(conf)),
+      copy: (url, params, conf) =>
+        request.copy(this.getUrl(url), params, updateConfig(conf)),
+    };
+  }
+
   get resources() {
     return [
       {
