@@ -384,7 +384,7 @@ export const macAddressMessage = t(
 const asciiMessage = t('Please enter a valid ASCII code');
 
 export const databaseNameValidate = (rule, value) => {
-  if (!rule.required && value === undefined) {
+  if (!rule.required && [undefined, null, ''].includes(value)) {
     return Promise.resolve(true);
   }
   if (isDatabaseName(value)) {
@@ -394,7 +394,7 @@ export const databaseNameValidate = (rule, value) => {
 };
 
 export const databaseUserNameValidate = (rule, value) => {
-  if (!rule.required && value === undefined) {
+  if (!rule.required && [undefined, null, ''].includes(value)) {
     return Promise.resolve(true);
   }
   if (['os_admin', 'root'].includes(value)) {
@@ -433,7 +433,7 @@ export const emailValidate = (rule, value) => {
 };
 
 const nameValidate = (rule, value) => {
-  if (!rule.required && value === undefined) {
+  if (!rule.required && [undefined, null, ''].includes(value)) {
     return Promise.resolve(true);
   }
   if (isName(value)) {
@@ -443,7 +443,7 @@ const nameValidate = (rule, value) => {
 };
 
 const nameValidateWithoutChinese = (rule, value) => {
-  if (!rule.required && value === undefined) {
+  if (!rule.required && [undefined, null, ''].includes(value)) {
     return Promise.resolve(true);
   }
   if (isNameWithoutChinese(value)) {
@@ -455,7 +455,7 @@ const nameValidateWithoutChinese = (rule, value) => {
 };
 
 const fileNameValidate = (rule, value) => {
-  if (!rule.required && value === undefined) {
+  if (!rule.required && [undefined, null, ''].includes(value)) {
     return Promise.resolve(true);
   }
   if (isFilename(value)) {
@@ -465,7 +465,7 @@ const fileNameValidate = (rule, value) => {
 };
 
 const swiftFileNameValidate = (rule, value) => {
-  if (!rule.required && value === undefined) {
+  if (!rule.required && [undefined, null, ''].includes(value)) {
     return Promise.resolve(true);
   }
   if (isSwiftFilename(value)) {
@@ -475,7 +475,7 @@ const swiftFileNameValidate = (rule, value) => {
 };
 
 const keypairNameValidate = (rule, value) => {
-  if (!rule.required && value === undefined) {
+  if (!rule.required && [undefined, null, ''].includes(value)) {
     return Promise.resolve(true);
   }
   if (isKeypairName(value)) {
@@ -485,7 +485,7 @@ const keypairNameValidate = (rule, value) => {
 };
 
 const stackNameValidate = (rule, value) => {
-  if (!rule.required && value === undefined) {
+  if (!rule.required && [undefined, null, ''].includes(value)) {
     return Promise.resolve(true);
   }
   if (isStackName(value)) {
@@ -495,7 +495,7 @@ const stackNameValidate = (rule, value) => {
 };
 
 const crontabNameValidate = (rule, value) => {
-  if (!rule.required && value === undefined) {
+  if (!rule.required && [undefined, null, ''].includes(value)) {
     return Promise.resolve(true);
   }
   if (isCrontabName(value)) {
@@ -505,7 +505,7 @@ const crontabNameValidate = (rule, value) => {
 };
 
 const imageNameValidate = (rule, value) => {
-  if (!rule.required && value === undefined) {
+  if (!rule.required && [undefined, null, ''].includes(value)) {
     return Promise.resolve(true);
   }
   if (isImageName(value)) {
@@ -515,7 +515,7 @@ const imageNameValidate = (rule, value) => {
 };
 
 const instanceNameValidate = (rule, value) => {
-  if (!rule.required && value === undefined) {
+  if (!rule.required && [undefined, null, ''].includes(value)) {
     return Promise.resolve(true);
   }
   if (isInstanceName(value)) {
