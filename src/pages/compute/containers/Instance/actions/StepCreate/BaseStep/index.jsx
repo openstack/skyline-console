@@ -209,12 +209,6 @@ export class BaseStep extends Base {
     } else {
       await this.imageStore.fetchList({ all_projects: this.hasAdminRole });
     }
-    if (image) {
-      this.updateFormValue('image', {
-        selectedRowKeys: [image],
-        selectedRows: this.images.filter((it) => it.id === image),
-      });
-    }
   }
 
   async getVolumeTypes() {
@@ -244,27 +238,18 @@ export class BaseStep extends Base {
         sortOrder: 'ascend',
       });
     }
-    if (volume) {
-      this.updateFormValue('volume', {
-        selectedRowKeys: [volume],
-        selectedRows: this.volumes.filter((it) => it.id === volume),
-      });
-    }
   }
 
   async getInstanceSnapshots() {
-    const { snapshot } = this.locationParams;
+    const { image, snapshot, volume } = this.locationParams;
+    if (image || volume) {
+      return;
+    }
     if (!snapshot) {
       this.instanceSnapshotStore.fetchList();
       return;
     }
     await this.instanceSnapshotStore.fetchDetail({ id: snapshot });
-    if (snapshot) {
-      this.updateFormValue('instanceSnapshot', {
-        selectedRowKeys: [snapshot],
-        selectedRows: this.snapshots.filter((it) => it.id === snapshot),
-      });
-    }
   }
 
   onImageTabChange = (value) => {
