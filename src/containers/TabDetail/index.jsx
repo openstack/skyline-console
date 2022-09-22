@@ -246,7 +246,7 @@ export default class DetailBase extends React.Component {
     if (unit) {
       return getUnitRender(dataConf)(value);
     }
-    if (value === undefined || value === '') {
+    if ([undefined, null, ''].includes(value)) {
       return '-';
     }
     return value;
