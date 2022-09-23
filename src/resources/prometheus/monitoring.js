@@ -43,20 +43,20 @@ const UnitTypes = {
     units: ['TiB', 'GiB', 'MiB', 'KiB', 'Bytes'],
   },
   disk: {
-    conditions: [1000 ** 4, 1000 ** 3, 1000 ** 2, 1000, 0],
-    units: ['TB', 'GB', 'MB', 'KB', 'Bytes'],
+    conditions: [1024 ** 4, 1024 ** 3, 1024 ** 2, 1024, 0],
+    units: ['TiB', 'GiB', 'MiB', 'KiB', 'Bytes'],
   },
   throughput: {
-    conditions: [1000 ** 4, 1000 ** 3, 1000 ** 2, 1000, 0],
-    units: ['TB/s', 'GB/s', 'MB/s', 'KB/s', 'B/s'],
+    conditions: [1024 ** 4, 1024 ** 3, 1024 ** 2, 1024, 0],
+    units: ['TiB/s', 'GiB/s', 'MiB/s', 'KiB/s', 'B/s'],
   },
   traffic: {
-    conditions: [1000 ** 4, 1000 ** 3, 1000 ** 2, 1000, 0],
-    units: ['TB/s', 'GB/s', 'MB/s', 'KB/s', 'B/s'],
+    conditions: [1024 ** 4, 1024 ** 3, 1024 ** 2, 1024, 0],
+    units: ['TiB/s', 'GiB/s', 'MiB/s', 'KiB/s', 'B/s'],
   },
   bandwidth: {
     conditions: [1024 ** 2 / 8, 1024 / 8, 0],
-    units: ['Mbps', 'Kbps', 'bps'],
+    units: ['Mibps', 'Kibps', 'bps'],
   },
 };
 
