@@ -68,7 +68,9 @@ export default class index extends Component {
         <Row>
           {options.map((opt) => (
             <Col span={span} key={opt.value}>
-              <Checkbox value={opt.value}>{opt.label}</Checkbox>
+              <Checkbox value={opt.value} disabled={!!opt.disabled}>
+                {opt.label}
+              </Checkbox>
             </Col>
           ))}
         </Row>
