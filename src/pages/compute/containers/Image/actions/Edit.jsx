@@ -205,7 +205,6 @@ export class Edit extends ModalAction {
       hw_cpu_policy,
       hw_cpu_thread_policy,
       min_ram,
-      min_disk,
       ...rest
     } = values;
     const newValues = {
