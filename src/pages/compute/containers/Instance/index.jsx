@@ -268,10 +268,6 @@ export class Instance extends Base {
           ]
         : []),
       instanceStatusFilter,
-      {
-        label: t('Tags'),
-        name: 'tags',
-      },
     ];
   }
 
