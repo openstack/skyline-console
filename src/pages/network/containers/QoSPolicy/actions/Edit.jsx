@@ -53,6 +53,7 @@ export class Edit extends ModalAction {
         label: t('Policy Name'),
         type: 'input-name',
         withoutChinese: true,
+        required: true,
       },
       {
         name: 'description',
