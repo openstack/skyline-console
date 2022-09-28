@@ -52,16 +52,21 @@ export const getQosPolicyColumns = ({ self, all = false }) => {
     {
       title: t('Rules'),
       dataIndex: 'rules',
-      render: (rules) => (
-        <Row>
-          {rules.map((rule) => (
-            <Col span={24} key={rule.direction}>
-              {getRuleValue(rule)}
-            </Col>
-          ))}
-        </Row>
-      ),
-      stringify: (rules) => rules.map((rule) => getRuleValue(rule)).join('\n'),
+      render: (rules) =>
+        rules.length ? (
+          <Row>
+            {rules.map((rule) => (
+              <Col span={24} key={rule.direction}>
+                {getRuleValue(rule)}
+              </Col>
+            ))}
+          </Row>
+        ) : (
+          '-'
+        ),
+      sorter: false,
+      stringify: (rules) =>
+        rules.length ? rules.map((rule) => getRuleValue(rule)).join('\n') : '-',
     },
     {
       title: t('Shared'),
@@ -86,7 +91,7 @@ export const getQosPolicyColumns = ({ self, all = false }) => {
       sorter: false,
     },
   ];
-  if (all) {
+  if (all && self.isAdminPage) {
     ret.splice(2, 0, {
       title: t('Project ID/Name'),
       dataIndex: 'project_name',
