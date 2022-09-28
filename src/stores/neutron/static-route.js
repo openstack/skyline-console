@@ -38,6 +38,7 @@ export class StaticRouteStore extends Base {
     const { routes = [] } = data;
     routes.forEach((it) => {
       it.router_id = id;
+      it.id = `${it.destination} - ${it.nexthop}`;
     });
     this.list.update({
       data: routes,
