@@ -28,7 +28,11 @@ export class ModifyTags extends ModalAction {
 
   static policy = 'os_compute_api:os-server-tags:update_all';
 
-  static allowed = () => Promise.resolve(true);
+  static allowed = (item) => {
+    const allowedStates = ['active', 'paused', 'suspended', 'stopped'];
+    const { vm_state = '' } = item || {};
+    return Promise.resolve(allowedStates.includes(vm_state.toLowerCase()));
+  };
 
   get name() {
     return t('modify instance tags');
