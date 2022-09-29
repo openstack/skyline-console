@@ -150,7 +150,8 @@ export class Create extends StepAction {
           body[key] = newValue;
         }
       } else {
-        body[key] = values[key];
+        const isEmptyName = key === 'name' && values[key] === '';
+        body[key] = isEmptyName ? null : values[key];
       }
     });
     body.driver_info = driverInfo;
@@ -186,8 +187,13 @@ export class Create extends StepAction {
       } else {
         const oldValue = originData[key];
         if (!isEqual(oldValue, value) && (oldValue || value)) {
-          obj.op = 'replace';
-          replaces.push(obj);
+          if (key === 'name' && value === '') {
+            obj.op = 'remove';
+            dels.push(obj);
+          } else {
+            obj.op = 'replace';
+            replaces.push(obj);
+          }
         }
       }
     });
