@@ -180,10 +180,10 @@ export class SecurityGroup extends React.Component {
       >
         <div>
           <Row>
-            <Col span={10}>
+            <Col span={8}>
               <img className={styles.image} alt="example" src={interfaceImg} />
             </Col>
-            <Col span={14}>
+            <Col span={16}>
               {/* <span style={{ fontSize: 20 }}>Interface</span> */}
               <div style={{ fontSize: 12 }}>
                 {t('Interface Name:')} {item.id.substring(0, 8)}{' '}
