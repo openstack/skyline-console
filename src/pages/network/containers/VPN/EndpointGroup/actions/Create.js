@@ -130,6 +130,7 @@ export class Create extends ModalAction {
         name: 'type',
         label: t('Type'),
         type: 'select',
+        required: true,
         options: [
           {
             label: t('Peer'),
