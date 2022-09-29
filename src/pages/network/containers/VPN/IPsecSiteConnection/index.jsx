@@ -45,6 +45,10 @@ export class IPsecSiteConnection extends Base {
     return true;
   }
 
+  get hasTab() {
+    return true;
+  }
+
   get actionConfigs() {
     if (this.isAdminPage) {
       return adminConfigs;
