@@ -42,6 +42,10 @@ export class VPNGateway extends Base {
     return t('vpn services');
   }
 
+  get hasTab() {
+    return true;
+  }
+
   get adminPageHasProjectFilter() {
     return true;
   }
