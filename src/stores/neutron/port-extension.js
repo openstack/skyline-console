@@ -174,28 +174,37 @@ export class PortStore extends Base {
       return items;
     }
     const { subnetId } = filters;
-    if (!subnetId) {
-      return items;
+    if (subnetId) {
+      const newItems = [];
+      items.forEach((it) => {
+        const { fixed_ips = [] } = it;
+        const newFixedIps = fixed_ips.filter((ip) => ip.subnet_id === subnetId);
+        if (newFixedIps.length) {
+          const ipv4 = it.ipv4.filter((ip) =>
+            newFixedIps.some((newIp) => newIp.ip_address === ip)
+          );
+          const ipv6 = it.ipv6.filter((ip) =>
+            newFixedIps.some((newIp) => newIp.ip_address === ip)
+          );
+          newItems.push({
+            ...it,
+            fixed_ips: newFixedIps,
+            ipv4,
+            ipv6,
+            subnet_id: subnetId,
+          });
+        }
+      });
+      return newItems;
     }
-    const newItems = [];
-    items.forEach((it) => {
-      const { fixed_ips = [] } = it;
-      const newFixedIps = fixed_ips.filter((ip) => ip.subnet_id === subnetId);
-      if (newFixedIps.length) {
-        const ipv4 = it.ipv4.filter((ip) =>
-          newFixedIps.some((newIp) => newIp.ip_address === ip)
-        );
-        const ipv6 = it.ipv6.filter((ip) =>
-          newFixedIps.some((newIp) => newIp.ip_address === ip)
-        );
-        newItems.push({
-          ...it,
-          fixed_ips: newFixedIps,
-          ipv4,
-          ipv6,
-          subnet_id: subnetId,
-        });
-      }
+    const fips = (await globalFloatingIpsStore.pureFetchList()) || [];
+    const newItems = items.map((it) => {
+      it.associatedDetail = fips.filter(
+        (f) =>
+          f.port_id === it.id &&
+          it.fixed_ips.find((ff) => ff.ip_address === f.fixed_ip_address)
+      );
+      return it;
     });
     return newItems;
   }
