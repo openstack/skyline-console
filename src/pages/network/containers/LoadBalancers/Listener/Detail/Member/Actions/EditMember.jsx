@@ -43,6 +43,20 @@ export class Edit extends ModalAction {
 
   static policy = 'os_load-balancer_api:member:put';
 
+  protocolValidator = (rule, value) => {
+    const { address, protocol_port } = this.item;
+    const repeatPort = (globalPoolMemberStore.list.data || []).find(
+      (member) =>
+        member.address === address &&
+        value === member.protocol_port &&
+        value !== protocol_port
+    );
+    if (repeatPort) {
+      return Promise.reject(new Error(t('Invalid IP Address and Port')));
+    }
+    return Promise.resolve();
+  };
+
   get formItems() {
     return [
       {
@@ -56,6 +70,7 @@ export class Edit extends ModalAction {
         label: t('Port'),
         type: 'input-number',
         required: true,
+        validator: this.protocolValidator,
       },
     ];
   }
