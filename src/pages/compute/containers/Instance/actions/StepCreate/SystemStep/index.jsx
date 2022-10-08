@@ -371,7 +371,7 @@ export class SystemStep extends Base {
       },
       {
         name: 'physicalNode',
-        label: ' ',
+        label: t('Specify Physical Node'),
         type: 'select-table',
         hidden: !this.hasAdminRole || !more || !isManually,
         required: isManually,
