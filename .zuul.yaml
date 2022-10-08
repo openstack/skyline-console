@@ -607,6 +607,8 @@
               - ^.*\.rst$
               # releasenotes
               - ^releasenotes/.*$
+              # dist
+              - ^skyline_console/.*$
         - skyline-console-devstack-e2etests-network:
             irrelevant-files: &e2etests-network-irrelevant-files
               # compute
@@ -669,6 +671,8 @@
               - ^.*\.rst$
               # releasenotes
               - ^releasenotes/.*$
+              # dist
+              - ^skyline_console/.*$
         - skyline-console-devstack-e2etests-other:
             irrelevant-files: &e2etests-other-irrelevant-files
               # compute
@@ -706,6 +710,8 @@
               - ^.*\.rst$
               # releasenotes
               - ^releasenotes/.*$
+              # dist
+              - ^skyline_console/.*$
         - skyline-console-devstack-e2etests-storage:
             irrelevant-files: &e2etests-storage-irrelevant-files
               # compute
@@ -770,6 +776,8 @@
               - ^.*\.rst$
               # releasenotes
               - ^releasenotes/.*$
+              # dist
+              - ^skyline_console/.*$
     gate:
       jobs:
         - skyline-nodejs14-run-lint-src
