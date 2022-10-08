@@ -29,6 +29,7 @@ import {
   isBareMetalFlavor,
   isBareMetal,
   getFlavorArchInfo,
+  getFlavorSearchFilters,
 } from 'resources/nova/flavor';
 import styles from './index.less';
 
@@ -326,12 +327,7 @@ export class FlavorSelectTable extends Component {
       data: this.flavors,
       tableHeader: this.renderTableHeader(),
       isLoading,
-      filterParams: [
-        {
-          label: t('Name'),
-          name: 'name',
-        },
-      ],
+      filterParams: getFlavorSearchFilters(),
       value,
       onChange: this.onChange,
       disabledFunc,

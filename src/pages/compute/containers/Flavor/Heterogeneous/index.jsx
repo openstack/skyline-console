@@ -22,8 +22,8 @@ import {
   extraColumns,
   heterogeneousCategoryList,
   gpuColumns,
+  getFlavorSearchFilters,
 } from 'resources/nova/flavor';
-import { getOptions } from 'utils/index';
 import actionConfigs from './actions';
 
 export class Flavor extends Base {
@@ -55,18 +55,7 @@ export class Flavor extends Base {
   });
 
   get searchFilters() {
-    return [
-      {
-        label: t('Name'),
-        name: 'name',
-      },
-      {
-        label: t('Category'),
-        name: 'category',
-        options: getOptions(heterogeneousCategoryList),
-        include: false,
-      },
-    ];
+    return getFlavorSearchFilters(heterogeneousCategoryList);
   }
 }
 

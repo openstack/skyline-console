@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { formatSize } from 'utils';
+import { formatSize, getOptions } from 'utils';
 
 export const cpuPolicyList = {
   dedicated: t('Dedicated'),
@@ -285,4 +285,36 @@ export const getFlavorArchInfo = (flavor) => {
   return `${flavorArchitectures[architecture] || architecture} - ${
     flavorCategoryList[category] || category
   }`;
+};
+
+export const getFlavorSearchFilters = (category) => {
+  const filters = [
+    {
+      label: t('Name'),
+      name: 'name',
+    },
+    {
+      label: t('CPU'),
+      name: 'vcpus',
+      filterFunc: (vcpus, value) => {
+        return (`${vcpus}` || '').includes(value);
+      },
+    },
+    {
+      label: t('Memory'),
+      name: 'ram',
+      filterFunc: (ram, value) => {
+        return (formatSize(ram, 2) || '').includes(value);
+      },
+    },
+  ];
+  if (category) {
+    filters.push({
+      label: t('Category'),
+      name: 'category',
+      options: getOptions(armCategoryList),
+    });
+  }
+
+  return filters;
 };
