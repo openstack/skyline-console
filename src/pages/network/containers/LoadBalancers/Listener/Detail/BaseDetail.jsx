@@ -48,7 +48,7 @@ export class BaseDetail extends Base {
 
   get rightCards() {
     const { protocol } = this.detailData || {};
-    if (protocol === 'TERMINATED_HTTPS') {
+    if (protocol === 'TERMINATED_HTTPS' && !this.isAdminPage) {
       return [this.certificateInfo];
     }
     return [];
