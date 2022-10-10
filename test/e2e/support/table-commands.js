@@ -276,7 +276,7 @@ Cypress.Commands.add('clickLinkInColumn', (columnIndex, waitTime = 5000) => {
     .find('td')
     .eq(columnIndex)
     .find('a')
-    .click(waitTime);
+    .click('left', waitTime);
 });
 
 Cypress.Commands.add('goToDetail', (index = 1, waitTime) => {

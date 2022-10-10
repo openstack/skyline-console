@@ -14,6 +14,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Typography } from 'antd';
 import {
   isArray,
   get,
@@ -26,6 +27,9 @@ import {
 import Status from 'components/Status';
 import { renderFilterMap } from 'utils/index';
 import { getLinkRender } from 'utils/route-map';
+import classnames from 'classnames';
+
+const { Paragraph } = Typography;
 
 export function getStringValue(value) {
   if (
@@ -147,6 +151,33 @@ const getLinkUrl = (prefix, id) => {
   return `${prefix}/${id}`;
 };
 
+export const getIdRender = (value, copyable = true, isLink = true) => {
+  const short = (value || '').substring(0, 8);
+  const shortRender = isLink ? (
+    <span className="link-class">{short}</span>
+  ) : (
+    short
+  );
+  if (!copyable) {
+    return shortRender;
+  }
+  return (
+    <Paragraph
+      copyable={{ text: value }}
+      className={classnames('no-wrap', 'no-margin-bottom')}
+    >
+      {shortRender}
+    </Paragraph>
+  );
+};
+
+export const getNameRenderWithStyle = (name) => {
+  const style = {
+    fontWeight: 'bold',
+  };
+  return <div style={style}>{name || '-'}</div>;
+};
+
 export const getNameRender = (render, column, rowKey) => {
   if (render) {
     return render;
@@ -158,6 +189,7 @@ export const getNameRender = (render, column, rowKey) => {
     linkPrefixFunc,
     linkFunc,
     hasNoDetail = false,
+    copyable = true,
   } = column;
   return (value, record) => {
     const idValue = get(record, idKey || rowKey);
@@ -171,23 +203,25 @@ export const getNameRender = (render, column, rowKey) => {
       url = getLinkUrl(linkValue, idValue);
     }
     const nameValue = value || get(record, dataIndex) || '-';
+    const nameRender = getNameRenderWithStyle(nameValue);
+    const idRender = getIdRender(idValue, copyable, !!url);
     if (hasNoDetail) {
       return (
         <div>
-          <div>{idValue}</div>
-          <div>{nameValue}</div>
+          <div>{idRender}</div>
+          {nameRender}
         </div>
       );
     }
     if (!url && !hasNoDetail) {
-      return nameValue;
+      return nameRender;
     }
     return (
       <div>
         <div>
-          <Link to={url}>{idValue}</Link>
+          <Link to={url}>{idRender}</Link>
         </div>
-        <div>{nameValue}</div>
+        {nameRender}
       </div>
     );
   };
@@ -205,13 +239,19 @@ export const getNameRenderByRouter = (render, column, rowKey) => {
     routeQuery = {},
     routeParamsFunc,
     withoutName = false,
+    copyable = true,
   } = column;
   return (value, record) => {
     const nameValue = value || get(record, dataIndex) || '-';
+    const nameRender = getNameRenderWithStyle(nameValue);
     if (!routeName) {
       return nameValue;
     }
     const idValue = get(record, idKey || rowKey);
+    if (!idValue) {
+      return '-';
+    }
+    const idRender = getIdRender(idValue, copyable, true);
     const params = routeParamsFunc
       ? routeParamsFunc(record)
       : { [routeParamsKey]: idValue };
@@ -220,12 +260,12 @@ export const getNameRenderByRouter = (render, column, rowKey) => {
       key: routeName,
       params,
       query,
-      value: idValue,
+      value: idRender,
     });
     return (
       <div>
         <div>{link}</div>
-        {!withoutName && <div>{nameValue}</div>}
+        {!withoutName && nameRender}
       </div>
     );
   };
