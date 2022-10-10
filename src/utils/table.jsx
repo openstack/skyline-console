@@ -275,10 +275,12 @@ export const idNameColumn = {
   title: t('ID/Name'),
   dataIndex: 'name',
   render: (value, record) => {
+    const idRender = getIdRender(record.id, true, false);
+    const nameRender = getNameRenderWithStyle(value);
     return (
       <>
-        <div>{record.id}</div>
-        <div>{value}</div>
+        <div>{idRender}</div>
+        {nameRender}
       </>
     );
   },
