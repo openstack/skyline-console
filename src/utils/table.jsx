@@ -135,12 +135,19 @@ export const getRender = (valueRender) => {
 export const getProjectId = (record) =>
   record.project_id || record.owner || record.fingerprint || record.tenant;
 
-export const projectRender = (value, record) => (
-  <>
-    <div>{getProjectId(record)}</div>
-    <div>{value || '-'}</div>
-  </>
-);
+export const projectRender = (value, record) => {
+  const projectId = getProjectId(record);
+  if (!projectId) {
+    return '-';
+  }
+  const idRender = getIdRender(projectId, true, false);
+  return (
+    <>
+      <div>{idRender}</div>
+      <div>{value || '-'}</div>
+    </>
+  );
+};
 
 const getLinkUrl = (prefix, id) => {
   if (!prefix) {
