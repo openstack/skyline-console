@@ -43,12 +43,12 @@ import {
   columnRender,
   getValueMapRender,
   getUnitRender,
+  getProjectRender,
+  getProjectId,
 } from 'utils/table';
 import { getNoValue } from 'utils/index';
 import { getLocalStorageItem, setLocalStorageItem } from 'utils/local-storage';
-import { getLinkRender } from 'utils/route-map';
 import { inject } from 'mobx-react';
-import globalRootStore from 'stores/root';
 import CustomColumns from './CustomColumns';
 import ItemActionButtons from './ItemActionButtons';
 import PrimaryActionButtons from './PrimaryActionButtons';
@@ -322,32 +322,6 @@ export class BaseTable extends React.Component {
     return actionList && actionList.length > 0;
   };
 
-  getProjectId = (record) =>
-    record.project_id || record.owner || record.fingerprint || record.tenant;
-
-  getProjectRender = (render) => {
-    if (render) {
-      return render;
-    }
-    return (value, record) => {
-      const projectId = this.getProjectId(record);
-      if (!projectId) {
-        return '-';
-      }
-      const link = getLinkRender({
-        key: 'projectDetailAdmin',
-        params: { id: projectId },
-        value: projectId,
-      });
-      return (
-        <>
-          <div>{globalRootStore.hasAdminRole ? link : projectId}</div>
-          <div>{value || '-'}</div>
-        </>
-      );
-    };
-  };
-
   getNoValueRender = (render) => {
     if (render) {
       return render;
@@ -439,7 +413,7 @@ export class BaseTable extends React.Component {
         newRender = this.getNoValueRender(newRender);
       }
       if (dataIndex === 'project_name') {
-        newRender = this.getProjectRender(newRender);
+        newRender = getProjectRender(newRender);
       }
       if ((dataIndex === 'name' && routeName) || isLink) {
         const { rowKey } = this.props;
@@ -565,7 +539,7 @@ export class BaseTable extends React.Component {
             it.dataIndex === 'project_name'
           ) {
             fIndex = 'project_id';
-            render = (_, record) => this.getProjectId(record);
+            render = (_, record) => getProjectId(record);
           }
           return [
             {

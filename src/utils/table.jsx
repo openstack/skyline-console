@@ -28,6 +28,7 @@ import Status from 'components/Status';
 import { renderFilterMap } from 'utils/index';
 import { getLinkRender } from 'utils/route-map';
 import classnames from 'classnames';
+import globalRootStore from 'stores/root';
 
 const { Paragraph } = Typography;
 
@@ -311,4 +312,31 @@ export const getUnitRender = (column) => {
     };
   }
   return null;
+};
+
+export const getProjectRender = (render) => {
+  if (render) {
+    return render;
+  }
+  return (value, record) => {
+    const projectId = getProjectId(record);
+    if (!projectId) {
+      return '-';
+    }
+    const { hasAdminRole } = globalRootStore;
+    const hasLink = !!hasAdminRole;
+    let idRender = null;
+    if (hasLink) {
+      const url = `/identity/project-admin/detail/${projectId}`;
+      idRender = <Link to={url}>{getIdRender(projectId, true, true)}</Link>;
+    } else {
+      idRender = getIdRender(projectId, true, false);
+    }
+    return (
+      <>
+        <div>{idRender}</div>
+        <div>{value || '-'}</div>
+      </>
+    );
+  };
 };

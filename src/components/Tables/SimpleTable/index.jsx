@@ -28,8 +28,8 @@ import {
   getNameRenderByRouter,
   getValueMapRender,
   getUnitRender,
+  getProjectRender,
 } from 'utils/table';
-import { Link } from 'react-router-dom';
 import { getNoValue } from 'utils/index';
 import styles from './index.less';
 
@@ -111,7 +111,7 @@ export default class SimpleTable extends React.Component {
         newRender = this.getNoValueRender(newRender);
       }
       if (dataIndex === 'project_name') {
-        newRender = this.getProjectRender(newRender);
+        newRender = getProjectRender(newRender);
       }
       if ((dataIndex === 'name' && routeName) || isLink) {
         const { rowKey } = this.props;
@@ -140,30 +140,6 @@ export default class SimpleTable extends React.Component {
       updateColumnSort(newColumn, this.props);
       return newColumn;
     });
-
-  getProjectId = (record) =>
-    record.project_id || record.owner || record.fingerprint || record.tenant;
-
-  getProjectRender = (render) => {
-    if (render) {
-      return render;
-    }
-    return (value, record) => {
-      const projectId = this.getProjectId(record);
-      if (!projectId) {
-        return '-';
-      }
-      const url = `/identity/project-admin/detail/${projectId}`;
-      return (
-        <>
-          <div>
-            <Link to={url}>{projectId}</Link>
-          </div>
-          <div>{value || '-'}</div>
-        </>
-      );
-    };
-  };
 
   getNoValueRender = (render) => {
     if (render) {
