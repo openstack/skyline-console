@@ -36,6 +36,7 @@ export class KeypairStore extends Base {
     return (data) => {
       const { keypair } = data;
       const item = keypair ? { ...keypair } : data;
+      item.origin_id = item.id;
       item.id = item.name;
       return item;
     };

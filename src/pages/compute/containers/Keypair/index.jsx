@@ -48,6 +48,7 @@ export class Keypair extends Base {
       dataIndex: 'name',
       idKey: 'name',
       routeName: this.getRouteName('keypairDetail'),
+      withoutId: true,
     },
     {
       title: t('Fingerprint'),

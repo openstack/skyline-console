@@ -255,6 +255,7 @@ export const getNameRenderByRouter = (render, column, rowKey) => {
     copyable = true,
     boldName,
     title,
+    withoutId = false,
   } = column;
   return (value, record) => {
     const nameValue = value || get(record, dataIndex) || '-';
@@ -272,18 +273,27 @@ export const getNameRenderByRouter = (render, column, rowKey) => {
       ? routeParamsFunc(record)
       : { [routeParamsKey]: idValue };
     const query = routeQuery;
+    if (!withoutId) {
+      const link = getLinkRender({
+        key: routeName,
+        params,
+        query,
+        value: idRender,
+      });
+      return (
+        <div>
+          <div>{link}</div>
+          {!withoutName && nameRender}
+        </div>
+      );
+    }
     const link = getLinkRender({
       key: routeName,
       params,
       query,
-      value: idRender,
+      value: nameRender,
     });
-    return (
-      <div>
-        <div>{link}</div>
-        {!withoutName && nameRender}
-      </div>
-    );
+    return <div>{link}</div>;
   };
 };
 

@@ -35,6 +35,10 @@ export class KeypairDetail extends Base {
     return actionConfigs;
   }
 
+  get titleValue() {
+    return this.detailData.origin_id;
+  }
+
   get detailInfos() {
     return [
       // {
