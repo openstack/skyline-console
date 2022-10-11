@@ -20,7 +20,7 @@ Resources
 ---------
 
 -  `Wiki <https://wiki.openstack.org/wiki/Skyline>`__
--  `Bug Tracker <https://launchpad.net/skyline-apiserver>`__
+-  `Bug Tracker <https://launchpad.net/skyline-console>`__
 
 Prerequisites
 -------------

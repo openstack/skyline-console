@@ -20,7 +20,7 @@
 ----
 
 -  `Wiki <https://wiki.openstack.org/wiki/Skyline>`__
--  `Bug 跟踪器 <https://launchpad.net/skyline-apiserver>`__
+-  `Bug 跟踪器 <https://launchpad.net/skyline-console>`__
 
 环境依赖
 --------
