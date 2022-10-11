@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Optimize ID/Name column in the tables:
+
+    * Shorten the display of the ID and only display the first 8 characters.
+
+    * Provide button to support quick copy ID.
+
+    * Bold the name to make it more prominent.
