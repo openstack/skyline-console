@@ -257,6 +257,7 @@ export class FloatingIps extends Base {
         dataIndex: 'floating_ip_address',
         isLink: true,
         routeName: this.getRouteName('fipDetail'),
+        boldName: true,
       },
       {
         title: t('QoS Policy'),

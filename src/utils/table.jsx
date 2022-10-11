@@ -179,10 +179,12 @@ export const getIdRender = (value, copyable = true, isLink = true) => {
   );
 };
 
-export const getNameRenderWithStyle = (name) => {
-  const style = {
-    fontWeight: 'bold',
-  };
+export const getNameRenderWithStyle = (name, isBold) => {
+  const style = isBold
+    ? {
+        fontWeight: 'bold',
+      }
+    : {};
   return <div style={style}>{name || '-'}</div>;
 };
 
@@ -198,6 +200,8 @@ export const getNameRender = (render, column, rowKey) => {
     linkFunc,
     hasNoDetail = false,
     copyable = true,
+    boldName,
+    title,
   } = column;
   return (value, record) => {
     const idValue = get(record, idKey || rowKey);
@@ -210,8 +214,9 @@ export const getNameRender = (render, column, rowKey) => {
         : linkPrefix;
       url = getLinkUrl(linkValue, idValue);
     }
+    const isBold = boldName || title === t('ID/Name') || dataIndex === 'name';
     const nameValue = value || get(record, dataIndex) || '-';
-    const nameRender = getNameRenderWithStyle(nameValue);
+    const nameRender = getNameRenderWithStyle(nameValue, isBold);
     const idRender = getIdRender(idValue, copyable, !!url);
     if (hasNoDetail) {
       return (
@@ -248,10 +253,13 @@ export const getNameRenderByRouter = (render, column, rowKey) => {
     routeParamsFunc,
     withoutName = false,
     copyable = true,
+    boldName,
+    title,
   } = column;
   return (value, record) => {
     const nameValue = value || get(record, dataIndex) || '-';
-    const nameRender = getNameRenderWithStyle(nameValue);
+    const isBold = boldName || title === t('ID/Name') || dataIndex === 'name';
+    const nameRender = getNameRenderWithStyle(nameValue, isBold);
     if (!routeName) {
       return nameValue;
     }
@@ -284,7 +292,7 @@ export const idNameColumn = {
   dataIndex: 'name',
   render: (value, record) => {
     const idRender = getIdRender(record.id, true, false);
-    const nameRender = getNameRenderWithStyle(value);
+    const nameRender = getNameRenderWithStyle(value, true);
     return (
       <>
         <div>{idRender}</div>
