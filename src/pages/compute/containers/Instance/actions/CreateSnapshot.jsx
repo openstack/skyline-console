@@ -25,6 +25,7 @@ import {
 import { InstanceVolumeStore } from 'stores/nova/instance-volume';
 import globalVolumeTypeStore from 'stores/cinder/volume-type';
 import globalProjectStore from 'stores/keystone/project';
+import { idNameColumn } from 'utils/table';
 
 export const getWishes = () => {
   const { volumesForSnapshot = [] } = globalServerStore;
@@ -203,19 +204,7 @@ export class CreateSnapshot extends ModalAction {
     }
     const { volumes = [] } = this.state;
     const columns = [
-      {
-        dataIndex: 'id',
-        title: t('ID/Name'),
-        render: (value, record) => {
-          const { name } = record;
-          return (
-            <>
-              <div>{value}</div>
-              <div>{name || '-'}</div>
-            </>
-          );
-        },
-      },
+      idNameColumn,
       {
         dataIndex: 'size',
         title: t('Size'),

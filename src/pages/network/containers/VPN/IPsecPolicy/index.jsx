@@ -23,6 +23,7 @@ import {
   ipsecPolicyTransformProtocolOptions,
   pfsOptions,
 } from 'resources/neutron/vpn';
+import { idNameColumn } from 'utils/table';
 import { actionConfigs, adminConfigs } from './actions';
 
 export class IPsecPolicy extends Base {
@@ -64,16 +65,7 @@ export class IPsecPolicy extends Base {
   }
 
   getColumns = () => [
-    {
-      title: t('ID/Name'),
-      dataIndex: 'name',
-      render: (name, record) => (
-        <div>
-          <div>{record.id}</div>
-          <div>{name}</div>
-        </div>
-      ),
-    },
+    idNameColumn,
     {
       title: t('Project ID/Name'),
       dataIndex: 'project_name',

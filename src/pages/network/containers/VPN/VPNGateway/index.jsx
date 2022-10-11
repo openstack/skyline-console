@@ -16,7 +16,7 @@ import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { VpnServicesStore } from 'stores/neutron/vpn-service';
 import { vpnStatus, vpnStatusOptions } from 'resources/neutron/vpn';
-import React from 'react';
+import { idNameColumn } from 'utils/table';
 import { actionConfigs, adminConfigs } from './actions';
 
 export class VPNGateway extends Base {
@@ -58,16 +58,7 @@ export class VPNGateway extends Base {
   }
 
   getColumns = () => [
-    {
-      title: t('ID/Name'),
-      dataIndex: 'name',
-      render: (name, record) => (
-        <div>
-          <div>{record.id}</div>
-          <div>{name}</div>
-        </div>
-      ),
-    },
+    idNameColumn,
     {
       title: t('Project ID/Name'),
       dataIndex: 'project_name',

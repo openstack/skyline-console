@@ -19,6 +19,7 @@ import { VpnEndPointGroupStore } from 'stores/neutron/vpn-endpoint-group';
 import { Col, Popover, Row, Spin } from 'antd';
 import { FileTextOutlined } from '@ant-design/icons';
 import { SubnetStore } from 'stores/neutron/subnet';
+import { idNameColumn } from 'utils/table';
 import { actionConfigs, adminConfigs } from './actions';
 
 export class EndpointGroup extends Base {
@@ -64,16 +65,7 @@ export class EndpointGroup extends Base {
   }
 
   getColumns = () => [
-    {
-      title: t('ID/Name'),
-      dataIndex: 'name',
-      render: (name, record) => (
-        <div>
-          <div>{record.id}</div>
-          <div>{name}</div>
-        </div>
-      ),
-    },
+    idNameColumn,
     {
       title: t('Project ID/Name'),
       dataIndex: 'project_name',

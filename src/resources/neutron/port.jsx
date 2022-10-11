@@ -15,6 +15,7 @@
 import React from 'react';
 import { ipValidate } from 'utils/validate';
 import { getOptions } from 'utils/index';
+import { idNameColumn } from 'utils/table';
 
 const { isIPv4 } = ipValidate;
 
@@ -230,17 +231,7 @@ export function getPortFormItem(withResourceNameAndStatusFilter = true) {
 }
 
 export const portColumns = [
-  {
-    title: t('ID/Name'),
-    dataIndex: 'name',
-    sorter: false,
-    render: (value, record) => (
-      <div>
-        <div>{record.id}</div>
-        <div>{value || '-'}</div>
-      </div>
-    ),
-  },
+  idNameColumn,
   {
     title: t('Owned Network'),
     dataIndex: 'network_name',

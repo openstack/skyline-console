@@ -46,7 +46,7 @@ export class Configurations extends Base {
 
   getColumns = () => [
     {
-      title: t('Configuration Group Name'),
+      title: t('Configuration Group ID/Name'),
       dataIndex: 'name',
       routeName: this.getRouteName('configurationsDetail'),
     },

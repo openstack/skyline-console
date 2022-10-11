@@ -46,7 +46,7 @@ export class Backups extends Base {
 
   getColumns = () => [
     {
-      title: t('Name'),
+      title: t('ID/Name'),
       dataIndex: 'name',
       routeName: this.getRouteName('databaseBackupDetail'),
     },

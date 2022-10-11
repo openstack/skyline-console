@@ -18,6 +18,7 @@ import { renderFilterMap } from 'utils/index';
 import globalProjectStore from 'stores/keystone/project';
 import globalVolumeStore from 'stores/cinder/volume';
 import { isEmpty } from 'lodash';
+import { idNameColumn } from 'utils/table';
 
 export const volumeStatus = {
   available: t('Available'),
@@ -144,16 +145,7 @@ export const multiTip = t(
 );
 
 export const volumeColumns = [
-  {
-    title: t('ID/Name'),
-    dataIndex: 'name',
-    render: (value, record) => (
-      <>
-        <p style={{ marginBottom: 0 }}>{record.id}</p>
-        <span>{value || '-'}</span>
-      </>
-    ),
-  },
+  idNameColumn,
   {
     title: t('Type'),
     dataIndex: 'volume_type',

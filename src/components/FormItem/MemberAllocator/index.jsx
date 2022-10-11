@@ -17,9 +17,7 @@ import { Form, Button, Row, Col, Select } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import SelectTable from 'components/FormItem/SelectTable';
 import { ipValidate } from 'utils/validate';
-import { isAdminPage } from 'utils/index';
 import { Address4, Address6 } from 'ip-address';
-import { getLinkRender } from 'utils/route-map';
 import Item from './Item';
 
 const { isIPv4, isIpv6 } = ipValidate;
@@ -39,13 +37,6 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
   const triggerChange = (data) => {
     onChange && onChange(data);
   };
-
-  function getLink(routerName, item) {
-    const { pathname } = window.location;
-    const key = isAdminPage(pathname) ? `${routerName}Admin` : routerName;
-    const { id } = item;
-    return getLinkRender({ key, params: { id }, value: id });
-  }
 
   let addOuter = () => {};
 
@@ -69,12 +60,7 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
             {
               title: t('ID/Name'),
               dataIndex: 'name',
-              render: (n, record) => (
-                <div>
-                  <div>{getLink('portDetail', record)}</div>
-                  <div>{n || '-'}</div>
-                </div>
-              ),
+              routeName: 'portDetail',
             },
             {
               title: t('Binding Instance'),
