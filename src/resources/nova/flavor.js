@@ -312,7 +312,7 @@ export const getFlavorSearchFilters = (category) => {
     filters.push({
       label: t('Category'),
       name: 'category',
-      options: getOptions(armCategoryList),
+      options: getOptions(category),
     });
   }
 
