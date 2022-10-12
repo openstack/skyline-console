@@ -23,8 +23,13 @@ import ChartCard from '../ChartCard';
 import BaseContentContext from './context';
 
 const Charts = (props) => {
-  const { baseTopCardProps, baseChartProps, topCardList, chartCardList } =
-    props;
+  const {
+    baseTopCardProps,
+    baseChartProps,
+    topCardList,
+    chartCardList,
+    fetchPrometheusFunc,
+  } = props;
 
   const ctx = useContext(BaseContentContext);
 
@@ -60,7 +65,11 @@ const Charts = (props) => {
           }
           return (
             <Col {...colProps}>
-              <BaseCard {...rest} fetchDataParams={newFetchDataParams} />
+              <BaseCard
+                {...rest}
+                fetchDataParams={newFetchDataParams}
+                fetchPrometheusFunc={fetchPrometheusFunc}
+              />
             </Col>
           );
         })}
@@ -97,7 +106,11 @@ const Charts = (props) => {
           }
           return (
             <Col {...colProps}>
-              <ChartCard {...rest} fetchDataParams={newFetchDataParams} />
+              <ChartCard
+                {...rest}
+                fetchDataParams={newFetchDataParams}
+                fetchPrometheusFunc={fetchPrometheusFunc}
+              />
             </Col>
           );
         })}

@@ -2,8 +2,8 @@ import { get, clone, isArray } from 'lodash';
 import DataSet from '@antv/data-set';
 import { baseReturnFunc, fetchPrometheus, getRequestUrl } from './utils';
 
-export function createFetchPrometheusClient(createParams) {
-  const { requestType, metricKey } = createParams;
+export function createFetchPrometheusClient(createParams, fetchPrometheusFunc) {
+  const { requestType, metricKey, convertUrl } = createParams;
 
   const queryParams = get(METRICDICT, metricKey);
 
@@ -14,8 +14,16 @@ export function createFetchPrometheusClient(createParams) {
         (queryParams.finalFormatFunc || [])[idx] || baseReturnFunc;
       // get base params in order
       const baseParams = (queryParams.baseParams || [])[idx] || {};
-      const finalUrl = getRequestUrl(u, params, finalFormatFunc, baseParams);
-      return fetchPrometheus(finalUrl, requestType, currentRange, interval);
+      const formattedUrl = getRequestUrl(
+        u,
+        params,
+        finalFormatFunc,
+        baseParams
+      );
+      const finalUrl = convertUrl ? convertUrl(formattedUrl) : formattedUrl;
+      return fetchPrometheusFunc
+        ? fetchPrometheusFunc(finalUrl, requestType, currentRange, interval)
+        : fetchPrometheus(finalUrl, requestType, currentRange, interval);
     });
     return Promise.all(promises);
   };
