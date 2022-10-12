@@ -92,7 +92,7 @@ export const getSuitableValue = (
     return defaultValue;
   }
   const unit = getSuitableUnit(value, unitType);
-  const unitText = unit ? ` ${t(unit)}` : '';
+  const unitText = unit || '';
   const count = getValueByUnit(value, unit || unitType);
   return `${count}${unitText}`;
 };
@@ -116,15 +116,19 @@ export const getValueByUnit = (num, unit) => {
       if (value < 1) return 0;
       break;
     case 'KiB':
+    case 'KiB/s':
       value /= 1024;
       break;
     case 'MiB':
+    case 'MiB/s':
       value /= 1024 ** 2;
       break;
     case 'GiB':
+    case 'GiB/s':
       value /= 1024 ** 3;
       break;
     case 'TiB':
+    case 'TiB/s':
       value /= 1024 ** 4;
       break;
     case 'Bytes':
