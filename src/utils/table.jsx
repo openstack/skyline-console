@@ -160,7 +160,7 @@ const getLinkUrl = (prefix, id) => {
 };
 
 export const getIdRender = (value, copyable = true, isLink = true) => {
-  const short = (value || '').substring(0, 8);
+  const short = `${value || ''}`.substring(0, 8);
   const shortRender = isLink ? (
     <span className="link-class">{short}</span>
   ) : (
