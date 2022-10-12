@@ -43,6 +43,7 @@ export class Role extends Base {
       title: t('Role Name'),
       dataIndex: 'name',
       routeName: 'roleDetailAdmin',
+      withoutId: true,
     },
     {
       title: t('ID'),

@@ -179,6 +179,14 @@ export const getIdRender = (value, copyable = true, isLink = true) => {
   );
 };
 
+const isNameBold = (dataIndex, title, boldName, withoutId) => {
+  return boldName === undefined
+    ? withoutId
+      ? false
+      : title === t('ID/Name') || dataIndex === 'name'
+    : boldName;
+};
+
 export const getNameRenderWithStyle = (name, isBold) => {
   const style = isBold
     ? {
@@ -214,7 +222,7 @@ export const getNameRender = (render, column, rowKey) => {
         : linkPrefix;
       url = getLinkUrl(linkValue, idValue);
     }
-    const isBold = boldName || title === t('ID/Name') || dataIndex === 'name';
+    const isBold = isNameBold(dataIndex, title, boldName, false);
     const nameValue = value || get(record, dataIndex) || '-';
     const nameRender = getNameRenderWithStyle(nameValue, isBold);
     const idRender = getIdRender(idValue, copyable, !!url);
@@ -259,7 +267,7 @@ export const getNameRenderByRouter = (render, column, rowKey) => {
   } = column;
   return (value, record) => {
     const nameValue = value || get(record, dataIndex) || '-';
-    const isBold = boldName || title === t('ID/Name') || dataIndex === 'name';
+    const isBold = isNameBold(dataIndex, title, boldName, withoutId);
     const nameRender = getNameRenderWithStyle(nameValue, isBold);
     if (!routeName) {
       return nameValue;
