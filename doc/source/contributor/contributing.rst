@@ -16,7 +16,7 @@ skyline-console
     | The OpenStack Modern Dashboard - front-end.
     | code: https://opendev.org/openstack/skyline-console
     | docs: https://docs.openstack.org/skyline-console/latest/
-    | Launchpad: https://launchpad.net/skyline-apiserver
+    | Launchpad: https://launchpad.net/skyline-console
 
 Communication
 ~~~~~~~~~~~~~
@@ -99,7 +99,7 @@ quick rundown of what they are and how the Skyline Console project uses them.
 
 blueprints
     | Exist in Launchpad, where they can be targeted to release milestones.
-    | You file one at https://blueprints.launchpad.net/skyline-apiserver
+    | You file one at https://blueprints.launchpad.net/skyline-console
 
 Feel free to ask in ``#openstack-skyline`` if you have an idea you want to
 develop and you're not sure whether it requires a blueprint *and* a spec or
@@ -134,7 +134,7 @@ Reporting a Bug
 You found an issue and want to make sure we are aware of it? You can do so in
 the Launchpad space for the affected deliverable:
 
-* skyline-console: https://bugs.launchpad.net/skyline-apiserver
+* skyline-console: https://bugs.launchpad.net/skyline-console
 
 Getting Your Patch Merged
 ~~~~~~~~~~~~~~~~~~~~~~~~~

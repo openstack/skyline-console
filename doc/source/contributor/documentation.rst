@@ -90,7 +90,7 @@ out below.
 There are also documentation bugs that other people have noticed that
 you could address:
 
-* https://bugs.launchpad.net/skyline-apiserver/+bugs?field.tag=doc
+* https://bugs.launchpad.net/skyline-console/+bugs?field.tag=doc
 
 .. note::
    If you don't see a bug listed, you can also try the tag 'docs' or
