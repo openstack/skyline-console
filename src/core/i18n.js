@@ -51,10 +51,9 @@ const getLocale = () => {
     localStorageLocaleKey: 'lang',
   });
 
-  // If not found, the default is Chinese
+  // If not found, the default is English
   if (!_.find(SUPPORT_LOCALES, { value: currentLocale })) {
-    currentLocale = 'zh-cn';
-    // currentLocale = 'en';
+    currentLocale = 'en';
   }
 
   if (!currentLocals) {
