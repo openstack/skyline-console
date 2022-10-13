@@ -14,6 +14,7 @@
 
 import client from 'client';
 import { isSnapshot } from 'src/resources/glance/image';
+import { cloneDeep } from 'lodash';
 import Base from '../base';
 
 export class InstanceSnapshotStore extends Base {
@@ -151,6 +152,43 @@ export class InstanceSnapshotStore extends Base {
     };
     item.instanceDetail = instanceResult.server || {};
     return item;
+  }
+
+  async fetchInstanceSnapshotVolumeData({ id }) {
+    const snapshotDetailInfo = await this.client.show(id);
+    const instanceSnapshotDetail = await this.detailDidFetch(
+      snapshotDetailInfo
+    );
+    const { block_device_mapping: bdm = '[]' } = instanceSnapshotDetail;
+    const bdmFormatData = JSON.parse(bdm) || [];
+    if (!bdmFormatData?.length) {
+      return instanceSnapshotDetail;
+    }
+    const snapshotsOfDataDisk = bdmFormatData?.filter(
+      (it) => it.boot_index !== 0
+    );
+    const snapshotsReqs = snapshotsOfDataDisk.map(async (i) => {
+      const snapshot = cloneDeep(i);
+      const { snapshot_id } = i;
+      const snapshotResult = await client.cinder.snapshots.show(snapshot_id);
+      const snapshotDetail = snapshotResult?.snapshot || {};
+      snapshot.snapshotDetail = snapshotDetail;
+      snapshot.bdmFormatData = i;
+      return snapshot;
+    });
+    const snapshotsOfDataDiskRes = await Promise.all(snapshotsReqs);
+    const volumesReqs = snapshotsOfDataDiskRes.map(async (i) => {
+      const { volume_id } = i.snapshotDetail;
+      const volumesResult = await client.cinder.volumes.show(volume_id);
+      const volumeDetail = volumesResult?.volume || {};
+      i.volumeDetail = volumeDetail;
+      return i;
+    });
+    const instanceSnapshotDataVolumes = await Promise.all(volumesReqs);
+    return {
+      ...instanceSnapshotDetail,
+      instanceSnapshotDataVolumes,
+    };
   }
 }
 

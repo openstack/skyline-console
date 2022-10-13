@@ -34,6 +34,11 @@ import {
 import Base from 'components/Form';
 import InstanceVolume from 'components/FormItem/InstanceVolume';
 import { isGpuCategory } from 'resources/nova/flavor';
+import {
+  volumeTypes,
+  getDiskInfo,
+  getInstanceSnapshotDataDisk,
+} from 'resources/cinder/snapshot';
 import FlavorSelectTable from '../../../components/FlavorSelectTable';
 
 export class BaseStep extends Base {
@@ -126,11 +131,7 @@ export class BaseStep extends Base {
   }
 
   get volumeTypes() {
-    return (this.volumeTypeStore.list.data || []).map((it) => ({
-      label: it.name,
-      value: it.id,
-      originData: toJS(it),
-    }));
+    return volumeTypes();
   }
 
   get volumes() {
@@ -337,62 +338,53 @@ export class BaseStep extends Base {
     if (!id) {
       this.updateContext({
         instanceSnapshotDisk: null,
+        instanceSnapshotDataVolumes: [],
       });
       this.setState({
         instanceSnapshotDisk: null,
         instanceSnapshotMinSize: 0,
+        instanceSnapshotDataVolumes: [],
       });
       return;
     }
-    const detail = await this.instanceSnapshotStore.fetchDetail({ id });
+    const detail =
+      await this.instanceSnapshotStore.fetchInstanceSnapshotVolumeData({ id });
     const {
-      snapshotDetail: { size: snapshotSize = 0, volume_type_id } = {},
+      snapshotDetail: { size: snapshotSize = 0 } = {},
       block_device_mapping = '',
       volumeDetail,
+      snapshotDetail,
+      instanceSnapshotDataVolumes = [],
     } = detail;
     if (!volumeDetail) {
       this.updateContext({
         instanceSnapshotDisk: null,
+        instanceSnapshotDataVolumes: [],
       });
       this.setState({
         instanceSnapshotDisk: null,
         instanceSnapshotMinSize: 0,
+        instanceSnapshotDataVolumes: [],
       });
     }
     const minSize = Math.max(min_disk, size, snapshotSize);
-    let bdm = {};
-    try {
-      bdm = JSON.parse(block_device_mapping);
-    } catch (e) {}
-    const { volume_type } = volumeDetail;
-    const { delete_on_termination } = bdm[0] || {};
-    const deleteType = delete_on_termination ? 1 : 0;
-    const deleteTypeLabel = delete_on_termination
-      ? t('Deleted with the instance')
-      : t('Not deleted with the instance');
-    const volumeTypeId =
-      volume_type_id ||
-      (this.volumeTypes.find((it) => it.label === volume_type) || {}).value;
-    const volumeTypeItem = this.volumeTypes.find(
-      (it) => it.value === volumeTypeId
-    );
-    const instanceSnapshotDisk = volumeDetail
-      ? {
-          type: volumeTypeId,
-          typeOption: volumeTypeItem,
-          size: snapshotSize,
-          deleteType,
-          deleteTypeLabel,
-        }
-      : null;
 
+    const bdmFormatData = JSON.parse(block_device_mapping) || [];
+    const systemDiskBdm = bdmFormatData[0] || {};
+    const instanceSnapshotDisk = getDiskInfo({
+      volumeDetail,
+      snapshotDetail,
+      selfBdmData: systemDiskBdm,
+    });
     this.updateFormValue('instanceSnapshotDisk', instanceSnapshotDisk);
     this.updateContext({
       instanceSnapshotDisk,
+      instanceSnapshotDataVolumes,
     });
     this.setState({
       instanceSnapshotDisk,
       instanceSnapshotMinSize: minSize,
+      instanceSnapshotDataVolumes,
     });
   };
 
@@ -426,8 +418,14 @@ export class BaseStep extends Base {
     return instanceSnapshotDisk || oldDisk;
   };
 
-  renderSnapshotDisk = () => {
-    const disk = this.getInstanceSnapshotDisk();
+  getSnapshotDataDisks = () => {
+    const { instanceSnapshotDataVolumes } = this.state;
+    const { instanceSnapshotDataVolumes: oldSnapshotDataVolumes } =
+      this.props.context;
+    return instanceSnapshotDataVolumes || oldSnapshotDataVolumes || [];
+  };
+
+  renderInstanceSnapshotDisk = (disk) => {
     if (disk === null) {
       return null;
     }
@@ -452,6 +450,28 @@ export class BaseStep extends Base {
         </Col>
         <Col span={8}>{deleteTypeLabel}</Col>
       </Row>
+    );
+  };
+
+  renderSnapshotDisk = () => {
+    const disk = this.getInstanceSnapshotDisk();
+    return this.renderInstanceSnapshotDisk(disk);
+  };
+
+  renderSnapshotDataDisk = () => {
+    const dataDisks = this.getSnapshotDataDisks();
+    return (
+      <>
+        {dataDisks?.map((i) => {
+          const disk = getInstanceSnapshotDataDisk(i);
+          const id = i?.id || i?.snapshot_id;
+          return (
+            <div style={{ marginBottom: 10 }} key={`data-disk-${id}`}>
+              {this.renderInstanceSnapshotDisk(disk)}
+            </div>
+          );
+        })}
+      </>
     );
   };
 
@@ -531,6 +551,15 @@ export class BaseStep extends Base {
       (this.sourceTypeIsImage ||
         (this.sourceTypeIsSnapshot && snapshotDisk === null))
     );
+  }
+
+  get hideInstanceSnapshotSystemDisk() {
+    return this.showSystemDisk || this.sourceTypeIsVolume;
+  }
+
+  get hideInstanceSnapshotDataDisk() {
+    if (this.hideInstanceSnapshotSystemDisk) return true;
+    return this.getSnapshotDataDisks().length === 0;
   }
 
   getFlavorComponent() {
@@ -669,8 +698,14 @@ export class BaseStep extends Base {
       {
         name: 'instanceSnapshotDisk',
         label: t('System Disk'),
-        hidden: this.showSystemDisk,
+        hidden: this.hideInstanceSnapshotSystemDisk,
         component: this.renderSnapshotDisk(),
+      },
+      {
+        name: 'instanceSnapshotDataDisk',
+        label: t('Required Data Disk'),
+        hidden: this.hideInstanceSnapshotDataDisk,
+        component: this.renderSnapshotDataDisk(),
       },
       {
         name: 'dataDisk',

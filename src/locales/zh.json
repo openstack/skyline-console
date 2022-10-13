@@ -1940,6 +1940,7 @@
   "Request ID": "请求ID",
   "Require": "强制",
   "Require(Need multithreading)": "Require（必须有多线程）",
+  "Required Data Disk": "所需数据盘",
   "Rescue": "救援",
   "Rescued": "已救援",
   "Rescuing": "救援中",
