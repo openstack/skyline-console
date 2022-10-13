@@ -19,6 +19,7 @@ function getChartData(data, device, devices) {
 
 const BaseCard = (props) => {
   const {
+    fetchPrometheusFunc,
     createFetchParams,
     handleDataParams,
     fetchDataParams,
@@ -38,7 +39,10 @@ const BaseCard = (props) => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchData = createFetchPrometheusClient(createFetchParams);
+  const fetchData = createFetchPrometheusClient(
+    createFetchParams,
+    fetchPrometheusFunc
+  );
 
   const dataHandler = createDataHandler(handleDataParams);
 
