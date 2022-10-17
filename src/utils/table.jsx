@@ -183,7 +183,7 @@ export const getIdRender = (value, copyable = true, isLink = true) => {
   return (
     <Paragraph
       copyable={{ text: value }}
-      className={classnames('no-wrap', 'no-margin-bottom')}
+      className={classnames('no-wrap', 'no-margin-bottom', 'inline-block')}
       onClick={onClick}
     >
       {shortRender}
