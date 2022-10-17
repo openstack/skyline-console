@@ -169,10 +169,22 @@ export const getIdRender = (value, copyable = true, isLink = true) => {
   if (!copyable) {
     return shortRender;
   }
+  const onClick = (e) => {
+    if (e) {
+      const { nodeName = '', className = '' } = e.target || {};
+      const isCopyClick =
+        nodeName === 'svg' ||
+        (isString(className) && className.includes('copy'));
+      if (isCopyClick && e.stopPropagation) {
+        return e.stopPropagation();
+      }
+    }
+  };
   return (
     <Paragraph
       copyable={{ text: value }}
       className={classnames('no-wrap', 'no-margin-bottom')}
+      onClick={onClick}
     >
       {shortRender}
     </Paragraph>
