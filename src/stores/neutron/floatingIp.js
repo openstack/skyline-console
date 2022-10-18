@@ -18,12 +18,15 @@ import { action, observable } from 'mobx';
 import globalRouterStore from 'stores/neutron/router';
 import globalServerStore from 'stores/nova/instance';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
-import globalQoSPolicyStore from 'stores/neutron/qos-policy';
 import { qosEndpoint } from 'client/client/constants';
 
 export class FloatingIpStore extends Base {
   get client() {
     return client.neutron.floatingips;
+  }
+
+  get qosClient() {
+    return client.neutron.qosPolicies;
   }
 
   get listFilterByProject() {
@@ -59,6 +62,19 @@ export class FloatingIpStore extends Base {
 
   async listDidFetch(items, allProjects, filters) {
     const { qos_policy_id } = filters;
+    const hasQos = items.find((it) => !!it.qos_policy_id);
+    if (hasQos && this.enableQos) {
+      const qosResult = await this.qosClient.list();
+      const { policies = [] } = qosResult || {};
+      items.forEach((it) => {
+        if (it.qos_policy_id) {
+          const qosItem = policies.find((p) => p.id === it.qos_policy_id);
+          if (qosItem) {
+            it.qos_policy_name = qosItem.name;
+          }
+        }
+      });
+    }
     if (!qos_policy_id) {
       return items;
     }
@@ -75,26 +91,17 @@ export class FloatingIpStore extends Base {
     timeFilter,
     ...filters
   } = {}) {
-    const qosReq = this.enableQos ? globalQoSPolicyStore.fetchList() : null;
-    const [qosResult, allData] = await Promise.all([
-      qosReq,
-      this.fetchListByPage({
-        limit,
-        page,
-        sortKey,
-        sortOrder,
-        conditions,
-        timeFilter,
-        ...filters,
-      }),
-    ]);
-    const qosPolicies = qosResult || [];
+    const allData = await this.fetchListByPage({
+      limit,
+      page,
+      sortKey,
+      sortOrder,
+      conditions,
+      timeFilter,
+      ...filters,
+    });
     const promises = [];
     allData.forEach((data) => {
-      const qos = qosPolicies.find((it) => it.id === data.qos_policy_id);
-      if (qos) {
-        data.qos_policy_name = qos.name;
-      }
       if (
         data.port_details &&
         data.port_details.device_owner === 'network:router_gateway'
