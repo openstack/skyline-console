@@ -35,7 +35,7 @@ export const networkColumns = (self) => [
   },
   {
     title: t('Is Current Project'),
-    dataIndex: 'project_id',
+    dataIndex: 'tenant_id',
     render: (value) => (value === self.currentProjectId ? t('Yes') : t('No')),
     hidden: self.isAdminPage,
     sorter: false,
