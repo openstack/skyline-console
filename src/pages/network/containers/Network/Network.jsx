@@ -121,7 +121,7 @@ export class Networks extends Base {
       return columns;
     }
     if (this.isProjectTab) {
-      return columns.filter((it) => it.dataIndex !== 'project_id');
+      return columns.filter((it) => it.dataIndex !== 'tenant_id');
     }
     if (this.isSharedTab) {
       return columns.filter((it) => it.dataIndex !== 'shared');
