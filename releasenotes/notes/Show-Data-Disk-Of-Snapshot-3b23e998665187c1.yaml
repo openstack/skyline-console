@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    `Bug #1992739 <https://bugs.launchpad.net/skyline-console/+bug/1992739>`_:
+
+    When the instance snapshot is used to create instance, if the instance
+    snapshot is associated with data disks, it is supported to show necessary
+    data disk information and make quota measurable.

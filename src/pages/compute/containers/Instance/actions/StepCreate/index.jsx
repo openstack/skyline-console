@@ -22,6 +22,7 @@ import globalProjectStore from 'stores/keystone/project';
 import classnames from 'classnames';
 import { isEmpty, isFinite, isString } from 'lodash';
 import { getUserData } from 'resources/nova/instance';
+import { getAllDataDisks } from 'resources/cinder/snapshot';
 import { getGiBValue } from 'utils/index';
 import Notify from 'components/Notify';
 import ConfirmStep from './ConfirmStep';
@@ -299,12 +300,14 @@ export class StepCreate extends StepAction {
       count = 1,
       source: { value: sourceValue } = {},
       instanceSnapshotDisk = {},
+      instanceSnapshotDataVolumes = [],
     } = data;
     const newCountMap = {};
     const newSizeMap = {};
     let totalNewCount = 0;
     let totalNewSize = 0;
-    if (sourceValue === 'instanceSnapshot' && instanceSnapshotDisk) {
+    const isSnapshotType = sourceValue === 'instanceSnapshot';
+    if (isSnapshotType && instanceSnapshotDisk) {
       const { size, typeOption: { label } = {} } = instanceSnapshotDisk;
       if (label) {
         newCountMap[label] = !newCountMap[label] ? 1 : newCountMap[label] + 1;
@@ -322,11 +325,19 @@ export class StepCreate extends StepAction {
       totalNewCount += 1 * count;
       totalNewSize += size * count;
     }
-    if (dataDisk) {
-      dataDisk.forEach((item) => {
-        if (item.value && item.value.type) {
-          const { size } = item.value;
-          const { label } = item.value.typeOption || {};
+    if (
+      dataDisk ||
+      (isSnapshotType && instanceSnapshotDataVolumes?.length > 0)
+    ) {
+      const allDataDisks = getAllDataDisks({
+        dataDisk,
+        instanceSnapshotDataVolumes,
+      });
+      allDataDisks.forEach((item) => {
+        const diskItem = item.value || {};
+        if (diskItem.type) {
+          const { size, typeOption } = diskItem;
+          const { label } = typeOption || {};
           newCountMap[label] = !newCountMap[label]
             ? 1 * count
             : newCountMap[label] + 1 * count;
