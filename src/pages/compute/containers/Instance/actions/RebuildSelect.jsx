@@ -72,7 +72,7 @@ export class Rebuild extends ModalAction {
   }
 
   getImages() {
-    this.imageStore.fetchList();
+    this.imageStore.fetchList({ all_projects: this.hasAdminRole });
   }
 
   get systemTabs() {
