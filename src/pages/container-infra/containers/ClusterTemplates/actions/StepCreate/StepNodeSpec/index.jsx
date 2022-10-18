@@ -27,6 +27,7 @@ import {
 export class StepNodeSpec extends Base {
   init() {
     this.getImageList();
+    this.getKeypairs();
   }
 
   get title() {
@@ -50,11 +51,19 @@ export class StepNodeSpec extends Base {
     this.updateDefaultValue();
   }
 
+  async getKeypairs() {
+    await globalKeypairStore.fetchList();
+  }
+
+  get keypairs() {
+    return globalKeypairStore.list.data || [];
+  }
+
   get acceptedImageOs() {
     const { context: { coe = '' } = {} } = this.props;
     let acceptedOs = [];
     if (coe === 'kubernetes') {
-      acceptedOs = ['fedora', 'coreos'];
+      acceptedOs = ['fedora', 'coreos', 'others'];
     } else if (['swarm', 'swarm-mode'].includes(coe)) {
       acceptedOs = ['fedora'];
     } else if (['mesos', 'dcos'].includes(coe)) {
@@ -83,7 +92,6 @@ export class StepNodeSpec extends Base {
     return (globalImageStore.list.data || [])
       .filter(
         (it) =>
-          it.owner === this.currentProjectId &&
           this.acceptedImageOs.includes(it.os_distro)
       )
       .filter((it) => getImageOS(it) === imageTab);
@@ -176,7 +184,7 @@ export class StepNodeSpec extends Base {
         name: 'keypairs',
         label: t('Keypair'),
         type: 'select-table',
-        data: this.keypairsList,
+        data: this.keypairs,
         isLoading: globalKeypairStore.list.isLoading,
         tip: t(
           'The SSH key is a way to remotely log in to the instance. The cloud platform only helps to keep the public key. Please keep your private key properly.'

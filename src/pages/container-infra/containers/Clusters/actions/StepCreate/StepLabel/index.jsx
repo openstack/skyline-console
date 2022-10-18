@@ -15,7 +15,6 @@
 import Base from 'components/Form';
 import { inject, observer } from 'mobx-react';
 import KeyValueInput from 'components/FormItem/KeyValueInput';
-import { admission_control_list } from 'resources/magnum/template';
 
 export class StepLabel extends Base {
   get title() {
@@ -24,20 +23,6 @@ export class StepLabel extends Base {
 
   get name() {
     return t('Labels');
-  }
-
-  get defaultValue() {
-    const values = {
-      additionalLabels: [
-        {
-          value: {
-            key: 'admission_control_list',
-            value: admission_control_list,
-          },
-        },
-      ],
-    };
-    return values;
   }
 
   get formItems() {
