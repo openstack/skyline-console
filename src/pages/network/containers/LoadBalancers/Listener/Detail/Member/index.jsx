@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { provisioningStatusCodes } from 'resources/octavia/lb';
 import globalPoolMemberStore from 'stores/octavia/pool-member';
+import { idNameColumn } from 'utils/table';
 import { actionConfigs, adminActions } from './Actions';
 
 export class Members extends Base {
@@ -61,17 +61,7 @@ export class Members extends Base {
   }
 
   getColumns = () => [
-    {
-      title: t('ID/Name'),
-      dataIndex: 'name',
-      stringify: (name, record) => name || record.id,
-      render: (name, item) => (
-        <>
-          {item.id}
-          <div>{name && `(${name})`}</div>
-        </>
-      ),
-    },
+    idNameColumn,
     {
       title: t('Status'),
       dataIndex: 'provisioning_status',
