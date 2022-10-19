@@ -172,8 +172,9 @@ export const getIdRender = (value, copyable = true, isLink = true) => {
   const onClick = (e) => {
     if (e) {
       const { nodeName = '', className = '' } = e.target || {};
+      const copyNodeNames = ['svg', 'path'];
       const isCopyClick =
-        nodeName === 'svg' ||
+        copyNodeNames.includes(nodeName) ||
         (isString(className) && className.includes('copy'));
       if (isCopyClick && e.stopPropagation) {
         return e.stopPropagation();
