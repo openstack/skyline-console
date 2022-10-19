@@ -17,6 +17,7 @@ import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
 import { physicalNodeTypes } from 'resources/nova/instance';
 import { Col, Row } from 'antd';
+import { getAllDataDisks } from 'resources/cinder/snapshot';
 
 export class ConfirmStep extends Base {
   init() {}
@@ -36,7 +37,7 @@ export class ConfirmStep extends Base {
   allowed = () => Promise.resolve();
 
   getDisk(diskInfo) {
-    const { size, typeOption, deleteTypeLabel } = diskInfo;
+    const { size, typeOption, deleteTypeLabel } = diskInfo || {};
     return `${typeOption.label} ${size}GiB ${deleteTypeLabel}`;
   }
 
@@ -66,8 +67,19 @@ export class ConfirmStep extends Base {
   getDataDisk() {
     if (!this.enableCinder) return null;
     const { context } = this.props;
-    const { dataDisk = [] } = context;
-    return dataDisk.map((it) => this.getDisk(it.value));
+    const {
+      dataDisk = [],
+      source: { value } = {},
+      instanceSnapshotDataVolumes = [],
+    } = context;
+    let allDataDisks = dataDisk;
+    if (
+      value === 'instanceSnapshot' &&
+      instanceSnapshotDataVolumes?.length > 0
+    ) {
+      allDataDisks = getAllDataDisks({ dataDisk, instanceSnapshotDataVolumes });
+    }
+    return allDataDisks.map((it) => this.getDisk(it.value));
   }
 
   getFlavor() {
@@ -213,6 +225,7 @@ export class ConfirmStep extends Base {
       {
         label: t('Data Disk'),
         value: this.getDataDisk(),
+        contentStyle: { display: 'inline-block' },
       },
       {
         label: t('Project'),

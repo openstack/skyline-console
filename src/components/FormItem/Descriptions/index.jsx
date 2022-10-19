@@ -16,7 +16,6 @@ import React, { Component } from 'react';
 import { Descriptions, Button } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
 import { isArray, isUndefined } from 'lodash';
-import { generateId } from 'utils/index';
 import styles from './index.less';
 
 export default class index extends Component {
@@ -26,7 +25,12 @@ export default class index extends Component {
     }
     if (isArray(value)) {
       // eslint-disable-next-line no-shadow
-      return value.map((it) => <div key={`value-${generateId()}`}>{it}</div>);
+      return value.map((it, itIndex) => (
+        <>
+          <div key={`value-${itIndex}`}>{it}</div>
+          {itIndex !== value.length - 1 && <br />}
+        </>
+      ));
     }
 
     return value;
@@ -49,18 +53,22 @@ export default class index extends Component {
 
   renderItem() {
     const { items } = this.props;
-    const desItems = items.map((it) => {
-      const { label, value, span } = it;
+    const desItems = items.map((it, iIndex) => {
+      const { label, value, span, contentStyle = {} } = it;
       const desContent = this.getValueContent(value);
       const options = {
         label,
-        key: `item-${generateId()}`,
+        key: `item-${label}-${iIndex}`,
         className: styles.label,
       };
       if (span) {
         options.span = span;
       }
-      return <Descriptions.Item {...options}>{desContent}</Descriptions.Item>;
+      return (
+        <Descriptions.Item contentStyle={contentStyle} {...options}>
+          {desContent}
+        </Descriptions.Item>
+      );
     });
     return (
       <Descriptions title={this.renderTitle()} colon={false}>

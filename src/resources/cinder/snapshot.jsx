@@ -14,6 +14,7 @@
 
 import globalVolumeTypeStore from 'stores/cinder/volume-type';
 import { toJS } from 'mobx';
+import { cloneDeep } from 'lodash';
 
 export const volumeTypes = () => {
   return (globalVolumeTypeStore.list.data || []).map((it) => ({
@@ -57,4 +58,16 @@ export const getInstanceSnapshotDataDisk = (disk) => {
     selfBdmData: dataDiskBdm,
   });
   return instanceSnapshotDataDisk;
+};
+
+export const getAllDataDisks = ({
+  dataDisk = [],
+  instanceSnapshotDataVolumes = [],
+}) => {
+  const allDataDisks = cloneDeep(dataDisk);
+  instanceSnapshotDataVolumes?.forEach((i) => {
+    const disk = getInstanceSnapshotDataDisk(i) || {};
+    allDataDisks.unshift({ value: disk });
+  });
+  return allDataDisks;
 };
