@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    `Feature #1990355 <https://bugs.launchpad.net/skyline-console/+bug/1990355>`_:
+
+    Support progress add abort when use modal form to download file:
+
+    * Support showing download progress when download file.
+
+    * Support abort request when download file.

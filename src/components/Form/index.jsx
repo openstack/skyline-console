@@ -268,6 +268,10 @@ export default class BaseForm extends React.Component {
     return null;
   }
 
+  get progressType() {
+    return 'upload';
+  }
+
   getRightExtraSpan() {
     return {
       left: 18,
@@ -368,7 +372,11 @@ export default class BaseForm extends React.Component {
   onCancel = () => {
     if (this.isSubmitting && this.cancel) {
       this.cancel();
-      Notify.success(t('Cancel upload successfully.'));
+      const message =
+        this.progressType === 'download'
+          ? t('Cancel download successfully.')
+          : t('Cancel upload successfully.');
+      Notify.success(message);
     }
   };
 
@@ -474,6 +482,21 @@ export default class BaseForm extends React.Component {
   getUploadRequestConf = () => {
     return {
       onUploadProgress: this.onUploadProgress,
+      cancelToken: this.cancelToken,
+    };
+  };
+
+  onDownloadProgress = (progressEvent) => {
+    const { loaded, total } = progressEvent;
+    const percent = Math.floor((loaded / total) * 100);
+    this.setState({
+      percent,
+    });
+  };
+
+  getDownloadRequestConf = () => {
+    return {
+      onDownloadProgress: this.onDownloadProgress,
       cancelToken: this.cancelToken,
     };
   };
@@ -653,9 +676,13 @@ export default class BaseForm extends React.Component {
       return;
     }
     const { percent } = this.state;
+    const message =
+      this.progressType === 'download'
+        ? t('Download progress')
+        : t('Upload progress');
     return (
       <div className={styles['submit-tip']}>
-        {t('Upload progress')}
+        {message}
         <div className={styles['progress-wrapper']}>
           <Progress percent={percent} size="small" />
         </div>
