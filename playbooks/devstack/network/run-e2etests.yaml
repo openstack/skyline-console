@@ -13,7 +13,7 @@
           # make e2e
           config_file="test/e2e/config/local_config.yaml"
           cp test/e2e/config/config-network.yaml $config_file
-          sed -i "s#baseUrl.*#baseUrl: https://127.0.0.1:9999#" $config_file
+          sed -i "s#baseUrl.*#baseUrl: http://127.0.0.1:9999#" $config_file
           sed -i "s/- neutron::qos/# - neutron::qos/" $config_file
           sed -i "s/- neutron::vpn/# - neutron::vpn/" $config_file
           sed -i "s/- neutron::port-forwarding/# - neutron::port-forwarding/" $config_file

@@ -13,7 +13,7 @@
           # make e2e
           config_file="test/e2e/config/local_config.yaml"
           cp test/e2e/config/config-other.yaml $config_file
-          sed -i "s#baseUrl.*#baseUrl: https://127.0.0.1:9999#" $config_file
+          sed -i "s#baseUrl.*#baseUrl: http://127.0.0.1:9999#" $config_file
           sed -i "s/- heat/# - heat/" $config_file
           sed -i "s/- zun/# - zun/" $config_file
           sed -i "s/- manila/# - manila/" $config_file
