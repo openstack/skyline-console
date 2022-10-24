@@ -40,8 +40,8 @@ const ChartCard = (props) => {
 
     scale.x = merge(
       {},
-      getXScale(props.fetchDataParams.currentRange),
-      scale.x || {}
+      scale.x || {},
+      getXScale(props.fetchDataParams.currentRange)
     );
 
     let lineProps;
