@@ -14,6 +14,7 @@
 
 import React from 'react';
 import Progress from 'components/Progress';
+import { isNumber } from 'lodash';
 
 export const poolColumns = [
   {
@@ -34,7 +35,7 @@ export const poolColumns = [
     dataIndex: 'usedGBPercent',
     isHideable: true,
     render: (value, record) =>
-      value ? (
+      isNumber(value) ? (
         <Progress
           value={value}
           label={`${record.usedGB} / ${record.total_capacity_gb}`}
@@ -43,7 +44,7 @@ export const poolColumns = [
         '-'
       ),
     stringify: (value, record) =>
-      value
+      isNumber(value)
         ? `${value}% (${t('Used')}: ${record.usedGB} / ${t('Total')}: ${
             record.total_capacity_gb
           })`
