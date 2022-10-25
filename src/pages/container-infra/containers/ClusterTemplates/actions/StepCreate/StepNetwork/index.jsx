@@ -170,7 +170,6 @@ export class StepNetwork extends Base {
         backendPageStore: this.externalNetworkStore,
         extraParams: {
           'router:external': true,
-          project_id: this.currentProjectId,
         },
         required: true,
         loading: this.externalNetworkStore.list.isLoading,

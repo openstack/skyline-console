@@ -100,8 +100,8 @@ export class StepCreate extends StepAction {
       name: values.name,
       labels: {
         ...requestLabels,
-        auto_healing_enabled: `${auto_healing_enabled}`,
-        auto_scaling_enabled: `${auto_scaling_enabled}`,
+        auto_healing_enabled: `${auto_healing_enabled ? true : false}`,
+        auto_scaling_enabled: `${auto_scaling_enabled ? true : false}`,
       },
       master_flavor_id: masterFlavor.selectedRowKeys[0],
       flavor_id: flavor.selectedRowKeys[0],
