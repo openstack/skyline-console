@@ -92,9 +92,11 @@ export default class index extends Component {
     };
     return (
       <Upload {...props}>
-        <Button>
-          <UploadOutlined /> {t('Click to Upload')}
-        </Button>
+        {this.props.children || (
+          <Button>
+            <UploadOutlined /> {t('Click to Upload')}
+          </Button>
+        )}
       </Upload>
     );
   }
