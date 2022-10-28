@@ -163,6 +163,18 @@ export default class BaseForm extends React.Component {
     return false;
   }
 
+  get hasFooter() {
+    return !(this.isStep || this.isModal);
+  }
+
+  get formStyle() {
+    return {};
+  }
+
+  get footerStyle() {
+    return {};
+  }
+
   get labelCol() {
     return {
       xs: { span: 5 },
@@ -554,7 +566,7 @@ export default class BaseForm extends React.Component {
   }
 
   renderFooter() {
-    if (this.isStep || this.isModal) {
+    if (!this.hasFooter) {
       return null;
     }
     const footerStyle = {};
@@ -564,7 +576,10 @@ export default class BaseForm extends React.Component {
       footerStyle.bottom = height;
     }
     return (
-      <div className={styles.footer} style={footerStyle}>
+      <div
+        className={styles.footer}
+        style={{ ...footerStyle, ...this.footerStyle }}
+      >
         <div className={styles['footer-left']}>{this.renderFooterLeft()}</div>
         <div className={classnames(styles.btns, 'footer-btns')}>
           <Button
@@ -754,7 +769,10 @@ export default class BaseForm extends React.Component {
     const formDiv = (
       <Spin spinning={this.isSubmitting} tip={this.renderSubmittingTip()}>
         {this.renderRightTopExtra()}
-        <div className={classnames(styles.form, 'sl-form')} style={formStyle}>
+        <div
+          className={classnames(styles.form, 'sl-form')}
+          style={{ ...formStyle, ...this.formStyle }}
+        >
           {this.renderForms()}
         </div>
         {this.renderFooter()}
