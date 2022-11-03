@@ -80,13 +80,20 @@ export default class index extends Component {
 
   render() {
     const { key, value } = this.state;
-    const { keyReadonly, valueReadonly, keySpan, valueSpan } = this.props;
+    const {
+      keyReadonly,
+      valueReadonly,
+      keySpan,
+      valueSpan,
+      keyPlaceholder = t('Please input key'),
+      valuePlaceholder = t('Please input value'),
+    } = this.props;
     return (
       <Row>
         <Col span={keySpan || 4}>
           <Input
             value={key}
-            placeholder={t['Please input key']}
+            placeholder={keyPlaceholder}
             onChange={this.onKeyChange}
             readOnly={keyReadonly}
             required
@@ -98,7 +105,7 @@ export default class index extends Component {
         <Col span={valueSpan || 8}>
           <Input
             value={value}
-            placeholder={t['Please input key']}
+            placeholder={valuePlaceholder}
             onChange={this.onValueChange}
             readOnly={valueReadonly}
             required

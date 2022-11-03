@@ -24,7 +24,7 @@ import { firstUpperCase, allSettled } from 'utils';
 import styles from './index.less';
 
 function getDefaultMsg(action, data) {
-  const { actionName, title } = action;
+  const { actionName = '', title = '' } = action;
   const name = isArray(data) ? data.map((it) => it.name).join(', ') : data.name;
   const submitErrorMsg = t('Unable to {action} {name}.', {
     action: actionName.toLowerCase() || title,
