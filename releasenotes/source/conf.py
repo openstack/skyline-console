@@ -42,7 +42,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'Skyline Console Release Notes'
-copyright = u'2022, Skyline Console developers'
+copyright = '2022, Skyline Console developers'
 # openstackdocstheme options
 openstackdocs_repo_name = 'openstack/skyline-console'
 openstackdocs_bug_project = 'skyline-apiserver'
