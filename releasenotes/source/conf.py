@@ -174,8 +174,8 @@ htmlhelp_basename = 'SkylineConsoleReleaseNotesdoc'
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'SkylineConsoleReleaseNotes.tex', u'Skyline Console Release Notes Documentation',
-   u'Skyline Console developers', 'manual'),
+  ('index', 'SkylineConsoleReleaseNotes.tex', 'Skyline Console Release Notes Documentation',
+   'Skyline Console developers', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -204,8 +204,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'skylineconsolereleasenotes', u'Skyline Console Release Notes Documentation',
-     [u'Skyline Console developers'], 1)
+    ('index', 'skylineconsolereleasenotes', 'Skyline Console Release Notes Documentation',
+     ['Skyline Console developers'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -218,8 +218,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'SkylineConsoleReleaseNotes', u'Skyline Console Release Notes Documentation',
-   u'Skyline Console developers', 'SkylineConsoleReleaseNotes', 'One line description of project.',
+  ('index', 'SkylineConsoleReleaseNotes', 'Skyline Console Release Notes Documentation',
+   'Skyline Console developers', 'SkylineConsoleReleaseNotes', 'One line description of project.',
    'Miscellaneous'),
 ]
 

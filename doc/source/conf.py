@@ -209,8 +209,8 @@ htmlhelp_basename = 'SkylineConsoledoc'
 # (source start file, target name, title, author, documentclass
 # [howto/manual]).
 latex_documents = [
-    ('index', 'doc-skyline-console.tex', u'Skyline Console Developer Documentation',
-     u'Skyline Console contributors', 'manual'),
+    ('index', 'doc-skyline-console.tex', 'Skyline Console Developer Documentation',
+     'Skyline Console contributors', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
