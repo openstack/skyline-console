@@ -111,7 +111,7 @@ export class BaseDetail extends Base {
         dataIndex: 'docker_volume_size',
       },
       {
-        label: t('Master Flavor ID'),
+        label: t('Master Node Flavor ID'),
         content: masterFlavorUrl,
       },
       {
@@ -149,7 +149,7 @@ export class BaseDetail extends Base {
         dataIndex: 'api_address',
       },
       {
-        label: t('Master Addresses'),
+        label: t('Master Node Addresses'),
         dataIndex: 'master_addresses',
         render: (value) =>
           value && value.length ? value.map((it) => <div>{it}</div>) : '-',
@@ -192,7 +192,7 @@ export class BaseDetail extends Base {
     ];
 
     return {
-      title: t('Labels'),
+      title: t('Additional Labels'),
       labelCol: 2,
       options,
     };

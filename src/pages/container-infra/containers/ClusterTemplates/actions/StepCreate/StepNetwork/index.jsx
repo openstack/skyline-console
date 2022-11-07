@@ -266,7 +266,7 @@ export class StepNetwork extends Base {
       },
       {
         name: 'master_lb_enabled',
-        label: t('Master LB'),
+        label: t('Master Node LB'),
         type: 'check',
       },
       {

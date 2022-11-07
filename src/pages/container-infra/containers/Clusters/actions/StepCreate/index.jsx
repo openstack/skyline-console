@@ -51,15 +51,15 @@ export class StepCreate extends StepAction {
   get steps() {
     return [
       {
-        title: t('Info *'),
+        title: t('Cluster Info'),
         component: StepInfo,
       },
       {
-        title: t('Node Spec *'),
+        title: t('Node Spec'),
         component: StepNodeSpec,
       },
       {
-        title: t('Networks'),
+        title: t('Network Setting'),
         component: StepNetworks,
       },
       {
@@ -67,7 +67,7 @@ export class StepCreate extends StepAction {
         component: StepManagement,
       },
       {
-        title: t('Labels'),
+        title: t('Additional Labels'),
         component: StepLabel,
       },
     ];
@@ -100,8 +100,8 @@ export class StepCreate extends StepAction {
       name: values.name,
       labels: {
         ...requestLabels,
-        auto_healing_enabled: `${auto_healing_enabled ? true : false}`,
-        auto_scaling_enabled: `${auto_scaling_enabled ? true : false}`,
+        auto_healing_enabled: `${!!auto_healing_enabled}`,
+        auto_scaling_enabled: `${!!auto_scaling_enabled}`,
       },
       master_flavor_id: masterFlavor.selectedRowKeys[0],
       flavor_id: flavor.selectedRowKeys[0],

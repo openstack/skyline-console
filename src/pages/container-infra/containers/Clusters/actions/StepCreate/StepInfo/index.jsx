@@ -37,7 +37,12 @@ export class StepInfo extends Base {
   }
 
   get clusterTemplates() {
-    return globalClusterTemplateStore.list.data || [];
+    const templates = globalClusterTemplateStore.list.data || [];
+    const { template } = this.locationParams;
+    if (template) {
+      return templates.filter((it) => it.uuid === template);
+    }
+    return templates;
   }
 
   async getKeypairs() {
@@ -46,6 +51,16 @@ export class StepInfo extends Base {
 
   get keypairs() {
     return globalKeypairStore.list.data || [];
+  }
+
+  get defaultValue() {
+    const { template } = this.locationParams;
+    if (template) {
+      return {
+        clusterTemplate: { selectedRowKeys: [template] },
+      };
+    }
+    return {};
   }
 
   get formItems() {
@@ -80,7 +95,7 @@ export class StepInfo extends Base {
         data: this.keypairs,
         isLoading: globalKeypairStore.list.isLoading,
         tip: t(
-          'The SSH key is a way to remotely log in to the instance. The cloud platform only helps to keep the public key. Please keep your private key properly.'
+          'The SSH key is a way to remotely log in to the cluster instance. The cloud platform only helps to keep the public key. Please keep your private key properly.'
         ),
         filterParams: [
           {

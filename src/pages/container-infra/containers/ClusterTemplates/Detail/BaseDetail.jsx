@@ -114,7 +114,7 @@ export class BaseDetail extends Base {
         dataIndex: 'dns_nameserver',
       },
       {
-        label: t('Master LB Enabled'),
+        label: t('Master Node LB Enabled'),
         dataIndex: 'master_lb_enabled',
         valueRender: 'yesNo',
       },
@@ -172,7 +172,7 @@ export class BaseDetail extends Base {
         content: flavorUrl,
       },
       {
-        label: t('Master Flavor ID'),
+        label: t('Master Node Flavor ID'),
         content: masterFlavorUrl,
       },
       {
@@ -222,7 +222,7 @@ export class BaseDetail extends Base {
     ];
 
     return {
-      title: t('Labels'),
+      title: t('Additional Labels'),
       labelCol: 2,
       options,
     };

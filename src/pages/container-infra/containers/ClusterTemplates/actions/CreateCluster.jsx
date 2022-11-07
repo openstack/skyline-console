@@ -1,3 +1,5 @@
+// Copyright 2021 99cloud
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -9,18 +11,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import Create from './StepCreate';
-import Delete from './Delete';
-import Edit from './Edit';
-import CreateCluster from './CreateCluster';
 
-const actionConfigs = {
-  rowActions: {
-    firstAction: Delete,
-    moreActions: [{ action: Edit }, { action: CreateCluster }],
-  },
-  batchActions: [Delete],
-  primaryActions: [Create],
-};
+import { inject, observer } from 'mobx-react';
+import Base from 'pages/container-infra/containers/Clusters/actions/StepCreate';
 
-export default actionConfigs;
+export class CreateCluster extends Base {
+  static path(item) {
+    return `/container-infra/clusters/create?template=${item.id}`;
+  }
+}
+
+export default inject('rootStore')(observer(CreateCluster));

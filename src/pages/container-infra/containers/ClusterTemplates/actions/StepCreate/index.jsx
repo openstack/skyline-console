@@ -74,19 +74,19 @@ export class StepCreate extends StepAction {
   get steps() {
     return [
       {
-        title: t('Info *'),
+        title: t('Cluster Info'),
         component: StepInfo,
       },
       {
-        title: t('Node Spec *'),
+        title: t('Node Spec'),
         component: StepNodeSpec,
       },
       {
-        title: t('Network'),
+        title: t('Network Setting'),
         component: StepNetwork,
       },
       {
-        title: t('Labels'),
+        title: t('Additional Labels'),
         component: StepLabel,
       },
     ];

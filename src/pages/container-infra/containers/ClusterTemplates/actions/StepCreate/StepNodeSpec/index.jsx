@@ -90,10 +90,7 @@ export class StepNodeSpec extends Base {
   get imageList() {
     const { imageTab } = this.state;
     return (globalImageStore.list.data || [])
-      .filter(
-        (it) =>
-          this.acceptedImageOs.includes(it.os_distro)
-      )
+      .filter((it) => this.acceptedImageOs.includes(it.os_distro))
       .filter((it) => getImageOS(it) === imageTab);
   }
 
@@ -187,7 +184,7 @@ export class StepNodeSpec extends Base {
         data: this.keypairs,
         isLoading: globalKeypairStore.list.isLoading,
         tip: t(
-          'The SSH key is a way to remotely log in to the instance. The cloud platform only helps to keep the public key. Please keep your private key properly.'
+          'The SSH key is a way to remotely log in to the cluster instance. The cloud platform only helps to keep the public key. Please keep your private key properly.'
         ),
         filterParams: [
           {
@@ -208,13 +205,13 @@ export class StepNodeSpec extends Base {
       },
       {
         name: 'flavor',
-        label: t('Flavor'),
+        label: t('Node Flavor'),
         type: 'select-table',
         component: <FlavorSelectTable onChange={this.onFlavorChange} />,
       },
       {
         name: 'masterFlavor',
-        label: t('Master Flavor'),
+        label: t('Flavor of Master Nodes'),
         type: 'select-table',
         component: <FlavorSelectTable onChange={this.onFlavorChange} />,
       },

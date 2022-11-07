@@ -65,6 +65,7 @@ export class StepInfo extends Base {
         label: t('Cluster Template Name'),
         type: 'input',
         placeholder: t('Cluster Template Name'),
+        required: true,
       },
       {
         name: 'coe',

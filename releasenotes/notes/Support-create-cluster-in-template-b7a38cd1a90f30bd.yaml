@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Support create cluster instance from template list
+
+    1. Add create cluster action from magnum template list
+
+    2. It is convenient and quick to use templates to create cluster instances
