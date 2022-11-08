@@ -72,10 +72,7 @@ module.exports = {
             },
           },
         ],
-        include: [
-          root('src/asset/image/logo-small.svg'),
-          root('src/asset/image/logo-extend.svg'),
-        ],
+        include: [root('src/asset/image/cloud-logo.svg')],
       },
       {
         test: /\.(woff|woff2|ttf|eot|svg)$/,
@@ -88,10 +85,7 @@ module.exports = {
             },
           },
         ],
-        exclude: [
-          root('src/asset/image/logo-small.svg'),
-          root('src/asset/image/logo-extend.svg'),
-        ],
+        exclude: [root('src/asset/image/cloud-logo.svg')],
       },
     ],
   },

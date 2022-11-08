@@ -93,6 +93,10 @@ export class BaseLayout extends Component {
     return ret;
   }
 
+  get globalNav() {
+    return this.menu;
+  }
+
   get menu() {
     const menu = this.filterMenuByHidden(this.originMenu);
     const newMenu = this.getMenuAllowed(menu);
@@ -246,20 +250,18 @@ export class BaseLayout extends Component {
     <GlobalHeader
       {...this.props}
       isAdminPage={this.isAdminPage}
+      navItems={this.globalNav}
       isUserCenterPage={this.isUserCenterPage}
     />
   );
 
   render() {
-    const { collapsed } = this.state;
     const { pathname } = this.props.location;
     const currentRoutes = this.getCurrentMenu(pathname);
     return (
       <div className={styles['base-layout']}>
         {this.renderNotice()}
-        <Header
-          className={collapsed ? styles['header-collapsed'] : styles.header}
-        >
+        <Header className={styles.header}>
           {/* {this.renderLogo()} */}
           {this.renderHeader()}
         </Header>

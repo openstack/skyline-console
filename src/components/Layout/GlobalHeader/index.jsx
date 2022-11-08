@@ -13,14 +13,41 @@
 // limitations under the License.
 
 import React from 'react';
-import RightContent from './RightContent';
+import { Link } from 'react-router-dom';
+import cloudLogo from 'asset/image/cloud-logo.svg';
+import { getPath } from 'utils/route-map';
+import classnames from 'classnames';
+import GlobalNav from '../GlobalNav';
 import ProjectDropdown from './ProjectDropdown';
+import RightContent from './RightContent';
 import styles from './index.less';
 
 export default function HeaderContent(props) {
-  const { isAdminPage = false } = props;
+  const { isAdminPage = false, navItems = [] } = props;
+
+  const getRouteName = (routeName) =>
+    isAdminPage ? `${routeName}Admin` : routeName;
+
+  const getRoutePath = (routeName, params = {}, query = {}) => {
+    const realName = getRouteName(routeName);
+    return getPath({ key: realName, params, query });
+  };
+
+  const renderLogo = () => {
+    const homeUrl = getRoutePath('overview');
+    return (
+      <div className={classnames(styles.logo)}>
+        <Link to={homeUrl}>
+          <img src={cloudLogo} alt="logo" className={styles['logo-image']} />
+        </Link>
+      </div>
+    );
+  };
+
   return (
     <div className={styles.header}>
+      <GlobalNav navItems={navItems} />
+      {renderLogo()}
       {!isAdminPage && <ProjectDropdown />}
       <RightContent {...props} />
     </div>

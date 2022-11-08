@@ -7,12 +7,12 @@
 .header {
   top: 0;
   left: 0;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: @header-height;
   padding: 0;
-  padding-left: 230px;
   color: @white;
 }
 
@@ -247,10 +247,10 @@
 
 .base-layout-sider {
   position: absolute;
-  top: 0;
+  top: @header-height;
   bottom: 0;
   left: 0;
-  z-index: 999;
+  z-index: 1;
   width: 230px;
   background-color: @sider-background;
   transition: all 0.2s;

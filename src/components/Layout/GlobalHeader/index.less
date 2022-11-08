@@ -108,7 +108,7 @@
   z-index: 200;
   flex-grow: 1;
   height: 100%;
-  padding-left: 36px;
+  padding-left: 0;
   overflow: hidden;
   color: @title-color;
   background-color: #fff;
@@ -173,5 +173,17 @@
     background: hsla(0%, 0%, 58.8%, 10%);
     border: 1px solid hsla(0%, 0%, 39.2%, 20%);
     border-radius: 3px;
+  }
+}
+
+.logo {
+  // margin: @size-medium 38px;
+  float: left;
+  height: @header-height;
+  padding: 0 46px;
+  line-height: @header-height;
+
+  img {
+    height: 30px;
   }
 }

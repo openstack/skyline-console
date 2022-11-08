@@ -15,12 +15,9 @@
 import React, { Component } from 'react';
 import { Menu, Tooltip } from 'antd';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { toJS } from 'mobx';
 import classnames from 'classnames';
-import logoSmall from 'asset/image/logo-small.svg';
-import logoExtend from 'asset/image/logo-extend.svg';
 import { getPath } from 'utils/route-map';
 import styles from './index.less';
 
@@ -65,10 +62,6 @@ export class LayoutMenu extends Component {
   onCollapse = (collapsed) => {
     this.setState({ collapsed });
   };
-
-  getImage(isExtend) {
-    return !isExtend ? logoSmall : logoExtend;
-  }
 
   changeCollapse = () => {
     const { collapsed } = this.state;
@@ -235,25 +228,6 @@ export class LayoutMenu extends Component {
     );
   }
 
-  renderLogo() {
-    const { collapsed, hover } = this.state;
-    const isExtend = !collapsed || hover;
-    const imageSvg = this.getImage(isExtend);
-    const homeUrl = this.getRoutePath('overview');
-    return (
-      <div
-        className={classnames(
-          styles.logo,
-          !isExtend ? styles['logo-collapse'] : ''
-        )}
-      >
-        <Link to={homeUrl}>
-          <img src={imageSvg} alt="logo" className={styles['logo-image']} />
-        </Link>
-      </div>
-    );
-  }
-
   render() {
     const { currentRoutes } = this.props;
     const selectedKeys = this.getSelectedKeys(currentRoutes);
@@ -270,7 +244,6 @@ export class LayoutMenu extends Component {
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
       >
-        {this.renderLogo()}
         {this.renderMenu(selectedKeys)}
         {trigger}
       </div>
