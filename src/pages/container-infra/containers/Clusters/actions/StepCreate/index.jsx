@@ -103,12 +103,21 @@ export class StepCreate extends StepAction {
         auto_healing_enabled: `${!!auto_healing_enabled}`,
         auto_scaling_enabled: `${!!auto_scaling_enabled}`,
       },
-      master_flavor_id: masterFlavor.selectedRowKeys[0],
-      flavor_id: flavor.selectedRowKeys[0],
       cluster_template_id: clusterTemplate.selectedRowKeys[0],
-      keypair: keypair.selectedRowKeys[0],
       ...rest,
     };
+
+    if (keypair) {
+      data.keypair = keypair.selectedRowKeys[0];
+    }
+
+    if (masterFlavor) {
+      data.master_flavor_id = masterFlavor.selectedRowKeys[0];
+    }
+
+    if (flavor) {
+      data.flavor_id = flavor.selectedRowKeys[0];
+    }
 
     if (!newNetwork && fixed_network) {
       const { selectedRowKeys = [] } = fixed_network;

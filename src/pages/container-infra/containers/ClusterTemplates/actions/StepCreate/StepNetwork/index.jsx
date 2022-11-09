@@ -266,13 +266,17 @@ export class StepNetwork extends Base {
       },
       {
         name: 'master_lb_enabled',
-        label: t('Master Node LB'),
+        label: t('Enable Load Balancer'),
         type: 'check',
+        content: t('Enabled Load Balancer for Master Nodes'),
       },
       {
         name: 'floating_ip_enabled',
-        label: t('Floating IP'),
+        label: t('Enable Floating IP'),
         type: 'check',
+        tip: t(
+          'Whether enable or not using the floating IP of cloud provider.'
+        ),
       },
     ];
   }

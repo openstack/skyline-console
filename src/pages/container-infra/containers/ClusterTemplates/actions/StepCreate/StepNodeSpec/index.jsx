@@ -18,11 +18,7 @@ import Base from 'components/Form';
 import globalImageStore from 'src/stores/glance/image';
 import globalKeypairStore from 'src/stores/nova/keypair';
 import FlavorSelectTable from 'src/pages/compute/containers/Instance/components/FlavorSelectTable';
-import {
-  getImageColumns,
-  getImageSystemTabs,
-  getImageOS,
-} from 'resources/glance/image';
+import { getImageColumns } from 'resources/glance/image';
 
 export class StepNodeSpec extends Base {
   init() {
@@ -47,7 +43,7 @@ export class StepNodeSpec extends Base {
   }
 
   async getImageList() {
-    await globalImageStore.fetchList();
+    await globalImageStore.fetchList({ all_projects: this.hasAdminRole });
     this.updateDefaultValue();
   }
 
@@ -63,10 +59,10 @@ export class StepNodeSpec extends Base {
     const { context: { coe = '' } = {} } = this.props;
     let acceptedOs = [];
     if (coe === 'kubernetes') {
-      acceptedOs = ['fedora', 'coreos', 'others'];
+      acceptedOs = ['fedora-coreos'];
     } else if (['swarm', 'swarm-mode'].includes(coe)) {
-      acceptedOs = ['fedora'];
-    } else if (['mesos', 'dcos'].includes(coe)) {
+      acceptedOs = ['fedora-atomic'];
+    } else {
       acceptedOs = ['ubuntu'];
     }
     return acceptedOs;
@@ -76,22 +72,11 @@ export class StepNodeSpec extends Base {
     return getImageColumns(this);
   }
 
-  get systemTabs() {
-    const imageTabs = getImageSystemTabs();
-    return imageTabs.filter((it) => this.acceptedImageOs.includes(it.value));
-  }
-
-  onImageTabChange = (value) => {
-    this.setState({
-      imageTab: value,
-    });
-  };
-
   get imageList() {
-    const { imageTab } = this.state;
-    return (globalImageStore.list.data || [])
-      .filter((it) => this.acceptedImageOs.includes(it.os_distro))
-      .filter((it) => getImageOS(it) === imageTab);
+    return (globalImageStore.list.data || []).filter((it) => {
+      const { originData: { os_distro } = {} } = it;
+      return this.acceptedImageOs.includes(os_distro);
+    });
   }
 
   get volumeDrivers() {
@@ -172,10 +157,6 @@ export class StepNodeSpec extends Base {
           },
         ],
         columns: this.imageColumns,
-        tabs: this.systemTabs,
-        defaultTabValue: this.systemTabs[0].value,
-        onTabChange: this.onImageTabChange,
-        imageTabAuto: true,
       },
       {
         name: 'keypairs',
@@ -205,7 +186,7 @@ export class StepNodeSpec extends Base {
       },
       {
         name: 'flavor',
-        label: t('Node Flavor'),
+        label: t('Flavor of Nodes'),
         type: 'select-table',
         component: <FlavorSelectTable onChange={this.onFlavorChange} />,
       },

@@ -53,6 +53,13 @@ export class StepInfo extends Base {
     return globalKeypairStore.list.data || [];
   }
 
+  handleTemplateChange = (e) => {
+    const { selectedRows = [] } = e;
+    this.setState({
+      clusterTemplate: selectedRows[0],
+    });
+  };
+
   get defaultValue() {
     const { template } = this.locationParams;
     if (template) {
@@ -64,6 +71,9 @@ export class StepInfo extends Base {
   }
 
   get formItems() {
+    const { clusterTemplate } = this.state;
+    const { keypair_id } = clusterTemplate || {};
+
     return [
       {
         name: 'name',
@@ -86,16 +96,17 @@ export class StepInfo extends Base {
           },
         ],
         columns: getBaseTemplateColumns(this),
+        onChange: this.handleTemplateChange,
       },
       {
         name: 'keypair',
         label: t('Keypair'),
         type: 'select-table',
-        required: true,
+        required: !keypair_id,
         data: this.keypairs,
         isLoading: globalKeypairStore.list.isLoading,
         tip: t(
-          'The SSH key is a way to remotely log in to the cluster instance. The cloud platform only helps to keep the public key. Please keep your private key properly.'
+          'The SSH key is a way to remotely log in to the cluster instance. If it’s not set, the value of this in template will be used.'
         ),
         filterParams: [
           {
