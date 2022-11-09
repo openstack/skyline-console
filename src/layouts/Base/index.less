@@ -19,7 +19,7 @@
 .header-collapsed {
   &:extend(.header);
 
-  padding-left: 88px;
+  padding-left: 40px;
 }
 
 .logo {
@@ -252,16 +252,24 @@
   left: 0;
   z-index: 1;
   width: 230px;
+  padding-top: 10px;
   background-color: @sider-background;
   transition: all 0.2s;
 }
 
 .base-layout-sider-collapsed {
-  width: 88px;
+  width: 40px;
   transition: all 0.2s;
-  // &:hover {
-  //   width: 220px;
-  // }
+
+  .menu-collapsed {
+    padding-right: 0;
+    padding-left: 0;
+
+    .menu-item-collapsed {
+      padding-left: 12px !important;
+      text-overflow: inherit;
+    }
+  }
 }
 
 .base-layout-right {
@@ -273,12 +281,22 @@
 }
 
 .base-layout-right-collapsed {
-  left: 88px;
+  left: 40px;
 }
 
 .base-layout-sider-hover {
   width: 230px;
   transition: all 0.2s;
+
+  .menu-collapsed {
+    padding-right: 14px;
+    padding-left: 14px;
+
+    .menu-item-collapsed {
+      padding-left: 48px !important;
+      text-overflow: ellipsis;
+    }
+  }
 }
 
 .notice {

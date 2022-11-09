@@ -17,6 +17,7 @@ import { Menu, Tooltip } from 'antd';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { inject, observer } from 'mobx-react';
 import { toJS } from 'mobx';
+import { isString, isEqual } from 'lodash';
 import classnames from 'classnames';
 import { getPath } from 'utils/route-map';
 import styles from './index.less';
@@ -34,6 +35,18 @@ export class LayoutMenu extends Component {
     this.maxTitleLength = 17;
   }
 
+  componentDidMount() {
+    this.init();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { pathname } = this.props;
+    const { pathname: prevPathname } = prevProps;
+    if (prevPathname && pathname !== prevPathname) {
+      this.updateOpenKeysByRoute();
+    }
+  }
+
   get menu() {
     return this.props.menu || [];
   }
@@ -49,6 +62,13 @@ export class LayoutMenu extends Component {
   getRoutePath(routeName, params = {}, query = {}) {
     const realName = this.getRouteName(routeName);
     return getPath({ key: realName, params, query });
+  }
+
+  getOpenKeysByRoute() {
+    const { currentRoutes } = this.props;
+    const selectedKeys = this.getSelectedKeys(currentRoutes);
+    const currentOpenKeys = this.getCurrentOpenKeys(selectedKeys);
+    return currentOpenKeys;
   }
 
   get rootStore() {
@@ -78,7 +98,7 @@ export class LayoutMenu extends Component {
     if (collapsed) {
       const target = (e && e.target) || null;
       const className = target ? target.className || '' : '';
-      if (className.indexOf('trigger') < 0) {
+      if (isString(className) && !className.includes('trigger')) {
         this.setState({
           hover: true,
         });
@@ -107,7 +127,7 @@ export class LayoutMenu extends Component {
     const { collapsed, hover } = this.state;
     if (collapsed && !hover) {
       return (
-        <Menu.Item key={item.key} className={styles['menu-item']}>
+        <Menu.Item key={item.key} className={styles['menu-item-collapsed']}>
           {item.icon}
         </Menu.Item>
       );
@@ -160,23 +180,56 @@ export class LayoutMenu extends Component {
     );
   };
 
+  getFirstLevelKeys = (selectedKeys) => {
+    const fathers = this.menu.filter((it) => {
+      const { children = [] } = it;
+      if (!children.length) {
+        return selectedKeys.includes(it.key);
+      }
+      let hasFather = children.find((c) => selectedKeys.includes(c.key));
+      if (hasFather) {
+        return true;
+      }
+      children.forEach((c) => {
+        const { children: cc = [] } = c;
+        const child = cc.find((ccc) => selectedKeys.includes(ccc.key));
+        if (child) {
+          hasFather = true;
+        }
+      });
+      return hasFather;
+    });
+    return fathers.map((f) => f.key);
+  };
+
+  getSelectedKeysForMenu = (selectedKeys) => {
+    const { collapsed, hover } = this.state;
+    if (!collapsed || hover) {
+      return selectedKeys;
+    }
+    return this.getFirstLevelKeys(selectedKeys);
+  };
+
+  getCurrentOpenKeys = (selectedKeys) => {
+    return this.getFirstLevelKeys(selectedKeys);
+  };
+
   renderMenu = (selectedKeys = []) => {
-    const { openKeys } = this.state;
-    const { openKeys: defaultOpenKeys } = this.rootStore;
-    const newOpenKeys =
-      openKeys.length === 0 ? toJS(defaultOpenKeys) : openKeys;
+    const { collapsed } = this.state;
+    const { openKeys } = this.rootStore;
     const menuItems = this.menu
       .map((item) => this.renderMenuItem(item))
       .filter((it) => it !== null);
 
+    const newSelectedKeys = this.getSelectedKeysForMenu(selectedKeys);
     return (
       <Menu
         theme="dark"
         mode="inline"
-        className={styles.menu}
-        defaultSelectedKeys={selectedKeys}
-        selectedKeys={selectedKeys}
-        openKeys={newOpenKeys}
+        className={collapsed ? styles['menu-collapsed'] : styles.menu}
+        defaultSelectedKeys={newSelectedKeys}
+        selectedKeys={newSelectedKeys}
+        openKeys={openKeys}
         onOpenChange={this.onOpenChange}
       >
         {menuItems}
@@ -192,9 +245,13 @@ export class LayoutMenu extends Component {
     );
     const latestOpenKey = openKeys.find((key) => oldKeys.indexOf(key) === -1);
     const newKeys = latestOpenKey ? [latestOpenKey] : [];
-    this.rootStore.updateOpenKeys(newKeys);
+    this.updateOpenKeys(newKeys);
+  };
+
+  updateOpenKeys = (keys) => {
+    this.rootStore.updateOpenKeys(keys);
     this.setState({
-      openKeys: newKeys,
+      openKeys: keys,
     });
   };
 
@@ -210,6 +267,19 @@ export class LayoutMenu extends Component {
     }
     return [];
   };
+
+  updateOpenKeysByRoute() {
+    const currentOpenKeys = this.getOpenKeysByRoute();
+    const { openKeys: defaultOpenKeys } = this.rootStore;
+    if (!isEqual(currentOpenKeys, toJS(defaultOpenKeys))) {
+      this.init();
+    }
+  }
+
+  init() {
+    const currentOpenKeys = this.getOpenKeysByRoute();
+    this.updateOpenKeys(currentOpenKeys);
+  }
 
   renderTrigger() {
     const { collapsed } = this.state;
