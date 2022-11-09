@@ -16,6 +16,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
 import FlavorSelectTable from 'src/pages/compute/containers/Instance/components/FlavorSelectTable';
+import { defaultTip } from 'resources/magnum/cluster';
 
 export class StepNodeSpec extends Base {
   get title() {
@@ -46,6 +47,10 @@ export class StepNodeSpec extends Base {
   }
 
   get formItems() {
+    const { context: { clusterTemplate = {} } = {} } = this.props;
+    const { selectedRows = [] } = clusterTemplate;
+    const { master_flavor_id, flavor_id } = selectedRows[0] || {};
+
     return [
       {
         name: 'master_count',
@@ -59,24 +64,26 @@ export class StepNodeSpec extends Base {
         label: t('Flavor of Master Nodes'),
         type: 'select-table',
         component: this.getFlavorComponent(),
-        required: true,
+        required: !master_flavor_id,
+        tip: defaultTip,
       },
       {
         type: 'divider',
       },
       {
         name: 'node_count',
-        label: t('Number of Worker Nodes'),
+        label: t('Number of Nodes'),
         type: 'input-int',
         min: 1,
         required: true,
       },
       {
         name: 'flavor',
-        label: t('Flavor of Worker Nodes'),
+        label: t('Flavor of Nodes'),
         type: 'select-table',
         component: this.getFlavorComponent(),
-        required: true,
+        required: !flavor_id,
+        tip: defaultTip,
       },
     ];
   }

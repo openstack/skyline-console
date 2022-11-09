@@ -14,6 +14,7 @@
 
 import Base from 'components/Form';
 import { inject, observer } from 'mobx-react';
+import { defaultTip } from 'resources/magnum/cluster';
 
 export class StepNetworks extends Base {
   get title() {
@@ -45,6 +46,7 @@ export class StepNetworks extends Base {
         label: t('Enable Load Balancer'),
         type: 'check',
         content: t('Enabled Load Balancer for Master Nodes'),
+        tip: defaultTip,
       },
       {
         name: 'newNetwork',
@@ -65,9 +67,7 @@ export class StepNetworks extends Base {
         name: 'floating_ip_enabled',
         label: t('Enable Floating IP'),
         type: 'check',
-        tip: t(
-          'Whether enable or not using the floating IP of cloud provider. If it’s not set, the value of this in template will be used.'
-        ),
+        tip: defaultTip,
       },
     ];
   }
