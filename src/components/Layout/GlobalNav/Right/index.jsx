@@ -14,10 +14,13 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Input } from 'antd';
 import PropTypes from 'prop-types';
 import { navItemPropType } from '../common';
 
 import styles from './index.less';
+
+const { Search } = Input;
 
 export default class Right extends React.Component {
   static propTypes = {
@@ -27,6 +30,51 @@ export default class Right extends React.Component {
 
   static defaultProps = {
     items: [],
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentItems: props.items || [],
+    };
+  }
+
+  onInputChange = (e) => {
+    const { value } = e.target;
+    this.getNavItemsBySearch(value);
+  };
+
+  onSearch = (value) => {
+    this.getNavItemsBySearch(value);
+  };
+
+  getNavItemsBySearch = (search) => {
+    const checkWords = (search || '').toLowerCase().trim();
+    const { items } = this.props;
+    const currentItems = [];
+    items.forEach((first) => {
+      if (!checkWords) {
+        currentItems.push(first);
+      } else {
+        const { name, children = [] } = first;
+        if (name.toLowerCase().includes(checkWords)) {
+          currentItems.push(first);
+        } else {
+          const cItems = children.filter((c) => {
+            return c.name.toLowerCase().includes(checkWords);
+          });
+          if (cItems.length) {
+            currentItems.push({
+              ...first,
+              children: cItems,
+            });
+          }
+        }
+      }
+    });
+    this.setState({
+      currentItems,
+    });
   };
 
   renderNavItemChildren = (item) => {
@@ -59,15 +107,31 @@ export default class Right extends React.Component {
     );
   };
 
-  render() {
-    const { items } = this.props;
-    if (!items.length) {
-      return null;
-    }
-
+  renderSearch() {
     return (
-      <div className={styles.right} id="global-nav-right">
-        {items.map(this.renderNavItem)}
+      <div className={styles.search}>
+        <Search
+          placeholder={t('Search')}
+          allowClear
+          onChange={this.onInputChange}
+          onSearch={this.onSearch}
+        />
+      </div>
+    );
+  }
+
+  renderNavItems() {
+    const { currentItems = [] } = this.state;
+    return (
+      <div className={styles.right}>{currentItems.map(this.renderNavItem)}</div>
+    );
+  }
+
+  render() {
+    return (
+      <div id="global-nav-right">
+        {this.renderSearch()}
+        {this.renderNavItems()}
       </div>
     );
   }

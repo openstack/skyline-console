@@ -2034,6 +2034,7 @@
   "Saving": "保存中",
   "Scheduler Hints": "调度程序提示",
   "Scheduling": "调度中",
+  "Search": "搜索",
   "Sec for DPD delay, > 0": "设置DPD检查的最大延时时间。",
   "Sec for DPD timeout, > 0 & > DPD Interval": "设置DPD检查的超时时间，超时时间必须大于最大延迟时间。",
   "Security Group": "安全组",
