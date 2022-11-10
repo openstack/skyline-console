@@ -64,7 +64,7 @@ export const policyMap = {
   octavia: ['os_load-balancer_api'],
   // keystone: ['identity:'],
   heat: ['stacks:', 'resource:index'],
-  magnum: ['cluster', 'clustertemplate'],
+  magnum: ['cluster:', 'clustertemplate:'],
   barbican: [
     'secret:get',
     'secret:decrypt',

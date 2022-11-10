@@ -761,7 +761,6 @@
   "Docker Storage Driver": "Docker存储驱动",
   "Docker Swarm": "Docker Swarm",
   "Docker Swarm Mode": "Docker Swarm Mode",
-  "Docker Volume Size": "Docker硬盘大小",
   "Docker Volume Size (GiB)": "Docker硬盘大小(GiB)",
   "Domain": "域",
   "Domain Detail": "域详情",

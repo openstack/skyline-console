@@ -107,7 +107,7 @@ export class BaseDetail extends Base {
         content: keypairUrl,
       },
       {
-        label: t('Docker Volume Size'),
+        label: t('Docker Volume Size (GiB)'),
         dataIndex: 'docker_volume_size',
       },
       {

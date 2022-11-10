@@ -184,7 +184,7 @@ export class BaseDetail extends Base {
         dataIndex: 'docker_storage_driver',
       },
       {
-        label: t('Docker Volume Size'),
+        label: t('Docker Volume Size (GiB)'),
         dataIndex: 'docker_volume_size',
       },
       {

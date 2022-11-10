@@ -34,6 +34,8 @@ export class StepInfo extends Base {
 
   async getClustertemplates() {
     await globalClusterTemplateStore.fetchList();
+    this.updateDefaultValue();
+    this.updateState();
   }
 
   get clusterTemplates() {
@@ -53,18 +55,18 @@ export class StepInfo extends Base {
     return globalKeypairStore.list.data || [];
   }
 
-  handleTemplateChange = (e) => {
-    const { selectedRows = [] } = e;
-    this.setState({
-      clusterTemplate: selectedRows[0],
-    });
-  };
+  get nameForStateUpdate() {
+    return ['clusterTemplate'];
+  }
 
   get defaultValue() {
     const { template } = this.locationParams;
     if (template) {
       return {
-        clusterTemplate: { selectedRowKeys: [template] },
+        clusterTemplate: {
+          selectedRowKeys: [template],
+          selectedRows: this.clusterTemplates,
+        },
       };
     }
     return {};
@@ -96,7 +98,6 @@ export class StepInfo extends Base {
           },
         ],
         columns: getBaseTemplateColumns(this),
-        onChange: this.handleTemplateChange,
       },
       {
         name: 'keypair',
