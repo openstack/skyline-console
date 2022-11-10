@@ -1897,7 +1897,6 @@
   "Ram value is { ram }, NUMA RAM value is { totalRam }, need to be equal. ": "Ram value is { ram }, NUMA RAM value is { totalRam }, need to be equal. ",
   "Ramdisk ID": "Ramdisk ID",
   "Ramdisk Image": "Ramdisk Image",
-  "Read And Write": "Read And Write",
   "Read and write": "Read and write",
   "Read only": "Read only",
   "Real Name": "Real Name",
