@@ -48,7 +48,7 @@ const chartCardList = [
     },
   },
   {
-    title: t('Read And Write'),
+    title: t('Read and write'),
     createFetchParams: {
       metricKey: 'memcacheService.readWriteBytesTotal',
     },
