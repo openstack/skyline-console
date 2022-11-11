@@ -24,7 +24,10 @@ const { Search } = Input;
 
 export default class Right extends React.Component {
   static propTypes = {
-    items: PropTypes.arrayOf(navItemPropType),
+    items: PropTypes.oneOfType([
+      PropTypes.arrayOf(navItemPropType),
+      PropTypes.array,
+    ]),
     onClose: PropTypes.func,
   };
 
@@ -98,7 +101,7 @@ export default class Right extends React.Component {
     const { name = '' } = item || {};
 
     return (
-      <div className={styles['nav-item']}>
+      <div className={styles['nav-item']} key={item.name}>
         <div className={styles.title}>{name}</div>
         <div classnames={styles.children}>
           {this.renderNavItemChildren(item)}

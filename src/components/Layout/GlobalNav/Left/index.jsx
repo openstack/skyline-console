@@ -21,7 +21,10 @@ import styles from './index.less';
 
 export default class Left extends React.Component {
   static propTypes = {
-    items: PropTypes.arrayOf(navItemPropType),
+    items: PropTypes.oneOfType([
+      PropTypes.arrayOf(navItemPropType),
+      PropTypes.array,
+    ]),
     onClose: PropTypes.func,
   };
 

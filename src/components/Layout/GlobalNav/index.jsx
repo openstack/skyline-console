@@ -26,7 +26,10 @@ import styles from './index.less';
 
 export class GlobalNav extends React.Component {
   static propTypes = {
-    navItems: PropTypes.arrayOf(navItemPropType),
+    navItems: PropTypes.oneOfType([
+      PropTypes.arrayOf(navItemPropType),
+      PropTypes.array,
+    ]),
   };
 
   static defaultProps = {
