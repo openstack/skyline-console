@@ -15,6 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/TabDetail';
 import { VpnIPsecConnectionStore } from 'stores/neutron/vpn-ipsec-connection';
+import { vpnStatus } from 'resources/neutron/vpn';
 import BaseDetail from './BaseDetail';
 import { actionConfigs, adminConfigs } from '../actions';
 
@@ -60,6 +61,7 @@ export class IPsecSiteConnection extends Base {
       {
         title: t('Status'),
         dataIndex: 'status',
+        valueMap: vpnStatus,
       },
       {
         title: t('Local Endpoint Group ID'),
