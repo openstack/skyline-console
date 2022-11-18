@@ -23,4 +23,13 @@ const actionConfigs = {
   primaryActions: [Create],
 };
 
-export default actionConfigs;
+const actionConfigsAdmin = {
+  rowActions: {
+    firstAction: Delete,
+    moreActions: [],
+  },
+  batchActions: [Delete],
+  primaryActions: [],
+};
+
+export default { actionConfigs, actionConfigsAdmin };

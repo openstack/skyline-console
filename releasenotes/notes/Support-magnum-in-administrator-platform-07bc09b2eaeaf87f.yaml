@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Support magnum in administrator platform:
+
+    1. Show list and detail of cluster instance
+
+    2. Show list and detail of cluster template
+
+    3. Hide the keypair if in administrator platform

@@ -32,6 +32,7 @@ export const getBaseTemplateColumns = (self) => [
     title: t('Keypair'),
     isHideable: true,
     dataIndex: 'keypair_id',
+    hidden: self.isAdminPage,
     render: (value) => {
       return value
         ? self.getLinkRender('keypairDetail', value, { id: value })

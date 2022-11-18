@@ -88,14 +88,16 @@ const renderLabel = (option) => {
 };
 
 const renderOptions = (options, data, loading, labelCol, contentCol) =>
-  options.map((option, index) => (
-    <Skeleton loading={loading} key={`detail-row-${index}`}>
-      <Row className={classnames(styles['card-item'], 'sl-card-item')}>
-        <Col span={labelCol}>{renderLabel(option)}</Col>
-        <Col span={contentCol}>{getContent(data, option)}</Col>
-      </Row>
-    </Skeleton>
-  ));
+  options
+    .filter((option) => !option.hidden)
+    .map((option, index) => (
+      <Skeleton loading={loading} key={`detail-row-${index}`}>
+        <Row className={classnames(styles['card-item'], 'sl-card-item')}>
+          <Col span={labelCol}>{renderLabel(option)}</Col>
+          <Col span={contentCol}>{getContent(data, option)}</Col>
+        </Row>
+      </Skeleton>
+    ));
 
 const DetailCard = ({
   title,

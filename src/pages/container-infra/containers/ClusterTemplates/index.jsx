@@ -30,8 +30,15 @@ export class ClusterTemplates extends Base {
     return 'clustertemplate:get_all';
   }
 
+  get fetchDataByAllProjects() {
+    return false;
+  }
+
   get actionConfigs() {
-    return actionConfigs;
+    if (this.isAdminPage) {
+      return actionConfigs.actionConfigsAdmin;
+    }
+    return actionConfigs.actionConfigs;
   }
 
   getColumns = () => getBaseTemplateColumns(this);

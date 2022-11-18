@@ -32,8 +32,15 @@ export class Clusters extends Base {
     return 'cluster:get_all';
   }
 
+  get fetchDataByAllProjects() {
+    return false;
+  }
+
   get actionConfigs() {
-    return actionConfigs;
+    if (this.isAdminPage) {
+      return actionConfigs.actionConfigsAdmin;
+    }
+    return actionConfigs.actionConfigs;
   }
 
   getColumns = () => [
@@ -58,6 +65,7 @@ export class Clusters extends Base {
       title: t('Keypair'),
       isHideable: true,
       dataIndex: 'keypair',
+      hidden: this.isAdminPage,
       render: (value) => {
         return value
           ? this.getLinkRender('keypairDetail', value, { id: value })

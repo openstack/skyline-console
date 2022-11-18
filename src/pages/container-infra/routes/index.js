@@ -39,6 +39,12 @@ export default [
         component: ClustersCreate,
         exact: true,
       },
+      { path: `${PATH}/clusters-admin`, component: Clusters, exact: true },
+      {
+        path: `${PATH}/clusters-admin/detail/:id`,
+        component: ClustersDetail,
+        exact: true,
+      },
       {
         path: `${PATH}/cluster-template`,
         component: ClusterTemplates,
@@ -57,6 +63,16 @@ export default [
       {
         path: `${PATH}/cluster-template/update/:id`,
         component: ClusterTemplateUpdate,
+        exact: true,
+      },
+      {
+        path: `${PATH}/cluster-template-admin`,
+        component: ClusterTemplates,
+        exact: true,
+      },
+      {
+        path: `${PATH}/cluster-template-admin/detail/:id`,
+        component: ClusterTemplateDetail,
         exact: true,
       },
       { path: '*', component: E404 },

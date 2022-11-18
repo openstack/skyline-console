@@ -916,6 +916,38 @@ const renderMenu = (t) => {
           endpoints: 'zun',
           level: 1,
         },
+        {
+          path: '/container-infra/clusters-admin',
+          name: t('Cluster Instance'),
+          key: 'containerInfraClustersAdmin',
+          endpoints: 'magnum',
+          level: 1,
+          children: [
+            {
+              path: /^\/container-infra\/clusters-admin\/detail\/.[^/]+$/,
+              name: t('Cluster Instance Detail'),
+              key: 'containerInfraClusterDetailAdmin',
+              level: 2,
+              routePath: '/container-infra/clusters-admin/detail/:id',
+            },
+          ],
+        },
+        {
+          path: '/container-infra/cluster-template-admin',
+          name: t('Cluster Templates'),
+          key: 'clusterTemplateAdmin',
+          endpoints: 'magnum',
+          level: 1,
+          children: [
+            {
+              path: /^\/container-infra\/cluster-template-admin\/detail\/.[^/]+$/,
+              name: t('Cluster Template Detail'),
+              key: 'containerInfraClusterTemplateDetailAdmin',
+              level: 2,
+              routePath: '/container-infra/cluster-template-admin/detail/:id',
+            },
+          ],
+        },
       ],
     },
   ];

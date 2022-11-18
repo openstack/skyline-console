@@ -166,6 +166,7 @@ export class BaseDetail extends Base {
       {
         label: t('Keypair'),
         content: keypairUrl,
+        hidden: this.isAdminPage,
       },
       {
         label: t('Flavor ID'),
