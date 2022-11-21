@@ -17,9 +17,11 @@ import { inject, observer } from 'mobx-react';
 import globalClusterTemplateStore from 'stores/magnum/clusterTemplates';
 import globalKeypairStore from 'stores/nova/keypair';
 import { getBaseTemplateColumns } from 'resources/magnum/template';
+import { getKeyPairHeader } from 'resources/nova/keypair';
 
 export class StepInfo extends Base {
   init() {
+    this.keyPairStore = globalKeypairStore;
     this.getClustertemplates();
     this.getKeypairs();
   }
@@ -48,11 +50,11 @@ export class StepInfo extends Base {
   }
 
   async getKeypairs() {
-    await globalKeypairStore.fetchList();
+    await this.keyPairStore.fetchList();
   }
 
   get keypairs() {
-    return globalKeypairStore.list.data || [];
+    return this.keyPairStore.list.data || [];
   }
 
   get nameForStateUpdate() {
@@ -60,20 +62,25 @@ export class StepInfo extends Base {
   }
 
   get defaultValue() {
+    const values = {};
+    const { initKeyPair } = this.state;
+    if (initKeyPair) {
+      values.keypairs = initKeyPair;
+    }
+
     const { template } = this.locationParams;
     if (template) {
-      return {
-        clusterTemplate: {
-          selectedRowKeys: [template],
-          selectedRows: this.clusterTemplates,
-        },
+      values.clusterTemplate = {
+        selectedRowKeys: [template],
+        selectedRows: this.clusterTemplates,
       };
     }
-    return {};
+
+    return values;
   }
 
   get formItems() {
-    const { clusterTemplate } = this.state;
+    const { clusterTemplate, initKeyPair } = this.state;
     const { keypair_id } = clusterTemplate || {};
 
     return [
@@ -105,7 +112,9 @@ export class StepInfo extends Base {
         type: 'select-table',
         required: !keypair_id,
         data: this.keypairs,
-        isLoading: globalKeypairStore.list.isLoading,
+        initValue: initKeyPair,
+        isLoading: this.keyPairStore.list.isLoading,
+        header: getKeyPairHeader(this),
         tip: t(
           'The SSH key is a way to remotely log in to the cluster instance. If it’s not set, the value of this in template will be used.'
         ),

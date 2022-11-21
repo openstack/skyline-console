@@ -19,9 +19,11 @@ import globalImageStore from 'src/stores/glance/image';
 import globalKeypairStore from 'src/stores/nova/keypair';
 import FlavorSelectTable from 'src/pages/compute/containers/Instance/components/FlavorSelectTable';
 import { getImageColumns } from 'resources/glance/image';
+import { getKeyPairHeader } from 'resources/nova/keypair';
 
 export class StepNodeSpec extends Base {
   init() {
+    this.keyPairStore = globalKeypairStore;
     this.getImageList();
     this.getKeypairs();
   }
@@ -48,11 +50,11 @@ export class StepNodeSpec extends Base {
   }
 
   async getKeypairs() {
-    await globalKeypairStore.fetchList();
+    await this.keyPairStore.fetchList();
   }
 
   get keypairs() {
-    return globalKeypairStore.list.data || [];
+    return this.keyPairStore.list.data || [];
   }
 
   get acceptedImageOs() {
@@ -99,6 +101,11 @@ export class StepNodeSpec extends Base {
   get defaultValue() {
     let values = {};
 
+    const { initKeyPair } = this.state;
+    if (initKeyPair) {
+      values.keypairs = initKeyPair;
+    }
+
     if (this.isEdit) {
       const {
         extra: {
@@ -142,6 +149,8 @@ export class StepNodeSpec extends Base {
   }
 
   get formItems() {
+    const { initKeyPair } = this.state;
+
     return [
       {
         name: 'images',
@@ -163,7 +172,9 @@ export class StepNodeSpec extends Base {
         label: t('Keypair'),
         type: 'select-table',
         data: this.keypairs,
-        isLoading: globalKeypairStore.list.isLoading,
+        initValue: initKeyPair,
+        isLoading: this.keyPairStore.list.isLoading,
+        header: getKeyPairHeader(this),
         tip: t(
           'The SSH key is a way to remotely log in to the cluster instance. The cloud platform only helps to keep the public key. Please keep your private key properly.'
         ),

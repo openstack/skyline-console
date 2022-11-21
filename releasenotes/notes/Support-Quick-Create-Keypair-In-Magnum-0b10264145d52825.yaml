@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Support quick creating keypair in Magnum service:
+
+    1. Support quick creating keypair when create cluster template
+
+    2. Support quick creating keypair when create cluster instance
