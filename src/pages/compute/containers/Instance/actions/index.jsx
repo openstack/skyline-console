@@ -158,6 +158,9 @@ const adminActions = {
       {
         action: DeleteIronic,
       },
+      {
+        action: ConfirmResize,
+      },
     ],
   },
   batchActions,
