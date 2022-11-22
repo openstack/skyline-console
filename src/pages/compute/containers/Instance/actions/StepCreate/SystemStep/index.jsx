@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
 import { inject, observer } from 'mobx-react';
 import globalKeyPairStore from 'stores/nova/keypair';
 import globalServerStore from 'stores/nova/instance';
@@ -27,10 +26,8 @@ import {
 } from 'resources/nova/hypervisor';
 import { physicalNodeTypes } from 'resources/nova/instance';
 import { getOptions } from 'utils';
-import CreateKeyPair from 'pages/compute/containers/Keypair/actions/Create';
-import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
+import { getKeyPairHeader } from 'resources/nova/keypair';
 import { has } from 'lodash';
-import styles from '../index.less';
 
 export class SystemStep extends Base {
   init() {
@@ -184,7 +181,7 @@ export class SystemStep extends Base {
   allowed = () => Promise.resolve();
 
   async getKeypairs() {
-    return this.keyPairStore.fetchList();
+    await this.keyPairStore.fetchList();
   }
 
   getHypervisors() {
@@ -216,26 +213,6 @@ export class SystemStep extends Base {
     return this.sourceInfo && this.sourceInfo.os_admin_user;
   }
 
-  onFinishCreateKeyPair = async () => {
-    const { createdItem } = this.keyPairStore;
-    const result = await this.getKeypairs();
-    const newItem = result.find((it) => it.name === (createdItem || {}).name);
-    if (newItem) {
-      const initKeyPair = {
-        selectedRowKeys: [newItem.id],
-        selectedRows: [newItem],
-      };
-      this.setState(
-        {
-          initKeyPair,
-        },
-        () => {
-          this.updateDefaultValue();
-        }
-      );
-    }
-  };
-
   onValuesChange = (changedFields) => {
     if (has(changedFields, 'serverGroup')) {
       this.onServerGroupChange(changedFields.serverGroup);
@@ -248,28 +225,6 @@ export class SystemStep extends Base {
       serverGroupRow: selectedRows[0] || null,
     });
   };
-
-  getKeyPairHeader() {
-    const { isLoading } = this.keyPairStore.list || {};
-    if (isLoading) {
-      return null;
-    }
-    return (
-      <div style={{ marginBottom: 10 }}>
-        <span>
-          {t(
-            'The key pair allows you to SSH into your newly created instance. You can select an existing key pair, import a key pair, or generate a new key pair.'
-          )}
-        </span>
-        <span className={styles['action-wrapper']}>
-          <ItemActionButtons
-            actions={{ moreActions: [{ action: CreateKeyPair }] }}
-            onFinishAction={this.onFinishCreateKeyPair}
-          />
-        </span>
-      </div>
-    );
-  }
 
   get formItems() {
     const { loginType, more = false, physicalNodeType } = this.state;
@@ -314,7 +269,7 @@ export class SystemStep extends Base {
         isLoading: this.keyPairStore.list.isLoading,
         required: !isPassword,
         hidden: isPassword,
-        header: this.getKeyPairHeader(),
+        header: getKeyPairHeader(this),
         initValue: initKeyPair,
         tip: t(
           'The SSH key is a way to remotely log in to the instance. The cloud platform only helps to keep the public key. Please keep your private key properly.'
