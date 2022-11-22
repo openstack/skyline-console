@@ -34,7 +34,7 @@ export class StepCreate extends StepAction {
 
   static title = t('Create Container');
 
-  static path = '/container/containers/create';
+  static path = '/container-service/containers/create';
 
   static policy = 'container:create';
 

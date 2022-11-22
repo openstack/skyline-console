@@ -21,6 +21,13 @@ export class CapsulesStore extends Base {
     return client.zun.capsules;
   }
 
+  get mapper() {
+    return (data) => ({
+      ...data,
+      id: data.uuid,
+    });
+  }
+
   @action
   async create(newbody) {
     return this.client.create(newbody);

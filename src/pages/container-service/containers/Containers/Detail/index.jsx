@@ -59,7 +59,9 @@ export class ContainerDetail extends Base {
   }
 
   get showLogs() {
-    return checkPolicyRule('container:logs');
+    const { status } = this.detailData || {};
+    const acceptedStatus = ['Created', 'Running', 'Stopped', 'Paused'];
+    return checkPolicyRule('container:logs') && acceptedStatus.includes(status);
   }
 
   get tabs() {

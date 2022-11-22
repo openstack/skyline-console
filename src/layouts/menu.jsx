@@ -637,40 +637,40 @@ const renderMenu = (t) => {
       icon: <ContainerOutlined />,
       children: [
         {
-          path: '/container/containers',
+          path: '/container-service/containers',
           name: t('Containers'),
           key: 'zunContainers',
           endpoints: 'zun',
           level: 1,
           children: [
             {
-              path: '/container/containers/create',
+              path: '/container-service/containers/create',
               name: t('Create Container'),
               key: 'zunContainersCreateContainer',
               level: 2,
             },
             {
-              path: /^\/container\/containers\/detail\/.[^/]+$/,
+              path: /^\/container-service\/containers\/detail\/.[^/]+$/,
               name: t('Container Detail'),
               key: 'zunContainerDetail',
               level: 2,
-              routePath: '/container/containers/detail/:id',
+              routePath: '/container-service/containers/detail/:id',
             },
           ],
         },
         {
-          path: '/container/capsules',
+          path: '/container-service/capsules',
           name: t('Capsules'),
           key: 'zunCapsules',
           endpoints: 'zun',
           level: 1,
           children: [
             {
-              path: /^\/container\/capsules\/detail\/.[^/]+$/,
+              path: /^\/container-service\/capsules\/detail\/.[^/]+$/,
               name: t('Capsule Detail'),
               key: 'zunCapsuleDetail',
               level: 2,
-              routePath: '/container/capsules/detail/:id',
+              routePath: '/container-service/capsules/detail/:id',
             },
           ],
         },

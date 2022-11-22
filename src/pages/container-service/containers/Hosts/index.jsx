@@ -32,65 +32,70 @@ export class Hosts extends Base {
     return 'host:get_all';
   }
 
-  getColumns = () => [
-    {
-      title: t('ID/Name'),
-      dataIndex: 'name',
-      routeName: 'zuHostsDetailAdmin',
-    },
-    {
-      title: t('Architecture'),
-      dataIndex: 'architecture',
-      isHideable: true,
-    },
-    {
-      title: t('Total Containers'),
-      dataIndex: 'total_containers',
-      isHideable: true,
-    },
-    {
-      title: t('CPU (Core)'),
-      dataIndex: 'cpu_percent',
-      render: (value, record) => (
-        <Progress value={value} label={`${record.cpu_used} / ${record.cpus}`} />
-      ),
-      width: 180,
-      stringify: (value, record) =>
-        `${value}% (${t('Used')}: ${record.cpu_used} / ${t('Total')}: ${
-          record.cpus
-        })`,
-    },
-    {
-      title: t('Configured Memory (GiB)'),
-      dataIndex: 'memory_percent',
-      render: (value, record) => (
-        <Progress
-          value={value}
-          label={`${record.mem_used_gb} / ${record.mem_total_gb}`}
-        />
-      ),
-      width: 180,
-      stringify: (value, record) =>
-        `${value}% (${t('Used')}: ${record.mem_used_gb} / ${t('Total')}: ${
-          record.mem_total_gb
-        })`,
-    },
-    {
-      title: t('Configured Disk (GiB)'),
-      dataIndex: 'disk_percent',
-      render: (value, record) => (
-        <Progress
-          value={value}
-          label={`${record.disk_used} / ${record.disk_total}`}
-        />
-      ),
-      width: 180,
-      stringify: (value, record) =>
-        `${value}% (${t('Used')}: ${record.disk_used} / ${t('Total')}: ${
-          record.disk_total
-        })`,
-    },
-  ];
+  getColumns() {
+    return [
+      {
+        title: t('ID/Name'),
+        dataIndex: 'name',
+        routeName: 'zuHostsDetailAdmin',
+      },
+      {
+        title: t('Architecture'),
+        dataIndex: 'architecture',
+        isHideable: true,
+      },
+      {
+        title: t('Total Containers'),
+        dataIndex: 'total_containers',
+        isHideable: true,
+      },
+      {
+        title: t('CPU (Core)'),
+        dataIndex: 'cpu_percent',
+        render: (value, record) => (
+          <Progress
+            value={value}
+            label={`${record.cpu_used} / ${record.cpus}`}
+          />
+        ),
+        width: 180,
+        stringify: (value, record) =>
+          `${value}% (${t('Used')}: ${record.cpu_used} / ${t('Total')}: ${
+            record.cpus
+          })`,
+      },
+      {
+        title: t('Configured Memory (GiB)'),
+        dataIndex: 'memory_percent',
+        render: (value, record) => (
+          <Progress
+            value={value}
+            label={`${record.mem_used_gb} / ${record.mem_total_gb}`}
+          />
+        ),
+        width: 180,
+        stringify: (value, record) =>
+          `${value}% (${t('Used')}: ${record.mem_used_gb} / ${t('Total')}: ${
+            record.mem_total_gb
+          })`,
+      },
+      {
+        title: t('Configured Disk (GiB)'),
+        dataIndex: 'disk_percent',
+        render: (value, record) => (
+          <Progress
+            value={value}
+            label={`${record.disk_used} / ${record.disk_total}`}
+          />
+        ),
+        width: 180,
+        stringify: (value, record) =>
+          `${value}% (${t('Used')}: ${record.disk_used} / ${t('Total')}: ${
+            record.disk_total
+          })`,
+      },
+    ];
+  }
 }
 
 export default inject('rootStore')(observer(Hosts));

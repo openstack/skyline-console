@@ -36,31 +36,33 @@ export class Capsules extends Base {
     return actionConfigs;
   }
 
-  getColumns = () => [
-    {
-      title: t('ID/Name'),
-      dataIndex: 'meta_name',
-      isLink: true,
-      routeName: this.getRouteName('zunCapsuleDetail'),
-      idKey: 'uuid',
-    },
-    {
-      title: t('Status'),
-      isHideable: true,
-      dataIndex: 'status',
-      valueMap: capsuleStatus,
-    },
-    {
-      title: t('CPU'),
-      isHideable: true,
-      dataIndex: 'cpu',
-    },
-    {
-      title: t('Memory'),
-      isHideable: true,
-      dataIndex: 'memory',
-    },
-  ];
+  getColumns() {
+    return [
+      {
+        title: t('ID/Name'),
+        dataIndex: 'meta_name',
+        isLink: true,
+        routeName: this.getRouteName('zunCapsuleDetail'),
+        idKey: 'uuid',
+      },
+      {
+        title: t('Status'),
+        isHideable: true,
+        dataIndex: 'status',
+        valueMap: capsuleStatus,
+      },
+      {
+        title: t('CPU'),
+        isHideable: true,
+        dataIndex: 'cpu',
+      },
+      {
+        title: t('Memory'),
+        isHideable: true,
+        dataIndex: 'memory',
+      },
+    ];
+  }
 }
 
 export default inject('rootStore')(observer(Capsules));
