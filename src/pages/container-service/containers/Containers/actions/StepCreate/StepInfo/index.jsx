@@ -66,6 +66,7 @@ export class StepInfo extends Base {
         label: t('Container Name'),
         type: 'input',
         placeholder: t('Container Name'),
+        required: true,
       },
       {
         name: 'images',

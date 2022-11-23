@@ -15,9 +15,9 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
-import globalImageStore from 'src/stores/glance/image';
-import globalKeypairStore from 'src/stores/nova/keypair';
-import FlavorSelectTable from 'src/pages/compute/containers/Instance/components/FlavorSelectTable';
+import globalImageStore from 'stores/glance/image';
+import globalKeypairStore from 'stores/nova/keypair';
+import FlavorSelectTable from 'pages/compute/containers/Instance/components/FlavorSelectTable';
 import { getImageColumns } from 'resources/glance/image';
 import { getKeyPairHeader } from 'resources/nova/keypair';
 
