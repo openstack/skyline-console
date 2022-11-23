@@ -22,6 +22,13 @@ export class ContainersStore extends Base {
     return client.zun.containers;
   }
 
+  get mapper() {
+    return (data) => ({
+      ...data,
+      id: data.uuid,
+    });
+  }
+
   @action
   async create(newbody) {
     return this.submitting(this.client.create(newbody));

@@ -19,6 +19,13 @@ export class ServicesStore extends Base {
   get client() {
     return client.zun.services;
   }
+
+  get mapper() {
+    return (data) => ({
+      ...data,
+      id: data.uuid,
+    });
+  }
 }
 
 const globalServicesStore = new ServicesStore();

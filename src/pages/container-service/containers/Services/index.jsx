@@ -32,50 +32,52 @@ export class Services extends Base {
     return 'zun-service:get_all';
   }
 
-  getColumns = () => [
-    {
-      title: t('Name'),
-      dataIndex: 'binary',
-    },
-    {
-      title: t('Hosts'),
-      dataIndex: 'host',
-      isHideable: true,
-    },
-    {
-      title: t('Availability Zone'),
-      dataIndex: 'availability_zone',
-      isHideable: true,
-    },
-    {
-      title: t('Report Count'),
-      dataIndex: 'report_count',
-      isHideable: true,
-    },
-    {
-      title: t('Forced Down'),
-      dataIndex: 'forced_down',
-      valueRender: 'yesNo',
-      isHideable: true,
-    },
-    {
-      title: t('Forbidden'),
-      dataIndex: 'disabled',
-      valueRender: 'yesNo',
-      isHideable: true,
-    },
-    {
-      title: t('Service State'),
-      dataIndex: 'state',
-      valueMap: serviceState,
-    },
-    {
-      title: t('Last Updated'),
-      dataIndex: 'updated_at',
-      isHideable: true,
-      valueRender: 'sinceTime',
-    },
-  ];
+  getColumns() {
+    return [
+      {
+        title: t('Name'),
+        dataIndex: 'binary',
+      },
+      {
+        title: t('Hosts'),
+        dataIndex: 'host',
+        isHideable: true,
+      },
+      {
+        title: t('Availability Zone'),
+        dataIndex: 'availability_zone',
+        isHideable: true,
+      },
+      {
+        title: t('Report Count'),
+        dataIndex: 'report_count',
+        isHideable: true,
+      },
+      {
+        title: t('Forced Down'),
+        dataIndex: 'forced_down',
+        valueRender: 'yesNo',
+        isHideable: true,
+      },
+      {
+        title: t('Forbidden'),
+        dataIndex: 'disabled',
+        valueRender: 'yesNo',
+        isHideable: true,
+      },
+      {
+        title: t('Service State'),
+        dataIndex: 'state',
+        valueMap: serviceState,
+      },
+      {
+        title: t('Last Updated'),
+        dataIndex: 'updated_at',
+        isHideable: true,
+        valueRender: 'sinceTime',
+      },
+    ];
+  }
 }
 
 export default inject('rootStore')(observer(Services));

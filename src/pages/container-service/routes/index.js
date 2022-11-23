@@ -23,7 +23,7 @@ import HostsDetail from '../containers/Hosts/Detail';
 import StepCreateContainer from '../containers/Containers/actions/StepCreate';
 import Services from '../containers/Services';
 
-const PATH = '/container';
+const PATH = '/container-service';
 export default [
   {
     path: PATH,

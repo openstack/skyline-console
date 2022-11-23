@@ -39,36 +39,34 @@ export class Containers extends Base {
     return actionConfigs.actionConfigs;
   }
 
-  get rowKey() {
-    return 'uuid';
+  getColumns() {
+    return [
+      {
+        title: t('ID/Name'),
+        dataIndex: 'name',
+        isLink: true,
+        routeName: this.getRouteName('zunContainerDetail'),
+        idKey: 'uuid',
+      },
+      {
+        title: t('Status'),
+        isHideable: true,
+        dataIndex: 'status',
+        valueMap: containerStatus,
+      },
+      {
+        title: t('Image'),
+        isHideable: true,
+        dataIndex: 'image',
+      },
+      {
+        title: t('Task State'),
+        isHideable: true,
+        dataIndex: 'task_state',
+        valueMap: containerTaskStatus,
+      },
+    ];
   }
-
-  getColumns = () => [
-    {
-      title: t('ID/Name'),
-      dataIndex: 'name',
-      isLink: true,
-      routeName: this.getRouteName('zunContainerDetail'),
-      idKey: 'uuid',
-    },
-    {
-      title: t('Status'),
-      isHideable: true,
-      dataIndex: 'status',
-      valueMap: containerStatus,
-    },
-    {
-      title: t('Image'),
-      isHideable: true,
-      dataIndex: 'image',
-    },
-    {
-      title: t('Task State'),
-      isHideable: true,
-      dataIndex: 'task_state',
-      valueMap: containerTaskStatus,
-    },
-  ];
 }
 
 export default inject('rootStore')(observer(Containers));

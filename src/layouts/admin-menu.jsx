@@ -878,39 +878,39 @@ const renderMenu = (t) => {
       icon: <ContainerOutlined />,
       children: [
         {
-          path: '/container/containers-admin',
+          path: '/container-service/containers-admin',
           name: t('Containers'),
           key: 'zunContainersAdmin',
           endpoints: 'zun',
           level: 1,
           children: [
             {
-              path: /^\/container\/containers-admin\/detail\/.[^/]+$/,
+              path: /^\/container-service\/containers-admin\/detail\/.[^/]+$/,
               name: t('Container Detail'),
               key: 'zunContainerDetailAdmin',
               level: 2,
-              routePath: '/container/containers-admin/detail/:id',
+              routePath: '/container-service/containers-admin/detail/:id',
             },
           ],
         },
         {
-          path: '/container/hosts-admin',
+          path: '/container-service/hosts-admin',
           name: t('Hosts'),
           key: 'zunHostsAdmin',
           endpoints: 'zun',
           level: 1,
           children: [
             {
-              path: /^\/container\/hosts-admin\/detail\/.[^/]+$/,
+              path: /^\/container-service\/hosts-admin\/detail\/.[^/]+$/,
               name: t('Host Detail'),
               key: 'zuHostsDetailAdmin',
               level: 2,
-              routePath: '/container/hosts-admin/detail/:id',
+              routePath: '/container-service/hosts-admin/detail/:id',
             },
           ],
         },
         {
-          path: '/container/services-admin',
+          path: '/container-service/services-admin',
           name: t('Services'),
           key: 'zunServicesAdmin',
           endpoints: 'zun',
