@@ -33,6 +33,7 @@ const successKeys = [
   'complete',
   'online',
   'ready',
+  'pass',
 ];
 
 const successKeysContain = ['complete'];
@@ -58,6 +59,7 @@ const errorKeys = [
   'power off',
   'error',
   'offline',
+  'refuse',
 ];
 
 const errorKeysContain = ['fail'];
