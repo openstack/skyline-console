@@ -15,7 +15,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
-import globalImageStore from 'stores/glance/image';
+import { ImageStore } from 'stores/glance/image';
 import globalKeypairStore from 'stores/nova/keypair';
 import FlavorSelectTable from 'pages/compute/containers/Instance/components/FlavorSelectTable';
 import { getImageColumns } from 'resources/glance/image';
@@ -23,6 +23,7 @@ import { getKeyPairHeader } from 'resources/nova/keypair';
 
 export class StepNodeSpec extends Base {
   init() {
+    this.imageStore = new ImageStore();
     this.keyPairStore = globalKeypairStore;
     this.getImageList();
     this.getKeypairs();
@@ -45,7 +46,7 @@ export class StepNodeSpec extends Base {
   }
 
   async getImageList() {
-    await globalImageStore.fetchList({ all_projects: this.hasAdminRole });
+    await this.imageStore.fetchList({ all_projects: this.hasAdminRole });
     this.updateDefaultValue();
   }
 
@@ -75,7 +76,7 @@ export class StepNodeSpec extends Base {
   }
 
   get imageList() {
-    return (globalImageStore.list.data || []).filter((it) => {
+    return (this.imageStore.list.data || []).filter((it) => {
       const { originData: { os_distro } = {} } = it;
       return this.acceptedImageOs.includes(os_distro);
     });
@@ -158,7 +159,7 @@ export class StepNodeSpec extends Base {
         type: 'select-table',
         data: this.imageList,
         required: true,
-        isLoading: globalImageStore.list.isLoading,
+        isLoading: this.imageStore.list.isLoading,
         filterParams: [
           {
             label: t('Name'),
