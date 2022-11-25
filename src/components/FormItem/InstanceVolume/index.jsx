@@ -141,7 +141,7 @@ export default class InstanceVolume extends React.Component {
       errorMsg,
       minSize,
     } = this.state;
-    const { name } = this.props;
+    const { name, showDelete = true } = this.props;
     const selects = (
       <Select
         value={type}
@@ -160,11 +160,11 @@ export default class InstanceVolume extends React.Component {
       />
     );
     const deleteValue = deleteType === 1;
-    const checkbox = (
+    const checkbox = showDelete ? (
       <Checkbox onChange={this.onDeleteChange} checked={deleteValue}>
         {t('Deleted with the instance')}
       </Checkbox>
-    );
+    ) : null;
 
     return (
       <Form.Item
