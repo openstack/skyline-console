@@ -15,6 +15,7 @@
 import Base from 'stores/base';
 import client from 'client';
 import { action } from 'mobx';
+import { isBoolean } from 'lodash';
 
 export class ClusterTemplatesStore extends Base {
   get client() {
@@ -43,7 +44,12 @@ export class ClusterTemplatesStore extends Base {
       )
       .map((key) => ({
         path: `/${key}`,
-        value: key === 'labels' ? JSON.stringify(body[key] || {}) : body[key],
+        value:
+          key === 'labels'
+            ? JSON.stringify(body[key] || {})
+            : isBoolean(body[key])
+            ? `${body[key]}`
+            : body[key],
         op: [null, undefined, ''].includes(body[key]) ? 'remove' : 'replace',
       }));
     return this.submitting(this.client.patch(id, newBody));

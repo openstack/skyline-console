@@ -154,10 +154,7 @@ export class SystemStep extends Base {
         selectedRows: this.serverGroups.filter((it) => it.id === servergroup),
       };
     }
-    const { initKeyPair, name } = this.state;
-    if (initKeyPair) {
-      data.keypair = initKeyPair;
-    }
+    const { name } = this.state;
     if (name) {
       data.name = name;
     }

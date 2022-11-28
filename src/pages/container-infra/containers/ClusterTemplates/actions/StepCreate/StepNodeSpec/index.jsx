@@ -102,11 +102,6 @@ export class StepNodeSpec extends Base {
   get defaultValue() {
     let values = {};
 
-    const { initKeyPair } = this.state;
-    if (initKeyPair) {
-      values.keypairs = initKeyPair;
-    }
-
     if (this.isEdit) {
       const {
         extra: {
@@ -134,7 +129,7 @@ export class StepNodeSpec extends Base {
         values.images = { selectedRowKeys: [image_id] };
       }
       if (keypair_id) {
-        values.keypairs = { selectedRowKeys: [keypair_id] };
+        values.keypair = { selectedRowKeys: [keypair_id] };
       }
     }
     return values;
@@ -169,7 +164,7 @@ export class StepNodeSpec extends Base {
         columns: this.imageColumns,
       },
       {
-        name: 'keypairs',
+        name: 'keypair',
         label: t('Keypair'),
         type: 'select-table',
         data: this.keypairs,

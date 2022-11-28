@@ -17,7 +17,7 @@ import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
 import CreateKeyPair from 'pages/compute/containers/Keypair/actions/Create';
 import styles from './keypair.less';
 
-export const getKeyPairHeader = (self) => {
+export const getKeyPairHeader = (self, name = 'keypair') => {
   const onFinishCreateKeyPair = async () => {
     await self.getKeypairs(); // refresh keypairs
     const { createdItem } = self.keyPairStore;
@@ -34,7 +34,7 @@ export const getKeyPairHeader = (self) => {
           initKeyPair,
         },
         () => {
-          self.updateDefaultValue();
+          self.updateFormValue(name, newItem);
         }
       );
     }

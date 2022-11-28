@@ -63,10 +63,6 @@ export class StepInfo extends Base {
 
   get defaultValue() {
     const values = {};
-    const { initKeyPair } = this.state;
-    if (initKeyPair) {
-      values.keypair = initKeyPair;
-    }
 
     const { template } = this.locationParams;
     if (template) {

@@ -98,7 +98,7 @@ export class StepCreate extends StepAction {
       masterFlavor,
       additionalLabels,
       images,
-      keypairs,
+      keypair,
       externalNetwork,
       fixedNetwork,
       fixedSubnet,
@@ -127,8 +127,8 @@ export class StepCreate extends StepAction {
     if (images) {
       body.image_id = images.selectedRowKeys[0];
     }
-    if (keypairs) {
-      body.keypair_id = keypairs.selectedRowKeys[0];
+    if (keypair) {
+      body.keypair_id = keypair.selectedRowKeys[0];
     }
     if (fixedNetwork) {
       body.fixed_network = fixedNetwork.selectedRowKeys[0];
