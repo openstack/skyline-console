@@ -15,15 +15,11 @@
 import Base from 'components/Form';
 import { inject, observer } from 'mobx-react';
 import globalClusterTemplateStore from 'stores/magnum/clusterTemplates';
-import globalKeypairStore from 'stores/nova/keypair';
 import { getBaseTemplateColumns } from 'resources/magnum/template';
-import { getKeyPairHeader } from 'resources/nova/keypair';
 
 export class StepInfo extends Base {
   init() {
-    this.keyPairStore = globalKeypairStore;
     this.getClustertemplates();
-    this.getKeypairs();
   }
 
   get title() {
@@ -37,7 +33,6 @@ export class StepInfo extends Base {
   async getClustertemplates() {
     await globalClusterTemplateStore.fetchList();
     this.updateDefaultValue();
-    this.updateState();
   }
 
   get clusterTemplates() {
@@ -47,18 +42,6 @@ export class StepInfo extends Base {
       return templates.filter((it) => it.uuid === template);
     }
     return templates;
-  }
-
-  async getKeypairs() {
-    await this.keyPairStore.fetchList();
-  }
-
-  get keypairs() {
-    return this.keyPairStore.list.data || [];
-  }
-
-  get nameForStateUpdate() {
-    return ['clusterTemplate'];
   }
 
   get defaultValue() {
@@ -76,9 +59,6 @@ export class StepInfo extends Base {
   }
 
   get formItems() {
-    const { clusterTemplate, initKeyPair } = this.state;
-    const { keypair_id } = clusterTemplate || {};
-
     return [
       {
         name: 'name',
@@ -101,35 +81,6 @@ export class StepInfo extends Base {
           },
         ],
         columns: getBaseTemplateColumns(this),
-      },
-      {
-        name: 'keypair',
-        label: t('Keypair'),
-        type: 'select-table',
-        required: !keypair_id,
-        data: this.keypairs,
-        initValue: initKeyPair,
-        isLoading: this.keyPairStore.list.isLoading,
-        header: getKeyPairHeader(this),
-        tip: t(
-          'The SSH key is a way to remotely log in to the cluster instance. If it’s not set, the value of this in template will be used.'
-        ),
-        filterParams: [
-          {
-            label: t('Name'),
-            name: 'name',
-          },
-        ],
-        columns: [
-          {
-            title: t('Name'),
-            dataIndex: 'name',
-          },
-          {
-            title: t('Fingerprint'),
-            dataIndex: 'fingerprint',
-          },
-        ],
       },
     ];
   }

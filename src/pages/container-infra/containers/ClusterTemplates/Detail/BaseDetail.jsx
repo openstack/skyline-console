@@ -206,19 +206,19 @@ export class BaseDetail extends Base {
         label: t('labels'),
         dataIndex: 'labels',
         render: (value) =>
-          !isEmpty(value)
-            ? Object.entries(value).map(([key, val]) => {
+          !isEmpty(value) ? (
+            <ul>
+              {Object.entries(value).map(([key, val]) => {
                 return (
-                  <div key={key}>
-                    <ul>
-                      <li>
-                        {key} : {val}
-                      </li>
-                    </ul>
-                  </div>
+                  <li key={key}>
+                    {key} : {val}
+                  </li>
                 );
-              })
-            : '-',
+              })}
+            </ul>
+          ) : (
+            '-'
+          ),
       },
     ];
 

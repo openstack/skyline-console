@@ -93,9 +93,23 @@ export class StepNodeSpec extends Base {
     return acceptedVolumeDriver;
   }
 
+  getFlavorComponent() {
+    return <FlavorSelectTable onChange={this.onFlavorChange} />;
+  }
+
   onFlavorChange = (value) => {
     this.updateContext({
       flavor: value,
+    });
+  };
+
+  getMasterFlavorComponent() {
+    return <FlavorSelectTable onChange={this.onMasterFlavorChange} />;
+  }
+
+  onMasterFlavorChange = (value) => {
+    this.updateContext({
+      masterFlavor: value,
     });
   };
 
@@ -195,13 +209,13 @@ export class StepNodeSpec extends Base {
         name: 'flavor',
         label: t('Flavor of Nodes'),
         type: 'select-table',
-        component: <FlavorSelectTable onChange={this.onFlavorChange} />,
+        component: this.getFlavorComponent(),
       },
       {
         name: 'masterFlavor',
         label: t('Flavor of Master Nodes'),
         type: 'select-table',
-        component: <FlavorSelectTable onChange={this.onFlavorChange} />,
+        component: this.getMasterFlavorComponent(),
       },
       {
         name: 'volume_driver',

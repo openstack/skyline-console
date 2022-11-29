@@ -16,9 +16,16 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
 import FlavorSelectTable from 'src/pages/compute/containers/Instance/components/FlavorSelectTable';
+import globalKeypairStore from 'stores/nova/keypair';
 import { defaultTip } from 'resources/magnum/cluster';
+import { getKeyPairHeader } from 'resources/nova/keypair';
 
 export class StepNodeSpec extends Base {
+  init() {
+    this.keyPairStore = globalKeypairStore;
+    this.getKeypairs();
+  }
+
   get title() {
     return t('Node Spec');
   }
@@ -29,6 +36,14 @@ export class StepNodeSpec extends Base {
 
   allowed = () => Promise.resolve();
 
+  async getKeypairs() {
+    await this.keyPairStore.fetchList();
+  }
+
+  get keypairs() {
+    return this.keyPairStore.list.data || [];
+  }
+
   getFlavorComponent() {
     return <FlavorSelectTable onChange={this.onFlavorChange} />;
   }
@@ -36,6 +51,16 @@ export class StepNodeSpec extends Base {
   onFlavorChange = (value) => {
     this.updateContext({
       flavor: value,
+    });
+  };
+
+  getMasterFlavorComponent() {
+    return <FlavorSelectTable onChange={this.onMasterFlavorChange} />;
+  }
+
+  onMasterFlavorChange = (value) => {
+    this.updateContext({
+      masterFlavor: value,
     });
   };
 
@@ -49,9 +74,39 @@ export class StepNodeSpec extends Base {
   get formItems() {
     const { context: { clusterTemplate = {} } = {} } = this.props;
     const { selectedRows = [] } = clusterTemplate;
-    const { master_flavor_id, flavor_id } = selectedRows[0] || {};
+    const { master_flavor_id, flavor_id, keypair_id } = selectedRows[0] || {};
+    const { initKeyPair } = this.state;
 
     return [
+      {
+        name: 'keypair',
+        label: t('Keypair'),
+        type: 'select-table',
+        required: !keypair_id,
+        data: this.keypairs,
+        initValue: initKeyPair,
+        isLoading: this.keyPairStore.list.isLoading,
+        header: getKeyPairHeader(this),
+        tip: t(
+          'The SSH key is a way to remotely log in to the cluster instance. If it’s not set, the value of this in template will be used.'
+        ),
+        filterParams: [
+          {
+            label: t('Name'),
+            name: 'name',
+          },
+        ],
+        columns: [
+          {
+            title: t('Name'),
+            dataIndex: 'name',
+          },
+          {
+            title: t('Fingerprint'),
+            dataIndex: 'fingerprint',
+          },
+        ],
+      },
       {
         name: 'master_count',
         label: t('Number of Master Nodes'),
@@ -63,7 +118,7 @@ export class StepNodeSpec extends Base {
         name: 'masterFlavor',
         label: t('Flavor of Master Nodes'),
         type: 'select-table',
-        component: this.getFlavorComponent(),
+        component: this.getMasterFlavorComponent(),
         required: !master_flavor_id,
         tip: defaultTip,
       },
