@@ -59,7 +59,7 @@ export class Clusters extends Base {
       title: t('Health Status'),
       isHideable: true,
       dataIndex: 'health_status',
-      valueMap: healthStatus,
+      render: (value) => healthStatus[value] || value || '-',
     },
     {
       title: t('Keypair'),
