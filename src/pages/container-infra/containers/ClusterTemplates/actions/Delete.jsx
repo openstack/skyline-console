@@ -19,11 +19,11 @@ export default class Delete extends ConfirmAction {
   }
 
   get title() {
-    return t('Delete Template');
+    return t('Delete Cluster Template');
   }
 
   get actionName() {
-    return t('Delete Clusters Templates');
+    return t('Delete Cluster Template');
   }
 
   get isDanger() {

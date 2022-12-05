@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Support Quota of Magnum cluster
+
+    1. Show quota info when create cluster
+
+    2. Support quota setting of magnum cluster when manage project quota

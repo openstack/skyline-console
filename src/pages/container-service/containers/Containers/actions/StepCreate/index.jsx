@@ -123,7 +123,7 @@ export class StepCreate extends StepAction {
       ...cpu,
       add: canAdd ? cpuCount : 0,
       name: 'cpu',
-      title: t('CPU'),
+      title: t('Containers CPU'),
       type: 'line',
     };
 
@@ -131,7 +131,7 @@ export class StepCreate extends StepAction {
       ...memory,
       add: canAdd ? memoryCount : 0,
       name: 'memory',
-      title: t('Memory (MiB)'),
+      title: t('Containers Memory (MiB)'),
       type: 'line',
     };
 
@@ -139,7 +139,7 @@ export class StepCreate extends StepAction {
       ...disk,
       add: canAdd ? diskCount : 0,
       name: 'disk',
-      title: t('Disk (GiB)'),
+      title: t('Containers Disk (GiB)'),
       type: 'line',
     };
 

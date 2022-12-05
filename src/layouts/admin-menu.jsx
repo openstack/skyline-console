@@ -918,14 +918,14 @@ const renderMenu = (t) => {
         },
         {
           path: '/container-infra/clusters-admin',
-          name: t('Cluster Instance'),
+          name: t('Clusters'),
           key: 'containerInfraClustersAdmin',
           endpoints: 'magnum',
           level: 1,
           children: [
             {
               path: /^\/container-infra\/clusters-admin\/detail\/.[^/]+$/,
-              name: t('Cluster Instance Detail'),
+              name: t('Cluster Detail'),
               key: 'containerInfraClusterDetailAdmin',
               level: 2,
               routePath: '/container-infra/clusters-admin/detail/:id',

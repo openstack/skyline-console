@@ -71,7 +71,7 @@ export class StepCreate extends StepAction {
     });
     await Promise.all([
       this.projectStore.fetchProjectNovaQuota(),
-      this.projectStore.fetchProjectCinderQuota(),
+      this.enableCinder ? this.projectStore.fetchProjectCinderQuota() : null,
     ]);
     this.setState({
       quotaLoading: false,

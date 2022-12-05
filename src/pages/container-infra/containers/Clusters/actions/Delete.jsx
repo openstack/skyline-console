@@ -21,11 +21,11 @@ export default class DeleteClusters extends ConfirmAction {
   }
 
   get title() {
-    return t('Delete Clusters');
+    return t('Delete Cluster');
   }
 
   get actionName() {
-    return t('Delete Clusters');
+    return t('Delete Cluster');
   }
 
   get buttonText() {

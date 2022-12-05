@@ -15,6 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import globalProjectStore, { ProjectStore } from 'stores/keystone/project';
 import React from 'react';
+import { Spin } from 'antd';
 import { ModalAction } from 'containers/Action';
 import { VolumeTypeStore } from 'stores/cinder/volume-type';
 import {
@@ -23,6 +24,7 @@ import {
   shareQuotaCard,
   zunQuotaCard,
   troveQuotaCard,
+  magnumQuotaCard,
 } from 'pages/base/containers/Overview/components/QuotaOverview';
 
 export class ManageQuota extends ModalAction {
@@ -51,6 +53,10 @@ export class ManageQuota extends ModalAction {
 
   get enableZun() {
     return this.props.rootStore.checkEndpoint('zun');
+  }
+
+  get enableMagnum() {
+    return this.props.rootStore.checkEndpoint('magnum');
   }
 
   get enableTrove() {
@@ -150,6 +156,9 @@ export class ManageQuota extends ModalAction {
     if (this.enableZun) {
       newQuotaCardList.push(zunQuotaCard);
     }
+    if (this.enableMagnum) {
+      newQuotaCardList.push(magnumQuotaCard);
+    }
     if (this.enableTrove) {
       newQuotaCardList.push(troveQuotaCard);
     }
@@ -197,7 +206,27 @@ export class ManageQuota extends ModalAction {
     return [labelItem, ...items];
   }
 
+  getMagnumFormItems() {
+    const formItems = this.getFormItemsByCards('magnum');
+    return formItems.map((it) => {
+      if (it.name === 'magnum_cluster') {
+        it.min = 1;
+        it.tip = t('The limit of cluster instance greater than or equal to 1.');
+      }
+      return it;
+    });
+  }
+
   get formItems() {
+    if (this.projectStore.quotaLoading) {
+      return [
+        {
+          name: 'loading',
+          label: '',
+          component: <Spin />,
+        },
+      ];
+    }
     const computeFormItems = this.getComputeFormItems();
     const networkFormItems = this.getFormItemsByCards('networks');
     const form = [...computeFormItems, ...networkFormItems];
@@ -206,6 +235,9 @@ export class ManageQuota extends ModalAction {
     }
     if (this.enableZun) {
       form.push(...this.getFormItemsByCards('zun'));
+    }
+    if (this.enableMagnum) {
+      form.push(...this.getMagnumFormItems());
     }
     if (this.enableTrove) {
       form.push(...this.getFormItemsByCards('trove'));
@@ -236,11 +268,13 @@ export class ManageQuota extends ModalAction {
       volumeTypes,
       share,
       zun,
+      magnum,
       ...others
     } = values;
     return {
       project_id,
       data: others,
+      current_quota: this.projectStore.quota,
     };
   }
 

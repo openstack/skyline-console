@@ -112,9 +112,20 @@ export const zunQuotaCard = {
       text: t('Containers'),
       key: 'zun_containers',
     },
-    { text: t('CPUs'), key: 'zun_cpu' },
-    { text: t('Memory (MiB)'), key: 'zun_memory' },
+    { text: t('Containers CPU'), key: 'zun_cpu' },
+    { text: t('Containers Memory (MiB)'), key: 'zun_memory' },
     { text: t('Containers Disk (GiB)'), key: 'zun_disk' },
+  ],
+};
+
+export const magnumQuotaCard = {
+  text: t('Clusters Management'),
+  type: 'magnum',
+  value: [
+    {
+      text: t('Clusters'),
+      key: 'magnum_cluster',
+    },
   ],
 };
 
@@ -210,6 +221,10 @@ export class QuotaOverview extends Component {
     return globalRootStore.checkEndpoint('zun');
   }
 
+  get enableMagnum() {
+    return globalRootStore.checkEndpoint('magnum');
+  }
+
   get enableTrove() {
     return (
       globalRootStore.checkEndpoint('trove') && globalRootStore.hasAdminOnlyRole
@@ -236,6 +251,9 @@ export class QuotaOverview extends Component {
     }
     if (this.enableZun) {
       newList.push(zunQuotaCard);
+    }
+    if (this.enableMagnum) {
+      newList.push(magnumQuotaCard);
     }
     if (this.enableTrove) {
       newList.push(troveQuotaCard);

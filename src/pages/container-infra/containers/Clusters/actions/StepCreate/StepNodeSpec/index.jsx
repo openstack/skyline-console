@@ -113,6 +113,11 @@ export class StepNodeSpec extends Base {
         type: 'input-int',
         min: 1,
         required: true,
+        onChange: (value) => {
+          this.updateContext({
+            master_count: value,
+          });
+        },
       },
       {
         name: 'masterFlavor',
@@ -131,6 +136,11 @@ export class StepNodeSpec extends Base {
         type: 'input-int',
         min: 1,
         required: true,
+        onChange: (value) => {
+          this.updateContext({
+            node_count: value,
+          });
+        },
       },
       {
         name: 'flavor',

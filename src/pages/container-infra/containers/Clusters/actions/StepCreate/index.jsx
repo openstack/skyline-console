@@ -11,8 +11,12 @@
 // limitations under the License.
 
 import { inject, observer } from 'mobx-react';
+import { toJS } from 'mobx';
 import { StepAction } from 'src/containers/Action';
 import globalClustersStore from 'src/stores/magnum/clusters';
+import globalProjectStore from 'stores/keystone/project';
+import { getGiBValue } from 'utils';
+import { message as $message } from 'antd';
 import StepInfo from './StepInfo';
 import StepNodeSpec from './StepNodeSpec';
 import StepNetworks from './StepNetworks';
@@ -22,6 +26,10 @@ import StepLabel from './StepLabel';
 export class StepCreate extends StepAction {
   init() {
     this.store = globalClustersStore;
+    this.projectStore = globalProjectStore;
+    this.state.quotaLoading = true;
+    this.getQuota();
+    this.errorMsg = '';
   }
 
   static id = 'create-cluster';
@@ -37,7 +45,7 @@ export class StepCreate extends StepAction {
   }
 
   get name() {
-    return t('Create Instance');
+    return t('Create Cluster');
   }
 
   get listUrl() {
@@ -71,6 +79,170 @@ export class StepCreate extends StepAction {
         component: StepLabel,
       },
     ];
+  }
+
+  get enableCinder() {
+    return this.props.rootStore.checkEndpoint('cinder');
+  }
+
+  get showQuota() {
+    return true;
+  }
+
+  async getQuota() {
+    this.setState({
+      quotaLoading: true,
+    });
+    await Promise.all([
+      this.projectStore.fetchProjectNovaQuota(),
+      this.projectStore.fetchProjectMagnumQuota(),
+      this.enableCinder ? this.projectStore.fetchProjectCinderQuota() : null,
+    ]);
+    this.setState({
+      quotaLoading: false,
+    });
+  }
+
+  get disableNext() {
+    return !!this.errorMsg;
+  }
+
+  get disableSubmit() {
+    return !!this.errorMsg;
+  }
+
+  get quotaInfo() {
+    const { quotaLoading } = this.state;
+    if (quotaLoading) {
+      return [];
+    }
+    const quotaError = this.checkQuotaInput();
+
+    const { magnum_cluster = {} } = toJS(this.projectStore.magnumQuota) || {};
+    const clusterQuotaInfo = {
+      ...magnum_cluster,
+      add: quotaError ? 0 : 1,
+      name: 'cluster',
+      title: t('Clusters'),
+    };
+
+    const {
+      instances = {},
+      cores = {},
+      ram = {},
+    } = toJS(this.projectStore.novaQuota) || {};
+    const instanceQuotaInfo = {
+      ...instances,
+      add: quotaError ? 0 : 1,
+      name: 'instance',
+      title: t('Instance'),
+      type: 'line',
+    };
+
+    const { newCPU, newRam } = this.getFlavorInput();
+    const cpuQuotaInfo = {
+      ...cores,
+      add: quotaError ? 0 : newCPU,
+      name: 'cpu',
+      title: t('CPU'),
+      type: 'line',
+    };
+
+    const ramQuotaInfo = {
+      ...ram,
+      add: quotaError ? 0 : newRam,
+      name: 'ram',
+      title: t('Memory (GiB)'),
+      type: 'line',
+    };
+
+    const quotaInfo = [
+      clusterQuotaInfo,
+      instanceQuotaInfo,
+      cpuQuotaInfo,
+      ramQuotaInfo,
+    ];
+
+    return quotaInfo;
+  }
+
+  checkInstanceQuota() {
+    const { quotaLoading } = this.state;
+    if (quotaLoading) {
+      return '';
+    }
+    const { instances = {} } = this.projectStore.novaQuota || {};
+    const { left = 0 } = instances;
+    if (left === 0) {
+      return this.getQuotaMessage(1, instances, t('Instance'));
+    }
+    return '';
+  }
+
+  getFlavorInput() {
+    const { data = {} } = this.state;
+    const {
+      flavor: { selectedRows = [] } = {},
+      node_count = 1,
+      masterFlavor: { selectedRows: selectedRowsMaster = [] } = {},
+      master_count = 1,
+    } = data;
+    const { vcpus = 0, ram = 0 } = selectedRows[0] || {};
+    const ramGiB = getGiBValue(ram);
+    const { vcpus: vcpusMaster = 0, ram: ramMaster = 0 } =
+      selectedRowsMaster[0] || {};
+    const ramGiBMaster = getGiBValue(ramMaster);
+    const newCPU = vcpus * node_count + vcpusMaster * master_count;
+    const newRam = ramGiB * node_count + ramGiBMaster * master_count;
+    return {
+      newCPU,
+      newRam,
+    };
+  }
+
+  checkFlavorQuota() {
+    const { newCPU, newRam } = this.getFlavorInput();
+    const { cores = {}, ram = {} } = this.projectStore.novaQuota || {};
+    const { left = 0 } = cores || {};
+    const { left: leftRam = 0 } = ram || {};
+    if (left !== -1 && left < newCPU) {
+      return this.getQuotaMessage(newCPU, cores, t('CPU'));
+    }
+    if (leftRam !== -1 && leftRam < newRam) {
+      return this.getQuotaMessage(newRam, ram, t('Memory'));
+    }
+    return '';
+  }
+
+  checkQuotaInput() {
+    const instanceMsg = this.checkInstanceQuota();
+    const flavorMsg = this.checkFlavorQuota();
+    const error = instanceMsg || flavorMsg;
+    if (!error) {
+      this.status = 'success';
+      this.errorMsg = '';
+      return '';
+    }
+    this.status = 'error';
+    if (this.errorMsg !== error) {
+      $message.error(error);
+    }
+    this.errorMsg = error;
+    return error;
+  }
+
+  getQuotaMessage(value, quota, name) {
+    const { left = 0 } = quota || {};
+    if (left === -1) {
+      return '';
+    }
+    if (value > left) {
+      return t(
+        'Insufficient {name} quota to create resources(left { quota }, input { input }).',
+        { name, quota: left, input: value }
+      );
+    }
+    return '';
   }
 
   onSubmit = (values) => {
