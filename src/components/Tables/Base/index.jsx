@@ -98,6 +98,7 @@ export class BaseTable extends React.Component {
     primaryActionsExtra: PropTypes.any,
     isAdminPage: PropTypes.bool,
     containerProps: PropTypes.any,
+    middleComponentInHeader: PropTypes.node,
   };
 
   static defaultProps = {
@@ -653,6 +654,14 @@ export class BaseTable extends React.Component {
     );
   }
 
+  renderMiddleInHeader() {
+    const { middleComponentInHeader } = this.props;
+    if (middleComponentInHeader) {
+      return middleComponentInHeader;
+    }
+    return null;
+  }
+
   renderActions() {
     const {
       isAdminPage,
@@ -791,6 +800,7 @@ export class BaseTable extends React.Component {
           {this.renderRefreshAuto()}
         </div>
         {this.renderTimeFilter()}
+        {this.renderMiddleInHeader()}
         {this.renderSearch()}
       </div>
     );
