@@ -440,6 +440,10 @@ export default class BaseList extends React.Component {
     return false;
   }
 
+  get middleComponentInTableHeader() {
+    return null;
+  }
+
   setRefreshDataTimerTransition = () => {
     this.stopRefreshAuto();
     if (this.dataTimerTransition) {
@@ -557,6 +561,7 @@ export default class BaseList extends React.Component {
       primaryActionsExtra: this.primaryActionsExtra,
       isAdminPage: this.isAdminPage,
       initFilter: this.initFilter,
+      middleComponentInHeader: this.middleComponentInTableHeader,
       ...this.getEnabledTableProps(),
     };
   }
