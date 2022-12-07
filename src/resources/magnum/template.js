@@ -33,10 +33,11 @@ export const getBaseTemplateColumns = (self) => [
     isHideable: true,
     dataIndex: 'keypair_id',
     hidden: self.isAdminPage,
-    render: (value) => {
-      return value
-        ? self.getLinkRender('keypairDetail', value, { id: value })
-        : '-';
+    render: (value, row) => {
+      if (value && row.selfKeypair) {
+        return self.getLinkRender('keypairDetail', value, { id: value });
+      }
+      return value || '-';
     },
   },
 ];

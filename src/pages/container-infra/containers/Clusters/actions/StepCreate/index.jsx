@@ -15,6 +15,7 @@ import { toJS } from 'mobx';
 import { StepAction } from 'src/containers/Action';
 import globalClustersStore from 'src/stores/magnum/clusters';
 import globalProjectStore from 'stores/keystone/project';
+import globalFlavorStore from 'stores/nova/flavor';
 import { getGiBValue } from 'utils';
 import { message as $message } from 'antd';
 import StepInfo from './StepInfo';
@@ -83,6 +84,10 @@ export class StepCreate extends StepAction {
 
   get enableCinder() {
     return this.props.rootStore.checkEndpoint('cinder');
+  }
+
+  get flavors() {
+    return toJS(globalFlavorStore.list.data) || [];
   }
 
   get showQuota() {
@@ -179,6 +184,20 @@ export class StepCreate extends StepAction {
     return '';
   }
 
+  get templateFlavor() {
+    const { data = {} } = this.state;
+    const { clusterTemplate: { selectedRows = [] } = {} } = data;
+    const { master_flavor_id, flavor_id } = selectedRows[0] || {};
+    const masterTemplateFlavor = this.flavors.find(
+      (it) => it.id === master_flavor_id
+    );
+    const workTemplateFlavor = this.flavors.find((it) => it.id === flavor_id);
+    return {
+      masterTemplateFlavor,
+      workTemplateFlavor,
+    };
+  }
+
   getFlavorInput() {
     const { data = {} } = this.state;
     const {
@@ -187,10 +206,11 @@ export class StepCreate extends StepAction {
       masterFlavor: { selectedRows: selectedRowsMaster = [] } = {},
       master_count = 1,
     } = data;
-    const { vcpus = 0, ram = 0 } = selectedRows[0] || {};
+    const { vcpus = 0, ram = 0 } =
+      selectedRows[0] || this.templateFlavor.workTemplateFlavor || {};
     const ramGiB = getGiBValue(ram);
     const { vcpus: vcpusMaster = 0, ram: ramMaster = 0 } =
-      selectedRowsMaster[0] || {};
+      selectedRowsMaster[0] || this.templateFlavor.masterTemplateFlavor || {};
     const ramGiBMaster = getGiBValue(ramMaster);
     const newCPU = vcpus * node_count + vcpusMaster * master_count;
     const newRam = ramGiB * node_count + ramGiBMaster * master_count;
@@ -262,8 +282,8 @@ export class StepCreate extends StepAction {
 
     if (additionalLabels) {
       additionalLabels.forEach((item) => {
-        const labelKey = item.value.key.toLowerCase().trim();
-        const labelValue = item.value.value.toLowerCase().trim();
+        const labelKey = item.value.key;
+        const labelValue = item.value.value;
         requestLabels[labelKey] = labelValue;
       });
     }

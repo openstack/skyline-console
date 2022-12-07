@@ -107,8 +107,8 @@ export class StepCreate extends StepAction {
     const requestLabels = {};
     if (additionalLabels) {
       additionalLabels.forEach((item) => {
-        const labelKey = item.value.key.toLowerCase().trim();
-        const labelValue = item.value.value.toLowerCase().trim();
+        const labelKey = item.value.key;
+        const labelValue = item.value.value;
         requestLabels[labelKey] = labelValue;
       });
     }

@@ -132,7 +132,7 @@ export class BaseDetail extends Base {
   }
 
   get specCard() {
-    const { image_id, keypair_id, flavor_id, master_flavor_id } =
+    const { image_id, keypair_id, flavor_id, master_flavor_id, selfKeypair } =
       this.detailData;
     const imageUrl = image_id
       ? this.getLinkRender('imageDetail', image_id, {
@@ -140,11 +140,12 @@ export class BaseDetail extends Base {
         })
       : '-';
 
-    const keypairUrl = keypair_id
-      ? this.getLinkRender('keypairDetail', keypair_id, {
-          id: keypair_id,
-        })
-      : '-';
+    const keypairUrl =
+      keypair_id && selfKeypair
+        ? this.getLinkRender('keypairDetail', keypair_id, {
+            id: keypair_id,
+          })
+        : keypair_id || '-';
 
     const flavorUrl = flavor_id
       ? this.getLinkRender('flavorDetail', flavor_id, {
@@ -169,7 +170,7 @@ export class BaseDetail extends Base {
         hidden: this.isAdminPage,
       },
       {
-        label: t('Flavor ID'),
+        label: t('Node Flavor ID'),
         content: flavorUrl,
       },
       {

@@ -81,6 +81,11 @@ export class StepInfo extends Base {
           },
         ],
         columns: getBaseTemplateColumns(this),
+        onChange: (value) => {
+          this.updateContext({
+            clusterTemplate: value,
+          });
+        },
       },
     ];
   }

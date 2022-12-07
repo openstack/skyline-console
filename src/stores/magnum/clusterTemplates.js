@@ -61,6 +61,27 @@ export class ClusterTemplatesStore extends Base {
       id: data.uuid,
     });
   }
+
+  async listDidFetch(items) {
+    if (!items.length) return items;
+    const { keypairs = [] } = (await client.nova.keypairs.list()) || {};
+    return items.map((it) => {
+      const keypair = keypairs.find((k) => k?.keypair?.name === it.keypair_id);
+      if (keypair) {
+        it.selfKeypair = true;
+      }
+      return it;
+    });
+  }
+
+  async detailDidFetch(item) {
+    const { keypairs = [] } = (await client.nova.keypairs.list()) || {};
+    const keypair = keypairs.find((k) => k?.keypair?.name === item.keypair_id);
+    if (keypair) {
+      item.selfKeypair = true;
+    }
+    return item;
+  }
 }
 
 const globalClusterTemplateStore = new ClusterTemplatesStore();

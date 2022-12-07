@@ -65,26 +65,40 @@ export class StepNodeSpec extends Base {
   };
 
   get defaultValue() {
+    const { context: { clusterTemplate = {} } = {} } = this.props;
+    const { selectedRows = [] } = clusterTemplate;
+    const { master_flavor_id, flavor_id } = selectedRows[0] || {};
+
     return {
       master_count: 1,
       node_count: 1,
+      masterFlavor: {
+        selectedRowKeys: [master_flavor_id],
+      },
+      flavor: { selectedRowKeys: [flavor_id] },
     };
   }
 
   get formItems() {
     const { context: { clusterTemplate = {} } = {} } = this.props;
     const { selectedRows = [] } = clusterTemplate;
-    const { master_flavor_id, flavor_id, keypair_id } = selectedRows[0] || {};
+    const { master_flavor_id, flavor_id, keypair_id, selfKeypair } =
+      selectedRows[0] || {};
     const { initKeyPair } = this.state;
+    const templateHasSelfKeypair = keypair_id && selfKeypair;
+    const templateInitKeypair = {
+      selectedRowKeys: [keypair_id],
+    };
 
     return [
       {
         name: 'keypair',
         label: t('Keypair'),
         type: 'select-table',
-        required: !keypair_id,
+        required: !templateHasSelfKeypair,
         data: this.keypairs,
-        initValue: initKeyPair,
+        initValue:
+          initKeyPair || (templateHasSelfKeypair && templateInitKeypair),
         isLoading: this.keyPairStore.list.isLoading,
         header: getKeyPairHeader(this),
         tip: t(
