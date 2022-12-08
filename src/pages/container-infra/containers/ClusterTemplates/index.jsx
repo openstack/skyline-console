@@ -41,7 +41,18 @@ export class ClusterTemplates extends Base {
     return actionConfigs.actionConfigs;
   }
 
-  getColumns = () => getBaseTemplateColumns(this);
+  getColumns() {
+    return getBaseTemplateColumns(this);
+  }
+
+  get searchFilters() {
+    return [
+      {
+        label: t('Name'),
+        name: 'name',
+      },
+    ];
+  }
 }
 
 export default inject('rootStore')(observer(ClusterTemplates));

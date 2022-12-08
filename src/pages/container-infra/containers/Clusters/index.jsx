@@ -14,6 +14,7 @@
 
 import Base from 'containers/List';
 import { inject, observer } from 'mobx-react';
+import { getOptions } from 'utils';
 import { clusterStatus, healthStatus } from 'resources/magnum/cluster';
 import globalClustersStore from 'src/stores/magnum/clusters';
 import actionConfigs from './actions';
@@ -43,36 +44,57 @@ export class Clusters extends Base {
     return actionConfigs.actionConfigs;
   }
 
-  getColumns = () => [
-    {
-      title: t('ID/Name'),
-      dataIndex: 'name',
-      routeName: this.getRouteName('containerInfraClusterDetail'),
-    },
-    {
-      title: t('Status'),
-      isHideable: true,
-      dataIndex: 'status',
-      valueMap: clusterStatus,
-    },
-    {
-      title: t('Health Status'),
-      isHideable: true,
-      dataIndex: 'health_status',
-      render: (value) => healthStatus[value] || value || '-',
-    },
-    {
-      title: t('Keypair'),
-      isHideable: true,
-      dataIndex: 'keypair',
-      hidden: this.isAdminPage,
-      render: (value) => {
-        return value
-          ? this.getLinkRender('keypairDetail', value, { id: value })
-          : '-';
+  getColumns() {
+    return [
+      {
+        title: t('ID/Name'),
+        dataIndex: 'name',
+        routeName: this.getRouteName('containerInfraClusterDetail'),
       },
-    },
-  ];
+      {
+        title: t('Status'),
+        isHideable: true,
+        dataIndex: 'status',
+        valueMap: clusterStatus,
+      },
+      {
+        title: t('Health Status'),
+        isHideable: true,
+        dataIndex: 'health_status',
+        render: (value) => healthStatus[value] || value || '-',
+      },
+      {
+        title: t('Keypair'),
+        isHideable: true,
+        dataIndex: 'keypair',
+        hidden: this.isAdminPage,
+        render: (value) => {
+          return value
+            ? this.getLinkRender('keypairDetail', value, { id: value })
+            : '-';
+        },
+      },
+    ];
+  }
+
+  get searchFilters() {
+    return [
+      {
+        label: t('Name'),
+        name: 'name',
+      },
+      {
+        label: t('Status'),
+        name: 'status',
+        options: getOptions(clusterStatus),
+      },
+      {
+        label: t('Health Status'),
+        name: 'health_status',
+        options: getOptions(healthStatus),
+      },
+    ];
+  }
 }
 
 export default inject('rootStore')(observer(Clusters));

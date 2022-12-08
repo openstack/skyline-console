@@ -69,7 +69,7 @@ export class StepInfo extends Base {
       },
       {
         name: 'coe',
-        label: t('Container Orchestration Engine'),
+        label: t('COE'),
         type: 'select',
         options: [
           {
