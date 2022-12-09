@@ -63,8 +63,9 @@ export class StepInfo extends Base {
       {
         name: 'name',
         label: t('Cluster Name'),
-        type: 'input',
-        placeholder: t('Cluster Name'),
+        type: 'input-name',
+        placeholder: t('Please input cluster name'),
+        isInstance: true,
         required: true,
       },
       {

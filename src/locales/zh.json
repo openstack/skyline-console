@@ -1729,6 +1729,8 @@
   "Please input at least 2 characters.": "请输入至少2个字符",
   "Please input auth key": "请输入密钥",
   "Please input cipher": "请输入cipher",
+  "Please input cluster name": "请输入集群名称",
+  "Please input cluster template name": "请输入集群模板名称",
   "Please input file name": "请输入文件名称",
   "Please input ipv4": "请输入IPV4",
   "Please input ipv6": "请输入IPV6",

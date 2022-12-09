@@ -1729,6 +1729,8 @@
   "Please input at least 2 characters.": "Please input at least 2 characters.",
   "Please input auth key": "Please input auth key",
   "Please input cipher": "Please input cipher",
+  "Please input cluster name": "Please input cluster name",
+  "Please input cluster template name": "Please input cluster template name",
   "Please input file name": "Please input file name",
   "Please input ipv4": "Please input ipv4",
   "Please input ipv6": "Please input ipv6",
