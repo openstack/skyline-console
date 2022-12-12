@@ -36,6 +36,7 @@ export default class index extends Component {
     optionsByIndex: PropTypes.bool, // special: index=0, use [options[0]]; index=1 use [options[1]]; index >= options.length, options
     initValue: PropTypes.array,
     readonlyKeys: PropTypes.array,
+    disableEditKeys: PropTypes.array,
   };
 
   static defaultProps = {
@@ -48,6 +49,7 @@ export default class index extends Component {
     optionsByIndex: false,
     initValue: [],
     readonlyKeys: [],
+    disableEditKeys: [],
   };
 
   constructor(props) {
@@ -108,9 +110,10 @@ export default class index extends Component {
   };
 
   // eslint-disable-next-line no-shadow
-  canRemove = (index) => {
+  canRemove = (index, item) => {
+    const isDisabledKey = this.checkDisabledKey(item);
     const { minCount } = this.props;
-    return index >= minCount;
+    return index >= minCount && !isDisabledKey;
   };
 
   // eslint-disable-next-line no-shadow
@@ -150,6 +153,13 @@ export default class index extends Component {
       return [options[itemIndex]];
     }
     return options;
+  };
+
+  checkDisabledKey = (item) => {
+    const { key = '' } = item.value || {};
+    const { disableEditKeys = [] } = this.props;
+    const isDisabledKey = disableEditKeys.indexOf(key) >= 0;
+    return isDisabledKey;
   };
 
   renderTip() {
@@ -198,6 +208,7 @@ export default class index extends Component {
     const ItemComponent = itemComponent;
     const { key = '' } = item.value || {};
     const keyReadonly = readonlyKeys.indexOf(key) >= 0;
+    const isDisabledKey = this.checkDisabledKey(item);
     return (
       <ItemComponent
         {...this.props}
@@ -205,6 +216,7 @@ export default class index extends Component {
         value={item.value}
         index={index}
         keyReadonly={keyReadonly}
+        disabled={isDisabledKey}
         onChange={(newValue) => {
           this.onItemChange(newValue, index);
         }}
@@ -221,7 +233,7 @@ export default class index extends Component {
           type="link"
           onClick={() => this.removeItem(index)}
           className={classnames(styles.float, styles['remove-btn'])}
-          disabled={!this.canRemove(index)}
+          disabled={!this.canRemove(index, it)}
         >
           <MinusCircleFilled />
         </Button>
