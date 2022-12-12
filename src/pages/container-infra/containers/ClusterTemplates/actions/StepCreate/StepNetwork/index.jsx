@@ -50,7 +50,8 @@ export class StepNetwork extends Base {
   }
 
   get subnetList() {
-    const { fixedNetwork: { selectedRowKeys = [] } = {} } = this.state;
+    const selectedRowKeys =
+      this.props.context?.fixedNetwork?.selectedRowKeys || [];
     return (this.subnetNetworkStore.list.data || []).filter(
       (it) => selectedRowKeys[0] === it.network_id
     );
@@ -73,10 +74,6 @@ export class StepNetwork extends Base {
       acceptedDrivers = [{ value: 'docker', label: 'Docker' }];
     }
     return acceptedDrivers;
-  }
-
-  get nameForStateUpdate() {
-    return ['fixedNetwork'];
   }
 
   get defaultValue() {
@@ -112,20 +109,14 @@ export class StepNetwork extends Base {
         floating_ip_enabled,
       };
       if (fixed_network) {
-        values.fixedNetwork = {
+        values.fixedNetwork = this.props.context.fixedNetwork || {
           selectedRowKeys: [fixed_network],
         };
       }
       if (fixed_subnet) {
-        const { subnetInitValue } = this.state;
-
-        if (subnetInitValue) {
-          values.fixedSubnet = subnetInitValue;
-        } else {
-          values.fixedSubnet = {
-            selectedRowKeys: [fixed_subnet],
-          };
-        }
+        values.fixedSubnet = {
+          selectedRowKeys: [fixed_subnet],
+        };
       }
     }
 
@@ -134,7 +125,6 @@ export class StepNetwork extends Base {
 
   get formItems() {
     const { extra: { network_driver } = {} } = this.props;
-    const { subnetInitValue } = this.state;
 
     return [
       {
@@ -208,18 +198,10 @@ export class StepNetwork extends Base {
         ],
         columns: networkColumns(this),
         onChange: (value) => {
-          this.setState(
-            {
-              fixedNetwork: value,
-              subnetInitValue: {
-                selectedRowKeys: [],
-                selectedRows: [],
-              },
-            },
-            () => {
-              this.formRef.current.resetFields(['fixedSubnet']);
-            }
-          );
+          this.updateContext({
+            fixedNetwork: value,
+          });
+          this.updateFormValue('fixedSubnet', null);
         },
       },
       {
@@ -227,7 +209,6 @@ export class StepNetwork extends Base {
         label: t('Fixed Subnet'),
         type: 'select-table',
         data: this.subnetList,
-        initValue: subnetInitValue,
         filterParams: [
           {
             label: t('Name'),

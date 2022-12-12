@@ -80,11 +80,11 @@ export class StepNodeSpec extends Base {
   }
 
   get formItems() {
-    const { context: { clusterTemplate = {} } = {} } = this.props;
+    const { context: { clusterTemplate = {}, keypair } = {} } = this.props;
     const { selectedRows = [] } = clusterTemplate;
     const { master_flavor_id, flavor_id, keypair_id, selfKeypair } =
       selectedRows[0] || {};
-    const { initKeyPair } = this.state;
+    const { initKeyPair = keypair } = this.state;
     const templateHasSelfKeypair = keypair_id && selfKeypair;
     const templateInitKeypair = {
       selectedRowKeys: [keypair_id],

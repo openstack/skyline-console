@@ -114,9 +114,11 @@ export class StepCreate extends StepAction {
     }
 
     const body = {
+      ...rest,
       labels: requestLabels,
       external_network_id: externalNetwork.selectedRowKeys[0],
-      ...rest,
+      fixed_network: fixedNetwork ? fixedNetwork.selectedRowKeys[0] : null,
+      fixed_subnet: fixedSubnet ? fixedSubnet.selectedRowKeys[0] : null,
     };
     if (flavor) {
       body.flavor_id = flavor.selectedRowKeys[0];
@@ -129,12 +131,6 @@ export class StepCreate extends StepAction {
     }
     if (keypair) {
       body.keypair_id = keypair.selectedRowKeys[0];
-    }
-    if (fixedNetwork) {
-      body.fixed_network = fixedNetwork.selectedRowKeys[0];
-    }
-    if (fixedSubnet) {
-      body.fixed_subnet = fixedSubnet.selectedRowKeys[0];
     }
     if (this.isEdit) {
       return this.store.update({ id: this.params.id }, body);

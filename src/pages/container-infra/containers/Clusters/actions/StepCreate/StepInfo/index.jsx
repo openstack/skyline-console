@@ -58,15 +58,31 @@ export class StepInfo extends Base {
     return values;
   }
 
+  clusterNameValidator = (rule, value) => {
+    const pattern = /^[a-zA-Z][a-zA-Z0-9_.-]*$/;
+    if (!value) {
+      // eslint-disable-next-line prefer-promise-reject-errors
+      return Promise.reject('');
+    }
+    if (!pattern.test(value)) {
+      return Promise.reject(
+        t(
+          'The name should start with upper letter or lower letter, characters can only contain "0-9, a-z, A-Z, -, _, ."'
+        )
+      );
+    }
+    return Promise.resolve();
+  };
+
   get formItems() {
     return [
       {
         name: 'name',
         label: t('Cluster Name'),
-        type: 'input-name',
+        type: 'input',
         placeholder: t('Please input cluster name'),
-        isInstance: true,
         required: true,
+        validator: this.clusterNameValidator,
       },
       {
         name: 'clusterTemplate',
