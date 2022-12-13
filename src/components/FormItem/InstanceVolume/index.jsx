@@ -13,9 +13,8 @@
 // limitations under the License.
 
 import React from 'react';
-import { Select, Checkbox, Row, Col, Form } from 'antd';
+import { Select, Checkbox, Row, Col, Form, InputNumber } from 'antd';
 import PropTypes from 'prop-types';
-import InputInt from '../InputInt';
 import styles from './index.less';
 
 export default class InstanceVolume extends React.Component {
@@ -152,11 +151,14 @@ export default class InstanceVolume extends React.Component {
       />
     );
     const input = (
-      <InputInt
+      <InputNumber
         value={size}
         onChange={this.onInputChange}
         min={minSize}
         style={{ maxWidth: '60%' }}
+        precision={0}
+        formatter={(value) => `$ ${value}`.replace(/\D/g, '')}
+        onInput={(e) => this.onInputChange(e * 1)}
       />
     );
     const deleteValue = deleteType === 1;
