@@ -15,7 +15,7 @@
 import React, { Component } from 'react';
 import { Select, Button, Input } from 'antd';
 import { PlusCircleFilled, MinusCircleFilled } from '@ant-design/icons';
-import { isArray, isEqual, isEmpty } from 'lodash';
+import { isArray, isEqual, isEmpty, isFunction } from 'lodash';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { generateId } from 'utils/index';
@@ -37,6 +37,7 @@ export default class index extends Component {
     initValue: PropTypes.array,
     readonlyKeys: PropTypes.array,
     disableEditKeys: PropTypes.array,
+    disabledRemoveFunc: PropTypes.func,
   };
 
   static defaultProps = {
@@ -50,6 +51,7 @@ export default class index extends Component {
     initValue: [],
     readonlyKeys: [],
     disableEditKeys: [],
+    disabledRemoveFunc: null,
   };
 
   constructor(props) {
@@ -111,7 +113,7 @@ export default class index extends Component {
 
   // eslint-disable-next-line no-shadow
   canRemove = (index, item) => {
-    const isDisabledKey = this.checkDisabledKey(item);
+    const isDisabledKey = this.checkItemRemoveDisabled(item);
     const { minCount } = this.props;
     return index >= minCount && !isDisabledKey;
   };
@@ -153,6 +155,15 @@ export default class index extends Component {
       return [options[itemIndex]];
     }
     return options;
+  };
+
+  checkItemRemoveDisabled = (item) => {
+    const { items = [] } = this.state;
+    const { disabledRemoveFunc } = this.props;
+    if (isFunction(disabledRemoveFunc)) {
+      return disabledRemoveFunc({ item, items });
+    }
+    return this.checkDisabledKey(item);
   };
 
   checkDisabledKey = (item) => {
@@ -208,7 +219,7 @@ export default class index extends Component {
     const ItemComponent = itemComponent;
     const { key = '' } = item.value || {};
     const keyReadonly = readonlyKeys.indexOf(key) >= 0;
-    const isDisabledKey = this.checkDisabledKey(item);
+    const isDisabledKey = this.checkItemRemoveDisabled(item);
     return (
       <ItemComponent
         {...this.props}
