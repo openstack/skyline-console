@@ -18,7 +18,7 @@ import { inject, observer } from 'mobx-react';
 import { NetworkStore } from 'src/stores/neutron/network';
 import { SubnetStore } from 'src/stores/neutron/subnet';
 import { getLinkRender } from 'utils/route-map';
-import { networkColumns } from 'resources/neutron/network';
+import { networkColumns, subnetColumns } from 'resources/neutron/network';
 
 export class StepNetwork extends Base {
   async init() {
@@ -87,8 +87,11 @@ export class StepNetwork extends Base {
           https_proxy,
           no_proxy,
           external_network_id,
+          externalNetwork,
           fixed_network,
+          fixedNetwork,
           fixed_subnet,
+          fixedSubnet,
           dns_nameserver,
           master_lb_enabled,
           floating_ip_enabled,
@@ -101,21 +104,22 @@ export class StepNetwork extends Base {
         no_proxy,
         externalNetwork: {
           selectedRowKeys: [external_network_id],
+          selectedRows: [externalNetwork],
         },
-        fixed_network,
-        fixed_subnet,
         dns_nameserver,
         master_lb_enabled,
         floating_ip_enabled,
       };
       if (fixed_network) {
-        values.fixedNetwork = this.props.context.fixedNetwork || {
+        values.fixedNetwork = {
           selectedRowKeys: [fixed_network],
+          selectedRows: [fixedNetwork],
         };
       }
       if (fixed_subnet) {
         values.fixedSubnet = {
           selectedRowKeys: [fixed_subnet],
+          selectedRows: [fixedSubnet],
         };
       }
     }
@@ -201,7 +205,10 @@ export class StepNetwork extends Base {
           this.updateContext({
             fixedNetwork: value,
           });
-          this.updateFormValue('fixedSubnet', null);
+          this.updateFormValue('fixedSubnet', {
+            selectedRowKeys: [],
+            selectedRows: [],
+          });
         },
       },
       {
@@ -215,29 +222,7 @@ export class StepNetwork extends Base {
             name: 'name',
           },
         ],
-        columns: [
-          {
-            title: t('Name'),
-            dataIndex: 'name',
-          },
-          {
-            title: t('CIDR'),
-            dataIndex: 'cidr',
-          },
-          {
-            title: t('Gateway IP'),
-            dataIndex: 'gateway_ip',
-          },
-          {
-            title: t('IP Version'),
-            dataIndex: 'ip_version',
-          },
-          {
-            title: t('Created At'),
-            dataIndex: 'created_at',
-            valueRender: 'toLocalTime',
-          },
-        ],
+        columns: subnetColumns,
       },
       {
         name: 'dns_nameserver',

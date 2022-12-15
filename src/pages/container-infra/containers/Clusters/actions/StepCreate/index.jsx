@@ -171,6 +171,19 @@ export class StepCreate extends StepAction {
     return quotaInfo;
   }
 
+  checkClusterQuota() {
+    const { quotaLoading } = this.state;
+    if (quotaLoading) {
+      return '';
+    }
+    const { magnum_cluster = {} } = toJS(this.projectStore.magnumQuota) || {};
+    const { left = 0 } = magnum_cluster;
+    if (left === 0) {
+      return this.getQuotaMessage(1, magnum_cluster, t('Clusters'));
+    }
+    return '';
+  }
+
   checkInstanceQuota() {
     const { quotaLoading } = this.state;
     if (quotaLoading) {
@@ -235,9 +248,10 @@ export class StepCreate extends StepAction {
   }
 
   checkQuotaInput() {
+    const clusterMsg = this.checkClusterQuota();
     const instanceMsg = this.checkInstanceQuota();
     const flavorMsg = this.checkFlavorQuota();
-    const error = instanceMsg || flavorMsg;
+    const error = clusterMsg || instanceMsg || flavorMsg;
     if (!error) {
       this.status = 'success';
       this.errorMsg = '';
@@ -273,7 +287,8 @@ export class StepCreate extends StepAction {
       auto_healing_enabled,
       auto_scaling_enabled,
       newNetwork,
-      fixed_network,
+      fixedNetwork,
+      fixedSubnet,
       flavor,
       masterFlavor,
       ...rest
@@ -311,9 +326,14 @@ export class StepCreate extends StepAction {
       data.flavor_id = flavor.selectedRowKeys[0];
     }
 
-    if (!newNetwork && fixed_network) {
-      const { selectedRowKeys = [] } = fixed_network;
+    if (!newNetwork && fixedNetwork) {
+      const { selectedRowKeys = [] } = fixedNetwork;
       data.fixed_network = selectedRowKeys[0];
+    }
+
+    if (!newNetwork && fixedSubnet) {
+      const { selectedRowKeys = [] } = fixedSubnet;
+      data.fixed_subnet = selectedRowKeys[0];
     }
 
     return this.store.create(data);

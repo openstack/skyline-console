@@ -68,17 +68,35 @@ export class BaseDetail extends Base {
   }
 
   get networkCard() {
-    const { external_network_id, fixed_network } = this.detailData || {};
+    const {
+      external_network_id,
+      externalNetwork: { name: externalName } = {},
+      fixed_network,
+      fixedNetwork: { name: fixedName } = {},
+      fixed_subnet,
+      fixedSubnet: { name: subName } = {},
+    } = this.detailData || {};
     const externalNetworkUrl = external_network_id
-      ? this.getLinkRender('networkDetail', external_network_id, {
-          id: external_network_id,
-        })
+      ? this.getLinkRender(
+          'networkDetail',
+          externalName || external_network_id,
+          {
+            id: external_network_id,
+          }
+        )
       : '-';
     const fixedNetworkUrl = fixed_network
-      ? this.getLinkRender('networkDetail', fixed_network, {
+      ? this.getLinkRender('networkDetail', fixedName || fixed_network, {
           id: fixed_network,
         })
       : '-';
+    const subnetUrl =
+      fixed_network && fixed_subnet
+        ? this.getLinkRender('subnetDetail', subName || fixed_subnet, {
+            networkId: fixed_network,
+            id: fixed_subnet,
+          })
+        : '-';
 
     const options = [
       {
@@ -98,16 +116,16 @@ export class BaseDetail extends Base {
         dataIndex: 'no_proxy',
       },
       {
-        label: t('External Network ID'),
+        label: t('External Network'),
         content: externalNetworkUrl,
       },
       {
-        label: t('Fixed Network ID'),
+        label: t('Fixed Network'),
         content: fixedNetworkUrl,
       },
       {
-        label: t('Fixed Subnet ID'),
-        dataIndex: 'fixed_subnet',
+        label: t('Fixed Subnet'),
+        content: subnetUrl,
       },
       {
         label: t('DNS'),
@@ -132,10 +150,18 @@ export class BaseDetail extends Base {
   }
 
   get specCard() {
-    const { image_id, keypair_id, flavor_id, master_flavor_id, selfKeypair } =
-      this.detailData;
+    const {
+      image_id,
+      image: { name: imageName } = {},
+      keypair_id,
+      flavor_id,
+      flavor: { name: flavorName } = {},
+      master_flavor_id,
+      masterFlavor: { name: masterFlavorName } = {},
+      selfKeypair,
+    } = this.detailData;
     const imageUrl = image_id
-      ? this.getLinkRender('imageDetail', image_id, {
+      ? this.getLinkRender('imageDetail', imageName || image_id, {
           id: image_id,
         })
       : '-';
@@ -148,20 +174,24 @@ export class BaseDetail extends Base {
         : keypair_id || '-';
 
     const flavorUrl = flavor_id
-      ? this.getLinkRender('flavorDetail', flavor_id, {
+      ? this.getLinkRender('flavorDetail', flavorName || flavor_id, {
           id: flavor_id,
         })
       : '-';
 
     const masterFlavorUrl = master_flavor_id
-      ? this.getLinkRender('flavorDetail', master_flavor_id, {
-          id: master_flavor_id,
-        })
+      ? this.getLinkRender(
+          'flavorDetail',
+          masterFlavorName || master_flavor_id,
+          {
+            id: master_flavor_id,
+          }
+        )
       : '-';
 
     const options = [
       {
-        label: t('Image ID'),
+        label: t('Image'),
         content: imageUrl,
       },
       {
@@ -170,11 +200,11 @@ export class BaseDetail extends Base {
         hidden: this.isAdminPage,
       },
       {
-        label: t('Node Flavor ID'),
+        label: t('Node Flavor'),
         content: flavorUrl,
       },
       {
-        label: t('Master Node Flavor ID'),
+        label: t('Master Node Flavor'),
         content: masterFlavorUrl,
       },
       {

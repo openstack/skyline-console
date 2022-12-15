@@ -22,7 +22,6 @@ import actionConfigs from './actions';
 export class Clusters extends Base {
   init() {
     this.store = globalClustersStore;
-    this.downloadStore = globalClustersStore;
   }
 
   get name() {

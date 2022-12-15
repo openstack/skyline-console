@@ -19,7 +19,6 @@ import actionConfigs from './actions';
 export class ClusterTemplates extends Base {
   init() {
     this.store = globalClusterTemplateStore;
-    this.downloadStore = globalClusterTemplateStore;
   }
 
   get name() {

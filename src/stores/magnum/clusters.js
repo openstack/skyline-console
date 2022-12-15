@@ -25,6 +25,18 @@ export class ClustersStore extends Base {
     return client.magnum.clusterTemplates;
   }
 
+  get flavorClient() {
+    return client.nova.flavors;
+  }
+
+  get networkClient() {
+    return client.neutron.networks;
+  }
+
+  get subnetClient() {
+    return client.neutron.subnets;
+  }
+
   get listWithDetail() {
     return true;
   }
@@ -45,9 +57,41 @@ export class ClustersStore extends Base {
   }
 
   async detailDidFetch(item) {
-    const { cluster_template_id } = item || {};
-    const template = await this.templateClient.show(cluster_template_id);
+    const template =
+      (await this.templateClient.show(item.cluster_template_id)) || {};
     item.template = template;
+    const {
+      flavor_id: templateFlavorId,
+      master_flavor_id: templateMasterFlavorId,
+      fixed_network: templateFixedNetworkId,
+      fixed_subnet: templateSubnetId,
+    } = template;
+    const flavorId = item.flavor_id || templateFlavorId;
+    const masterFlavorId = item.master_flavor_id || templateMasterFlavorId;
+    const fixedNetworkId = item.fixed_network || templateFixedNetworkId;
+    const fixedSubnetId = item.fixed_subnet || templateSubnetId;
+    const [fr = {}, mfr = {}, fx = {}, sub = {}] = await Promise.all([
+      flavorId ? this.flavorClient.show(flavorId) : {},
+      masterFlavorId ? this.flavorClient.show(masterFlavorId) : {},
+      fixedNetworkId ? this.networkClient.show(fixedNetworkId) : {},
+      fixedSubnetId ? this.subnetClient.show(fixedSubnetId) : {},
+    ]);
+    const { flavor } = fr;
+    const { flavor: masterFlavor } = mfr;
+    const { network: fixedNetwork } = fx;
+    const { subnet: fixedSubnet } = sub;
+    if (flavor) {
+      item.flavor = flavor;
+    }
+    if (masterFlavor) {
+      item.masterFlavor = masterFlavor;
+    }
+    if (fixedNetwork) {
+      item.fixedNetwork = fixedNetwork;
+    }
+    if (fixedSubnet) {
+      item.fixedSubnet = fixedSubnet;
+    }
     return item;
   }
 

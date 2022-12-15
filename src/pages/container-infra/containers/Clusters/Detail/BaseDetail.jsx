@@ -19,14 +19,14 @@ import React from 'react';
 
 export class BaseDetail extends Base {
   get leftCards() {
-    return [this.baseInfoCard, this.miscellaneousCard];
+    return [this.templateCard, this.networkCard, this.miscellaneousCard];
   }
 
   get rightCards() {
     return [this.nodesCard, this.labelCard, this.stackCard];
   }
 
-  get baseInfoCard() {
+  get templateCard() {
     const { template = {} } = this.detailData;
     const templateUrl = template
       ? this.getLinkRender(
@@ -65,19 +65,45 @@ export class BaseDetail extends Base {
     };
   }
 
-  get miscellaneousCard() {
-    const { master_flavor_id, flavor_id, keypair } = this.detailData;
-    const masterFlavorUrl = master_flavor_id
-      ? this.getLinkRender('flavorDetail', master_flavor_id, {
-          id: master_flavor_id,
+  get networkCard() {
+    const {
+      fixed_network,
+      fixedNetwork: { name: fixedName } = {},
+      fixed_subnet,
+      fixedSubnet: { name: subName } = {},
+    } = this.detailData || {};
+    const fixedNetworkUrl = fixed_network
+      ? this.getLinkRender('networkDetail', fixedName || fixed_network, {
+          id: fixed_network,
         })
       : '-';
+    const subnetUrl =
+      fixed_network && fixed_subnet
+        ? this.getLinkRender('subnetDetail', subName || fixed_subnet, {
+            networkId: fixed_network,
+            id: fixed_subnet,
+          })
+        : '-';
 
-    const flavorUrl = flavor_id
-      ? this.getLinkRender('flavorDetail', flavor_id, {
-          id: flavor_id,
-        })
-      : '-';
+    const options = [
+      {
+        label: t('Fixed Network'),
+        content: fixedNetworkUrl,
+      },
+      {
+        label: t('Fixed Subnet'),
+        content: subnetUrl,
+      },
+    ];
+
+    return {
+      title: t('Network'),
+      options,
+    };
+  }
+
+  get miscellaneousCard() {
+    const { keypair } = this.detailData;
 
     const keypairUrl = keypair
       ? this.getLinkRender('keypairDetail', keypair, {
@@ -112,14 +138,6 @@ export class BaseDetail extends Base {
         dataIndex: 'docker_volume_size',
       },
       {
-        label: t('Master Node Flavor ID'),
-        content: masterFlavorUrl,
-      },
-      {
-        label: t('Node Flavor ID'),
-        content: flavorUrl,
-      },
-      {
         label: t('COE Version'),
         dataIndex: 'coe_version',
       },
@@ -132,14 +150,47 @@ export class BaseDetail extends Base {
     return {
       title: t('Miscellaneous'),
       options,
+      labelCol: 12,
+      contentCol: 12,
     };
   }
 
   get nodesCard() {
+    const {
+      master_flavor_id,
+      masterFlavor: { name: masterFlavorName } = {},
+      flavor_id,
+      flavor: { name: flavorName } = {},
+    } = this.detailData;
+
+    const masterFlavorUrl = master_flavor_id
+      ? this.getLinkRender(
+          'flavorDetail',
+          masterFlavorName || master_flavor_id,
+          {
+            id: master_flavor_id,
+          }
+        )
+      : '-';
+
+    const flavorUrl = flavor_id
+      ? this.getLinkRender('flavorDetail', flavorName || flavor_id, {
+          id: flavor_id,
+        })
+      : '-';
+
     const options = [
+      {
+        label: t('Master Node Flavor'),
+        content: masterFlavorUrl,
+      },
       {
         label: t('Master Count'),
         dataIndex: 'master_count',
+      },
+      {
+        label: t('Node Flavor'),
+        content: flavorUrl,
       },
       {
         label: t('Node Count'),

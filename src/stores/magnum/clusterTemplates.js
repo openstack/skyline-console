@@ -22,6 +22,22 @@ export class ClusterTemplatesStore extends Base {
     return client.magnum.clusterTemplates;
   }
 
+  get flavorClient() {
+    return client.nova.flavors;
+  }
+
+  get networkClient() {
+    return client.neutron.networks;
+  }
+
+  get subnetClient() {
+    return client.neutron.subnets;
+  }
+
+  get imageClient() {
+    return client.glance.images;
+  }
+
   @action
   async create(newbody) {
     return this.submitting(this.client.create(newbody));
@@ -75,10 +91,47 @@ export class ClusterTemplatesStore extends Base {
   }
 
   async detailDidFetch(item) {
-    const { keypairs = [] } = (await client.nova.keypairs.list()) || {};
+    const [kp = {}, fr = {}, mfr = {}, ext = {}, fx = {}, sub = {}, img] =
+      await Promise.all([
+        client.nova.keypairs.list(),
+        item.flavor_id ? this.flavorClient.show(item.flavor_id) : {},
+        item.master_flavor_id
+          ? this.flavorClient.show(item.master_flavor_id)
+          : {},
+        item.external_network_id
+          ? this.networkClient.show(item.external_network_id)
+          : {},
+        item.fixed_network ? this.networkClient.show(item.fixed_network) : {},
+        item.fixed_subnet ? this.subnetClient.show(item.fixed_subnet) : {},
+        item.image_id ? this.imageClient.show(item.image_id) : {},
+      ]);
+    const { keypairs = [] } = kp;
+    const { flavor } = fr;
+    const { flavor: masterFlavor } = mfr;
+    const { network } = ext;
+    const { network: fixedNetwork } = fx;
+    const { subnet: fixedSubnet } = sub;
     const keypair = keypairs.find((k) => k?.keypair?.name === item.keypair_id);
     if (keypair) {
       item.selfKeypair = true;
+    }
+    if (flavor) {
+      item.flavor = flavor;
+    }
+    if (masterFlavor) {
+      item.masterFlavor = masterFlavor;
+    }
+    if (network) {
+      item.externalNetwork = network;
+    }
+    if (fixedNetwork) {
+      item.fixedNetwork = fixedNetwork;
+    }
+    if (fixedSubnet) {
+      item.fixedSubnet = fixedSubnet;
+    }
+    if (img) {
+      item.image = img;
     }
     return item;
   }

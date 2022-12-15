@@ -111,3 +111,27 @@ export const isExternalNetwork = (network) => !!network['router:external'];
 export const subnetIpv6Tip = t(
   'Default is slaac, for details, see https://docs.openstack.org/neutron/latest/admin/config-ipv6.html'
 );
+
+export const subnetColumns = [
+  {
+    title: t('Name'),
+    dataIndex: 'name',
+  },
+  {
+    title: t('CIDR'),
+    dataIndex: 'cidr',
+  },
+  {
+    title: t('Gateway IP'),
+    dataIndex: 'gateway_ip',
+  },
+  {
+    title: t('IP Version'),
+    dataIndex: 'ip_version',
+  },
+  {
+    title: t('Created At'),
+    dataIndex: 'created_at',
+    valueRender: 'toLocalTime',
+  },
+];

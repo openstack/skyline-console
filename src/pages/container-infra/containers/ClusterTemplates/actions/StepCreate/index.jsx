@@ -117,21 +117,14 @@ export class StepCreate extends StepAction {
       ...rest,
       labels: requestLabels,
       external_network_id: externalNetwork.selectedRowKeys[0],
-      fixed_network: fixedNetwork ? fixedNetwork.selectedRowKeys[0] : null,
-      fixed_subnet: fixedSubnet ? fixedSubnet.selectedRowKeys[0] : null,
+      fixed_network: (fixedNetwork && fixedNetwork.selectedRowKeys[0]) || null,
+      fixed_subnet: (fixedSubnet && fixedSubnet.selectedRowKeys[0]) || null,
+      flavor_id: (flavor && flavor.selectedRowKeys[0]) || null,
+      master_flavor_id:
+        (masterFlavor && masterFlavor.selectedRowKeys[0]) || null,
+      image_id: (images && images.selectedRowKeys[0]) || null,
+      keypair_id: (keypair && keypair.selectedRowKeys[0]) || null,
     };
-    if (flavor) {
-      body.flavor_id = flavor.selectedRowKeys[0];
-    }
-    if (masterFlavor) {
-      body.master_flavor_id = masterFlavor.selectedRowKeys[0];
-    }
-    if (images) {
-      body.image_id = images.selectedRowKeys[0];
-    }
-    if (keypair) {
-      body.keypair_id = keypair.selectedRowKeys[0];
-    }
     if (this.isEdit) {
       return this.store.update({ id: this.params.id }, body);
     }

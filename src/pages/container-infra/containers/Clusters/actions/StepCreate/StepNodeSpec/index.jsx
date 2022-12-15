@@ -12,18 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
 import { inject, observer } from 'mobx-react';
+import { toJS } from 'mobx';
 import Base from 'components/Form';
-import FlavorSelectTable from 'src/pages/compute/containers/Instance/components/FlavorSelectTable';
 import globalKeypairStore from 'stores/nova/keypair';
+import { FlavorStore } from 'src/stores/nova/flavor';
 import { defaultTip } from 'resources/magnum/cluster';
 import { getKeyPairHeader } from 'resources/nova/keypair';
+import { getBaseSimpleFlavorColumns } from 'resources/magnum/template';
 
 export class StepNodeSpec extends Base {
   init() {
     this.keyPairStore = globalKeypairStore;
-    this.getKeypairs();
+    this.flavorStore = new FlavorStore();
+    this.masterFlavorStore = new FlavorStore();
+    this.getAllInitFunctions();
   }
 
   get title() {
@@ -36,58 +39,90 @@ export class StepNodeSpec extends Base {
 
   allowed = () => Promise.resolve();
 
-  async getKeypairs() {
-    await this.keyPairStore.fetchList();
+  async getAllInitFunctions() {
+    await Promise.all([
+      this.getKeypairs(),
+      this.getFlavors(),
+      this.getMasterFlavors(),
+    ]);
+    this.updateDefaultValue();
+  }
+
+  getKeypairs() {
+    return this.keyPairStore.fetchList();
   }
 
   get keypairs() {
     return this.keyPairStore.list.data || [];
   }
 
-  getFlavorComponent() {
-    return <FlavorSelectTable onChange={this.onFlavorChange} />;
+  getFlavors() {
+    return this.flavorStore.fetchList();
   }
 
-  onFlavorChange = (value) => {
-    this.updateContext({
-      flavor: value,
-    });
-  };
-
-  getMasterFlavorComponent() {
-    return <FlavorSelectTable onChange={this.onMasterFlavorChange} />;
+  getMasterFlavors() {
+    return this.masterFlavorStore.fetchList();
   }
 
-  onMasterFlavorChange = (value) => {
-    this.updateContext({
-      masterFlavor: value,
-    });
-  };
+  get flavors() {
+    return toJS(this.flavorStore.list.data) || [];
+  }
+
+  get masterFlavors() {
+    return toJS(this.masterFlavorStore.list.data) || [];
+  }
 
   get defaultValue() {
-    const { context: { clusterTemplate = {} } = {} } = this.props;
+    const {
+      context: { clusterTemplate = {}, keypair, masterFlavor, flavor } = {},
+    } = this.props;
     const { selectedRows = [] } = clusterTemplate;
-    const { master_flavor_id, flavor_id } = selectedRows[0] || {};
+    const { master_flavor_id, flavor_id, keypair_id, selfKeypair } =
+      selectedRows[0] || {};
 
     return {
       master_count: 1,
       node_count: 1,
-      masterFlavor: {
-        selectedRowKeys: [master_flavor_id],
+      masterFlavor: masterFlavor || {
+        selectedRowKeys: master_flavor_id ? [master_flavor_id] : [],
+        selectedRows: this.masterFlavors.filter(
+          (it) => it.id === master_flavor_id
+        ),
       },
-      flavor: { selectedRowKeys: [flavor_id] },
+      flavor: flavor || {
+        selectedRowKeys: flavor_id ? [flavor_id] : [],
+        selectedRows: this.flavors.filter((it) => it.id === flavor_id),
+      },
+      keypair: keypair || {
+        selectedRowKeys: keypair_id && selfKeypair ? [keypair_id] : [],
+        selectedRows: this.keypairs.filter((it) => it.id === keypair_id),
+      },
     };
   }
 
   get formItems() {
-    const { context: { clusterTemplate = {}, keypair } = {} } = this.props;
+    const {
+      context: { clusterTemplate = {}, keypair, masterFlavor, flavor } = {},
+    } = this.props;
     const { selectedRows = [] } = clusterTemplate;
     const { master_flavor_id, flavor_id, keypair_id, selfKeypair } =
       selectedRows[0] || {};
     const { initKeyPair = keypair } = this.state;
     const templateHasSelfKeypair = keypair_id && selfKeypair;
     const templateInitKeypair = {
-      selectedRowKeys: [keypair_id],
+      selectedRowKeys: keypair_id && selfKeypair ? [keypair_id] : [],
+      selectedRows: this.keypairs.filter((it) => it.id === keypair_id),
+    };
+
+    const initFlavor = flavor || {
+      selectedRowKeys: flavor_id ? [flavor_id] : [],
+      selectedRows: this.flavors.filter((it) => it.id === flavor_id),
+    };
+    const initMasterFlavor = masterFlavor || {
+      selectedRowKeys: master_flavor_id ? [master_flavor_id] : [],
+      selectedRows: this.masterFlavors.filter(
+        (it) => it.id === master_flavor_id
+      ),
     };
 
     return [
@@ -95,7 +130,7 @@ export class StepNodeSpec extends Base {
         name: 'keypair',
         label: t('Keypair'),
         type: 'select-table',
-        required: !templateHasSelfKeypair,
+        required: true,
         data: this.keypairs,
         initValue:
           initKeyPair || (templateHasSelfKeypair && templateInitKeypair),
@@ -137,9 +172,23 @@ export class StepNodeSpec extends Base {
         name: 'masterFlavor',
         label: t('Flavor of Master Nodes'),
         type: 'select-table',
-        component: this.getMasterFlavorComponent(),
-        required: !master_flavor_id,
+        required: true,
         tip: defaultTip,
+        data: this.masterFlavors,
+        initValue: initMasterFlavor,
+        columns: getBaseSimpleFlavorColumns(this),
+        isLoading: this.masterFlavorStore.list.isLoading,
+        filterParams: [
+          {
+            label: t('Name'),
+            name: 'name',
+          },
+        ],
+        onChange: (value) => {
+          this.updateContext({
+            masterFlavor: value,
+          });
+        },
       },
       {
         type: 'divider',
@@ -160,9 +209,23 @@ export class StepNodeSpec extends Base {
         name: 'flavor',
         label: t('Flavor of Nodes'),
         type: 'select-table',
-        component: this.getFlavorComponent(),
-        required: !flavor_id,
+        required: true,
         tip: defaultTip,
+        data: this.flavors,
+        initValue: initFlavor,
+        columns: getBaseSimpleFlavorColumns(this),
+        isLoading: this.flavorStore.list.isLoading,
+        filterParams: [
+          {
+            label: t('Name'),
+            name: 'name',
+          },
+        ],
+        onChange: (value) => {
+          this.updateContext({
+            flavor: value,
+          });
+        },
       },
     ];
   }
