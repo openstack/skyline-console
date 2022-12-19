@@ -24,12 +24,9 @@ describe('test yaml', () => {
           },
         },
       })
-    ).toBe(`{
-  "level1": {
-    "level2": {
-      "key": "value"
-    }
-  }
-}`);
+    ).toBe(`level1:
+  level2:
+    key: value
+`);
   });
 });
