@@ -411,7 +411,10 @@ export default class DetailBase extends React.Component {
   }
 
   renderTabComponent(tabItem) {
-    const { component, key } = tabItem;
+    const { component, key, render } = tabItem;
+    if (render) {
+      return render;
+    }
     return component ? (
       <tabItem.component
         {...this.props}
