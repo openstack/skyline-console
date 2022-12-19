@@ -164,8 +164,6 @@ export class StepNetworks extends Base {
         onChange: (value) => {
           this.updateContext({
             fixedNetwork: value,
-          });
-          this.updateContext({
             fixedSubnet: {
               selectedRowKeys: [],
               selectedRows: [],
