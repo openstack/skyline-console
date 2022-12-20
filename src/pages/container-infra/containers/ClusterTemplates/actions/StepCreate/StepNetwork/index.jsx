@@ -96,6 +96,10 @@ export class StepNetwork extends Base {
           master_lb_enabled,
           floating_ip_enabled,
         } = {},
+        context: {
+          fixedNetwork: fixedNetworkContext,
+          fixedSubnet: fixedSubnetContext,
+        },
       } = this.props;
       values = {
         network_driver,
@@ -111,13 +115,13 @@ export class StepNetwork extends Base {
         floating_ip_enabled,
       };
       if (fixed_network) {
-        values.fixedNetwork = {
+        values.fixedNetwork = fixedNetworkContext || {
           selectedRowKeys: [fixed_network],
           selectedRows: [fixedNetwork],
         };
       }
       if (fixed_subnet) {
-        values.fixedSubnet = {
+        values.fixedSubnet = fixedSubnetContext || {
           selectedRowKeys: [fixed_subnet],
           selectedRows: [fixedSubnet],
         };
@@ -128,7 +132,15 @@ export class StepNetwork extends Base {
   }
 
   get formItems() {
-    const { extra: { network_driver } = {} } = this.props;
+    const {
+      extra: { network_driver, fixed_subnet, fixedSubnet } = {},
+      context: { fixedSubnet: fixedSubnetContext },
+    } = this.props;
+
+    const initSubnet = fixedSubnetContext || {
+      selectedRowKeys: fixed_subnet ? [fixed_subnet] : [],
+      selectedRows: fixedSubnet ? [fixedSubnet] : [],
+    };
 
     return [
       {
@@ -204,10 +216,10 @@ export class StepNetwork extends Base {
         onChange: (value) => {
           this.updateContext({
             fixedNetwork: value,
-          });
-          this.updateFormValue('fixedSubnet', {
-            selectedRowKeys: [],
-            selectedRows: [],
+            fixedSubnet: {
+              selectedRowKeys: [],
+              selectedRows: [],
+            },
           });
         },
       },
@@ -223,6 +235,12 @@ export class StepNetwork extends Base {
           },
         ],
         columns: subnetColumns,
+        initValue: initSubnet,
+        onChange: (value) => {
+          this.updateContext({
+            fixedSubnet: value,
+          });
+        },
       },
       {
         name: 'dns_nameserver',

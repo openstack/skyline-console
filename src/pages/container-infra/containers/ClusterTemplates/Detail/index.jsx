@@ -56,6 +56,11 @@ export class ClusterTemplateDetail extends Base {
         dataIndex: 'updated_at',
         valueRender: 'toLocalTime',
       },
+      {
+        title: t('Project ID'),
+        dataIndex: 'project_id',
+        hidden: !this.isAdminPage,
+      },
     ];
   }
 

@@ -74,15 +74,22 @@ export class StepNodeSpec extends Base {
 
   get defaultValue() {
     const {
-      context: { clusterTemplate = {}, keypair, masterFlavor, flavor } = {},
+      context: {
+        clusterTemplate = {},
+        keypair,
+        masterFlavor,
+        flavor,
+        master_count,
+        node_count,
+      } = {},
     } = this.props;
     const { selectedRows = [] } = clusterTemplate;
     const { master_flavor_id, flavor_id, keypair_id, selfKeypair } =
       selectedRows[0] || {};
 
     return {
-      master_count: 1,
-      node_count: 1,
+      master_count: master_count || 1,
+      node_count: node_count || 1,
       masterFlavor: masterFlavor || {
         selectedRowKeys: master_flavor_id ? [master_flavor_id] : [],
         selectedRows: this.masterFlavors.filter(

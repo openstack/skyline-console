@@ -52,6 +52,12 @@ export const getBaseSimpleFlavorColumns = (self) => [
     routeName: self ? self.getRouteName('flavorDetail') : '',
   },
   {
+    title: t('Project ID/Name'),
+    dataIndex: 'project_name',
+    isHideable: true,
+    hidden: !self.isAdminPage,
+  },
+  {
     title: t('Architecture'),
     dataIndex: 'architecture',
     valueMap: flavorArchitectures,

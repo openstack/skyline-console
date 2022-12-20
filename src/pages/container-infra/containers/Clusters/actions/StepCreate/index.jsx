@@ -131,6 +131,7 @@ export class StepCreate extends StepAction {
       title: t('Clusters'),
     };
 
+    const { newNodes } = this.getNodesInput();
     const {
       instances = {},
       cores = {},
@@ -138,7 +139,7 @@ export class StepCreate extends StepAction {
     } = toJS(this.projectStore.novaQuota) || {};
     const instanceQuotaInfo = {
       ...instances,
-      add: quotaError ? 0 : 1,
+      add: quotaError ? 0 : newNodes,
       name: 'instance',
       title: t('Instance'),
       type: 'line',
@@ -161,11 +162,21 @@ export class StepCreate extends StepAction {
       type: 'line',
     };
 
+    const { volumes } = toJS(this.projectStore.cinderQuota) || {};
+    const volumeQuotaInfo = {
+      ...volumes,
+      add: quotaError ? 0 : newNodes,
+      name: 'volume',
+      title: t('Volume'),
+      type: 'line',
+    };
+
     const quotaInfo = [
       clusterQuotaInfo,
       instanceQuotaInfo,
       cpuQuotaInfo,
       ramQuotaInfo,
+      volumeQuotaInfo,
     ];
 
     return quotaInfo;
@@ -184,15 +195,25 @@ export class StepCreate extends StepAction {
     return '';
   }
 
+  getNodesInput() {
+    const { data = {} } = this.state;
+    const { node_count = 0, master_count = 0 } = data;
+    const newNodes = node_count + master_count;
+    return {
+      newNodes,
+    };
+  }
+
   checkInstanceQuota() {
     const { quotaLoading } = this.state;
     if (quotaLoading) {
       return '';
     }
+    const { newNodes } = this.getNodesInput();
     const { instances = {} } = this.projectStore.novaQuota || {};
     const { left = 0 } = instances;
-    if (left === 0) {
-      return this.getQuotaMessage(1, instances, t('Instance'));
+    if (left !== -1 && left < newNodes) {
+      return this.getQuotaMessage(newNodes, instances, t('Instance'));
     }
     return '';
   }
@@ -247,11 +268,26 @@ export class StepCreate extends StepAction {
     return '';
   }
 
+  checkVolumeQuota() {
+    const { quotaLoading } = this.state;
+    if (quotaLoading) {
+      return '';
+    }
+    const { newNodes } = this.getNodesInput();
+    const { volumes } = toJS(this.projectStore.cinderQuota) || {};
+    const { left = 0 } = volumes;
+    if (left !== -1 && left < newNodes) {
+      return this.getQuotaMessage(newNodes, volumes, t('Volume'));
+    }
+    return '';
+  }
+
   checkQuotaInput() {
     const clusterMsg = this.checkClusterQuota();
     const instanceMsg = this.checkInstanceQuota();
     const flavorMsg = this.checkFlavorQuota();
-    const error = clusterMsg || instanceMsg || flavorMsg;
+    const volumeMsg = this.checkVolumeQuota();
+    const error = clusterMsg || instanceMsg || flavorMsg || volumeMsg;
     if (!error) {
       this.status = 'success';
       this.errorMsg = '';
@@ -304,6 +340,7 @@ export class StepCreate extends StepAction {
     }
 
     const data = {
+      ...rest,
       name: values.name,
       labels: {
         ...requestLabels,
@@ -311,30 +348,13 @@ export class StepCreate extends StepAction {
         auto_scaling_enabled: `${!!auto_scaling_enabled}`,
       },
       cluster_template_id: clusterTemplate.selectedRowKeys[0],
-      ...rest,
+      keypair: (keypair && keypair.selectedRowKeys[0]) || null,
+      master_flavor_id:
+        (masterFlavor && masterFlavor.selectedRowKeys[0]) || null,
+      flavor_id: (flavor && flavor.selectedRowKeys[0]) || null,
+      fixed_network: (!newNetwork && fixedNetwork.selectedRowKeys[0]) || null,
+      fixed_subnet: (!newNetwork && fixedSubnet.selectedRowKeys[0]) || null,
     };
-
-    if (keypair) {
-      data.keypair = keypair.selectedRowKeys[0];
-    }
-
-    if (masterFlavor) {
-      data.master_flavor_id = masterFlavor.selectedRowKeys[0];
-    }
-
-    if (flavor) {
-      data.flavor_id = flavor.selectedRowKeys[0];
-    }
-
-    if (!newNetwork && fixedNetwork) {
-      const { selectedRowKeys = [] } = fixedNetwork;
-      data.fixed_network = selectedRowKeys[0];
-    }
-
-    if (!newNetwork && fixedSubnet) {
-      const { selectedRowKeys = [] } = fixedSubnet;
-      data.fixed_subnet = selectedRowKeys[0];
-    }
 
     return this.store.create(data);
   };

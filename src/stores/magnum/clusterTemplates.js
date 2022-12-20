@@ -78,10 +78,14 @@ export class ClusterTemplatesStore extends Base {
     });
   }
 
-  async listDidFetch(items) {
+  async listDidFetch(items, _, filters) {
     if (!items.length) return items;
+    const { shouldFetchProject } = filters;
+    const newData = await this.listDidFetchProject(items, {
+      all_projects: shouldFetchProject,
+    });
     const { keypairs = [] } = (await client.nova.keypairs.list()) || {};
-    return items.map((it) => {
+    return newData.map((it) => {
       const keypair = keypairs.find((k) => k?.keypair?.name === it.keypair_id);
       if (keypair) {
         it.selfKeypair = true;

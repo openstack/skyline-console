@@ -185,6 +185,11 @@ export class StepNetworks extends Base {
           },
         ],
         columns: subnetColumns,
+        onChange: (value) => {
+          this.updateContext({
+            fixedSubnet: value,
+          });
+        },
         initValue: initSubnet,
       },
       {
