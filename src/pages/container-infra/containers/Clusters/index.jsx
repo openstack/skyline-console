@@ -16,12 +16,17 @@ import Base from 'containers/List';
 import { inject, observer } from 'mobx-react';
 import { getOptions } from 'utils';
 import { clusterStatus, healthStatus } from 'resources/magnum/cluster';
-import globalClustersStore from 'src/stores/magnum/clusters';
+import { ClustersStore } from 'stores/magnum/clusters';
+import { ClustersAdminStore } from 'stores/magnum/clusterAdmin';
 import actionConfigs from './actions';
 
 export class Clusters extends Base {
   init() {
-    this.store = globalClustersStore;
+    if (this.isAdminPage) {
+      this.store = new ClustersAdminStore();
+    } else {
+      this.store = new ClustersStore();
+    }
   }
 
   get name() {

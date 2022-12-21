@@ -38,6 +38,10 @@ export class ClusterTemplatesStore extends Base {
     return client.glance.images;
   }
 
+  get listWithDetail() {
+    return true;
+  }
+
   @action
   async create(newbody) {
     return this.submitting(this.client.create(newbody));

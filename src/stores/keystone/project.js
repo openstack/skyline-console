@@ -296,7 +296,7 @@ export class ProjectStore extends Base {
     );
     promiseArr.push(
       this.enableMagnum ? this.magnumQuotaClient.list(project_id) : null,
-      this.enableMagnum ? client.magnum.clusters.list() : null
+      this.enableMagnum ? client.magnum.clusters.listDetail() : null
     );
     promiseArr.push(
       this.enableTrove ? this.troveQuotaClient.show(project_id) : null
@@ -684,7 +684,7 @@ export class ProjectStore extends Base {
   async fetchProjectMagnumQuota(projectId) {
     const [quotas, clustersRes] = await Promise.all([
       this.magnumQuotaClient.list(projectId || this.currentProjectId),
-      client.magnum.clusters.list(),
+      client.magnum.clusters.listDetail(),
     ]);
     const { hard_limit } = this.updateQuotaData(quotas);
     const { clusters = [] } = clustersRes || {};

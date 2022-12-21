@@ -12,13 +12,18 @@
 
 import Base from 'containers/List';
 import { inject, observer } from 'mobx-react';
-import globalClusterTemplateStore from 'src/stores/magnum/clusterTemplates';
+import { ClusterTemplatesStore } from 'stores/magnum/clusterTemplates';
+import { ClusterTemplatesAdminStore } from 'stores/magnum/clusterTemplatesAdmin';
 import { getBaseTemplateColumns } from 'resources/magnum/template';
 import actionConfigs from './actions';
 
 export class ClusterTemplates extends Base {
   init() {
-    this.store = globalClusterTemplateStore;
+    if (this.isAdminPage) {
+      this.store = new ClusterTemplatesAdminStore();
+    } else {
+      this.store = new ClusterTemplatesStore();
+    }
   }
 
   get name() {
