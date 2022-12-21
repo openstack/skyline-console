@@ -22,6 +22,12 @@ export const getBaseTemplateColumns = (self) => [
     routeName: self.getRouteName('containerInfraClusterTemplateDetail'),
   },
   {
+    title: t('Project ID/Name'),
+    dataIndex: 'project_name',
+    isHideable: true,
+    hidden: !self.isAdminPage,
+  },
+  {
     title: t('COE'),
     isHideable: true,
     dataIndex: 'coe',
@@ -50,12 +56,6 @@ export const getBaseSimpleFlavorColumns = (self) => [
     title: t('ID/Name'),
     dataIndex: 'name',
     routeName: self ? self.getRouteName('flavorDetail') : '',
-  },
-  {
-    title: t('Project ID/Name'),
-    dataIndex: 'project_name',
-    isHideable: true,
-    hidden: !self.isAdminPage,
   },
   {
     title: t('Architecture'),
