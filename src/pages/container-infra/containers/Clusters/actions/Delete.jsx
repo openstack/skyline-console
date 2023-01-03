@@ -40,7 +40,11 @@ export default class DeleteClusters extends ConfirmAction {
 
   allowedCheckFunc = (item) => {
     const { stack_id, status } = item;
-    return !!stack_id && status !== 'DELETE_IN_PROGRESS';
+    const disableDelete =
+      status === 'DELETE_IN_PROGRESS' ||
+      (status === 'CREATE_IN_PROGRESS' && !stack_id);
+
+    return !disableDelete;
   };
 
   onSubmit = (data) => globalClustersStore.delete({ id: data.id });

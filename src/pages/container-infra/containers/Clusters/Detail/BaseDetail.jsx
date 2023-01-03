@@ -28,7 +28,7 @@ export class BaseDetail extends Base {
 
   get templateCard() {
     const { template = {} } = this.detailData;
-    const templateUrl = template
+    const templateUrl = template?.name
       ? this.getLinkRender(
           'containerInfraClusterTemplateDetail',
           template.name,
@@ -37,6 +37,7 @@ export class BaseDetail extends Base {
           }
         )
       : '-';
+
     const options = [
       {
         label: t('Name'),
@@ -44,16 +45,8 @@ export class BaseDetail extends Base {
         content: templateUrl,
       },
       {
-        label: t('ID'),
-        dataIndex: 'template.uuid',
-      },
-      {
         label: t('COE'),
         dataIndex: 'template.coe',
-      },
-      {
-        label: t('Image ID'),
-        dataIndex: 'template.image_id',
       },
     ];
 
@@ -251,10 +244,20 @@ export class BaseDetail extends Base {
   }
 
   get stackCard() {
+    const { stack: { id, stack_name: name } = {} } = this.detailData || {};
+
+    const stackUrl = id
+      ? this.getLinkRender('stackDetail', id, {
+          id,
+          name,
+        })
+      : '-';
+
     const options = [
       {
         label: t('Stack ID'),
         dataIndex: 'stack_id',
+        content: stackUrl,
       },
       {
         label: t('Stack Faults'),
@@ -278,6 +281,37 @@ export class BaseDetail extends Base {
 
     return {
       title: t('Stack'),
+      labelCol: 2,
+      options,
+    };
+  }
+
+  get healthCard() {
+    const { health_status_reason = {} } = this.detailData || {};
+
+    const logContent = !isEmpty(health_status_reason) ? (
+      <ul>
+        {Object.entries(health_status_reason).map(([key, val]) => {
+          return (
+            <li key={key}>
+              {key} : {val}
+            </li>
+          );
+        })}
+      </ul>
+    ) : (
+      '-'
+    );
+
+    const options = [
+      {
+        label: t('Log'),
+        content: logContent,
+      },
+    ];
+
+    return {
+      title: t('Health Checking Log'),
       labelCol: 2,
       options,
     };

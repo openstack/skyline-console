@@ -37,6 +37,10 @@ export class ClustersStore extends Base {
     return client.neutron.subnets;
   }
 
+  get stackClient() {
+    return client.heat.stacks;
+  }
+
   get listWithDetail() {
     return true;
   }
@@ -70,16 +74,18 @@ export class ClustersStore extends Base {
     const masterFlavorId = item.master_flavor_id || templateMasterFlavorId;
     const fixedNetworkId = item.fixed_network || templateFixedNetworkId;
     const fixedSubnetId = item.fixed_subnet || templateSubnetId;
-    const [fr = {}, mfr = {}, fx = {}, sub = {}] = await Promise.all([
+    const [fr = {}, mfr = {}, fx = {}, sub = {}, stack] = await Promise.all([
       flavorId ? this.flavorClient.show(flavorId) : {},
       masterFlavorId ? this.flavorClient.show(masterFlavorId) : {},
       fixedNetworkId ? this.networkClient.show(fixedNetworkId) : {},
       fixedSubnetId ? this.subnetClient.show(fixedSubnetId) : {},
+      item.stack_id ? this.stackClient.list({ id: item.stack_id }) : {},
     ]);
     const { flavor } = fr;
     const { flavor: masterFlavor } = mfr;
     const { network: fixedNetwork } = fx;
     const { subnet: fixedSubnet } = sub;
+    const { stacks = [] } = stack;
     if (flavor) {
       item.flavor = flavor;
     }
@@ -91,6 +97,9 @@ export class ClustersStore extends Base {
     }
     if (fixedSubnet) {
       item.fixedSubnet = fixedSubnet;
+    }
+    if (stacks[0]) {
+      item.stack = stacks[0];
     }
     return item;
   }

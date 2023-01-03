@@ -16,7 +16,6 @@ import { inject, observer } from 'mobx-react';
 import Base from 'containers/TabDetail';
 import { clusterStatus, healthStatus } from 'resources/magnum/cluster';
 import globalClustersStore from 'src/stores/magnum/clusters';
-import { isEmpty } from 'lodash';
 import BaseDetail from './BaseDetail';
 import actionConfigs from '../actions';
 
@@ -73,11 +72,6 @@ export class ClustersDetail extends Base {
         title: t('Health Status'),
         dataIndex: 'health_status',
         render: (value) => healthStatus[value] || value || '-',
-      },
-      {
-        title: t('Health Status Reason'),
-        dataIndex: 'health_status_reason',
-        render: (value) => (isEmpty(value) ? '-' : JSON.stringify(value)),
       },
     ];
   }

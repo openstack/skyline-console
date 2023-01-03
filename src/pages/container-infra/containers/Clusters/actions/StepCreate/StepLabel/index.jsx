@@ -47,6 +47,11 @@ export class StepLabel extends Base {
         type: 'add-select',
         itemComponent: KeyValueInput,
         addText: t('Add Label'),
+        onChange: (value) => {
+          this.updateContext({
+            additionalLabels: value,
+          });
+        },
       },
     ];
   }
