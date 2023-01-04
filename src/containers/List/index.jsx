@@ -1049,6 +1049,7 @@ export default class BaseList extends React.Component {
       // this.list.timeFilter = timeFilter;
       this.setState(
         {
+          filters: rest,
           timeFilter,
         },
         () => {
