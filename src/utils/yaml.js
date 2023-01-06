@@ -18,8 +18,9 @@ import yaml from 'js-yaml';
 export const getValue = (value) => {
   if (isObject(value)) {
     try {
-      return yaml.safeDump(value, { noRefs: true });
+      return yaml.dump(value, { noRefs: true });
     } catch (err) {
+      console.log('yaml-dump-err', err);
       return JSON.stringify(value, null, 2);
     }
   }
