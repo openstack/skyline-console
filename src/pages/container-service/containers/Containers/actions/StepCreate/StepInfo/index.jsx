@@ -13,11 +13,8 @@
 import Base from 'components/Form';
 import { inject, observer } from 'mobx-react';
 import globalImageStore from 'src/stores/glance/image';
-import {
-  getImageColumns,
-  getImageSystemTabs,
-  getImageOS,
-} from 'resources/glance/image';
+import { getImageColumns } from 'resources/glance/image';
+import { toJS } from 'mobx';
 
 export class StepInfo extends Base {
   init() {
@@ -34,42 +31,76 @@ export class StepInfo extends Base {
 
   async getImageList() {
     await globalImageStore.fetchList();
-    this.updateDefaultValue();
   }
 
   get imageList() {
-    const { imageTab } = this.state;
-    return (globalImageStore.list.data || [])
-      .filter((it) => it.owner === this.currentProjectId)
-      .filter((it) => getImageOS(it) === imageTab);
+    return toJS(globalImageStore.list.data || []).filter(
+      (it) => it.container_format === 'docker'
+    );
   }
 
   get imageColumns() {
-    return getImageColumns(this);
+    return getImageColumns(this).filter(
+      (it) => !['project_name', 'owner'].includes(it.dataIndex)
+    );
   }
-
-  get systemTabs() {
-    const imageTabs = getImageSystemTabs();
-    return imageTabs;
-  }
-
-  onImageTabChange = (value) => {
-    this.setState({
-      imageTab: value,
-    });
-  };
 
   get formItems() {
+    const { imageDriver } = this.state;
+
     return [
       {
         name: 'name',
         label: t('Container Name'),
         type: 'input',
-        placeholder: t('Container Name'),
+        placeholder: t('Please input container name'),
+        required: true,
+        validator: (rule, value) => {
+          const pattern = /^[a-zA-Z0-9][a-zA-Z0-9_.-]+$/;
+          if (!pattern.test(value)) {
+            return Promise.reject(
+              value
+                ? t(
+                    'The name should start with letter or number, characters can only contain "0-9, a-z, A-Z, -, _, ."'
+                  )
+                : ''
+            );
+          }
+          return Promise.resolve();
+        },
+      },
+      {
+        name: 'image_driver',
+        label: t('Image Driver'),
+        placeholder: t('Please select image driver'),
+        type: 'select',
+        options: [
+          {
+            label: t('Docker Hub'),
+            value: 'docker',
+          },
+          {
+            label: t('Glance Image'),
+            value: 'glance',
+          },
+        ],
+        onChange: (value) => {
+          this.setState({
+            imageDriver: value,
+          });
+        },
         required: true,
       },
       {
-        name: 'images',
+        name: 'image',
+        label: t('Image'),
+        type: 'input',
+        placeholder: t('Please input image'),
+        required: true,
+        display: imageDriver === 'docker',
+      },
+      {
+        name: 'image',
         label: t('Image'),
         type: 'select-table',
         data: this.imageList,
@@ -82,32 +113,7 @@ export class StepInfo extends Base {
           },
         ],
         columns: this.imageColumns,
-        tabs: this.systemTabs,
-        defaultTabValue: this.systemTabs[0].value,
-        onTabChange: this.onImageTabChange,
-      },
-      {
-        name: 'image_driver',
-        label: t('Image Driver'),
-        placeholder: t('Image Driver'),
-        type: 'select',
-        options: [
-          {
-            label: t('Docker'),
-            value: 'docker',
-          },
-          {
-            label: t('Glance'),
-            value: 'glance',
-          },
-        ],
-        allowClear: true,
-      },
-      {
-        name: 'command',
-        label: t('Command'),
-        type: 'input',
-        placeholder: t('A command that will be sent to the container'),
+        display: imageDriver === 'glance',
       },
     ];
   }

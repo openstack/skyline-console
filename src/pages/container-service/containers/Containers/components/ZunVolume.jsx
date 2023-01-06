@@ -15,8 +15,8 @@
 import React from 'react';
 import { Select, Row, Col, Form, Input } from 'antd';
 import PropTypes from 'prop-types';
+import InputInt from 'components/FormItem/InputInt';
 import styles from './index.less';
-import InputInt from '../InputInt';
 
 export default class ZunVolume extends React.Component {
   static propTypes = {
@@ -120,6 +120,7 @@ export default class ZunVolume extends React.Component {
     const inputSize = (
       <InputInt
         value={size}
+        min={1}
         onChange={this.onVolumeSizeChange}
         style={{ maxWidth: '40%' }}
       />
@@ -135,17 +136,17 @@ export default class ZunVolume extends React.Component {
     );
 
     return (
-      <Form.Item className={styles['zun-volume']}>
-        <Row gutter={24}>
-          <Col span={8}>
+      <Form.Item className={styles['select-input']}>
+        <Row gutter={8}>
+          <Col span={6}>
             <span className={styles.label}>{t('Type')}</span>
             {selectType}
           </Col>
-          <Col span={8} hidden={isNewVolume}>
+          <Col span={10} hidden={isNewVolume}>
             <span className={styles.label}>{t('Source')}</span>
             {selectSource}
           </Col>
-          <Col span={8} hidden={!isNewVolume}>
+          <Col span={10} hidden={!isNewVolume}>
             <span className={styles.label}>{t('Size (GiB)')}</span>
             {inputSize}
           </Col>

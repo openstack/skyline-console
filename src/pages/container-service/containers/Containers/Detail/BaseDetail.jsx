@@ -21,7 +21,7 @@ import { isEmpty } from 'lodash';
 
 export class BaseDetail extends Base {
   get leftCards() {
-    const cards = [this.baseInfoCard, this.miscellaneousCard];
+    const cards = [this.baseInfoCard, this.otherCard];
     const { stats } = this.detailData;
     if (!isEmpty(stats)) {
       cards.push(this.statsCard);
@@ -36,6 +36,14 @@ export class BaseDetail extends Base {
   get baseInfoCard() {
     const options = [
       {
+        label: t('Image'),
+        dataIndex: 'image',
+      },
+      {
+        label: t('Image Driver'),
+        dataIndex: 'image_driver',
+      },
+      {
         label: t('Status Detail'),
         dataIndex: 'status_detail',
         valueMap: containerStatus,
@@ -48,11 +56,6 @@ export class BaseDetail extends Base {
         label: t('Task State'),
         dataIndex: 'task_state',
       },
-      {
-        label: t('Command'),
-        dataIndex: 'command',
-        render: stringifyContent,
-      },
     ];
 
     return {
@@ -61,11 +64,29 @@ export class BaseDetail extends Base {
     };
   }
 
-  get miscellaneousCard() {
+  get otherCard() {
     const options = [
       {
         label: t('Host'),
         dataIndex: 'host',
+      },
+      {
+        label: t('Hostname'),
+        dataIndex: 'hostname',
+      },
+      {
+        label: t('Runtime'),
+        dataIndex: 'runtime',
+      },
+      {
+        label: t('CMD'),
+        dataIndex: 'command',
+        render: stringifyContent,
+      },
+      {
+        label: t('ENTRYPOINT'),
+        dataIndex: 'entrypoint',
+        render: stringifyContent,
       },
       {
         label: t('Workdir'),
@@ -77,40 +98,20 @@ export class BaseDetail extends Base {
         render: stringifyContent,
       },
       {
-        label: t('Interactive'),
-        dataIndex: 'interactive',
-        valueRender: 'yesNo',
+        label: t('Labels'),
+        dataIndex: 'labels',
+        render: stringifyContent,
       },
     ];
 
     return {
-      title: t('Miscellaneous'),
+      title: t('Others'),
       options,
     };
   }
 
   get specCard() {
     const options = [
-      {
-        label: t('Image'),
-        dataIndex: 'image',
-      },
-      {
-        label: t('Image Driver'),
-        dataIndex: 'image_driver',
-      },
-      {
-        label: t('Image Pull Policy'),
-        dataIndex: 'image_pull_policy',
-      },
-      {
-        label: t('Hostname'),
-        dataIndex: 'hostname',
-      },
-      {
-        label: t('Runtime'),
-        dataIndex: 'runtime',
-      },
       {
         label: t('CPU (Core)'),
         dataIndex: 'cpu',
@@ -126,15 +127,63 @@ export class BaseDetail extends Base {
       {
         label: t('Restart Policy'),
         dataIndex: 'restart_policy',
-        render: stringifyContent,
+        render: (value) => {
+          if (isEmpty(value)) {
+            return '-';
+          }
+          const { Name, MaximumRetryCount } = value;
+          return (
+            <div>
+              <p>
+                {t('Name')}: {Name}
+              </p>
+              <p>
+                {t('Max Retry')}: {MaximumRetryCount}
+              </p>
+            </div>
+          );
+        },
       },
       {
         label: t('Auto Remove'),
         dataIndex: 'auto_remove',
+        valueRender: 'yesNo',
       },
       {
         label: t('Auto Heal'),
         dataIndex: 'auto_heal',
+        valueRender: 'yesNo',
+      },
+      {
+        label: t('Interactive'),
+        dataIndex: 'interactive',
+        valueRender: 'yesNo',
+      },
+      {
+        label: t('Enable Health Check'),
+        dataIndex: 'healthcheck',
+        render: (value) => {
+          if (isEmpty(value)) {
+            return t('No');
+          }
+          const { interval, retries, test, timeout } = value;
+          return (
+            <div>
+              <p>
+                {t('Health Check CMD')}: {test}
+              </p>
+              <p>
+                {t('Health Check Interval')}: {interval} s
+              </p>
+              <p>
+                {t('Health Check Retries')}: {retries}
+              </p>
+              <p>
+                {t('Health Check Timeout')}: {timeout} s
+              </p>
+            </div>
+          );
+        },
       },
       {
         label: t('Addresses'),

@@ -25,6 +25,7 @@ onlyOn(zunServiceEnabled, () => {
         .should('include', `${listUrl}/create`)
         .wait(5000)
         .formInput('containerName', zunContainerName)
+        .formSelect('image_driver')
         .formInput('image', 'cirros')
         .clickStepActionNextButton()
         .wait(2000)

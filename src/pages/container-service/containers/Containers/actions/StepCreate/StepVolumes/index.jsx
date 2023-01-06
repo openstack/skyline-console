@@ -11,9 +11,10 @@
 // limitations under the License.
 
 import Base from 'components/Form';
+import { toJS } from 'mobx';
 import { inject, observer } from 'mobx-react';
-import ZunVolume from 'src/components/FormItem/ZunVolume';
-import { VolumeStore } from 'src/stores/cinder/volume';
+import { VolumeStore } from 'stores/cinder/volume';
+import ZunVolume from '../../../components/ZunVolume';
 
 export class StepVolumes extends Base {
   init() {
@@ -22,7 +23,7 @@ export class StepVolumes extends Base {
   }
 
   get volumes() {
-    return (this.volumeStore.list.data || [])
+    return toJS(this.volumeStore.list.data || [])
       .filter((it) => it.status === 'available')
       .map((it) => ({
         value: it.id,
@@ -32,6 +33,7 @@ export class StepVolumes extends Base {
 
   async getVolumes() {
     await this.volumeStore.fetchList();
+    this.updateDefaultValue();
   }
 
   get formItems() {
@@ -46,6 +48,25 @@ export class StepVolumes extends Base {
         ],
         optionsSource: this.volumes,
         itemComponent: ZunVolume,
+        validator: (rule, value) => {
+          const ifHaveEmpty = (value || []).some((it) => {
+            const { value: innerValue = {} } = it;
+            if (!innerValue.type) {
+              return true;
+            }
+            if (innerValue.type === 'volume') {
+              return !innerValue.size || !innerValue.destination;
+            }
+            if (innerValue.type === 'bind') {
+              return !innerValue.source || !innerValue.destination;
+            }
+            return false;
+          });
+          if (ifHaveEmpty) {
+            return Promise.reject(new Error(t('Please input complete data')));
+          }
+          return Promise.resolve();
+        },
       },
     ];
   }

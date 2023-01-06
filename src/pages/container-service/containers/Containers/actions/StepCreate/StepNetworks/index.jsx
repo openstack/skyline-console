@@ -36,19 +36,11 @@ export class StepNetworks extends Base {
     return t('Networks');
   }
 
-  get nameForStateUpdate() {
-    return ['networks'];
-  }
-
-  get defaultValue() {
-    const data = {
-      networks: [],
-    };
-    return data;
-  }
-
   get formItems() {
-    const { networks } = this.state;
+    const { networks = [] } = this.state;
+    const {
+      context: { exposedPorts = [] },
+    } = this.props;
 
     return [
       {
@@ -82,7 +74,7 @@ export class StepNetworks extends Base {
         backendPageStore: this.securityGroupStore,
         extraParams: { project_id: this.currentProjectId },
         isMulti: true,
-        hidden: !networks || !networks.length,
+        hidden: exposedPorts.length || !networks.length,
         header: (
           <div style={{ marginBottom: 8 }}>
             {t(
@@ -97,6 +89,7 @@ export class StepNetworks extends Base {
         ),
         filterParams: securityGroupFilter,
         columns: securityGroupColumns,
+        tip: t('If exposed port is specified, this parameter will be ignored.'),
       },
     ];
   }

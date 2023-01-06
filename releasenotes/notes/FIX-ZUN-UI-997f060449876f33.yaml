@@ -1,0 +1,22 @@
+---
+features:
+  - |
+    Support some new params when create the zun container:
+
+    1. add health check
+
+    2. add exposed ports
+
+    3. add auto remove
+
+    4. add entrypoint
+
+    5. add validator to some key-inputs
+
+fixes:
+  - |
+    Fix image resource and step name
+
+    1. fix the image resource by glance or docker
+
+    2. fix step name from miscellaneous to others
