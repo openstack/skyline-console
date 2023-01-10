@@ -22,10 +22,15 @@ export class ContainersStore extends Base {
     return client.zun.containers;
   }
 
+  get imageClient() {
+    return client.glance.images;
+  }
+
   get mapper() {
     return (data) => ({
       ...data,
       id: data.uuid,
+      task_state: data.task_state === null ? 'free' : data.task_state,
     });
   }
 
@@ -85,7 +90,7 @@ export class ContainersStore extends Base {
   }
 
   async detailDidFetch(item) {
-    const { uuid, status, addresses = {} } = item;
+    const { uuid, status, addresses = {}, image_driver, image } = item;
     let stats = {};
     if (status === 'Running') {
       stats = (await this.client.stats.list(uuid)) || {};
@@ -99,6 +104,10 @@ export class ContainersStore extends Base {
           return ret;
         }, [])
         .map((it) => it.port);
+    }
+    if (image_driver === 'glance') {
+      const info = await this.imageClient.show(image);
+      item.imageInfo = info;
     }
     return { ...item, stats, networks, ports };
   }

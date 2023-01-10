@@ -15,7 +15,12 @@
 import Base from 'containers/List';
 import { inject, observer } from 'mobx-react';
 import globalContainersStore from 'src/stores/zun/containers';
-import { containerStatus, containerTaskStatus } from 'resources/zun/container';
+import {
+  containerStatus,
+  containerTaskStatus,
+  imageDrivers,
+} from 'resources/zun/container';
+import { getOptions } from 'utils';
 import actionConfigs from './actions';
 
 export class Containers extends Base {
@@ -49,21 +54,41 @@ export class Containers extends Base {
         idKey: 'uuid',
       },
       {
+        title: t('Image Driver'),
+        isHideable: true,
+        dataIndex: 'image_driver',
+        valueMap: imageDrivers,
+      },
+      {
         title: t('Status'),
         isHideable: true,
         dataIndex: 'status',
         valueMap: containerStatus,
       },
       {
-        title: t('Image'),
-        isHideable: true,
-        dataIndex: 'image',
-      },
-      {
         title: t('Task State'),
         isHideable: true,
         dataIndex: 'task_state',
         valueMap: containerTaskStatus,
+      },
+    ];
+  }
+
+  get searchFilters() {
+    return [
+      {
+        label: t('Name'),
+        name: 'name',
+      },
+      {
+        label: t('Status'),
+        name: 'status',
+        options: getOptions(containerStatus),
+      },
+      {
+        label: t('Task State'),
+        name: 'task_state',
+        options: getOptions(containerTaskStatus),
       },
     ];
   }

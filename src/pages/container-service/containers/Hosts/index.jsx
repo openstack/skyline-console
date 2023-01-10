@@ -96,6 +96,15 @@ export class Hosts extends Base {
       },
     ];
   }
+
+  get searchFilters() {
+    return [
+      {
+        label: t('Name'),
+        name: 'name',
+      },
+    ];
+  }
 }
 
 export default inject('rootStore')(observer(Hosts));

@@ -13,6 +13,7 @@
 import Base from 'components/Form';
 import { inject, observer } from 'mobx-react';
 import globalAvailabilityZoneStore from 'stores/nova/zone';
+import { exitPolicies } from 'resources/zun/container';
 import ExposedPorts from '../../../components/ExposedPorts';
 
 export class StepSpec extends Base {
@@ -42,6 +43,13 @@ export class StepSpec extends Base {
       }));
   }
 
+  get exitPoliciesOptions() {
+    return Object.entries(exitPolicies).map(([k, v]) => ({
+      label: v,
+      value: k,
+    }));
+  }
+
   exposedPortValidator = (rule, value) => {
     const ifHaveEmpty = (value || []).some((it) => {
       const { value: innerValue } = it;
@@ -57,7 +65,8 @@ export class StepSpec extends Base {
   };
 
   get formItems() {
-    const { disableRetry, healthcheck } = this.state;
+    const { context: { exitPolicy, healthcheck } = {} } = this.props;
+    const disableRetry = exitPolicy !== 'on-failure';
 
     return [
       {
@@ -103,27 +112,10 @@ export class StepSpec extends Base {
         name: 'exitPolicy',
         label: t('Exit Policy'),
         type: 'select',
-        options: [
-          {
-            label: t('No'),
-            value: 'no',
-          },
-          {
-            label: t('On failure'),
-            value: 'on-failure',
-          },
-          {
-            label: t('Always'),
-            value: 'always',
-          },
-          {
-            label: t('Unless Stopped'),
-            value: 'unless-stopped',
-          },
-        ],
+        options: this.exitPoliciesOptions,
         onChange: (value) =>
-          this.setState({
-            disableRetry: value !== 'on-failure',
+          this.updateContext({
+            exitPolicy: value,
           }),
       },
       {
@@ -153,11 +145,10 @@ export class StepSpec extends Base {
         name: 'healthcheck',
         label: t('Enable Health Check'),
         type: 'check',
-        onChange: (value) => {
-          this.setState({
+        onChange: (value) =>
+          this.updateContext({
             healthcheck: value,
-          });
-        },
+          }),
       },
       {
         name: 'healthcheck_cmd',

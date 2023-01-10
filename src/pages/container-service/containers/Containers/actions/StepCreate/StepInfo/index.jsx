@@ -12,13 +12,13 @@
 
 import Base from 'components/Form';
 import { inject, observer } from 'mobx-react';
-import globalImageStore from 'src/stores/glance/image';
+import { ImageStore } from 'stores/glance/image';
 import { getImageColumns } from 'resources/glance/image';
-import { toJS } from 'mobx';
+import { imageDrivers } from 'resources/zun/container';
 
 export class StepInfo extends Base {
   init() {
-    this.getImageList();
+    this.imageStore = new ImageStore();
   }
 
   get title() {
@@ -29,24 +29,21 @@ export class StepInfo extends Base {
     return t('Info');
   }
 
-  async getImageList() {
-    await globalImageStore.fetchList();
-  }
-
-  get imageList() {
-    return toJS(globalImageStore.list.data || []).filter(
-      (it) => it.container_format === 'docker'
-    );
-  }
-
   get imageColumns() {
     return getImageColumns(this).filter(
       (it) => !['project_name', 'owner'].includes(it.dataIndex)
     );
   }
 
+  get imageDriverOptions() {
+    return Object.entries(imageDrivers).map(([k, v]) => ({
+      label: v,
+      value: k,
+    }));
+  }
+
   get formItems() {
-    const { imageDriver } = this.state;
+    const { context: { image_driver } = {} } = this.props;
 
     return [
       {
@@ -61,7 +58,7 @@ export class StepInfo extends Base {
             return Promise.reject(
               value
                 ? t(
-                    'The name should start with letter or number, characters can only contain "0-9, a-z, A-Z, -, _, ."'
+                    'The name should start with letter or number, and be a string of 2 to 255, characters can only contain "0-9, a-z, A-Z, -, _, ."'
                   )
                 : ''
             );
@@ -74,38 +71,29 @@ export class StepInfo extends Base {
         label: t('Image Driver'),
         placeholder: t('Please select image driver'),
         type: 'select',
-        options: [
-          {
-            label: t('Docker Hub'),
-            value: 'docker',
-          },
-          {
-            label: t('Glance Image'),
-            value: 'glance',
-          },
-        ],
-        onChange: (value) => {
-          this.setState({
-            imageDriver: value,
-          });
-        },
+        options: this.imageDriverOptions,
+        onChange: (value) =>
+          this.updateContext({
+            image_driver: value,
+          }),
         required: true,
       },
       {
-        name: 'image',
+        name: 'imageDocker',
         label: t('Image'),
         type: 'input',
         placeholder: t('Please input image'),
         required: true,
-        display: imageDriver === 'docker',
+        display: image_driver === 'docker',
       },
       {
-        name: 'image',
+        name: 'imageGlance',
         label: t('Image'),
         type: 'select-table',
-        data: this.imageList,
         required: true,
-        isLoading: globalImageStore.list.isLoading,
+        backendPageStore: this.imageStore,
+        extraParams: { container_format: 'docker' },
+        isLoading: this.imageStore.list.isLoading,
         filterParams: [
           {
             label: t('Name'),
@@ -113,7 +101,7 @@ export class StepInfo extends Base {
           },
         ],
         columns: this.imageColumns,
-        display: imageDriver === 'glance',
+        display: image_driver === 'glance',
       },
     ];
   }

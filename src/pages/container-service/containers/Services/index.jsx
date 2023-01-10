@@ -17,6 +17,7 @@ import Base from 'containers/List';
 import { inject, observer } from 'mobx-react';
 import globalServicesStore from 'src/stores/zun/services';
 import { serviceState } from 'resources/nova/service';
+import { getOptions } from 'utils';
 
 export class Services extends Base {
   init() {
@@ -75,6 +76,20 @@ export class Services extends Base {
         dataIndex: 'updated_at',
         isHideable: true,
         valueRender: 'sinceTime',
+      },
+    ];
+  }
+
+  get searchFilters() {
+    return [
+      {
+        label: t('Name'),
+        name: 'name',
+      },
+      {
+        label: t('Service State'),
+        name: 'state',
+        options: getOptions(serviceState),
       },
     ];
   }

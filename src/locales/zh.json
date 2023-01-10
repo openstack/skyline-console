@@ -2352,7 +2352,7 @@
   "The name of the physical network to which a port is connected": "端口连接到的物理网络的名称",
   "The name should contain letter or number, the length is 1 to 16, characters can only contain \"0-9, a-z, A-Z, -, _.\"": "名称应包含字母或数字，长度为 1 到 16，且字符只能包含“0-9、a-z、A-Z、-、_”。",
   "The name should contain letter or number, the length is 2 to 64, characters can only contain \"0-9, a-z, A-Z, -, _.\"": "名称应包含字母或数字，长度为 2 到 64，且字符只能包含“0-9、a-z、A-Z、-、_”。",
-  "The name should start with letter or number, characters can only contain \"0-9, a-z, A-Z, -, _, .\"": "名称应以字母或数字开头，且只包含“0-9, a-z, A-Z, -, _, .”。",
+  "The name should start with letter or number, and be a string of 2 to 255, characters can only contain \"0-9, a-z, A-Z, -, _, .\"": "名称应以字母或数字开头，长度为 2 到 255，且只包含“0-9, a-z, A-Z, -, _, .”。",
   "The name should start with upper letter or lower letter, and be a string of 1 to 128, characters can only contain \"0-9, a-z, A-Z, \"-'_()[].:^\".": "名称应以大写字母或小写字母开头，最长为128字符，且只包含“0-9, a-z, A-Z, \"'-_()[].:^”。",
   "The name should start with upper letter or lower letter, characters can only contain \"0-9, a-z, A-Z, -, _, .\"": "名称应以大写字母或小写字母开头，且字符只能包含“0-9、a-z、A-Z、-、_、.”。",
   "The name should start with upper letter, lower letter or chinese, and be a string of 1 to 128, characters can only contain \"0-9, a-z, A-Z, \"-'_()[].\".": "名称应以大写字母，小写字母或中文开头，最长为128字符，且只包含“0-9, a-z, A-Z, \"'-_()[].”。",

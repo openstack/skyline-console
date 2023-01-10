@@ -15,7 +15,7 @@ import { message as $message } from 'antd';
 import { StepAction } from 'src/containers/Action';
 import globalContainersStore from 'stores/zun/containers';
 import globalProjectStore from 'stores/keystone/project';
-import { isEmpty, isObject } from 'lodash';
+import { isEmpty } from 'lodash';
 import StepInfo from './StepInfo';
 import StepSpec from './StepSpec';
 import StepVolumes from './StepVolumes';
@@ -227,7 +227,9 @@ export class StepCreate extends StepAction {
       environmentVariables,
       labels,
       mounts,
-      image,
+      image_driver,
+      imageDocker,
+      imageGlance,
       exitPolicy,
       maxRetry,
       networks,
@@ -245,6 +247,7 @@ export class StepCreate extends StepAction {
     } = values;
 
     const body = {
+      image_driver,
       ...rest,
     };
 
@@ -359,8 +362,12 @@ export class StepCreate extends StepAction {
       body.entrypoint = [entrypoint];
     }
 
-    if (image) {
-      body.image = isObject(image) ? (image.selectedRows[0] || {}).name : image;
+    if (imageDocker && image_driver === 'docker') {
+      body.image = imageDocker;
+    }
+
+    if (imageGlance && image_driver === 'glance') {
+      body.image = imageGlance.selectedRowKeys[0];
     }
 
     if (exitPolicy) {

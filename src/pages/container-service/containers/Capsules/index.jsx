@@ -16,6 +16,7 @@ import Base from 'containers/List';
 import { inject, observer } from 'mobx-react';
 import globalCapsulesStore from 'stores/zun/capsules';
 import { capsuleStatus } from 'resources/zun/capsule';
+import { getOptions } from 'utils';
 import actionConfigs from './actions';
 
 export class Capsules extends Base {
@@ -60,6 +61,20 @@ export class Capsules extends Base {
         title: t('Memory'),
         isHideable: true,
         dataIndex: 'memory',
+      },
+    ];
+  }
+
+  get searchFilters() {
+    return [
+      {
+        label: t('Name'),
+        name: 'name',
+      },
+      {
+        label: t('Status'),
+        name: 'status',
+        options: getOptions(capsuleStatus),
       },
     ];
   }

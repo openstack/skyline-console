@@ -15,7 +15,11 @@
 import Base from 'containers/BaseDetail';
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { containerStatus } from 'resources/zun/container';
+import {
+  containerStatus,
+  imageDrivers,
+  exitPolicies,
+} from 'resources/zun/container';
 import { stringifyContent } from 'utils/content';
 import { isEmpty } from 'lodash';
 
@@ -34,14 +38,22 @@ export class BaseDetail extends Base {
   }
 
   get baseInfoCard() {
+    const { image, imageInfo } = this.detailData || {};
+    const imageUrl = imageInfo
+      ? this.getLinkRender('imageDetail', imageInfo.name, {
+          id: imageInfo.id,
+        })
+      : image;
+
     const options = [
       {
         label: t('Image'),
-        dataIndex: 'image',
+        content: imageUrl,
       },
       {
         label: t('Image Driver'),
         dataIndex: 'image_driver',
+        valueMap: imageDrivers,
       },
       {
         label: t('Status Detail'),
@@ -135,7 +147,7 @@ export class BaseDetail extends Base {
           return (
             <div>
               <p>
-                {t('Name')}: {Name}
+                {t('Name')}: {exitPolicies[Name]}
               </p>
               <p>
                 {t('Max Retry')}: {MaximumRetryCount}
