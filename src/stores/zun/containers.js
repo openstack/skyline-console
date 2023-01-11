@@ -15,7 +15,6 @@
 import Base from 'stores/base';
 import client from 'client';
 import { action } from 'mobx';
-import { isEmpty } from 'lodash';
 
 export class ContainersStore extends Base {
   get client() {
@@ -27,11 +26,27 @@ export class ContainersStore extends Base {
   }
 
   get mapper() {
-    return (data) => ({
-      ...data,
-      id: data.uuid,
-      task_state: data.task_state === null ? 'free' : data.task_state,
-    });
+    return (data) => {
+      const { addresses = {} } = data;
+      const networks = Object.keys(addresses);
+      const addrs = [];
+      const subnets = [];
+      Object.entries(addresses).forEach(([key, val]) => {
+        (val || []).forEach((v) => {
+          addrs.push({ network: key, addr: v.addr });
+          subnets.push({ network: key, subnet: v.subnet_id });
+        });
+      });
+
+      return {
+        ...data,
+        id: data.uuid,
+        task_state: data.task_state === null ? 'free' : data.task_state,
+        networks,
+        addrs,
+        subnets,
+      };
+    };
   }
 
   @action
@@ -90,26 +105,18 @@ export class ContainersStore extends Base {
   }
 
   async detailDidFetch(item) {
-    const { uuid, status, addresses = {}, image_driver, image } = item;
+    const { uuid, status, image_driver, image } = item;
     let stats = {};
     if (status === 'Running') {
       stats = (await this.client.stats.list(uuid)) || {};
     }
-    const networks = Object.keys(addresses);
-    let { ports = [] } = item;
-    if (isEmpty(ports)) {
-      ports = Object.values(addresses)
-        .reduce((ret, cur) => {
-          ret = ret.concat(cur);
-          return ret;
-        }, [])
-        .map((it) => it.port);
-    }
     if (image_driver === 'glance') {
-      const info = await this.imageClient.show(image);
-      item.imageInfo = info;
+      try {
+        const info = await this.imageClient.show(image);
+        item.imageInfo = info;
+      } catch (error) {}
     }
-    return { ...item, stats, networks, ports };
+    return { ...item, stats };
   }
 
   async fetchLogs(id) {

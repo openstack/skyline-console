@@ -19,6 +19,7 @@ import {
   containerStatus,
   imageDrivers,
   exitPolicies,
+  containerTaskStatus,
 } from 'resources/zun/container';
 import { stringifyContent } from 'utils/content';
 import { isEmpty } from 'lodash';
@@ -67,6 +68,7 @@ export class BaseDetail extends Base {
       {
         label: t('Task State'),
         dataIndex: 'task_state',
+        valueMap: containerTaskStatus,
       },
     ];
 
@@ -203,6 +205,19 @@ export class BaseDetail extends Base {
         render: stringifyContent,
       },
       {
+        label: t('IP Address'),
+        dataIndex: 'addrs',
+        render: (value = []) => (
+          <>
+            {value.length
+              ? value.map((it) => {
+                  return <div key={it.addr}>{it.addr}</div>;
+                })
+              : '-'}
+          </>
+        ),
+      },
+      {
         label: t('Networks'),
         dataIndex: 'networks',
         render: (value = []) => (
@@ -219,16 +234,30 @@ export class BaseDetail extends Base {
         ),
       },
       {
+        label: t('Subnets'),
+        dataIndex: 'subnets',
+        render: (value = []) => (
+          <>
+            {value.length
+              ? value.map((it) => {
+                  const link = this.getLinkRender('subnetDetail', it.subnet, {
+                    networkId: it.network,
+                    id: it.subnet,
+                  });
+                  return <div key={it.subnet}>{link}</div>;
+                })
+              : '-'}
+          </>
+        ),
+      },
+      {
         label: t('Ports'),
         dataIndex: 'ports',
         render: (value = []) => (
           <>
             {value.length
               ? value.map((it) => {
-                  const link = this.getLinkRender('portDetail', it, {
-                    id: it,
-                  });
-                  return <div key={it}>{link}</div>;
+                  return <div key={it}>{it}</div>;
                 })
               : '-'}
           </>

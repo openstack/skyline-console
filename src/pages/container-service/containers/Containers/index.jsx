@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import Base from 'containers/List';
 import { inject, observer } from 'mobx-react';
 import globalContainersStore from 'src/stores/zun/containers';
@@ -60,7 +61,52 @@ export class Containers extends Base {
         valueMap: imageDrivers,
       },
       {
-        title: t('Status'),
+        title: t('IP Address'),
+        isHideable: true,
+        dataIndex: 'addrs',
+        render: (value = []) => (
+          <>
+            {value.length
+              ? value.map((it) => {
+                  return <div key={it.addr}>{it.addr}</div>;
+                })
+              : '-'}
+          </>
+        ),
+      },
+      {
+        title: t('Ports'),
+        isHideable: true,
+        dataIndex: 'ports',
+        render: (value = []) => (
+          <>
+            {value.length
+              ? value.map((it) => {
+                  return <div key={it}>{it}</div>;
+                })
+              : '-'}
+          </>
+        ),
+      },
+      {
+        title: t('Networks'),
+        isHideable: true,
+        dataIndex: 'networks',
+        render: (value = []) => (
+          <>
+            {value.length
+              ? value.map((it) => {
+                  const link = this.getLinkRender('networkDetail', it, {
+                    id: it,
+                  });
+                  return <div key={it}>{link}</div>;
+                })
+              : '-'}
+          </>
+        ),
+      },
+      {
+        title: t('Container Status'),
         isHideable: true,
         dataIndex: 'status',
         valueMap: containerStatus,
@@ -79,6 +125,11 @@ export class Containers extends Base {
       {
         label: t('Name'),
         name: 'name',
+      },
+      {
+        label: t('Image Driver'),
+        name: 'image_driver',
+        options: getOptions(imageDrivers),
       },
       {
         label: t('Status'),
