@@ -16,6 +16,7 @@ import Base from 'stores/base';
 import client from 'client';
 import { action } from 'mobx';
 import { isBoolean } from 'lodash';
+import { allSettled } from 'utils';
 
 export class ClusterTemplatesStore extends Base {
   get client() {
@@ -100,7 +101,7 @@ export class ClusterTemplatesStore extends Base {
 
   async detailDidFetch(item) {
     const [kp = {}, fr = {}, mfr = {}, ext = {}, fx = {}, sub = {}, img] =
-      await Promise.all([
+      await allSettled([
         client.nova.keypairs.list(),
         item.flavor_id ? this.flavorClient.show(item.flavor_id) : {},
         item.master_flavor_id
@@ -113,34 +114,57 @@ export class ClusterTemplatesStore extends Base {
         item.fixed_subnet ? this.subnetClient.show(item.fixed_subnet) : {},
         item.image_id ? this.imageClient.show(item.image_id) : {},
       ]);
-    const { keypairs = [] } = kp;
-    const { flavor } = fr;
-    const { flavor: masterFlavor } = mfr;
-    const { network } = ext;
-    const { network: fixedNetwork } = fx;
-    const { subnet: fixedSubnet } = sub;
-    const keypair = keypairs.find((k) => k?.keypair?.name === item.keypair_id);
-    if (keypair) {
-      item.selfKeypair = true;
+    if (kp.status === 'fulfilled') {
+      const { keypairs = [] } = kp.value;
+      const keypair = keypairs.find(
+        (k) => k?.keypair?.name === item.keypair_id
+      );
+      if (keypair) {
+        item.selfKeypair = true; // Don't need to reset keypair_id to null if not matched
+      }
     }
-    if (flavor) {
+    if (fr.status === 'fulfilled') {
+      const { flavor } = fr.value;
       item.flavor = flavor;
+    } else {
+      item.original_flavor_id = item.flavor_id;
+      item.flavor_id = null;
     }
-    if (masterFlavor) {
+    if (mfr.status === 'fulfilled') {
+      const { flavor: masterFlavor } = mfr.value;
       item.masterFlavor = masterFlavor;
+    } else {
+      item.original_master_flavor_id = item.master_flavor_id;
+      item.master_flavor_id = null;
     }
-    if (network) {
+    if (ext.status === 'fulfilled') {
+      const { network } = ext.value;
       item.externalNetwork = network;
+    } else {
+      item.original_external_network_id = item.external_network_id;
+      item.external_network_id = null;
     }
-    if (fixedNetwork) {
+    if (fx.status === 'fulfilled') {
+      const { network: fixedNetwork } = fx.value;
       item.fixedNetwork = fixedNetwork;
+    } else {
+      item.original_fixed_network = item.fixed_network;
+      item.fixed_network = null;
     }
-    if (fixedSubnet) {
+    if (sub.status === 'fulfilled') {
+      const { subnet: fixedSubnet } = sub.value;
       item.fixedSubnet = fixedSubnet;
+    } else {
+      item.original_fixed_subnet = item.fixed_subnet;
+      item.fixed_subnet = null;
     }
-    if (img) {
-      item.image = img;
+    if (img.status === 'fulfilled') {
+      item.image = img.value;
+    } else {
+      item.original_image_id = item.image_id;
+      item.image_id = null;
     }
+
     return item;
   }
 }

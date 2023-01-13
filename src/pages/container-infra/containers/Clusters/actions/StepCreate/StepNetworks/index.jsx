@@ -19,11 +19,14 @@ import { inject, observer } from 'mobx-react';
 import { defaultTip } from 'resources/magnum/cluster';
 import { NetworkStore } from 'stores/neutron/network';
 import { SubnetStore } from 'src/stores/neutron/subnet';
+import { ClusterTemplatesStore } from 'stores/magnum/clusterTemplates';
 import { networkColumns, subnetColumns } from 'resources/neutron/network';
 import { getLinkRender } from 'utils/route-map';
+import { allSettled } from 'utils';
 
 export class StepNetworks extends Base {
   init() {
+    this.templateStore = new ClusterTemplatesStore();
     this.networkStore = new NetworkStore();
     this.subnetStore = new SubnetStore();
     this.getAllInitFunctions();
@@ -40,19 +43,25 @@ export class StepNetworks extends Base {
   allowed = () => Promise.resolve();
 
   async getAllInitFunctions() {
-    const {
-      context: { clusterTemplate = {} },
-    } = this.props;
-    const { selectedRows = [] } = clusterTemplate;
-    const { fixed_network, fixed_subnet } = selectedRows[0] || {};
-    await Promise.all([
+    await allSettled([this.subnetStore.fetchList(), this.getTemplateDetail()]);
+    const { fixed_network, fixed_subnet } = this.templateDetail;
+
+    await allSettled([
       fixed_network
         ? this.networkStore.fetchDetail({ id: fixed_network })
         : null,
       fixed_subnet ? this.subnetStore.fetchDetail({ id: fixed_subnet }) : null,
-      this.subnetStore.fetchList(),
     ]);
     this.updateDefaultValue();
+  }
+
+  getTemplateDetail() {
+    const { context: { clusterTemplate = {} } = {} } = this.props;
+    const { selectedRowKeys = [] } = clusterTemplate;
+    const templateId = selectedRowKeys[0];
+    if (templateId) {
+      return this.templateStore.fetchDetail({ id: templateId });
+    }
   }
 
   get network() {
@@ -65,25 +74,23 @@ export class StepNetworks extends Base {
 
   get subnetList() {
     const {
-      context: {
-        clusterTemplate: { selectedRows: templateRows = [] } = {},
-        fixedNetwork: { selectedRowKeys: contextKeys = [] } = {},
-      },
+      context: { fixedNetwork: { selectedRowKeys: contextKeys = [] } = {} },
     } = this.props;
-    const { fixed_network } = templateRows[0] || {};
+    const { fixed_network } = this.templateDetail;
     const key = contextKeys[0] || fixed_network;
 
-    return (this.subnetStore.list.data || []).filter(
+    return toJS(this.subnetStore.list.data || []).filter(
       (it) => key === it.network_id
     );
   }
 
+  get templateDetail() {
+    return toJS(this.templateStore.detail) || {};
+  }
+
   get defaultValue() {
-    const {
-      context: { clusterTemplate = {}, fixedNetwork, fixedSubnet } = {},
-    } = this.props;
-    const { selectedRows = [] } = clusterTemplate;
-    const { fixed_network, fixed_subnet } = selectedRows[0] || {};
+    const { context: { fixedNetwork, fixedSubnet } = {} } = this.props;
+    const { fixed_network, fixed_subnet } = this.templateDetail;
 
     return {
       newNetwork: true,
@@ -105,11 +112,8 @@ export class StepNetworks extends Base {
   get formItems() {
     const { newNetwork } = this.state;
 
-    const {
-      context: { clusterTemplate = {}, fixedNetwork, fixedSubnet } = {},
-    } = this.props;
-    const { selectedRows = [] } = clusterTemplate;
-    const { fixed_network, fixed_subnet } = selectedRows[0] || {};
+    const { context: { fixedNetwork, fixedSubnet } = {} } = this.props;
+    const { fixed_network, fixed_subnet } = this.templateDetail;
 
     const initFixedNetwork = fixedNetwork || {
       selectedRowKeys: fixed_network ? [fixed_network] : [],

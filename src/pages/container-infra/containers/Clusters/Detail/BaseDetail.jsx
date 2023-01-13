@@ -61,22 +61,27 @@ export class BaseDetail extends Base {
   get networkCard() {
     const {
       fixed_network,
+      original_fixed_network,
       fixedNetwork: { name: fixedName } = {},
       fixed_subnet,
+      original_fixed_subnet,
       fixedSubnet: { name: subName } = {},
     } = this.detailData || {};
-    const fixedNetworkUrl = fixed_network
+    const fixedNetworkUrl = original_fixed_network
+      ? `${original_fixed_network} (${t('The resource has been deleted')})`
+      : fixed_network
       ? this.getLinkRender('networkDetail', fixedName || fixed_network, {
           id: fixed_network,
         })
       : '-';
-    const subnetUrl =
-      fixed_network && fixed_subnet
-        ? this.getLinkRender('subnetDetail', subName || fixed_subnet, {
-            networkId: fixed_network,
-            id: fixed_subnet,
-          })
-        : '-';
+    const subnetUrl = original_fixed_subnet
+      ? `${original_fixed_subnet} (${t('The resource has been deleted')})`
+      : fixed_network && fixed_subnet
+      ? this.getLinkRender('subnetDetail', subName || fixed_subnet, {
+          networkId: fixed_network,
+          id: fixed_subnet,
+        })
+      : '-';
 
     const options = [
       {
@@ -151,12 +156,16 @@ export class BaseDetail extends Base {
   get nodesCard() {
     const {
       master_flavor_id,
+      original_master_flavor_id,
       masterFlavor: { name: masterFlavorName } = {},
       flavor_id,
+      original_flavor_id,
       flavor: { name: flavorName } = {},
     } = this.detailData;
 
-    const masterFlavorUrl = master_flavor_id
+    const masterFlavorUrl = original_master_flavor_id
+      ? `${original_master_flavor_id} (${t('The resource has been deleted')})`
+      : master_flavor_id
       ? this.getLinkRender(
           'flavorDetail',
           masterFlavorName || master_flavor_id,
@@ -166,7 +175,9 @@ export class BaseDetail extends Base {
         )
       : '-';
 
-    const flavorUrl = flavor_id
+    const flavorUrl = original_flavor_id
+      ? `${original_flavor_id} (${t('The resource has been deleted')})`
+      : flavor_id
       ? this.getLinkRender('flavorDetail', flavorName || flavor_id, {
           id: flavor_id,
         })

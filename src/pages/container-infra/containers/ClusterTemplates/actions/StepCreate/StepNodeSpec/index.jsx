@@ -21,6 +21,7 @@ import { FlavorStore } from 'src/stores/nova/flavor';
 import { getImageColumns } from 'resources/glance/image';
 import { getKeyPairHeader } from 'resources/nova/keypair';
 import { getBaseSimpleFlavorColumns } from 'resources/magnum/template';
+import { allSettled } from 'utils';
 
 export class StepNodeSpec extends Base {
   init() {
@@ -48,7 +49,7 @@ export class StepNodeSpec extends Base {
   }
 
   async getAllInitFunctions() {
-    await Promise.all([
+    await allSettled([
       this.getImageList(),
       this.getKeypairs(),
       this.getFlavors(),

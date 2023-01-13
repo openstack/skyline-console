@@ -17,15 +17,18 @@ import { toJS } from 'mobx';
 import Base from 'components/Form';
 import globalKeypairStore from 'stores/nova/keypair';
 import { FlavorStore } from 'src/stores/nova/flavor';
+import { ClusterTemplatesStore } from 'stores/magnum/clusterTemplates';
 import { defaultTip } from 'resources/magnum/cluster';
 import { getKeyPairHeader } from 'resources/nova/keypair';
 import { getBaseSimpleFlavorColumns } from 'resources/magnum/template';
+import { allSettled } from 'utils';
 
 export class StepNodeSpec extends Base {
   init() {
     this.keyPairStore = globalKeypairStore;
     this.flavorStore = new FlavorStore();
     this.masterFlavorStore = new FlavorStore();
+    this.templateStore = new ClusterTemplatesStore();
     this.getAllInitFunctions();
   }
 
@@ -40,10 +43,11 @@ export class StepNodeSpec extends Base {
   allowed = () => Promise.resolve();
 
   async getAllInitFunctions() {
-    await Promise.all([
+    await allSettled([
       this.getKeypairs(),
       this.getFlavors(),
       this.getMasterFlavors(),
+      this.getTemplateDetail(),
     ]);
     this.updateDefaultValue();
   }
@@ -72,20 +76,25 @@ export class StepNodeSpec extends Base {
     return toJS(this.masterFlavorStore.list.data) || [];
   }
 
+  getTemplateDetail() {
+    const { context: { clusterTemplate = {} } = {} } = this.props;
+    const { selectedRowKeys = [] } = clusterTemplate;
+    const templateId = selectedRowKeys[0];
+    if (templateId) {
+      return this.templateStore.fetchDetail({ id: templateId });
+    }
+  }
+
+  get templateDetail() {
+    return toJS(this.templateStore.detail) || {};
+  }
+
   get defaultValue() {
     const {
-      context: {
-        clusterTemplate = {},
-        keypair,
-        masterFlavor,
-        flavor,
-        master_count,
-        node_count,
-      } = {},
+      context: { keypair, masterFlavor, flavor, master_count, node_count } = {},
     } = this.props;
-    const { selectedRows = [] } = clusterTemplate;
     const { master_flavor_id, flavor_id, keypair_id, selfKeypair } =
-      selectedRows[0] || {};
+      this.templateDetail;
 
     return {
       master_count: master_count || 1,
