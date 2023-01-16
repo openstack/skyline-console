@@ -73,6 +73,7 @@ export class Containers extends Base {
               : '-'}
           </>
         ),
+        stringify: (value = []) => value.map((it) => it.addr).join(','),
       },
       {
         title: t('Ports'),
@@ -132,7 +133,7 @@ export class Containers extends Base {
         options: getOptions(imageDrivers),
       },
       {
-        label: t('Status'),
+        label: t('Container Status'),
         name: 'status',
         options: getOptions(containerStatus),
       },

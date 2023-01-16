@@ -159,17 +159,17 @@ export class BaseDetail extends Base {
         },
       },
       {
-        label: t('Auto Remove'),
+        label: t('Enable auto remove'),
         dataIndex: 'auto_remove',
         valueRender: 'yesNo',
       },
       {
-        label: t('Auto Heal'),
+        label: t('Enable auto heal'),
         dataIndex: 'auto_heal',
         valueRender: 'yesNo',
       },
       {
-        label: t('Interactive'),
+        label: t('Enable interactive mode'),
         dataIndex: 'interactive',
         valueRender: 'yesNo',
       },
