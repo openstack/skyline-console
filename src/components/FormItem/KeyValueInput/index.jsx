@@ -27,6 +27,8 @@ export default class index extends Component {
     keySpan: PropTypes.number,
     valueSpan: PropTypes.number,
     middleComponent: PropTypes.node,
+    isTextarea: PropTypes.bool,
+    textareaRows: PropTypes.number,
   };
 
   static defaultProps = {
@@ -38,6 +40,8 @@ export default class index extends Component {
     keyReadonly: false,
     valueReadonly: false,
     middleComponent: <PauseOutlined rotate={90} />,
+    isTextarea: false,
+    textareaRows: 2,
   };
 
   constructor(props) {
@@ -80,6 +84,22 @@ export default class index extends Component {
     });
   };
 
+  renderInput(value, placeholder, readOnly) {
+    const { isTextarea = false, textareaRows } = this.props;
+    const props = {
+      value,
+      placeholder,
+      onChange: this.onValueChange,
+      readOnly,
+      required: true,
+    };
+    if (isTextarea) {
+      props.rows = textareaRows;
+      return <Input.TextArea {...props} />;
+    }
+    return <Input {...props} />;
+  }
+
   render() {
     const { key, value } = this.state;
     const {
@@ -106,13 +126,7 @@ export default class index extends Component {
         </Col>
         {component}
         <Col span={valueSpan || 8}>
-          <Input
-            value={value}
-            placeholder={valuePlaceholder}
-            onChange={this.onValueChange}
-            readOnly={valueReadonly}
-            required
-          />
+          {this.renderInput(value, valuePlaceholder, valueReadonly)}
         </Col>
       </Row>
     );
