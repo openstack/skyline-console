@@ -455,7 +455,15 @@ export class ActionButton extends Component {
     if (!visible) {
       return null;
     }
-    const { title, action, item, containerProps, items } = this.props;
+    const {
+      title,
+      action,
+      item,
+      containerProps,
+      items,
+      onFinishAction,
+      onCancelAction,
+    } = this.props;
     const ActionComponent = action;
     const {
       okText,
@@ -493,6 +501,9 @@ export class ActionButton extends Component {
           items={items}
           ref={this.formRef}
           containerProps={containerProps}
+          onFinishAction={onFinishAction}
+          onCancelAction={onCancelAction}
+          modalProps={modalProps}
         />
       </Modal>
     );
