@@ -20,6 +20,7 @@ import {
   CheckCircleTwoTone,
   CloseCircleTwoTone,
 } from '@ant-design/icons/lib/icons';
+import { serviceState } from 'resources/nova/service';
 import styles from '../style.less';
 
 export class ComputeService extends Component {
@@ -39,8 +40,8 @@ export class ComputeService extends Component {
         {item.host}
       </Col>
       <Col span={8} style={{ textAlign: 'center' }}>
-        <span>{item.status === 'enabled' ? t('Up') : t('Down')}</span>
-        {item.status === 'enabled' ? (
+        <span>{serviceState[item.state]}</span>
+        {item.state === 'up' ? (
           <CheckCircleTwoTone
             style={{ marginLeft: 12 }}
             twoToneColor="#52c41a"
