@@ -165,13 +165,13 @@ export class BaseDetail extends Base {
       original_image_id,
       image: { name: imageName } = {},
       keypair_id,
+      original_keypair_id,
       flavor_id,
       original_flavor_id,
       flavor: { name: flavorName } = {},
       master_flavor_id,
       original_master_flavor_id,
       masterFlavor: { name: masterFlavorName } = {},
-      selfKeypair,
     } = this.detailData;
     const imageUrl = original_image_id
       ? `${original_image_id} (${t('The resource has been deleted')})`
@@ -181,12 +181,13 @@ export class BaseDetail extends Base {
         })
       : '-';
 
-    const keypairUrl =
-      keypair_id && selfKeypair
-        ? this.getLinkRender('keypairDetail', keypair_id, {
-            id: keypair_id,
-          })
-        : keypair_id || '-';
+    const keypairUrl = original_keypair_id
+      ? `${original_keypair_id} (${t('The resource has been deleted')})`
+      : keypair_id
+      ? this.getLinkRender('keypairDetail', keypair_id, {
+          id: keypair_id,
+        })
+      : '-';
 
     const flavorUrl = original_flavor_id
       ? `${original_flavor_id} (${t('The resource has been deleted')})`

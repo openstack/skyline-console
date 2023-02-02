@@ -106,14 +106,16 @@ export class StepNetwork extends Base {
         http_proxy,
         https_proxy,
         no_proxy,
-        externalNetwork: {
-          selectedRowKeys: [external_network_id],
-          selectedRows: [externalNetwork],
-        },
         dns_nameserver,
         master_lb_enabled,
         floating_ip_enabled,
       };
+      if (external_network_id) {
+        values.externalNetwork = {
+          selectedRowKeys: [external_network_id],
+          selectedRows: [externalNetwork],
+        };
+      }
       if (fixed_network) {
         values.fixedNetwork = fixedNetworkContext || {
           selectedRowKeys: [fixed_network],

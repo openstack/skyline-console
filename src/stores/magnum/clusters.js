@@ -61,6 +61,23 @@ export class ClustersStore extends Base {
     return this.client.resize(id, newbody);
   }
 
+  async listDidFetch(items, _, filters) {
+    if (!items.length) return items;
+    const { shouldFetchProject } = filters;
+    const newData = await this.listDidFetchProject(items, {
+      all_projects: shouldFetchProject,
+    });
+    const { keypairs = [] } = (await client.nova.keypairs.list()) || {};
+    return newData.map((it) => {
+      const keypair = keypairs.find((k) => k?.keypair?.name === it.keypair);
+      if (!keypair) {
+        it.original_keypair = it.keypair;
+        it.keypair = null;
+      }
+      return it;
+    });
+  }
+
   async detailDidFetch(item) {
     const template =
       (await this.templateClient.show(item.cluster_template_id)) || {};
@@ -75,13 +92,23 @@ export class ClustersStore extends Base {
     const masterFlavorId = item.master_flavor_id || templateMasterFlavorId;
     const fixedNetworkId = item.fixed_network || templateFixedNetworkId;
     const fixedSubnetId = item.fixed_subnet || templateSubnetId;
-    const [fr = {}, mfr = {}, fx = {}, sub = {}, stack] = await allSettled([
-      flavorId ? this.flavorClient.show(flavorId) : {},
-      masterFlavorId ? this.flavorClient.show(masterFlavorId) : {},
-      fixedNetworkId ? this.networkClient.show(fixedNetworkId) : {},
-      fixedSubnetId ? this.subnetClient.show(fixedSubnetId) : {},
-      item.stack_id ? this.stackClient.list({ id: item.stack_id }) : {},
-    ]);
+    const [kp = {}, fr = {}, mfr = {}, fx = {}, sub = {}, stack] =
+      await allSettled([
+        client.nova.keypairs.list(),
+        flavorId ? this.flavorClient.show(flavorId) : {},
+        masterFlavorId ? this.flavorClient.show(masterFlavorId) : {},
+        fixedNetworkId ? this.networkClient.show(fixedNetworkId) : {},
+        fixedSubnetId ? this.subnetClient.show(fixedSubnetId) : {},
+        item.stack_id ? this.stackClient.list({ id: item.stack_id }) : {},
+      ]);
+    if (kp.status === 'fulfilled') {
+      const { keypairs = [] } = kp.value;
+      const keypair = keypairs.find((k) => k?.keypair?.name === item.keypair);
+      if (!keypair) {
+        item.original_keypair = item.keypair;
+        item.keypair = null;
+      }
+    }
     if (fr.status === 'fulfilled') {
       const { flavor } = fr.value;
       item.flavor = flavor;

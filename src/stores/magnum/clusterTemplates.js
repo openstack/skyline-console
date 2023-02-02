@@ -92,8 +92,9 @@ export class ClusterTemplatesStore extends Base {
     const { keypairs = [] } = (await client.nova.keypairs.list()) || {};
     return newData.map((it) => {
       const keypair = keypairs.find((k) => k?.keypair?.name === it.keypair_id);
-      if (keypair) {
-        it.selfKeypair = true;
+      if (!keypair) {
+        it.original_keypair_id = it.keypair_id;
+        it.keypair_id = null;
       }
       return it;
     });
@@ -119,8 +120,9 @@ export class ClusterTemplatesStore extends Base {
       const keypair = keypairs.find(
         (k) => k?.keypair?.name === item.keypair_id
       );
-      if (keypair) {
-        item.selfKeypair = true; // Don't need to reset keypair_id to null if not matched
+      if (!keypair) {
+        item.original_keypair_id = item.keypair_id;
+        item.keypair_id = null;
       }
     }
     if (fr.status === 'fulfilled') {

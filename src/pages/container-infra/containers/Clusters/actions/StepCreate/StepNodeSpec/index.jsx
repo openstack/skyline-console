@@ -93,8 +93,7 @@ export class StepNodeSpec extends Base {
     const {
       context: { keypair, masterFlavor, flavor, master_count, node_count } = {},
     } = this.props;
-    const { master_flavor_id, flavor_id, keypair_id, selfKeypair } =
-      this.templateDetail;
+    const { master_flavor_id, flavor_id, keypair_id } = this.templateDetail;
 
     return {
       master_count: master_count || 1,
@@ -110,7 +109,7 @@ export class StepNodeSpec extends Base {
         selectedRows: this.flavors.filter((it) => it.id === flavor_id),
       },
       keypair: keypair || {
-        selectedRowKeys: keypair_id && selfKeypair ? [keypair_id] : [],
+        selectedRowKeys: keypair_id ? [keypair_id] : [],
         selectedRows: this.keypairs.filter((it) => it.id === keypair_id),
       },
     };
@@ -121,12 +120,10 @@ export class StepNodeSpec extends Base {
       context: { clusterTemplate = {}, keypair, masterFlavor, flavor } = {},
     } = this.props;
     const { selectedRows = [] } = clusterTemplate;
-    const { master_flavor_id, flavor_id, keypair_id, selfKeypair } =
-      selectedRows[0] || {};
+    const { master_flavor_id, flavor_id, keypair_id } = selectedRows[0] || {};
     const { initKeyPair = keypair } = this.state;
-    const templateHasSelfKeypair = keypair_id && selfKeypair;
     const templateInitKeypair = {
-      selectedRowKeys: keypair_id && selfKeypair ? [keypair_id] : [],
+      selectedRowKeys: keypair_id ? [keypair_id] : [],
       selectedRows: this.keypairs.filter((it) => it.id === keypair_id),
     };
 
@@ -148,8 +145,7 @@ export class StepNodeSpec extends Base {
         type: 'select-table',
         required: true,
         data: this.keypairs,
-        initValue:
-          initKeyPair || (templateHasSelfKeypair && templateInitKeypair),
+        initValue: initKeyPair || templateInitKeypair,
         isLoading: this.keyPairStore.list.isLoading,
         header: getKeyPairHeader(this),
         tip: t(

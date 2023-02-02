@@ -42,8 +42,8 @@ export const getBaseTemplateColumns = (self) => [
     isHideable: true,
     dataIndex: 'keypair_id',
     hidden: self.isAdminPage,
-    render: (value, row) => {
-      if (value && row.selfKeypair) {
+    render: (value) => {
+      if (value) {
         return self.getLinkRender('keypairDetail', value, { id: value });
       }
       return value || '-';

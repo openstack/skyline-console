@@ -101,9 +101,11 @@ export class BaseDetail extends Base {
   }
 
   get miscellaneousCard() {
-    const { keypair } = this.detailData;
+    const { original_keypair, keypair } = this.detailData;
 
-    const keypairUrl = keypair
+    const keypairUrl = original_keypair
+      ? `${original_keypair} (${t('The resource has been deleted')})`
+      : keypair
       ? this.getLinkRender('keypairDetail', keypair, {
           id: keypair,
         })
