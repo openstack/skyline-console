@@ -139,7 +139,7 @@ export class BaseDetail extends Base {
         dataIndex: 'disk',
       },
       {
-        label: t('Restart Policy'),
+        label: t('Exit Policy'),
         dataIndex: 'restart_policy',
         render: (value) => {
           if (isEmpty(value)) {
