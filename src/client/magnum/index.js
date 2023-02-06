@@ -30,6 +30,11 @@ export class MagnumClient extends Base {
             key: 'actions/resize',
             method: 'post',
           },
+          {
+            name: 'upgrade',
+            key: 'actions/upgrade',
+            method: 'post',
+          },
         ],
       },
       {

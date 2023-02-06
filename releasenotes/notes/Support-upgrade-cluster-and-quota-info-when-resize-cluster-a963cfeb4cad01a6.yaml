@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Support upgrade cluster and show quota info when resize cluster
+
+    1. Add upgrade cluster action
+
+    2. Show quota info when resize cluster

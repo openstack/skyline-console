@@ -61,6 +61,10 @@ export class ClustersStore extends Base {
     return this.client.resize(id, newbody);
   }
 
+  async upgrade({ id }, body) {
+    return this.client.upgrade(id, body);
+  }
+
   async listDidFetch(items, _, filters) {
     if (!items.length) return items;
     const { shouldFetchProject } = filters;

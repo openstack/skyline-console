@@ -41,6 +41,13 @@ export class Clusters extends Base {
     return false;
   }
 
+  updateFetchParams = (params) => {
+    return {
+      ...params,
+      shouldFetchProject: this.isAdminPage,
+    };
+  };
+
   get actionConfigs() {
     if (this.isAdminPage) {
       return actionConfigs.actionConfigsAdmin;
