@@ -1732,6 +1732,8 @@
   "Please enter right format key value!": "Please enter right format key value!",
   "Please enter right format memory page value!": "Please enter right format memory page value!",
   "Please enter right format trait!": "Please enter right format trait!",
+  "Please enter the correct id": "Please enter the correct id",
+  "Please enter the server id to be reduced, and separate different id with \",\"": "Please enter the server id to be reduced, and separate different id with \",\"",
   "Please fill in the peer network segment and subnet mask of CIDR format, the written subnets should be under the same router, one per line.": "Please fill in the peer network segment and subnet mask of CIDR format, the written subnets should be under the same router, one per line.",
   "Please input": "Please input",
   "Please input ICMP code(0-255)": "Please input ICMP code(0-255)",

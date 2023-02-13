@@ -116,14 +116,6 @@ export class Resize extends ModalAction {
     return ['changed_node_count'];
   }
 
-  get nodeAddressOptions() {
-    const { node_addresses = [] } = this.item;
-    return node_addresses.map((it) => ({
-      label: it,
-      value: it,
-    }));
-  }
-
   get formItems() {
     const { changed_node_count } = this.state;
     const { node_count = 0 } = this.item;
@@ -162,9 +154,17 @@ export class Resize extends ModalAction {
       {
         name: 'nodes_to_remove',
         label: t('Nodes To Remove'),
-        type: 'select',
-        mode: 'multiple',
-        options: this.nodeAddressOptions,
+        type: 'textarea',
+        placeholder: t(
+          'Please enter the server id to be reduced, and separate different id with ","'
+        ),
+        validator: (rule, value) => {
+          const pattern = /^[0-9a-zA-Z]+([0-9a-zA-Z,-][0-9a-zA-Z]+)*$/;
+          if (value && !pattern.test(value)) {
+            return Promise.reject(new Error(t('Please enter the correct id')));
+          }
+          return Promise.resolve();
+        },
         display: changed_node_count < node_count,
       },
     ];
@@ -177,11 +177,11 @@ export class Resize extends ModalAction {
       node_count: changed_node_count,
       nodes_to_remove: [],
     };
-    if (nodes_to_remove && nodes_to_remove.length) {
-      body.nodes_to_remove = nodes_to_remove;
+    if (nodes_to_remove) {
+      body.nodes_to_remove = nodes_to_remove.split(',');
     }
 
-    this.store.resize({ id: this.item.id }, body);
+    return this.store.resize({ id: this.item.id }, body);
   };
 }
 

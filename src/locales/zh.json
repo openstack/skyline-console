@@ -1732,6 +1732,8 @@
   "Please enter right format key value!": "请输入正确格式的键值",
   "Please enter right format memory page value!": "请输入正确格式的内存页值",
   "Please enter right format trait!": "请输入正确格式的特性！",
+  "Please enter the correct id": "请输入正确的ID",
+  "Please enter the server id to be reduced, and separate different id with \",\"": "请输入指定缩减的server ID，并且不同ID之间用 ',' 分隔",
   "Please fill in the peer network segment and subnet mask of CIDR format, the written subnets should be under the same router, one per line.": "请填写CIDR格式的对端网段，且填写的网段需在同一个路由下，每行一个。",
   "Please input": "请输入",
   "Please input ICMP code(0-255)": "请输入ICMP编码(0-255)",

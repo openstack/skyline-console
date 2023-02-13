@@ -58,7 +58,9 @@ export class ClustersStore extends Base {
 
   @action
   async resize({ id }, newbody) {
-    return this.client.resize(id, newbody);
+    return this.client.resize(id, newbody, null, {
+      headers: { 'OpenStack-API-Version': 'container-infra latest' },
+    });
   }
 
   async upgrade({ id }, body) {
