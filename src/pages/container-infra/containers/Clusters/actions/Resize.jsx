@@ -28,7 +28,7 @@ export class Resize extends ModalAction {
 
   static title = t('Resize Cluster');
 
-  policy = 'cluster:resize';
+  static policy = 'cluster:resize';
 
   static get modalSize() {
     return 'middle';

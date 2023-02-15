@@ -15,7 +15,8 @@
 import Base from 'containers/List';
 import { inject, observer } from 'mobx-react';
 import { ActionsLogStore } from 'src/stores/zun/action-log';
-import { actionColumn } from 'resources/zun/actions';
+import { actionColumn, actionMap } from 'resources/zun/actions';
+import { getOptions } from 'utils';
 
 export class ActionLogs extends Base {
   init() {
@@ -31,6 +32,16 @@ export class ActionLogs extends Base {
   }
 
   getColumns = () => actionColumn(this);
+
+  get searchFilters() {
+    return [
+      {
+        label: t('Operation Name'),
+        name: 'action',
+        options: getOptions(actionMap),
+      },
+    ];
+  }
 }
 
 export default inject('rootStore')(observer(ActionLogs));

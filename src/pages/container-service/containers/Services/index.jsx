@@ -84,7 +84,7 @@ export class Services extends Base {
     return [
       {
         label: t('Name'),
-        name: 'name',
+        name: 'binary',
       },
       {
         label: t('Service State'),

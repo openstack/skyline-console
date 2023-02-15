@@ -34,6 +34,14 @@ export const containerTaskStatus = {
   container_deleting: t('Container Deleting'),
   container_rebuilding: t('Container Rebuilding'),
   container_killing: t('Container Killing'),
+  container_pausing: t('Container Pausing'),
+  container_unpausing: t('Container Unpausing'),
+  container_restarting: t('Container Restarting'),
+  image_pulling: t('Image Pulling'),
+  sg_adding: t('Security Groups Adding'),
+  sg_removing: t('Security Groups Removing'),
+  network_attaching: t('Network Attaching'),
+  network_detaching: t('Network Detaching'),
 };
 
 const states = {
