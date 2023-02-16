@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
-import { LbaasStore } from 'stores/octavia/loadbalancer';
+import { inject, observer } from 'mobx-react';
 import { NetworkStore } from 'stores/neutron/network';
 import { SubnetStore } from 'stores/neutron/subnet';
+import { LbaasStore } from 'stores/octavia/loadbalancer';
 
 export class BaseStep extends Base {
   init() {
@@ -40,6 +40,7 @@ export class BaseStep extends Base {
   get defaultValue() {
     return {
       project_id: this.props.rootStore.user.project.id,
+      admin_state_enabled: true,
     };
   }
 
@@ -79,7 +80,10 @@ export class BaseStep extends Base {
   };
 
   get formItems() {
-    const { network_id, subnetDetails = [] } = this.state;
+    const {
+      network_id,
+      subnetDetails = [],
+    } = this.state;
     return [
       {
         name: 'name',
@@ -109,6 +113,12 @@ export class BaseStep extends Base {
         maxNumber: 1,
         hidden: !network_id,
         required: true,
+      },
+      {
+        name: 'admin_state_enabled',
+        label: t('Admin State Up'),
+        type: 'switch',
+        tip: t('Defines the admin state of the port.'),
       },
     ];
   }

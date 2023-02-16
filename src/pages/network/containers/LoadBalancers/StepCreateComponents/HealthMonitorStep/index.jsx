@@ -41,13 +41,15 @@ export class HealthMonitorStep extends Base {
       health_timeout: 3,
       health_max_retries: 3,
       health_type: '',
+      monitor_admin_state_up: true,
     };
   }
 
   allowed = () => Promise.resolve();
 
   get formItems() {
-    const { health_delay, enableHealthMonitor } = this.state;
+    const {health_delay, enableHealthMonitor} =
+        this.state;
     return [
       {
         name: 'enableHealthMonitor',
@@ -115,6 +117,12 @@ export class HealthMonitorStep extends Base {
         options: this.filteredProtocolOptions,
         required: true,
         hidden: !enableHealthMonitor,
+      },
+      {
+        name: 'monitor_admin_state_up',
+        label: t('Admin State Up'),
+        type: 'switch',
+        tip: t('Defines the admin state of the health monitor.'),
       },
     ];
   }
