@@ -15,6 +15,7 @@ import { SecurityGroupStore } from 'stores/neutron/security-group';
 import { PortStore } from 'stores/neutron/port-extension';
 import Base from 'components/Form';
 import { inject, observer } from 'mobx-react';
+import { toJS } from 'mobx';
 import { portColumns, portFilters } from 'src/resources/neutron/port';
 import {
   securityGroupColumns,
@@ -26,6 +27,7 @@ export class StepNetworks extends Base {
   init() {
     this.portStore = new PortStore();
     this.securityGroupStore = new SecurityGroupStore();
+    this.getPorts();
   }
 
   get title() {
@@ -34,6 +36,17 @@ export class StepNetworks extends Base {
 
   get name() {
     return t('Networks');
+  }
+
+  getPorts() {
+    this.portStore.fetchList({
+      project_id: this.currentProjectId,
+      status: 'DOWN',
+    });
+  }
+
+  get ports() {
+    return (toJS(this.portStore.list.data) || []).filter((it) => !it.device_id);
   }
 
   get formItems() {
@@ -58,8 +71,8 @@ export class StepNetworks extends Base {
         name: 'ports',
         type: 'select-table',
         label: t('Ports'),
-        extraParams: { project_id: this.currentProjectId, status: 'DOWN' },
-        backendPageStore: this.portStore,
+        data: this.ports,
+        isLoading: this.portStore.list.isLoading,
         isMulti: true,
         header: t(
           'Ports provide extra communication channels to your instances. You can select ports instead of networks or a mix of both (The port executes its own security group rules by default).'

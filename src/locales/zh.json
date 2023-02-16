@@ -2342,6 +2342,7 @@
   "The host name of this container": "容器的主机名",
   "The http_proxy address to use for nodes in cluster": "用于集群中节点的HTTP代理地址",
   "The https_proxy address to use for nodes in cluster": "用于集群中节点的HTTPS代理地址",
+  "The image is not existed": "镜像资源不存在",
   "The instance architecture diagram mainly shows the overall architecture composition of the instance. If you need to view the network topology of the instance, please go to: ": "云主机架构图主要展示云主机的总体架构组成。如果需要查看云主机的网络拓扑，请转到：",
   "The instance deleted immediately cannot be restored": "立即删除的云主机无法恢复",
   "The instance has been locked. If you want to do more, please unlock it first.": "该云主机已被锁定。如果要做更多操作，请先解锁。",

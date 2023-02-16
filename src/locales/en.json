@@ -2342,6 +2342,7 @@
   "The host name of this container": "The host name of this container",
   "The http_proxy address to use for nodes in cluster": "The http_proxy address to use for nodes in cluster",
   "The https_proxy address to use for nodes in cluster": "The https_proxy address to use for nodes in cluster",
+  "The image is not existed": "The image is not existed",
   "The instance architecture diagram mainly shows the overall architecture composition of the instance. If you need to view the network topology of the instance, please go to: ": "The instance architecture diagram mainly shows the overall architecture composition of the instance. If you need to view the network topology of the instance, please go to: ",
   "The instance deleted immediately cannot be restored": "The instance deleted immediately cannot be restored",
   "The instance has been locked. If you want to do more, please unlock it first.": "The instance has been locked. If you want to do more, please unlock it first.",

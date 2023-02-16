@@ -14,6 +14,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalContainersStore from 'src/stores/zun/containers';
 import { checkItemAction } from 'resources/zun/container';
+import { ImageStore } from 'stores/glance/image';
 
 export class RebuildContainer extends ModalAction {
   static id = 'rebuild';
@@ -58,6 +59,16 @@ export class RebuildContainer extends ModalAction {
         type: 'input',
         placeholder: t('Name or ID og the container image'),
         required: true,
+        validator: (rule, value) => {
+          return new ImageStore()
+            .fetchDetail({ id: value })
+            .then(() => {
+              return Promise.resolve(true);
+            })
+            .catch(() => {
+              return Promise.reject(new Error(t('The image is not existed')));
+            });
+        },
       },
       {
         name: 'image_driver',
