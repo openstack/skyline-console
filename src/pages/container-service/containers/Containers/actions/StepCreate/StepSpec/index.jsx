@@ -20,6 +20,7 @@ export class StepSpec extends Base {
   init() {
     this.getAvailabilityZones();
     this.state.disableRetry = true;
+    this.checkDefaultQuota();
   }
 
   get title() {
@@ -63,6 +64,18 @@ export class StepSpec extends Base {
     }
     return Promise.resolve();
   };
+
+  checkDefaultQuota() {
+    this.updateContext(this.defaultValue);
+  }
+
+  get defaultValue() {
+    return {
+      cpu: 1,
+      memory: 512,
+      disk: 10,
+    };
+  }
 
   get formItems() {
     const { context: { exitPolicy, healthcheck } = {} } = this.props;

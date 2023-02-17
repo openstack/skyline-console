@@ -75,7 +75,7 @@ export class StepNetworks extends Base {
         isLoading: this.portStore.list.isLoading,
         isMulti: true,
         header: t(
-          'Ports provide extra communication channels to your instances. You can select ports instead of networks or a mix of both (The port executes its own security group rules by default).'
+          'Ports provide extra communication channels to your containers. You can select ports instead of networks or a mix of both, If the terminal port and the network are selected at the same time, note that the terminal port is not a terminal port of the selected network, and the container under the same network will only be assigned one IP address (The port executes its own security group rules by default).'
         ),
         filterParams: portFilters,
         columns: portColumns,

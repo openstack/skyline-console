@@ -1828,6 +1828,7 @@
   "Port Type": "端口方式",
   "Ports": "端口",
   "Ports are either single values or ranges": "端口要么都是单一数值，要么都是范围",
+  "Ports provide extra communication channels to your containers. You can select ports instead of networks or a mix of both, If the terminal port and the network are selected at the same time, note that the terminal port is not a terminal port of the selected network, and the container under the same network will only be assigned one IP address (The port executes its own security group rules by default).": "端口为您的云容器提供了额外的通信渠道。您可以选择已创建的端口而非网络或者二者都选，如果同时选择了端口和网络，注意端口不是已选择网络的某端口，同一个网络下容器只会分配到一个IP地址（端口默认执行本身的安全组规则）。",
   "Ports provide extra communication channels to your instances. You can select ports instead of networks or a mix of both (The port executes its own security group rules by default).": "端口为您的云主机提供了额外的通信渠道。您可以选择已创建的端口而非网络或者二者都选（端口默认执行本身的安全组规则）。",
   "Portugal": "葡萄牙",
   "Power Off": "关机",
