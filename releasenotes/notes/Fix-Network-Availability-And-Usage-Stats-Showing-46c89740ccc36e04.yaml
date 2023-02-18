@@ -1,0 +1,10 @@
+---
+fixes:
+  - |
+    `Bug #2003303 <https://bugs.launchpad.net/skyline-console/+bug/2003303>`:
+
+    Fix the network IP availability showing by role.
+
+    By default policy configuration, only administrative users can retrieve IP availability.
+
+    Otherwise, Not Found (404) will be returned.
