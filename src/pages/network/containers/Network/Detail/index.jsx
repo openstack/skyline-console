@@ -17,7 +17,6 @@ import Base from 'containers/TabDetail';
 import { NetworkStore } from 'stores/neutron/network';
 import { networkStatus } from 'resources/neutron/network';
 import Port from 'pages/network/containers/Port';
-import globalRootStore from 'stores/root';
 import Subnet from 'pages/network/containers/Subnet';
 import Detail from './Detail';
 import actionConfigs from '../actions';
@@ -50,17 +49,14 @@ export class NetworkDetail extends Base {
         .fetchDetailWithAvailabilityAndUsage({
           ...newParams,
           isAdminPage: this.isAdminPage,
-          currentProjectId: globalRootStore.user.project.id,
+          canAddNetworkIPUsageInfo: this.canAddNetworkIPUsageInfo,
         })
         .catch(this.catch);
     }
   };
 
   get canAddNetworkIPUsageInfo() {
-    return (
-      this.isAdminPage ||
-      globalRootStore.user.project.id === this.detailData.project_id
-    );
+    return this.store.hasAdminRole;
   }
 
   get detailInfos() {

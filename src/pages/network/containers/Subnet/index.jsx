@@ -49,9 +49,7 @@ export class Subnets extends Base {
   };
 
   get canAddNetworkIPUsageInfo() {
-    return (
-      this.isAdminPage || this.currentProjectId === this.props.detail.project_id
-    );
+    return this.store.hasAdminRole;
   }
 
   getColumns = () => {

@@ -89,7 +89,7 @@ export class SubnetStore extends Base {
   }
 
   async detailDidFetch(item, allProjects, filters) {
-    const { inDetail = false } = filters;
+    const { inDetail = false, canAddNetworkIPUsageInfo = false } = filters;
     if (!inDetail) {
       return item;
     }
@@ -97,7 +97,7 @@ export class SubnetStore extends Base {
     const networkParams = {
       id: network_id,
       isAdminPage: allProjects,
-      currentProjectId: this.currentProjectId,
+      canAddNetworkIPUsageInfo,
     };
     const { NetworkStore } = require('stores/neutron/network');
     const network =
