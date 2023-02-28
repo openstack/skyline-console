@@ -224,10 +224,10 @@ export class BaseDetail extends Base {
           <>
             {value.length
               ? value.map((it) => {
-                  const link = this.getLinkRender('networkDetail', it, {
-                    id: it,
+                  const link = this.getLinkRender('networkDetail', it.name, {
+                    id: it.id,
                   });
-                  return <div key={it}>{link}</div>;
+                  return <div key={it.id}>{link}</div>;
                 })
               : '-'}
           </>
@@ -240,11 +240,11 @@ export class BaseDetail extends Base {
           <>
             {value.length
               ? value.map((it) => {
-                  const link = this.getLinkRender('subnetDetail', it.subnet, {
-                    networkId: it.network,
-                    id: it.subnet,
+                  const link = this.getLinkRender('subnetDetail', it.name, {
+                    networkId: it.network_id,
+                    id: it.id,
                   });
-                  return <div key={it.subnet}>{link}</div>;
+                  return <div key={it.id}>{link}</div>;
                 })
               : '-'}
           </>

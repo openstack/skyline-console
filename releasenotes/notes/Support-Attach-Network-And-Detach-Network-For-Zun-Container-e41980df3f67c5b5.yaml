@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Support attach network and detach network for zun container
+
+    1. Add attach network action for zun container
+
+    2. Add detach network action for zun container

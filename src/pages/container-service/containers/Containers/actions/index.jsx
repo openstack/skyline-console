@@ -23,6 +23,8 @@ import EditContainer from './Edit';
 import KillContainer from './Kill';
 import ForceDeleteContainer from './ForceDelete';
 import ExecuteCommandContainer from './ExecuteCommand';
+import AttachNetwork from './AttachNetwork';
+import DetachNetwork from './DetachNetwork';
 
 const statusActions = [
   StartContainer,
@@ -31,6 +33,8 @@ const statusActions = [
   KillContainer,
   RebuildContainer,
 ];
+
+const resourceActions = [AttachNetwork, DetachNetwork];
 
 const actionConfigs = {
   rowActions: {
@@ -44,6 +48,10 @@ const actionConfigs = {
           UnpauseContainer,
           ExecuteCommandContainer,
         ],
+      },
+      {
+        title: t('Related Resources'),
+        actions: resourceActions,
       },
       {
         action: EditContainer,

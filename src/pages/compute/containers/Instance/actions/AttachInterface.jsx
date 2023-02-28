@@ -195,7 +195,8 @@ export class AttachInterface extends ModalAction {
           {
             title: t('Allocation Pools'),
             dataIndex: 'allocation_pools',
-            render: (value) => `${value[0].start} -- ${value[0].end}`,
+            render: (value) =>
+              value.length ? `${value[0].start} -- ${value[0].end}` : '-',
           },
         ],
       },

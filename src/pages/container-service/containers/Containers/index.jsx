@@ -97,10 +97,10 @@ export class Containers extends Base {
           <>
             {value.length
               ? value.map((it) => {
-                  const link = this.getLinkRender('networkDetail', it, {
-                    id: it,
+                  const link = this.getLinkRender('networkDetail', it.name, {
+                    id: it.id,
                   });
-                  return <div key={it}>{link}</div>;
+                  return <div key={it.id}>{link}</div>;
                 })
               : '-'}
           </>

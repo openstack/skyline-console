@@ -103,6 +103,12 @@ const validStates = {
     states.STOPPED,
     states.PAUSED,
   ],
+  network_attach_detach: [
+    states.CREATED,
+    states.RUNNING,
+    states.STOPPED,
+    states.PAUSED,
+  ],
 };
 
 export const checkItemAction = (item, actionName) => {

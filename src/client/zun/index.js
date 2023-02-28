@@ -66,6 +66,14 @@ export class ZunClient extends Base {
             key: 'execute',
             method: 'post',
           },
+          {
+            key: 'network_attach',
+            method: 'post',
+          },
+          {
+            key: 'network_detach',
+            method: 'post',
+          },
         ],
         subResources: [
           {

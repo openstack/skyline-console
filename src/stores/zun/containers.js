@@ -25,26 +25,20 @@ export class ContainersStore extends Base {
     return client.glance.images;
   }
 
+  get networkClient() {
+    return client.neutron.networks;
+  }
+
+  get subnetClient() {
+    return client.neutron.subnets;
+  }
+
   get mapper() {
     return (data) => {
-      const { addresses = {} } = data;
-      const networks = Object.keys(addresses);
-      const addrs = [];
-      const subnets = [];
-      Object.entries(addresses).forEach(([key, val]) => {
-        (val || []).forEach((v) => {
-          addrs.push({ network: key, addr: v.addr });
-          subnets.push({ network: key, subnet: v.subnet_id });
-        });
-      });
-
       return {
         ...data,
         id: data.uuid,
         task_state: data.task_state === null ? 'free' : data.task_state,
-        networks,
-        addrs,
-        subnets,
       };
     };
   }
@@ -104,8 +98,40 @@ export class ContainersStore extends Base {
     return this.client.execute(id, data);
   }
 
+  @action
+  async attachNetwork(id, data) {
+    return this.client.network_attach(id, null, data);
+  }
+
+  @action
+  async detachNetwork(id, data) {
+    return this.client.network_detach(id, null, data);
+  }
+
+  async listDidFetch(items) {
+    if (!items.length) return items;
+    const [{ networks: allNetworks }, { subnets: allSubnets }] =
+      await Promise.all([this.networkClient.list(), this.subnetClient.list()]);
+    return items.map((it) => {
+      const { addresses = {} } = it;
+      const networks = [];
+      const addrs = [];
+      const subnets = [];
+      Object.entries(addresses).forEach(([key, val]) => {
+        (val || []).forEach((v) => {
+          const network = allNetworks.find((net) => net.id === key);
+          const subnet = allSubnets.find((sub) => sub.id === v.subnet_id);
+          addrs.push({ network, addr: v.addr, port: v.port });
+          networks.push(network);
+          subnets.push(subnet);
+        });
+      });
+      return { ...it, addrs, networks, subnets };
+    });
+  }
+
   async detailDidFetch(item) {
-    const { uuid, status, image_driver, image } = item;
+    const { uuid, status, image_driver, image, addresses = {} } = item;
     let stats = {};
     if (status === 'Running') {
       stats = (await this.client.stats.list(uuid)) || {};
@@ -116,7 +142,21 @@ export class ContainersStore extends Base {
         item.imageInfo = info;
       } catch (error) {}
     }
-    return { ...item, stats };
+    const [{ networks: allNetworks }, { subnets: allSubnets }] =
+      await Promise.all([this.networkClient.list(), this.subnetClient.list()]);
+    const networks = [];
+    const addrs = [];
+    const subnets = [];
+    Object.entries(addresses).forEach(([key, val]) => {
+      (val || []).forEach((v) => {
+        const network = allNetworks.find((net) => net.id === key);
+        const subnet = allSubnets.find((sub) => sub.id === v.subnet_id);
+        addrs.push({ network, addr: v.addr, port: v.port });
+        networks.push(network);
+        subnets.push(subnet);
+      });
+    });
+    return { ...item, stats, networks, addrs, subnets };
   }
 
   async fetchLogs(id) {
