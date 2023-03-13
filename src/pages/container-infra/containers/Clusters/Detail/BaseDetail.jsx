@@ -191,7 +191,7 @@ export class BaseDetail extends Base {
         content: masterFlavorUrl,
       },
       {
-        label: t('Master Count'),
+        label: t('Number of Master Nodes'),
         dataIndex: 'master_count',
       },
       {
@@ -199,7 +199,7 @@ export class BaseDetail extends Base {
         content: flavorUrl,
       },
       {
-        label: t('Node Count'),
+        label: t('Number of Nodes'),
         dataIndex: 'node_count',
       },
       {
