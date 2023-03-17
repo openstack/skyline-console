@@ -133,7 +133,7 @@ export class NetworkStore extends Base {
   async fetchDetailWithAvailabilityAndUsage({
     id,
     isAdminPage,
-    currentProjectId,
+    canAddNetworkIPUsageInfo,
   }) {
     this.isLoading = true;
     const result = await this.client.show(id);
@@ -167,8 +167,8 @@ export class NetworkStore extends Base {
       projectName: projectDetail.name,
     };
 
-    // Only the administrator or the current network owner can view the number of IP addresses used
-    if (isAdminPage || currentProjectId === originData.project_id) {
+    // Only the administrator can view the number of IP addresses used
+    if (canAddNetworkIPUsageInfo) {
       const used = await this.ipClient.show(id);
       this.detail = {
         ...this.detail,

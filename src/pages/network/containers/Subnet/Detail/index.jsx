@@ -45,6 +45,7 @@ export class SubnetDetail extends Base {
     return {
       ...params,
       inDetail: true,
+      canAddNetworkIPUsageInfo: this.store.hasAdminRole,
     };
   };
 

@@ -26,9 +26,7 @@ export class BaseDetail extends Base {
   }
 
   get canAddNetworkIPUsageInfo() {
-    return (
-      this.isAdminPage || this.currentProjectId === this.detailData.project_id
-    );
+    return this.store.hasAdminRole;
   }
 
   get networkCard() {
