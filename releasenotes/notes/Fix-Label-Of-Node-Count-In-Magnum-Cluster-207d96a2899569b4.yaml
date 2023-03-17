@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fix the label of node count in magnum cluster
+
+    Unify the name of the label between detail page and creating step
