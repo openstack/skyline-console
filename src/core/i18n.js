@@ -24,10 +24,20 @@ const SUPPORT_LOCALES = [
   {
     name: 'English',
     value: 'en',
+    shortName: 'en',
+    icon: 'us',
   },
   {
     name: '简体中文',
     value: 'zh-cn',
+    shortName: 'zh',
+    icon: 'cn',
+  },
+  {
+    name: '한글',
+    value: 'ko-kr',
+    shortName: 'kr',
+    icon: 'kr',
   },
 ];
 
@@ -61,6 +71,12 @@ const getLocale = () => {
   }
   moment.locale(currentLocale);
   return currentLocale;
+};
+
+const getLocaleShortName = () => {
+  const fullName = getLocale();
+  const item = SUPPORT_LOCALES.find((it) => it.value === fullName);
+  return item ? item.shortName : fullName;
 };
 
 const loadLocales = () => {
@@ -131,4 +147,6 @@ export default {
   init,
   t,
   isLocaleZh,
+  getLocaleShortName,
+  SUPPORT_LOCALES,
 };

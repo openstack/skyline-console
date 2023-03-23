@@ -19,7 +19,7 @@ import classNames from 'classnames';
 import { GlobalOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
-const { getLocale, setLocale } = i18n;
+const { getLocale, setLocale, SUPPORT_LOCALES } = i18n;
 
 const SelectLang = (props) => {
   const { className } = props;
@@ -29,27 +29,21 @@ const SelectLang = (props) => {
     setLocale(key, false);
   };
 
-  const locales = ['zh-cn', 'en'];
-  const languageLabels = {
-    'zh-cn': '简体中文',
-    en: 'English',
-  };
-  const languageIcons = {
-    'zh-cn': '🇨🇳',
-    en: '🇺🇸',
-  };
+  const locales = SUPPORT_LOCALES.map((it) => it.value);
+  const languageLabels = SUPPORT_LOCALES.map((it) => it.name);
+  const languageIcons = SUPPORT_LOCALES.map((it) => it.icon);
   const langMenu = (
     <Menu
       className={styles.menu}
       selectedKeys={[selectedLang]}
       onClick={changeLang}
     >
-      {locales.map((locale) => (
+      {locales.map((locale, index) => (
         <Menu.Item key={locale}>
-          <span role="img" aria-label={languageLabels[locale]}>
-            {languageIcons[locale]}
+          <span role="img" aria-label={languageLabels[index]}>
+            {languageIcons[index]}
           </span>{' '}
-          {languageLabels[locale]}
+          {languageLabels[index]}
         </Menu.Item>
       ))}
     </Menu>

@@ -14,8 +14,10 @@
 
 import zhData from './zh.json';
 import enData from './en.json';
+import krData from './ko-kr.json';
 
 export default {
   'zh-cn': zhData,
   en: enData,
+  'ko-kr': krData,
 };

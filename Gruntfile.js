@@ -19,7 +19,7 @@ module.exports = function (grunt) {
         src: ['src/**/*.{jsx,js}'],
         dest: 'src',
         options: {
-          lngs: ['en', 'zh'],
+          lngs: ['en', 'zh', 'ko-kr'],
           removeUnusedKeys: true,
           sort: true,
           keySeparator: false,
@@ -39,10 +39,10 @@ module.exports = function (grunt) {
             extensions: ['.js', '.jsx'],
           },
           defaultValue: (lng, ns, key) => {
-            if (lng === 'zh') {
-              return '';
+            if (lng === 'en') {
+              return key;
             }
-            return key;
+            return '';
           },
         },
       },
