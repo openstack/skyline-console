@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Support Korean I18n:
+
+    * Korean language switching is supported on the login page.
+
+    * Support switch Korean in the avatar hover box on the upper right of the page after logged in.
+
+    * Support automatic collection of Korean i18n file.
