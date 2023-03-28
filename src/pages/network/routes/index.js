@@ -40,6 +40,11 @@ import SecurityGroupDetail from '../containers/SecurityGroup/Detail';
 import Certificate from '../containers/Certificate';
 import CertificateDetailContainer from '../containers/Certificate/Detail/Container';
 import CertificateDetailSecret from '../containers/Certificate/Detail/Secret';
+import Reverse from '../containers/DNS/Reverse';
+import ReverseDetail from '../containers/DNS/Reverse/Detail';
+import Zones from '../containers/DNS/Zones';
+import ZonesDetail from '../containers/DNS/Zones/Detail';
+import RecordSetDetail from '../containers/DNS/Zones/Detail/RecordSets/Detail';
 
 const PATH = '/network';
 export default [
@@ -244,6 +249,11 @@ export default [
         component: SecurityGroupDetail,
         exact: true,
       },
+      { path: `${PATH}/dns/zones`, component: Zones, exact: true },
+      { path: `${PATH}/dns/zones/detail/:id`, component: ZonesDetail, exact: true },
+      { path: `${PATH}/dns/zones/detail/:id/recordsets/:recordset_id`, component: RecordSetDetail, exact: true },
+      { path: `${PATH}/dns/reverse`, component: Reverse, exact: true },
+      { path: `${PATH}/dns/reverse/detail/:id`, component: ReverseDetail, exact: true },
       { path: '*', component: E404 },
     ],
   },

@@ -35,6 +35,7 @@ export const endpointVersionMap = {
   barbican: 'v1',
   zun: 'v1',
   magnum: 'v1',
+  designate: 'v2',
 };
 
 export const endpointsDefault = {
@@ -75,6 +76,7 @@ export const manilaBase = () => getOpenstackEndpoint('manilav2');
 export const barbicanBase = () => getOpenstackEndpoint('barbican');
 export const zunBase = () => getOpenstackEndpoint('zun');
 export const magnumBase = () => getOpenstackEndpoint('magnum');
+export const designateBase = () => getOpenstackEndpoint('designate');
 
 export const ironicOriginEndpoint = () => getOriginEndpoint('ironic');
 export const vpnEndpoint = () => getOriginEndpoint('neutron_vpn');

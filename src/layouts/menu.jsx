@@ -448,6 +448,45 @@ const renderMenu = (t) => {
             },
           ],
         },
+        {
+          path: '/network/dns/zones',
+          name: t('DNS Zones'),
+          key: 'dnsZones',
+          endpoints: 'designate',
+          level: 1,
+          children: [
+            {
+              path: /^\/network\/dns\/zones\/detail\/.[^/]+$/,
+              name: t('Zones Detail'),
+              key: 'dnsZonesDetail',
+              level: 2,
+              routePath: '/network/dns/zones/detail/:id',
+            },
+            {
+              path: /^\/network\/dns\/zones\/detail\/.[^/]+\/recordsets\/.[^/]+$/,
+              name: t('Recordsets Detail'),
+              key: 'dnsRecordSetDetail',
+              level: 2,
+              routePath: '/network/dns/zones/detail/:id/recordsets/:recordset_id',
+            },
+          ]
+        },
+        {
+          path: '/network/dns/reverse',
+          name: t('DNS Reverse'),
+          key: 'dnsReverse',
+          endpoints: 'designate',
+          level: 1,
+          children: [
+            {
+              path: /^\/network\/dns\/reverse\/detail\/.[^/]+$/,
+              name: t('Reverse DNS Detail'),
+              key: 'dnsReverseDetail',
+              level: 2,
+              routePath: '/network/dns/reverse/detail/:id',
+            },
+          ]
+        }
       ],
     },
     {
