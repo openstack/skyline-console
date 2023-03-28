@@ -19,7 +19,7 @@ module.exports = function (grunt) {
         src: ['src/**/*.{jsx,js}'],
         dest: 'src',
         options: {
-          lngs: ['en', 'zh', 'ko-kr'],
+          lngs: ['en', 'zh-hans', 'ko-kr'],
           removeUnusedKeys: true,
           sort: true,
           keySeparator: false,

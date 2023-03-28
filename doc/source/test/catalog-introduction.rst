@@ -79,7 +79,7 @@ Catalog Introduction
       ├── local-storage-mock.js   ( Storage mock function in local)
       ├── locales (Translation files used when testing internationalization)
       │   ├── en-US.js
-      │   └── zh-CN.js
+      │   └── zh-hans.js
       ├── setup-tests.js  (setup uni test)
       └── svg-mock.js (Mock of image loading)
 

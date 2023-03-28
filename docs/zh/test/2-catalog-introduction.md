@@ -77,7 +77,7 @@ test
     ├── local-storage-mock.js   (本地存储的mock函数)
     ├── locales (测试国际化时使用的翻译文件)
     │   ├── en-US.js
-    │   └── zh-CN.js
+    │   └── zh-hans.js
     ├── setup-tests.js  (配置单元测试)
     └── svg-mock.js (图片加载的mock)
 ```

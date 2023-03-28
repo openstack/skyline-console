@@ -13,19 +13,19 @@
 // limitations under the License.
 
 import React from 'react';
-import zhCN from '../../test/unit/locales/zh-CN';
+import zhHans from '../../test/unit/locales/zh-hans';
 import enUS from '../../test/unit/locales/en-US';
 import ReactIntlUniversal from './translate';
 
 const intl = new ReactIntlUniversal();
 const locales = {
   'en-US': enUS,
-  'zh-CN': zhCN,
+  'zh-hans': zhHans,
 };
 
 describe('test translate', () => {
   it('Set specific locale', () => {
-    intl.init({ locales, currentLocale: 'zh-CN' });
+    intl.init({ locales, currentLocale: 'zh-hans' });
     expect(intl.get('SIMPLE')).toBe('简单');
     intl.init({ locales, currentLocale: 'en-US' });
     expect(intl.get('SIMPLE')).toBe('Simple');
@@ -178,7 +178,7 @@ describe('test translate', () => {
       })
     ).toBe('You have 10 photos.');
 
-    intl.init({ locales, currentLocale: 'zh-CN' });
+    intl.init({ locales, currentLocale: 'zh-hans' });
     expect(
       intl.get('PHOTO', {
         num: 1,
@@ -242,7 +242,7 @@ describe('test translate', () => {
   });
 
   it('Uses fallback locale if key not found in currentLocale', () => {
-    intl.init({ locales, currentLocale: 'zh-CN', fallbackLocale: 'en-US' });
+    intl.init({ locales, currentLocale: 'zh-hans', fallbackLocale: 'en-US' });
     expect(intl.get('ONLY_IN_ENGLISH')).toBe('ONLY_IN_ENGLISH');
   });
 

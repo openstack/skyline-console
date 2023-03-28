@@ -14,11 +14,10 @@
 
 import getTitle from './common';
 
-Cypress.Commands.add('setLanguage', () => {
+Cypress.Commands.add('setLanguage', (value) => {
   const exp = Date.now() + 864000000;
-  const language = Cypress.env('language') || 'zh';
-  const value = language === 'zh' ? 'zh-cn' : 'en';
-  const langValue = { value, expires: exp };
+  const language = Cypress.env('language') || 'en';
+  const langValue = { value: value || language, expires: exp };
   window.localStorage.setItem('lang', JSON.stringify(langValue));
 });
 
@@ -136,7 +135,7 @@ Cypress.Commands.add('clickMenu', (fatherIndex, sonIndex) => {
 
 Cypress.Commands.add('setLanguageByPage', () => {
   const language = Cypress.env('language');
-  if (language === 'zh') {
+  if (language === 'zh-hans') {
     return;
   }
   cy.log('change language to english');

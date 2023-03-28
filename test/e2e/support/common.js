@@ -13,7 +13,7 @@
 // limitations under the License.
 
 const getTitle = (title) => {
-  const language = Cypress.env('language') || 'zh';
+  const language = Cypress.env('language') || 'en';
   if (language === 'en') {
     return title;
   }

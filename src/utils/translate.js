@@ -31,7 +31,7 @@ class SLI18n {
   constructor() {
     this.options = {
       currentLocale: null, // Current locale such as 'en'
-      locales: {}, // app locale data like {"en":{"key1":"value1"},"zh-cn":{"key1":"值1"}}
+      locales: {}, // app locale data like {"en":{"key1":"value1"},"zh-hans":{"key1":"值1"}}
       // eslint-disable-next-line no-console
       warningHandler: function warn(...msg) {
         console.warn(...msg);
@@ -179,7 +179,7 @@ class SLI18n {
    * Initialize properties and load CLDR locale data according to currentLocale
    * @param {Object} options
    * @param {string} options.currentLocale Current locale such as 'en'
-   * @param {string} options.locales App locale data like {"en":{"key1":"value1"},"zh-cn":{"key1":"值1"}}
+   * @param {string} options.locales App locale data like {"en":{"key1":"value1"},"zh-hans":{"key1":"值1"}}
    * @returns {Promise}
    */
   init(options = {}) {

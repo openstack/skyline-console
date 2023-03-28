@@ -68,7 +68,7 @@ export class AvatarDropdown extends React.Component {
     const { length } = SUPPORT_LOCALES;
     if (length > 3) {
       const options = SUPPORT_LOCALES.map((it) => ({
-        label: it.shortName.toLocaleUpperCase(),
+        label: it.icon.toLocaleUpperCase(),
         value: it.value,
       }));
       return (
@@ -83,7 +83,7 @@ export class AvatarDropdown extends React.Component {
       );
     }
     const btns = SUPPORT_LOCALES.map((item, index) => {
-      const { value, shortName } = item;
+      const { value, icon } = item;
       return (
         <>
           <Button
@@ -94,7 +94,7 @@ export class AvatarDropdown extends React.Component {
               this.changeLang(value);
             }}
           >
-            {shortName.toUpperCase()}
+            {icon.toUpperCase()}
           </Button>
           {index !== length - 1 && <span>/</span>}
         </>

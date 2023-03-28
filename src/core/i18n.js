@@ -20,24 +20,26 @@ import SLI18n from 'utils/translate';
 import { setLocalStorageItem } from 'utils/local-storage';
 import locales from '../locales';
 
+// shortName: the i18n name in the api
+// icon: the icon of switch language in ui
 const SUPPORT_LOCALES = [
   {
     name: 'English',
     value: 'en',
     shortName: 'en',
-    icon: 'us',
+    icon: 'en',
   },
   {
     name: '简体中文',
-    value: 'zh-cn',
+    value: 'zh-hans',
     shortName: 'zh',
-    icon: 'cn',
+    icon: 'zh',
   },
   {
     name: '한글',
     value: 'ko-kr',
-    shortName: 'kr',
-    icon: 'kr',
+    shortName: 'ko',
+    icon: 'ko',
   },
 ];
 
@@ -96,12 +98,12 @@ const setLocale = (lang) => {
   return lang;
 };
 
-const isLocaleZh = getLocale() === 'zh-cn';
+const isLocaleZh = getLocale() === 'zh-hans';
 
 const init = () => {
   const lang = getLocale();
 
-  if (lang === 'zh') {
+  if (lang === 'zh-hans') {
     moment.locale('zh', {
       relativeTime: {
         s: '1秒',
