@@ -35,7 +35,7 @@ const RenderTabs = () => {
       get(pool, 'data.result', []).forEach((r) => {
         const { metric, value } = r;
         retData.push({
-          type: 'pool',
+          tabType: 'pool',
           ...metric,
           value: parseFloat(value[1]) || 0,
         });
@@ -43,7 +43,7 @@ const RenderTabs = () => {
       get(osd, 'data.result', []).forEach((r) => {
         const { metric, value } = r;
         retData.push({
-          type: 'osd',
+          tabType: 'osd',
           ...metric,
           value: parseFloat(value[1]) || 0,
         });
@@ -53,7 +53,7 @@ const RenderTabs = () => {
   });
 
   function getListData(data) {
-    let originData = data.filter((d) => d.type === tab);
+    let originData = data.filter((d) => d.tabType === tab);
     Object.keys(filters).forEach((key) => {
       originData = originData.filter((i) => i[key] === filters[key]);
     });
