@@ -34,6 +34,7 @@ export default class RuleButton extends Component {
       modalSize: 'middle',
       columns: getSelfColumns(this),
       data,
+      hasPagination: false,
     };
     return <TableButton {...configs} style={{ paddingLeft: 0 }} />;
   }

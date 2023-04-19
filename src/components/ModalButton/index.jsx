@@ -65,6 +65,34 @@ export default class ModalButton extends Component {
     };
   }
 
+  componentWillUnmount() {
+    this.removeListener();
+  }
+
+  addListener = () => {
+    const modalTarget =
+      document.getElementsByClassName('modal-button-modal')[0];
+    this.modalTarget = modalTarget;
+    if (modalTarget) {
+      this.listenerResult = modalTarget.addEventListener(
+        'click',
+        this.onClickModal
+      );
+    }
+  };
+
+  removeListener = () => {
+    const modalTarget =
+      document.getElementsByClassName('modal-button-modal')[0];
+    if (modalTarget) {
+      this.listenerResult = modalTarget.removeEventListener(
+        'click',
+        this.onClickModal
+      );
+    }
+    this.modalTarget = null;
+  };
+
   getModalWidth = (size) => {
     switch (size) {
       case 'small':
@@ -79,7 +107,7 @@ export default class ModalButton extends Component {
   };
 
   onClick = (e) => {
-    e && e.stopPropagation();
+    this.stopEvent(e);
     const { onClickButton } = this.props;
     onClickButton && onClickButton();
     this.showModal();
@@ -90,7 +118,8 @@ export default class ModalButton extends Component {
     onFinishAction && onFinishAction();
   };
 
-  handleOk = () => {
+  handleOk = (e) => {
+    this.stopEvent(e);
     const { handleOk } = this.props;
     if (handleOk) {
       this.setState({
@@ -118,22 +147,66 @@ export default class ModalButton extends Component {
     }
   };
 
-  handleCancel = () => {
+  handleCancel = (e) => {
+    this.stopEvent(e);
     const { onCancelAction } = this.props;
     onCancelAction && onCancelAction();
     this.hideModal();
   };
 
   hideModal = () => {
+    this.removeListener();
     this.setState({
       visible: false,
     });
   };
 
   showModal = () => {
-    this.setState({
-      visible: true,
-    });
+    this.setState(
+      {
+        visible: true,
+      },
+      () => {
+        setTimeout(() => {
+          this.addListener();
+        }, 0);
+      }
+    );
+  };
+
+  stopEvent = (e) => {
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
+    if (e && e.stopPropagation) {
+      e.stopPropagation();
+    }
+  };
+
+  onClickModal = (e) => {
+    if (!this.modalTarget) {
+      this.stopEvent(e);
+      return;
+    }
+    const buttons = this.modalTarget.getElementsByTagName('button');
+    const { innerHTML = '' } = e.target || {};
+    let isButton = false;
+    for (let i = 0; i < buttons.length; i++) {
+      if (isButton) {
+        return;
+      }
+      const specialInner = ['-', ''];
+      if (
+        !specialInner.includes(innerHTML) &&
+        buttons[i].innerHTML.includes(innerHTML)
+      ) {
+        isButton = true;
+      }
+    }
+    if (isButton) {
+      return;
+    }
+    this.stopEvent(e);
   };
 
   renderModal() {
@@ -171,7 +244,11 @@ export default class ModalButton extends Component {
         style: { display: 'none' },
       };
     }
-    return <Modal {...configs}>{content}</Modal>;
+    return (
+      <Modal {...configs} className="modal-button-modal">
+        {content}
+      </Modal>
+    );
   }
 
   render() {

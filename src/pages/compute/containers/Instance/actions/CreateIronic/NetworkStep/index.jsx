@@ -254,7 +254,6 @@ export class NetworkStep extends Base {
         ),
         filterParams: securityGroupFilter,
         columns: securityGroupColumns,
-        onRow: () => {},
       },
     ];
   }

@@ -29,6 +29,7 @@ export default class TableButton extends Component {
       className: PropTypes.func,
       buttonText: PropTypes.string,
       style: PropTypes.string,
+      hasPagination: PropTypes.bool,
     };
   }
 
@@ -41,11 +42,19 @@ export default class TableButton extends Component {
     className: '',
     buttonText: t('View Detail'),
     title: t('Detail'),
+    hasPagination: true,
   };
 
   renderTable = () => {
-    const { data, columns } = this.props;
-    return <Table columns={columns} dataSource={data} />;
+    const { data, columns, hasPagination } = this.props;
+    const configs = {
+      columns,
+      dataSource: data,
+    };
+    if (!hasPagination) {
+      configs.pagination = false;
+    }
+    return <Table {...configs} />;
   };
 
   render() {

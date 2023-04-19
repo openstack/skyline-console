@@ -187,7 +187,6 @@ export class ManageSecurityGroup extends ModalAction {
         isMulti: true,
         filterParams: securityGroupFilter,
         columns: securityGroupColumns,
-        onRow: () => {},
       },
     ];
   }
