@@ -13,7 +13,9 @@
 // limitations under the License.
 
 import React, { Component } from 'react';
-import SelectTable from 'components/FormItem/SelectTable';
+import SelectTable, {
+  renderClearButton,
+} from 'components/FormItem/SelectTable';
 import { Tabs, Tag } from 'antd';
 import { isEmpty } from 'lodash';
 
@@ -79,6 +81,18 @@ export default class TabSelectTable extends Component {
     this.setState(newState, () => {
       this.onChangeValue();
     });
+  };
+
+  clearSelected = () => {
+    this.setState(
+      {
+        selectedRowKeys: [],
+        selectedRows: [],
+      },
+      () => {
+        this.onChangeValue();
+      }
+    );
   };
 
   onTagClose = (itemKey) => {
@@ -162,12 +176,17 @@ export default class TabSelectTable extends Component {
     </Tag>
   );
 
+  renderClearButton = (rows) => {
+    return renderClearButton(this, rows);
+  };
+
   renderSelected() {
     const { selectedRows } = this.state;
     const items = selectedRows.map((it) => this.renderTag(it));
+    const clearButton = this.renderClearButton(selectedRows);
     return (
       <div>
-        {t('Selected')} :&nbsp;&nbsp;{items}
+        {t('Selected')} :&nbsp;&nbsp;{clearButton}&nbsp;&nbsp;{items}
       </div>
     );
   }

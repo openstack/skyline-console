@@ -13,7 +13,8 @@
 // limitations under the License.
 
 import React from 'react';
-import { Radio, Tag } from 'antd';
+import { Radio, Tag, Button, Tooltip } from 'antd';
+import { ClearOutlined } from '@ant-design/icons';
 import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import MagicInput from 'components/MagicInput';
@@ -47,6 +48,23 @@ const getInitRows = (value, data, backendPageStore) => {
     );
   });
   return rows;
+};
+
+export const renderClearButton = (self, rows, props = {}) => {
+  const { showSelected = true } = props;
+  if (!showSelected) {
+    return null;
+  }
+  if (!rows || !rows.length) {
+    return null;
+  }
+  return (
+    <Tooltip title={t('Clear selected')}>
+      <Button size="small" onClick={self.clearSelected}>
+        <ClearOutlined />
+      </Button>
+    </Tooltip>
+  );
 };
 
 @observer
@@ -581,6 +599,13 @@ export default class SelectTable extends React.Component {
     });
   };
 
+  clearSelected = () => {
+    this.setState({
+      selectedRowKeys: [],
+      selectedRows: [],
+    });
+  };
+
   initTabChange() {
     const { defaultTabValue, onTabChange, value } = this.props;
     if (defaultTabValue !== undefined && onTabChange !== undefined) {
@@ -795,6 +820,10 @@ export default class SelectTable extends React.Component {
     </Tag>
   );
 
+  renderClearButton = (rows) => {
+    return renderClearButton(this, rows, this.props);
+  };
+
   renderSelected() {
     const { showSelected = true, selectedLabel, maxSelectedCount } = this.props;
     if (maxSelectedCount === -1) {
@@ -806,9 +835,11 @@ export default class SelectTable extends React.Component {
     }
     const rows = isEmpty(selectedRows) ? this.getSelectedRows() : selectedRows;
     const items = rows.map((it) => this.renderTag(it));
+    const clearButton = this.renderClearButton(rows);
     return (
       <div>
-        {t('Selected')} {selectedLabel}:&nbsp;&nbsp;{items}
+        {t('Selected')} {selectedLabel}:&nbsp;&nbsp;{clearButton}&nbsp;&nbsp;
+        {items}
       </div>
     );
   }

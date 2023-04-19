@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Add clear selected button to clear all the selected data for the
+    select-table and tab-select-table component.
