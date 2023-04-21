@@ -66,6 +66,8 @@ export class RootStore {
   @observable
   noticeCount = 0;
 
+  noticeCountWaitRemove = 0;
+
   @observable
   enableBilling = false;
 
@@ -187,6 +189,7 @@ export class RootStore {
     this.hasAdminPageRole = false;
     this.version = '';
     this.noticeCount = 0;
+    this.noticeCountWaitRemove = 0;
     this.goToLoginPage();
   }
 
@@ -238,12 +241,21 @@ export class RootStore {
 
   @action
   removeNoticeCount() {
-    this.noticeCount -= 1;
+    const elements = document.getElementsByClassName('ant-modal');
+    // if there is an modal in the page, the notice count will be changed later, after no modal.
+    if (elements.length > 0) {
+      this.noticeCountWaitRemove += 1;
+    } else {
+      const noticeCount = this.noticeCount - 1 - this.noticeCountWaitRemove;
+      this.noticeCount = noticeCount < 0 ? 0 : noticeCount;
+      this.noticeCountWaitRemove = 0;
+    }
   }
 
   @action
   clearNoticeCount() {
     this.noticeCount = 0;
+    this.noticeCountWaitRemove = 0;
   }
 
   clearData() {

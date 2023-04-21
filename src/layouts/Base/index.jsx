@@ -66,7 +66,9 @@ export class BaseLayout extends Component {
   }
 
   get noticeCount() {
-    return this.rootStore.noticeCount;
+    return (
+      this.rootStore.noticeCount - (this.rootStore.noticeCountWaitRemove || 0)
+    );
   }
 
   get user() {
