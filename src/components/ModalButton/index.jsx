@@ -189,21 +189,23 @@ export default class ModalButton extends Component {
       return;
     }
     const buttons = this.modalTarget.getElementsByTagName('button');
+    const links = this.modalTarget.getElementsByTagName('a');
+    const elements = [...buttons, ...links];
     const { innerHTML = '' } = e.target || {};
-    let isButton = false;
-    for (let i = 0; i < buttons.length; i++) {
-      if (isButton) {
+    let isClickable = false;
+    const specialInner = ['-', ''];
+    for (let i = 0; i < elements.length; i++) {
+      if (isClickable) {
         return;
       }
-      const specialInner = ['-', ''];
       if (
         !specialInner.includes(innerHTML) &&
-        buttons[i].innerHTML.includes(innerHTML)
+        elements[i].innerHTML.includes(innerHTML)
       ) {
-        isButton = true;
+        isClickable = true;
       }
     }
-    if (isButton) {
+    if (isClickable) {
       return;
     }
     this.stopEvent(e);
