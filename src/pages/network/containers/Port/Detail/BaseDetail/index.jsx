@@ -16,7 +16,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
-import { bindingTypes } from 'resources/neutron/port';
 import { qosEndpoint } from 'client/client/constants';
 
 export class BaseDetail extends Base {
@@ -57,7 +56,6 @@ export class BaseDetail extends Base {
       {
         label: t('VNIC Type'),
         dataIndex: 'binding:vnic_type',
-        valueMap: bindingTypes,
       },
     ];
     if (this.qosEndpoint) {

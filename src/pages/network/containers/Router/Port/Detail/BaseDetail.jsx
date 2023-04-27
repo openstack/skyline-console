@@ -15,7 +15,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
-import { bindingTypes } from 'resources/neutron/port';
 import { isEmpty } from 'lodash';
 
 export class BaseDetail extends Base {
@@ -146,7 +145,6 @@ export class BaseDetail extends Base {
       {
         label: t('VNIC Type'),
         dataIndex: 'binding__vnic_type',
-        valueMap: bindingTypes,
       },
     ];
     if (this.detailData.binding__host_id) {
