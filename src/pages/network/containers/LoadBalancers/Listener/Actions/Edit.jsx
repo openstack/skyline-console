@@ -91,6 +91,20 @@ export class Edit extends Base {
     return values;
   }
 
+  get formItems() {
+    const baseItems = super.formItems;
+    return baseItems.map((it) => {
+      if (it.name === 'sni_enabled') {
+        it.disabled =
+          this.item.sni_container_refs && this.item.sni_container_refs.length;
+        it.tip = t(
+          'If the listener has an SNI certificate installed, it cannot be removed. Please delete the listener or replace the SNI certificate'
+        );
+      }
+      return it;
+    });
+  }
+
   onSubmit = (values) => {
     const { id } = this.item;
     const {
