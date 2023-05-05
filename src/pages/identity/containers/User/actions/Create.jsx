@@ -161,6 +161,12 @@ export class Create extends FormAction {
     this.setState({ projectRoles });
   };
 
+  onClickSelect = (e) => {
+    if (e && e.stopPropagation) {
+      e.stopPropagation();
+    }
+  };
+
   renderSelect = (projectId) => {
     return (
       <Select
@@ -172,6 +178,7 @@ export class Create extends FormAction {
         onChange={(value, option) => {
           this.onSelectChange(value, option, projectId);
         }}
+        onClick={this.onClickSelect}
       />
     );
   };
@@ -332,7 +339,6 @@ export class Create extends FormAction {
         onChange: this.onChangeProject,
         filterOption: transferFilterOption,
         loading: this.projectStore.list.isLoading,
-        onRowRight: () => null,
       },
       {
         name: 'select_user_group',

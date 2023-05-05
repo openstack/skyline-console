@@ -130,6 +130,12 @@ export class ManageUser extends ModalAction {
     ];
   }
 
+  onClickSelect = (e) => {
+    if (e && e.stopPropagation) {
+      e.stopPropagation();
+    }
+  };
+
   renderSelect = (id) => {
     return (
       <Select
@@ -141,6 +147,7 @@ export class ManageUser extends ModalAction {
         onChange={(value, option) => {
           this.onSelectChange(value, option, id);
         }}
+        onClick={this.onClickSelect}
       />
     );
   };
@@ -206,7 +213,6 @@ export class ManageUser extends ModalAction {
         filterOption: transferFilterOption,
         wrapperCol: this.wrapperCol,
         loading: this.userStore.list.isLoading,
-        onRowRight: () => null,
       },
     ];
   }

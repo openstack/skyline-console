@@ -118,6 +118,12 @@ export class ManageUserGroup extends ModalAction {
     return nameDomainColumns;
   }
 
+  onClickSelect = (e) => {
+    if (e && e.stopPropagation) {
+      e.stopPropagation();
+    }
+  };
+
   renderSelect = (groupId) => {
     return (
       <Select
@@ -129,6 +135,7 @@ export class ManageUserGroup extends ModalAction {
         onChange={(value, option) => {
           this.onSubChange(value, option, groupId);
         }}
+        onClick={this.onClickSelect}
       />
     );
   };
@@ -206,7 +213,6 @@ export class ManageUserGroup extends ModalAction {
         onChange: this.onChangeUserGroup,
         wrapperCol: this.wrapperCol,
         loading: this.userGroupStore.list.isLoading,
-        onRowRight: () => null,
       },
     ];
   }
