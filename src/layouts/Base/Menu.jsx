@@ -160,7 +160,7 @@ export class LayoutMenu extends Component {
     const title = (
       <span>
         {item.icon}
-        <span>
+        <span className={styles['menu-item-title']}>
           {item.name.length >= this.maxTitleLength ? (
             <Tooltip title={item.name} placement="right">
               {item.name}
