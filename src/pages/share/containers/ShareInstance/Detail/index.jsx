@@ -48,12 +48,12 @@ export class Detail extends Base {
         valueMap: shareStatus,
       },
       {
-        title: t('Created'),
+        title: t('Created At'),
         dataIndex: 'created_at',
         valueRender: 'toLocalTime',
       },
       {
-        title: t('Updated'),
+        title: t('Updated At'),
         dataIndex: 'updated_at',
         valueRender: 'toLocalTime',
       },

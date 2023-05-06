@@ -32,7 +32,7 @@ export class BaseDetail extends Base {
       {
         label: t('Records'),
         dataIndex: 'records',
-        render: (value) => value.map((item) => <div>{item}</div>)
+        render: (value) => value.map((item) => <div>{item}</div>),
         // render: (value) => value.join(" - ")
       },
       {
@@ -42,36 +42,36 @@ export class BaseDetail extends Base {
       {
         label: t('Version'),
         dataIndex: 'version',
-      }
+      },
     ];
 
     return {
       title: t('Base Info'),
       labelCol: 6,
       contentCol: 18,
-      options
+      options,
     };
   }
 
   get modificationTimesCard() {
     const options = [
       {
-        label: t('Created'),
+        label: t('Created At'),
         dataIndex: 'created_at',
-        valueRender: 'toLocalTime'
+        valueRender: 'toLocalTime',
       },
       {
-        label: t('Updated'),
+        label: t('Updated At'),
         dataIndex: 'updated_at',
-        valueRender: 'toLocalTime'
-      }
+        valueRender: 'toLocalTime',
+      },
     ];
 
     return {
       title: t('Modification Times'),
       labelCol: 6,
       contentCol: 18,
-      options
+      options,
     };
   }
 
@@ -80,7 +80,7 @@ export class BaseDetail extends Base {
       {
         label: t('Zone ID'),
         dataIndex: 'zone_id',
-        copyable: true
+        copyable: true,
       },
       {
         label: t('Zone Name'),
@@ -89,15 +89,15 @@ export class BaseDetail extends Base {
       {
         label: t('Project ID'),
         dataIndex: 'project_id',
-        copyable: true
-      }
+        copyable: true,
+      },
     ];
 
     return {
       title: t('Associations'),
       // labelCol: 4,
       // contentCol: 18,
-      options
+      options,
     };
   }
 }

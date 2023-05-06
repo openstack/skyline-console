@@ -80,12 +80,12 @@ export class BaseDetail extends Base {
         unit: 'GiB',
       },
       {
-        label: t('Created'),
+        label: t('Created At'),
         dataIndex: 'created',
         valueRender: 'toLocalTime',
       },
       {
-        label: t('Updated'),
+        label: t('Updated At'),
         dataIndex: 'updated',
         valueRender: 'toLocalTime',
       },
@@ -149,7 +149,7 @@ export class BaseDetail extends Base {
   get faultCard() {
     const options = [
       {
-        label: t('Created'),
+        label: t('Created At'),
         dataIndex: 'created',
         valueRender: 'toLocalTime',
       },

@@ -36,8 +36,9 @@ export class Backups extends Base {
         dataIndex: 'name',
       },
       {
-        title: t('Created'),
+        title: t('Created At'),
         dataIndex: 'created',
+        valueRender: 'toLocalTime',
       },
       {
         title: t('Backup File'),

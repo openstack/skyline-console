@@ -39,12 +39,14 @@ export class BaseDetail extends Base {
         dataIndex: 'datastore_version_name',
       },
       {
-        label: t('Created'),
+        label: t('Created At'),
         dataIndex: 'created',
+        valueRender: 'toLocalTime',
       },
       {
-        label: t('Updated'),
+        label: t('Updated At'),
         dataIndex: 'updated',
+        valueRender: 'toLocalTime',
       },
     ];
 

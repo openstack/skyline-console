@@ -115,7 +115,7 @@ export class BaseDetail extends Base {
         dataIndex: 'transfer.name',
       },
       {
-        label: t('Created'),
+        label: t('Created At'),
         dataIndex: 'transfer.created_at',
         valueRender: 'toLocalTime',
       },

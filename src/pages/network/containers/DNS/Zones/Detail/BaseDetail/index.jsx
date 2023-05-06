@@ -51,19 +51,19 @@ export class BaseDetail extends Base {
   get modificationTimesCard() {
     const options = [
       {
-        label: t('Created'),
+        label: t('Created At'),
         dataIndex: 'created_at',
-        valueRender: 'toLocalTime'
+        valueRender: 'toLocalTime',
       },
       {
-        label: t('Updated'),
+        label: t('Updated At'),
         dataIndex: 'updated_at',
-        valueRender: 'toLocalTime'
+        valueRender: 'toLocalTime',
       },
       {
         label: t('Transferred'),
         dataIndex: 'transferred_at',
-        valueRender: 'toLocalTime'
+        valueRender: 'toLocalTime',
       },
     ];
 
@@ -78,8 +78,8 @@ export class BaseDetail extends Base {
       {
         label: t('Attributes'),
         dataIndex: 'attributes',
-        render: (value) => JSON.stringify(value)
-      }
+        render: (value) => JSON.stringify(value),
+      },
     ];
 
     return {
@@ -101,8 +101,8 @@ export class BaseDetail extends Base {
       {
         label: t('Masters'),
         dataIndex: 'masters',
-        render: (value) => JSON.stringify(value)
-      }
+        render: (value) => JSON.stringify(value),
+      },
     ];
 
     return {
