@@ -347,12 +347,14 @@ export class CreateForm extends FormAction {
       owner,
       usage_type = 'common',
       members,
+      os_distro,
       ...rest
     } = values;
     const body = {
       visibility: visibility || 'private',
       container_format: 'bare',
       usage_type,
+      os_distro,
       ...rest,
     };
     if (min_ram) {
@@ -366,6 +368,9 @@ export class CreateForm extends FormAction {
     }
     if (this.isAdminPage) {
       body.owner = owner.selectedRowKeys[0];
+    }
+    if (os_distro === 'windows') {
+      body.os_type = 'windows';
     }
     const mems = visibility === 'shared' ? members.selectedRowKeys : [];
     const config = this.getUploadRequestConf();
