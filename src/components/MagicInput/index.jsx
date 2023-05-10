@@ -450,6 +450,7 @@ class MagicInput extends PureComponent {
     this.clearInputValue();
     this.setState(
       {
+        inputValue: '',
         tags: [],
         currentFilter: null,
         isFocus: false,
