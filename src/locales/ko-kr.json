@@ -2401,7 +2401,7 @@
   "The instance architecture diagram mainly shows the overall architecture composition of the instance. If you need to view the network topology of the instance, please go to: ": "인스턴스 아키텍처 다이어그램은 주로 인스턴스의 전체 아키텍처 구성을 보여줍니다. 인스턴스의 네트워크 토폴로지를 보려면 다음으로 이동하십시오: ",
   "The instance deleted immediately cannot be restored": "즉시 삭제된 인스턴스는 복구할 수 없습니다",
   "The instance has been locked. If you want to do more, please unlock it first.": "인스턴스가 잠겼습니다. 추가적인 작업을 위해 먼저 잠금을 해제 해 주세요.",
-  "The instance is not shut down, unable to restore.": "",
+  "The instance is not shut down, unable to restore.": "인스턴스가 종료되지 않아, 복구할 수 없습니다.",
   "The instance which is boot from volume will create snapshots for each mounted volumes.": "볼륨에서 부팅되는 인스턴스는 마운트된 각 볼륨에 대한 스냅샷을 생성합니다.",
   "The instances in the affinity group are allocated to the same physical machine as much as possible, and when there are no more physical machines to allocate, the normal allocation strategy is returned.": "\"affinity group\"의 인스턴스는 가능한 한 동일한 물리적 시스템에 할당되며, 할당할 물리적 시스템이 더 이상 없을 경우 일반적인 할당 전략을 따르게 됩니다.",
   "The instances in the affinity group are strictly allocated to the same physical machine. When there are no more physical machines to allocate, the allocation fails.": "\"affinity group\"의 인스턴스는 동일한 물리적 시스템에만 할당됩니다. 할당할 물리적 시스템이 더 이상 없으면 할당이 실패합니다.",
