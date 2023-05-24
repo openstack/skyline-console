@@ -31,9 +31,9 @@ export const resourceCircle = [
 ];
 
 export const color = {
-  infoColor: 'rgba(0, 104, 255, 0.65)',
-  warnColor: '#FE9901',
-  dangerColor: '#D93126',
+  infoColor: globalCSS.primaryColor,
+  warnColor: globalCSS.warnDarkColor,
+  dangerColor: globalCSS.errorColor,
 };
 
 export class ResourceCircle extends Component {
@@ -56,9 +56,9 @@ export class ResourceCircle extends Component {
     const used = overview[item.used];
     const percentNum = parseFloat(((used / resource) * 100).toFixed(2));
     const unUsed = parseFloat((resource - used).toFixed(2));
-    let circleColor = color.infoColor;
+    let circleColor = color.primaryColor;
     if (percentNum > 70) {
-      circleColor = color.warnColor;
+      circleColor = color.warnDarkColor;
     }
     if (percentNum > 90) {
       circleColor = color.dangerColor;

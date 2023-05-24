@@ -23,9 +23,9 @@ import { isNumber } from 'lodash';
 import styles from '../style.less';
 
 const colors = {
-  normal: { color: '#4CC9F0', text: t('Normal') },
-  danger: { color: '#4361EE', text: t('Danger') },
-  full: { color: '#E8684A', text: t('Full') },
+  normal: { color: globalCSS.primaryColor, text: t('Normal') },
+  danger: { color: globalCSS.warnDarkColor, text: t('Danger') },
+  full: { color: globalCSS.errorColor, text: t('Full') },
 };
 
 const keyPairTitle = (

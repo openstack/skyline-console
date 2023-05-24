@@ -1,3 +1,5 @@
+@import '~styles/variables';
+
 .register {
   float: right;
 }
@@ -13,11 +15,11 @@
 
 .login-error {
   padding: 8px 12px;
-  color: #a43a39;
+  color: @login-error;
   font-size: 14px;
   line-height: 1.5;
   background: #f2dede;
-  border: 1px solid #a43a39;
+  border: 1px solid @login-error;
   border-radius: 4px;
 
   :global {

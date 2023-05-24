@@ -143,7 +143,7 @@ export class Resize extends ModalAction {
   get tips() {
     return (
       <div>
-        <p style={{ color: '#0068FF' }}>
+        <p style={{ color: globalCSS.primaryColor }}>
           {t('The current operation requires the instance to be shut down:')}
         </p>
         <p>

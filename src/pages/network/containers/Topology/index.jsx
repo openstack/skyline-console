@@ -43,6 +43,10 @@ import NodeCard from './NodeCard';
 let graph = null;
 const { isIpInRangeAll } = ipValidate;
 
+export const activeShadowColor = 'rgba(87,227,155,0.61)';
+export const errorShadowColor = 'rgba(237,33,48,1)';
+export const errorStrokeColor = '#DB3A3A';
+
 export class Topology extends React.Component {
   constructor(props) {
     super(props);
@@ -142,11 +146,12 @@ export class Topology extends React.Component {
         style: {
           radius: 4,
           fill: '#FFFFFFFF',
-          stroke: router.status === 'ACTIVE' ? '#57E39B' : '#DB3A3A',
-          shadowColor:
+          stroke:
             router.status === 'ACTIVE'
-              ? 'rgba(87,227,155,0.61)'
-              : 'rgba(237,33,48,1)',
+              ? globalCSS.successColor
+              : errorStrokeColor,
+          shadowColor:
+            router.status === 'ACTIVE' ? activeShadowColor : errorShadowColor,
           shadowBlur: router.status === 'ACTIVE' ? 5 : 4,
         },
         anchorPoints: [[0.5, 0]],
@@ -336,11 +341,14 @@ export class Topology extends React.Component {
           style: {
             radius: 4,
             fill: '#FFFFFFFF',
-            stroke: server.vm_state === 'active' ? '#57E39B' : '#DB3A3A',
+            stroke:
+              server.vm_state === 'active'
+                ? globalCSS.successColor
+                : errorStrokeColor,
             shadowColor:
               server.vm_state === 'active'
-                ? 'rgba(87,227,155,0.61)'
-                : 'rgba(237,33,48,1)',
+                ? activeShadowColor
+                : errorShadowColor,
             shadowBlur: server.vm_state === 'active' ? 5 : 4,
           },
         });
@@ -403,11 +411,14 @@ export class Topology extends React.Component {
             style: {
               radius: 4,
               fill: '#FFFFFFFF',
-              stroke: server.vm_state === 'active' ? '#57E39B' : '#DB3A3A',
+              stroke:
+                server.vm_state === 'active'
+                  ? globalCSS.successColor
+                  : errorStrokeColor,
               shadowColor:
                 server.vm_state === 'active'
-                  ? 'rgba(87,227,155,0.61)'
-                  : 'rgba(237,33,48,1)',
+                  ? activeShadowColor
+                  : errorShadowColor,
               shadowBlur: server.vm_state === 'active' ? 5 : 4,
             },
           });

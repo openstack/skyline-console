@@ -68,17 +68,17 @@ export const smallCard = [
 ];
 
 const instanceColors = {
-  active: { color: '#52C41A', text: t('Active Status') },
-  error: { color: '#E8684A', text: t('Error') },
+  active: { color: globalCSS.successColor, text: t('Active Status') },
+  error: { color: globalCSS.errorColor, text: t('Error') },
   shutoff: { color: '#E6F2E0', text: t('Shutoff') },
-  other: { color: '#F6B23D', text: t('Others') },
+  other: { color: globalCSS.warnLightColor, text: t('Others') },
 };
 
 const volumeColors = {
-  active: { color: '#52C41A', text: t('Attaching') },
-  error: { color: '#E8684A', text: t('Error') },
+  active: { color: globalCSS.successColor, text: t('Attaching') },
+  error: { color: globalCSS.errorColor, text: t('Error') },
   available: { color: '#E6F2E0', text: t('Unattached') },
-  other: { color: '#F6B23D', text: t('Others') },
+  other: { color: globalCSS.warnLightColor, text: t('Others') },
 };
 
 export class virtualResourceInfo extends Component {

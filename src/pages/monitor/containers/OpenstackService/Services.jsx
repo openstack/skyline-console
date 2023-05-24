@@ -30,7 +30,7 @@ const statusToIcon = {
   down: (
     <InfoCircleTwoTone
       style={{ fontSize: 24, marginLeft: 36 }}
-      twoToneColor="#EB354D"
+      twoToneColor={globalCSS.errorColor}
     />
   ),
 };

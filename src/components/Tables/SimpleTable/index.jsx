@@ -171,7 +171,7 @@ export default class SimpleTable extends React.Component {
     }
     return (value) => {
       const valueStr = isString(value) ? value : (value || 0).toFixed(2);
-      return <span style={{ color: '#f50' }}>{valueStr}</span>;
+      return <span style={{ color: globalCSS.moneyColor }}>{valueStr}</span>;
     };
   };
 

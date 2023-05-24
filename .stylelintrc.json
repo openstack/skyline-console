@@ -10,6 +10,12 @@
   "rules": {
     "no-descending-specificity": null,
     "at-rule-no-unknown": null,
-    "color-function-notation": "legacy"
+    "color-function-notation": "legacy",
+    "property-no-unknown": [
+      true,
+      {
+        "ignoreProperties": ["/Color$/"]
+      }
+    ]
   }
 }

@@ -137,7 +137,11 @@ export const physicalNodeLeftTopCardList = [
               <Progress
                 style={{ width: '95%' }}
                 percent={progressPercentage}
-                strokeColor={progressPercentage > 80 ? '#FAAD14' : '#1890FF'}
+                strokeColor={
+                  progressPercentage > 80
+                    ? globalCSS.warnDarkColor
+                    : globalCSS.primaryColor
+                }
                 showInfo={progressPercentage !== 100}
               />
             </Row>

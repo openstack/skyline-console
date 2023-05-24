@@ -138,7 +138,7 @@ export class Password extends Component {
         name: 'hint',
         render: () => (
           <div className={styles.hint}>
-            <InfoCircleFilled style={{ color: '#FAAD14' }} />
+            <InfoCircleFilled style={{ color: globalCSS.warnColor }} />
             {t('User need to change password')}
           </div>
         ),

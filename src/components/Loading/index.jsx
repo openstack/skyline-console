@@ -28,7 +28,7 @@ const Loading = ({ pastDelay, timedOut, error }) => {
       >
         <Icon
           type="loading"
-          style={{ fontSize: 32, color: '#1890ff' }}
+          style={{ fontSize: 32, color: globalCSS.primaryColor }}
           theme="outlined"
         />
         <p>Loading...</p>

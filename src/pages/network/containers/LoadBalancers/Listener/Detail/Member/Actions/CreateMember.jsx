@@ -96,7 +96,7 @@ export class CreateAction extends ModalAction {
   get tips() {
     return (
       <div style={{ display: 'inline-table' }}>
-        <p style={{ color: '#0068FF' }}>
+        <p style={{ color: globalCSS.primaryColor }}>
           {t(
             'The amphora instance is required for load balancing service setup and is not recommended'
           )}

@@ -82,7 +82,7 @@ export class Token extends ModalAction {
     const now = Date.now();
     if (now > this.keystoneTokenExp) {
       return (
-        <span style={{ color: 'rgb(232, 104, 74)' }}>
+        <span style={globalCSS.warnDarkColor}>
           {t('Keystone token is expired.')}
         </span>
       );

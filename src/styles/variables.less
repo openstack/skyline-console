@@ -4,6 +4,7 @@
 @blue-3: rgba(89, 157, 255, 35%);
 @blue-4: #005ade;
 @primary-color: @blue-1;
+@info-color: @blue-2;
 @hover-color: @blue-4;
 
 @green-1: #57e39b;
@@ -15,6 +16,9 @@
 @yellow-2: rgba(254, 223, 64, 65%);
 @yellow-3: rgba(254, 223, 64, 35%);
 @warn-color: @yellow-1;
+
+@warn-light-color: #f6b23d;
+@warn-dark-color: #fa8c16;
 
 @red-1: #eb354d;
 @red-2: rgba(235, 53, 77, 65%);
@@ -124,3 +128,20 @@
 /*  sider */
 @sider-background: #26262b;
 @sider-open-background: #222121;
+
+/* login */
+@login-error: #a43a39;
+
+@money-color: #f50;
+
+:export {
+  primaryColor: @primary-color;
+  successColor: @success-color;
+  warnColor: @warn-color;
+  warnDarkColor: @warn-dark-color;
+  warnLightColor: @warn-light-color;
+  errorColor: @error-color;
+  dangerColor: @danger-color;
+  moneyColor: @money-color;
+  infoColor: @info-color;
+}

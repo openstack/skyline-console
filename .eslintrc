@@ -74,6 +74,10 @@
           [
             "asset",
             "./src/asset"
+          ],
+          [
+            "styles",
+            "./src/styles"
           ]
         ],
         "extensions": [
@@ -134,6 +138,7 @@
     "t": true,
     "globals": true,
     "request": true,
-    "METRICDICT": true
+    "METRICDICT": true,
+    "globalCSS": true
   }
 }

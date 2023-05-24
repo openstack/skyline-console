@@ -28,8 +28,8 @@ export default class index extends Component {
   get progress() {
     return {
       strokeColor: {
-        '0%': '#108ee9',
-        '100%': '#87d068',
+        '0%': globalCSS.primaryColor,
+        '100%': globalCSS.successColor,
       },
       strokeWidth: 3,
       format: (percent) => `${parseFloat(percent.toFixed(2))}%`,

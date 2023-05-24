@@ -99,7 +99,8 @@ export const topCardList = [
       >
         {(value.data || []).map((item, index) => {
           const percentage = computePercentage(item.avail, item.total);
-          const percentageColor = percentage > 80 ? '#FAAD14' : '#1890FF';
+          const percentageColor =
+            percentage > 80 ? globalCSS.warnDarkColor : globalCSS.primaryColor;
           return (
             <div
               key={item.mountpoint}

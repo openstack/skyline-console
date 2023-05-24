@@ -22,11 +22,13 @@ import enUS from 'antd/es/locale/en_US';
 import globalRootStore from 'stores/root';
 import PageLoading from 'components/PageLoading';
 import metricDict from 'resources/prometheus/metricDict';
+import variables from 'styles/variables.less';
 import i18n from './i18n';
 import App from './App';
 
 window.t = i18n.t;
 window.METRICDICT = metricDict;
+window.globalCSS = variables;
 
 const store = globalRootStore;
 const browserHistory = createBrowserHistory();

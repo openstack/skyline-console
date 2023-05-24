@@ -30,9 +30,9 @@ export default class index extends Component {
   static defaultProps = {
     wanValue: 70,
     dangerValue: 90,
-    infoColor: 'rgba(0, 104, 255, 0.65)',
-    warnColor: 'rgba(254, 223, 64, 0.65)',
-    dangerColor: 'rgba(235, 53, 77, 0.65)',
+    infoColor: globalCSS.primaryColor,
+    warnColor: globalCSS.warnDarkColor,
+    dangerColor: globalCSS.dangerColor,
     label: '',
   };
 

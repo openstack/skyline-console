@@ -25,11 +25,11 @@ import {
 import { Tooltip as AntTooltip } from 'antd';
 
 export const typeColors = {
-  used: '#5B8FF9',
+  used: globalCSS.primaryColor,
   reserved: '#5D7092',
-  add: '#5AD8A6',
+  add: globalCSS.successColor,
   left: '#eee',
-  danger: '#E8684A',
+  danger: globalCSS.warnDarkColor,
 };
 
 export const getAddValueColor = (percent) => {

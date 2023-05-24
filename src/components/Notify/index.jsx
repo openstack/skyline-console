@@ -42,19 +42,19 @@ const open = (args) => {
   let icon = null;
 
   if (type === 'info') {
-    iconColor = '#0068FF';
+    iconColor = globalCSS.primaryColor;
     icon = <InfoCircleOutlined theme="filled" style={{ color: iconColor }} />;
   } else if (type === 'success') {
-    iconColor = '#57E39B';
+    iconColor = globalCSS.successColor;
     icon = <CheckCircleOutlined theme="filled" style={{ color: iconColor }} />;
   } else if (type === 'error') {
-    iconColor = '#EB354D';
+    iconColor = globalCSS.errorColor;
     icon = <CloseCircleOutlined theme="filled" style={{ color: iconColor }} />;
   } else if (type === 'process') {
-    iconColor = '#0068FF';
+    iconColor = globalCSS.primaryColor;
     icon = <LoadingOutlined style={{ color: iconColor }} />;
   } else if (type === 'warn') {
-    iconColor = '#FEDF40';
+    iconColor = globalCSS.warnColor;
     icon = <InfoCircleOutlined theme="filled" style={{ color: iconColor }} />;
   }
 
