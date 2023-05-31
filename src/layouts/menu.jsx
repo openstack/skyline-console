@@ -218,7 +218,7 @@ const renderMenu = (t) => {
         {
           path: '/storage/container',
           name: t('Object Storage'),
-          key: 'container',
+          key: 'containers',
           endpoints: 'swift',
           level: 1,
           children: [
