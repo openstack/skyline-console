@@ -82,8 +82,8 @@
 
 -  ``yarn run mock``: 使用\ `rap2 <http://rap2.taobao.org/>`__\ 工具
    mock 接口
--  ``yarn run dev``: 使用实际接口，需要将\ ``webpack.dev.js``\ 文件第 47
-   行的 “http://pre.xxx.com” 修改为实际地址
+-  ``yarn run dev``: 使用实际接口，可复制 \ ``config/config.yaml``\ 到
+   \ ``config/local_config.yaml``\ ，将 \ ``server``\ 替换为正确的地址
 -  ``yarn run build``: 构建打包，可将生成的 dist 目录的内容交给后端
 
 文档

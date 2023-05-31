@@ -68,6 +68,10 @@ Catalog Introduction-Image Version
     ├── Makefile
     ├── README.rst
     ├── config
+    │   ├── config.yaml (The default configuration of host, port, and server during development)
+    │   ├── local_config.yaml (gitignore file, you can configure the host/port/server used in the actual development, if the actual value is different from the default value in config.yaml, you can modify it in this file)
+    │   ├── server.dev.js (Read the custom configuration information used during development)
+    │   ├── utils.js
     │   ├── theme.js
     │   ├── webpack.common.js
     │   ├── webpack.dev.js  (Webpack configuration used during development)

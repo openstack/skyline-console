@@ -26,37 +26,23 @@
 
 - 准备好可用的后端
   - 准备好可访问的后端，举个例子：https://172.20.154.250
-  - 修改`config/webpack.dev.js`中的相应配置：
+  - 新增 `config/local_config.yaml` 中的 `server` 配置：
 
-    ```javascript
-    if (API === 'mock' || API === 'dev') {
-      devServer.proxy = {
-        '/api': {
-          target: 'https://172.20.154.250',
-          changeOrigin: true,
-          secure: false,
-        },
-      };
-    }
+    ```yaml
+    server: https://172.20.154.250
     ```
 
 - 配置访问的 host 与 port
-  - 修改`devServer.host`与`devServer.port`
-  - 修改`config/webpack.dev.js`中的相应配置
+  - 默认配置在 `config/config.yaml`
+    - `host` 为 `0.0.0.0`
+    - `port` 为 `8088`
+    - 如果当前配置无需变更，则下面的步骤无需操作
+  - 新增 `config/local_config.yaml`
+  - 添加 `host` 与 `port` 配置
 
-    ```javascript
-    const devServer = {
-      host: '0.0.0.0',
-      // host: 'localhost',
-      port: 8088,
-      contentBase: root('dist'),
-      historyApiFallback: true,
-      compress: true,
-      hot: true,
-      inline: true,
-      disableHostCheck: true,
-      // progress: true
-    };
+    ```yaml
+    host: localhost
+    port: 8080
     ```
 
 - 搭建完成
@@ -66,7 +52,8 @@
     yarn run dev
     ```
 
-  - 使用`config/webpack.dev.js`中配置的`host`与`port`访问即可，如`http://localhost:8088`
+  - 使用 `config/local_config.yaml` 或 `config/config.yaml` 中配置
+  的 `host` 与 `port` 访问即可，如`http://localhost:8088`
   - 开发使用的前端实时更新环境搞定。
 
 # 生产环境使用的前端包

@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Add config/config.yaml to set the default configurations of host,
+    port and server. For the development, you can add config/local_config.yaml,
+    to set custom host, port, server, the config/local_config.yaml file is
+    gitignored.

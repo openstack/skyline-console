@@ -83,9 +83,9 @@ You can also use the following commands:
 
 -  ``yarn run mock``: Use the mock interface of
    `rap2 <http://rap2.taobao.org/>`__
--  ``yarn run dev``: To use the actual interface, please change the
-   "http://pre.xxx.com" in line 47 into the real address in file
-   ``webpack.dev.js``.
+-  ``yarn run dev``: To use the actual interface, you can copy
+   ``config/config.yaml`` to ``config/local_config.yaml`` , and
+   replace the ``server`` value with the correct address.
 -  ``yarn run build``: Build packages and then you can hand over the
    contents of the generated *dist* directory to the back end.
 

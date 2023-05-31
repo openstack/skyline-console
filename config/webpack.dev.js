@@ -23,7 +23,11 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 const common = require('./webpack.common');
 const theme = require('./theme');
 
+const server = require('./server.dev');
+
 const root = (path) => resolve(__dirname, `../${path}`);
+
+const { host, port, proxy } = server;
 
 module.exports = (env) => {
   const API = (env || {}).API || 'mock';
@@ -31,9 +35,8 @@ module.exports = (env) => {
   console.log('API %s', API);
 
   const devServer = {
-    host: '0.0.0.0',
-    // host: 'localhost',
-    port: 8088,
+    host,
+    port,
     contentBase: root('dist'),
     historyApiFallback: true,
     compress: true,
@@ -53,16 +56,7 @@ module.exports = (env) => {
   };
 
   if (API === 'mock' || API === 'dev') {
-    devServer.proxy = {
-      '/api': {
-        target: 'http://localhost',
-        changeOrigin: true,
-        secure: false,
-        headers: {
-          Connection: 'keep-alive',
-        },
-      },
-    };
+    devServer.proxy = proxy;
   }
 
   const { version, ...restConfig } = common;

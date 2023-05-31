@@ -8,40 +8,26 @@ Skyline Console Settings Reference
 
    -  Prepare an accessible backend, for example: ``https://172.20.154.250``
 
-   -  Modify the corresponding configuration in ``config/webpack.dev.js``:
+   -  Add file ``config/local_config.yaml``:
 
-   .. code:: javascript
+   .. code-block:: yaml
 
-    if (API === 'mock' || API === 'dev') {
-      devServer.proxy = {
-        '/api': {
-          target: 'https://172.20.154.250',
-          changeOrigin: true,
-          secure: false,
-        },
-      };
-    }
+    server: https://172.20.154.250
 
 -  Configure access host and port
 
-   -  Modify ``devServer.host`` and ``devServer.port``
+   -  The default configuration is in ``config/config.yaml``
+      -  ``host`` is ``0.0.0.0``
+      -  ``port`` is ``8088``
+      -  If the current configuration does not need to be changed,
+      the following steps do not need to be operated.
+   -  Added file ``config/local_config.yaml``
+   -  Add ``host`` and ``port`` configurations
 
-   -  Modify the corresponding configuration in ``config/webpack.dev.js``
+   .. code-block:: yaml
 
-   .. code:: javascript
-
-    const devServer = {
-      host: '0.0.0.0',
-      // host: 'localhost',
-      port: 8088,
-      contentBase: root('dist'),
-      historyApiFallback: true,
-      compress: true,
-      hot: true,
-      inline: true,
-      disableHostCheck: true,
-      // progress: true
-    };
+    host: localhost
+    port: 8080
 
 -  Execute in the project root directory, which is the same level as ``package.json``
 
@@ -49,6 +35,6 @@ Skyline Console Settings Reference
 
     yarn run dev
 
--  Use the ``host`` and ``port`` configured in ``config/webpack.dev.js`` to access, such as ``http://localhost:8088``
+   - Use the ``host`` and ``port`` configured in ``config/config.yaml`` or ``config/local_config.yaml`` to access, such as ``http://localhost:8088``.
 
 -  The front-end real-time update environment used for development is done.

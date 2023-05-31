@@ -101,6 +101,10 @@
 ├── Makefile
 ├── README.rst
 ├── config
+│   ├── config.yaml （开发时 host, port, server 的默认配置）
+│   ├── local_config.yaml （gitignore的文件，可配置实际开发时使用的 host/port/server，如实际使用的值与config.yaml中的默认值不一致，在该文件中修改即可）
+│   ├── server.dev.js （读取开发时使用的自定义配置信息）
+│   ├── utils.js
 │   ├── theme.js
 │   ├── webpack.common.js
 │   ├── webpack.dev.js  (开发时使用的webpack配置)
