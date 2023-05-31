@@ -92,6 +92,10 @@ export class HttpRequest {
     return config;
   }
 
+  handleResponse(response) {
+    return response;
+  }
+
   /**
    * @param instance instance of axios
    * @param url request url
@@ -109,6 +113,7 @@ export class HttpRequest {
     instance.interceptors.response.use(
       (response) => {
         // request is finished
+        this.handleResponse(response);
         const { data, status } = response;
         const disposition = response.headers['content-disposition'] || '';
         const contentType = response.headers['content-type'] || '';
