@@ -211,9 +211,12 @@ export class Projects extends Base {
         },
       },
       {
-        title: t('Affiliated Domain'),
+        title: t('Affiliated Domain ID/Name'),
         dataIndex: 'domainName',
         isHideable: true,
+        routeName: 'domainDetailAdmin',
+        isLink: true,
+        idKey: 'domain_id',
       },
       enabledColumn,
       {
