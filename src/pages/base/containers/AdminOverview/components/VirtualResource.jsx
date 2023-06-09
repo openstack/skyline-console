@@ -56,9 +56,9 @@ export class ResourceCircle extends Component {
     const used = overview[item.used];
     const percentNum = parseFloat(((used / resource) * 100).toFixed(2));
     const unUsed = parseFloat((resource - used).toFixed(2));
-    let circleColor = color.primaryColor;
+    let circleColor = color.infoColor;
     if (percentNum > 70) {
-      circleColor = color.warnDarkColor;
+      circleColor = color.warnColor;
     }
     if (percentNum > 90) {
       circleColor = color.dangerColor;
