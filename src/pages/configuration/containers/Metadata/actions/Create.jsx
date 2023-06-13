@@ -15,6 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import globalMetadataStore from 'stores/glance/metadata';
 import { ModalAction } from 'containers/Action';
+import { jsonValidator } from 'utils/validate';
 
 export class Create extends ModalAction {
   static id = 'create';
@@ -42,6 +43,7 @@ export class Create extends ModalAction {
         placeholder: t('Please input metadata'),
         required: true,
         rows: 6,
+        validator: jsonValidator,
       },
       {
         name: 'options',
@@ -63,6 +65,9 @@ export class Create extends ModalAction {
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log(e, metadata);
+    }
+    if (!body) {
+      body = {};
     }
     const { isPublic = false, isProtected = false } = options;
     body.protected = isProtected || false;
