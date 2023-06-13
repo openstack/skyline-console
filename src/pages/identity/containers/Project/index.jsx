@@ -271,6 +271,14 @@ export class Projects extends Base {
   }
 
   get searchFilters() {
+    const domainFilter = this.inDomainDetail
+      ? []
+      : [
+          {
+            label: t('Domain Name'),
+            name: 'domainName',
+          },
+        ];
     return [
       {
         label: t('Project Name'),
@@ -281,6 +289,7 @@ export class Projects extends Base {
         name: 'enabled',
         options: yesNoOptions,
       },
+      ...domainFilter,
       {
         label: t('Tags'),
         name: 'tags',

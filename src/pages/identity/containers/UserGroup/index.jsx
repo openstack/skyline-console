@@ -226,11 +226,20 @@ export class UserGroups extends Base {
   }
 
   get searchFilters() {
+    const domainFilter = this.inDomainDetail
+      ? []
+      : [
+          {
+            label: t('Domain Name'),
+            name: 'domainName',
+          },
+        ];
     return [
       {
         label: t('User Group Name'),
         name: 'name',
       },
+      ...domainFilter,
     ];
   }
 

@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Support domain name fuzzy search:
+
+    * Support domain name fuzzy search in the user list page.
+
+    * Support domain name fuzzy search in the user group list page.
+
+    * Support domain name fuzzy search in the project list page.

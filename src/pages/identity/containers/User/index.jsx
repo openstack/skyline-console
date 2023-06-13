@@ -167,6 +167,14 @@ export class User extends Base {
   }
 
   get searchFilters() {
+    const domainFilter = this.inDomainDetail
+      ? []
+      : [
+          {
+            label: t('Domain Name'),
+            name: 'domainName',
+          },
+        ];
     return [
       {
         label: t('User Name'),
@@ -181,6 +189,7 @@ export class User extends Base {
         name: 'enabled',
         options: yesNoOptions,
       },
+      ...domainFilter,
     ];
   }
 
