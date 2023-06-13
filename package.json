@@ -60,6 +60,7 @@
     "escape-html": "^1.0.3",
     "file-saver": "^2.0.2",
     "history": "4.7.2",
+    "html-entities": "^2.3.5",
     "intersection-observer": "^0.11.0",
     "intl-messageformat": "7.8.4",
     "invariant": "^2.2.4",

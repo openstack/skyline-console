@@ -27,6 +27,7 @@ import globalRootStore from 'stores/root';
 import { unescapeHtml } from 'utils/index';
 import { statusMap } from 'src/utils/code';
 import { isEmpty, isString } from 'lodash';
+import { decode } from 'html-entities';
 import styles from './index.less';
 
 const open = (args) => {
@@ -140,6 +141,8 @@ const errorWithDetail = (err, title) => {
       nTitle += statusMap[status];
     }
   } else {
+    const decodeErr =
+      err && isString(err) ? decode(err, { level: 'html5' }) : err;
     // prettier-ignore
     description = err
       ? <ModalButton
@@ -151,7 +154,7 @@ const errorWithDetail = (err, title) => {
         component={
           <CodeEditor
             className={styles['code-editor']}
-            value={err}
+            value={decodeErr}
             mode="json"
             options={{
               readOnly: true,
