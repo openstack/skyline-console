@@ -70,15 +70,17 @@ export class Edit extends ModalAction {
 
   onSubmit = (values) => {
     const { description, qos_policy_id } = values;
-    return globalFloatingIpsStore.edit(
-      { id: this.item.id },
-      {
-        description,
-        qos_policy_id: qos_policy_id.selectedRowKeys.length
+    const body = {
+      description,
+    };
+    if (this.qosEndpoint) {
+      body.qos_policy_id = qos_policy_id
+        ? qos_policy_id.selectedRowKeys.length
           ? qos_policy_id.selectedRowKeys[0]
-          : null,
-      }
-    );
+          : null
+        : null;
+    }
+    return globalFloatingIpsStore.edit({ id: this.item.id }, body);
   };
 
   get formItems() {
