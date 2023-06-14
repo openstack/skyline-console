@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Check the JWT expire by the `time_expired` in the cookie for each request.

@@ -37,6 +37,7 @@ Cypress.Commands.add(
   (visitUrl = '', switchToAdmin = false, isAdmin = false) => {
     cy.setLanguage();
     const switchProject = switchToAdmin;
+    cy.setCookie('time_expired', Cypress.config('timeExpired') || '');
     if (isAdmin) {
       if (Cypress.config('adminToken')) {
         cy.setCookie('session', Cypress.config('adminSession'));
@@ -74,12 +75,17 @@ Cypress.Commands.add(
       method: 'POST',
     }).then((res) => {
       const { body: resBody, headers } = res;
-      const [sk] = headers['set-cookie'];
+      const [sessionCookie, ...rest] = headers['set-cookie'];
+      const timeCookie = rest[rest.length - 1];
+      const getCookieValue = (sk) => sk.split(';')[0].split('=');
       // eslint-disable-next-line no-unused-vars
-      const [_, session] = sk.split(';')[0].split('=');
+      const session = getCookieValue(sessionCookie)[1];
+      const timeExpired = getCookieValue(timeCookie)[1] || '';
       const { keystone_token } = resBody || {};
       cy.setCookie('session', session);
       cy.setCookie('X-Auth-Token', keystone_token);
+      cy.setCookie('time_expired', timeExpired);
+      Cypress.config('timeExpired', timeExpired);
       if (isAdmin) {
         Cypress.config('adminToken', keystone_token);
         Cypress.config('adminSession', session);
@@ -103,8 +109,10 @@ Cypress.Commands.add(
 Cypress.Commands.add('clearToken', () => {
   cy.setCookie('session', '');
   cy.setCookie('X-Auth-Token', '');
+  cy.setCookie('time_expired', '');
   Cypress.config('token', null);
   Cypress.config('adminToken', null);
+  Cypress.config('timeExpired', null);
 });
 
 Cypress.Commands.add('loginAdmin', (visitUrl = '', switchToAdmin = false) => {
