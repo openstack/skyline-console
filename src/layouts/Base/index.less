@@ -19,7 +19,7 @@
 .header-collapsed {
   &:extend(.header);
 
-  padding-left: 40px;
+  padding-left: @sider-collapsed-width;
 }
 
 .logo {
@@ -258,7 +258,7 @@
 }
 
 .base-layout-sider-collapsed {
-  width: 40px;
+  width: @sider-collapsed-width;
   transition: all 0.2s;
 
   .menu-collapsed {
@@ -274,14 +274,14 @@
 
 .base-layout-right {
   position: absolute;
-  top: 40px;
+  top: @header-height;
   right: 0;
   left: 230px;
-  height: calc(100vh - 40px);
+  height: calc(100vh - @header-height);
 }
 
 .base-layout-right-collapsed {
-  left: 40px;
+  left: @sider-collapsed-width;
 }
 
 .base-layout-sider-hover {
