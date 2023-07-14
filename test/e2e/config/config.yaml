@@ -6,7 +6,6 @@ env:
   password: passW0rdY_
   usernameAdmin: e2e-admin
   passwordAdmin: passW0rdY_
-  userIsRegisted: true
   imageName: cirros
   imageType: Others
   imageFile: null
