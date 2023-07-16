@@ -578,7 +578,11 @@ class MagicInput extends PureComponent {
             />
             {this.renderMenu()}
           </Col>
-          <Col className={styles['search-icon']}>
+          <Col
+            className={`${styles['search-icon']} ${
+              isFocus ? styles['search-icon-hidden'] : ''
+            }`}
+          >
             <SearchOutlined />
           </Col>
           {this.renderClose()}
