@@ -441,8 +441,8 @@ class MagicInput extends PureComponent {
   };
 
   clearInputValue = () => {
-    this.inputRef.current.setState({
-      value: '',
+    this.setState({
+      inputValue: '',
     });
   };
 
@@ -547,7 +547,7 @@ class MagicInput extends PureComponent {
 
   render() {
     const { placeholder } = this.props;
-    const { isFocus } = this.state;
+    const { isFocus, inputValue } = this.state;
     return (
       <div
         className={classnames(
@@ -575,6 +575,7 @@ class MagicInput extends PureComponent {
               onFocus={this.handleFocus}
               onPressEnter={this.handleEnter}
               onKeyUp={this.handleKeyUp}
+              value={inputValue}
             />
             {this.renderMenu()}
           </Col>
