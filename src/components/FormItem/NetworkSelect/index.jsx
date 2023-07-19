@@ -299,8 +299,15 @@ export default class NetworkSelect extends React.Component {
     if (!item) {
       return null;
     }
+    const totalAllocationPools = [];
+    subnets.forEach((sub) => {
+      const { allocation_pools: pools = [] } = sub;
+      pools.forEach((pool) => {
+        totalAllocationPools.push(pool);
+      });
+    });
     const { allocation_pools: pools } = item;
-    const details = pools.map((pool, index) => (
+    const details = totalAllocationPools.map((pool, index) => (
       <span key={`pool.start.${index}`} style={{ marginRight: 10 }}>
         {pool.start}--{pool.end}
       </span>
@@ -332,7 +339,7 @@ export default class NetworkSelect extends React.Component {
     );
     return (
       <Col span={6}>
-        <Input defaultValue={ip} onChange={this.onIPChange} />
+        <Input value={ip} onChange={this.onIPChange} />
         <Tooltip title={tips} color="white">
           <QuestionCircleOutlined />
         </Tooltip>
