@@ -110,7 +110,7 @@ export class ManageUserGroup extends ModalAction {
     return groupProjectRole;
   };
 
-  static policy = 'identity:update_project';
+  static policy = ['identity:create_grant', 'identity:revoke_grant'];
 
   static allowed = () => Promise.resolve(true);
 

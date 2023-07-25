@@ -111,7 +111,7 @@ export class ManageUser extends ModalAction {
     return usersProjectRole;
   };
 
-  static policy = 'identity:update_project';
+  static policy = ['identity:create_grant', 'identity:revoke_grant'];
 
   static allowed = () => Promise.resolve(true);
 
