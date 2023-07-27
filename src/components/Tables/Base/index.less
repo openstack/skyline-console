@@ -69,11 +69,12 @@
 .table-header-btns {
   position: relative;
   display: inline-block;
-  margin-bottom: @body-padding;
+  margin-bottom: calc(@body-padding - 4px);
 
   :global {
     button {
       margin-right: 10px;
+      margin-bottom: 4px;
     }
 
     .ant-btn[disabled] {
