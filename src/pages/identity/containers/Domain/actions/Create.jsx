@@ -16,6 +16,7 @@ import { inject, observer } from 'mobx-react';
 import globalDomainStore from 'stores/keystone/domain';
 import { ModalAction } from 'containers/Action';
 import { statusTypes } from 'resources/keystone/domain';
+import { toJS } from 'mobx';
 
 export class Create extends ModalAction {
   init() {
@@ -43,6 +44,11 @@ export class Create extends ModalAction {
     return data;
   }
 
+  get currentList() {
+    const { list: { data = [] } = {} } = this.store;
+    return data;
+  }
+
   get formItems() {
     return [
       {
@@ -51,7 +57,8 @@ export class Create extends ModalAction {
         type: 'input',
         placeholder: t('Please input name'),
         required: true,
-        help: t('The name cannot be modified after creation'),
+        extra: t('The name cannot be modified after creation'),
+        validator: this.nameValidator,
       },
       // {
       //   name: 'domainManager',
@@ -80,6 +87,17 @@ export class Create extends ModalAction {
       },
     ];
   }
+
+  nameValidator = (rule, value) => {
+    const data = toJS(this.currentList);
+    if (data.find((d) => d.name === value)) {
+      return Promise.reject(
+        new Error(t('Invalid: Domain name cannot be duplicated'))
+      );
+    }
+
+    return Promise.resolve(true);
+  };
 
   onSubmit = (values) => {
     values.enabled = values.enabled.value;

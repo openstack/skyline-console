@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+import React from 'react';
 import { ConfirmAction } from 'containers/Action';
 import globalProjectStore from 'stores/keystone/project';
 
@@ -51,6 +51,25 @@ export default class DeleteAction extends ConfirmAction {
       action: this.actionName || this.title,
       name,
     });
+  };
+
+  confirmContext = (data) => {
+    const name = this.getName(data);
+    return (
+      <div>
+        <div>
+          {t('Are you sure to {action} (instance: {name})?', {
+            action: this.actionNameDisplay || this.title,
+            name,
+          })}
+        </div>
+        <div>
+          {t(
+            'Before deleting the project, it is recommended to clean up the resources under the project.'
+          )}
+        </div>
+      </div>
+    );
   };
 
   onSubmit = (data) => {

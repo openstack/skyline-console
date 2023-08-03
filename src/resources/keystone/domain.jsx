@@ -19,8 +19,9 @@ export const getDomainOptions = (self) => {
   const { domains } = globalDomainStore;
   const domainList = (domains || []).filter(
     (it) =>
-      baseDomains.indexOf(it.name) === -1 ||
-      it.id === (self.item || {}).domain_id
+      (baseDomains.indexOf(it.name) === -1 ||
+        it.id === (self.item || {}).domain_id) &&
+      !!it.enabled
   );
   return domainList.map((it) => ({
     label: it.name,

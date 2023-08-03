@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+import React from 'react';
 import { ConfirmAction } from 'containers/Action';
 import globalDomainStore from 'stores/keystone/domain';
 
@@ -39,6 +39,25 @@ export default class DeleteAction extends ConfirmAction {
   policy = 'identity:delete_domain';
 
   allowedCheckFunc = (data) => !data.enabled;
+
+  confirmContext = (data) => {
+    const name = this.getName(data);
+    return (
+      <div>
+        <div>
+          {t('Are you sure to {action} (instance: {name})?', {
+            action: this.actionNameDisplay || this.title,
+            name,
+          })}
+        </div>
+        <div>
+          {t(
+            'Please note that when deleting a domain, all projects, users, and user groups under the domain will be deleted directly!'
+          )}
+        </div>
+      </div>
+    );
+  };
 
   onSubmit = (data) => {
     const { id } = data;
