@@ -518,9 +518,9 @@ export class StepCreate extends StepAction {
     return null;
   }
 
-  renderFooterLeft() {
+  getCountInputConfig() {
     const { data } = this.state;
-    const { count = 1, source: { value: sourceValue } = {} } = data;
+    const { source: { value: sourceValue } = {} } = data;
     const configs = {
       min: 1,
       max:
@@ -533,17 +533,30 @@ export class StepCreate extends StepAction {
       onChange: this.onCountChange,
       formatter: (value) => `$ ${value}`.replace(/\D/g, ''),
     };
+    return configs;
+  }
+
+  renderCountInput() {
+    const { data } = this.state;
+    const { count = 1 } = data || {};
+    const configs = this.getCountInputConfig();
+    return (
+      <div className={styles['number-input']}>
+        <span>{t('Count')}</span>
+        <InputNumber
+          {...configs}
+          value={count}
+          className={classnames(styles.input, 'instance-count')}
+        />
+      </div>
+    );
+  }
+
+  renderFooterLeft() {
     return (
       <div style={{ display: 'flex' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div className={styles['number-input']}>
-            <span>{t('Count')}</span>
-            <InputNumber
-              {...configs}
-              value={count}
-              className={classnames(styles.input, 'instance-count')}
-            />
-          </div>
+          {this.renderCountInput()}
           {this.renderExtra()}
         </div>
         {this.renderBadge()}
