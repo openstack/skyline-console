@@ -90,14 +90,22 @@ const renderLabel = (option) => {
 const renderOptions = (options, data, loading, labelCol, contentCol) =>
   options
     .filter((option) => !option.hidden)
-    .map((option, index) => (
-      <Skeleton loading={loading} key={`detail-row-${index}`}>
-        <Row className={classnames(styles['card-item'], 'sl-card-item')}>
-          <Col span={labelCol}>{renderLabel(option)}</Col>
-          <Col span={contentCol}>{getContent(data, option)}</Col>
-        </Row>
-      </Skeleton>
-    ));
+    .map((option, index) => {
+      const currentLabelCol = has(option, 'labelCol')
+        ? option.labelCol
+        : labelCol;
+      const currentContentCol = has(option, 'contentCol')
+        ? option.contentCol
+        : contentCol;
+      return (
+        <Skeleton loading={loading} key={`detail-row-${index}`}>
+          <Row className={classnames(styles['card-item'], 'sl-card-item')}>
+            <Col span={currentLabelCol}>{renderLabel(option)}</Col>
+            <Col span={currentContentCol}>{getContent(data, option)}</Col>
+          </Row>
+        </Skeleton>
+      );
+    });
 
 const DetailCard = ({
   title,
@@ -145,6 +153,8 @@ const detailProps = PropTypes.shape({
   tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   dataIndex: PropTypes.string,
   valueRender: PropTypes.string,
+  labelCol: PropTypes.number,
+  contentCol: PropTypes.number,
 });
 
 DetailCard.defaultProps = {
