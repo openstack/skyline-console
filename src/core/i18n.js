@@ -45,6 +45,13 @@ const SUPPORT_LOCALES_ALL = [
     icon: 'ko',
     momentName: 'ko',
   },
+  {
+    name: 'Türkçe',
+    value: 'tr-tr',
+    shortname: 'tr',
+    icon: 'tr',
+    momentName: 'tr',
+  },
 ];
 
 const getDefaultLanguageInConfig = () => {
@@ -156,6 +163,63 @@ const init = () => {
         yy: '%d年',
         past: '%s前',
         future: '在%s后',
+      },
+    });
+  } else if (lang === 'tr-tr') {
+    moment.locale('tr', {
+      months: 'Ocak_Şubat_Mart_Nisan_Mayıs_Haziran_Temmuz_Ağustos_Eylül_Ekim_Kasım_Aralık'.split(
+        '_'
+      ),
+      monthsShort: 'Oca_Şub_Mar_Nis_May_Haz_Tem_Ağu_Eyl_Eki_Kas_Ara'.split('_'),
+      weekdays: 'Pazar_Pazartesi_Salı_Çarşamba_Perşembe_Cuma_Cumartesi'.split(
+        '_'
+      ),
+      weekdaysShort: 'Paz_Pzt_Sal_Çar_Per_Cum_Cmt'.split('_'),
+      weekdaysMin: 'Pz_Pt_Sa_Ça_Pe_Cu_Ct'.split('_'),
+      meridiem: function (hours, minutes, isLower) {
+        if (hours < 12) {
+          return isLower ? 'öö' : 'ÖÖ';
+        } else {
+          return isLower ? 'ös' : 'ÖS';
+        }
+      },
+      meridiemParse: /öö|ÖÖ|ös|ÖS/,
+      isPM: function (input) {
+        return input === 'ös' || input === 'ÖS';
+      },
+      longDateFormat: {
+        LT: 'HH:mm',
+        LTS: 'HH:mm:ss',
+        L: 'DD.MM.YYYY',
+        LL: 'D MMMM YYYY',
+        LLL: 'D MMMM YYYY HH:mm',
+        LLLL: 'dddd, D MMMM YYYY HH:mm',
+      },
+      calendar: {
+        sameDay: '[bugün saat] LT',
+        nextDay: '[yarın saat] LT',
+        nextWeek: '[gelecek] dddd [saat] LT',
+        lastDay: '[dün] LT',
+        lastWeek: '[geçen] dddd [saat] LT',
+        sameElse: 'L',
+      },
+      relativeTime: {
+        future: '%s sonra',
+        past: '%s önce',
+        s: '1 saniye',
+        ss: '%d saniye',
+        m: '1 dakika',
+        mm: '%d dakika',
+        h: '1 saat',
+        hh: '%d saat',
+        d: '1 gün',
+        dd: '%d gün',
+        w: '1 hafta',
+        ww: '%d hafta',
+        M: '1 ay',
+        MM: '%d ay',
+        y: '1 yıl',
+        yy: '%d yıl',
       },
     });
   }
