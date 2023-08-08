@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Support custom local language:
+
+    * The globalVariables in the config.yaml support default language and all support languages.
+
+    * Use globalVariables in the local_config.yaml to support custom local languages and custom support languages.
+
+    * If only one support language, the switch language icon will been auto hidden.

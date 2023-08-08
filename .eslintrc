@@ -139,6 +139,7 @@
     "globals": true,
     "request": true,
     "METRICDICT": true,
-    "globalCSS": true
+    "globalCSS": true,
+    "GLOBAL_VARIABLES": true
   }
 }

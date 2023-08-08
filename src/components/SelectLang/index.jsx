@@ -22,6 +22,10 @@ import styles from './index.less';
 const { getLocale, setLocale, SUPPORT_LOCALES } = i18n;
 
 const SelectLang = (props) => {
+  if (SUPPORT_LOCALES.length <= 1) {
+    return null;
+  }
+
   const { className } = props;
   const selectedLang = getLocale();
 

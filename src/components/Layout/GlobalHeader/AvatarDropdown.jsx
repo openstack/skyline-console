@@ -103,6 +103,21 @@ export class AvatarDropdown extends React.Component {
     return <span style={{ float: 'right' }}>{btns}</span>;
   }
 
+  renderLanguageMenuItem() {
+    if (SUPPORT_LOCALES.length <= 1) {
+      return null;
+    }
+    return (
+      <Menu.Item
+        key="language"
+        className={`${styles['no-hover']} ${styles['menu-item']}`}
+      >
+        <span>{t('Switch Language')}</span>
+        {this.renderLanguageSwitch()}
+      </Menu.Item>
+    );
+  }
+
   render() {
     if (!this.user) {
       return (
@@ -136,13 +151,7 @@ export class AvatarDropdown extends React.Component {
           </Button>
         </Menu.Item>
         <Menu.Divider />
-        <Menu.Item
-          key="language"
-          className={`${styles['no-hover']} ${styles['menu-item']}`}
-        >
-          <span>{t('Switch Language')}</span>
-          {this.renderLanguageSwitch()}
-        </Menu.Item>
+        {this.renderLanguageMenuItem()}
         <Menu.Item key="password" className={styles['menu-item']}>
           <ItemActionButtons
             actions={{ moreActions: [{ action: Password }] }}

@@ -14,34 +14,68 @@
 
 import moment from 'moment';
 import 'moment/locale/zh-cn';
-import _ from 'lodash';
+import _, { isArray } from 'lodash';
 import cookie from 'utils/cookie';
 import SLI18n from 'utils/translate';
 import { setLocalStorageItem } from 'utils/local-storage';
+
 import locales from '../locales';
 
 // shortName: the i18n name in the api
 // icon: the icon of switch language in ui
-const SUPPORT_LOCALES = [
+const SUPPORT_LOCALES_ALL = [
   {
     name: 'English',
     value: 'en',
     shortName: 'en',
     icon: 'en',
+    momentName: 'en',
   },
   {
     name: '简体中文',
     value: 'zh-hans',
     shortName: 'zh',
     icon: 'zh',
+    momentName: 'zhCN',
   },
   {
     name: '한글',
     value: 'ko-kr',
     shortName: 'ko',
     icon: 'ko',
+    momentName: 'ko',
   },
 ];
+
+const getDefaultLanguageInConfig = () => {
+  const { defaultLanguage } = GLOBAL_VARIABLES;
+  const defaultLang = defaultLanguage || 'en';
+  const inSupport = SUPPORT_LOCALES_ALL.find((it) => it.value === defaultLang);
+  return inSupport ? defaultLang : 'en';
+};
+
+const getSupportLanguagesInConfig = () => {
+  const { supportLanguages } = GLOBAL_VARIABLES;
+  const defaultLang = getDefaultLanguageInConfig();
+  const defaultSupportLanguages = [defaultLang];
+  if (!supportLanguages || !isArray(supportLanguages)) {
+    return defaultSupportLanguages;
+  }
+  if (!supportLanguages.includes(defaultLang)) {
+    return [...supportLanguages, defaultLang];
+  }
+  return supportLanguages;
+};
+
+const SUPPORT_LOCALES = SUPPORT_LOCALES_ALL.filter((it) => {
+  const supportLanguages = getSupportLanguagesInConfig();
+  return supportLanguages.includes(it.value);
+});
+
+const getMomentName = (locale) => {
+  const item = SUPPORT_LOCALES_ALL.find((it) => it.value === locale);
+  return (item || {}).momentName || 'en';
+};
 
 const intl = new SLI18n();
 
@@ -63,9 +97,11 @@ const getLocale = () => {
     localStorageLocaleKey: 'lang',
   });
 
-  // If not found, the default is English
+  const { defaultLanguage } = GLOBAL_VARIABLES;
+
+  // If not found, the default language is set in config.yaml
   if (!_.find(SUPPORT_LOCALES, { value: currentLocale })) {
-    currentLocale = 'en';
+    currentLocale = defaultLanguage;
   }
 
   if (!currentLocals) {
@@ -93,7 +129,7 @@ const loadLocales = () => {
 const setLocale = (lang) => {
   setLocaleToStorage(lang);
   cookie('lang', lang);
-  moment.locale(lang);
+  moment.locale(getMomentName(lang));
   window.location.reload();
   return lang;
 };
@@ -104,7 +140,7 @@ const init = () => {
   const lang = getLocale();
 
   if (lang === 'zh-hans') {
-    moment.locale('zh', {
+    moment.locale('zh-cn', {
       relativeTime: {
         s: '1秒',
         ss: '%d秒',
@@ -140,6 +176,7 @@ const t = (key, options) => intl.get(key, options);
 t.html = (key, options) => intl.getHTML(key, options);
 
 loadLocales();
+init();
 window.t = t;
 
 export default {

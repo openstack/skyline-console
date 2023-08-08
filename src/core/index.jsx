@@ -17,12 +17,13 @@ import ReactDOM from 'react-dom';
 import { createBrowserHistory } from 'history';
 import { syncHistoryWithStore } from 'mobx-react-router';
 import { ConfigProvider } from 'antd';
-import zhCN from 'antd/es/locale/zh_CN';
-import enUS from 'antd/es/locale/en_US';
 import globalRootStore from 'stores/root';
 import PageLoading from 'components/PageLoading';
 import metricDict from 'resources/prometheus/metricDict';
 import variables from 'styles/variables.less';
+import zhCN from 'antd/es/locale/zh_CN';
+import enUS from 'antd/es/locale/en_US';
+import koKR from 'antd/es/locale/ko_KR';
 import i18n from './i18n';
 import App from './App';
 
@@ -33,8 +34,19 @@ window.globalCSS = variables;
 const store = globalRootStore;
 const browserHistory = createBrowserHistory();
 const history = syncHistoryWithStore(browserHistory, store.routing);
-const lang = i18n.getLocale();
-const localeProvider = lang === 'en' ? enUS : zhCN;
+
+const antdLanguageMap = {
+  en: enUS,
+  'zh-hans': zhCN,
+  'ko-kr': koKR,
+};
+
+const getAntdLocale = (locale) => {
+  const lang = locale || i18n.getLocale();
+  return antdLanguageMap[lang] || enUS;
+};
+
+const localeProvider = getAntdLocale(i18n.getLocale());
 
 const render = (component) => {
   ReactDOM.render(

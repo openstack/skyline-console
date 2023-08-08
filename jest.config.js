@@ -32,4 +32,10 @@ module.exports = {
   moduleDirectories: ['node_modules', 'src'],
   testPathIgnorePatterns: ['node_modules', '.cache', 'test/e2e', 'config'],
   setupFiles: ['<rootDir>/test/unit/setup-tests.js'],
+  globals: {
+    GLOBAL_VARIABLES: {
+      defaultLanguage: 'en',
+      supportLanguages: ['en', 'zh-hans'],
+    },
+  },
 };

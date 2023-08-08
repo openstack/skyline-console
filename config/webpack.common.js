@@ -17,6 +17,7 @@ const { normalize, resolve } = require('path');
 // const path = require("path");
 // const CleanWebpackPlugin = require('clean-webpack-plugin');
 const moment = require('moment');
+const { getGlobalVariables } = require('./utils');
 
 const root = (path) => resolve(__dirname, `../${path}`);
 const version = moment().unix();
@@ -109,7 +110,12 @@ module.exports = {
       client: root('src/client'),
     },
   },
-  plugins: [new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)],
+  plugins: [
+    new webpack.DefinePlugin({
+      GLOBAL_VARIABLES: getGlobalVariables(),
+    }),
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+  ],
 };
 
 module.exports.version = version;
