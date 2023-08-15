@@ -14,7 +14,7 @@ import BaseContentContext from 'components/PrometheusChart/component/context';
 
 const { TabPane } = Tabs;
 
-const RenderTabs = () => {
+const RenderTabs = ({ fetchPrometheusFunc }) => {
   const [filters, setFilters] = useState({});
   const [initData, setInitData] = useState([]);
   const [listData, setListData] = useState([]);
@@ -22,10 +22,13 @@ const RenderTabs = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const ctx = useContext(BaseContentContext);
-  const fetchData = createFetchPrometheusClient({
-    requestType: 'current',
-    metricKey: 'storageCluster.tabs',
-  });
+  const fetchData = createFetchPrometheusClient(
+    {
+      requestType: 'current',
+      metricKey: 'storageCluster.tabs',
+    },
+    fetchPrometheusFunc
+  );
 
   const dataHandler = createDataHandler({
     modifyKeys: ['pools', 'osds'],
@@ -63,10 +66,10 @@ const RenderTabs = () => {
   async function handleInitData(data) {
     const newData = [...data];
     const poolPromises = get(METRICDICT, 'storageCluster.poolTab.url', []).map(
-      (item) => fetchPrometheus(item, 'current')
+      (item) => (fetchPrometheusFunc || fetchPrometheus)(item, 'current')
     );
     const osdPromises = get(METRICDICT, 'storageCluster.osdTab.url', []).map(
-      (item) => fetchPrometheus(item, 'current')
+      (item) => (fetchPrometheusFunc || fetchPrometheus)(item, 'current')
     );
 
     function handler(ret, index, primaryKey) {
