@@ -122,9 +122,9 @@ export default class SoftDelete extends ConfirmAction {
     );
   }
 
-  get snapshotTip() {
+  get backupTip() {
     return t(
-      'If you still want to keep the disk data, it is recommended that you create a snapshot for the disk before deleting.'
+      'If you still want to keep the disk data, it is recommended that you create a backup for the disk before deleting.'
     );
   }
 
@@ -140,7 +140,7 @@ export default class SoftDelete extends ConfirmAction {
             'The associated floating IP, virtual adapter, volume and other resources will be automatically disassociated.'
           )}
         </p>
-        <p className={styles['tip-content']}>{this.snapshotTip}</p>
+        <p className={styles['tip-content']}>{this.backupTip}</p>
       </div>
     );
     return (
