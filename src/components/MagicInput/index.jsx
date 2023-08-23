@@ -223,6 +223,7 @@ class MagicInput extends PureComponent {
       value = key === 'false' ? false : key;
     }
     this.updateInput(value);
+    this.onFocusChange(false);
   };
 
   handleSelectFilter = ({ key }) => {
