@@ -19,6 +19,7 @@ export async function checkAllowed({
   policy,
   aliasPolicy,
   allowed,
+  allowedExtra,
   containerProps,
   actionName,
   extra,
@@ -38,6 +39,16 @@ export async function checkAllowed({
     return false;
   }
   let result = false;
+  let allowedExtraResult = true;
+  if (allowedExtra) {
+    allowedExtraResult = allowedExtra({ item, containerProps, extra, action });
+    if (allowedExtraResult instanceof Promise) {
+      allowedExtraResult = await allowedExtraResult;
+    }
+  }
+  if (!allowedExtraResult) {
+    return false;
+  }
   if (allowed) {
     result = allowed(item, containerProps, extra);
     if (result instanceof Promise) {
@@ -61,6 +72,7 @@ export async function getAllowedResults({
       policy: key ? it[key].policy : it.policy,
       aliasPolicy: key ? it[key].aliasPolicy : it.aliasPolicy,
       allowed: key ? it[key].allowed : it.allowed,
+      allowedExtra: key ? it[key].allowedExtra : it.allowedExtra,
       containerProps,
       actionName: key ? it[key].title : it.title,
       extra,
