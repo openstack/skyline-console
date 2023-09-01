@@ -346,7 +346,11 @@ class MagicInput extends PureComponent {
       <Menu.Item key={it.name}>{it.label}</Menu.Item>
     ));
     return (
-      <Menu className={styles.menu} onClick={this.handleSelectFilter}>
+      <Menu
+        className={styles.menu}
+        onClick={this.handleSelectFilter}
+        id="search-items-menu"
+      >
         {this.renderOptionsClose(filters)}
         {menuItems}
       </Menu>
