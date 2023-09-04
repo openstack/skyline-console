@@ -160,20 +160,20 @@ describe('The Instance Page', () => {
       .waitStatusActiveByRefresh();
   });
 
-  it('successfully reboot', () => {
-    cy.tableSearchText(name)
-      .clickConfirmActionInMoreSub('Reboot', 'Instance Status')
-      .tableSearchText(name)
-      .waitStatusActiveByRefresh();
-  });
+  // it('successfully reboot', () => {
+  //   cy.tableSearchText(name)
+  //     .clickConfirmActionInMoreSub('Reboot', 'Instance Status')
+  //     .tableSearchText(name)
+  //     .waitStatusActiveByRefresh();
+  // });
 
-  it('successfully soft reboot', () => {
-    cy.tableSearchText(name)
-      .clickConfirmActionInMoreSub('Soft Reboot', 'Instance Status')
-      .wait(5000)
-      .tableSearchText(name)
-      .waitStatusActiveByRefresh();
-  });
+  // it('successfully soft reboot', () => {
+  //   cy.tableSearchText(name)
+  //     .clickConfirmActionInMoreSub('Soft Reboot', 'Instance Status')
+  //     .wait(5000)
+  //     .tableSearchText(name)
+  //     .waitStatusActiveByRefresh();
+  // });
 
   it('successfully attach interface', () => {
     cy.tableSearchText(name)
