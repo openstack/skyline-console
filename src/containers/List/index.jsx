@@ -279,12 +279,18 @@ export default class BaseList extends React.Component {
 
   get tableTopHeight() {
     const tableSearchHeader = document.getElementById('sl-table-header-search');
+    const tableSearchInputItemMenu =
+      document.getElementById('search-items-menu');
     const tableSearchHeight = tableSearchHeader
       ? tableSearchHeader.scrollHeight
       : defaultTableSearchHeight;
-    const topTotal = navHeight + breadcrumbHeight + tableSearchHeight + padding;
+    const searchMenuHeight = tableSearchInputItemMenu?.scrollHeight || 0;
+    const searchHeight = searchMenuHeight
+      ? tableSearchHeight - searchMenuHeight + 10
+      : tableSearchHeight;
+    const topTotal = navHeight + breadcrumbHeight + searchHeight + padding;
     if (this.hasSubTab) {
-      return topTotal + tabHeight * 2;
+      return topTotal + tabHeight * 2 + 20;
     }
     if (this.hasTab) {
       return topTotal + tabHeight;
