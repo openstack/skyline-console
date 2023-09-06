@@ -34,6 +34,8 @@ const normalProps = {
   cancelText: PropTypes.string,
   okText: PropTypes.string,
   className: PropTypes.string,
+  okButtonProps: PropTypes.any,
+  cancelButtonProps: PropTypes.any,
 };
 
 const confirm = (props) => {
@@ -46,6 +48,8 @@ const confirm = (props) => {
     okText = t('Confirm'),
     cancelText = t('Cancel'),
     className,
+    okButtonProps = {},
+    cancelButtonProps = {},
   } = props;
   Modal.confirm({
     title,
@@ -54,6 +58,8 @@ const confirm = (props) => {
     content: unescapeHtml(content),
     okText,
     cancelText,
+    okButtonProps: okButtonProps || {},
+    cancelButtonProps: cancelButtonProps || {},
     onOk() {
       return onOk && onOk();
     },
