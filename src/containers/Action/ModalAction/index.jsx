@@ -158,6 +158,11 @@ export default class ModalAction extends BaseForm {
     return (this.item || {}).id;
   }
 
+  get actionId() {
+    const { action } = this.props;
+    return action?.id;
+  }
+
   get items() {
     const { items } = this.props;
     return items;

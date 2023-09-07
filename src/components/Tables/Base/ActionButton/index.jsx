@@ -537,6 +537,7 @@ export class ActionButton extends Component {
           onFinishAction={onFinishAction}
           onCancelAction={onCancelAction}
           modalProps={modalProps}
+          action={action}
         />
       </Modal>
     );
