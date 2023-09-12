@@ -399,8 +399,6 @@ export class BaseDetail extends Base {
         </div>
       );
     });
-    const { isAdminPage } = this.props;
-    const containerProps = { isAdminPage };
     return (
       <Row className={styles['vm-volume']}>
         <div className={styles['volume-inline']} />
@@ -413,7 +411,7 @@ export class BaseDetail extends Base {
               actions={this.volumeActions}
               onFinishAction={this.handleRefreshVolume}
               item={this.detailData}
-              containerProps={containerProps}
+              containerProps={this.props}
               firstActionClassName={styles['attach-btn']}
             />
           </div>

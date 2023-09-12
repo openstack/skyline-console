@@ -90,6 +90,7 @@ export class SecurityGroup extends React.Component {
                 actions={{ firstAction: Detach }}
                 onFinishAction={this.refreshSecurityGroup}
                 item={item}
+                containerProps={this.props}
               >
                 {t('Detach')}
               </ItemActionButtons>

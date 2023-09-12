@@ -123,6 +123,7 @@ export class SecurityGroup extends React.Component {
                 actions={{ firstAction: Detach }}
                 onFinishAction={this.actionCallback}
                 item={newItem}
+                containerProps={this.props}
               >
                 {t('Detach')}
               </ItemActionButtons>
@@ -229,6 +230,7 @@ export class SecurityGroup extends React.Component {
                 port: activeInterfaceId,
                 portItem: activeInterface,
                 filterData,
+                ...this.props,
               }}
             >
               {t('Attach Security Group')}
