@@ -28,6 +28,7 @@ import manila from './manila';
 import barbican from './barbican';
 import zun from './zun';
 import magnum from './magnum';
+import masakari from './masakari';
 
 const client = {
   skyline,
@@ -46,6 +47,7 @@ const client = {
   barbican,
   zun,
   magnum,
+  masakari,
 };
 
 window.client = client;
