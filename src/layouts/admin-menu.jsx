@@ -24,6 +24,7 @@ import {
   SwitcherOutlined,
   ContainerOutlined,
   DatabaseFilled,
+  DeploymentUnitOutlined,
 } from '@ant-design/icons';
 
 const renderMenu = (t) => {
@@ -950,6 +951,66 @@ const renderMenu = (t) => {
         },
       ],
     },
+    {
+      path: '/ha',
+      name: t('Instance-HA'),
+      key: 'masakari',
+      icon: <DeploymentUnitOutlined />,
+      // endpoints: 'masakari',
+      children: [
+        {
+          path: '/ha/segments-admin',
+          name: t('Segments'),
+          key: 'masakariSegmentsAdmin',
+          level: 1,
+          children: [
+            {
+              path: '/ha/segments-admin/create-step-admin',
+              name: t('Create Segment'),
+              key: 'masakariSegmentsCreateAdmin',
+              level: 2,
+            },
+            {
+              path: /^\/ha\/segments-admin\/detail\/.[^/]+$/,
+              name: t('Segment Detail'),
+              key: 'masakariSegmentDetailAdmin',
+              level: 2,
+              routePath: '/ha/segments-admin/detail/:id',
+            },
+          ]
+        },
+        {
+          path: '/ha/hosts-admin',
+          name: t('Hosts'),
+          key: 'masakariHostsAdmin',
+          level: 1,
+          children: [
+            {
+              path: /^\/ha\/hosts-admin\/detail\/.[^/]+$/,
+              name: t('Host Detail'),
+              key: 'masakariHostDetailAdmin',
+              level: 2,
+              routePath: '/ha/hosts-admin/detail/:id',
+            },
+          ]
+        },
+        {
+          path: '/ha/notifications-admin',
+          name: t('Notifications'),
+          key: 'masakariNotificationsAdmin',
+          level: 1,
+          children: [
+            {
+              path: /^\/ha\/notifications-admin\/detail\/.[^/]+$/,
+              name: t('Notification Detail'),
+              key: 'masakariNotificationDetailAdmin',
+              level: 2,
+              routePath: '/ha/notifications-admin/detail/:id',
+            },
+          ]
+        }
+      ]
+    }
   ];
   return menu;
 };
