@@ -251,6 +251,10 @@ export class Instance extends Base {
         label: t('Name'),
         name: 'name',
       },
+      {
+        label: t('Fixed IP'),
+        name: 'ip',
+      },
       ...(this.isAdminPage
         ? [
             {
