@@ -175,9 +175,12 @@ export class CreateNetwork extends ModalAction {
     const networkCommonData = {
       name,
       description,
-      availability_zone_hints: [availableZone],
       port_security_enabled,
     };
+
+    if (availableZone) {
+      networkCommonData.availability_zone_hints = [availableZone];
+    }
 
     if (mtu) {
       networkCommonData.mtu = mtu;
@@ -374,7 +377,6 @@ export class CreateNetwork extends ModalAction {
         label: t('Available Zone'),
         type: 'select',
         placeholder: t('Please select'),
-        required: true,
         options: this.availableZones,
       },
       {
