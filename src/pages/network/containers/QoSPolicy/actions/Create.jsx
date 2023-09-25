@@ -16,6 +16,9 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalProjectStore from 'stores/keystone/project';
 import { QoSPolicyStore } from 'stores/neutron/qos-policy';
+import { projectTableOptions } from 'resources/keystone/project';
+import { isAdminPage } from 'utils';
+import { toJS } from 'mobx';
 
 export class Create extends ModalAction {
   static id = 'create_qos_policy';
@@ -26,6 +29,15 @@ export class Create extends ModalAction {
     return t('Create QoS Policy');
   }
 
+  static get modalSize() {
+    const { pathname } = window.location;
+    return isAdminPage(pathname) ? 'large' : 'small';
+  }
+
+  getModalSize() {
+    return this.isAdminPage ? 'large' : 'small';
+  }
+
   static policy = 'create_policy';
 
   static aliasPolicy = 'neutron:create_policy';
@@ -34,13 +46,28 @@ export class Create extends ModalAction {
 
   init() {
     this.store = new QoSPolicyStore();
-    this.isAdminPage && globalProjectStore.fetchList();
+    this.projectStore = globalProjectStore;
+    this.isAdminPage && this.fetchProjectList();
+  }
+
+  async fetchProjectList() {
+    await this.projectStore.fetchProjectsWithDomain();
+    this.updateDefaultValue();
+  }
+
+  get projects() {
+    return toJS(this.projectStore.list.data) || [];
   }
 
   get defaultValue() {
-    return {
-      project_id: this.props.rootStore.user.project.id,
-    };
+    if (this.isAdminPage) {
+      return {
+        project_id: {
+          selectedRowKeys: [this.props.rootStore.user.project.id],
+        },
+      };
+    }
+    return {};
   }
 
   onSubmit = (values) => {
@@ -50,16 +77,13 @@ export class Create extends ModalAction {
       description,
       shared,
       is_default,
-      project_id,
+      project_id: project_id
+        ? project_id.selectedRowKeys[0]
+        : this.props.rootStore.user.project.id,
     });
   };
 
   get formItems() {
-    const projects = globalProjectStore.list.data.map((item) => ({
-      label: item.name,
-      value: item.id,
-    }));
-
     return [
       {
         name: 'name',
@@ -71,11 +95,12 @@ export class Create extends ModalAction {
       {
         name: 'project_id',
         label: t('Project'),
-        type: 'select',
-        showSearch: true,
-        required: true,
-        options: projects,
+        type: 'select-table',
+        required: this.isAdminPage,
+        isLoading: globalProjectStore.list.isLoading,
+        data: this.projects,
         hidden: !this.isAdminPage,
+        ...projectTableOptions,
       },
       {
         name: 'description',

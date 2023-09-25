@@ -285,6 +285,10 @@ export class Projects extends Base {
         name: 'name',
       },
       {
+        label: t('Project ID'),
+        name: 'id',
+      },
+      {
         label: t('Enabled'),
         name: 'enabled',
         options: yesNoOptions,

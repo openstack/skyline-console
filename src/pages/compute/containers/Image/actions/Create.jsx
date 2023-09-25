@@ -31,7 +31,7 @@ export class CreateForm extends FormAction {
   init() {
     this.store = globalImageStore;
     this.projectStore = new ProjectStore();
-    this.getProjects();
+    this.isAdminPage && this.getProjects();
   }
 
   static id = 'image-create';
@@ -72,10 +72,9 @@ export class CreateForm extends FormAction {
     return Promise.resolve(true);
   }
 
-  getProjects() {
-    if (this.isAdminPage) {
-      this.projectStore.fetchList();
-    }
+  async getProjects() {
+    await this.projectStore.fetchProjectsWithDomain();
+    this.updateDefaultValue();
   }
 
   get projects() {

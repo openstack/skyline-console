@@ -1,5 +1,6 @@
 import React from 'react';
 import { Badge } from 'antd';
+import { getIdRender } from 'utils/table';
 import globalDomainStore from 'stores/keystone/domain';
 import globalRootStore from 'src/stores/root';
 
@@ -73,15 +74,35 @@ export const enabledColumn = {
 export const nameDomainColumns = [
   {
     dataIndex: 'name',
-    title: t('Name'),
+    title: t('Project ID/Name'),
+    render: (value, record) => {
+      return (
+        <>
+          <div>{getIdRender(record.id, true, false)}</div>
+          <div>{value}</div>
+        </>
+      );
+    },
   },
   {
     dataIndex: 'domainName',
-    title: t('Domain'),
+    title: t('Domain ID/Name'),
+    render: (value, record) => {
+      return (
+        <>
+          <div>{getIdRender(record.domain_id, true, false)}</div>
+          <div>{value}</div>
+        </>
+      );
+    },
   },
 ];
 
 export const transferFilterOption = (inputValue, record) => {
-  const { domainName, name } = record;
-  return name.includes(inputValue) || domainName.includes(inputValue);
+  const { domainName, name, id } = record;
+  return (
+    id.includes(inputValue) ||
+    name.includes(inputValue) ||
+    domainName.includes(inputValue)
+  );
 };

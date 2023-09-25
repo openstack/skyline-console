@@ -153,7 +153,7 @@ Cypress.Commands.add('setLanguageByPage', () => {
     .find('.ant-col')
     .last()
     .find('button')
-    .trigger('mouseover');
+    .trigger('mouseover', { force: true });
   cy.get('.ant-dropdown-menu-light')
     .find('li')
     .eq(2)

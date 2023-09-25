@@ -218,6 +218,24 @@ export class ProjectStore extends Base {
     );
   }
 
+  async fetchProjectsWithDomain() {
+    this.list.isLoading = true;
+    const [{ projects = [] }, { domains = [] }] = await Promise.all([
+      this.client.list(),
+      this.domainClient.list(),
+    ]);
+    const newProjects = projects.map((pro) => {
+      const domain = domains.find((it) => it.id === pro.domain_id);
+      pro.domainName = domain?.name;
+      return pro;
+    });
+    this.list.update({
+      data: newProjects,
+      total: newProjects.length || 0,
+      isLoading: false,
+    });
+  }
+
   get enableCinder() {
     return globalRootStore.checkEndpoint('cinder');
   }

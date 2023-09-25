@@ -56,7 +56,7 @@ export class ManageAccess extends ModalAction {
   }
 
   async getProjects() {
-    await this.projectStore.fetchList();
+    await this.projectStore.fetchProjectsWithDomain();
     this.updateDefaultValue();
   }
 

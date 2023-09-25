@@ -50,6 +50,7 @@ describe('The Project Page', () => {
   it('successfully edit quota', () => {
     cy.tableSearchText(name)
       .clickActionInMore('Edit Quota')
+      .wait(5000)
       .formInput('instances', 11)
       .formButtonClick('more')
       .wait(2000)
