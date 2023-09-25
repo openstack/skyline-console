@@ -22,6 +22,9 @@ import Notify from 'components/Notify';
 import { checkSystemAdmin } from 'resources/skyline/policy';
 import globalNeutronStore from 'stores/neutron/neutron';
 import { subnetIpv6Tip } from 'resources/neutron/network';
+import { projectTableOptions } from 'resources/keystone/project';
+import { isAdminPage } from 'utils';
+import { toJS } from 'mobx';
 import networkUtil from './networkUtil';
 
 const {
@@ -59,6 +62,15 @@ export class CreateNetwork extends ModalAction {
     return t('create network');
   }
 
+  static get modalSize() {
+    const { pathname } = window.location;
+    return isAdminPage(pathname) ? 'large' : 'small';
+  }
+
+  getModalSize() {
+    return this.isAdminPage ? 'large' : 'small';
+  }
+
   init() {
     globalNetworkStore.updateCreateWithSubnet(false);
     this.state.networkQuota = {};
@@ -68,7 +80,7 @@ export class CreateNetwork extends ModalAction {
     this.state.projectId = this.currentProjectId;
     this.projectStore = globalProjectStore;
     globalNeutronStore.fetchAvailableZones();
-    this.isAdminPage && globalProjectStore.fetchList();
+    this.isAdminPage && this.fetchProjectList();
     this.getQuota();
   }
 
@@ -87,6 +99,15 @@ export class CreateNetwork extends ModalAction {
 
   static get showQuota() {
     return true;
+  }
+
+  async fetchProjectList() {
+    await this.projectStore.fetchProjectsWithDomain();
+    this.updateDefaultValue();
+  }
+
+  get projects() {
+    return toJS(this.projectStore.list.data) || [];
   }
 
   get showQuota() {
@@ -136,8 +157,7 @@ export class CreateNetwork extends ModalAction {
   }
 
   get defaultValue() {
-    return {
-      project_id: this.currentProjectId,
+    const values = {
       enable_dhcp: true,
       provider_network_type: 'vxlan',
       ip_version: 'ipv4',
@@ -147,6 +167,12 @@ export class CreateNetwork extends ModalAction {
       ipv6_ra_mode: 'slaac',
       ipv6_address_mode: 'slaac',
     };
+    if (this.isAdminPage) {
+      values.project_id = {
+        selectedRowKeys: [this.currentProjectId],
+      };
+    }
+    return values;
   }
 
   onSubmit = (values) => {
@@ -188,7 +214,9 @@ export class CreateNetwork extends ModalAction {
 
     const networkAdminPageData = {
       'router:external': external_network,
-      project_id,
+      project_id: project_id
+        ? project_id.selectedRowKeys[0]
+        : this.currentProjectId,
       'provider:network_type': provider_network_type,
       'provider:physical_network': provider_physical_network,
       'provider:segmentation_id': provider_segmentation_id,
@@ -314,9 +342,10 @@ export class CreateNetwork extends ModalAction {
   };
 
   onProjectChange = (value) => {
+    const { selectedRowKeys } = value;
     this.setState(
       {
-        projectId: value,
+        projectId: selectedRowKeys[0],
       },
       () => {
         this.getQuota();
@@ -339,10 +368,6 @@ export class CreateNetwork extends ModalAction {
       ip_version = 'ipv4',
       disable_gateway = false,
     } = this.state;
-    const projectOptions = globalProjectStore.list.data.map((project) => ({
-      label: project.name,
-      value: project.id,
-    }));
 
     const hiddenPhysicalNetwork =
       this.isAdminPage &&
@@ -426,13 +451,13 @@ export class CreateNetwork extends ModalAction {
       {
         name: 'project_id',
         label: t('Project'),
-        type: 'select',
-        showSearch: true,
+        type: 'select-table',
         hidden: !this.isAdminPage,
         required: this.isAdminPage,
-        options: projectOptions,
+        isLoading: this.projectStore.list.isLoading,
+        data: this.projects,
         onChange: this.onProjectChange,
-        allowClear: false,
+        ...projectTableOptions,
       },
       {
         name: 'provider_network_type',

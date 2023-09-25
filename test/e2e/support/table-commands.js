@@ -56,7 +56,7 @@ Cypress.Commands.add(
     cy.get('.table-header-btns')
       .find('.ant-dropdown-trigger')
       .contains(moreTitle)
-      .trigger('mouseover');
+      .trigger('mouseover', { force: true });
     cy.get('ul.ant-dropdown-menu-light')
       .last()
       .find('button')
@@ -95,7 +95,7 @@ Cypress.Commands.add('clickMoreActionButton', (buttonIndex) => {
   cy.get('.ant-table-row')
     .first()
     .find('.ant-dropdown-trigger')
-    .trigger('mouseover');
+    .trigger('mouseover', { force: true });
   cy.get('ul.ant-dropdown-menu-light')
     .find('li')
     .eq(buttonIndex)
@@ -106,7 +106,7 @@ Cypress.Commands.add('clickActionInMore', (title, waitTime = 2000) => {
   cy.get('.ant-table-row')
     .first()
     .find('.ant-dropdown-trigger')
-    .trigger('mouseover');
+    .trigger('mouseover', { force: true });
   const realTitle = getTitle(title);
   cy.get('ul.ant-dropdown-menu-light')
     .contains(realTitle)
@@ -118,12 +118,12 @@ Cypress.Commands.add('clickActionInMoreSub', (title, subMenu) => {
   cy.get('.ant-table-row')
     .first()
     .find('.ant-dropdown-trigger')
-    .trigger('mouseover');
+    .trigger('mouseover', { force: true });
   const realTitle = getTitle(title);
   const realMenu = getTitle(subMenu);
   cy.get('.ant-dropdown-menu-submenu-title')
     .contains(realMenu)
-    .trigger('mouseover');
+    .trigger('mouseover', { force: true });
   cy.get('.ant-dropdown-menu-submenu-popup')
     .last()
     .find('button')
@@ -190,7 +190,7 @@ Cypress.Commands.add('checkActionDisabled', (title) => {
   cy.get('.ant-table-row')
     .first()
     .find('.ant-dropdown-trigger')
-    .trigger('mouseover');
+    .trigger('mouseover', { force: true });
   cy.get('ul.ant-dropdown-menu-light').contains(realTitle).should('not.exist');
 });
 
@@ -204,7 +204,7 @@ Cypress.Commands.add('checkActionDisabledInFirstRow', (title, name) => {
     .get('.ant-table-row')
     .first()
     .find('.ant-dropdown-trigger')
-    .trigger('mouseover')
+    .trigger('mouseover', { force: true })
     .get('ul.ant-dropdown-menu-light')
     .contains(realTitle)
     .should('not.exist');
@@ -228,7 +228,7 @@ Cypress.Commands.add('clickConfirmActionInMore', (title, waitTime) => {
   cy.get('.ant-table-row')
     .first()
     .find('.ant-dropdown-trigger')
-    .trigger('mouseover');
+    .trigger('mouseover', { force: true });
   const realTitle = getTitle(title);
   cy.get('ul.ant-dropdown-menu-light')
     .contains(realTitle)
@@ -254,12 +254,12 @@ Cypress.Commands.add(
     cy.get('.ant-table-row')
       .first()
       .find('.ant-dropdown-trigger')
-      .trigger('mouseover');
+      .trigger('mouseover', { force: true });
     const realTitle = getTitle(title);
     const realMenu = getTitle(subMenu);
     cy.get('.ant-dropdown-menu-submenu-title')
       .contains(realMenu)
-      .trigger('mouseover');
+      .trigger('mouseover', { force: true });
     cy.get('.ant-dropdown-menu-submenu-popup')
       .last()
       .find('button')

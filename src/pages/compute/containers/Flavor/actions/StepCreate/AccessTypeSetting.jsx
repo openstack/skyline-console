@@ -48,8 +48,9 @@ export class AccessTypeSetting extends Base {
     ];
   }
 
-  getProjects() {
-    this.projectStore.fetchList();
+  async getProjects() {
+    this.projectStore.fetchProjectsWithDomain();
+    this.updateDefaultValue();
   }
 
   get formItems() {

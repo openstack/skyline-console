@@ -257,6 +257,10 @@ export class Instance extends Base {
               label: t('Project Name'),
               name: 'project_name',
             },
+            {
+              label: t('Project ID'),
+              name: 'project_id',
+            },
           ]
         : []),
       ...(this.isAdminPage && !this.inHostDetailPage

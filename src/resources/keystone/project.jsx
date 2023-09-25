@@ -12,12 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { yesNoOptions } from 'utils/constants';
+import { getIdRender } from 'utils/table';
 
 export const projectFilter = [
   {
     label: t('Project Name'),
     name: 'name',
+  },
+  {
+    label: t('Project ID'),
+    name: 'id',
+  },
+  {
+    label: t('Domain Name'),
+    name: 'domainName',
+  },
+  {
+    label: t('Domain ID'),
+    name: 'domain_id',
   },
   {
     label: t('Enabled'),
@@ -28,12 +42,30 @@ export const projectFilter = [
 
 export const projectColumns = [
   {
-    title: t('Project Name'),
+    title: t('Project ID/Name'),
     dataIndex: 'name',
+    render: (value, record) => {
+      const idRender = getIdRender(record.id, true, false);
+      return (
+        <>
+          <div>{idRender}</div>
+          <div>{value}</div>
+        </>
+      );
+    },
   },
   {
-    title: t('User Num'),
-    dataIndex: 'userCount',
+    title: t('Domain ID/Name'),
+    dataIndex: 'domainName',
+    render: (value, record) => {
+      const idRender = getIdRender(record.domain_id, true, false);
+      return (
+        <>
+          <div>{idRender}</div>
+          <div>{value}</div>
+        </>
+      );
+    },
   },
   {
     title: t('Enabled'),

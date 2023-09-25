@@ -22,6 +22,9 @@ import globalSubnetStore from 'stores/neutron/subnet';
 import { QoSPolicyStore } from 'stores/neutron/qos-policy';
 import { getQoSPolicyTabs } from 'resources/neutron/qos-policy';
 import { qosEndpoint } from 'client/client/constants';
+import { projectTableOptions } from 'resources/keystone/project';
+import { isAdminPage } from 'utils';
+import { toJS } from 'mobx';
 
 export class Allocate extends ModalAction {
   static id = 'allocate';
@@ -33,11 +36,12 @@ export class Allocate extends ModalAction {
   }
 
   static get modalSize() {
-    return qosEndpoint() ? 'large' : 'small';
+    const { pathname } = window.location;
+    return qosEndpoint() || isAdminPage(pathname) ? 'large' : 'small';
   }
 
   getModalSize() {
-    return qosEndpoint() ? 'large' : 'small';
+    return qosEndpoint() || this.isAdminPage ? 'large' : 'small';
   }
 
   get qosEndpoint() {
@@ -63,8 +67,13 @@ export class Allocate extends ModalAction {
       maxCount: 2,
     };
     this.getExternalNetworks();
-    this.isAdminPage && globalProjectStore.fetchList();
+    this.isAdminPage && this.fetchProjectList();
     this.getQuota();
+  }
+
+  async fetchProjectList() {
+    await this.projectStore.fetchProjectsWithDomain();
+    this.updateDefaultValue();
   }
 
   async getExternalNetworks() {
@@ -78,6 +87,10 @@ export class Allocate extends ModalAction {
 
   get messageHasItemName() {
     return false;
+  }
+
+  get projects() {
+    return toJS(this.projectStore.list.data) || [];
   }
 
   static policy = 'create_floatingip';
@@ -151,10 +164,15 @@ export class Allocate extends ModalAction {
   }
 
   get defaultValue() {
-    return {
-      project_id: this.currentProjectId,
+    const values = {
       count: 2,
     };
+    if (this.isAdminPage) {
+      values.project_id = {
+        selectedRowKeys: [this.currentProjectId],
+      };
+    }
+    return values;
   }
 
   handleNetworkChange = async (networkId) => {
@@ -181,7 +199,14 @@ export class Allocate extends ModalAction {
     });
   };
 
-  onSubmit = ({ subnet_id, batch_allocate, count, qos_policy_id, ...rest }) => {
+  onSubmit = ({
+    subnet_id,
+    batch_allocate,
+    count,
+    qos_policy_id,
+    project_id,
+    ...rest
+  }) => {
     const data = rest;
     if (subnet_id) {
       data.subnet_id = subnet_id.value;
@@ -197,7 +222,12 @@ export class Allocate extends ModalAction {
       }
       return Promise.all(promises);
     }
-    return this.store.create(data);
+    return this.store.create({
+      ...data,
+      project_id: project_id
+        ? project_id.selectedRowKeys[0]
+        : this.currentProjectId,
+    });
   };
 
   onCountChange = (value) => {
@@ -207,9 +237,10 @@ export class Allocate extends ModalAction {
   };
 
   onProjectChange = (value) => {
+    const { selectedRowKeys } = value;
     this.setState(
       {
-        projectId: value,
+        projectId: selectedRowKeys[0],
       },
       () => {
         this.getQuota();
@@ -230,10 +261,6 @@ export class Allocate extends ModalAction {
       label: item.name,
       value: item.id,
     }));
-    const projectOptions = globalProjectStore.list.data.map((project) => ({
-      label: project.name,
-      value: project.id,
-    }));
     return [
       {
         name: 'floating_network_id',
@@ -246,12 +273,13 @@ export class Allocate extends ModalAction {
       {
         name: 'project_id',
         label: t('Project'),
-        type: 'select',
-        showSearch: true,
+        type: 'select-table',
         hidden: !this.isAdminPage,
         required: this.isAdminPage,
-        options: projectOptions,
+        isLoading: this.projectStore.list.isLoading,
+        data: this.projects,
         onChange: this.onProjectChange,
+        ...projectTableOptions,
       },
       {
         name: 'subnet_id',

@@ -21,6 +21,10 @@ import parsePhoneNumberFromString from 'libphonenumber-js';
 export class EditForm extends ModalAction {
   init() {
     this.store = globalUserStore;
+    const {
+      list: { data },
+    } = this.store;
+    data.length === 0 && this.store.fetchList();
   }
 
   static id = 'user-edit';

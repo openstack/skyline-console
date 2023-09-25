@@ -60,8 +60,9 @@ export class Create extends ModalAction {
     this.getProjects();
   }
 
-  getProjects() {
-    this.projectStore.fetchList();
+  async getProjects() {
+    await this.projectStore.fetchProjectsWithDomain();
+    this.updateDefaultValue();
   }
 
   get projects() {

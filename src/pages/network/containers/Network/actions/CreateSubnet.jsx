@@ -20,6 +20,8 @@ import { isEmpty } from 'lodash';
 import globalProjectStore from 'stores/keystone/project';
 import globalRootStore from 'stores/root';
 import { subnetIpv6Tip } from 'resources/neutron/network';
+import { projectTableOptions } from 'resources/keystone/project';
+import { toJS } from 'mobx';
 import networkUtil from './networkUtil';
 
 const {
@@ -43,6 +45,14 @@ export class CreateSubnet extends ModalAction {
     return t('Create Subnet');
   }
 
+  static get modalSize() {
+    return globalRootStore.hasAdminRole ? 'large' : 'small';
+  }
+
+  getModalSize() {
+    return this.isSystemAdmin ? 'large' : 'small';
+  }
+
   get network() {
     return this.props.containerProps.detail || this.item || {};
   }
@@ -52,15 +62,20 @@ export class CreateSubnet extends ModalAction {
   }
 
   get defaultValue() {
-    return {
+    const values = {
       enable_dhcp: true,
       ip_version: 'ipv4',
-      project_id: this.currentProjectId,
       disable_gateway: false,
       more: false,
       ipv6_ra_mode: 'slaac',
       ipv6_address_mode: 'slaac',
     };
+    if (this.isSystemAdmin) {
+      values.project_id = {
+        selectedRowKeys: [this.currentProjectId],
+      };
+    }
+    return values;
   }
 
   init() {
@@ -72,8 +87,13 @@ export class CreateSubnet extends ModalAction {
     this.getQuota();
   }
 
-  getProjects() {
-    this.projectStore.fetchList();
+  async getProjects() {
+    await this.projectStore.fetchProjectsWithDomain();
+    this.updateDefaultValue();
+  }
+
+  get projects() {
+    return toJS(this.projectStore.list.data) || [];
   }
 
   static get disableSubmit() {
@@ -139,7 +159,7 @@ export class CreateSubnet extends ModalAction {
   };
 
   onSubmit = (values) => {
-    const { allocation_pools, host_routes, ...rest } = values;
+    const { allocation_pools, host_routes, project_id, ...rest } = values;
 
     const allocationPools = getAllocationPools(allocation_pools);
 
@@ -147,6 +167,9 @@ export class CreateSubnet extends ModalAction {
 
     return globalNetworkStore.createSubnet({
       ...rest,
+      project_id: project_id
+        ? project_id.selectedRowKeys[0]
+        : this.currentProjectId,
       network_id: this.network.id,
       allocation_pools: allocationPools,
       host_routes: hostRouters,
@@ -180,9 +203,10 @@ export class CreateSubnet extends ModalAction {
   };
 
   onProjectChange = (value) => {
+    const { selectedRowKeys } = value;
     this.setState(
       {
-        projectId: value,
+        projectId: selectedRowKeys[0],
       },
       () => {
         this.getQuota();
@@ -207,10 +231,6 @@ export class CreateSubnet extends ModalAction {
       projectId,
     } = this.state;
     const isIpv4 = ip_version === 'ipv4';
-    const projectOptions = globalProjectStore.list.data.map((project) => ({
-      label: project.name,
-      value: project.id,
-    }));
 
     return [
       {
@@ -223,17 +243,18 @@ export class CreateSubnet extends ModalAction {
       {
         name: 'project_id',
         label: t('Project'),
-        type: 'select',
+        type: 'select-table',
         required: true,
         hidden: !this.isSystemAdmin,
-        showSearch: true,
         extra:
           projectId !== this.networkProjectId &&
           t(
             'The selected project is different from the project to which the network belongs. That is, the subnet to be created is not under the same project as the network. Please do not continue unless you are quit sure what you are doing.'
           ),
-        options: projectOptions,
+        isLoading: this.projectStore.list.isLoading,
+        data: this.projects,
         onChange: this.onProjectChange,
+        ...projectTableOptions,
       },
       {
         name: 'ip_version',

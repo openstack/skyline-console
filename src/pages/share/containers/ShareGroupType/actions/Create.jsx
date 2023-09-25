@@ -42,8 +42,9 @@ export class Create extends ModalAction {
     this.typeStore.fetchList({ is_public: 'all' });
   }
 
-  getProjects() {
-    this.projectStore.fetchList();
+  async getProjects() {
+    await this.projectStore.fetchProjectsWithDomain();
+    this.updateDefaultValue();
   }
 
   get projects() {
