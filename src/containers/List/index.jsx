@@ -80,19 +80,12 @@ export default class BaseList extends React.Component {
   }
 
   componentDidMount() {
-    this.unsubscribe = this.routing.history.subscribe((location) => {
-      if (
-        location.pathname === this.props.match.url &&
-        location.key === this.props.location.key
-      ) {
-        const params = this.initFilter;
-        if (!this.filterTimeKey) {
-          const { limit, page } = this.store.list;
-          this.list.filters = {};
-          this.handleFetch({ ...params, limit, page }, true);
-        }
-      }
-    });
+    const params = this.initFilter;
+    if (!this.filterTimeKey) {
+      const { limit, page } = this.store.list;
+      this.list.filters = {};
+      this.handleFetch({ ...params, limit, page }, true);
+    }
     window.addEventListener('resize', this.debounceSetTableHeight);
   }
 
