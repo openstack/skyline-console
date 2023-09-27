@@ -23,6 +23,11 @@ export const certificateContentTip = (
     </p>
     <p>
       {t(
+        'It is recommended to refer to the following description format, otherwise it may not be effective'
+      )}
+    </p>
+    <p>
+      {t(
         'The format of the certificate content is: by "----BEGIN CERTIFICATE-----" as the beginning,"-----END CERTIFICATE----" as the end, 64 characters per line, the last line does not exceed 64 characters, and there cannot be blank lines.'
       )}
     </p>
@@ -34,6 +39,11 @@ export const certificateKeyPairTip = (
     <p>
       {t(
         'The private key of the certificate, the extension of the private key is "key", you can directly enter the content of the private key file or upload a private key that conforms to the format document.'
+      )}
+    </p>
+    <p>
+      {t(
+        'It is recommended to refer to the following description format, otherwise it may not be effective'
       )}
     </p>
     <p>

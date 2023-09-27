@@ -67,6 +67,14 @@ export class CreateAction extends ModalAction {
     });
   }
 
+  get certificateContentTip() {
+    return certificateContentTip;
+  }
+
+  get certificateKeyPairTip() {
+    return certificateKeyPairTip;
+  }
+
   validateDomain = (rule, value) => {
     if ([undefined, null, ''].includes(value)) return Promise.resolve();
     const domains = value.split(',');
@@ -135,8 +143,7 @@ export class CreateAction extends ModalAction {
         type: 'textarea-from-file',
         placeholder: t('PEM encoding'),
         accept: '.crt,.pem',
-        tip: certificateContentTip,
-        validator: this.validateCertificateContent,
+        tip: this.certificateContentTip,
         required: true,
         rows: 6,
       },
@@ -146,8 +153,7 @@ export class CreateAction extends ModalAction {
         type: 'textarea-from-file',
         placeholder: t('PEM encoding'),
         accept: '.key,.pem',
-        tip: certificateKeyPairTip,
-        validator: this.validateCertificateKeyPair,
+        tip: this.certificateKeyPairTip,
         required: true,
         display: mode === 'SERVER',
         rows: 6,
