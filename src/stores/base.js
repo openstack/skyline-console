@@ -69,8 +69,8 @@ export default class BaseStore {
 
   get mapper() {
     // update response items;
-    return (data) => data;
-    // return ObjectMapper[this.module] || (data => data);
+    // eslint-disable-next-line no-unused-vars
+    return (data, allProjects, originFilters) => data;
   }
 
   get mapperBeforeFetchProject() {
@@ -395,7 +395,7 @@ export default class BaseStore {
       // eslint-disable-next-line no-console
       console.log(e);
     }
-    newData = newData.map(this.mapper);
+    newData = newData.map((d) => this.mapper(d, all_projects, filters));
     this.list.update({
       data: newData,
       total: newData.length || 0,
@@ -476,7 +476,7 @@ export default class BaseStore {
     const allDataNew = allData.map(this.mapperBeforeFetchProject);
     let newData = await this.listDidFetchProject(allDataNew, all_projects);
     newData = await this.listDidFetch(newData, all_projects, filters);
-    newData = newData.map(this.mapper);
+    newData = newData.map((d) => this.mapper(d, all_projects, filters));
     let count;
     let total;
     if (result.count || result.total) {
@@ -529,7 +529,7 @@ export default class BaseStore {
     const item = this.mapperBeforeFetchProject(originData, rest, true);
     try {
       const newItem = await this.detailDidFetch(item, all_projects, rest);
-      const detail = this.mapper(newItem);
+      const detail = this.mapper(newItem, all_projects, rest);
       this.detail = detail;
     } catch (e) {
       // eslint-disable-next-line no-console
