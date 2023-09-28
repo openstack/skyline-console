@@ -301,6 +301,7 @@ export class StepCreate extends StepAction {
       source: { value: sourceValue } = {},
       instanceSnapshotDisk = {},
       instanceSnapshotDataVolumes = [],
+      bootFromVolume = true,
     } = data;
     const newCountMap = {};
     const newSizeMap = {};
@@ -309,7 +310,7 @@ export class StepCreate extends StepAction {
     const isSnapshotType = sourceValue === 'instanceSnapshot';
     if (isSnapshotType && instanceSnapshotDisk) {
       const { size, typeOption: { label } = {} } = instanceSnapshotDisk;
-      if (label) {
+      if (label && bootFromVolume) {
         newCountMap[label] = !newCountMap[label] ? 1 : newCountMap[label] + 1;
         newSizeMap[label] = !newSizeMap[label]
           ? size
@@ -317,7 +318,7 @@ export class StepCreate extends StepAction {
         totalNewCount += 1 * count;
         totalNewSize += size * count;
       }
-    } else if (systemDisk.type) {
+    } else if (systemDisk.type && bootFromVolume) {
       const { size } = systemDisk;
       const { label } = systemDisk.typeOption || {};
       newCountMap[label] = !newCountMap[label] ? 1 : newCountMap[label] + 1;
@@ -577,6 +578,7 @@ export class StepCreate extends StepAction {
       instanceSnapshotDisk,
       source,
       systemDisk,
+      bootFromVolume = true,
     } = values;
     const { value: sourceValue } = source;
     const imageRef =
@@ -592,21 +594,23 @@ export class StepCreate extends StepAction {
     }
     let rootVolume = {};
     if (sourceValue !== 'bootableVolume') {
-      const { deleteType, type, size } = systemDisk || {};
-      rootVolume = {
-        boot_index: 0,
-        uuid: imageRef,
-        source_type: 'image',
-        volume_size: size,
-        destination_type: 'volume',
-        volume_type: type,
-        delete_on_termination: deleteType === 1,
-      };
-      if (sourceValue === 'instanceSnapshot') {
-        if (instanceSnapshotDisk) {
-          delete rootVolume.volume_size;
-          delete rootVolume.volume_type;
-          delete rootVolume.delete_on_termination;
+      if (bootFromVolume) {
+        const { deleteType, type, size } = systemDisk || {};
+        rootVolume = {
+          boot_index: 0,
+          uuid: imageRef,
+          source_type: 'image',
+          volume_size: size,
+          destination_type: 'volume',
+          volume_type: type,
+          delete_on_termination: deleteType === 1,
+        };
+        if (sourceValue === 'instanceSnapshot') {
+          if (instanceSnapshotDisk) {
+            delete rootVolume.volume_size;
+            delete rootVolume.volume_type;
+            delete rootVolume.delete_on_termination;
+          }
         }
       }
     } else {
@@ -636,15 +640,19 @@ export class StepCreate extends StepAction {
     if (
       sourceValue === 'image' &&
       image.selectedRows[0].disk_format === 'iso' &&
-      dataVolumes[0]
+      dataVolumes[0] &&
+      bootFromVolume
     ) {
       dataVolumes[0].boot_index = 0;
       dataVolumes[0].device_type = 'disk';
       rootVolume.boot_index = 1;
       rootVolume.device_type = 'cdrom';
     }
+    const volumes = isEmpty(rootVolume)
+      ? [...dataVolumes]
+      : [rootVolume, ...dataVolumes];
     return {
-      volumes: [rootVolume, ...dataVolumes],
+      volumes,
       imageRef,
     };
   }
@@ -695,6 +703,7 @@ export class StepCreate extends StepAction {
       serverGroup,
       name,
       count = 1,
+      bootFromVolume = true,
     } = values;
     if (hasIp && count > 1) {
       this.ipBatchError = true;
@@ -714,7 +723,7 @@ export class StepCreate extends StepAction {
     if (this.enableCinder) {
       server.block_device_mapping_v2 = volumes;
     }
-    if (imageRef && !volumes) {
+    if (imageRef && (!volumes || !bootFromVolume)) {
       server.imageRef = imageRef;
     }
     if (loginType.value === 'keypair') {

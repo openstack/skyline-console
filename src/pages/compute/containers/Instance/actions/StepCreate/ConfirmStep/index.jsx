@@ -36,7 +36,10 @@ export class ConfirmStep extends Base {
 
   allowed = () => Promise.resolve();
 
-  getDisk(diskInfo) {
+  getDisk(diskInfo, bootFromVolume) {
+    if (!bootFromVolume) {
+      return null;
+    }
     const { size, typeOption, deleteTypeLabel } = diskInfo || {};
     return `${typeOption.label} ${size}GiB ${deleteTypeLabel}`;
   }
@@ -54,14 +57,15 @@ export class ConfirmStep extends Base {
       systemDisk,
       source: { value } = {},
       instanceSnapshotDisk,
+      bootFromVolume = true,
     } = context;
     if (value === 'bootableVolume') {
       return this.getBootableVolumeDisk();
     }
     if (value === 'instanceSnapshot' && instanceSnapshotDisk !== null) {
-      return this.getDisk(instanceSnapshotDisk);
+      return this.getDisk(instanceSnapshotDisk, bootFromVolume);
     }
-    return this.getDisk(systemDisk);
+    return this.getDisk(systemDisk, bootFromVolume);
   }
 
   getDataDisk() {
@@ -79,7 +83,7 @@ export class ConfirmStep extends Base {
     ) {
       allDataDisks = getAllDataDisks({ dataDisk, instanceSnapshotDataVolumes });
     }
-    return allDataDisks.map((it) => this.getDisk(it.value));
+    return allDataDisks.map((it) => this.getDisk(it.value, true));
   }
 
   getFlavor() {

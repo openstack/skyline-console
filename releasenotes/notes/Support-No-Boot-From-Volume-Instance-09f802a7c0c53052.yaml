@@ -1,0 +1,10 @@
+---
+fixes:
+  - |
+    `Feature #2003057 <https://bugs.launchpad.net/skyline-apiserver/+bug/2003057>`_:
+
+    Support create No-BFV instance:
+
+    * Support no-boot-from-volume selector when create instance by image or instance snapshot.
+
+    * When create a no-boot-from-volume instance, you can not add data disk in the step forms, but you can attach volumes when the instance has been created.

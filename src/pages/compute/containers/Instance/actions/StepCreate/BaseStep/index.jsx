@@ -82,6 +82,9 @@ export class BaseStep extends Base {
       project: this.currentProjectName,
       dataDisk: [],
     };
+    if (source.value === 'image') {
+      values.bootFromVolume = true;
+    }
     return values;
   }
 
@@ -272,7 +275,14 @@ export class BaseStep extends Base {
   };
 
   get nameForStateUpdate() {
-    return ['source', 'image', 'instanceSnapshot', 'bootableVolume', 'flavor'];
+    return [
+      'source',
+      'image',
+      'instanceSnapshot',
+      'bootableVolume',
+      'flavor',
+      'bootFromVolume',
+    ];
   }
 
   getSystemDiskMinSize() {
@@ -333,6 +343,17 @@ export class BaseStep extends Base {
     });
   };
 
+  onChangeBootFromVolume = (value) => {
+    const newData = {
+      bootFromVolume: value,
+    };
+    if (!value) {
+      newData.dataDisk = [];
+      this.updateFormValue('dataDisk', []);
+    }
+    this.updateContext(newData);
+  };
+
   onInstanceSnapshotChange = async (value) => {
     const { min_disk, size, id } = value.selectedRows[0] || {};
     if (!id) {
@@ -357,14 +378,17 @@ export class BaseStep extends Base {
       instanceSnapshotDataVolumes = [],
     } = detail;
     if (!volumeDetail) {
+      this.updateFormValue('bootFromVolume', true);
       this.updateContext({
         instanceSnapshotDisk: null,
         instanceSnapshotDataVolumes: [],
+        bootFromVolume: true,
       });
       this.setState({
         instanceSnapshotDisk: null,
         instanceSnapshotMinSize: 0,
         instanceSnapshotDataVolumes: [],
+        bootFromVolume: true,
       });
     }
     const minSize = Math.max(min_disk, size, snapshotSize);
@@ -544,6 +568,36 @@ export class BaseStep extends Base {
     ];
   }
 
+  get supportNoBootFromVolume() {
+    return true;
+  }
+
+  get showBootFromVolumeFormItem() {
+    if (!this.supportNoBootFromVolume) {
+      return false;
+    }
+    if (!this.enableCinder) {
+      return false;
+    }
+    if (this.sourceTypeIsImage) {
+      return true;
+    }
+    return this.showSystemDisk;
+  }
+
+  get bootFromVolumeOptions() {
+    return [
+      {
+        value: true,
+        label: t('Yes - Create a new system disk'),
+      },
+      {
+        value: false,
+        label: t('No - Do not create a new system disk'),
+      },
+    ];
+  }
+
   get showSystemDisk() {
     const snapshotDisk = this.getInstanceSnapshotDisk();
     return (
@@ -553,6 +607,18 @@ export class BaseStep extends Base {
     );
   }
 
+  get showSystemDiskByBootFromVolume() {
+    if (!this.showSystemDisk) {
+      return false;
+    }
+    if (!this.supportNoBootFromVolume) {
+      return true;
+    }
+    // support non-bfv and bootFromVolume = true
+    const { bootFromVolume = true } = this.state;
+    return !!bootFromVolume;
+  }
+
   get hideInstanceSnapshotSystemDisk() {
     return this.showSystemDisk || this.sourceTypeIsVolume;
   }
@@ -560,6 +626,17 @@ export class BaseStep extends Base {
   get hideInstanceSnapshotDataDisk() {
     if (this.hideInstanceSnapshotSystemDisk) return true;
     return this.getSnapshotDataDisks().length === 0;
+  }
+
+  get hideDataDisk() {
+    if (!this.supportNoBootFromVolume) {
+      return false;
+    }
+    if (this.sourceTypeIsVolume) {
+      return false;
+    }
+    const { bootFromVolume = true } = this.state;
+    return !bootFromVolume;
   }
 
   getFlavorComponent() {
@@ -684,12 +761,29 @@ export class BaseStep extends Base {
         type: 'divider',
       },
       {
+        name: 'bootFromVolume',
+        label: t('Boot From Volume'),
+        type: 'radio',
+        required: this.showBootFromVolumeFormItem,
+        hidden: !this.showBootFromVolumeFormItem,
+        onChange: this.onChangeBootFromVolume,
+        wrapperCol: {
+          xs: {
+            span: 16,
+          },
+          sm: {
+            span: 14,
+          },
+        },
+        options: this.bootFromVolumeOptions,
+      },
+      {
         name: 'systemDisk',
         label: t('System Disk'),
         type: 'instance-volume',
         options: this.volumeTypes,
-        required: this.showSystemDisk,
-        hidden: !this.showSystemDisk,
+        required: this.showSystemDiskByBootFromVolume,
+        hidden: !this.showSystemDiskByBootFromVolume,
         validator: this.checkSystemDisk,
         minSize: this.getSystemDiskMinSize(),
         extra: t('Disk size is limited by the min disk of flavor, image, etc.'),
@@ -713,6 +807,7 @@ export class BaseStep extends Base {
         type: 'add-select',
         options: this.volumeTypes,
         defaultItemValue: this.defaultVolumeType,
+        hidden: this.hideDataDisk,
         itemComponent: InstanceVolume,
         minCount: 0,
         addTextTips: t('Data Disks'),
