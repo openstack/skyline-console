@@ -86,6 +86,7 @@ export class CreateForm extends FormAction {
       uploadType: 'file',
       hw_qemu_guest_agent: 'yes',
       usage_type: 'common',
+      container_format: 'bare',
       visibility: this.isAdminPage ? 'public' : false,
       hw_cpu_policy: NoSetValue,
       hw_cpu_thread_policy: NoSetValue,
@@ -105,6 +106,19 @@ export class CreateForm extends FormAction {
       value: key,
       label: this.imageFormats[key],
     }));
+  }
+
+  get containerFormatList() {
+    return [
+      {
+        value: 'bare',
+        label: 'Bare',
+      },
+      {
+        value: 'docker',
+        label: 'Docker',
+      },
+    ];
   }
 
   get osList() {
@@ -221,9 +235,21 @@ export class CreateForm extends FormAction {
       },
       {
         name: 'disk_format',
-        label: t('Format'),
+        label: t('Disk Format'),
         type: 'select',
         options: this.formatList,
+        required: true,
+      },
+      {
+        name: 'container_format',
+        label: t('Container Format'),
+        type: 'select',
+        options: this.containerFormatList,
+        onChange: (value) => {
+          this.setState({
+            isContainer: value === 'docker' ? true : false,
+          });
+        },
         required: true,
       },
       {
@@ -231,19 +257,22 @@ export class CreateForm extends FormAction {
         label: t('OS'),
         type: 'select',
         options: this.osList,
-        required: true,
+        required: !this.state.isContainer,
+        hidden: this.state.isContainer,
       },
       {
         name: 'os_version',
         label: t('OS Version'),
         type: 'input',
-        required: true,
+        hidden: this.state.isContainer,
+        required: !this.state.isContainer,
       },
       {
         name: 'os_admin_user',
         label: t('OS Admin'),
         type: 'input',
-        required: true,
+        required: !this.state.isContainer,
+        hidden: this.state.isContainer,
         extra: t(
           'In general, administrator for Windows,root for Linux, please fill by image uploading.'
         ),
@@ -347,11 +376,12 @@ export class CreateForm extends FormAction {
       usage_type = 'common',
       members,
       os_distro,
+      container_format = 'bare',
       ...rest
     } = values;
     const body = {
       visibility: visibility || 'private',
-      container_format: 'bare',
+      container_format,
       usage_type,
       os_distro,
       ...rest,
