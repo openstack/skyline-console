@@ -73,6 +73,7 @@ const ChartCard = (props) => {
       handleDataParams,
       fetchDataParams,
       isModal = false,
+      fetchPrometheusFunc,
     } = props;
     const defaultNode = {};
     const { params: fParams = {} } = fetchDataParams;
@@ -106,6 +107,7 @@ const ChartCard = (props) => {
                       }}
                       visibleHeight={props.chartProps.height}
                       chartConfig={{
+                        fetchPrometheusFunc,
                         chartCardList: [
                           {
                             title,
