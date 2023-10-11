@@ -69,6 +69,11 @@ export const volumeCreateImageTypes = {
   qcow2: t('QCOW2 - QEMU image format'),
 };
 
+export const imageContainerFormats = {
+  bare: 'Bare',
+  docker: 'Docker',
+};
+
 export const imageFormatsAdmin = {
   aki: t('AKI - Amazon kernel image format'),
   ari: t('ARI - Amazon ramdisk image format'),
