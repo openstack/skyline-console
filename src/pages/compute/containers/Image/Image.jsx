@@ -117,75 +117,77 @@ export class Image extends Base {
     return 'owner';
   }
 
-  getColumns = () => [
-    {
-      title: t('ID/Name'),
-      dataIndex: 'name',
-      routeName: this.getRouteName('imageDetail'),
-    },
-    {
-      title: t('Project ID/Name'),
-      dataIndex: 'project_name',
-      hidden: !this.isAdminPage && this.tab !== 'all',
-      sorter: false,
-    },
-    {
-      title: t('Description'),
-      dataIndex: 'description',
-      isHideable: true,
-      sorter: false,
-    },
-    {
-      title: t('Use Type'),
-      dataIndex: 'usage_type',
-      isHideable: true,
-      valueMap: imageUsage,
-      sorter: false,
-    },
-    {
-      title: t('Container Format'),
-      dataIndex: 'container_format',
-      valueMap: imageContainerFormats,
-      isHideable: true,
-    },
-    {
-      title: t('Type'),
-      dataIndex: 'os_distro',
-      isHideable: true,
-      render: (value) => <ImageType type={value} title={value} />,
-      width: 80,
-      sorter: false,
-    },
-    {
-      title: t('Status'),
-      dataIndex: 'status',
-      valueMap: imageStatus,
-    },
-    {
-      title: t('Visibility'),
-      dataIndex: 'visibility',
-      valueMap: imageVisibility,
-      sorter: false,
-    },
-    {
-      title: t('Disk Format'),
-      dataIndex: 'disk_format',
-      isHideable: true,
-      valueMap: imageFormats,
-    },
-    {
-      title: t('Size'),
-      dataIndex: 'size',
-      isHideable: true,
-      valueRender: 'formatSize',
-    },
-    {
-      title: t('Created At'),
-      dataIndex: 'created_at',
-      isHideable: true,
-      valueRender: 'sinceTime',
-    },
-  ];
+  getColumns() {
+    return [
+      {
+        title: t('ID/Name'),
+        dataIndex: 'name',
+        routeName: this.getRouteName('imageDetail'),
+      },
+      {
+        title: t('Project ID/Name'),
+        dataIndex: 'project_name',
+        hidden: !this.isAdminPage && this.tab !== 'all',
+        sorter: false,
+      },
+      {
+        title: t('Description'),
+        dataIndex: 'description',
+        isHideable: true,
+        sorter: false,
+      },
+      {
+        title: t('Use Type'),
+        dataIndex: 'usage_type',
+        isHideable: true,
+        valueMap: imageUsage,
+        sorter: false,
+      },
+      {
+        title: t('Container Format'),
+        dataIndex: 'container_format',
+        valueMap: imageContainerFormats,
+        isHideable: true,
+      },
+      {
+        title: t('Type'),
+        dataIndex: 'os_distro',
+        isHideable: true,
+        render: (value) => <ImageType type={value} title={value} />,
+        width: 80,
+        sorter: false,
+      },
+      {
+        title: t('Status'),
+        dataIndex: 'status',
+        valueMap: imageStatus,
+      },
+      {
+        title: t('Visibility'),
+        dataIndex: 'visibility',
+        valueMap: imageVisibility,
+        sorter: false,
+      },
+      {
+        title: t('Disk Format'),
+        dataIndex: 'disk_format',
+        isHideable: true,
+        valueMap: imageFormats,
+      },
+      {
+        title: t('Size'),
+        dataIndex: 'size',
+        isHideable: true,
+        valueRender: 'formatSize',
+      },
+      {
+        title: t('Created At'),
+        dataIndex: 'created_at',
+        isHideable: true,
+        valueRender: 'sinceTime',
+      },
+    ];
+  }
 
   get searchFilters() {
     const filters = [
