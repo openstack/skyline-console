@@ -22,6 +22,7 @@ import {
   imageUsage,
   imageFormats,
   transitionStatusList,
+  imageContainerFormats,
 } from 'resources/glance/image';
 import { ImageStore } from 'stores/glance/image';
 import { getOptions } from 'utils/index';
@@ -140,6 +141,12 @@ export class Image extends Base {
       isHideable: true,
       valueMap: imageUsage,
       sorter: false,
+    },
+    {
+      title: t('Container Format'),
+      dataIndex: 'container_format',
+      valueMap: imageContainerFormats,
+      isHideable: true,
     },
     {
       title: t('Type'),

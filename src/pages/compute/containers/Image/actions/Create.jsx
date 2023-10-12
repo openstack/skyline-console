@@ -21,6 +21,7 @@ import {
   imageFormats,
   imageFormatsConsole,
   imageVisibility,
+  imageContainerFormats,
 } from 'resources/glance/image';
 import { cpuPolicyList, cpuThreadPolicyList } from 'resources/nova/flavor';
 import { NoSetValue, getOptionsWithNoSet, getOptions } from 'utils/index';
@@ -109,16 +110,7 @@ export class CreateForm extends FormAction {
   }
 
   get containerFormatList() {
-    return [
-      {
-        value: 'bare',
-        label: 'Bare',
-      },
-      {
-        value: 'docker',
-        label: 'Docker',
-      },
-    ];
+    return getOptions(imageContainerFormats);
   }
 
   get osList() {
@@ -189,6 +181,21 @@ export class CreateForm extends FormAction {
     return Promise.resolve();
   };
 
+  onChangeContainerFormat = (value) => {
+    this.setState({
+      container_format: value,
+    });
+  };
+
+  get showContainerFormatFormItem() {
+    return this.containerFormatList.length > 1;
+  }
+
+  get isBareFormat() {
+    const { container_format = 'bare' } = this.state;
+    return container_format === 'bare';
+  }
+
   get formItems() {
     const { more, visibility, uploadType } = this.state;
     const isShare = this.isAdminPage && visibility === 'shared';
@@ -245,34 +252,31 @@ export class CreateForm extends FormAction {
         label: t('Container Format'),
         type: 'select',
         options: this.containerFormatList,
-        onChange: (value) => {
-          this.setState({
-            isContainer: value === 'docker' ? true : false,
-          });
-        },
-        required: true,
+        onChange: this.onChangeContainerFormat,
+        hidden: !this.showContainerFormatFormItem,
+        required: this.showContainerFormatFormItem,
       },
       {
         name: 'os_distro',
         label: t('OS'),
         type: 'select',
         options: this.osList,
-        required: !this.state.isContainer,
-        hidden: this.state.isContainer,
+        required: this.isBareFormat,
+        hidden: !this.isBareFormat,
       },
       {
         name: 'os_version',
         label: t('OS Version'),
         type: 'input',
-        hidden: this.state.isContainer,
-        required: !this.state.isContainer,
+        hidden: !this.isBareFormat,
+        required: this.isBareFormat,
       },
       {
         name: 'os_admin_user',
         label: t('OS Admin'),
         type: 'input',
-        required: !this.state.isContainer,
-        hidden: this.state.isContainer,
+        required: this.isBareFormat,
+        hidden: !this.isBareFormat,
         extra: t(
           'In general, administrator for Windows,root for Linux, please fill by image uploading.'
         ),
@@ -376,6 +380,8 @@ export class CreateForm extends FormAction {
       usage_type = 'common',
       members,
       os_distro,
+      os_version,
+      os_admin_user,
       container_format = 'bare',
       ...rest
     } = values;
@@ -383,7 +389,6 @@ export class CreateForm extends FormAction {
       visibility: visibility || 'private',
       container_format,
       usage_type,
-      os_distro,
       ...rest,
     };
     if (min_ram) {
@@ -398,9 +403,15 @@ export class CreateForm extends FormAction {
     if (this.isAdminPage) {
       body.owner = owner.selectedRowKeys[0];
     }
-    if (os_distro === 'windows') {
-      body.os_type = 'windows';
+    if (this.isBareFormat) {
+      body.os_distro = os_distro;
+      body.os_version = os_version;
+      body.os_admin_user = os_admin_user;
+      if (os_distro === 'windows') {
+        body.os_type = 'windows';
+      }
     }
+
     const mems = visibility === 'shared' ? members.selectedRowKeys : [];
     const config = this.getUploadRequestConf();
     const actualFile = uploadType === 'file' ? file : url;

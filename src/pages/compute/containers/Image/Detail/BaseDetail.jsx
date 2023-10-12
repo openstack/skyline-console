@@ -18,6 +18,7 @@ import {
   imageProperties,
   imageVisibility,
   imageOS,
+  imageContainerFormats,
 } from 'resources/glance/image';
 import Base from 'containers/BaseDetail';
 import { isObject, isArray } from 'lodash';
@@ -69,7 +70,7 @@ export class BaseDetail extends Base {
       {
         label: t('Container Format'),
         dataIndex: 'container_format',
-        valueRender: 'uppercase',
+        valueMap: imageContainerFormats,
       },
     ];
     return {
