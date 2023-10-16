@@ -41,6 +41,13 @@ export class PortStore extends Base {
     };
   }
 
+  get paramsFunc() {
+    return (params) => {
+      const { all_projects, ...rest } = params;
+      return rest;
+    };
+  }
+
   async detailDidFetch(item) {
     const { network_id } = item;
     try {
