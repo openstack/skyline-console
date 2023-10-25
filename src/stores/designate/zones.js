@@ -15,7 +15,6 @@ import client from 'client';
 import Base from 'stores/base';
 
 export class DNSZonesStore extends Base {
-
   get client() {
     return client.designate.zones;
   }
@@ -30,7 +29,6 @@ export class DNSZonesStore extends Base {
 
   @action
   update = ({ id }, body) => this.submitting(this.client.patch(id, body));
-
 }
 
 const globalDNSZonesStore = new DNSZonesStore();

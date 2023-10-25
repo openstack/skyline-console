@@ -34,9 +34,13 @@ export default class Delete extends ConfirmAction {
     return true;
   }
 
+  get isAsyncAction() {
+    return true;
+  }
+
   allowedCheckFunction = () => true;
 
-  policy = 'instance:delete';
+  policy = 'delete_zone';
 
   confirmContext = (data) => {
     const name = this.getName(data);

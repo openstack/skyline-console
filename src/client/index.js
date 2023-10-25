@@ -29,6 +29,7 @@ import barbican from './barbican';
 import zun from './zun';
 import magnum from './magnum';
 import masakari from './masakari';
+import designate from './designate';
 
 const client = {
   skyline,
@@ -48,6 +49,7 @@ const client = {
   zun,
   magnum,
   masakari,
+  designate,
 };
 
 window.client = client;

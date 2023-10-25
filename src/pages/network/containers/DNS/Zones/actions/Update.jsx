@@ -10,85 +10,67 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ModalAction } from 'containers/Action';
 import { inject, observer } from 'mobx-react';
-import globalDNSZonesStore from 'src/stores/designate/zones';
-import { emailValidate } from 'utils/validate';
-export class Update extends ModalAction {
+import globalDNSZonesStore from 'stores/designate/zones';
+import { Create } from './Create';
+
+export class Update extends Create {
   init() {
     this.store = globalDNSZonesStore;
   }
 
   static id = 'update-dns-zone';
 
-  static title = t('Update Zone');
+  static title = t('Edit');
 
   get name() {
-    return t('Update Zone');
+    return t('Edit');
   }
 
-  static policy = 'get_images';
+  static policy = 'update_zone';
 
   static allowed() {
     return Promise.resolve(true);
   }
 
   get defaultValue() {
-
-    const { name, description, email, ttl, type } = this.props.item;
-
+    const { masters = [], ...rest } = this.item;
+    const mastersValue = masters.map((m, index) => ({
+      index,
+      value: m,
+    }));
     return {
-      name: name,
-      description: description,
-      email: email,
-      ttl: ttl,
-      type: type
-    }
+      ...rest,
+      masters: mastersValue,
+    };
   }
 
   get formItems() {
-    return [
-      {
-        name: 'name',
-        label: t('Name'),
-        type: 'input',
-        disabled: true
-      },
-      {
-        name: 'description',
-        label: t('Description'),
-        type: 'textarea'
-      },
-      {
-        name: 'email',
-        label: t('Email Address'),
-        type: 'input',
-        required: true,
-        validator: emailValidate,
-      },
-      {
-        name: 'ttl',
-        label: t('TTL'),
-        type: 'input-number',
-        required: true
-      },
-      {
-        name: 'type',
-        label: t('Type'),
-        type: 'select',
-        options: [
-          { label: t('Primary'), value: 'PRIMARY' },
-          { label: t('Secondary'), value: 'SECONDARY' },
-        ],
-        disabled: true
-      },
-    ]
+    const items = super.formItems;
+    return items.map((it) => {
+      if (it.name === 'name' || it.name === 'type') {
+        return {
+          ...it,
+          disabled: true,
+        };
+      }
+      return it;
+    });
   }
 
   onSubmit = (values) => {
     const { id } = this.item;
-    const { name, type, ...val } = values;
-    return this.store.update({ id: id }, val);
+    const { type } = this.item;
+    const { masters = [], email, ttl, description } = values;
+    const body = {
+      description,
+      masters: masters.map((m) => m.value),
+    };
+    if (type === 'PRIMARY') {
+      body.email = email;
+      body.ttl = ttl;
+    }
+    return this.store.update({ id }, body);
   };
 }
 

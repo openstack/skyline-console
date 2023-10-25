@@ -19,10 +19,10 @@ import CreateRecords from './Records/Create';
 
 const actionConfigs = {
   rowActions: {
-    firstAction: CreateRecords,
+    firstAction: Update,
     moreActions: [
       {
-        action: Update,
+        action: CreateRecords,
       },
       {
         action: Delete,
@@ -30,7 +30,7 @@ const actionConfigs = {
     ],
   },
   primaryActions: [Create],
-  batchActions: [Delete]
+  batchActions: [Delete],
 };
 
 export default actionConfigs;

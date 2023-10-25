@@ -29,7 +29,7 @@ export class DesignateClient extends Base {
             key: 'recordsets',
             responseKey: 'recordset',
           },
-        ]
+        ],
       },
       {
         name: 'reverse',
@@ -53,7 +53,8 @@ export class DesignateClient extends Base {
             key: 'setReverse',
             generate: (id, data) =>
               this.request.patch(
-                this.getSubResourceUrlById('reverse', id, 'floatingips'), data,
+                this.getSubResourceUrlById('reverse', id, 'floatingips'),
+                data,
                 null,
                 {
                   headers: {
@@ -66,7 +67,8 @@ export class DesignateClient extends Base {
             key: 'unsetReverse',
             generate: (id, data) =>
               this.request.patch(
-                this.getSubResourceUrlById('reverse', id, 'floatingips'), data,
+                this.getSubResourceUrlById('reverse', id, 'floatingips'),
+                data,
                 null,
                 {
                   headers: {
@@ -81,9 +83,9 @@ export class DesignateClient extends Base {
             key: 'floatingips',
             responseKey: 'floatingip',
           },
-        ]
-      }
-    ]
+        ],
+      },
+    ];
   }
 }
 

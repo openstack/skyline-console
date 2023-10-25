@@ -13,6 +13,7 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalDNSZonesStore, { DNSZonesStore } from 'src/stores/designate/zones';
+import { ZONE_STATUS, ZONE_TYPES } from 'resources/dns/zone';
 import actionConfigs from './actions';
 
 export class Zones extends Base {
@@ -22,7 +23,7 @@ export class Zones extends Base {
   }
 
   get policy() {
-    return 'get_images';
+    return 'get_zones';
   }
 
   get name() {
@@ -39,22 +40,29 @@ export class Zones extends Base {
       dataIndex: 'name',
       isHideable: true,
       isLink: true,
-      routeName: 'dnsZonesDetail'
+      routeName: 'dnsZonesDetail',
     },
     {
       title: t('Type'),
       dataIndex: 'type',
       isHideable: true,
-      sorter: false
+      sorter: false,
+      valueMap: ZONE_TYPES,
     },
     {
       title: t('Status'),
       dataIndex: 'status',
       isHideable: true,
+      valueMap: ZONE_STATUS,
       sorter: false,
     },
-  ]
-
+    {
+      title: t('Created At'),
+      dataIndex: 'created_at',
+      valueRender: 'sinceTime',
+      sorter: false,
+    },
+  ];
 }
 
 export default inject('rootStore')(observer(Zones));

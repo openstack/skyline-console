@@ -195,7 +195,7 @@ export default class index extends Component {
         return (
           <Input
             value={item.value}
-            placeholder={t('Please input')}
+            placeholder={placeholder || t('Please input')}
             style={{ width }}
             onChange={(e) => {
               this.onItemChange(e.currentTarget.value, index);

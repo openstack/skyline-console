@@ -11,10 +11,11 @@
 // limitations under the License.
 
 import { inject, observer } from 'mobx-react';
+import { DNSZonesStore } from 'stores/designate/zones';
 import Base from 'containers/TabDetail';
+import { ZONE_STATUS, ZONE_TYPES } from 'resources/dns/zone';
 import BaseDetail from './BaseDetail';
 import RecordSets from './RecordSets';
-import { DNSZonesStore } from 'src/stores/designate/zones';
 
 export class ZonesDetail extends Base {
   init() {
@@ -30,7 +31,7 @@ export class ZonesDetail extends Base {
   }
 
   get policy() {
-    return 'get_images';
+    return 'get_zone';
   }
 
   get detailInfos() {
@@ -46,15 +47,17 @@ export class ZonesDetail extends Base {
       {
         title: t('Type'),
         dataIndex: 'type',
+        valueMap: ZONE_TYPES,
       },
       {
         title: t('Status'),
         dataIndex: 'status',
+        valueMap: ZONE_STATUS,
       },
       {
         title: t('Email'),
         dataIndex: 'email',
-      }
+      },
     ];
   }
 
@@ -69,13 +72,11 @@ export class ZonesDetail extends Base {
         title: t('Record Sets'),
         key: 'record_sets',
         component: RecordSets,
-      }
-    ]
+      },
+    ];
 
     return tabs;
-
   }
-
 }
 
 export default inject('rootStore')(observer(ZonesDetail));

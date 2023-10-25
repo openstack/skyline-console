@@ -12,14 +12,21 @@
 
 import { ModalAction } from 'containers/Action';
 import { inject, observer } from 'mobx-react';
+import {
+  ZONE_TYPE_ENUM,
+  validateZoneName,
+  zoneNameMessage,
+  zoneTypeOptions,
+} from 'src/resources/dns/zone';
 import globalDNSZonesStore from 'src/stores/designate/zones';
-import { emailValidate } from 'utils/validate';
+import { emailValidate, ipValidate } from 'utils/validate';
+
 export class Create extends ModalAction {
   init() {
     this.store = globalDNSZonesStore;
   }
 
-  static id = 'create-dns-zone';
+  static id = 'create_zone';
 
   static title = t('Create Zone');
 
@@ -31,7 +38,7 @@ export class Create extends ModalAction {
     return t('Create Zone');
   }
 
-  static policy = 'get_images';
+  static policy = 'create_zone';
 
   static allowed() {
     return Promise.resolve(true);
@@ -40,51 +47,119 @@ export class Create extends ModalAction {
   get defaultValue() {
     return {
       ttl: 3600,
-      type: 'PRIMARY'
-    }
+      type: ZONE_TYPE_ENUM.primary,
+    };
   }
 
+  get nameForStateUpdate() {
+    return ['type'];
+  }
+
+  validateMasters = (rule, value) => {
+    if (!value || !value.length) {
+      return Promise.resolve();
+    }
+    const errorItem = value.find((v) => {
+      if (!v.value) {
+        return true;
+      }
+      if (!ipValidate.isIPv4(v.value) && !!ipValidate.isIpv6(v.value)) {
+        return true;
+      }
+      return false;
+    });
+    if (errorItem) {
+      return Promise.reject(t('Please input a valid ip!'));
+    }
+    const sameItem = value.find((v) => {
+      const theSame = value.find((vv) => {
+        return vv.value === v.value && vv.index !== v.index;
+      });
+      return !!theSame;
+    });
+    if (sameItem) {
+      return Promise.reject(
+        t('The ip address {ip} is duplicated, please modify it.', {
+          ip: sameItem.value,
+        })
+      );
+    }
+    return Promise.resolve();
+  };
+
   get formItems() {
+    const { type = ZONE_TYPE_ENUM.primary } = this.state;
+    const isPrimaryType = type === ZONE_TYPE_ENUM.primary;
     return [
       {
         name: 'name',
         label: t('Name'),
         type: 'input',
-        required: true
+        required: true,
+        extra: zoneNameMessage,
+        validator: validateZoneName,
       },
       {
         name: 'description',
         label: t('Description'),
-        type: 'textarea'
+        type: 'textarea',
+      },
+      {
+        name: 'type',
+        label: t('Type'),
+        type: 'select',
+        options: zoneTypeOptions,
+        tip: t(
+          'Primary is controlled by Designate, Secondary zones are slaved from another DNS Server.'
+        ),
       },
       {
         name: 'email',
         label: t('Email Address'),
         type: 'input',
-        required: true,
+        required: isPrimaryType,
+        hidden: !isPrimaryType,
         validator: emailValidate,
+        extra: t('Email for the zone. Used in SOA records for the zone.'),
       },
       {
         name: 'ttl',
         label: t('TTL'),
         type: 'input-number',
         min: 0,
-        required: true
+        required: isPrimaryType,
+        hidden: !isPrimaryType,
+        extra: t('TTL (Time to Live) for the zone.'),
       },
       {
-        name: 'type',
-        label: t('Type'),
-        type: 'select',
-        options: [
-          { label: t('Primary'), value: 'PRIMARY' },
-          { label: t('Secondary'), value: 'SECONDARY' },
-        ]
+        name: 'masters',
+        label: t('Masters'),
+        type: 'add-select',
+        isInput: true,
+        placeholder: t('Please input ip address'),
+        tip: t(
+          'Mandatory for secondary zones. The servers to slave from to get DNS information.'
+        ),
+        minCount: 1,
+        hidden: isPrimaryType,
+        required: !isPrimaryType,
+        validator: this.validateMasters,
       },
-    ]
+    ];
   }
 
   onSubmit = (values) => {
-    return this.store.create(values);
+    const { masters = [], type, email, ttl, ...rest } = values;
+    const body = {
+      ...rest,
+      type,
+      masters: masters.map((m) => m.value),
+    };
+    if (type === 'PRIMARY') {
+      body.email = email;
+      body.ttl = ttl;
+    }
+    return this.store.create(body);
   };
 }
 
