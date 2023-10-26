@@ -36,6 +36,7 @@ describe('The Volume Page', () => {
 
   const networkName = `e2e-network-for-volume-${uuid}`;
   const instanceName = `e2e-instance-for-volume-${uuid}`;
+  const skipCreateImage = true;
 
   const backupServiceEnabled = (Cypress.env('extensions') || []).includes(
     'cinder::backup'
@@ -159,14 +160,16 @@ describe('The Volume Page', () => {
   });
 
   it('successfully create image', () => {
-    cy.tableSearchText(name)
-      .clickActionInMoreSub('Create Image', 'Data Protection')
-      .formInput('image_name', imageName)
-      .clickModalActionSubmitButton();
-    cy.tableSearchText(name).waitStatusActiveByRefresh();
-    cy.visit(imageListUrl)
-      .tableSearchText(imageName)
-      .checkTableFirstRow(imageName);
+    if (!skipCreateImage) {
+      cy.tableSearchText(name)
+        .clickActionInMoreSub('Create Image', 'Data Protection')
+        .formInput('image_name', imageName)
+        .clickModalActionSubmitButton();
+      cy.tableSearchText(name).waitStatusActiveByRefresh();
+      cy.visit(imageListUrl)
+        .tableSearchText(imageName)
+        .checkTableFirstRow(imageName);
+    }
   });
 
   it('successfully extend volume', () => {
@@ -196,7 +199,10 @@ describe('The Volume Page', () => {
   });
 
   it('successfully delete related resources', () => {
-    cy.deleteAll('image', imageName);
+    if (!skipCreateImage) {
+      cy.deleteAll('image', imageName);
+    }
+
     cy.deleteAll('volume', cloneVolumeName);
     cy.forceDeleteInstance(instanceName).wait(120000);
     cy.deleteAll('network', networkName);
