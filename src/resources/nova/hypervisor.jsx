@@ -43,9 +43,11 @@ export const hypervisorColumns = [
       ),
     width: 180,
     stringify: (value, record) =>
-      `${value}% (${t('Used')}: ${record.vcpus_used} / ${t('Total')}: ${
-        record.vcpus
-      })`,
+      record.hypervisor_type === 'ironic'
+        ? '-'
+        : `${value}% (${t('Used')}: ${record.vcpus_used} / ${t('Total')}: ${
+            record.vcpus
+          })`,
   },
   {
     title: t('Configured Memory (GiB)'),
@@ -65,9 +67,11 @@ export const hypervisorColumns = [
       ),
     width: 180,
     stringify: (value, record) =>
-      `${value}% (${t('Used')}: ${record.memory_mb_used_gb} / ${t('Total')}: ${
-        record.memory_mb_gb
-      })`,
+      record.hypervisor_type === 'ironic'
+        ? '-'
+        : `${value}% (${t('Used')}: ${record.memory_mb_used_gb} / ${t(
+            'Total'
+          )}: ${record.memory_mb_gb})`,
   },
   {
     title: t('Instances'),
