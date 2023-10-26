@@ -14,14 +14,17 @@
 
 import { ModalAction } from 'containers/Action';
 import { inject, observer } from 'mobx-react';
-import globalDNSRecordSetsStore from 'src/stores/designate/recordSets';
-import { DNS_RECORD_TYPE } from 'src/utils/dns-rrtype';
-import { getRecordSetFormItem } from 'src/resources/dns/record';
+import globalDNSRecordSetsStore from 'stores/designate/record-set';
+import { getRecordSetFormItem, DNS_RECORD_TYPE } from 'resources/dns/record';
 
 export class Create extends ModalAction {
   init() {
     this.store = globalDNSRecordSetsStore;
-    this.state = { ...this.state, nameExtra: `Exp: ${DNS_RECORD_TYPE.A.nameExtra}`, recordsExtra: `Exp: ${DNS_RECORD_TYPE.A.recordsExtra}` };
+    this.state = {
+      ...this.state,
+      nameExtra: `${t('Exp: ')}${DNS_RECORD_TYPE.A.nameExtra}`,
+      recordsExtra: `${t('Exp: ')}${DNS_RECORD_TYPE.A.recordsExtra}`,
+    };
   }
 
   static id = 'create-record-set';
@@ -32,7 +35,7 @@ export class Create extends ModalAction {
     return t('Create Record Set');
   }
 
-  static policy = 'get_images';
+  static policy = 'create_recordset';
 
   static allowed() {
     return Promise.resolve(true);
@@ -50,7 +53,8 @@ export class Create extends ModalAction {
   }
 
   onSubmit = (values) => {
-    const { id } = this.item;
+    const { detail } = this.containerProps;
+    const { id } = detail || this.item;
     const { records, ...val } = values;
 
     const recordsItem = [];

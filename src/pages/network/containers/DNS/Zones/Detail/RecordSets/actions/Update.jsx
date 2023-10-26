@@ -12,17 +12,18 @@
 
 import { ModalAction } from 'containers/Action';
 import { inject, observer } from 'mobx-react';
-import { getRecordSetFormItem } from 'src/resources/dns/record';
-import globalDNSRecordSetsStore from 'src/stores/designate/recordSets';
-import { DNS_RECORD_TYPE } from 'src/utils/dns-rrtype';
+import { getRecordSetFormItem, DNS_RECORD_TYPE } from 'resources/dns/record';
+import globalDNSRecordSetsStore from 'stores/designate/record-set';
 
 export class Update extends ModalAction {
   init() {
     this.store = globalDNSRecordSetsStore;
     this.state = {
       ...this.state,
-      nameExtra: `Exp: ${DNS_RECORD_TYPE[this.item.type].nameExtra}`,
-      recordsExtra: `Exp: ${DNS_RECORD_TYPE[this.item.type].recordsExtra}`,
+      nameExtra: `${t('Exp: ')}${DNS_RECORD_TYPE[this.item.type].nameExtra}`,
+      recordsExtra: `${t('Exp: ')}${
+        DNS_RECORD_TYPE[this.item.type].recordsExtra
+      }`,
     };
   }
 
@@ -30,39 +31,47 @@ export class Update extends ModalAction {
 
   static title = t('Update Record Set');
 
+  static buttonText = t('Update');
+
   get name() {
     return t('Update Record Set');
   }
 
-  static policy = 'get_images';
+  static policy = 'update_recordset';
 
   static allowed() {
     return Promise.resolve(true);
   }
 
   get defaultValue() {
-    const { ...values } = this.item;
-
-    const recordsData = [];
-    values.records.map((item, index) =>
-      recordsData.push({ index, value: item })
-    );
+    const { records, type, name, description, ttl } = this.item;
+    const recordsData = records.map((item, index) => ({ index, value: item }));
 
     return {
-      type: values.type,
-      name: values.name,
-      description: values.description,
-      ttl: values.ttl,
+      type,
+      name,
+      description,
+      ttl,
       records: recordsData,
     };
   }
 
   get formItems() {
-    return getRecordSetFormItem(this, this.currentFormValue);
+    const formItems = getRecordSetFormItem(this, this.currentFormValue);
+    const newItems = formItems.map((it) => {
+      if (it.name === 'name' || it.name === 'type') {
+        return {
+          ...it,
+          disabled: true,
+        };
+      }
+      return it;
+    });
+    return newItems;
   }
 
   onSubmit = (values) => {
-    const zone_id = this.item.zone_id;
+    const { zone_id } = this.item;
     const recordset_id = this.item.id;
 
     const { records, ...val } = values;

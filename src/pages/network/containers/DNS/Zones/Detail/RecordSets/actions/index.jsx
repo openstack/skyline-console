@@ -14,19 +14,19 @@
 
 import Update from './Update';
 import Delete from './Delete';
+import Create from '../../../actions/Records/Create';
 
 const actionConfigs = {
   rowActions: {
+    firstAction: Update,
     moreActions: [
-      {
-        action: Update,
-      },
       {
         action: Delete,
       },
     ],
   },
-  batchActions: [Delete]
+  primaryActions: [Create],
+  batchActions: [Delete],
 };
 
 export default actionConfigs;

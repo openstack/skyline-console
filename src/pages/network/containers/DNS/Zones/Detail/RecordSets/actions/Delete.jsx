@@ -11,7 +11,7 @@
 // limitations under the License.
 
 import { ConfirmAction } from 'containers/Action';
-import globalDNSRecordSetsStore from 'src/stores/designate/recordSets';
+import globalDNSRecordSetsStore from 'stores/designate/record-set';
 
 export default class Delete extends ConfirmAction {
   get id() {
@@ -36,7 +36,7 @@ export default class Delete extends ConfirmAction {
 
   allowedCheckFunction = () => true;
 
-  policy = 'instance:delete';
+  policy = 'delete_recordset';
 
   confirmContext = (data) => {
     const name = this.getName(data);
@@ -44,12 +44,12 @@ export default class Delete extends ConfirmAction {
     return t('Are you sure to {action}? (Record Set: {name} - {id})', {
       action: this.actionNameDisplay || this.title,
       name,
-      id
+      id,
     });
   };
 
   onSubmit = (item) => {
-    const zone_id = item.zone_id;
+    const { zone_id } = item;
     const recordset_id = item.id;
     return globalDNSRecordSetsStore.delete({ zone_id, recordset_id });
   };

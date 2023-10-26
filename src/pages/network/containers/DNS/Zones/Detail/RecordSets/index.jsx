@@ -13,9 +13,10 @@
 import React from 'react';
 import Base from 'containers/List';
 import { inject, observer } from 'mobx-react';
-import globalDNSRecordSetsStore from "src/stores/designate/recordSets";
-import actionConfigs from './actions';
 import { Tag } from 'antd';
+import globalDNSRecordSetsStore from 'stores/designate/record-set';
+import { RECORD_STATUS, getRecordSetType } from 'resources/dns/record';
+import actionConfigs from './actions';
 
 export class RecordSets extends Base {
   init() {
@@ -27,7 +28,7 @@ export class RecordSets extends Base {
   }
 
   get policy() {
-    return 'get_images';
+    return 'get_recordsets';
   }
 
   get actionConfigs() {
@@ -51,17 +52,20 @@ export class RecordSets extends Base {
       {
         title: t('Type'),
         dataIndex: 'type',
+        render: (value) => getRecordSetType(value),
       },
       {
         title: t('Records'),
         dataIndex: 'records',
-        render: (value) => value.map((item) => <Tag>{item}</Tag>)
+        render: (value) => value.map((item) => <Tag key={item}>{item}</Tag>),
+        stringify: (value) => value.join('\n'),
       },
       {
         title: t('Status'),
         dataIndex: 'status',
+        valueMap: RECORD_STATUS,
       },
-    ]
+    ];
   }
 }
 

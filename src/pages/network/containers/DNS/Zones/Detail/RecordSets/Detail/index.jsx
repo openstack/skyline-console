@@ -12,9 +12,10 @@
 
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/TabDetail';
+import { DNSRecordSetsStore } from 'stores/designate/record-set';
+import { RECORD_STATUS, getRecordSetType } from 'resources/dns/record';
 import BaseDetail from './BaseDetail';
-import { DNSRecordSetsStore } from 'src/stores/designate/recordSets';
-import { DNS_RECORD_TYPE } from 'src/utils/dns-rrtype';
+import actionConfigs from '../actions';
 
 export class RecordSetsDetail extends Base {
   init() {
@@ -30,11 +31,19 @@ export class RecordSetsDetail extends Base {
   }
 
   get listUrl() {
-    return this.getRoutePath('dnsZonesDetail', { id: this.detailData.zone_id }, { 'tab': 'record_sets' });
+    return this.getRoutePath(
+      'dnsZonesDetail',
+      { id: this.detailData.zone_id },
+      { tab: 'record_sets' }
+    );
+  }
+
+  get actionConfigs() {
+    return actionConfigs;
   }
 
   get policy() {
-    return 'get_images';
+    return 'get_recordset';
   }
 
   get detailInfos() {
@@ -50,12 +59,13 @@ export class RecordSetsDetail extends Base {
       {
         title: t('Type'),
         dataIndex: 'type',
-        render: (data) => data + (Object.keys(DNS_RECORD_TYPE).includes(data) ? " - " + DNS_RECORD_TYPE[data].name : "")
+        render: (data) => getRecordSetType(data),
       },
       {
         title: t('Status'),
         dataIndex: 'status',
-      }
+        valueMap: RECORD_STATUS,
+      },
     ];
   }
 
@@ -65,12 +75,11 @@ export class RecordSetsDetail extends Base {
         title: t('Overview'),
         key: 'overview',
         component: BaseDetail,
-      }
-    ]
+      },
+    ];
 
     return tabs;
   }
-
 }
 
 export default inject('rootStore')(observer(RecordSetsDetail));

@@ -15,7 +15,6 @@ import { action } from 'mobx';
 import Base from 'stores/base';
 
 export class DNSRecordSetsStore extends Base {
-
   get client() {
     return client.designate.zones.recordsets;
   }
@@ -37,14 +36,15 @@ export class DNSRecordSetsStore extends Base {
   }
 
   @action
-  delete = ({ zone_id, recordset_id }) => this.submitting(this.client.delete(zone_id, recordset_id));
+  delete = ({ zone_id, recordset_id }) =>
+    this.submitting(this.client.delete(zone_id, recordset_id));
 
   @action
-  update = (zone_id, recordset_id, body) => this.submitting(this.client.update(zone_id, recordset_id, body));
+  update = (zone_id, recordset_id, body) =>
+    this.submitting(this.client.update(zone_id, recordset_id, body));
 
   @action
   create = ({ id }, body) => this.submitting(this.client.create(id, body));
-
 }
 
 const globalDNSRecordSetsStore = new DNSRecordSetsStore();
