@@ -2,7 +2,6 @@ import { Select } from 'antd';
 import { get } from 'lodash';
 
 import React, { useState } from 'react';
-import styles from '../../style.less';
 
 const { Option } = Select;
 const useNodeSelect = (defaultNode) => {
@@ -17,7 +16,7 @@ const useNodeSelect = (defaultNode) => {
   const Nodes = () => {
     const key = getKey();
     return (
-      <div className={styles.header}>
+      <div style={{ marginBottom: 16 }}>
         <span style={{ color: 'black', fontSize: 14, fontWeight: 400 }}>
           Node:{' '}
         </span>

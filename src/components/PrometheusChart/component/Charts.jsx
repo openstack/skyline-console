@@ -35,7 +35,7 @@ const Charts = (props) => {
 
   function renderTopCards() {
     return (
-      <Row gutter={[16, 16]} style={{ width: '100%' }}>
+      <Row gutter={[16, 16]}>
         {topCardList.map((chartProps) => {
           if (chartProps.hidden) {
             return null;
