@@ -1872,6 +1872,8 @@
   "Please select {name} first": "请先选择{name}",
   "Please set CPU && Ram first.": "请先设置CPU、内存。",
   "Please set MUNA": "请设置NUMA节点",
+  "Please set a size no less than {minSize} GiB!": "请设置不小于 {minSize} GiB 的容量！",
+  "Please set the system disk size!": "请设置系统盘的容量！",
   "Please upload files smaller than { size }GiB on the page. It is recommended to upload files over { size }GiB using API.": "页面请上传小于{ size }GiB的文件，超过{ size }GiB的文件建议使用API上传。",
   "Pointer Record": "指针记录",
   "Poland": "波兰",

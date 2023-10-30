@@ -267,9 +267,21 @@ export class BaseStep extends Base {
   }
 
   checkSystemDisk = (rule, value) => {
-    if (!value.type) {
+    const { size = 10, type } = value || {};
+    const minSize = this.getSystemDiskMinSize();
+    if (!type) {
       // eslint-disable-next-line prefer-promise-reject-errors
       return Promise.reject('');
+    }
+    if (!size) {
+      return Promise.reject(new Error(t('Please set the system disk size!')));
+    }
+    if (size < minSize) {
+      return Promise.reject(
+        new Error(
+          t('Please set a size no less than {minSize} GiB!', { minSize })
+        )
+      );
     }
     return Promise.resolve();
   };
@@ -788,6 +800,7 @@ export class BaseStep extends Base {
         minSize: this.getSystemDiskMinSize(),
         extra: t('Disk size is limited by the min disk of flavor, image, etc.'),
         onChange: this.onSystemDiskChange,
+        dependencies: ['flavor', 'image', 'instanceSnapshot', 'bootFromVolume'],
       },
       {
         name: 'instanceSnapshotDisk',
