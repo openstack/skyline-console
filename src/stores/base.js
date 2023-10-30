@@ -437,7 +437,7 @@ export default class BaseStore {
     this.listResponseKey ? get(result, this.listResponseKey, []) : result;
 
   // eslint-disable-next-line no-unused-vars
-  async getCountForPage(newParams, all_projects, newData) {
+  async getCountForPage(newParams, newData, all_projects, result, params) {
     return {};
   }
 
@@ -517,13 +517,15 @@ export default class BaseStore {
   }
 
   @action
-  async fetchDetail({ all_projects, silent, ...rest }) {
+  async fetchDetail(params) {
+    const { all_projects, silent, ...rest } = params || {};
     if (!silent) {
       this.isLoading = true;
     }
     const result = await this.detailFetchByClient(
       rest,
-      this.getDetailParams({ all_projects })
+      this.getDetailParams({ all_projects }),
+      params
     );
     const originData = get(result, this.responseKey) || result;
     const item = this.mapperBeforeFetchProject(originData, rest, true);

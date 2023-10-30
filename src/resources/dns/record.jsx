@@ -100,6 +100,7 @@ export const dnsRRTypeList = () => {
     .map((item) => ({
       label: `${item} - ${DNS_RECORD_TYPE[item].name}`,
       value: item,
+      key: item,
     }));
 };
 

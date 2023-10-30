@@ -447,6 +447,30 @@ const renderMenu = (t) => {
             },
           ],
         },
+        {
+          path: '/network/dns-admin/zones',
+          name: t('DNS Zones'),
+          key: 'dnsZonesAdmin',
+          endpoints: 'designate',
+          level: 1,
+          children: [
+            {
+              path: /^\/network\/dns-admin\/zones\/detail\/.[^/]+$/,
+              name: t('Zones Detail'),
+              key: 'dnsZonesDetailAdmin',
+              level: 2,
+              routePath: '/network/dns-admin/zones/detail/:id',
+            },
+            {
+              path: /^\/network\/dns-admin\/zones\/detail\/.[^/]+\/recordsets\/.[^/]+$/,
+              name: t('Recordsets Detail'),
+              key: 'dnsRecordSetDetailAdmin',
+              level: 2,
+              routePath:
+                '/network/dns-admin/zones/detail/:zoneId/recordsets/:id',
+            },
+          ],
+        },
       ],
     },
     {
@@ -977,7 +1001,7 @@ const renderMenu = (t) => {
               level: 2,
               routePath: '/ha/segments-admin/detail/:id',
             },
-          ]
+          ],
         },
         {
           path: '/ha/hosts-admin',
@@ -992,7 +1016,7 @@ const renderMenu = (t) => {
               level: 2,
               routePath: '/ha/hosts-admin/detail/:id',
             },
-          ]
+          ],
         },
         {
           path: '/ha/notifications-admin',
@@ -1007,10 +1031,10 @@ const renderMenu = (t) => {
               level: 2,
               routePath: '/ha/notifications-admin/detail/:id',
             },
-          ]
-        }
-      ]
-    }
+          ],
+        },
+      ],
+    },
   ];
   return menu;
 };

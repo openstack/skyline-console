@@ -89,7 +89,9 @@ export class LbaasStore extends Base {
       const totalResult = await this.getCountForPage(
         newParams,
         newData,
-        all_projects
+        all_projects,
+        result,
+        params
       );
       const { count: retCount, total: retTotal } = totalResult;
       count = retCount;

@@ -467,9 +467,9 @@ const renderMenu = (t) => {
               name: t('Recordsets Detail'),
               key: 'dnsRecordSetDetail',
               level: 2,
-              routePath: '/network/dns/zones/detail/:id/recordsets/:recordset_id',
+              routePath: '/network/dns/zones/detail/:zoneId/recordsets/:id',
             },
-          ]
+          ],
         },
         {
           path: '/network/dns/reverse',
@@ -485,8 +485,8 @@ const renderMenu = (t) => {
               level: 2,
               routePath: '/network/dns/reverse/detail/:id',
             },
-          ]
-        }
+          ],
+        },
       ],
     },
     {

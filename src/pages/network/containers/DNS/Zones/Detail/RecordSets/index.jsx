@@ -14,13 +14,19 @@ import React from 'react';
 import Base from 'containers/List';
 import { inject, observer } from 'mobx-react';
 import { Tag } from 'antd';
-import globalDNSRecordSetsStore from 'stores/designate/record-set';
-import { RECORD_STATUS, getRecordSetType } from 'resources/dns/record';
+import { DNSRecordSetsStore } from 'stores/designate/record-set';
+import {
+  RECORD_STATUS,
+  dnsRRTypeList,
+  getRecordSetType,
+} from 'resources/dns/record';
+import { getOptions } from 'utils';
 import actionConfigs from './actions';
 
 export class RecordSets extends Base {
   init() {
-    this.store = globalDNSRecordSetsStore;
+    this.store = new DNSRecordSetsStore();
+    this.downloadStore = new DNSRecordSetsStore();
   }
 
   get name() {
@@ -29,6 +35,14 @@ export class RecordSets extends Base {
 
   get policy() {
     return 'get_recordsets';
+  }
+
+  get isFilterByBackend() {
+    return true;
+  }
+
+  get isSortByBackend() {
+    return true;
   }
 
   get actionConfigs() {
@@ -43,11 +57,12 @@ export class RecordSets extends Base {
         routeName: this.getRouteName('dnsRecordSetDetail'),
         routeParamsFunc: (data) => {
           return {
-            id: data.zone_id,
-            recordset_id: data.id,
+            zoneId: data.zone_id,
+            id: data.id,
           };
         },
         isLink: true,
+        sortKey: 'id',
       },
       {
         title: t('Type'),
@@ -59,11 +74,37 @@ export class RecordSets extends Base {
         dataIndex: 'records',
         render: (value) => value.map((item) => <Tag key={item}>{item}</Tag>),
         stringify: (value) => value.join('\n'),
+        sorter: false,
       },
       {
         title: t('Status'),
         dataIndex: 'status',
         valueMap: RECORD_STATUS,
+        sorter: false,
+      },
+      {
+        title: t('Created At'),
+        dataIndex: 'created_at',
+        valueRender: 'toLocalTime',
+      },
+    ];
+  }
+
+  get searchFilters() {
+    return [
+      {
+        label: t('Name'),
+        name: 'name',
+      },
+      {
+        label: t('Type'),
+        name: 'type',
+        options: dnsRRTypeList(),
+      },
+      {
+        label: t('Status'),
+        name: 'status',
+        options: getOptions(RECORD_STATUS),
       },
     ];
   }

@@ -12,7 +12,7 @@
 
 import client from 'client';
 import { action } from 'mobx';
-import Base from 'stores/base';
+import Base from './base';
 
 export class DNSRecordSetsStore extends Base {
   get client() {
@@ -23,14 +23,11 @@ export class DNSRecordSetsStore extends Base {
     return true;
   }
 
-  detailFetchByClient(resourceParams) {
-    const { id, recordset_id } = resourceParams;
-    return this.client.show(id, recordset_id);
-  }
+  getFatherResourceId = (params) => params.zoneId || params.id;
 
-  get paramsFunc() {
+  get paramsFuncPage() {
     return (params) => {
-      const { id, ...rest } = params;
+      const { id, zoneId, all_projects, current, ...rest } = params;
       return rest;
     };
   }

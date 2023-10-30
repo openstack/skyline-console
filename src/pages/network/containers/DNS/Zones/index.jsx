@@ -14,6 +14,7 @@ import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalDNSZonesStore, { DNSZonesStore } from 'src/stores/designate/zones';
 import { ZONE_STATUS, ZONE_TYPES } from 'resources/dns/zone';
+import { getOptions } from 'utils';
 import actionConfigs from './actions';
 
 export class Zones extends Base {
@@ -34,13 +35,29 @@ export class Zones extends Base {
     return actionConfigs;
   }
 
+  get isFilterByBackend() {
+    return true;
+  }
+
+  get isSortByBackend() {
+    return true;
+  }
+
   getColumns = () => [
     {
-      title: t('Name'),
+      title: t('Zone ID/Name'),
       dataIndex: 'name',
       isHideable: true,
       isLink: true,
-      routeName: 'dnsZonesDetail',
+      routeName: this.getRouteName('dnsZonesDetail'),
+      sortKey: 'id',
+    },
+    {
+      title: t('Project ID/Name'),
+      dataIndex: 'project_name',
+      isHideable: true,
+      hidden: !this.isAdminPage,
+      sortKey: 'tenant_id',
     },
     {
       title: t('Type'),
@@ -54,15 +71,32 @@ export class Zones extends Base {
       dataIndex: 'status',
       isHideable: true,
       valueMap: ZONE_STATUS,
-      sorter: false,
     },
     {
       title: t('Created At'),
       dataIndex: 'created_at',
       valueRender: 'sinceTime',
-      sorter: false,
     },
   ];
+
+  get searchFilters() {
+    return [
+      {
+        label: t('Name'),
+        name: 'name',
+      },
+      {
+        label: t('Type'),
+        name: 'type',
+        options: getOptions(ZONE_TYPES),
+      },
+      {
+        label: t('Status'),
+        name: 'status',
+        options: getOptions(ZONE_STATUS),
+      },
+    ];
+  }
 }
 
 export default inject('rootStore')(observer(Zones));

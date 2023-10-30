@@ -12,7 +12,7 @@
 
 import { action } from 'mobx';
 import client from 'client';
-import Base from 'stores/base';
+import Base from './base';
 
 export class DNSZonesStore extends Base {
   get client() {
