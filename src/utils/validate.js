@@ -30,7 +30,7 @@ const portRangeRegex =
 const ipWithMask =
   /^(?:(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\/([1-9]|[1-2]\d|3[0-2])$/;
 const passwordRegex =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\\[\]`~!@#$%^&*()_\-+=?:"{}|,.\\/;'])[A-Za-z\d\\[\]`~!@#$%^&*()_\-+=?:"{}|,.\\/;']{8,16}$/;
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\\[\]`~!@#$%^&*><()_\-+=?:"{}|,.\\/;'])[A-Za-z\d\\[\]`~!@#$%^&*><()_\-+=?:"{}|,.\\/;']{8,32}$/;
 const instancePasswordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\\[\]`~!@#$%^&*()_\-+=?:"{}|,.\\/;']{8,16}$/;
 const emailRegex =
@@ -636,7 +636,7 @@ export const passwordValidate = (rule, value, state) => {
           )
         : getErrorMessage(
             t(
-              '8 to 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character.'
+              '8 to 32 characters, at least one uppercase letter, one lowercase letter, one number and one special character.'
             ),
             hasPrefix
           );
