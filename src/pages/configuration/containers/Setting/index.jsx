@@ -16,6 +16,7 @@ import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import globalSettingStore from 'stores/skyline/setting';
 import { onlyAdminCanReadPolicy } from 'resources/skyline/policy';
+import { SETTING_DESC } from 'resources/skyline/setting';
 import actionConfigs from './actions';
 
 export class Setting extends Base {
@@ -43,19 +44,31 @@ export class Setting extends Base {
     return actionConfigs;
   }
 
-  getColumns = () => [
-    {
-      title: t('Type'),
-      dataIndex: 'key',
-    },
-    {
-      title: t('Effective Mode'),
-      dataIndex: 'restart_service',
-      titleTip: t('Effective mode after configuration changes'),
-      render: (value) =>
-        value ? t('Take effect after restart') : t('Immediate effect'),
-    },
-  ];
+  getDesc(record) {
+    const { key } = record;
+    return SETTING_DESC[key] || '-';
+  }
+
+  getColumns() {
+    return [
+      {
+        title: t('Type'),
+        dataIndex: 'key',
+      },
+      {
+        title: t('Effective Mode'),
+        dataIndex: 'restart_service',
+        titleTip: t('Effective mode after configuration changes'),
+        render: (value) =>
+          value ? t('Take effect after restart') : t('Immediate effect'),
+      },
+      {
+        title: t('Description'),
+        dataIndex: 'description',
+        render: (value, record) => this.getDesc(record),
+      },
+    ];
+  }
 
   get searchFilters() {
     return [];
