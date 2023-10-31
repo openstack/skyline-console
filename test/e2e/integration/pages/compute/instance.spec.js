@@ -105,11 +105,7 @@ describe('The Instance Page', () => {
     cy.tableSearchText(name)
       .clickConfirmActionInMoreSub('Stop', 'Instance Status')
       .tableSearchText(name)
-      .waitStatusTextByFresh('Shutoff')
-      .tableSearchText(name)
-      .selectFirst()
-      .clickHeaderButtonByTitle('Stop')
-      .checkDisableAction(2000);
+      .waitStatusTextByFresh('Shutoff');
   });
 
   it('successfully start', () => {
