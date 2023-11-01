@@ -49,18 +49,27 @@ export class Setting extends Base {
     return SETTING_DESC[key] || '-';
   }
 
+  get modeOptions() {
+    return [
+      { key: false, label: t('Immediate effect') },
+      { key: true, label: t('Take effect after restart') },
+    ];
+  }
+
   getColumns() {
     return [
       {
-        title: t('Type'),
+        title: t('Parameter'),
         dataIndex: 'key',
       },
       {
         title: t('Effective Mode'),
         dataIndex: 'restart_service',
         titleTip: t('Effective mode after configuration changes'),
-        render: (value) =>
-          value ? t('Take effect after restart') : t('Immediate effect'),
+        render: (value) => {
+          const item = this.modeOptions.find((m) => m.key === value);
+          return item?.label || '-';
+        },
       },
       {
         title: t('Description'),
@@ -71,7 +80,25 @@ export class Setting extends Base {
   }
 
   get searchFilters() {
-    return [];
+    return [
+      {
+        name: 'key',
+        label: t('Parameter'),
+      },
+      {
+        name: 'restart_service',
+        label: t('Effective Mode'),
+        options: this.modeOptions,
+      },
+      {
+        name: 'description',
+        label: t('Description'),
+        filterFunc: (record, val, data) => {
+          const desc = this.getDesc(data).toLowerCase();
+          return desc.includes(val.toLowerCase());
+        },
+      },
+    ];
   }
 }
 

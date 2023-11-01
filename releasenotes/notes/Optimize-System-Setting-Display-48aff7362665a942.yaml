@@ -1,0 +1,7 @@
+features:
+  - |
+    Optimize the display of system configuration page in the administrator:
+
+    * Add a description for each setting key to better understand the meaning of each key.
+
+    * Update search filter for each column.
