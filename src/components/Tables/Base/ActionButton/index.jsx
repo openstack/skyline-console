@@ -463,17 +463,21 @@ export class ActionButton extends Component {
     }
   };
 
-  getModalOkButtonProps = (item, action) => {
+  getModalOkButtonProps = ({ item, action, items }) => {
     const { disableSubmit = false, okButtonProps } = action;
     if (okButtonProps) {
       return okButtonProps;
     }
+    const disabled = isFunction(disableSubmit)
+      ? disableSubmit({ item, items, action })
+      : disableSubmit;
     return {
-      disabled: disableSubmit,
+      disabled,
     };
   };
 
-  getModalCancelButtonProps = (item, action) => {
+  // eslint-disable-next-line no-unused-vars
+  getModalCancelButtonProps = ({ item, action, items }) => {
     const { readOnly, cancelButtonProps } = action;
     if (cancelButtonProps) {
       return cancelButtonProps;
@@ -509,8 +513,12 @@ export class ActionButton extends Component {
     const ActionComponent = action;
     const { okText, cancelText, id, className } = action;
     const width = this.getModalWidth(action);
-    const okButtonProps = this.getModalOkButtonProps(item, action);
-    const cancelButtonProps = this.getModalCancelButtonProps(item, action);
+    const okButtonProps = this.getModalOkButtonProps({ item, action, items });
+    const cancelButtonProps = this.getModalCancelButtonProps({
+      item,
+      action,
+      items,
+    });
     const modalProps = {
       title,
       visible,
