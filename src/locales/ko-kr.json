@@ -1333,7 +1333,7 @@
   "Invalid: Project name can not be chinese": "잘못됨: 프로젝트 이름은 중국어일 수 없습니다.",
   "Invalid: Project names in the domain can not be repeated": "유효하지 않음: 도메인의 프로젝트 이름은 반복될 수 없습니다.",
   "Invalid: Quota value(s) cannot be less than the current usage value(s): { used } used.": "잘못됨: 할당량 값은 현재 사용 값보다 작을 수 없습니다: { used } 사용됨.",
-  "Invalid: User Group name can not be duplicated": "잘못됨: 사용자 그룹 이름은 중복될 수 없습니다.",
+  "Invalid: User Group names in the domain can not be repeated": "유효하지 않음: 도메인의 사용자 그룹 이름은 반복될 수 없습니다.",
   "Invalid: User names in the domain can not be repeated": "유효하지 않음: 도메인의 사용자 이름은 반복될 수 없습니다.",
   "Ip Address": "IP 주소",
   "Iran (Islamic Republic of)": "",

@@ -50,11 +50,17 @@ export class Create extends ModalAction {
     if (!value) {
       return Promise.reject(t('Please input'));
     }
+    const domainId = this.formRef.current.getFieldValue('domain_id');
+    if (!domainId) {
+      return Promise.resolve();
+    }
     const { list: { data = [] } = {} } = this.store;
-    const nameUsed = data.find((it) => it.name === value);
+    const nameUsed = data.find(
+      (it) => it.name === value && it.domain_id === domainId
+    );
     if (nameUsed) {
       return Promise.reject(
-        t('Invalid: User Group name can not be duplicated')
+        t('Invalid: User Group names in the domain can not be repeated')
       );
     }
     return Promise.resolve();
@@ -72,6 +78,7 @@ export class Create extends ModalAction {
         validator: this.checkName,
         extra: t('User Groups') + t('Name can not be duplicated'),
         maxLength: 30,
+        dependencies: ['domain_id'],
       },
       domainFormItem,
       {
