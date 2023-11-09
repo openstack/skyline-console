@@ -1334,7 +1334,7 @@
   "Invalid: Project names in the domain can not be repeated": "Invalid: Project names in the domain can not be repeated",
   "Invalid: Quota value(s) cannot be less than the current usage value(s): { used } used.": "Invalid: Quota value(s) cannot be less than the current usage value(s): { used } used.",
   "Invalid: User Group name can not be duplicated": "Invalid: User Group name can not be duplicated",
-  "Invalid: User name can not be duplicated": "Invalid: User name can not be duplicated",
+  "Invalid: User names in the domain can not be repeated": "Invalid: User names in the domain can not be repeated",
   "Ip Address": "Ip Address",
   "Iran (Islamic Republic of)": "Iran (Islamic Republic of)",
   "Iraq": "Iraq",

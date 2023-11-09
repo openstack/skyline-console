@@ -1334,7 +1334,7 @@
   "Invalid: Project names in the domain can not be repeated": "无效：域下的项目名称不能重复",
   "Invalid: Quota value(s) cannot be less than the current usage value(s): { used } used.": "无效：配额必须大于已使用数量{ used }且为整数",
   "Invalid: User Group name can not be duplicated": "无效：用户组名称不可重复",
-  "Invalid: User name can not be duplicated": "无效：用户名称不可重复",
+  "Invalid: User names in the domain can not be repeated": "无效：域下的用户名称不能重复",
   "Ip Address": "IP地址",
   "Iran (Islamic Republic of)": "伊朗",
   "Iraq": "伊拉克",

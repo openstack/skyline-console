@@ -221,12 +221,20 @@ export class Create extends FormAction {
     if (!value) {
       return Promise.reject(t('Please input'));
     }
+    const domainId = this.formRef.current.getFieldValue('domain_id');
+    if (!domainId) {
+      return Promise.resolve();
+    }
     const {
       list: { data },
     } = this.store;
-    const nameUsed = data.filter((it) => it.name === value);
+    const nameUsed = data.filter(
+      (it) => it.name === value && it.domain_id === domainId
+    );
     if (nameUsed[0]) {
-      return Promise.reject(t('Invalid: User name can not be duplicated'));
+      return Promise.reject(
+        t('Invalid: User names in the domain can not be repeated')
+      );
     }
     return Promise.resolve();
   };
@@ -261,6 +269,7 @@ export class Create extends FormAction {
         required: true,
         ...cols,
         maxLength: 30,
+        dependencies: ['domain_id'],
       },
       {
         name: 'email',
