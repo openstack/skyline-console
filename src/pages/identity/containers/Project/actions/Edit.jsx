@@ -54,10 +54,15 @@ export class EditForm extends ModalAction {
       list: { data },
     } = this.store;
     const nameUsed = data.find(
-      (i) => i.name === value && i.id !== this.item.id
+      (i) =>
+        i.name === value &&
+        i.id !== this.item.id &&
+        i.domain_id === this.item.domain_id
     );
     if (nameUsed) {
-      return Promise.reject(t('Invalid: Project name can not be duplicated'));
+      return Promise.reject(
+        t('Invalid: Project names in the domain can not be repeated')
+      );
     }
     return Promise.resolve();
   };

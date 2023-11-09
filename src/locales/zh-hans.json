@@ -1331,7 +1331,7 @@
   "Invalid: Please input a valid ipv4": "无效：请输入有效的IPV4",
   "Invalid: Please input a valid ipv6.": "无效：请输入有效的IPV6",
   "Invalid: Project name can not be chinese": "无效：项目名称不可使用中文",
-  "Invalid: Project name can not be duplicated": "无效：项目名称不可重复",
+  "Invalid: Project names in the domain can not be repeated": "无效：域下的项目名称不能重复",
   "Invalid: Quota value(s) cannot be less than the current usage value(s): { used } used.": "无效：配额必须大于已使用数量{ used }且为整数",
   "Invalid: User Group name can not be duplicated": "无效：用户组名称不可重复",
   "Invalid: User name can not be duplicated": "无效：用户名称不可重复",

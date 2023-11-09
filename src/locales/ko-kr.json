@@ -1331,7 +1331,7 @@
   "Invalid: Please input a valid ipv4": "잘못됨: 유효한 ipv4를 입력하십시오",
   "Invalid: Please input a valid ipv6.": "잘못됨: 유효한 ipv6을 입력하십시오.",
   "Invalid: Project name can not be chinese": "잘못됨: 프로젝트 이름은 중국어일 수 없습니다.",
-  "Invalid: Project name can not be duplicated": "잘못됨: 프로젝트 이름은 중복될 수 없습니다.",
+  "Invalid: Project names in the domain can not be repeated": "유효하지 않음: 도메인의 프로젝트 이름은 반복될 수 없습니다.",
   "Invalid: Quota value(s) cannot be less than the current usage value(s): { used } used.": "잘못됨: 할당량 값은 현재 사용 값보다 작을 수 없습니다: { used } 사용됨.",
   "Invalid: User Group name can not be duplicated": "잘못됨: 사용자 그룹 이름은 중복될 수 없습니다.",
   "Invalid: User name can not be duplicated": "잘못됨: 사용자 이름은 중복될 수 없습니다.",

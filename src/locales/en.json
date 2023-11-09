@@ -1331,7 +1331,7 @@
   "Invalid: Please input a valid ipv4": "Invalid: Please input a valid ipv4",
   "Invalid: Please input a valid ipv6.": "Invalid: Please input a valid ipv6.",
   "Invalid: Project name can not be chinese": "Invalid: Project name can not be chinese",
-  "Invalid: Project name can not be duplicated": "Invalid: Project name can not be duplicated",
+  "Invalid: Project names in the domain can not be repeated": "Invalid: Project names in the domain can not be repeated",
   "Invalid: Quota value(s) cannot be less than the current usage value(s): { used } used.": "Invalid: Quota value(s) cannot be less than the current usage value(s): { used } used.",
   "Invalid: User Group name can not be duplicated": "Invalid: User Group name can not be duplicated",
   "Invalid: User name can not be duplicated": "Invalid: User name can not be duplicated",

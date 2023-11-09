@@ -74,12 +74,20 @@ export class Create extends ModalAction {
     if (!nameRegexWithoutChinese.test(value)) {
       return Promise.reject(t('Invalid: Project name can not be chinese'));
     }
+    const domainId = this.formRef.current.getFieldValue('domain_id');
+    if (!domainId) {
+      return Promise.resolve();
+    }
     const {
       list: { data },
     } = this.projectStore;
-    const nameUsed = data.filter((it) => it.name === value);
+    const nameUsed = data.filter(
+      (it) => it.name === value && it.domain_id === domainId
+    );
     if (nameUsed[0]) {
-      return Promise.reject(t('Invalid: Project name can not be duplicated'));
+      return Promise.reject(
+        t('Invalid: Project names in the domain can not be repeated')
+      );
     }
     return Promise.resolve();
   };
@@ -96,6 +104,7 @@ export class Create extends ModalAction {
         validator: this.checkName,
         extra: t('Project') + t('Name can not be duplicated'),
         maxLength: 30,
+        dependencies: ['domain_id'],
       },
       domainFormItem,
       {
