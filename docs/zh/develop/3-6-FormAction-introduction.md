@@ -175,7 +175,6 @@
           type: 'input',
           placeholder: t('Please input name'),
           required: true,
-          help: t('The name cannot be modified after creation'),
         },
         {
           name: 'description',

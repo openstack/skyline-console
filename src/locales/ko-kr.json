@@ -2463,7 +2463,6 @@
   "The maximum batch size is {size}, that is, the size of the port range cannot exceed {size}.": "최대 batch 크기는 {size}입니다. 즉, 포트 범위의 크기는 {size}를 초과할 수 없습니다.",
   "The maximum transmission unit (MTU) value to address fragmentation. Minimum value is 68 for IPv4, and 1280 for IPv6.": "분할을 처리하기 위한 최대 전송 단위(MTU) 값입니다. IPv4의 경우 최소값은 68이며, IPv6의 경우 최소값은 1280입니다.",
   "The min size is {size} GiB": "최소 크기는 {size} GiB입니다.",
-  "The name cannot be modified after creation": "생성 후에는 이름을 수정할 수 없습니다.",
   "The name of the physical network to which a port is connected": "포트가 연결된 물리 네트워크의 이름",
   "The name should be end with \".\"": "",
   "The name should contain letter or number, the length is 1 to 16, characters can only contain \"0-9, a-z, A-Z, -, _.\"": "이름은 문자나 숫자를 포함해야 하고, 길이는 1~16자 사이여야 하며, 문자는 \"0-9, a-z, A-Z, -, _.\"만 포함할 수 있습니다.",

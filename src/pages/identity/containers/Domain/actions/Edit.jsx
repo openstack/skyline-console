@@ -15,10 +15,12 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalDomainStore from 'stores/keystone/domain';
+import { toJS } from 'mobx';
 
 export class Edit extends ModalAction {
   init() {
     this.store = globalDomainStore;
+    this.store.fetchList();
   }
 
   static id = 'domain-edit';
@@ -41,6 +43,22 @@ export class Edit extends ModalAction {
     };
   }
 
+  get currentList() {
+    const { list: { data = [] } = {} } = this.store;
+    return data;
+  }
+
+  nameValidator = (rule, value) => {
+    const data = toJS(this.currentList);
+    if (data.find((d) => d.name === value && d.id !== this.item.id)) {
+      return Promise.reject(
+        new Error(t('Invalid: Domain name cannot be duplicated'))
+      );
+    }
+
+    return Promise.resolve(true);
+  };
+
   get formItems() {
     return [
       {
@@ -48,9 +66,8 @@ export class Edit extends ModalAction {
         label: t('Name'),
         type: 'input',
         placeholder: t('Please input name'),
-        // required: true,
-        help: t('The name cannot be modified after creation'),
-        disabled: true,
+        required: true,
+        validator: this.nameValidator,
       },
       {
         name: 'description',

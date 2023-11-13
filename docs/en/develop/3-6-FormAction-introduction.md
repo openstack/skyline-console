@@ -175,7 +175,6 @@ English | [Chinese](../../zh/develop/3-6-FormAction-introduction.md)
           type: 'input',
           placeholder: t('Please input name'),
           required: true,
-          help: t('The name cannot be modified after creation'),
         },
         {
           name: 'description',
@@ -349,7 +348,7 @@ English | [Chinese](../../zh/develop/3-6-FormAction-introduction.md)
 
 - `labelCol`
   - Configure the layout of the labels on the left side of the form
-  - The default value is 
+  - The default value is
 
     ```javascript
     get labelCol() {
@@ -373,7 +372,7 @@ English | [Chinese](../../zh/develop/3-6-FormAction-introduction.md)
 
 - `wrapperCol`
   - Configure the layout of the content on the right side of the form
-  - The default value is 
+  - The default value is
 
     ```javascript
     get wrapperCol() {

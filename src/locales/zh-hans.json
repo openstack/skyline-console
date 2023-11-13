@@ -2463,7 +2463,6 @@
   "The maximum batch size is {size}, that is, the size of the port range cannot exceed {size}.": "批量的上限为{size}个，即端口范围大小不可超过{size}。",
   "The maximum transmission unit (MTU) value to address fragmentation. Minimum value is 68 for IPv4, and 1280 for IPv6.": "地址片段的最大传输单位。IPv4最小68，IPv6最小1280。",
   "The min size is {size} GiB": "最小内存为 {size} GiB",
-  "The name cannot be modified after creation": "名称创建后不可修改",
   "The name of the physical network to which a port is connected": "端口连接到的物理网络的名称",
   "The name should be end with \".\"": "",
   "The name should contain letter or number, the length is 1 to 16, characters can only contain \"0-9, a-z, A-Z, -, _.\"": "名称应包含字母或数字，长度为 1 到 16，且字符只能包含“0-9、a-z、A-Z、-、_”。",

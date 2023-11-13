@@ -2463,7 +2463,6 @@
   "The maximum batch size is {size}, that is, the size of the port range cannot exceed {size}.": "The maximum batch size is {size}, that is, the size of the port range cannot exceed {size}.",
   "The maximum transmission unit (MTU) value to address fragmentation. Minimum value is 68 for IPv4, and 1280 for IPv6.": "The maximum transmission unit (MTU) value to address fragmentation. Minimum value is 68 for IPv4, and 1280 for IPv6.",
   "The min size is {size} GiB": "The min size is {size} GiB",
-  "The name cannot be modified after creation": "The name cannot be modified after creation",
   "The name of the physical network to which a port is connected": "The name of the physical network to which a port is connected",
   "The name should be end with \".\"": "The name should be end with \".\"",
   "The name should contain letter or number, the length is 1 to 16, characters can only contain \"0-9, a-z, A-Z, -, _.\"": "The name should contain letter or number, the length is 1 to 16, characters can only contain \"0-9, a-z, A-Z, -, _.\"",

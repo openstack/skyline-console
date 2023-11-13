@@ -95,9 +95,9 @@ export class DomainStore extends Base {
   }
 
   @action
-  async edit({ id, description }) {
+  async edit({ id, description, name }) {
     const reqBody = {
-      domain: { description },
+      domain: { description, name },
     };
     return this.submitting(this.client.patch(id, reqBody));
   }

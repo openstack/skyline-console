@@ -57,7 +57,6 @@ export class Create extends ModalAction {
         type: 'input',
         placeholder: t('Please input name'),
         required: true,
-        extra: t('The name cannot be modified after creation'),
         validator: this.nameValidator,
       },
       // {
