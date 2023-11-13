@@ -16,6 +16,7 @@ import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
 import {
   getCertificateColumns,
+  getListenerInsertHeadersFormItem,
   listenerProtocols,
   sslParseMethod,
 } from 'resources/octavia/lb';
@@ -87,6 +88,8 @@ export class ListenerStep extends Base {
       listener_ssl_parsing_method,
       listener_sni_enabled,
     } = this.state;
+
+    const insertHeadersFormItem = getListenerInsertHeadersFormItem();
     return [
       {
         name: 'listener_name',
@@ -202,6 +205,7 @@ export class ListenerStep extends Base {
         type: 'switch',
         tip: t('Defines the admin state of the listener.'),
       },
+      insertHeadersFormItem,
     ];
   }
 }

@@ -16,6 +16,8 @@ import { inject, observer } from 'mobx-react';
 import globalListenerStore from 'stores/octavia/listener';
 import Base from 'containers/BaseDetail';
 import { HealthMonitorStore } from 'stores/octavia/health-monitor';
+import { getInsertHeaderCard } from 'src/resources/octavia/lb';
+import { isEmpty } from 'lodash';
 
 export class BaseDetail extends Base {
   componentDidMount() {
@@ -43,7 +45,12 @@ export class BaseDetail extends Base {
   };
 
   get leftCards() {
-    return [this.PoolInfo, this.healthMonitor];
+    const cards = [this.PoolInfo, this.healthMonitor];
+    const { insert_headers = {} } = this.detailData;
+    if (isEmpty(insert_headers)) {
+      return cards;
+    }
+    return [...cards, this.customHeaders];
   }
 
   get rightCards() {
@@ -81,16 +88,21 @@ export class BaseDetail extends Base {
     };
   }
 
+  get customHeaders() {
+    const { insert_headers = {} } = this.detailData || {};
+    return getInsertHeaderCard(insert_headers || {});
+  }
+
   get healthMonitor() {
     const healthmonitor = this.healthmonitorStore.detail || {};
     const { admin_state_up, type, delay, timeout, max_retries } = healthmonitor;
     const options = [
       {
-        label: t('Enable HealthMonitor'),
+        label: t('Enable Health Monitor'),
         content: admin_state_up ? t('Yes') : t('No'),
       },
       {
-        label: t('HealthMonitor Type'),
+        label: t('Health Monitor Type'),
         content: admin_state_up ? type : '-',
       },
       {
@@ -110,7 +122,7 @@ export class BaseDetail extends Base {
       options[0].content = '-';
     }
     return {
-      title: t('HealthMonitor'),
+      title: t('Health Monitor'),
       options,
     };
   }

@@ -15,6 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { StepAction } from 'containers/Action';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
+import { getInsertHeadersValueFromForm } from 'resources/octavia/lb';
 import BaseStep from './BaseStep';
 import ListenerStep from '../../../StepCreateComponents/ListenerStep';
 import PoolStep from '../../../StepCreateComponents/PoolStep';
@@ -93,6 +94,7 @@ export class StepCreate extends StepAction {
       listener_admin_state_up,
       pool_admin_state_up,
       monitor_admin_state_up,
+      insert_headers,
       ...rest
     } = values;
     const data = {
@@ -111,6 +113,11 @@ export class StepCreate extends StepAction {
       admin_state_up: listener_admin_state_up,
       protocol: listener_protocol,
     };
+
+    const insertHeaders = getInsertHeadersValueFromForm(insert_headers);
+    if (insertHeaders) {
+      listenerData.insert_headers = insertHeaders;
+    }
 
     if (listener_protocol === 'TERMINATED_HTTPS') {
       if (listener_default_tls_container_ref) {

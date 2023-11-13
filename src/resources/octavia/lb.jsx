@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { isEmpty } from 'lodash';
 import React from 'react';
 
 export const operatingStatusCodes = {
@@ -154,3 +155,82 @@ export const healthProtocols = [
     value: 'UDP-CONNECT',
   },
 ];
+
+export const INSERT_HEADERS = {
+  'X-Forwarded-For': t('Specify the client IP address'),
+  'X-Forwarded-Port': t('Specify the listener port'),
+};
+
+export const insertHeaderOptions = Object.keys(INSERT_HEADERS).map((key) => ({
+  label: key,
+  value: key,
+}));
+
+export const insertHeaderTips = (
+  <>
+    {Object.keys(INSERT_HEADERS).map((key) => {
+      return (
+        <p key={key}>
+          {key}: {INSERT_HEADERS[key]}
+        </p>
+      );
+    })}
+  </>
+);
+
+export const insertHeaderDesc = t(
+  'The optional headers to insert into the request before it is sent to the backend member.'
+);
+
+export const getListenerInsertHeadersFormItem = () => {
+  return {
+    name: 'insert_headers',
+    label: t('Custom Headers'),
+    type: 'check-group',
+    extra: insertHeaderDesc,
+    tip: insertHeaderTips,
+    options: insertHeaderOptions,
+  };
+};
+
+export const getInsertHeadersValueFromForm = (values) => {
+  if (!values) {
+    return null;
+  }
+  const result = {};
+  Object.keys(INSERT_HEADERS).forEach((key) => {
+    if (values[key]) {
+      result[key] = 'true';
+    }
+  });
+  return isEmpty(result) ? null : result;
+};
+
+export const getInsertHeadersFormValueFromListener = (listener) => {
+  const { insert_headers } = listener || {};
+  const result = {};
+  Object.keys(INSERT_HEADERS).forEach((key) => {
+    if (insert_headers[key]) {
+      result[key] = insert_headers[key] === 'true';
+    }
+  });
+  return result;
+};
+
+export const getInsertHeaderCard = (data) => {
+  const options = [];
+  Object.keys(INSERT_HEADERS).forEach((key) => {
+    if (data[key]) {
+      options.push({
+        label: key,
+        content: data[key],
+        tooltip: INSERT_HEADERS[key],
+      });
+    }
+  });
+  return {
+    title: t('Custom Headers'),
+    titleHelp: insertHeaderDesc,
+    options,
+  };
+};

@@ -15,6 +15,10 @@
 import { inject, observer } from 'mobx-react';
 import globalListenerStore from 'stores/octavia/listener';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
+import {
+  getInsertHeadersFormValueFromListener,
+  getInsertHeadersValueFromForm,
+} from 'resources/octavia/lb';
 import { Create as Base } from './CreateListener';
 
 export class Edit extends Base {
@@ -53,6 +57,7 @@ export class Edit extends Base {
       protocol: item.protocol,
       protocol_port: item.protocol_port,
       connection_limit: item.connection_limit,
+      insert_headers: getInsertHeadersFormValueFromListener(item),
     };
     if (item.protocol === 'TERMINATED_HTTPS') {
       if (item.default_tls_container_ref) {
@@ -115,11 +120,16 @@ export class Edit extends Base {
       default_tls_container_ref,
       client_ca_tls_container_ref,
       sni_container_refs,
+      insert_headers,
       ...rest
     } = values;
     const data = {
       ...rest,
     };
+    const insertHeaders = getInsertHeadersValueFromForm(insert_headers);
+    if (insertHeaders) {
+      data.insert_headers = insertHeaders;
+    }
     if (protocol === 'TERMINATED_HTTPS') {
       if (default_tls_container_ref) {
         data.default_tls_container_ref =

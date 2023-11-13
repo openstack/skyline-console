@@ -48,12 +48,11 @@ export class HealthMonitorStep extends Base {
   allowed = () => Promise.resolve();
 
   get formItems() {
-    const {health_delay, enableHealthMonitor} =
-        this.state;
+    const { health_delay, enableHealthMonitor } = this.state;
     return [
       {
         name: 'enableHealthMonitor',
-        label: t('Enable HealthMonitor'),
+        label: t('Enable Health Monitor'),
         type: 'radio',
         options: [
           {

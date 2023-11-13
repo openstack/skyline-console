@@ -122,7 +122,7 @@ export class EditHealthMonitor extends ModalAction {
     return [
       {
         name: 'admin_state_up',
-        label: t('Enable HealthMonitor'),
+        label: t('Enable Health Monitor'),
         type: 'radio',
         required: true,
         // onlyRadio: true,

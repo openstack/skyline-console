@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    Support insert_headers for lb's listener:
+
+    * Support set insert_headers for listener when creating lb.
+
+    * Support set insert_headers when creating lb's listener.
+
+    * Support update insert_headers when editing lb's listener.
+
+    * Support insert_headers card in the listener detail page.
