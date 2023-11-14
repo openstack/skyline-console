@@ -92,6 +92,7 @@ export class Create extends ModalAction {
       ssl_parsing_method: 'one-way',
       sni_enabled: false,
       connection_limit: -1,
+      admin_state_up: true,
     };
   }
 
@@ -202,6 +203,12 @@ export class Create extends ModalAction {
         min: -1,
         extra: t('-1 means no connection limit'),
         required: true,
+      },
+      {
+        name: 'admin_state_up',
+        label: t('Admin State Up'),
+        type: 'switch',
+        tip: t('Defines the admin state of the listener.'),
       },
       insertHeaderFormItem,
     ];

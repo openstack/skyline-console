@@ -93,6 +93,11 @@ export class Listeners extends Base {
       title: t('Max connect'),
       dataIndex: 'connection_limit',
     },
+    {
+      title: t('Admin State Up'),
+      dataIndex: 'admin_state_up',
+      render: (value) => (value ? t('On') : t('Off')),
+    },
   ];
 
   get searchFilters() {

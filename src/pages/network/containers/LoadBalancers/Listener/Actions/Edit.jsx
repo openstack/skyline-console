@@ -51,13 +51,22 @@ export class Edit extends Base {
 
   get defaultValue() {
     const { item } = this.props;
+    const {
+      name,
+      description,
+      protocol,
+      protocol_port,
+      connection_limit,
+      admin_state_up,
+    } = item || {};
     const values = {
-      name: item.name,
-      description: item.description,
-      protocol: item.protocol,
-      protocol_port: item.protocol_port,
-      connection_limit: item.connection_limit,
+      name,
+      description,
+      protocol,
+      protocol_port,
+      connection_limit,
       insert_headers: getInsertHeadersFormValueFromListener(item),
+      admin_state_up,
     };
     if (item.protocol === 'TERMINATED_HTTPS') {
       if (item.default_tls_container_ref) {

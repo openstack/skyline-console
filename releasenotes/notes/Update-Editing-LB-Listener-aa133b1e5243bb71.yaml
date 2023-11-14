@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    Update editing admin_state_up for lb's listener:
+
+    * Support editing admin_state_up when creating listener in the lb detail page.
+
+    * Support editing admin_state_up when editing listener.
+
+    * Support display admin_state_up info in the listener tab in the lb detail page.
+
+    * Support display admin_state_up info in the listener detail page.
