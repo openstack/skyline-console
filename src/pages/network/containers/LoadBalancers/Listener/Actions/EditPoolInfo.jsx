@@ -50,20 +50,13 @@ export class EditPoolInfo extends ModalAction {
 
   get defaultValue() {
     const { pool } = this.state;
-    const { name, description, protocol, lb_algorithm } = pool;
-    if (name && this.formRef.current) {
-      this.formRef.current.setFieldsValue({
-        name,
-        description,
-        protocol,
-        lb_algorithm,
-      });
-    }
+    const { name, description, protocol, lb_algorithm, admin_state_up } = pool;
     return {
       name,
       description,
       protocol,
       lb_algorithm,
+      admin_state_up,
     };
   }
 
@@ -84,7 +77,9 @@ export class EditPoolInfo extends ModalAction {
   async getPoolDetail() {
     const { default_pool_id } = this.item;
     const pool = await this.store.fetchDetail({ id: default_pool_id });
-    this.setState({ pool });
+    this.setState({ pool }, () => {
+      this.updateDefaultValue();
+    });
   }
 
   get formItems() {
@@ -114,6 +109,12 @@ export class EditPoolInfo extends ModalAction {
         type: 'select',
         options: Algorithm,
         required: true,
+      },
+      {
+        name: 'admin_state_up',
+        label: t('Admin State Up'),
+        type: 'switch',
+        tip: t('Defines the admin state of the pool.'),
       },
     ];
   }

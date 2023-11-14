@@ -23,7 +23,7 @@ export const BackendProtocol = [
   },
 ];
 
-const algorithmDict = {
+export const algorithmDict = {
   LEAST_CONNECTIONS: t('LEAST_CONNECTIONS'),
   ROUND_ROBIN: t('ROUND_ROBIN'),
   SOURCE_IP: t('SOURCE_IP'),

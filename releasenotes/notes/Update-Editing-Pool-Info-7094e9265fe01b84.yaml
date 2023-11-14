@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Update editing admin_state_up for listener's pool:
+
+    * Support editing admin_state_up when edit listener's pool of lb.
+
+    * Support display admin_state_up info in the pool info card in the listener detail page.
+
+    * Update lb algorithm display in the pool info card in the listener detail page.

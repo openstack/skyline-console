@@ -16,8 +16,9 @@ import { inject, observer } from 'mobx-react';
 import globalListenerStore from 'stores/octavia/listener';
 import Base from 'containers/BaseDetail';
 import { HealthMonitorStore } from 'stores/octavia/health-monitor';
-import { getInsertHeaderCard } from 'src/resources/octavia/lb';
+import { getInsertHeaderCard } from 'resources/octavia/lb';
 import { isEmpty } from 'lodash';
+import { algorithmDict } from 'resources/octavia/pool';
 
 export class BaseDetail extends Base {
   componentDidMount() {
@@ -63,7 +64,8 @@ export class BaseDetail extends Base {
 
   get PoolInfo() {
     const { default_pool = {} } = this.detailData || {};
-    const { name, protocol, lb_algorithm, description } = default_pool;
+    const { name, protocol, lb_algorithm, description, admin_state_up } =
+      default_pool;
     const options = [
       {
         label: t('Name'),
@@ -75,7 +77,11 @@ export class BaseDetail extends Base {
       },
       {
         label: t('LB Algorithm'),
-        content: lb_algorithm || '-',
+        content: algorithmDict[lb_algorithm] || lb_algorithm || '-',
+      },
+      {
+        label: t('Admin State Up'),
+        content: admin_state_up ? t('On') : t('Off'),
       },
       {
         label: t('Description'),
