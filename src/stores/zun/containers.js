@@ -99,6 +99,11 @@ export class ContainersStore extends Base {
   }
 
   @action
+  async attach(id) {
+    return this.client.attach(id);
+  }
+
+  @action
   async attachNetwork(id, data) {
     return this.client.network_attach(id, null, data);
   }
