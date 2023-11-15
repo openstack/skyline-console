@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Update editing health monitor for load balancer:
+
+    * Fix remove health monitor.
+
+    * Support editing admin_state_up when editing health monitor.
+
+    * Support display admin_state_up info in the heath monitor info card in the listener detail page.

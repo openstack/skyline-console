@@ -24,6 +24,14 @@ export class ListenerStore extends Base {
     return client.octavia.pools;
   }
 
+  get healthMonitorClient() {
+    return client.octavia.healthMonitors;
+  }
+
+  get lbClient() {
+    return client.octavia.loadbalancers;
+  }
+
   get listFilterByProject() {
     return true;
   }
@@ -66,11 +74,21 @@ export class ListenerStore extends Base {
       caCertificateId: caId,
       sniCertificateId: sniId,
     });
+    const { loadbalancers = [] } = item;
+    const { loadbalancer } = await this.lbClient.show(loadbalancers[0].id);
+    item.loadBalancer = loadbalancer;
     if (default_pool_id) {
       //  pool attach listener or loadbalancer ？
       try {
-        const res = await this.poolClient.show(default_pool_id);
-        item.default_pool = res.pool;
+        const { pool } = await this.poolClient.show(default_pool_id);
+        item.default_pool = pool;
+        const { healthmonitor_id } = pool;
+        if (healthmonitor_id) {
+          const { healthmonitor } = await this.healthMonitorClient.show(
+            healthmonitor_id
+          );
+          item.healthMonitor = healthmonitor;
+        }
         return item;
       } catch (err) {
         return item;

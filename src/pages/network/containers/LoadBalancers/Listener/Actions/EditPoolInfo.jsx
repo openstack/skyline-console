@@ -63,7 +63,8 @@ export class EditPoolInfo extends ModalAction {
   static policy = 'os_load-balancer_api:pool:put';
 
   static allowed = async (item, containerProps) => {
-    let { detail: lbDetail } = containerProps || {};
+    const { detail } = containerProps || {};
+    let lbDetail = item.loadBalancer || detail;
     if (!lbDetail) {
       lbDetail = await globalLbaasStore.pureFetchDetail(item.loadbalancers[0]);
     }

@@ -20,14 +20,17 @@ import globalHealthMonitorStore, {
 import { healthProtocols } from 'resources/octavia/lb';
 import { PoolStore } from 'stores/octavia/pool';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
+import { ListenerStore } from 'stores/octavia/listener';
 
 export class EditHealthMonitor extends ModalAction {
   init() {
     this.store = new HealthMonitorStore();
+    this.listenerStore = new ListenerStore();
     this.poolStore = new PoolStore();
     this.state = {
-      defaultData: true,
-      admin_state_up: false,
+      enableHealthMonitor: false,
+      dataLoading: true,
+      healthMonitor: null,
     };
   }
 
@@ -58,31 +61,40 @@ export class EditHealthMonitor extends ModalAction {
   }
 
   get defaultValue() {
-    const { operating_status, type, delay, timeout, max_retries } =
-      this.store.detail;
-    const { defaultData, admin_state_up } = this.state;
-    if (defaultData && operating_status && this.formRef.current) {
-      this.formRef.current.setFieldsValue({
-        admin_state_up,
-        operating_status,
-        type,
-        delay,
-        timeout,
-        max_retries,
-      });
-      this.setState({ defaultData: false });
+    const { healthMonitor } = this.state;
+    if (!healthMonitor) {
+      return {
+        delay: 5,
+        timeout: 3,
+        max_retries: 3,
+        enableHealthMonitor: false,
+        admin_state_up: true,
+      };
     }
+    const {
+      admin_state_up,
+      operating_status,
+      type,
+      delay,
+      timeout,
+      max_retries,
+    } = healthMonitor;
     return {
-      delay: 5,
-      timeout: 3,
-      max_retries: 3,
+      enableHealthMonitor: true,
+      admin_state_up,
+      operating_status,
+      type,
+      delay,
+      timeout,
+      max_retries,
     };
   }
 
   static policy = 'os_load-balancer_api:healthmonitor:put';
 
   static allowed = async (item, containerProps) => {
-    let { detail: lbDetail } = containerProps || {};
+    const { detail } = containerProps || {};
+    let lbDetail = item.loadBalancer || detail;
     if (!lbDetail) {
       lbDetail = await globalLbaasStore.pureFetchDetail(item.loadbalancers[0]);
     }
@@ -94,52 +106,45 @@ export class EditHealthMonitor extends ModalAction {
   };
 
   async getHealthMonitor() {
-    const { default_pool_id } = this.item;
-    const pool = await this.poolStore.fetchDetail({ id: default_pool_id });
-    const { healthmonitor_id } = pool;
-    if (healthmonitor_id) {
-      const { admin_state_up } = await this.store.fetchDetail({
-        id: healthmonitor_id,
-      });
-      this.setState({ admin_state_up });
-      this.formRef.current.setFieldsValue({ admin_state_up });
-    }
-  }
-
-  get tips() {
-    const { healthmonitor_id } = this.poolStore.detail || {};
-    if (!healthmonitor_id) {
-      return t(
-        'First time edit automatically creates health monitor When pool does not have a health monitor'
-      );
-    }
-    return '';
+    const detail = await this.listenerStore.fetchDetail(this.item);
+    const { healthMonitor } = detail;
+    this.setState(
+      {
+        healthMonitor,
+        enableHealthMonitor: !!healthMonitor,
+        dataLoading: false,
+      },
+      () => {
+        this.updateDefaultValue();
+      }
+    );
   }
 
   get formItems() {
-    const { admin_state_up } = this.state;
-    const { healthmonitor_id } = this.poolStore.detail || {};
+    const { enableHealthMonitor, dataLoading, healthMonitor } = this.state;
+    if (dataLoading) {
+      return [
+        {
+          name: 'loading',
+          type: 'loading',
+        },
+      ];
+    }
     return [
       {
-        name: 'admin_state_up',
+        name: 'enableHealthMonitor',
         label: t('Enable Health Monitor'),
         type: 'radio',
         required: true,
-        // onlyRadio: true,
-        // isWrappedValue: true,
         options: [
           {
             label: t('Yes'),
             value: true,
           },
-          ...(healthmonitor_id
-            ? [
-                {
-                  label: t('No'),
-                  value: false,
-                },
-              ]
-            : []),
+          {
+            label: t('No'),
+            value: false,
+          },
         ],
       },
       {
@@ -147,9 +152,9 @@ export class EditHealthMonitor extends ModalAction {
         label: t('HealthMonitor Type'),
         type: 'select',
         options: this.filteredProtocolOptions,
-        hidden: !admin_state_up && healthmonitor_id,
+        hidden: !enableHealthMonitor,
         required: true,
-        disabled: !!healthmonitor_id,
+        disabled: !!healthMonitor,
       },
       {
         name: 'delay',
@@ -157,7 +162,7 @@ export class EditHealthMonitor extends ModalAction {
         type: 'input-int',
         min: 0,
         extra: t('Maximum interval time for each health check response'),
-        hidden: !admin_state_up && healthmonitor_id,
+        hidden: !enableHealthMonitor,
         required: true,
       },
       {
@@ -168,7 +173,7 @@ export class EditHealthMonitor extends ModalAction {
         extra: t(
           'The timeout period of waiting for the return of the health check request, the check timeout will be judged as a check failure'
         ),
-        hidden: !admin_state_up && healthmonitor_id,
+        hidden: !enableHealthMonitor,
         required: true,
       },
       {
@@ -179,21 +184,39 @@ export class EditHealthMonitor extends ModalAction {
         extra: t(
           'That is, after how many consecutive failures of the health check, the health check status of the back-end cloud server is changed from normal to abnormal'
         ),
-        hidden: !admin_state_up && healthmonitor_id,
+        hidden: !enableHealthMonitor,
         required: true,
+      },
+      {
+        name: 'admin_state_up',
+        label: t('Admin State Up'),
+        type: 'switch',
+        tip: t('Defines the admin state of the health monitor.'),
+        hidden: !enableHealthMonitor,
       },
     ];
   }
 
   onSubmit = (values) => {
     const { default_pool_id } = this.item;
-    const { healthmonitor_id: id } = this.poolStore.detail || {};
+    const { healthMonitor } = this.state;
+    const { id } = healthMonitor || {};
+    const { enableHealthMonitor, type, ...others } = values;
     if (id) {
-      const { type, ...others } = values;
+      if (!enableHealthMonitor) {
+        return globalHealthMonitorStore.delete({ id });
+      }
       return globalHealthMonitorStore.edit({ id }, others);
     }
-    values.pool_id = default_pool_id;
-    return globalHealthMonitorStore.create(values);
+    if (!enableHealthMonitor) {
+      return Promise.resolve();
+    }
+    const data = {
+      type,
+      ...others,
+      pool_id: default_pool_id,
+    };
+    return globalHealthMonitorStore.create(data);
   };
 }
 

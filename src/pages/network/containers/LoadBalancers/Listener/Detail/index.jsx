@@ -78,6 +78,10 @@ export class ListenerDetail extends Base {
     ];
   }
 
+  get forceLoadingTabs() {
+    return ['detail'];
+  }
+
   get tabs() {
     const tabs = [
       {

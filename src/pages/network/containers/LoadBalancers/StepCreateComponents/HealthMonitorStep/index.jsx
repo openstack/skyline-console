@@ -122,6 +122,7 @@ export class HealthMonitorStep extends Base {
         label: t('Admin State Up'),
         type: 'switch',
         tip: t('Defines the admin state of the health monitor.'),
+        hidden: !enableHealthMonitor,
       },
     ];
   }

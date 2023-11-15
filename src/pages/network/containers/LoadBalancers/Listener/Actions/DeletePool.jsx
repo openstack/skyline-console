@@ -40,7 +40,8 @@ export default class DeletePoolAction extends ConfirmAction {
   policy = 'os_load-balancer_api:pool:delete';
 
   allowedCheckFunc = async (item, containerProps) => {
-    let { detail: lbDetail } = containerProps || {};
+    const { detail } = containerProps || {};
+    let lbDetail = item.loadBalancer || detail;
     if (!lbDetail) {
       lbDetail = await globalLbaasStore.pureFetchDetail(item.loadbalancers[0]);
     }

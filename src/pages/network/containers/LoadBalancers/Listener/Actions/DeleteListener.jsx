@@ -40,7 +40,8 @@ export default class DeleteAction extends ConfirmAction {
   policy = 'os_load-balancer_api:listener:delete';
 
   allowed = async (item, containerProps) => {
-    let { detail: lbDetail } = containerProps || {};
+    const { detail } = containerProps || {};
+    let lbDetail = item.loadBalancer || detail;
     if (!lbDetail) {
       lbDetail = await globalLbaasStore.pureFetchDetail(item.loadbalancers[0]);
     }
