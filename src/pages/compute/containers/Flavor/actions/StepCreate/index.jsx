@@ -159,7 +159,7 @@ export class StepCreate extends StepAction {
         ? `${gpuType}:${gpuNumber},${usbType}:${usbNumber}`
         : `${gpuType}:${gpuNumber}`;
     } else if (isGpuVisualType) {
-      extraSpecs['resources:VGPU'] = gpuNumber;
+      extraSpecs['resources:VGPU'] = `${gpuType}:${gpuNumber}`;
     }
     if (isComputeOptimized(category)) {
       extraSpecs['hw:numa_nodes'] = numaNodes.length;

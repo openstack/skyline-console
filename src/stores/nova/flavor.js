@@ -39,8 +39,8 @@ export class FlavorStore extends Base {
     let usbType = '-';
     let usbCount = '-';
     if (vgpu) {
-      gpuType = 'vgpu';
-      gpuCount = vgpu;
+      gpuType = (vgpu || '').split(':')[0];
+      gpuCount = (vgpu || '').split(':')[1];
     }
     if (alias) {
       if (category && !category.includes('visualization_')) {
