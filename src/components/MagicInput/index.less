@@ -11,8 +11,8 @@
   width: 100%;
   min-width: 200px;
   padding: 3px 0 3px 8px;
-  background-color: #fff;
-  border: 1px solid rgb(217, 217, 217);
+  background-color: @table-header-search-input-background;
+  border: 1px solid @table-header-search-input-border-color;
   border-radius: @border-radius;
 
   :global {
@@ -22,7 +22,7 @@
       margin-bottom: 1px;
       padding: 0 4px;
       color: #fff;
-      font-size: 10px;
+      font-size: @table-header-search-input-font-size;
       line-height: 24px;
       background-color: @primary-color;
       border: none;
@@ -69,7 +69,7 @@
     }
 
     input::placeholder {
-      font-size: 10px;
+      font-size: @table-header-search-input-font-size;
     }
 
     .ant-menu-vertical > .ant-menu-item {
@@ -80,7 +80,7 @@
     .ant-menu-vertical .ant-menu-item {
       margin-top: 0;
       margin-bottom: 0;
-      font-size: 10px;
+      font-size: @table-header-search-input-font-size;
     }
   }
 }
@@ -101,7 +101,7 @@
 }
 
 .key {
-  font-size: 10px;
+  font-size: @table-header-search-input-font-size;
   line-height: 24px;
 
   :global {
@@ -156,6 +156,7 @@
   .close-btn {
     height: 28px !important;
     padding: 0;
+    background-color: @table-header-default-button-background;
     border: none;
   }
 }

@@ -17,7 +17,7 @@ const { normalize, resolve } = require('path');
 // const path = require("path");
 // const CleanWebpackPlugin = require('clean-webpack-plugin');
 const moment = require('moment');
-const { getGlobalVariables } = require('./utils');
+const { getGlobalVariables, getCustomStyleVariables } = require('./utils');
 
 const root = (path) => resolve(__dirname, `../${path}`);
 const version = moment().unix();
@@ -26,8 +26,17 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.jsx$/,
+        loader: resolve('config/js-string-replace-loader'),
+        include: [root('src/core')],
+        options: {
+          search: 'styles/variables',
+          change: getCustomStyleVariables(),
+        },
+      },
+      {
         test: /\.jsx?$/,
-        include: root('node_modules'),
+        include: [root('src'), root('node_modules')],
         use: ['thread-loader', 'cache-loader'],
       },
       {
@@ -73,7 +82,10 @@ module.exports = {
             },
           },
         ],
-        include: [root('src/asset/image/cloud-logo.svg')],
+        include: [
+          root('src/asset/image/cloud-logo.svg'),
+          root('src/asset/image/cloud-logo-white.svg'),
+        ],
       },
       {
         test: /\.(woff|woff2|ttf|eot|svg)$/,
@@ -86,7 +98,10 @@ module.exports = {
             },
           },
         ],
-        exclude: [root('src/asset/image/cloud-logo.svg')],
+        exclude: [
+          root('src/asset/image/cloud-logo.svg'),
+          root('src/asset/image/cloud-logo-white.svg'),
+        ],
       },
     ],
   },

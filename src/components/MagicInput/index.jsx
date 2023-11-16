@@ -565,7 +565,8 @@ class MagicInput extends PureComponent {
           className={classnames(
             'magic-input-wrapper',
             styles['magic-input-wrapper'],
-            isFocus ? styles['magic-input-wrapper-active'] : ''
+            isFocus ? styles['magic-input-wrapper-active'] : '',
+            isFocus ? 'magic-input-wrapper-active' : ''
           )}
         >
           <Col>{this.renderTags()}</Col>

@@ -31,6 +31,8 @@
 @gray-2: #f2f2f2;
 @gray-3: #fafafa;
 
+@dark-text-title: rgba(0, 0, 0, 100%);
+@dark-text-title-second: rgba(0, 0, 0, 85%);
 @color-text-title: rgba(0, 0, 0, 85%);
 @color-text-body: rgba(0, 0, 0, 65%);
 @color-text-caption: rgba(0, 0, 0, 45%);
@@ -129,11 +131,111 @@
 @sider-background: #26262b;
 @sider-open-background: #222121;
 @sider-collapsed-width: 40px;
+@sider-menu-padding: 14px;
+@sider-menu-padding-top: 10px;
+@sider-border-right: none;
+@sider-width: 230px;
+// @sider-menu-item-selected-background: #26262b;
+@sider-menu-item-selected-background: @primary-color;
+@sider-sub-menu-item-margin-top: 4px;
+@sider-sub-menu-item-margin-bottom: 8px;
+@sider-sub-menu-item-selected-background: @primary-color;
+@sider-sub-menu-item-hover-background: transparent;
+@sider-menu-item-selected-border-radius: @border-radius;
+@sider-menu-item-selected-text-color: #fff;
+@sider-menu-item-selected-after-border-right: 3px solid #0c63fa;
+@sider-menu-item-hover-dot-color: @primary-color;
+@sider-menu-item-selected-dot-color: #fff;
+@sider-sub-menu-background: #222121;
+@sider-sub-menu-item-padding-left: 5px;
+@sider-sub-menu-item-dot-color: rgba(255, 255, 255, 65%);
+@sider-trigger-background-color: rgba(0, 0, 0, 35%);
+@sider-menu-title-font-size: 14px;
+@sider-sub-menu-title-font-size: 14px;
+@sider-sub-menu-title-color: rgba(255, 255, 255, 65%);
 
 /* login */
 @login-error: #a43a39;
 
 @money-color: #f50;
+
+//layout
+@layout-header-color: @white;
+@layout-text-color: @title-color;
+@layout-link-color: @primary-color;
+@layout-header-menu-background-color: @layout-header-color;
+@layout-header-menu-text-color: @white;
+@layout-header-menu-text-hover-color: @white;
+@layout-header-menu-search-background: #282e39;
+@layout-header-menu-search-text-color: @white;
+@layout-header-menu-search-icon: #86909c;
+@layout-header-menu-region-hover: #e8f2ff;
+@layout-header-color-hover: @primary-color;
+@layout-selected-color: #111418;
+@layout-header-logo-wrapper-width: 190px;
+@layout-header-logo-image-height: 30px;
+
+//form
+@form-item-label-color: rgba(0, 0, 0, 85%);
+@form-item-magic-input-wrapper-border-color: #d9d9d9;
+
+//avatar-dropdown
+@avatar-color: #bfbfbf;
+@avatar-dropdown-background-color: #fff;
+@avatar-dropdown-text-color: @color-text-title;
+@avatar-dropdown-button-color: @primary-color;
+@avatar-dropdown-property-text-color: #86909c;
+@avatar-dropdown-copy-icon-color: @white;
+@avatar-dropdown-hover-background-color: #fff;
+@avatar-dropdown-hover-text-color: @color-text-title;
+@avatar-dropdown-button-disabled-color: @color-text-title;
+@avatar-dropdown-divider-color: #fff;
+
+//products
+@products-icon-background: @primary-color;
+@products-icon-hover-background: @primary-color;
+@products-header-title-color: @color-text-title;
+@products-title-color: #000;
+@products-sub-title-color: #000;
+@products-icon-fill-color: #c9cdd4;
+@products-drawer-background-1: #fff;
+@products-drawer-divider-color-1: #f0f0f0;
+@products-drawer-hover-background-1: rgba(0, 0, 0, 5%);
+@products-drawer-sub-title-hover-background: rgba(0, 0, 0, 5%);
+@products-drawer-sub-title-hover-color: #000;
+@products-drawer-background-2: #fff;
+@products-drawer-header-title: #fff;
+@products-drawer-left-icon: #0053ec;
+@products-drawer-close-icon: rgba(0, 0, 0, 45%);
+@products-drawer-search-icon: rgba(0, 0, 0, 45%);
+@products-drawer-search-box-shadow: 0 0 0 2px rgba(12, 99, 250, 20%);
+@products-drawer-search-placeholder-color: #86909c;
+@products-drawer-search-border-color: #d9d9d9;
+@products-drawer-search-border: 1px solid #d9d9d9;
+@products-drawer-search-hover-border-color: @primary-color;
+@products-drawer-search-background: #fff;
+@products-drawer-search-input-color: rgba(0, 0, 0, 85%);
+@products-column-width: @sider-width;
+
+// breadcrumb
+@breadcrumb-item-font-size: 12px;
+
+// overview padding
+@overview-padding: 44px;
+
+// table
+@table-header-default-button-background: #fff;
+@table-header-default-button-border: @primary-color;
+@table-header-default-button-color: @primary-color;
+@table-header-search-input-background: #fff;
+@table-header-search-input-border-color: #d9d9d9;
+@table-header-search-input-font-size: 10px;
+@table-header-danger-button-color: @error-color;
+@table-header-disable-button-color: rgba(0, 0, 0, 25%);
+@table-header-disable-button-border: #d9d9d9;
+@table-header-disable-button-background: #f5f5f5;
+@table-row-selected-background: #f2f7ff;
+@table-checkbox-size: 14px;
 
 :export {
   primaryColor: @primary-color;
@@ -146,4 +248,5 @@
   moneyColor: @money-color;
   infoColor: @info-color;
   headerHeight: @header-height;
+  productsColumnWidth: @products-column-width;
 }

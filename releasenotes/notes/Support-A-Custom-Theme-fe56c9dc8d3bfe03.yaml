@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Support a custom UI theme
+
+    * Support theme setting in the config.yaml file, optional values: default, custom.
+      The default value represents the old theme, the custom value represents the new theme,
+      and the color is light.
+
+    * When you want to use the customized new theme, you can set `theme: custom` in config.yaml
+      or local_config.yaml.

@@ -1,3 +1,5 @@
+@import '~styles/variables';
+
 .right {
   columns: 200px 3;
   column-gap: 12px;
@@ -13,7 +15,7 @@
     box-sizing: border-box;
     height: 32px;
     margin-bottom: 4px;
-    color: #000;
+    color: @products-title-color;
     font-weight: 600;
     font-size: 14px;
     line-height: 22px;
@@ -33,17 +35,53 @@
   }
 
   &:hover {
-    background-color: rgba(0, 0, 0, 5%);
+    color: @products-drawer-sub-title-hover-color;
+    background-color: @products-drawer-sub-title-hover-background;
+
+    .link-name {
+      color: @products-drawer-sub-title-hover-color;
+    }
   }
 
   .link-name {
-    color: #000;
+    color: @products-sub-title-color;
   }
 }
 
 .search {
-  width: 90%;
+  width: 60%;
   margin-top: -8px;
   margin-bottom: 16px;
   margin-left: 0;
+
+  :global {
+    .ant-input-affix-wrapper {
+      background-color: @products-drawer-search-background;
+      border: @products-drawer-search-border;
+      border-color: @products-drawer-search-border-color;
+      box-shadow: none;
+    }
+
+    .anticon-search {
+      color: @products-drawer-search-icon !important;
+    }
+
+    .ant-input {
+      color: @products-drawer-search-input-color;
+      background-color: @products-drawer-search-background;
+
+      &:hover {
+        border: @products-drawer-search-hover-border-color;
+      }
+    }
+
+    .ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
+      border-color: @products-drawer-search-hover-border-color;
+    }
+
+    .ant-input-clear-icon,
+    .ant-input-clear-icon:active {
+      color: @products-drawer-search-input-color;
+    }
+  }
 }

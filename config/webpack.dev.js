@@ -21,9 +21,14 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const common = require('./webpack.common');
-const theme = require('./theme');
 
 const server = require('./server.dev');
+
+const { getThemeConfig, getCustomStyleVariables } = require('./utils');
+
+const theme = getThemeConfig();
+
+console.log('theme', theme);
 
 const root = (path) => resolve(__dirname, `../${path}`);
 
@@ -129,7 +134,12 @@ module.exports = (env) => {
               options: {
                 importLoaders: true,
                 javascriptEnabled: true,
-                modifyVars: theme,
+              },
+            },
+            {
+              loader: resolve('config/less-replace-loader'),
+              options: {
+                variableFile: getCustomStyleVariables(),
               },
             },
           ],

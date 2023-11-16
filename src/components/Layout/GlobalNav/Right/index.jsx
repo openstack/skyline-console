@@ -15,12 +15,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Input } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { navItemPropType } from '../common';
 
 import styles from './index.less';
-
-const { Search } = Input;
 
 export default class Right extends React.Component {
   static propTypes = {
@@ -113,11 +112,11 @@ export default class Right extends React.Component {
   renderSearch() {
     return (
       <div className={styles.search}>
-        <Search
+        <Input
+          prefix={<SearchOutlined />}
           placeholder={t('Search')}
           allowClear
           onChange={this.onInputChange}
-          onSearch={this.onSearch}
         />
       </div>
     );

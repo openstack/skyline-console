@@ -1,29 +1,40 @@
 @import '~styles/variables';
 
 .menu {
+  color: @avatar-dropdown-text-color;
+  background-color: @avatar-dropdown-background-color;
+
   :global(.anticon) {
     margin-right: 8px;
   }
 
-  :global(.ant-dropdown-menu-item) {
-    min-width: 245px;
+  :global {
+    .ant-dropdown-menu-item {
+      min-width: 245px;
+      color: @avatar-dropdown-text-color;
+
+      &:hover {
+        color: @avatar-dropdown-hover-text-color;
+        background-color: @avatar-dropdown-hover-background-color;
+      }
+    }
   }
 
   .no-hover {
     overflow: hidden;
 
     &:hover {
-      background-color: #fff;
+      background-color: @avatar-dropdown-hover-background-color;
     }
   }
 
   .name-item {
     padding: 0 12px;
+    font-weight: bold;
     line-height: 40px;
 
     .user-label {
       margin-right: 8px;
-      font-weight: 'bold';
     }
 
     span {
@@ -33,6 +44,24 @@
 
   .menu-item {
     line-height: 30px;
+
+    :global {
+      .ant-btn {
+        color: @avatar-dropdown-button-color;
+      }
+
+      .ant-btn-link[disabled] {
+        color: @avatar-dropdown-button-disabled-color;
+      }
+    }
+  }
+
+  .menu-btn {
+    color: @avatar-dropdown-button-color;
+  }
+
+  .menu-divider {
+    background-color: @avatar-dropdown-divider-color;
   }
 }
 
@@ -110,15 +139,15 @@
   height: 100%;
   padding-left: 0;
   overflow: hidden;
-  color: @title-color;
-  background-color: #fff;
+  color: @layout-text-color;
+  background-color: @layout-header-color;
   box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 9%);
 }
 
 .avatar {
   width: 30px;
   height: 30px;
-  color: #bfbfbf;
+  color: @avatar-color;
   border: none;
   box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 9%);
 }
@@ -162,7 +191,11 @@
 
 .single-link {
   margin-right: 5px;
-  color: @primary-color;
+  color: @layout-link-color;
+
+  &:hover {
+    color: @layout-link-color;
+  }
 }
 
 .token {
@@ -178,12 +211,12 @@
 
 .logo {
   float: left;
-  width: 190px;
+  width: @layout-header-logo-wrapper-width;
   height: @header-height;
   line-height: @header-height;
   text-align: center;
 
   img {
-    height: 30px;
+    height: @layout-header-logo-image-height;
   }
 }

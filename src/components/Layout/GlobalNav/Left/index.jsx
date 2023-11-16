@@ -48,6 +48,10 @@ export default class Left extends React.Component {
 
   render() {
     const { items } = this.props;
-    return <div id="global-nav-left">{items.map(this.renderItem)}</div>;
+    return (
+      <div id="global-nav-left" className={styles.left}>
+        {items.map(this.renderItem)}
+      </div>
+    );
   }
 }

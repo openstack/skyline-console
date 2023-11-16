@@ -1,18 +1,23 @@
+@import '~styles/variables';
+
+// .left {}
+
 .item {
   padding: 12px 24px;
   cursor: pointer;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 5%);
+    background-color: @products-drawer-hover-background-1;
   }
 }
 
 .item-label {
   display: block;
   width: 100%;
-  color: #000;
+  color: @products-title-color;
+  font-size: 13px;
 
   &:hover {
-    color: #000;
+    color: @products-title-color;
   }
 }

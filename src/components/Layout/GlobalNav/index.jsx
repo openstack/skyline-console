@@ -64,6 +64,10 @@ export class GlobalNav extends React.Component {
       height: `calc(100% - ${globalCSS.headerHeight})`,
     };
 
+    const productsColumnWidth = Number(
+      globalCSS.productsColumnWidth.replace('px', '')
+    );
+
     return (
       <>
         <div className={styles['global-nav-icon']} onClick={this.onToggleOpen}>
@@ -75,30 +79,32 @@ export class GlobalNav extends React.Component {
         </div>
         <Drawer
           title={t('Service List')}
+          className={styles['drawer-left']}
           placement="left"
           closable={false}
           onClose={this.onClose}
           visible={visible}
           style={drawerStyle}
           bodyStyle={{ padding: 0 }}
-          width="240"
+          width={productsColumnWidth}
           destroyOnClose
         >
           <Left items={navItems} onClose={this.onClose} />
         </Drawer>
         <Drawer
           title={null}
+          className={styles['drawer-right']}
           placement="left"
           closable
           onClose={this.onClose}
           visible={visible}
           style={{
             ...drawerStyle,
-            left: visible ? '240px' : 0,
+            left: visible ? globalCSS.productsColumnWidth : 0,
           }}
           bodyStyle={{ padding: 0 }}
           mask
-          width="1020"
+          width={productsColumnWidth * 4}
           maskStyle={{ backgroundColor: 'transparent' }}
           closeIcon={<CloseOutlined style={{ fontSize: '20px' }} />}
         >

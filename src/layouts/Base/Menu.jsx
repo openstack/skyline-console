@@ -136,7 +136,13 @@ export class LayoutMenu extends Component {
     if (item.level > 1) {
       return null;
     }
-    if (!item.children || item.children.length === 0 || item.level) {
+    const { showChildren = true } = item;
+    if (
+      !showChildren ||
+      !item.children ||
+      item.children.length === 0 ||
+      item.level
+    ) {
       return (
         <Menu.Item
           key={item.key}
@@ -145,7 +151,13 @@ export class LayoutMenu extends Component {
         >
           {/* <Menu.Item key={item.key} className={styles['menu-item-no-child']}> */}
           {item.icon}
-          <span className={styles['menu-item-title']}>
+          <span
+            className={
+              item.level === 0 || (item.level === 1 && !showChildren)
+                ? styles['menu-item-title']
+                : styles['sub-menu-item-title']
+            }
+          >
             {item.name.length >= this.maxTitleLength ? (
               <Tooltip title={item.name} placement="right">
                 {item.name}
@@ -224,7 +236,7 @@ export class LayoutMenu extends Component {
     const newSelectedKeys = this.getSelectedKeysForMenu(selectedKeys);
     return (
       <Menu
-        theme="dark"
+        theme={GLOBAL_VARIABLES.menuTheme}
         mode="inline"
         className={collapsed ? styles['menu-collapsed'] : styles.menu}
         defaultSelectedKeys={newSelectedKeys}

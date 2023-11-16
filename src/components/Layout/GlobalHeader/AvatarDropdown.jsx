@@ -145,12 +145,12 @@ export class AvatarDropdown extends React.Component {
           <Button
             type="link"
             onClick={this.handleLogout}
-            className={`${styles.logout} ${styles['no-padding-top']}`}
+            className={`${styles['menu-btn']} ${styles.logout} ${styles['no-padding-top']}`}
           >
             {t('Sign Out')}
           </Button>
         </Menu.Item>
-        <Menu.Divider />
+        <Menu.Divider className={styles['menu-divider']} />
         {this.renderLanguageMenuItem()}
         <Menu.Item key="password" className={styles['menu-item']}>
           <ItemActionButtons

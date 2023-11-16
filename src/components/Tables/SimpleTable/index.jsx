@@ -283,7 +283,11 @@ export default class SimpleTable extends React.Component {
     const dataSource = this.getDataSource();
     return (
       <Table
-        className={classnames(styles['sl-simple-table'], className)}
+        className={classnames(
+          styles['sl-simple-table'],
+          'sl-simple-table',
+          className
+        )}
         columns={currentColumns}
         dataSource={dataSource}
         loading={isLoading}

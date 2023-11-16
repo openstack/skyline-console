@@ -9,8 +9,12 @@
   font-size: 16px;
   line-height: @header-height;
   text-align: center;
-  background-color: @primary-color;
+  background-color: @products-icon-background;
   cursor: pointer;
+
+  &:hover {
+    background-color: @products-icon-hover-background;
+  }
 }
 
 .global-nav-icon-icon {
@@ -19,4 +23,34 @@
 
 .main {
   padding: 32px 32px 0;
+}
+
+.drawer-left {
+  :global {
+    .ant-drawer-header {
+      background-color: @products-drawer-background-1;
+
+      .ant-drawer-title {
+        color: @products-header-title-color;
+      }
+
+      border-bottom-color: @products-drawer-divider-color-1;
+    }
+
+    .ant-drawer-body {
+      background-color: @products-drawer-background-2;
+    }
+  }
+}
+
+.drawer-right {
+  :global {
+    .ant-drawer-body {
+      background-color: @products-drawer-background-1;
+    }
+
+    .ant-drawer-close {
+      color: @products-drawer-close-icon;
+    }
+  }
 }
