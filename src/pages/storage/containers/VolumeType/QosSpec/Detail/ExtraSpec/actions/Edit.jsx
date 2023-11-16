@@ -15,6 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalQosSpecKeyStore from 'stores/cinder/qos-spec-key';
+import { isNumber } from 'lodash';
 
 export class Edit extends ModalAction {
   static id = 'edit';
@@ -44,16 +45,15 @@ export class Edit extends ModalAction {
     return [
       {
         name: 'keyname',
-        label: t('Key'),
+        label: t('Parameter'),
         type: 'input',
         disabled: true,
-        placeholder: t('Please input key'),
       },
       {
         name: 'value',
         label: t('Value'),
-        type: 'input',
-        placeholder: t('Please input value'),
+        type: 'input-number',
+        extra: t('Please input a number'),
       },
     ];
   }
@@ -65,7 +65,7 @@ export class Edit extends ModalAction {
   onSubmit = (values) => {
     const { id } = this.containerProps.detail;
     const { keyname, value } = values;
-    const qos_specs = { [keyname]: value };
+    const qos_specs = { [keyname]: isNumber(value) ? value.toString() : null };
     return this.store.createOrUpdate(id, qos_specs);
   };
 }

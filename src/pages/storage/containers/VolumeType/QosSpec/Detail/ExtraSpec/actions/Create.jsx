@@ -88,17 +88,20 @@ export class Create extends ModalAction {
     return [
       {
         name: 'keyname',
-        label: t('Key'),
+        label: t('Parameter'),
         type: 'select',
         options: this.keysMap,
-        placeholder: t('Please select key'),
+        required: true,
+        placeholder: t('Please select a parameter'),
+        getPopupContainer: () => document.body,
       },
       {
         name: 'value',
         label: t('Value'),
-        type: 'input',
+        type: 'input-number',
         placeholder: t('Please input value'),
         required: true,
+        extra: t('Please input a number'),
       },
     ];
   }
@@ -110,7 +113,7 @@ export class Create extends ModalAction {
   onSubmit = (values) => {
     const { id } = this.containerProps.detail;
     const { keyname, value } = values;
-    const qos_specs = { [keyname]: value };
+    const qos_specs = { [keyname]: value.toString() };
     return this.store.createOrUpdate(id, qos_specs);
   };
 }
