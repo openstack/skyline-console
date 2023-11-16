@@ -32,7 +32,7 @@ export class ExtraSpecs extends Base {
 
   getColumns = () => [
     {
-      title: t('Key'),
+      title: t('Parameter'),
       dataIndex: 'keyname',
     },
     {

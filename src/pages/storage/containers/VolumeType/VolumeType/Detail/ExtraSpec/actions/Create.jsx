@@ -41,16 +41,16 @@ export class Create extends ModalAction {
     return [
       {
         name: 'keyname',
-        label: t('Key'),
+        label: t('Parameter'),
         type: 'input',
         required: true,
-        placeholder: t('Please input key'),
+        placeholder: t('Please input a parameter'),
       },
       {
         name: 'value',
         label: t('Value'),
         type: 'input',
-        placeholder: t('Please input value'),
+        placeholder: t('Please input a value'),
         required: true,
       },
     ];

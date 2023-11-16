@@ -48,10 +48,9 @@ export class Edit extends ModalAction {
     return [
       {
         name: 'keyname',
-        label: t('Key'),
+        label: t('Parameter'),
         type: 'input',
         disabled: true,
-        placeholder: t('Please input key'),
       },
       {
         name: 'value',
