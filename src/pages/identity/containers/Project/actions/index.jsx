@@ -21,6 +21,8 @@ import ManageUser from './ManageUser';
 import ManageUserGroup from './ManageUserGroup';
 import ManageQuota from './ManageQuota';
 import ModifyTags from './ModifyTags';
+import SetDefaultProject from './SetDefaultProject';
+import RemoveDefaultProject from './RemoveDefaultProject';
 
 const actionConfigs = {
   rowActions: {
@@ -51,6 +53,18 @@ const actionConfigs = {
   },
   batchActions: [Delete],
   primaryActions: [Create],
+};
+
+export const actionConfigsInUserDetail = {
+  rowActions: {
+    firstAction: null,
+    moreActions: [
+      {
+        action: SetDefaultProject,
+      },
+    ],
+  },
+  primaryActions: [RemoveDefaultProject],
 };
 
 export default actionConfigs;

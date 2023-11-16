@@ -20,7 +20,7 @@ import globalProjectStore, { ProjectStore } from 'stores/keystone/project';
 import { yesNoOptions, emptyActionConfig } from 'utils/constants';
 import { SimpleTag } from 'resources/nova/instance';
 import { enabledColumn } from 'resources/keystone/domain';
-import actionConfigs from './actions';
+import actionConfigs, { actionConfigsInUserDetail } from './actions';
 import styles from './index.less';
 
 export class Projects extends Base {
@@ -54,6 +54,10 @@ export class Projects extends Base {
 
   get inDomainDetail() {
     return this.inDetailPage && this.path.includes('domain-admin/detail');
+  }
+
+  get forceRefreshTopDetailWhenListRefresh() {
+    return this.inUserDetail;
   }
 
   getUserProjectRole = (record) => {
@@ -265,6 +269,9 @@ export class Projects extends Base {
 
   get actionConfigs() {
     if (this.inDetailPage) {
+      if (this.inUserDetail) {
+        return actionConfigsInUserDetail;
+      }
       return emptyActionConfig;
     }
     return actionConfigs;

@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Support user's default project
+
+    1. Support set user's default project
+
+    2. Display user's default project in the user list page/user detail page
+
+    3. Support remove user's default project

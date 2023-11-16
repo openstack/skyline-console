@@ -139,6 +139,15 @@ export class UserStore extends Base {
     return projects;
   }
 
+  getUserDefaultProject = (user, projects) => {
+    const { default_project_id } = user;
+    if (!default_project_id) {
+      return;
+    }
+    const project = projects.find((p) => p.id === default_project_id);
+    user.defaultProject = project?.name;
+  };
+
   getProjectMapRoles = (user, projectRoleAssignments, roles, projects) => {
     const projectMapRoles = {};
     const { id } = user;
@@ -190,6 +199,7 @@ export class UserStore extends Base {
     projects,
     domains
   ) => {
+    this.getUserDefaultProject(user, projects);
     const projectMapRoles = this.getProjectMapRoles(
       user,
       projectRoleAssignments,
@@ -219,6 +229,7 @@ export class UserStore extends Base {
     }
     const {
       withProjectRole = true,
+      withDefaultProject = true,
       withSystemRole = true,
       projectId,
       roleId,
@@ -238,7 +249,7 @@ export class UserStore extends Base {
         ? this.roleAssignmentClient.list({ 'scope.system': 'all' })
         : null,
       withRole ? this.roleClient.list() : null,
-      withProjectRole ? this.projectClient.list() : null,
+      withProjectRole || withDefaultProject ? this.projectClient.list() : null,
       domain_id ? null : this.domainClient.list(),
     ];
     const [
@@ -282,6 +293,19 @@ export class UserStore extends Base {
     return newItems;
   }
 
+  async fetchUserDefaultProject(user) {
+    const { default_project_id } = user;
+    if (!default_project_id) {
+      return null;
+    }
+    try {
+      const { project } = await this.projectClient.show(default_project_id);
+      return project;
+    } catch (e) {
+      return null;
+    }
+  }
+
   async detailDidFetch(item) {
     const { id } = item;
     const params = { 'user.id': id, 'scope.system': 'all' };
@@ -289,15 +313,27 @@ export class UserStore extends Base {
       this.roleAssignmentClient.list(params),
       this.roleClient.list(),
       this.domainClient.list(),
+      this.fetchUserDefaultProject(item),
     ];
-    const [systemRoleAssignmentsResult, roleResult, domainResult] =
-      await Promise.all(reqs);
+    const [
+      systemRoleAssignmentsResult,
+      roleResult,
+      domainResult,
+      defaultProject,
+    ] = await Promise.all(reqs);
 
     const { roles = [] } = roleResult || {};
     const { domains = [] } = domainResult;
     const { role_assignments: systemAssigns = [] } =
       systemRoleAssignmentsResult || {};
-    return this.updateUser(item, [], systemAssigns, roles, [], domains);
+    return this.updateUser(
+      item,
+      [],
+      systemAssigns,
+      roles,
+      defaultProject ? [defaultProject] : [],
+      domains
+    );
   }
 
   @action
@@ -351,6 +387,16 @@ export class UserStore extends Base {
         real_name,
         description,
         name,
+      },
+    };
+    return this.submitting(this.client.patch(id, reqBody));
+  }
+
+  @action
+  async setDefaultProject(id, defaultProject) {
+    const reqBody = {
+      user: {
+        default_project_id: defaultProject,
       },
     };
     return this.submitting(this.client.patch(id, reqBody));

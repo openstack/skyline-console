@@ -74,6 +74,11 @@ export class UserDetail extends Base {
         dataIndex: 'domainName',
       },
       {
+        title: t('Default Project'),
+        dataIndex: 'default_project_id',
+        render: (value) => this.detailData.defaultProject || value || '-',
+      },
+      {
         title: t('Email'),
         dataIndex: 'email',
         render: (email) => email || '-',
@@ -93,7 +98,7 @@ export class UserDetail extends Base {
     const tabs = [
       {
         title: t('Subordinate Projects'),
-        key: 'user',
+        key: 'project',
         component: Project,
       },
       {

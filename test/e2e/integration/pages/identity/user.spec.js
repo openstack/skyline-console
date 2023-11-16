@@ -62,7 +62,7 @@ describe('The User Page', () => {
       .url()
       .should('not.include', creatUrl)
       .tableSearchText(name)
-      .waitStatusGreen(7);
+      .waitStatusGreen(8);
   });
 
   it('successfully detail', () => {

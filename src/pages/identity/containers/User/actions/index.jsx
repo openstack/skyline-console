@@ -19,6 +19,7 @@ import Enable from './Enable';
 import Forbidden from './Forbidden';
 import SystemRole from './SystemRole';
 import Password from './Password';
+import SetDefaultProject from './SetDefaultProject';
 
 const actionConfigs = {
   rowActions: {
@@ -33,6 +34,9 @@ const actionConfigs = {
       // {
       //   action: projectActionConfig,
       // },
+      {
+        action: SetDefaultProject,
+      },
       {
         action: Password,
       },
