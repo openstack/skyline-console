@@ -60,6 +60,10 @@ export class Projects extends Base {
     return this.inUserDetail;
   }
 
+  get refreshDetailDataWithSilence() {
+    return !this.inUserDetail;
+  }
+
   getUserProjectRole = (record) => {
     // return [{role, groups}]
     const { users = {}, groups = {} } = record || {};
