@@ -31,7 +31,7 @@ describe('The Flavor Page', () => {
   });
 
   it('successfully create', () => {
-    cy.clickHeaderButton(1)
+    cy.clickHeaderActionButton(0)
       .wait(2000)
       .formRadioChoose('architecture', 1)
       .formRadioChoose('category', 0)

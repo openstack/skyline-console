@@ -788,20 +788,29 @@ export class BaseTable extends React.Component {
       <div className={styles['table-header']} id="sl-table-header-search">
         <div
           className={classnames(
-            styles['table-header-btns'],
-            'table-header-btns'
+            styles['table-header-action-btns'],
+            'table-header-action-btns'
           )}
         >
-          {this.renderRefresh()}
           {this.renderActions()}
           {this.renderBatchActions()}
-          {this.renderCustomButton()}
-          {this.renderDownload()}
-          {this.renderRefreshAuto()}
         </div>
         {this.renderTimeFilter()}
         {this.renderMiddleInHeader()}
-        {this.renderSearch()}
+        <div className={styles['table-header-right']}>
+          {this.renderSearch()}
+          <div
+            className={classnames(
+              styles['table-header-btns'],
+              'table-header-btns'
+            )}
+          >
+            {this.renderRefresh()}
+            {this.renderDownload()}
+            {this.renderCustomButton()}
+            {this.renderRefreshAuto()}
+          </div>
+        </div>
       </div>
     );
   }

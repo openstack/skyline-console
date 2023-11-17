@@ -48,7 +48,7 @@ describe('The Volume Page', () => {
 
   it('successfully prepare resource by admin', () => {
     cy.loginAdmin(volumeTypeListUrl)
-      .clickHeaderButton(1)
+      .clickHeaderActionButton(0)
       .formInput('name', volumeTypeName)
       .clickModalActionSubmitButton()
       .waitTableLoading();
@@ -61,7 +61,7 @@ describe('The Volume Page', () => {
 
   it('successfully create', () => {
     const creatUrl = `${listUrl}/create`;
-    cy.clickHeaderButton(1)
+    cy.clickHeaderActionButton(0)
       .url()
       .should('include', creatUrl)
       .wait(5000)

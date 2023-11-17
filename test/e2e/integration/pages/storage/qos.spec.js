@@ -23,7 +23,7 @@ describe('The Qos Specs Page', () => {
   });
 
   it('successfully create', () => {
-    cy.clickHeaderButton(1)
+    cy.clickHeaderActionButton(0)
       .formInput('name', name)
       .formSelect('consumer')
       .clickModalActionSubmitButton()
@@ -39,7 +39,7 @@ describe('The Qos Specs Page', () => {
     cy.tableSearchText(name)
       .goToDetail()
       .wait(5000)
-      .clickHeaderButton(1)
+      .clickHeaderActionButton(0)
       .formInput('value', 1000)
       .clickModalActionSubmitButton();
   });

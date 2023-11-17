@@ -48,7 +48,7 @@ describe('The Port Page', () => {
   });
 
   it('successfully create', () => {
-    cy.clickHeaderButton(1)
+    cy.clickHeaderActionButton(0)
       .formInput('name', name)
       .formText('description', name)
       .formTableSelectBySearch('network_id', networkName, 5000)
@@ -75,7 +75,7 @@ describe('The Port Page', () => {
     cy.tableSearchText(name)
       .goToDetail()
       .clickDetailTab('Allowed Address Pairs')
-      .clickHeaderButton(1)
+      .clickHeaderActionButton(0)
       .formSelect('ip_version')
       .formInput('ip_address', '10.10.10.1/24')
       .formSelect('mac_address')
@@ -158,7 +158,7 @@ describe('The Port Page', () => {
     cy.tableSearchText(name)
       .goToDetail()
       .clickDetailTab('Fixed IPs')
-      .clickHeaderButton(1)
+      .clickHeaderActionButton(0)
       .formButtonClick('fixed_ips')
       .formSelect('fixed_ips')
       .clickModalActionSubmitButton();

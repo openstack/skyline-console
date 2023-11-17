@@ -39,11 +39,11 @@ onlyOn(swiftEnabled, () => {
     });
 
     it('successfully create container', () => {
-      cy.clickHeaderButton(1)
+      cy.clickHeaderActionButton(0)
         .formInput('name', name)
         .clickModalActionSubmitButton();
 
-      cy.clickHeaderButton(1)
+      cy.clickHeaderActionButton(0)
         .formInput('name', name2)
         .clickModalActionSubmitButton();
     });
@@ -58,10 +58,10 @@ onlyOn(swiftEnabled, () => {
 
     it('successfully create folder', () => {
       cy.tableSearchText(name).goToContainerDetail();
-      cy.clickHeaderButton(1)
+      cy.clickHeaderActionButton(0)
         .formInput('folder_name', folderName)
         .clickModalActionSubmitButton();
-      cy.clickHeaderButton(1)
+      cy.clickHeaderActionButton(0)
         .formInput('folder_name', folderName2)
         .clickModalActionSubmitButton();
     });
@@ -69,7 +69,7 @@ onlyOn(swiftEnabled, () => {
     it('successfully upload file in container', () => {
       cy.tableSearchText(name)
         .goToContainerDetail()
-        .clickHeaderButton(2)
+        .clickHeaderActionButton(2)
         .formAttachFile('file', filename)
         .clickModalActionSubmitButton();
     });

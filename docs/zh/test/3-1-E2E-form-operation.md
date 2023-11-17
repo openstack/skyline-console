@@ -48,11 +48,11 @@
         .wait(10000);
       cy.tableSearchText(name)
         .selectFirst()
-        .clickHeaderButtonByTitle('Start')
+        .clickHeaderActionButtonByTitle('Start')
         .checkDisableAction(2000)
-        .clickHeaderButtonByTitle('Stop')
+        .clickHeaderActionButtonByTitle('Stop')
         .checkDisableAction(2000)
-        .clickHeaderButtonByTitle('Reboot')
+        .clickHeaderActionButtonByTitle('Reboot')
         .checkDisableAction(2000);
     });
     ```
@@ -66,7 +66,7 @@
 
     ```javascript
     it('successfully create', () => {
-      cy.clickHeaderButton(1)
+      cy.clickHeaderActionButton(0)
         .url()
         .should('include', `${listUrl}/create`)
         .wait(5000)
@@ -149,7 +149,7 @@
       const volumeJson = {
         name: volumeName,
       };
-      cy.clickHeaderButton(1, 2000)
+      cy.clickHeaderActionButton(0, 2000)
         .formAttachFile('content', contentFile)
         .formAttachFile('params', paramFile)
         .clickStepActionNextButton()
@@ -280,14 +280,14 @@
 
     ```javascript
     it('successfully create full backup', () => {
-      cy.clickHeaderButton(1, 5000)
+      cy.clickHeaderActionButton(0, 5000)
         .formInput('name', name)
         .formTableSelectBySearch('volume', volumeName)
         .clickModalActionSubmitButton()
         .wait(5000)
         .waitTableLoading();
 
-      cy.clickHeaderButton(1, 5000)
+      cy.clickHeaderActionButton(0, 5000)
         .formInput('name', nameIns)
         .formTableSelectBySearchOption('volume', 'Status', 'In-use')
         .clickModalActionSubmitButton();
@@ -306,7 +306,7 @@
 
     ```javascript
     it('successfully create', () => {
-      cy.clickHeaderButton(1)
+      cy.clickHeaderActionButton(0)
         .formInput('name', name)
         .formSelect('policy')
         .clickModalActionSubmitButton();
@@ -336,7 +336,7 @@
 
     ```javascript
     it('successfully create by file', () => {
-      cy.clickHeaderButton(1)
+      cy.clickHeaderActionButton(0)
         .formRadioChoose('type', 1)
         .formInput('name', nameByFile)
         .formAttachFile('public_key', filename)
@@ -356,7 +356,7 @@
 
     ```javascript
     it('successfully create by file', () => {
-      cy.clickHeaderButton(1)
+      cy.clickHeaderActionButton(0)
         .formRadioChoose('type', 1)
         .formInput('name', nameByFile)
         .formAttachFile('public_key', filename)
@@ -372,7 +372,7 @@
 
     ```javascript
     it('successfully create', () => {
-      cy.clickHeaderButton(1)
+      cy.clickHeaderActionButton(0)
         .url()
         .should('include', `${listUrl}/create`)
         .formInput('name', name)
@@ -420,7 +420,7 @@
 
     ```javascript
     it('successfully create', () => {
-      cy.clickHeaderButton(1)
+      cy.clickHeaderActionButton(0)
         .wait(2000)
         .formInput('name', name)
         .formText('description', name)

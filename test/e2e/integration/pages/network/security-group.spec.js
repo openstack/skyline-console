@@ -24,7 +24,7 @@ describe('The Security Group Page', () => {
   });
 
   it('successfully create', () => {
-    cy.clickHeaderButton(1)
+    cy.clickHeaderActionButton(0)
       .formInput('name', name)
       .formText('description', name)
       .clickModalActionSubmitButton();
@@ -39,7 +39,7 @@ describe('The Security Group Page', () => {
     cy.tableSearchText(name)
       .goToDetail()
       .wait(5000)
-      .clickHeaderButton(1)
+      .clickHeaderActionButton(0)
       .formSelect('ethertype')
       .formInput('sourcePort', 80)
       .formInput('remote_ip_prefix', '192.168.0.0/24')

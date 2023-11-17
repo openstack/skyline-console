@@ -66,7 +66,8 @@
   justify-content: space-between;
 }
 
-.table-header-btns {
+.table-header-btns,
+.table-header-action-btns {
   position: relative;
   display: inline-block;
   margin-bottom: calc(@body-padding - 4px);
@@ -84,11 +85,30 @@
 }
 
 .search-row {
-  float: right;
   min-width: 350px;
 }
 
 .search-input {
   width: 288px;
   height: 32px;
+}
+
+// .table-header-action-btns {
+//   flex-grow: 0;
+//   flex-shrink: 0;
+// }
+
+.table-header-right {
+  display: flex;
+}
+
+.table-header-btns {
+  margin-right: 0;
+  margin-left: 10px;
+
+  :global {
+    button:last-child {
+      margin-right: 0;
+    }
+  }
 }

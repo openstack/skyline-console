@@ -26,14 +26,14 @@ describe('The Keypair Page', () => {
   });
 
   it('successfully create', () => {
-    cy.clickHeaderButton(1)
+    cy.clickHeaderActionButton(0)
       .formInput('name', name)
       .clickModalActionSubmitButton()
       .wait(5000);
   });
 
   it('successfully create by file', () => {
-    cy.clickHeaderButton(1)
+    cy.clickHeaderActionButton(0)
       .formRadioChoose('type', 1)
       .formInput('name', nameByFile)
       .formAttachFile('public_key', filename)

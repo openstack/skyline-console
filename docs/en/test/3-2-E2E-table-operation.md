@@ -126,7 +126,7 @@ Mainly include: waiting for the list to load
     const volumeJson = {
       name: volumeName,
     };
-    cy.clickHeaderButton(1, 2000)
+    cy.clickHeaderActionButton(0, 2000)
       .formAttachFile('content', contentFile)
       .formAttachFile('params', paramFile)
       .clickStepActionNextButton()
@@ -210,7 +210,7 @@ Mainly include: waiting for the list to load
         .tableSearchText(name)
         .checkColumnValue(6, 'Shutoff')
         .selectFirst()
-        .clickHeaderButtonByTitle('Stop')
+        .clickHeaderActionButtonByTitle('Stop')
         .checkDisableAction(2000);
     });
     ```
@@ -237,7 +237,7 @@ Mainly include: waiting for the list to load
         .tableSearchText(name)
         .checkColumnValue(6, 'Shutoff')
         .selectFirst()
-        .clickHeaderButtonByTitle('Stop')
+        .clickHeaderActionButtonByTitle('Stop')
         .checkDisableAction(2000);
     });
     ```
@@ -260,7 +260,7 @@ Mainly include: waiting for the list to load
       const volumeJson = {
         name: volumeName,
       };
-      cy.clickHeaderButton(1, 2000)
+      cy.clickHeaderActionButton(0, 2000)
         .formAttachFile('content', contentFile)
         .formAttachFile('params', paramFile)
         .clickStepActionNextButton()
@@ -290,7 +290,7 @@ Mainly contains
 
 The buttons above the table generally include: refresh, create, batch operation button, configure table list items, download
 
-- `clickHeaderButton`
+- `clickHeaderActionButton`
 
   - Click the button above the table,
   - Parameter `buttonIndex`, the subscript of the button above the table
@@ -300,7 +300,7 @@ The buttons above the table generally include: refresh, create, batch operation 
 
   ```javascript
   it('successfully create', () => {
-    cy.clickHeaderButton(1)
+    cy.clickHeaderActionButton(0)
       .formInput('name', name)
       .clickModalActionSubmitButton()
       .wait(5000);
@@ -309,7 +309,7 @@ The buttons above the table generally include: refresh, create, batch operation 
 
   ![header-btn-index](images/e2e/table/header-btn-index.png)
 
-- `clickHeaderButtonByTitle`
+- `clickHeaderActionButtonByTitle`
 
   - Click the button above the table by name, generally used for batch operation button clicks
 
@@ -326,7 +326,7 @@ The buttons above the table generally include: refresh, create, batch operation 
         .tableSearchText(name)
         .checkColumnValue(6, 'Shutoff')
         .selectFirst()
-        .clickHeaderButtonByTitle('Stop')
+        .clickHeaderActionButtonByTitle('Stop')
         .checkDisableAction(2000);
     });
     ```
@@ -573,11 +573,11 @@ The buttons above the table generally include: refresh, create, batch operation 
         .wait(10000);
       cy.tableSearchText(name)
         .selectFirst()
-        .clickHeaderButtonByTitle('Start')
+        .clickHeaderActionButtonByTitle('Start')
         .checkDisableAction(2000)
-        .clickHeaderButtonByTitle('Stop')
+        .clickHeaderActionButtonByTitle('Stop')
         .checkDisableAction(2000)
-        .clickHeaderButtonByTitle('Reboot')
+        .clickHeaderActionButtonByTitle('Reboot')
         .checkDisableAction(2000);
     });
     ```

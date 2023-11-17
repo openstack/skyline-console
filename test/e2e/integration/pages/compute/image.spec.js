@@ -52,7 +52,7 @@ describe('The Image Page', () => {
   });
 
   it('successfully create', () => {
-    cy.clickHeaderButton(1)
+    cy.clickHeaderActionButton(0)
       .url()
       .should('include', `${listUrl}/create`)
       .formInput('name', name)
@@ -74,7 +74,7 @@ describe('The Image Page', () => {
   it('successfully create shared image by admin', () => {
     cy.loginAdmin(imageListUrlAdmin)
       .wait(2000)
-      .clickHeaderButton(1)
+      .clickHeaderActionButton(0)
       .wait(5000)
       .formInput('name', sharedImage)
       .formTableSelectBySearch('owner', projectName)

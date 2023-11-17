@@ -51,7 +51,7 @@ onlyOn(lbServiceEnabled, () => {
     });
 
     it('successfully create lb', () => {
-      cy.clickHeaderButton(1)
+      cy.clickHeaderActionButton(0)
         .wait(5000)
         .formInput('name', name)
         .formText('description', name)
@@ -117,7 +117,7 @@ onlyOn(lbServiceEnabled, () => {
     it('successfully create listener', () => {
       cy.tableSearchText(name)
         .goToDetail(1, 2000)
-        .clickHeaderButton(1)
+        .clickHeaderActionButton(0)
         .formInput('name', listener2)
         .formText('description', listener2)
         .formSelect('protocol')
@@ -193,7 +193,7 @@ onlyOn(lbServiceEnabled, () => {
         .tableSearchText(listener)
         .goToDetail(0, 2000)
         .clickDetailTab('Members')
-        .clickHeaderButton(1)
+        .clickHeaderActionButton(0)
         .formButtonClick('extMembers')
         .get('.ant-form-item')
         .eq(1)

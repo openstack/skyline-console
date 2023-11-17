@@ -560,6 +560,7 @@ class MagicInput extends PureComponent {
           'magic-input-outer-wrapper'
         )}
       >
+        {this.renderChecks()}
         <Row
           className={classnames(
             'magic-input-wrapper',
@@ -593,7 +594,6 @@ class MagicInput extends PureComponent {
           </Col>
           {this.renderClose()}
         </Row>
-        {this.renderChecks()}
       </div>
     );
   }

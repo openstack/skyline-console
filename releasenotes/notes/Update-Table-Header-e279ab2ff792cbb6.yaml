@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Update table header:
+
+    * Move all common table buttons to the right top of the table, such as refresh button, download button, custom button, auto-refresh button.
+
+    * Move the quick search of the MagicInput component from the behind the search input to the front.

@@ -26,7 +26,7 @@ describe('The Aggregate Page', () => {
   });
 
   it('successfully create aggregate', () => {
-    cy.clickHeaderButton(1)
+    cy.clickHeaderActionButton(0)
       .formInput('name', name)
       .clickModalActionSubmitButton();
   });

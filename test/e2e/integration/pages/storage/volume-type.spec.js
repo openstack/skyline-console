@@ -28,7 +28,7 @@ describe('The Volume Type Page', () => {
 
   it('successfully prepare resource', () => {
     cy.clickTab('QoS Specs')
-      .clickHeaderButton(1)
+      .clickHeaderActionButton(0)
       .formInput('name', qosName)
       .formSelect('consumer')
       .clickModalActionSubmitButton()
@@ -36,7 +36,7 @@ describe('The Volume Type Page', () => {
   });
 
   it('successfully create', () => {
-    cy.clickHeaderButton(1)
+    cy.clickHeaderActionButton(0)
       .formInput('name', name)
       .formText('description', 'create')
       .clickModalActionSubmitButton()
@@ -53,7 +53,7 @@ describe('The Volume Type Page', () => {
       .goToDetail()
       .clickDetailTab('Extra Specs')
       .wait(5000)
-      .clickHeaderButton(1)
+      .clickHeaderActionButton(0)
       .formInput('keyname', extraKeyName)
       .formInput('value', 1000)
       .clickModalActionSubmitButton();

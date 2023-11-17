@@ -20,7 +20,7 @@ onlyOn(zunServiceEnabled, () => {
     });
 
     it('successfully create', () => {
-      cy.clickHeaderButton(1)
+      cy.clickHeaderActionButton(0)
         .url()
         .should('include', `${listUrl}/create`)
         .wait(5000)

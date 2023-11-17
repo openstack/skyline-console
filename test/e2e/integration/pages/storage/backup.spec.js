@@ -44,7 +44,7 @@ onlyOn(backupServiceEnabled, () => {
     });
 
     it('successfully create full backup', () => {
-      cy.clickHeaderButton(1, 5000)
+      cy.clickHeaderActionButton(0, 5000)
         .formInput('name', name)
         .formTableSelectBySearch('volume', volumeName)
         .clickModalActionSubmitButton()
@@ -54,7 +54,7 @@ onlyOn(backupServiceEnabled, () => {
     });
 
     it('successfully create increment backup', () => {
-      cy.clickHeaderButton(1, 5000)
+      cy.clickHeaderActionButton(0, 5000)
         .formInput('name', nameInc)
         .formRadioChoose('incremental', 1)
         .formTableSelectBySearch('volume', volumeName)

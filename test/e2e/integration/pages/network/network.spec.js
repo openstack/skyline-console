@@ -35,7 +35,7 @@ describe('The Network Page', () => {
   });
 
   it('successfully create with subnet', () => {
-    cy.clickHeaderButton(1)
+    cy.clickHeaderActionButton(0)
       .formInput('name', name)
       .formText('description', name)
       .formSelect('availableZone')

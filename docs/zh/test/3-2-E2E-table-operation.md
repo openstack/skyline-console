@@ -117,7 +117,7 @@
       const volumeJson = {
         name: volumeName,
       };
-      cy.clickHeaderButton(1, 2000)
+      cy.clickHeaderActionButton(0, 2000)
         .formAttachFile('content', contentFile)
         .formAttachFile('params', paramFile)
         .clickStepActionNextButton()
@@ -197,7 +197,7 @@
         .tableSearchText(name)
         .checkColumnValue(6, 'Shutoff')
         .selectFirst()
-        .clickHeaderButtonByTitle('Stop')
+        .clickHeaderActionButtonByTitle('Stop')
         .checkDisableAction(2000);
     });
     ```
@@ -222,7 +222,7 @@
         .tableSearchText(name)
         .checkColumnValue(6, 'Shutoff')
         .selectFirst()
-        .clickHeaderButtonByTitle('Stop')
+        .clickHeaderActionButtonByTitle('Stop')
         .checkDisableAction(2000);
     });
     ```
@@ -243,7 +243,7 @@
       const volumeJson = {
         name: volumeName,
       };
-      cy.clickHeaderButton(1, 2000)
+      cy.clickHeaderActionButton(0, 2000)
         .formAttachFile('content', contentFile)
         .formAttachFile('params', paramFile)
         .clickStepActionNextButton()
@@ -270,7 +270,7 @@
 ### 表单上方按钮的操作
 
 表格上方的按钮一般包含：刷新、创建、批量操作按钮、配置表格列表项、下载
-- `clickHeaderButton`
+- `clickHeaderActionButton`
   - 点击表格上方的按钮，
   - 参数`buttonIndex`，表格上方按钮的下标
   - 参数`waitTime`，点击后的等待时间，默认为 2 秒
@@ -279,7 +279,7 @@
 
     ```javascript
     it('successfully create', () => {
-      cy.clickHeaderButton(1)
+      cy.clickHeaderActionButton(0)
         .formInput('name', name)
         .clickModalActionSubmitButton()
         .wait(5000);
@@ -288,7 +288,7 @@
 
     ![header-btn-index](images/e2e/table/header-btn-index.png)
 
-- `clickHeaderButtonByTitle`
+- `clickHeaderActionButtonByTitle`
   - 通过名称点击表格上方的按钮，一般用于批量操作按钮的点击
   - 参数`title`，表格上方按钮上的文字
   - 参数`waitTime`，点击后的等待时间，默认为 2 秒
@@ -303,7 +303,7 @@
         .tableSearchText(name)
         .checkColumnValue(6, 'Shutoff')
         .selectFirst()
-        .clickHeaderButtonByTitle('Stop')
+        .clickHeaderActionButtonByTitle('Stop')
         .checkDisableAction(2000);
     });
     ```
@@ -532,11 +532,11 @@
         .wait(10000);
       cy.tableSearchText(name)
         .selectFirst()
-        .clickHeaderButtonByTitle('Start')
+        .clickHeaderActionButtonByTitle('Start')
         .checkDisableAction(2000)
-        .clickHeaderButtonByTitle('Stop')
+        .clickHeaderActionButtonByTitle('Stop')
         .checkDisableAction(2000)
-        .clickHeaderButtonByTitle('Reboot')
+        .clickHeaderActionButtonByTitle('Reboot')
         .checkDisableAction(2000);
     });
     ```

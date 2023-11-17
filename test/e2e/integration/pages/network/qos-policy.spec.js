@@ -36,7 +36,7 @@ onlyOn(qosServiceEnabled, () => {
     });
 
     it('successfully create', () => {
-      cy.clickHeaderButton(1)
+      cy.clickHeaderActionButton(0)
         .wait(2000)
         .formInput('name', name)
         .formText('description', name)

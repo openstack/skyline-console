@@ -20,7 +20,7 @@ onlyOn(zunServiceEnabled, () => {
     });
 
     it('successfully create', () => {
-      cy.clickHeaderButton(1)
+      cy.clickHeaderActionButton(0)
         .formAttachFile('template_file', filename)
         .clickModalActionSubmitButton();
     });

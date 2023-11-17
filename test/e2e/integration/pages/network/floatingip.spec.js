@@ -45,7 +45,7 @@ describe('The Floating IP Page', () => {
   it('successfully create', () => {
     cy.wait(2000);
     cy.intercept('GET', '/networks').as('networks');
-    cy.clickHeaderButton(1)
+    cy.clickHeaderActionButton(0)
       .wait('@networks')
       .formSelect('floating_network_id')
       .clickModalActionSubmitButton();
@@ -54,7 +54,7 @@ describe('The Floating IP Page', () => {
   it('successfully batch create', () => {
     cy.wait(2000);
     cy.intercept('GET', '/networks').as('networks');
-    cy.clickHeaderButton(1)
+    cy.clickHeaderActionButton(0)
       .wait('@networks')
       .formSelect('floating_network_id')
       .formCheckboxClick('batch_allocate')

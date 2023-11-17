@@ -24,7 +24,7 @@ describe('The Metadata Page', () => {
   });
 
   it('successfully create', () => {
-    cy.clickHeaderButton(1)
+    cy.clickHeaderActionButton(0)
       .formAttachFile('metadata', filename)
       .clickModalActionSubmitButton();
   });

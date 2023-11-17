@@ -30,7 +30,7 @@ describe('The Router Page', () => {
   });
 
   it('successfully create', () => {
-    cy.clickHeaderButton(1, 5000)
+    cy.clickHeaderActionButton(0, 5000)
       .formInput('name', name)
       .formText('description', name)
       .formTableSelect('hints')

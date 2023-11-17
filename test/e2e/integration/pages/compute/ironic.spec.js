@@ -53,7 +53,7 @@ onlyOn(ironicServiceEnabled, () => {
     });
 
     it('successfully create', () => {
-      cy.clickHeaderButton(2)
+      cy.clickHeaderActionButton(2)
         .wait(5000)
         .formTableSelect('flavor')
         .formRadioChooseByLabel('image', imageType)
@@ -107,7 +107,7 @@ onlyOn(ironicServiceEnabled, () => {
         .tableSearchText(name)
         .checkColumnValue(6, 'Shutoff')
         .selectFirst()
-        .clickHeaderButtonByTitle('Stop')
+        .clickHeaderActionButtonByTitle('Stop')
         .checkDisableAction(2000);
     });
 
@@ -117,7 +117,7 @@ onlyOn(ironicServiceEnabled, () => {
         .waitStatusActive()
         .checkColumnValue(6, 'Active')
         .selectFirst()
-        .clickHeaderButtonByTitle('Start')
+        .clickHeaderActionButtonByTitle('Start')
         .checkDisableAction(2000);
     });
 

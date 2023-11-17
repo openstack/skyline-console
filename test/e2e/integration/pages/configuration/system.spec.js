@@ -119,7 +119,7 @@ describe('The System Info Page', () => {
   //     .tableSearchText('l3')
   //     .goToDetail(0)
   //     .clickDetailTab('Router')
-  //     .clickHeaderButton(1)
+  //     .clickHeaderActionButton(0)
   //     .wait(10000)
   //     .formTableSelectBySearch('router', routerName)
   //     .clickModalActionSubmitButton();
@@ -147,7 +147,7 @@ describe('The System Info Page', () => {
       .tableSearchText('dhcp')
       .goToDetail(0)
       .clickDetailTab('Networks')
-      .clickHeaderButton(1)
+      .clickHeaderActionButton(0)
       .wait(5000)
       .formTableSelectBySearch('network', networkName)
       .clickModalActionSubmitButton();

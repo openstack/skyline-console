@@ -38,7 +38,7 @@ onlyOn(manilaServiceEnabled, () => {
     });
 
     it('successfully create', () => {
-      cy.clickHeaderButton(1)
+      cy.clickHeaderActionButton(0)
         .formInput('name', name)
         .formText('description', 'create')
         .formSelect('driver_handles_share_servers')
@@ -60,7 +60,7 @@ onlyOn(manilaServiceEnabled, () => {
         .goToDetail()
         .clickDetailTab('Extra Specs')
         .wait(5000)
-        .clickHeaderButton(1)
+        .clickHeaderActionButton(0)
         .formInput('keyName', extraKeyName)
         .formInput('value', 1000)
         .clickModalActionSubmitButton();

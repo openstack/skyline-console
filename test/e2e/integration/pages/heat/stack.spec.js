@@ -43,7 +43,7 @@ onlyOn(heatServiceEnabled, () => {
       const volumeJson = {
         name: volumeName,
       };
-      cy.clickHeaderButton(1, 2000)
+      cy.clickHeaderActionButton(0, 2000)
         .formAttachFile('content', contentFile)
         .formAttachFile('params', paramFile)
         .clickStepActionNextButton()
@@ -105,7 +105,7 @@ onlyOn(heatServiceEnabled, () => {
       const volumeJson = {
         name: volumeNameAbandon,
       };
-      cy.clickHeaderButton(1, 2000)
+      cy.clickHeaderActionButton(0, 2000)
         .formAttachFile('content', contentFile)
         .formAttachFile('params', paramFile)
         .clickStepActionNextButton()

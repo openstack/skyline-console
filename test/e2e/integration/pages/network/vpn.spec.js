@@ -51,7 +51,7 @@ onlyOn(vpnServiceEnabled, () => {
     });
 
     it('successfully create gateway', () => {
-      cy.clickHeaderButton(1)
+      cy.clickHeaderActionButton(0)
         .formInput('name', gateway)
         .formText('description', gateway)
         .formTableSelectBySearch('router_id', routerName)
@@ -60,7 +60,7 @@ onlyOn(vpnServiceEnabled, () => {
 
     it('successfully create local endpoint', () => {
       cy.clickTab('VPN EndPoint Groups', 'vpn_endpoint_groups')
-        .clickHeaderButton(1)
+        .clickHeaderActionButton(0)
         .wait(5000)
         .formInput('name', endpointLocal)
         .formText('description', endpointLocal)
@@ -73,7 +73,7 @@ onlyOn(vpnServiceEnabled, () => {
 
     it('successfully create peer endpoint', () => {
       cy.clickTab('VPN EndPoint Groups', 'vpn_endpoint_groups')
-        .clickHeaderButton(1)
+        .clickHeaderActionButton(0)
         .formInput('name', endpointPeer)
         .formText('description', endpointPeer)
         .formSelect('type', 'Peer')
@@ -84,7 +84,7 @@ onlyOn(vpnServiceEnabled, () => {
 
     it('successfully create ike policy', () => {
       cy.clickTab('IKE Policies', 'ike_policy')
-        .clickHeaderButton(1)
+        .clickHeaderActionButton(0)
         .formInput('name', ikePolicy)
         .formText('description', ikePolicy)
         .clickModalActionSubmitButton();
@@ -92,7 +92,7 @@ onlyOn(vpnServiceEnabled, () => {
 
     it('successfully create ipsec policy', () => {
       cy.clickTab('IPsec Policies', 'ipsec_policy')
-        .clickHeaderButton(1)
+        .clickHeaderActionButton(0)
         .formInput('name', ipsecPolicy)
         .formText('description', ipsecPolicy)
         .clickModalActionSubmitButton();
@@ -100,7 +100,7 @@ onlyOn(vpnServiceEnabled, () => {
 
     it('successfully create ipsec site connection', () => {
       cy.clickTab('IPsec Site Connections', 'ipsec_site_connections')
-        .clickHeaderButton(1)
+        .clickHeaderActionButton(0)
         .wait(5000)
         .formInput('name', ipsecSiteConnection)
         .formText('description', ipsecSiteConnection)

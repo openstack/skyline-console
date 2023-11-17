@@ -30,7 +30,7 @@ describe('The User Group Page', () => {
   });
 
   it('successfully create', () => {
-    cy.clickHeaderButton(1)
+    cy.clickHeaderActionButton(0)
       .formInput('name', name)
       .clickModalActionSubmitButton();
   });
