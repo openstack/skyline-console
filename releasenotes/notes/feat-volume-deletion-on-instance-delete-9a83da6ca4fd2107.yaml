@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Allow deletion of Volume on Instance Delete setting
+
+    * Allows the user to check whether the selected Volume should be deleted along with the instance when the user selected the Bootable Volume Start Source via Instance creation module.

@@ -579,6 +579,7 @@ export class StepCreate extends StepAction {
       source,
       systemDisk,
       bootFromVolume = true,
+      deleteVolumeInstance,
     } = values;
     const { value: sourceValue } = source;
     const imageRef =
@@ -619,6 +620,7 @@ export class StepCreate extends StepAction {
         uuid: bootableVolume.selectedRowKeys[0],
         source_type: 'volume',
         destination_type: 'volume',
+        delete_on_termination: deleteVolumeInstance,
       };
     }
     const dataVolumes = dataDisk

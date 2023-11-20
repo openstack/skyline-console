@@ -50,6 +50,11 @@ export class ConfirmStep extends Base {
     return `${volume_type} ${size}GiB`;
   }
 
+  getDeleteVolumeInstance() {
+    const { deleteVolumeInstance } = this.props?.context;
+    return deleteVolumeInstance ? t('Yes') : t('No');
+  }
+
   getSystemDisk() {
     if (!this.enableCinder) return null;
     const { context } = this.props;
@@ -219,6 +224,11 @@ export class ConfirmStep extends Base {
         value: this.getSystemDisk(),
       },
       {
+        label: t('Delete Volume on Instance Delete'),
+        value: this.getDeleteVolumeInstance(),
+        key: 'deleteVolume',
+      },
+      {
         label: t('Available Zone'),
         value: context.availableZone.label,
       },
@@ -244,6 +254,9 @@ export class ConfirmStep extends Base {
       baseItems = baseItems.filter(
         (it) => ![t('System Disk'), t('Data Disk')].includes(it.label)
       );
+    }
+    if (context.source.value.toUpperCase() !== 'BOOTABLEVOLUME') {
+      baseItems = baseItems.filter((it) => it?.key !== 'deleteVolume');
     }
     return [
       {
