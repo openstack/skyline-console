@@ -443,6 +443,10 @@ export default class BaseList extends React.Component {
     return null;
   }
 
+  get refreshDetailDataWithSilence() {
+    return true;
+  }
+
   setRefreshDataTimerTransition = () => {
     this.stopRefreshAuto();
     if (this.dataTimerTransition) {
@@ -930,7 +934,7 @@ export default class BaseList extends React.Component {
 
   refreshDetailData = () => {
     const { refreshDetail } = this.props;
-    refreshDetail && refreshDetail();
+    refreshDetail && refreshDetail(this.refreshDetailDataWithSilence);
   };
 
   handleRefresh = (force) => {

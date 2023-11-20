@@ -294,8 +294,8 @@ export default class DetailBase extends React.Component {
     this.fetchData(params, silent);
   };
 
-  refreshDetailByTab = () => {
-    this.fetchDataWithPolicy(true);
+  refreshDetailByTab = (silence = true) => {
+    this.fetchDataWithPolicy(silence);
   };
 
   refreshDetailByAction = (silence) => {
