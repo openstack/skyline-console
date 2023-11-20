@@ -19,6 +19,7 @@ import actionConfigs from '../actions';
 import BaseDetail from './BaseDetail';
 import ActionLogs from './ActionLogs';
 import Logs from './Logs';
+import Console from './Console';
 
 export class ContainerDetail extends Base {
   init() {
@@ -82,6 +83,13 @@ export class ContainerDetail extends Base {
         title: t('Logs'),
         key: 'logs',
         component: Logs,
+      });
+    }
+    if (this.detailData.interactive === true) {
+      items.push({
+        title: t('Console'),
+        key: 'console',
+        component: Console,
       });
     }
     return items;
