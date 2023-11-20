@@ -70,7 +70,7 @@ Cypress.Commands.add(
   (title, waitTime = 2000) => {
     const realTitle = getTitle(title);
     const moreTitle = getTitle('More Actions');
-    cy.get('.table-action-header-btns')
+    cy.get('.table-header-action-btns')
       .find('.ant-dropdown-trigger')
       .contains(moreTitle)
       .trigger('mouseover', { force: true });
