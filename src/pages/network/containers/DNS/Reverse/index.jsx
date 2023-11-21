@@ -12,8 +12,8 @@
 
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import actionConfigs from './actions';
 import globalReverseStore, { ReverseStore } from 'src/stores/designate/reverse';
+import actionConfigs from './actions';
 
 export class Reverse extends Base {
   init() {
@@ -55,8 +55,7 @@ export class Reverse extends Base {
       dataIndex: 'status',
       isHideable: true,
     },
-  ]
-
+  ];
 }
 
 export default inject('rootStore')(observer(Reverse));

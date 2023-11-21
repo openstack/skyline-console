@@ -45,13 +45,13 @@ export class Set extends ModalAction {
         type: 'input',
         required: true,
         placeholder: t('smtp.example.com'),
-        tip: ('Domain name ending in.')
+        tip: t('Domain name ending in.'),
       },
       {
         name: 'description',
         label: t('Description'),
         type: 'textarea',
-        tip: t('Details about the PTR record.')
+        tip: t('Details about the PTR record.'),
       },
       {
         name: 'ttl',
@@ -61,12 +61,12 @@ export class Set extends ModalAction {
         tip: t('Time To Live in seconds.'),
         placeholder: t('3600'),
       },
-    ]
+    ];
   }
 
   onSubmit = (values) => {
     const { id } = this.item;
-    return this.store.set({ id: id }, values);
+    return this.store.set({ id }, values);
   };
 }
 

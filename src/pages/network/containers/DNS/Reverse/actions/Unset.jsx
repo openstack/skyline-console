@@ -33,7 +33,7 @@ export default class Unset extends ConfirmAction {
   allowedCheckFunc = (item) => {
     if (item.ptrdname !== null && item.status === 'ACTIVE') return true;
     return false;
-  }
+  };
 
   policy = 'instance:delete';
 
@@ -46,6 +46,6 @@ export default class Unset extends ConfirmAction {
   };
 
   onSubmit = (item) => {
-    return globalReverseStore.unset({ id: item.id }, { 'ptrdname': null });
+    return globalReverseStore.unset({ id: item.id }, { ptrdname: null });
   };
 }

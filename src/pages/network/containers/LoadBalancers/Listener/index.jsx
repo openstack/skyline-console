@@ -16,6 +16,7 @@ import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { provisioningStatusCodes } from 'resources/octavia/lb';
 import { ListenerStore } from 'stores/octavia/listener';
+import { emptyActionConfig } from 'utils/constants';
 import { actionConfigs, adminActions } from './Actions';
 
 export class Listeners extends Base {
@@ -53,6 +54,10 @@ export class Listeners extends Base {
   }
 
   get actionConfigs() {
+    const { provisioning_status } = this.props.detail;
+    if (provisioning_status !== 'ACTIVE') {
+      return emptyActionConfig;
+    }
     if (this.isAdminPage) {
       return adminActions;
     }
