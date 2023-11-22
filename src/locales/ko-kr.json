@@ -744,6 +744,7 @@
   "Delete Volume Backup": "Volume Backup 삭제",
   "Delete Volume Snapshot": "Volume Snapshot 삭제",
   "Delete Volume Type": "Volume Type 삭제",
+  "Delete Volume on Instance Delete": "인스턴스 삭제 시 볼륨 삭제",
   "Delete Zone": "Zone 삭제",
   "Delete metadata": "Metadata 삭제",
   "Deleted": "삭제됨",

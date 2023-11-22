@@ -744,6 +744,7 @@
   "Delete Volume Backup": "删除云硬盘备份",
   "Delete Volume Snapshot": "删除云硬盘快照",
   "Delete Volume Type": "删除云硬盘类型",
+  "Delete Volume on Instance Delete": "在实例删除时删除卷",
   "Delete Zone": "删除区域",
   "Delete metadata": "删除元数据",
   "Deleted": "已删除",

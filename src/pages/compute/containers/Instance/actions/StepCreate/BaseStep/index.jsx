@@ -803,6 +803,12 @@ export class BaseStep extends Base {
         dependencies: ['flavor', 'image', 'instanceSnapshot', 'bootFromVolume'],
       },
       {
+        name: 'deleteVolumeInstance',
+        label: 'Delete Volume on Instance Delete',
+        type: 'check',
+        hidden: !this.sourceTypeIsVolume,
+      },
+      {
         name: 'instanceSnapshotDisk',
         label: t('System Disk'),
         hidden: this.hideInstanceSnapshotSystemDisk,

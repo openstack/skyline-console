@@ -744,6 +744,7 @@
   "Delete Volume Backup": "Delete Volume Backup",
   "Delete Volume Snapshot": "Delete Volume Snapshot",
   "Delete Volume Type": "Delete Volume Type",
+  "Delete Volume on Instance Delete": "Delete Volume on Instance Delete",
   "Delete Zone": "Delete Zone",
   "Delete metadata": "Delete metadata",
   "Deleted": "Deleted",
