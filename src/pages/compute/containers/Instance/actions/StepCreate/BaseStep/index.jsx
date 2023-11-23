@@ -804,7 +804,7 @@ export class BaseStep extends Base {
       },
       {
         name: 'deleteVolumeInstance',
-        label: 'Delete Volume on Instance Delete',
+        label: t('Delete Volume on Instance Delete'),
         type: 'check',
         hidden: !this.sourceTypeIsVolume,
       },
