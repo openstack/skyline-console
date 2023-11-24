@@ -43,7 +43,7 @@ export class BaseDetail extends Base {
     const { default_pool = {}, default_pool_id } = this.detailData || {};
     const { name, protocol, lb_algorithm, description, admin_state_up } =
       default_pool;
-    const options = default_pool_id
+    const options = !default_pool_id
       ? [
           {
             label: '',
