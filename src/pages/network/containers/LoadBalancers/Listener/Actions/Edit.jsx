@@ -139,6 +139,8 @@ export class Edit extends Base {
     const insertHeaders = getInsertHeadersValueFromForm(insert_headers);
     if (insertHeaders) {
       data.insert_headers = insertHeaders;
+    } else {
+      data.insert_headers = {};
     }
     if (protocol === 'TERMINATED_HTTPS') {
       if (default_tls_container_ref) {
