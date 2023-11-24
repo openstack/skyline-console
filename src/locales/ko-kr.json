@@ -1646,6 +1646,7 @@
   "No State": "",
   "No Task": "",
   "No Vender": "",
+  "No default pool set": "기본 풀이 설정되지 않았습니다.",
   "Node": "노드",
   "Node Addresses": "노드 주소",
   "Node Driver": "노드 드라이버",

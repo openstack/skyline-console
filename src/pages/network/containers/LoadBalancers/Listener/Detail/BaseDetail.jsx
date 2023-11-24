@@ -20,12 +20,15 @@ import { algorithmDict } from 'resources/octavia/pool';
 
 export class BaseDetail extends Base {
   get leftCards() {
-    const cards = [this.PoolInfo, this.healthMonitor];
-    const { insert_headers = {} } = this.detailData;
-    if (isEmpty(insert_headers)) {
-      return cards;
+    const cards = [this.poolCard];
+    const { insert_headers = {}, default_pool_id } = this.detailData;
+    if (default_pool_id) {
+      cards.push(this.healthMonitor);
     }
-    return [...cards, this.customHeaders];
+    if (!isEmpty(insert_headers)) {
+      cards.push(this.customHeaders);
+    }
+    return cards;
   }
 
   get rightCards() {
@@ -36,32 +39,39 @@ export class BaseDetail extends Base {
     return [];
   }
 
-  get PoolInfo() {
-    const { default_pool = {} } = this.detailData || {};
+  get poolCard() {
+    const { default_pool = {}, default_pool_id } = this.detailData || {};
     const { name, protocol, lb_algorithm, description, admin_state_up } =
       default_pool;
-    const options = [
-      {
-        label: t('Name'),
-        content: name || '-',
-      },
-      {
-        label: t('Protocol'),
-        content: protocol || '-',
-      },
-      {
-        label: t('LB Algorithm'),
-        content: algorithmDict[lb_algorithm] || lb_algorithm || '-',
-      },
-      {
-        label: t('Admin State Up'),
-        content: admin_state_up ? t('On') : t('Off'),
-      },
-      {
-        label: t('Description'),
-        content: description || '-',
-      },
-    ];
+    const options = default_pool_id
+      ? [
+          {
+            label: '',
+            content: t('No default pool set'),
+          },
+        ]
+      : [
+          {
+            label: t('Name'),
+            content: name || '-',
+          },
+          {
+            label: t('Protocol'),
+            content: protocol || '-',
+          },
+          {
+            label: t('LB Algorithm'),
+            content: algorithmDict[lb_algorithm] || lb_algorithm || '-',
+          },
+          {
+            label: t('Admin State Up'),
+            content: admin_state_up ? t('On') : t('Off'),
+          },
+          {
+            label: t('Description'),
+            content: description || '-',
+          },
+        ];
     return {
       title: t('Pool Info'),
       options,

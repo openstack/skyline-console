@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Support setting admin_state_up for listener's pool:
+
+    * Support setting admin_state_up when creating a pool in the listener detail page.
+
+    * Fix pool info card in the listener detail page when there is no pool for the listener.
+
+    * Remove health monitor card in the listener detail page when there is no pool for the listener.

@@ -69,6 +69,12 @@ export class CreatePool extends ModalAction {
     });
   };
 
+  get defaultValue() {
+    return {
+      admin_state_up: true,
+    };
+  }
+
   get formItems() {
     const { algorithm } = this.state;
     return [
@@ -98,6 +104,12 @@ export class CreatePool extends ModalAction {
         type: 'select',
         options: this.filterOptions,
         required: true,
+      },
+      {
+        name: 'admin_state_up',
+        label: t('Admin State Up'),
+        type: 'switch',
+        tip: t('Defines the admin state of the pool.'),
       },
     ];
   }
