@@ -246,6 +246,14 @@ export class Resize extends ModalAction {
         type: 'check',
         content: t('Agree to force shutdown'),
         required: true,
+        validator: (rule, value) => {
+          if (value !== true) {
+            return Promise.reject(
+              new Error(t('Force shutdown must be checked!'))
+            );
+          }
+          return Promise.resolve();
+        },
       },
     ];
   }
