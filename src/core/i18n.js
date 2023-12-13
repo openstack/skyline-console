@@ -222,6 +222,26 @@ const init = () => {
         yy: '%d yıl',
       },
     });
+  } else if (lang === 'ko-kr') {
+    // korean const option
+    moment.locale('ko', {
+      relativeTime: {
+        s: '1초',
+        ss: '%d초',
+        m: '1분',
+        mm: '%d분',
+        h: '1시간',
+        hh: '%d시간',
+        d: '1일',
+        dd: '%d일',
+        M: '1개월',
+        MM: '%d개월',
+        y: '1년',
+        yy: '%d년',
+        past: '%s 전',
+        future: '%s 후',
+      },
+    });
   }
 
   return { locales };
