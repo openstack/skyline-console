@@ -37,7 +37,7 @@ export class Edit extends ModalAction {
 
   static allowed = (item) => {
     const rootStore = globalRootStore;
-    if (!this.isSystemAdmin && item.project_id !== rootStore.user.project.id) {
+    if (!checkSystemAdmin() && item.project_id !== rootStore.user.project.id) {
       return Promise.resolve(false);
     }
     return Promise.resolve(true);
