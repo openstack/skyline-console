@@ -51,7 +51,7 @@ export default class DeleteAction extends ConfirmAction {
       name: snapshot.name,
     });
     if (this.hasCreatedVolumes(snapshot)) {
-      const volumeNames = child_volumes.join(', ');
+      const volumeNames = child_volumes.map((it) => it.volume_name).join(', ');
       errorMsg = t(
         'You are not allowed to delete snapshot "{ name }", which is used by creating volume "{volumes}".',
         { name: snapshot.name, volumes: volumeNames }
