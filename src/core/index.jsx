@@ -25,6 +25,7 @@ import zhCN from 'antd/es/locale/zh_CN';
 import enUS from 'antd/es/locale/en_US';
 import koKR from 'antd/es/locale/ko_KR';
 import trTR from 'antd/es/locale/tr_TR';
+import ruRU from 'antd/es/locale/ru_RU';
 import i18n from './i18n';
 import App from './App';
 
@@ -41,6 +42,7 @@ const antdLanguageMap = {
   'zh-hans': zhCN,
   'ko-kr': koKR,
   'tr-tr': trTR,
+  ru: ruRU,
 };
 
 const getAntdLocale = (locale) => {

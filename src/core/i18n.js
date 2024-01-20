@@ -52,6 +52,13 @@ const SUPPORT_LOCALES_ALL = [
     icon: 'tr',
     momentName: 'tr',
   },
+  {
+    name: 'Русский',
+    value: 'ru',
+    shortname: 'ru',
+    icon: 'ru',
+    momentName: 'ru',
+  },
 ];
 
 const getDefaultLanguageInConfig = () => {
@@ -240,6 +247,63 @@ const init = () => {
         yy: '%d년',
         past: '%s 전',
         future: '%s 후',
+      },
+    });
+  } else if (lang === 'ru') {
+    moment.locale('ru', {
+      months: 'Январь_Февраль_Март_Апрель_Май_Июнь_Июль_Август_Сентябрь_Октябрь_Ноябрь_Декабрь'.split(
+        '_'
+      ),
+      monthsShort: 'Янв_Фев_Мрт_Апр_Май_Июн_Июл_Авг_Сен_Окт_Нбр_Дек'.split('_'),
+      weekdays: 'Воскресенье_Понедельник_Вторник_Среда_Четверг_Пятница_Суббота'.split(
+        '_'
+      ),
+      weekdaysShort: 'Пон_Втор_Сред_Четв_Пятн_Субб_Воскр'.split('_'),
+      weekdaysMin: 'Пн_Вт_Ср_Чт_Пт_Сб_Вс'.split('_'),
+      meridiem: function (hours, minutes, isLower) {
+        if (hours < 12) {
+          return isLower ? 'ночи' : 'Ночи';
+        } else {
+          return isLower ? 'дня' : 'Дня';
+        }
+      },
+      meridiemParse: /ночи|Ночи|дня|Дня/,
+      isPM: function (input) {
+        return input === 'дня' || input === 'Дня';
+      },
+      longDateFormat: {
+        LT: 'HH:mm',
+        LTS: 'HH:mm:ss',
+        L: 'DD.MM.YYYY',
+        LL: 'D MMMM YYYY',
+        LLL: 'D MMMM YYYY HH:mm',
+        LLLL: 'dddd, D MMMM YYYY HH:mm',
+      },
+      calendar: {
+        sameDay: '[сегодняшнее время] LT',
+        nextDay: '[завтрашнее время] LT',
+        nextWeek: '[будущее] dddd [время] LT',
+        lastDay: '[вчера] LT',
+        lastWeek: '[прошло] dddd [час] LT',
+        sameElse: 'L',
+      },
+      relativeTime: {
+        future: '%s позже',
+        past: '%s назад',
+        s: '1 секунда',
+        ss: '%d секунд',
+        m: '1 минута',
+        mm: '%d минут',
+        h: '1 час',
+        hh: '%d часов',
+        d: '1 день',
+        dd: '%d дней',
+        w: '1 неделя',
+        ww: '%d недель',
+        M: '1 месяц',
+        MM: '%d месяцев',
+        y: '1 год',
+        yy: '%d лет',
       },
     });
   }
