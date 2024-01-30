@@ -152,6 +152,13 @@ export class AvatarDropdown extends React.Component {
         </Menu.Item>
         <Menu.Divider className={styles['menu-divider']} />
         {this.renderLanguageMenuItem()}
+        <Menu.Divider className={styles['menu-divider']} />
+        <Menu.Item key="userCenter" className={styles['menu-item']}>
+          <Button href="/user/center" type="link" style={{ textAlign: 'left' }}>
+            {t('User Center')}
+          </Button>
+        </Menu.Item>
+        <Menu.Divider className={styles['menu-divider']} />
         <Menu.Item key="password" className={styles['menu-item']}>
           <ItemActionButtons
             actions={{ moreActions: [{ action: Password }] }}
@@ -182,7 +189,6 @@ export class AvatarDropdown extends React.Component {
             shape="circle"
             icon={<UserOutlined />}
             className={styles.avatar}
-            href="/user/center"
           />
         </div>
       </HeaderDropdown>

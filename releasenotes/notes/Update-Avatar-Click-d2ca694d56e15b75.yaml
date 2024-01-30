@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Update user's avatar click:
+
+    1. Cancel clicking the user avatar button to enter the user center
+
+    2. Add a jump to "User Center" in the hover pop-up window of the user's avatar
