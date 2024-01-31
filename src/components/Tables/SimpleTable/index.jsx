@@ -16,7 +16,7 @@ import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { get, isString, isEmpty, isEqual, has } from 'lodash';
-import { Table } from 'antd';
+import { Table, Typography } from 'antd';
 import {
   getColumnSorter,
   getSortOrder,
@@ -32,6 +32,8 @@ import {
 } from 'utils/table';
 import { getNoValue } from 'utils/index';
 import styles from './index.less';
+
+const { Paragraph } = Typography;
 
 export default class SimpleTable extends React.Component {
   static propTypes = {
@@ -89,6 +91,7 @@ export default class SimpleTable extends React.Component {
         linkPrefix,
         valueMap,
         unit,
+        copyable,
         ...rest
       } = column;
       if (column.key === 'operation') {
@@ -122,6 +125,14 @@ export default class SimpleTable extends React.Component {
       }
       if (dataIndex === 'cost' || isPrice) {
         newRender = this.getPriceRender(newRender, column);
+      }
+      if (copyable) {
+        newRender = (value) => {
+          if (value && value !== '-') {
+            return <Paragraph copyable>{value}</Paragraph>;
+          }
+          return '-';
+        };
       }
       const newColumn = {
         ...rest,
