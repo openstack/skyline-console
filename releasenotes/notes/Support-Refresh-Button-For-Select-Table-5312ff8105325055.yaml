@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    `Feature #2042928 <https://bugs.launchpad.net/skyline-console/+bug/2042928>`_:
+
+    Support refresh button for SelectTable component:
+
+    * Support refresh button to refresh data for the SelectTable component
+
+    * When creating an instance/ironic/container, you can click to create
+      a network/security group, then create a new resource in a new window,
+      refresh the data in the previous window and select the newly created
+      resource.

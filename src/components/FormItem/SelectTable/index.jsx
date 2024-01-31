@@ -14,7 +14,7 @@
 
 import React from 'react';
 import { Radio, Tag, Button, Tooltip } from 'antd';
-import { ClearOutlined } from '@ant-design/icons';
+import { ClearOutlined, SyncOutlined } from '@ant-design/icons';
 import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import MagicInput from 'components/MagicInput';
@@ -102,6 +102,8 @@ export default class SelectTable extends React.Component {
     onRow: PropTypes.func,
     childrenColumnName: PropTypes.string,
     imageTabAuto: PropTypes.bool,
+    refreshFunc: PropTypes.func,
+    hideRefresh: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -127,6 +129,8 @@ export default class SelectTable extends React.Component {
     defaultSortOrder: '',
     childrenColumnName: 'children',
     imageTabAuto: false,
+    refreshFunc: null,
+    hideRefresh: false,
   };
 
   constructor(props) {
@@ -388,6 +392,7 @@ export default class SelectTable extends React.Component {
   };
 
   handleFilterInput = (tags) => {
+    this.setState({ tags });
     const { backendPageStore } = this.props;
     const filters = {};
     tags.forEach((n) => {
@@ -606,6 +611,19 @@ export default class SelectTable extends React.Component {
     });
   };
 
+  handleRefresh = () => {
+    console.log('handleRefresh');
+    const { backendPageStore, refreshFunc } = this.props;
+    const { tags = [] } = this.state;
+    if (refreshFunc) {
+      refreshFunc();
+      return;
+    }
+    if (backendPageStore) {
+      this.handleFilterInput(tags);
+    }
+  };
+
   initTabChange() {
     const { defaultTabValue, onTabChange, value } = this.props;
     if (defaultTabValue !== undefined && onTabChange !== undefined) {
@@ -613,6 +631,28 @@ export default class SelectTable extends React.Component {
       onTabChange(tab);
       this.updateTab(tab);
     }
+  }
+
+  renderRefresh() {
+    const { hideRefresh, backendPageStore, refreshFunc } = this.props;
+    let showButton = false;
+    if (!hideRefresh) {
+      if (backendPageStore) {
+        showButton = true;
+      } else if (refreshFunc) {
+        showButton = true;
+      }
+    }
+    if (!showButton) {
+      return null;
+    }
+    return (
+      <Button
+        type="default"
+        icon={<SyncOutlined />}
+        onClick={this.handleRefresh}
+      />
+    );
   }
 
   renderSearch() {
@@ -635,6 +675,15 @@ export default class SelectTable extends React.Component {
           onInputChange={this.handleFilterInput}
           initValue={filters}
         />
+      </div>
+    );
+  }
+
+  renderSearchLine() {
+    return (
+      <div className={styles['search-line']}>
+        {this.renderSearch()}
+        {this.renderRefresh()}
       </div>
     );
   }
@@ -849,7 +898,8 @@ export default class SelectTable extends React.Component {
       <div className={styles['select-table']}>
         {this.renderHeader()}
         {this.renderTabs()}
-        {this.renderSearch()}
+
+        {this.renderSearchLine()}
         {this.renderTableHeader()}
         {this.renderTable()}
         {this.renderSelected()}

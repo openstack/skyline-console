@@ -76,3 +76,21 @@
     }
   }
 }
+
+.search-line {
+  display: flex;
+  gap: 8px;
+
+  :global {
+    .ant-btn-default {
+      color: @table-header-default-button-color;
+      background-color: @table-header-default-button-background-gray;
+      border-color: @table-header-default-button-border;
+    }
+
+    .ant-btn-default:hover {
+      color: @primary-color;
+      border-color: @primary-color;
+    }
+  }
+}

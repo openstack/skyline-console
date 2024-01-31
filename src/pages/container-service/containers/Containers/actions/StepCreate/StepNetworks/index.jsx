@@ -97,6 +97,7 @@ export class StepNetworks extends Base {
             {getLinkRender({
               key: 'securityGroup',
               value: `${t('create a new security group')}> `,
+              extra: { target: '_blank' },
             })}
           </div>
         ),

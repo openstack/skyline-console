@@ -155,6 +155,7 @@ export class StepNetworks extends Base {
             {getLinkRender({
               key: 'network',
               value: `${t('create a new network/subnet')} > `,
+              extra: { target: '_blank' },
             })}
           </div>
         ),
