@@ -54,10 +54,20 @@ export const getPath = ({ key, params, query = {} }) => {
   return str ? `${path}?${str}` : path;
 };
 
-export const getLinkRender = ({ key, params, query = {}, value }) => {
+export const getLinkRender = ({
+  key,
+  params,
+  query = {},
+  value,
+  extra = {},
+}) => {
   if (!value) {
     return null;
   }
   const path = getPath({ key, params, query });
-  return <Link to={path}>{value}</Link>;
+  return (
+    <Link to={path} {...extra}>
+      {value}
+    </Link>
+  );
 };

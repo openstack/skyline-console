@@ -212,6 +212,7 @@ export class NetworkStep extends Base {
             {getLinkRender({
               key: 'network',
               value: `${t('create a new network/subnet')} > `,
+              extra: { target: '_blank' },
             })}
           </div>
         ),
@@ -285,6 +286,7 @@ export class NetworkStep extends Base {
             {getLinkRender({
               key: 'securityGroup',
               value: `${t('create a new security group')}> `,
+              extra: { target: '_blank' },
             })}
             {t(
               'Note: The security group you use will act on all virtual adapters of the instance.'
