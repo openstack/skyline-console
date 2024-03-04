@@ -40,6 +40,8 @@ export class NetworkStep extends Base {
     this.securityGroupStore = new SecurityGroupStore();
     this.portStore = new PortStore();
     this.subnetMap = {};
+    this.state.networkSelectRows = this.props.context?.networkSelectRows || [];
+    this.state.portSelectRows = this.props.context?.portSelectRows || [];
   }
 
   get title() {
@@ -169,6 +171,9 @@ export class NetworkStep extends Base {
 
   onPortChange = (value) => {
     const { selectedRows = [] } = value || {};
+    this.setState({
+      portSelectRows: selectedRows,
+    });
     this.updateContext({
       portSelectRows: selectedRows,
     });
@@ -176,6 +181,26 @@ export class NetworkStep extends Base {
 
   get nameForStateUpdate() {
     return ['networkSelect', 'networks', 'ports'];
+  }
+
+  get showSecurityGroups() {
+    const { networkSelectRows = [], portSelectRows = [] } = this.state;
+    if (!networkSelectRows.length && !portSelectRows.length) {
+      return false;
+    }
+    if (
+      networkSelectRows.length &&
+      networkSelectRows.some((it) => !it.port_security_enabled)
+    ) {
+      return false;
+    }
+    if (
+      portSelectRows.length &&
+      portSelectRows.some((it) => !it.port_security_enabled)
+    ) {
+      return false;
+    }
+    return true;
   }
 
   get formItems() {
@@ -186,9 +211,6 @@ export class NetworkStep extends Base {
       ports = [],
     } = this.state;
     const showNetworks = networkSelectRows.length > 0;
-    const showSecurityGroups =
-      networkSelectRows.length &&
-      networkSelectRows.every((it) => it.port_security_enabled);
     const networkRequired = ports.length === 0;
     const portRequired = networkSelectRows.length === 0;
     return [
@@ -274,8 +296,8 @@ export class NetworkStep extends Base {
         ),
         backendPageStore: this.securityGroupStore,
         extraParams: { project_id: this.currentProjectId },
-        hidden: !showSecurityGroups,
-        required: showSecurityGroups,
+        hidden: !this.showSecurityGroups,
+        required: this.showSecurityGroups,
         isMulti: true,
         header: (
           <div style={{ marginBottom: 8 }}>
