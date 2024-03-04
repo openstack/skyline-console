@@ -53,6 +53,7 @@ export class Catalog extends Base {
       dataIndex: 'region',
       isHideable: true,
       width: 150,
+      render: (value) => value || '-',
     },
     {
       title: t('Endpoints'),

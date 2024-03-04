@@ -27,7 +27,7 @@ export class AuthCatalogStore extends Base {
   get mapper() {
     return (data) => ({
       ...data,
-      region: (data.endpoints && data.endpoints[0].region) || '',
+      region: (data.endpoints && data.endpoints[0]?.region) || '',
     });
   }
 }
