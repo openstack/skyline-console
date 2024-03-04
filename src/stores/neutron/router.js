@@ -23,6 +23,10 @@ export class RouterStore extends Base {
     return client.neutron.routers;
   }
 
+  get networkClient() {
+    return client.neutron.networks;
+  }
+
   get subnetClient() {
     return client.neutron.subnets;
   }
@@ -125,8 +129,31 @@ export class RouterStore extends Base {
     return routerItem;
   }
 
+  async updateExternalNetworkForItems(items) {
+    const externalNetworkIds = [];
+    items.forEach((it) => {
+      if (it.external_gateway_info?.network_id) {
+        externalNetworkIds.push(it.external_gateway_info?.network_id);
+      }
+    });
+    if (externalNetworkIds.length) {
+      const { networks = [] } = await this.networkClient.list({
+        'router:external': 'true',
+      });
+      items.forEach((it) => {
+        if (it.external_gateway_info?.network_id) {
+          const network = networks.find(
+            (n) => n.id === it.external_gateway_info?.network_id
+          );
+          it.external_gateway_info.network_name = network.name;
+        }
+      });
+    }
+  }
+
   async listDidFetch(items, allProjects, filters) {
     const { isFirewall } = filters;
+    await this.updateExternalNetworkForItems(items);
     if (!isFirewall) {
       return items;
     }
