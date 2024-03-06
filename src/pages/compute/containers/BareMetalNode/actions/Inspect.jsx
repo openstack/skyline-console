@@ -49,7 +49,7 @@ export default class Inspect extends ConfirmAction {
         <ul>
           <li>
             {t(
-              'This service will automatically query the configuration (CPU, memory, etc.) and mac address of the physical machine, and the ironic-inspector service will automatically register this information in the node information.'
+              'This service will automatically query the configuration (CPU, memory, etc.) and MAC address of the physical machine, and the ironic-inspector service will automatically register this information in the node information.'
             )}
           </li>
           <li>

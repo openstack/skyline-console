@@ -149,7 +149,7 @@ export class StepNodeSpec extends Base {
         isLoading: this.keyPairStore.list.isLoading,
         header: getKeyPairHeader(this),
         tip: t(
-          'The SSH key is a way to remotely log in to the cluster instance. If it’s not set, the value of this in template will be used.'
+          'The SSH key is a way to remotely log in to the cluster instance. If it’s not set, the value of this in the template will be used.'
         ),
         filterParams: [
           {

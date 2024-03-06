@@ -104,7 +104,7 @@ export class BaseDetail extends Base {
     }
     const options = [
       {
-        label: t('Internal Network Bandwidth(Gbps)'),
+        label: t('Internal Network Bandwidth (Gbps)'),
         dataIndex: 'quota:vif_outbound_average',
         render: (value) => {
           if (!value) {

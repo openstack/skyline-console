@@ -249,7 +249,7 @@ export class CreateSubnet extends ModalAction {
         extra:
           projectId !== this.networkProjectId &&
           t(
-            'The selected project is different from the project to which the network belongs. That is, the subnet to be created is not under the same project as the network. Please do not continue unless you are quit sure what you are doing.'
+            'The selected project is different from the project to which the network belongs. That is, the subnet to be created is not under the same project as the network. Please do not continue unless you are quite sure what you are doing.'
           ),
         isLoading: this.projectStore.list.isLoading,
         data: this.projects,

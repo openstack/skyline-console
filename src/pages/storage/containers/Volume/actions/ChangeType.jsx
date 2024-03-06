@@ -34,7 +34,7 @@ export class ChangeType extends ModalAction {
 
   get tips() {
     return t(
-      'If the capacity of the disk is large,the type modify operation may takes several hours. Please be cautious.'
+      'If the capacity of the disk is large, the type modify operation may take several hours. Please be cautious.'
     );
   }
 

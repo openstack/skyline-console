@@ -553,10 +553,10 @@ export class CreatePortForwarding extends ModalAction {
   get formItems() {
     const { fixed_ip_address = { selectedRows: [] } } = this.state;
     const externalPortExtra = t(
-      'Input external port or port range(example: 80 or 80:160)'
+      'Input external port or port range (example: 80 or 80:160)'
     );
     const internalPortExtra = t(
-      'Input internal port or port range(example: 80 or 80:160)'
+      'Input internal port or port range (example: 80 or 80:160)'
     );
     const ret = [
       {

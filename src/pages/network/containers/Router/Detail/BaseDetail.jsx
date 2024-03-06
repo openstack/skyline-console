@@ -72,7 +72,7 @@ export class BaseDetail extends Base {
   get aZoneCard() {
     const options = [
       {
-        label: t('Current Availability Zones'),
+        label: t('Current Availability Zones'),
         dataIndex: 'availability_zones',
         render: (value) => (value || []).join(',') || '-',
       },

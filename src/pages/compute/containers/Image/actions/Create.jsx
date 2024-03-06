@@ -278,7 +278,7 @@ export class CreateForm extends FormAction {
         required: this.isBareFormat,
         hidden: !this.isBareFormat,
         extra: t(
-          'In general, administrator for Windows,root for Linux, please fill by image uploading.'
+          'In general, administrator for Windows, root for Linux, please fill by image uploading.'
         ),
       },
       {

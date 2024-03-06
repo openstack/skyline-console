@@ -285,7 +285,7 @@ export class StepCreate extends StepAction {
     }
     if (value > left) {
       return t(
-        'Insufficient {name} quota to create resources(left { quota }, input { input }).',
+        'Insufficient {name} quota to create resources (left { quota }, input { input }).',
         { name, quota: left, input: value }
       );
     }

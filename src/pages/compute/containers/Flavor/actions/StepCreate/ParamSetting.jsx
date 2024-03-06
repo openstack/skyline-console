@@ -367,7 +367,7 @@ export class ParamSetting extends Base {
       },
       {
         name: 'bandwidth',
-        label: t('Internal Network Bandwidth(Gbps)'),
+        label: t('Internal Network Bandwidth (Gbps)'),
         type: 'input-int',
         hidden: isBareMetal,
         min: 1,

@@ -40,5 +40,5 @@ export const healthStatus = {
 };
 
 export const defaultTip = t(
-  'If it’s not set, the value of this in template will be used.'
+  'If it’s not set, the value of this in the template will be used.'
 );

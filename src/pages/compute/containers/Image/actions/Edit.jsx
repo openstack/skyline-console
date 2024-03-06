@@ -121,7 +121,7 @@ export class Edit extends ModalAction {
         type: 'input',
         required: true,
         extra: t(
-          'In general, administrator for Windows,root for Linux, please fill by image uploading.'
+          'In general, administrator for Windows, root for Linux, please fill by image uploading.'
         ),
       },
       {

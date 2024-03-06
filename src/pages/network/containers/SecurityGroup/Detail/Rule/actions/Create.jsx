@@ -270,7 +270,7 @@ export class Create extends ModalAction {
         hidden: !showSourcePort,
         extra:
           direction === 'egress' &&
-          t('Input destination port or port range(example: 80 or 80:160)'),
+          t('Input destination port or port range (example: 80 or 80:160)'),
       },
       {
         name: 'ipProtocol',

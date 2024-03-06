@@ -374,7 +374,7 @@ export const rangeMessage = t(
 );
 
 export const portRangeMessage = t(
-  'Input source port or port range(example: 80 or 80:160)'
+  'Input source port or port range (example: 80 or 80:160)'
 );
 
 export const macAddressMessage = t(

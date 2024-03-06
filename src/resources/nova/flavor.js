@@ -160,7 +160,7 @@ export const getBaseColumns = (self) => [
     render: (ram) => formatSize(ram, 2),
   },
   {
-    title: t('Internal Network Bandwidth(Gbps)'),
+    title: t('Internal Network Bandwidth (Gbps)'),
     dataIndex: 'quota:vif_outbound_average',
     isHideable: true,
     width: 120,

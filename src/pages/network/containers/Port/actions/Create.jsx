@@ -264,7 +264,7 @@ export class CreateAction extends ModalAction {
         style: { marginBottom: 24 },
         content: (
           <span>
-            {t('The selected VPC/ subnet does not have IPv6 enabled.')}{' '}
+            {t('The selected VPC/subnet does not have IPv6 enabled.')}{' '}
             <Button type="link">
               {t('To open')} <FormOutlined />
             </Button>{' '}
@@ -321,7 +321,7 @@ export class CreateAction extends ModalAction {
         label: t('Security Group'),
         type: 'select-table',
         tips: t(
-          'The security group is similar to the firewall function for setting up network access control, or you can go to the console and create a new security group. (Note: The security group you selected will work on all virtual LANS on the instances.)'
+          'The security group is similar to the firewall function for setting up network access control, or you can go to the console and create a new security group. (Note: The security group you selected will work on all virtual LANs on the instances.)'
         ),
         data: this.securityGroups,
         isLoading: this.securityGroupStore.list.isLoading,

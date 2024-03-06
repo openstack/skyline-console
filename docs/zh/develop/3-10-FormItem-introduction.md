@@ -146,7 +146,7 @@
         style: { marginBottom: 24 },
         content: (
           <span>
-            {t('The selected VPC/ subnet does not have IPv6 enabled.')}{' '}
+            {t('The selected VPC/subnet does not have IPv6 enabled.')}{' '}
             <Button type="link">
               {t('To open')} <FormOutlined />
             </Button>{' '}
