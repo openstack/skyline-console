@@ -219,7 +219,7 @@ export class Port extends Base {
         sorter: false,
       },
       {
-        title: t('Owned Network'),
+        title: t('Owned Network ID/Name'),
         dataIndex: 'network_name',
         isLink: true,
         routeName: this.getRouteName('networkDetail'),
