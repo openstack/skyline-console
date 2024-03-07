@@ -46,8 +46,11 @@ export default class DeleteAction extends ConfirmAction {
 
   policy = 'volume:delete';
 
-  canDelete = (item) =>
-    ['available', 'error', 'error_extending'].indexOf(item.status) >= 0;
+  canDelete = (item) => {
+    const { status, attachments = [] } = item;
+    const allowedStatus = ['available', 'error', 'error_extending'];
+    return allowedStatus.includes(status) && !attachments?.length;
+  };
 
   allowedCheckFunc = (item) => this.canDelete(item);
 
