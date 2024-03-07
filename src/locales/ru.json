@@ -979,6 +979,7 @@
   "External IP(V4)": "Внешний IP (IPv4)",
   "External IP(V6)": "Внешний IP (IPv6)",
   "External Network": "Внешняя сеть",
+  "External Network ID/Name": "Идентификатор/имя внешней сети",
   "External Network Info": "Информация о внешней сети",
   "External Networks": "Внешние сети",
   "External Port": "Внешний порт",

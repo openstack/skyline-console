@@ -19,7 +19,6 @@ import {
   getSubnetToRouter,
 } from 'resources/neutron/floatingip';
 import { getOptions } from 'utils';
-import { getNameRenderByRouter } from 'utils/table';
 
 export const routerStatus = {
   ACTIVE: t('Active'),
@@ -59,30 +58,13 @@ export const getRouterColumns = (self) => [
     sorter: false,
   },
   {
-    title: t('External Network'),
-    dataIndex: 'externalNetworkId',
+    title: t('External Network ID/Name'),
+    dataIndex: 'externalNetworkName',
     isHideable: true,
     sorter: false,
-    render: (value, record) => {
-      if (!value) {
-        return '-';
-      }
-      const { externalNetworkName: name } = record;
-      const routerColumn = {
-        dataIndex: 'name',
-        routeName: self.getRouteName('networkDetail'),
-        idKey: 'id',
-      };
-      const data = { name, id: value };
-      return getNameRenderByRouter(null, routerColumn)(name, data);
-    },
-    stringify: (value, record) => {
-      if (!value) {
-        return '-';
-      }
-      const { externalNetworkName: name } = record;
-      return `${value}(${name || '-'})`;
-    },
+    isLink: true,
+    idKey: 'externalNetworkId',
+    routeName: self.getRouteName('networkDetail'),
   },
   {
     title: t('External Fixed IP'),

@@ -979,6 +979,7 @@
   "External IP(V4)": "Harici IP(V4)",
   "External IP(V6)": "Harici IP(V6)",
   "External Network": "Harici Ağ",
+  "External Network ID/Name": "Harici ağ kimliği/adı",
   "External Network Info": "Harici Ağ Bilgisi",
   "External Networks": "Harici Ağlar",
   "External Port": "Harici Ağ Adaptörü",

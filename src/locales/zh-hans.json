@@ -979,6 +979,7 @@
   "External IP(V4)": "外网IP(V4)",
   "External IP(V6)": "外网IP(V6)",
   "External Network": "外部网络",
+  "External Network ID/Name": "外部网络ID/名称",
   "External Network Info": "外部网络信息",
   "External Networks": "外部网络",
   "External Port": "源端口",
