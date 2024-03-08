@@ -175,7 +175,7 @@ export class LayoutMenu extends Component {
       );
     }
     const title = (
-      <span>
+      <span className={styles['sub-menu-title']}>
         {this.renderMenuItemIcon({ item })}
         <span className={styles['menu-item-title']}>
           {item.name.length >= this.maxTitleLength ? (
