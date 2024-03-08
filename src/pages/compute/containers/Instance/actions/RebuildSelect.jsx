@@ -15,6 +15,8 @@
 import { inject, observer } from 'mobx-react';
 import globalImageStore from 'stores/glance/image';
 import globalServerStore from 'stores/nova/instance';
+import { InstanceVolumeStore } from 'stores/nova/instance-volume';
+import { SnapshotStore } from 'stores/cinder/snapshot';
 import { ModalAction } from 'containers/Action';
 import {
   isActiveOrShutOff,
@@ -27,6 +29,7 @@ import {
   canImageCreateInstance,
   getImageSystemTabs,
 } from 'resources/glance/image';
+import { isOsDisk } from 'resources/cinder/volume';
 
 export class Rebuild extends ModalAction {
   static id = 'rebuild';
@@ -36,7 +39,10 @@ export class Rebuild extends ModalAction {
   init() {
     this.store = globalServerStore;
     this.imageStore = globalImageStore;
+    this.instanceVolumeStore = new InstanceVolumeStore();
+    this.snapshotStore = new SnapshotStore();
     this.getImages();
+    this.getRootVolumeSnapshots();
   }
 
   get name() {
@@ -52,6 +58,12 @@ export class Rebuild extends ModalAction {
       xs: { span: 6 },
       sm: { span: 4 },
     };
+  }
+
+  get tips() {
+    return t(
+      'If the root disk has a snapshot, it will affect the deletion of the original disk during reconstruction or the recovery of the instance snapshot.'
+    );
   }
 
   get images() {
@@ -73,6 +85,18 @@ export class Rebuild extends ModalAction {
 
   getImages() {
     this.imageStore.fetchList({ all_projects: this.hasAdminRole });
+  }
+
+  async getRootVolumeSnapshots() {
+    const volumes = await this.instanceVolumeStore.fetchList({
+      serverId: this.item.id,
+    });
+    const rootDisk = volumes.find((v) => isOsDisk(v));
+    if (!rootDisk) {
+      return;
+    }
+    const snapshots = await this.snapshotStore.fetchList({ id: rootDisk.id });
+    this.setState({ snapshots });
   }
 
   get systemTabs() {
@@ -107,6 +131,14 @@ export class Rebuild extends ModalAction {
     });
   };
 
+  get instanceExtra() {
+    const { snapshots = [] } = this.state;
+    if (!snapshots.length) {
+      return '';
+    }
+    return t('The root disk of the instance has snapshots');
+  }
+
   get formItems() {
     return [
       {
@@ -114,6 +146,7 @@ export class Rebuild extends ModalAction {
         label: t('Instance'),
         type: 'label',
         iconType: 'instance',
+        extra: this.instanceExtra,
       },
       {
         name: 'image',
