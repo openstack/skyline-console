@@ -279,6 +279,7 @@ export class Create extends ModalAction {
         options: ipProtocols,
         required: isCustomProtocol,
         hidden: !isCustomProtocol,
+        formRef: this.formRef,
         help: t('Please input protocol number if it absent in select list.'),
       },
       {
