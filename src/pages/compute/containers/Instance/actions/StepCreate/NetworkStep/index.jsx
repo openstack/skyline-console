@@ -260,6 +260,7 @@ export class NetworkStep extends Base {
           }
           return Promise.resolve();
         },
+        wrapperCol: { span: 19 },
       },
       {
         name: 'divider1',
