@@ -179,6 +179,15 @@ export class ServerStore extends Base {
     }));
   }
 
+  async fetchLogs(id, tailSize) {
+    const logs = await this.client.action(id, {
+      "os-getConsoleOutput": {
+        "length": tailSize
+      }
+    });
+    return logs;
+  }
+
   @action
   async fetchInterface({ id }) {
     this.interface.isLoading = true;
@@ -226,7 +235,7 @@ export class ServerStore extends Base {
       sgItems = result.map((it) =>
         this.mapperSecurityGroupRule(it.security_group)
       );
-    } catch (e) {}
+    } catch (e) { }
     this.securityGroups = {
       data: sgItems || [],
       interfaces: ports,

@@ -30,6 +30,7 @@ import SecurityGroup from './SecurityGroup';
 import ActionLog from './ActionLog';
 import Snapshots from '../../InstanceSnapshot';
 import actionConfigs from '../actions';
+import Log from './Log';
 
 export class InstanceDetail extends Base {
   get name() {
@@ -147,6 +148,11 @@ export class InstanceDetail extends Base {
         title: t('Action Logs'),
         key: 'action',
         component: ActionLog,
+      },
+      {
+        title: t('Logs'),
+        key: 'logs',
+        component: Log,
       },
     ];
     if (this.enableCinder) {

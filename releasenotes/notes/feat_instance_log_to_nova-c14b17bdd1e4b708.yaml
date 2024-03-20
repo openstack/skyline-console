@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    feat: Adding log feature to Nova instance detail page.
+    Log tab has been added to the Nova instance detail interface.
