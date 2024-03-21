@@ -20,6 +20,8 @@ import SetGateway from './SetGateway';
 // import AssociateFip from './AssociateFip';
 import ConnectSubnet from './ConnectSubnet';
 import DisconnectSubnet from './DisconnectSubnet';
+import EnableSnat from './EnableSnat';
+import DisableSnat from './DisableSnat';
 // import DisassociateFip from './DisassociateFip';
 
 const actionConfigs = {
@@ -40,6 +42,12 @@ const actionConfigs = {
       },
       {
         action: SetGateway,
+      },
+      {
+        action: EnableSnat,
+      },
+      {
+        action: DisableSnat,
       },
       // {
       //   action: AssociateFip,

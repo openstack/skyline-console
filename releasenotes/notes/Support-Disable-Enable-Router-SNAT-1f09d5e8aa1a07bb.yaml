@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Support disable/enable SNAT for router:
+
+    * Support disable SNAT when the router's `enable_snat` is `true`.
+
+    * Support enable SNAT when the router's `enable_snat` is `false`.
