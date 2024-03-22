@@ -62,6 +62,7 @@ describe('The Server Group Page', () => {
       .clickStepActionNextButton()
       .formInput('name', instanceName)
       .formRadioChoose('loginType', 1)
+      .formInput('username', 'root')
       .formInput('password', password)
       .formInput('confirmPassword', password)
       .clickStepActionNextButton()

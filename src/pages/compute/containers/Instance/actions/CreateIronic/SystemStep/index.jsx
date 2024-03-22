@@ -39,11 +39,28 @@ export class SystemStep extends Base {
     }));
   }
 
+  get imageInfo() {
+    const { context = {} } = this.props;
+    const { image = {} } = context || {};
+    const { selectedRows = [] } = image;
+    return selectedRows.length && selectedRows[0];
+  }
+
+  get loginUserName() {
+    return this.imageInfo?.os_admin_user;
+  }
+
+  get loginUserNameInContext() {
+    const { username = '' } = this.props.context || {};
+    return username || '';
+  }
+
   get defaultValue() {
     const { context = {} } = this.props;
     const data = {
       loginType: context.loginType || this.loginTypes[0],
       more: false,
+      username: this.loginUserName || this.loginUserNameInContext,
     };
     return data;
   }
@@ -71,10 +88,32 @@ export class SystemStep extends Base {
     return ['loginType', 'password', 'confirmPassword'];
   }
 
-  get formItems() {
+  get isPassword() {
     const { loginType } = this.state;
-    const isPassword = loginType === this.loginTypes[1].value;
+    return loginType === this.loginTypes[1].value;
+  }
 
+  get usernameFormItem() {
+    const item = {
+      name: 'username',
+      label: t('Login Name'),
+      type: 'input',
+      extra: this.loginUserName
+        ? ''
+        : t(
+            "The feasible configuration of cloud-init or cloudbase-init service in the image is not synced to image's properties, so the Login Name is unknown."
+          ),
+      tip: t(
+        'Whether the Login Name can be used is up to the feasible configuration of cloud-init or cloudbase-init service in the image.'
+      ),
+      required: this.isPassword,
+      hidden: !this.isPassword,
+    };
+    item.disabled = !!this.loginUserName;
+    return item;
+  }
+
+  get formItems() {
     return [
       {
         name: 'name',
@@ -91,6 +130,7 @@ export class SystemStep extends Base {
         options: this.loginTypes,
         isWrappedValue: true,
       },
+      this.usernameFormItem,
       {
         name: 'keypair',
         label: t('Keypair'),
@@ -98,8 +138,8 @@ export class SystemStep extends Base {
         data: this.keypairs,
         isLoading: this.keyPairStore.list.isLoading,
         isMulti: false,
-        required: !isPassword,
-        hidden: isPassword,
+        required: !this.isPassword,
+        hidden: this.isPassword,
         tip: t(
           'The SSH key is a way to remotely log in to the instance. The cloud platform only helps to keep the public key. Please keep your private key properly.'
         ),
@@ -125,16 +165,16 @@ export class SystemStep extends Base {
         name: 'password',
         label: t('Password'),
         type: 'input-password',
-        required: isPassword,
-        hidden: !isPassword,
+        required: this.isPassword,
+        hidden: !this.isPassword,
         otherRule: getPasswordOtherRule('password', 'instance'),
       },
       {
         name: 'confirmPassword',
         label: t('Confirm Password'),
         type: 'input-password',
-        required: isPassword,
-        hidden: !isPassword,
+        required: this.isPassword,
+        hidden: !this.isPassword,
         otherRule: getPasswordOtherRule('confirmPassword', 'instance'),
       },
     ];

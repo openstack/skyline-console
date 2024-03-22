@@ -743,7 +743,10 @@ export class StepCreate extends StepAction {
         physicalNode.selectedRows[0].hypervisor_hostname;
     }
     if (server.adminPass || userData) {
-      server.user_data = btoa(getUserData(server.adminPass, userData));
+      const { username } = values;
+      server.user_data = btoa(
+        getUserData(server.adminPass, userData, username || 'root')
+      );
     }
     const body = {
       server,

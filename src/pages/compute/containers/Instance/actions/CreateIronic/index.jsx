@@ -327,7 +327,10 @@ export class CreateIronic extends StepAction {
       server.return_reservation_id = true;
     }
     if (server.adminPass || userData) {
-      server.user_data = btoa(getUserData(server.adminPass, userData));
+      const { username } = values;
+      server.user_data = btoa(
+        getUserData(server.adminPass, userData, username || 'root')
+      );
     }
     return {
       server,

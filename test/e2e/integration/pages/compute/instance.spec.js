@@ -58,6 +58,7 @@ describe('The Instance Page', () => {
       .clickStepActionNextButton()
       .formInput('name', name)
       .formRadioChoose('loginType', 1)
+      .formInput('username', 'root')
       .formInput('password', password)
       .formInput('confirmPassword', password)
       .wait(2000)

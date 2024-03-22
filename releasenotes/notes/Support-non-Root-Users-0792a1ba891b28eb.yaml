@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Support non-root users can log in to VM:
+
+    * When creating a vm/ironic, log in with a password. The username is required. The username comes from the image configuration or user input. Non-root is supported.

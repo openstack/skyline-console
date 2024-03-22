@@ -147,6 +147,7 @@ export class SystemStep extends Base {
       more: false,
       physicalNodeType: physicalNodeTypes[0],
       userData: '',
+      username: this.loginUserName || this.loginUserNameInContext,
     };
     if (servergroup) {
       data.serverGroup = {
@@ -210,6 +211,11 @@ export class SystemStep extends Base {
     return this.sourceInfo && this.sourceInfo.os_admin_user;
   }
 
+  get loginUserNameInContext() {
+    const { username = '' } = this.props.context || {};
+    return username || '';
+  }
+
   onValuesChange = (changedFields) => {
     if (has(changedFields, 'serverGroup')) {
       this.onServerGroupChange(changedFields.serverGroup);
@@ -223,9 +229,33 @@ export class SystemStep extends Base {
     });
   };
 
+  get isPassword() {
+    const { loginType } = this.state;
+    return loginType === this.loginTypes[1].value;
+  }
+
+  get usernameFormItem() {
+    const item = {
+      name: 'username',
+      label: t('Login Name'),
+      type: 'input',
+      extra: this.loginUserName
+        ? ''
+        : t(
+            "The feasible configuration of cloud-init or cloudbase-init service in the image is not synced to image's properties, so the Login Name is unknown."
+          ),
+      tip: t(
+        'Whether the Login Name can be used is up to the feasible configuration of cloud-init or cloudbase-init service in the image.'
+      ),
+      required: this.isPassword,
+      hidden: !this.isPassword,
+    };
+    item.disabled = !!this.loginUserName;
+    return item;
+  }
+
   get formItems() {
-    const { loginType, more = false, physicalNodeType } = this.state;
-    const isPassword = loginType === this.loginTypes[1].value;
+    const { more = false, physicalNodeType } = this.state;
     const isManually = physicalNodeType === physicalNodeTypes[1].value;
 
     const { initKeyPair } = this.state;
@@ -245,27 +275,15 @@ export class SystemStep extends Base {
         options: this.loginTypes,
         isWrappedValue: true,
       },
-      {
-        name: 'username',
-        label: t('Login Name'),
-        content: this.loginUserName || '-',
-        extra: this.loginUserName
-          ? ''
-          : t(
-              "The feasible configuration of cloud-init or cloudbase-init service in the image is not synced to image's properties, so the Login Name is unknown."
-            ),
-        tip: t(
-          'Whether the Login Name can be used is up to the feasible configuration of cloud-init or cloudbase-init service in the image.'
-        ),
-      },
+      this.usernameFormItem,
       {
         name: 'keypair',
         label: t('Keypair'),
         type: 'select-table',
         data: this.keypairs,
         isLoading: this.keyPairStore.list.isLoading,
-        required: !isPassword,
-        hidden: isPassword,
+        required: !this.isPassword,
+        hidden: this.isPassword,
         header: getKeyPairHeader(this),
         initValue: initKeyPair,
         tip: t(
@@ -293,16 +311,16 @@ export class SystemStep extends Base {
         name: 'password',
         label: t('Login Password'),
         type: 'input-password',
-        required: isPassword,
-        hidden: !isPassword,
+        required: this.isPassword,
+        hidden: !this.isPassword,
         otherRule: getPasswordOtherRule('password', 'instance'),
       },
       {
         name: 'confirmPassword',
         label: t('Confirm Password'),
         type: 'input-password',
-        required: isPassword,
-        hidden: !isPassword,
+        required: this.isPassword,
+        hidden: !this.isPassword,
         otherRule: getPasswordOtherRule('confirmPassword', 'instance'),
       },
       {

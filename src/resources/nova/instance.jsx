@@ -218,7 +218,7 @@ const passwordAndUserData =
   'Content-Disposition: attachment; filename="passwd-script.txt" \n' +
   '\n' +
   '#!/bin/sh\n' +
-  "echo 'root:USER_PASSWORD' | chpasswd\n" +
+  "echo 'USER_NAME:USER_PASSWORD' | chpasswd\n" +
   '\n' +
   '--===============2309984059743762475==\n' +
   'Content-Type: text/x-shellscript; charset="us-ascii" \n' +
@@ -252,7 +252,7 @@ const onlyPassword =
   'Content-Disposition: attachment; filename="passwd-script.txt" \n' +
   '\n' +
   '#!/bin/sh\n' +
-  "echo 'root:USER_PASSWORD' | chpasswd\n" +
+  "echo 'USER_NAME:USER_PASSWORD' | chpasswd\n" +
   '\n' +
   '--===============2309984059743762475==--';
 
@@ -270,13 +270,15 @@ const onlyUserData =
   '\n' +
   '--===============2309984059743762475==--';
 
-export const getUserData = (password, userData) => {
+export const getUserData = (password, userData, username = 'root') => {
   if (password && userData) {
-    const str = passwordAndUserData.replace(/USER_PASSWORD/g, password);
+    let str = passwordAndUserData.replace(/USER_PASSWORD/g, password);
+    str = str.replace(/USER_NAME/g, username);
     return str.replace(/USER_DATA/g, userData);
   }
   if (password) {
-    return onlyPassword.replace(/USER_PASSWORD/g, password);
+    const str = onlyPassword.replace(/USER_PASSWORD/g, password);
+    return str.replace(/USER_NAME/g, username);
   }
   return onlyUserData.replace(/USER_DATA/g, userData);
 };
