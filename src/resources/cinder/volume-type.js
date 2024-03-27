@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { isEmpty } from 'lodash';
 import { multiTip } from './volume';
 
 export const consumerTypes = {
@@ -65,4 +66,12 @@ export const volumeTypeFilters = [
 export const volumeTypeSelectProps = {
   columns: volumeTypeColumns,
   filterParams: volumeTypeFilters,
+};
+
+export const hasEncryption = (volume) => {
+  const { encryption } = volume || {};
+  if (!encryption || isEmpty(encryption)) {
+    return false;
+  }
+  return !encryption.deleted_at;
 };

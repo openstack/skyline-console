@@ -15,6 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalVolumeTypeStore from 'stores/cinder/volume-type';
+import { hasEncryption } from 'resources/cinder/volume-type';
 
 export class CreateEncryption extends ModalAction {
   static id = 'create';
@@ -27,8 +28,7 @@ export class CreateEncryption extends ModalAction {
 
   static policy = 'volume_extension:volume_type_encryption:create';
 
-  static allowed = (item) =>
-    Promise.resolve(!(item.encryption && !item.encryption.deleted_at));
+  static allowed = (item) => Promise.resolve(!hasEncryption(item));
 
   get defaultValue() {
     const { name } = this.item;

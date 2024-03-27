@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { ConfirmAction } from 'containers/Action';
+import { hasEncryption } from 'resources/cinder/volume-type';
 import globalVolumeTypeStore from 'stores/cinder/volume-type';
 
 export default class DeleteEncryptionAction extends ConfirmAction {
@@ -38,8 +39,7 @@ export default class DeleteEncryptionAction extends ConfirmAction {
 
   policy = 'volume_extension:volume_type_encryption:delete';
 
-  allowedCheckFunc = (data) =>
-    Promise.resolve(data.encryption && !data.encryption.deleted_at);
+  allowedCheckFunc = (data) => hasEncryption(data);
 
   onSubmit = () => {
     const { id, encryption } = this.item;
