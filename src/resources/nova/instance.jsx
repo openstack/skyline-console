@@ -209,7 +209,6 @@ const passwordAndUserData =
   '#cloud-config\n' +
   'disable_root: false\n' +
   'ssh_pwauth: true\n' +
-  'password: USER_PASSWORD\n' +
   '\n' +
   '--===============2309984059743762475==\n' +
   'Content-Type: text/x-shellscript; charset="us-ascii" \n' +
@@ -243,7 +242,6 @@ const onlyPassword =
   '#cloud-config\n' +
   'disable_root: false\n' +
   'ssh_pwauth: true\n' +
-  'password: USER_PASSWORD\n' +
   '\n' +
   '--===============2309984059743762475==\n' +
   'Content-Type: text/x-shellscript; charset="us-ascii" \n' +
