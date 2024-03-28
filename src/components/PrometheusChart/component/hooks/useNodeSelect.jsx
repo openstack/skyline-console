@@ -14,6 +14,9 @@ const useNodeSelect = (defaultNode) => {
   };
 
   const Nodes = () => {
+    if (!nodes.length) {
+      return null;
+    }
     const key = getKey();
     return (
       <div style={{ marginBottom: 16 }}>
