@@ -1000,7 +1000,7 @@
   "Fedora": "",
   "Fiji": "斐济",
   "File": "文件",
-  "File System Free Space": "文件系统可用空间",
+  "File System Used Space": "文件系统已用空间",
   "File URL": "文件URL",
   "Filename": "文件名",
   "Files: {names}": "文件：{names}",

@@ -1000,7 +1000,7 @@
   "Fedora": "Fedora",
   "Fiji": "Fiji",
   "File": "Dosya",
-  "File System Free Space": "Dosya Sistemi Boş Alanı",
+  "File System Used Space": "Dosya Sistemi Kullanılan Alan",
   "File URL": "Dosya URL'si",
   "Filename": "Dosya Adı",
   "Files: {names}": "Dosyalar: {names}",

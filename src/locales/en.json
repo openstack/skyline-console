@@ -1000,7 +1000,7 @@
   "Fedora": "Fedora",
   "Fiji": "Fiji",
   "File": "File",
-  "File System Free Space": "File System Free Space",
+  "File System Used Space": "File System Used Space",
   "File URL": "File URL",
   "Filename": "Filename",
   "Files: {names}": "Files: {names}",

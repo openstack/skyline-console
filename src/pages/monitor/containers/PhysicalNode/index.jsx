@@ -66,7 +66,7 @@ export const topCardList = [
     ),
   },
   {
-    title: t('File System Free Space'),
+    title: t('File System Used Space'),
     span: 9,
     createFetchParams: {
       metricKey: 'physicalNode.fileSystemFreeSpace',
@@ -78,11 +78,17 @@ export const topCardList = [
         const { data: { result } = { result: [] } } = avail;
         const temp = [];
         result.forEach((item, index) => {
+          const availValue = parseFloat(get(item, 'value[1]', 0));
+          const total = parseFloat(
+            get(size, `data.result[${index}].value[1]`, 0)
+          );
+          const used = total - availValue;
           temp.push({
             mountpoint:
               get(item, `metric.${deviceKey}`) + get(item, `metric.${typeKey}`),
-            avail: parseFloat(get(item, 'value[1]', 0)),
-            total: parseFloat(get(size, `data.result[${index}].value[1]`, 0)),
+            avail: availValue,
+            total,
+            used,
           });
         });
         return temp;
@@ -98,7 +104,7 @@ export const topCardList = [
         }}
       >
         {(value.data || []).map((item, index) => {
-          const percentage = computePercentage(item.avail, item.total);
+          const percentage = computePercentage(item.used, item.total);
           const percentageColor =
             percentage > 80 ? globalCSS.warnDarkColor : globalCSS.primaryColor;
           return (
@@ -109,16 +115,16 @@ export const topCardList = [
               <div>
                 <div style={{ float: 'left' }}>{item.mountpoint}</div>
                 <div style={{ float: 'right' }}>
-                  {`${formatSize(parseInt(item.avail, 10))} / ${formatSize(
+                  {`${formatSize(parseInt(item.used, 10))} / ${formatSize(
                     parseInt(item.total, 10)
                   )}`}
                 </div>
               </div>
               <Progress
-                style={{ width: '95%' }}
+                style={{ width: '90%' }}
                 percent={Number(
                   (
-                    (parseInt(item.avail, 10) / parseInt(item.total, 10)) *
+                    (parseInt(item.used, 10) / parseInt(item.total, 10)) *
                     100
                   ).toFixed(3)
                 )}
