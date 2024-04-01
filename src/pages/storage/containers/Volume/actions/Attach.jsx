@@ -48,7 +48,8 @@ export class Attach extends ModalAction {
     return 'large';
   }
 
-  disabledInstance = (ins) => !allowAttachVolumeInstance(ins);
+  disabledInstance = (ins) =>
+    !allowAttachVolumeInstance(ins) || this.alreadyAttached(ins);
 
   get defaultValue() {
     const { name, id, size, volume_type } = this.item;
