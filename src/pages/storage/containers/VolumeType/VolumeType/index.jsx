@@ -79,7 +79,7 @@ export class VolumeType extends Base {
       valueRender: 'noValue',
     },
     {
-      title: t('Associated QoS Spec'),
+      title: t('Associated QoS Spec ID/Name'),
       dataIndex: 'qos_specs_name',
       isLink: true,
       routeName: 'volumeTypeQosDetailAdmin',
@@ -112,7 +112,7 @@ export class VolumeType extends Base {
         name: 'name',
       },
       {
-        label: t('Associated QoS Spec'),
+        label: t('Associated QoS Spec ID'),
         name: 'qos_specs_id',
       },
     ];
