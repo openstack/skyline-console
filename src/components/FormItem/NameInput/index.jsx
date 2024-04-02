@@ -47,30 +47,19 @@ const {
 export default class index extends Component {
   static isFormItem = true;
 
-  getRules({
-    names,
-    rules,
-    withoutChinese,
-    isFile,
-    isKeypair,
-    isStack,
-    isCrontab,
-    isImage,
-    isInstance,
-    isSwiftFile,
-    isDatabaseName,
-    isDatabaseUserName,
-  }) {
-    const uniqueNameValidate = (rule, value) => {
-      if (names && names.length && names.includes(value)) {
-        const message = t('Name can not be duplicated');
-        return Promise.reject(new Error(`${t('Invalid: ')}${message}`));
-      }
-      return Promise.resolve(true);
-    };
-    const uniqueRule = {
-      validator: uniqueNameValidate,
-    };
+  getRuleValidator(props) {
+    const {
+      withoutChinese,
+      isFile,
+      isKeypair,
+      isStack,
+      isCrontab,
+      isImage,
+      isInstance,
+      isSwiftFile,
+      isDatabaseName,
+      isDatabaseUserName,
+    } = props;
     let validator = nameValidate;
     if (isFile) {
       validator = fileNameValidate;
@@ -93,8 +82,24 @@ export default class index extends Component {
     } else if (isDatabaseUserName) {
       validator = databaseUserNameValidate;
     }
+    return validator;
+  }
+
+  getRules(ruleProps) {
+    const { names, rules, ...rest } = ruleProps;
+    const uniqueNameValidate = (rule, value) => {
+      if (names && names.length && names.includes(value)) {
+        const message = t('Name can not be duplicated');
+        return Promise.reject(new Error(`${t('Invalid: ')}${message}`));
+      }
+      return Promise.resolve(true);
+    };
+    const uniqueRule = {
+      validator: uniqueNameValidate,
+    };
+
     const newRules = {
-      validator,
+      validator: this.getRuleValidator(rest),
     };
     if (rules && rules.length > 0) {
       return [...rules, newRules, uniqueRule];
@@ -147,8 +152,8 @@ export default class index extends Component {
     return nameMessage;
   }
 
-  render() {
-    const { componentProps, formItemProps } = this.props;
+  getPropsFromComponentProps() {
+    const { componentProps } = this.props;
     const {
       withoutChinese = false,
       isFile = false,
@@ -163,48 +168,82 @@ export default class index extends Component {
       names,
       ...componentRest
     } = componentProps;
+    return {
+      ruleProps: {
+        names,
+        withoutChinese,
+        isFile,
+        isKeypair,
+        isStack,
+        isCrontab,
+        isImage,
+        isInstance,
+        isSwiftFile,
+        isDatabaseName,
+        isDatabaseUserName,
+      },
+      messageProps: {
+        withoutChinese,
+        isFile,
+        isKeypair,
+        isStack,
+        isCrontab,
+        isImage,
+        isInstance,
+        isSwiftFile,
+        isDatabaseName,
+        isDatabaseUserName,
+      },
+      restProps: componentRest,
+    };
+  }
+
+  get ruleProps() {
+    const { formItemProps } = this.props;
+    const { rules } = formItemProps;
+    const { ruleProps } = this.getPropsFromComponentProps();
+    return {
+      ...ruleProps,
+      rules,
+    };
+  }
+
+  get messageProps() {
+    const { messageProps } = this.getPropsFromComponentProps();
+    return messageProps;
+  }
+
+  get formItemProps() {
+    const { formItemProps } = this.props;
+    const { rules, ...rest } = formItemProps;
+    const newRules = this.getRules(this.ruleProps);
+    const message = this.getMessage(this.messageProps);
+    return {
+      ...rest,
+      rules: newRules,
+      extra: message,
+    };
+  }
+
+  get inputProps() {
+    const { isFile } = this.ruleProps;
+    const { restProps } = this.getPropsFromComponentProps();
     const placeholder = isFile
       ? t('Please input file name')
       : t('Please input name');
     const props = {
       placeholder,
-      ...componentRest,
+      ...restProps,
     };
-    const { rules, ...rest } = formItemProps;
-    const newRules = this.getRules({
-      names,
-      rules,
-      withoutChinese,
-      isFile,
-      isKeypair,
-      isStack,
-      isCrontab,
-      isImage,
-      isInstance,
-      isSwiftFile,
-      isDatabaseName,
-      isDatabaseUserName,
-    });
-    const message = this.getMessage({
-      withoutChinese,
-      isFile,
-      isKeypair,
-      isStack,
-      isCrontab,
-      isImage,
-      isInstance,
-      isSwiftFile,
-      isDatabaseName,
-      isDatabaseUserName,
-    });
-    const newFormItemProps = {
-      ...rest,
-      rules: newRules,
-      extra: message,
-    };
+    return props;
+  }
+
+  render() {
+    const newFormItemProps = this.formItemProps;
+    const { inputProps } = this;
     return (
       <Form.Item {...newFormItemProps}>
-        <Input {...props} />
+        <Input {...inputProps} />
       </Form.Item>
     );
   }
