@@ -13,14 +13,23 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
-import actionConfigs from './actions';
 import globalHostStore, { HostStore } from 'src/stores/masakari/hosts';
 import { Link } from 'react-router-dom';
+import { masakariEndpoint } from 'client/client/constants';
+import actionConfigs from './actions';
 
 export class Hosts extends Base {
   init() {
     this.store = globalHostStore;
     this.downloadStore = new HostStore();
+  }
+
+  get endpoint() {
+    return masakariEndpoint();
+  }
+
+  get checkEndpoint() {
+    return true;
   }
 
   get policy() {
@@ -66,11 +75,11 @@ export class Hosts extends Base {
       },
       ...(this.isAdminPage
         ? [
-          {
-            label: t('Project Name'),
-            name: 'project_name',
-          },
-        ]
+            {
+              label: t('Project Name'),
+              name: 'project_name',
+            },
+          ]
         : []),
     ];
   }
@@ -80,9 +89,13 @@ export class Hosts extends Base {
       title: t('Name'),
       dataIndex: 'name',
       render: (value, row) => {
-        const path = this.getRoutePath('masakariHostDetail', { id: row.failover_segment_id }, { uuid: row.uuid });
+        const path = this.getRoutePath(
+          'masakariHostDetail',
+          { id: row.failover_segment_id },
+          { uuid: row.uuid }
+        );
         return <Link to={path}>{value}</Link>;
-      }
+      },
     },
     {
       title: t('UUID'),
@@ -93,7 +106,7 @@ export class Hosts extends Base {
       title: t('Reserved'),
       dataIndex: 'reserved',
       isHideable: true,
-      valueRender: 'yesNo'
+      valueRender: 'yesNo',
     },
     {
       title: t('Type'),
@@ -103,24 +116,31 @@ export class Hosts extends Base {
     {
       title: t('Control Attribute'),
       dataIndex: 'control_attributes',
-      isHideable: true
+      isHideable: true,
     },
     {
       title: t('On Maintenance'),
       dataIndex: 'on_maintenance',
       isHideable: true,
-      valueRender: 'yesNo'
+      valueRender: 'yesNo',
     },
     {
       title: t('Failover Segment'),
       dataIndex: 'failover_segment',
       isHideable: true,
       render: (value, row) => {
-        return <Link to={this.getRoutePath('masakariSegmentDetail', { id: row.failover_segment_id })}>{row.failover_segment.name}</Link>
-      }
-    }
+        return (
+          <Link
+            to={this.getRoutePath('masakariSegmentDetail', {
+              id: row.failover_segment_id,
+            })}
+          >
+            {row.failover_segment.name}
+          </Link>
+        );
+      },
+    },
   ];
-
 }
 
 export default inject('rootStore')(observer(Hosts));

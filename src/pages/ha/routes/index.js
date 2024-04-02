@@ -27,13 +27,32 @@ export default [
     component: BaseLayout,
     routes: [
       { path: `${PATH}/segments-admin`, component: Segments, exact: true },
-      { path: `${PATH}/segments-admin`, component: Segments, exact: true },
-      { path: `${PATH}/segments-admin/create-step-admin`, component: StepCreate, exact: true },
-      { path: `${PATH}/segments-admin/detail/:id`, component: SegmentsDetail, exact: true },
+      {
+        path: `${PATH}/segments-admin/create-step-admin`,
+        component: StepCreate,
+        exact: true,
+      },
+      {
+        path: `${PATH}/segments-admin/detail/:id`,
+        component: SegmentsDetail,
+        exact: true,
+      },
       { path: `${PATH}/hosts-admin`, component: Hosts, exact: true },
-      { path: `${PATH}/hosts-admin/detail/:id`, component: HostsDetail, exact: true, },
-      { path: `${PATH}/notifications-admin`, component: Notifications, exact: true },
-      { path: `${PATH}/notifications-admin/detail/:id`, component: NotificationsDetail, exact: true },
+      {
+        path: `${PATH}/hosts-admin/detail/:id`,
+        component: HostsDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/notifications-admin`,
+        component: Notifications,
+        exact: true,
+      },
+      {
+        path: `${PATH}/notifications-admin/detail/:id`,
+        component: NotificationsDetail,
+        exact: true,
+      },
       { path: '*', component: E404 },
     ],
   },

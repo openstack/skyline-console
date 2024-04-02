@@ -980,7 +980,7 @@ const renderMenu = (t) => {
       name: t('Instance-HA'),
       key: 'masakari',
       icon: <DeploymentUnitOutlined />,
-      // endpoints: 'masakari',
+      endpoints: 'masakari',
       children: [
         {
           path: '/ha/segments-admin',
