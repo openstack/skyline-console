@@ -55,7 +55,7 @@ export class HostsDetail extends Base {
     const hostId = parse(this.routing.location.search.slice(1));
     return {
       id: params.id,
-      uuid: hostId.uuid
+      uuid: hostId.uuid,
     };
   };
 

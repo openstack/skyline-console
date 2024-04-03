@@ -3,7 +3,6 @@ import client from 'client';
 import { action } from 'mobx';
 
 export class HostStore extends Base {
-
   get client() {
     return client.masakari.segments.hosts;
   }
@@ -32,22 +31,24 @@ export class HostStore extends Base {
     const result = [];
 
     if (params.segment_id) {
-      await this.client.list(params.segment_id).then(response => {
-        response.hosts.map(item => result.push(item))
+      await this.client.list(params.segment_id).then((response) => {
+        response.hosts.map((item) => result.push(item));
       });
     } else {
-      await this.segmentClient.list().then(async segmentList => {
-        const segmentHosts = segmentList.segments.map((it) => this.client.list(it.uuid).then(getHost => getHost.hosts))
-        await Promise.all(segmentHosts).then(hostList => {
-          hostList.forEach(host => {
-            host.forEach(item => {
+      await this.segmentClient.list().then(async (segmentList) => {
+        const segmentHosts = segmentList.segments.map((it) =>
+          this.client.list(it.uuid).then((getHost) => getHost.hosts)
+        );
+        await Promise.all(segmentHosts).then((hostList) => {
+          hostList.forEach((host) => {
+            host.forEach((item) => {
               result.push(item);
-            })
-          })
+            });
+          });
         });
       });
     }
-    return { hosts: result }
+    return { hosts: result };
   }
 
   @action
@@ -56,7 +57,8 @@ export class HostStore extends Base {
   }
 
   @action
-  delete = ({ segment_id, host_id }) => this.submitting(this.client.delete(segment_id, host_id));
+  delete = ({ segment_id, host_id }) =>
+    this.submitting(this.client.delete(segment_id, host_id));
 
   @action
   update(segmentId, id, body) {

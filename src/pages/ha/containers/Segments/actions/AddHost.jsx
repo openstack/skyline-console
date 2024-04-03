@@ -11,7 +11,7 @@
 // limitations under the License.
 
 import { inject, observer } from 'mobx-react';
-import { ModalAction } from "src/containers/Action";
+import { ModalAction } from 'src/containers/Action';
 import globalHostStore from 'src/stores/masakari/hosts';
 import globalComputeHostStore from 'src/stores/nova/compute-host';
 
@@ -19,7 +19,7 @@ export class AddHost extends ModalAction {
   init() {
     this.store = globalHostStore;
     this.state = {
-      host: []
+      host: [],
     };
     this.getHostList();
   }
@@ -37,17 +37,18 @@ export class AddHost extends ModalAction {
   static allowed = () => Promise.resolve(true);
 
   async getHostList() {
-    const response = await globalComputeHostStore.fetchList({ binary: 'nova-compute' });
+    const response = await globalComputeHostStore.fetchList({
+      binary: 'nova-compute',
+    });
     const hostList = await globalHostStore.fetchList();
     let flag = false;
 
     if (hostList.length < 1) {
       this.setState({
-        host: response
+        host: response,
       });
-    }
-    else {
-      response.forEach(newHost => {
+    } else {
+      response.forEach((newHost) => {
         for (let i = 0; i < hostList.length; i++) {
           if (hostList[i].name === newHost.host) {
             flag = true;
@@ -55,7 +56,7 @@ export class AddHost extends ModalAction {
         }
         if (!flag) {
           this.setState({
-            host: [...this.state.host, newHost]
+            host: [...this.state.host, newHost],
           });
         }
         flag = false;
@@ -74,7 +75,7 @@ export class AddHost extends ModalAction {
     return {
       segment_name: this.item.name,
       reserved: false,
-      on_maintenance: false
+      on_maintenance: false,
     };
   }
 
@@ -84,48 +85,48 @@ export class AddHost extends ModalAction {
         name: 'segment_name',
         label: t('Segment Name'),
         type: 'input',
-        disabled: true
+        disabled: true,
       },
       {
         name: 'name',
         label: t('Host Name'),
         type: 'select',
         options: this.getHostName,
-        required: true
+        required: true,
       },
       {
         name: 'reserved',
         label: t('Reserved'),
         type: 'switch',
         checkedText: '',
-        uncheckedText: ''
+        uncheckedText: '',
       },
       {
         name: 'type',
         label: t('Type'),
         type: 'input',
-        required: true
+        required: true,
       },
       {
         name: 'control_attributes',
         label: t('Control Attributes'),
         type: 'input',
-        required: true
+        required: true,
       },
       {
         name: 'on_maintenance',
         label: t('On Maintenance'),
         type: 'switch',
         checkedText: '',
-        uncheckedText: ''
+        uncheckedText: '',
       },
-    ]
+    ];
   }
 
   onSubmit = (values) => {
     const { segment_name, ...submitData } = values;
-    return this.store.create(this.item.uuid, { 'host': { ...submitData } });
-  }
+    return this.store.create(this.item.uuid, { host: { ...submitData } });
+  };
 }
 
 export default inject('rootStore')(observer(AddHost));

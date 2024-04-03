@@ -32,7 +32,7 @@ export class BaseDetail extends Base {
       {
         label: t('Enabled'),
         dataIndex: 'enabled',
-        valueRender: 'yesNo'
+        valueRender: 'yesNo',
       },
       {
         label: t('Created At'),

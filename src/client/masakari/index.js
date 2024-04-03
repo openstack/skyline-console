@@ -42,4 +42,3 @@ export class MasakariClient extends Base {
 
 const masakariClient = new MasakariClient();
 export default masakariClient;
-

@@ -28,22 +28,22 @@ export class BaseDetail extends Base {
       {
         label: t('Host'),
         dataIndex: 'source_host_uuid',
-        copyable: true
+        copyable: true,
       },
       {
         label: t('Generated Time'),
         dataIndex: 'generated_time',
-        valueRender: 'toLocalTime'
+        valueRender: 'toLocalTime',
       },
       {
         label: t('Created At'),
         dataIndex: 'created_at',
-        valueRender: 'toLocalTime'
+        valueRender: 'toLocalTime',
       },
       {
         label: t('Updated At'),
         dataIndex: 'updated_at',
-        valueRender: 'toLocalTime'
+        valueRender: 'toLocalTime',
       },
     ];
 
@@ -57,23 +57,23 @@ export class BaseDetail extends Base {
     const options = [
       {
         label: t('Event'),
-        dataIndex: 'event'
+        dataIndex: 'event',
       },
       {
         label: t('Instance UUID'),
-        dataIndex: 'instance_uuid'
+        dataIndex: 'instance_uuid',
       },
       {
         label: t('VIR Domain Event'),
-        dataIndex: 'vir_domain_event'
-      }
+        dataIndex: 'vir_domain_event',
+      },
     ];
 
     return {
       title: t('Payload'),
       sourceData: this.detailData.payload,
-      options
-    }
+      options,
+    };
   }
 }
 

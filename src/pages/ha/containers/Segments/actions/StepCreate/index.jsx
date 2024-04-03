@@ -12,9 +12,7 @@
 
 import { inject, observer } from 'mobx-react';
 import { StepAction } from 'containers/Action';
-import StepSegment from './StepSegment';
 import globalSegmentStore from 'src/stores/masakari/segments';
-import StepHost from './StepHost';
 import React from 'react';
 import { Button, Modal } from 'antd';
 import { toJS } from 'mobx';
@@ -22,6 +20,8 @@ import { QuestionCircleFilled } from '@ant-design/icons';
 import stylesConfirm from 'src/components/Confirm/index.less';
 import globalHostStore from 'src/stores/masakari/hosts';
 import Notify from 'src/components/Notify';
+import StepHost from './StepHost';
+import StepSegment from './StepSegment';
 
 export class StepCreate extends StepAction {
   static id = 'instance-ha-create';
@@ -54,28 +54,46 @@ export class StepCreate extends StepAction {
   }
 
   next() {
-    this.currentRef.current.wrappedInstance.checkFormInput((values) => {
-      this.updateData(values);
+    this.currentRef.current.wrappedInstance.checkFormInput(
+      (values) => {
+        this.updateData(values);
 
-      if (this.state.current === 0) {
-        this.setState({ btnIsLoading: true })
-        const { segment_name, recovery_method, service_type, description } = this.state.data;
+        if (this.state.current === 0) {
+          this.setState({ btnIsLoading: true });
+          const { segment_name, recovery_method, service_type, description } =
+            this.state.data;
 
-        globalSegmentStore.create({ segment: { name: segment_name, recovery_method, service_type, description } }).then(item => {
-          this.setState({ extra: toJS({ createdSegmentId: item.segment.uuid }) }, () => {
-            this.setState((prev) => ({ current: prev.current + 1 }));
-          })
-        }, (err) => {
-          this.responseError = err;
-          const { response: { data: responseData } = {} } = err;
-          Notify.errorWithDetail(responseData, this.errorText);
+          globalSegmentStore
+            .create({
+              segment: {
+                name: segment_name,
+                recovery_method,
+                service_type,
+                description,
+              },
+            })
+            .then(
+              (item) => {
+                this.setState(
+                  { extra: toJS({ createdSegmentId: item.segment.uuid }) },
+                  () => {
+                    this.setState((prev) => ({ current: prev.current + 1 }));
+                  }
+                );
+              },
+              (err) => {
+                this.responseError = err;
+                const { response: { data: responseData } = {} } = err;
+                Notify.errorWithDetail(responseData, this.errorText);
+              }
+            )
+            .finally(() => {
+              this.setState({ btnIsLoading: false });
+            });
         }
-        ).finally(() => {
-          this.setState({ btnIsLoading: false })
-        });
-      }
-
-    }, () => this.setState({ btnIsLoading: false }));
+      },
+      () => this.setState({ btnIsLoading: false })
+    );
   }
 
   getNextBtn() {
@@ -85,7 +103,11 @@ export class StepCreate extends StepAction {
     }
     const { title } = this.steps[current + 1];
     return (
-      <Button type="primary" onClick={() => this.next()} loading={this.state.btnIsLoading}>
+      <Button
+        type="primary"
+        onClick={() => this.next()}
+        loading={this.state.btnIsLoading}
+      >
         {`${t('Next')}: ${title}`}
       </Button>
     );
@@ -117,32 +139,47 @@ export class StepCreate extends StepAction {
       Modal.confirm({
         title: 'Confirm',
         icon: <QuestionCircleFilled className={stylesConfirm.warn} />,
-        content: 'Segment will be deleted. Are you sure want to cancel this created segment?',
+        content:
+          'Segment will be deleted. Are you sure want to cancel this created segment?',
         okText: 'Confirm',
         cancelText: 'Cancel',
         loading: true,
         onOk: () => {
-          return globalSegmentStore.delete({ id: this.state.extra.createdSegmentId }).finally(() => this.routing.push(this.listUrl));
-        }
+          return globalSegmentStore
+            .delete({ id: this.state.extra.createdSegmentId })
+            .finally(() => this.routing.push(this.listUrl));
+        },
       });
     } else {
       this.routing.push(this.listUrl);
     }
-  }
+  };
 
   get steps() {
     return [
       { title: t('Create Segment'), component: StepSegment },
-      { title: t('Add Host'), component: StepHost }
+      { title: t('Add Host'), component: StepHost },
     ];
   }
 
   onSubmit = (values) => {
     const { name } = values;
     return Promise.resolve(
-      name.selectedRows.forEach(item => {
-        const { binary, forced_down, host, id, state, status, updated_at, zone, ...hostData } = item;
-        this.store.create(this.state.extra.createdSegmentId, { 'host': { name: host, ...hostData } })
+      name.selectedRows.forEach((item) => {
+        const {
+          binary,
+          forced_down,
+          host,
+          id,
+          state,
+          status,
+          updated_at,
+          zone,
+          ...hostData
+        } = item;
+        this.store.create(this.state.extra.createdSegmentId, {
+          host: { name: host, ...hostData },
+        });
       })
     );
   };

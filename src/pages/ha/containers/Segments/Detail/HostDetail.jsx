@@ -36,9 +36,13 @@ export class HostDetail extends Base {
         title: t('Name'),
         dataIndex: 'name',
         render: (value, row) => {
-          const path = this.getRoutePath('masakariHostDetail', { id: row.failover_segment_id }, { uuid: row.uuid });
+          const path = this.getRoutePath(
+            'masakariHostDetail',
+            { id: row.failover_segment_id },
+            { uuid: row.uuid }
+          );
           return <Link to={path}>{value}</Link>;
-        }
+        },
       },
       {
         title: t('UUID'),
@@ -49,7 +53,7 @@ export class HostDetail extends Base {
         title: t('Reserved'),
         dataIndex: 'reserved',
         isHideable: true,
-        valueRender: 'yesNo'
+        valueRender: 'yesNo',
       },
       {
         title: t('Type'),
@@ -59,27 +63,33 @@ export class HostDetail extends Base {
       {
         title: t('Control Attribute'),
         dataIndex: 'control_attributes',
-        isHideable: true
+        isHideable: true,
       },
       {
         title: t('On Maintenance'),
         dataIndex: 'on_maintenance',
         isHideable: true,
-        valueRender: 'yesNo'
-      }
-      ,
+        valueRender: 'yesNo',
+      },
       {
         title: t('Failover Segment'),
         dataIndex: 'failover_segment',
         isHideable: true,
         render: (value, row) => {
-          return <Link to={this.getRoutePath('masakariSegmentDetail', { id: row.failover_segment_id })}>{row.failover_segment.name}</Link>
-        }
-      }
+          return (
+            <Link
+              to={this.getRoutePath('masakariSegmentDetail', {
+                id: row.failover_segment_id,
+              })}
+            >
+              {row.failover_segment.name}
+            </Link>
+          );
+        },
+      },
     ];
     return columns;
   };
-
 }
 
 export default inject('rootStore')(observer(HostDetail));

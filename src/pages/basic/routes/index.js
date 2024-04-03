@@ -51,13 +51,13 @@ const Share = lazy(() =>
   import(/* webpackChunkName: "share" */ 'pages/share/App')
 );
 const ContainerInfra = lazy(() =>
-import(/* webpackChunkName: "container-infra" */ 'pages/container-infra/App')
+  import(/* webpackChunkName: "container-infra" */ 'pages/container-infra/App')
 );
 const ContainerService = lazy(() =>
-import(/* webpackChunkName: "Container" */ 'pages/container-service/App')
+  import(/* webpackChunkName: "Container" */ 'pages/container-service/App')
 );
 const E404 = lazy(() =>
-import(/* webpackChunkName: "E404" */ 'pages/base/containers/404')
+  import(/* webpackChunkName: "E404" */ 'pages/base/containers/404')
 );
 const InstanceHA = lazy(() =>
   import(/* webpackChunkName: "Inctance-HA" */ 'pages/ha/App')

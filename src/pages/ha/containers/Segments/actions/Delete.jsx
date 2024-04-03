@@ -48,7 +48,7 @@ export default class Delete extends ConfirmAction {
 
   onSubmit = (item) => {
     const { uuid } = item || this.item;
-    let id = uuid;
+    const id = uuid;
     return globalSegmentStore.delete({ id });
   };
 }

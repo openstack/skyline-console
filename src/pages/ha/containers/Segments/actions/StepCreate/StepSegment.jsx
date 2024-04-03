@@ -14,7 +14,6 @@ import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
 
 export class StepSegment extends Base {
-
   get title() {
     return 'StepSegment';
   }
@@ -42,7 +41,7 @@ export class StepSegment extends Base {
         name: 'segment_name',
         label: t('Segment Name'),
         type: 'input',
-        required: true
+        required: true,
       },
       {
         name: 'recovery_method',
@@ -54,20 +53,20 @@ export class StepSegment extends Base {
           { label: t('reserved_host'), value: 'reserved_host' },
           { label: t('rh_priority'), value: 'rh_priority' },
         ],
-        required: true
+        required: true,
       },
       {
         name: 'service_type',
         label: t('Service Type'),
         type: 'input',
         required: true,
-        disabled: true
+        disabled: true,
       },
       {
         name: 'description',
         label: t('Description'),
         type: 'textarea',
-        rows: 4
+        rows: 4,
       },
     ];
   }

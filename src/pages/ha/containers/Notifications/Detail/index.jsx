@@ -12,8 +12,8 @@
 
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/TabDetail';
-import BaseDetail from './BaseDetail';
 import globalNotificationStore from 'stores/masakari/notifications';
+import BaseDetail from './BaseDetail';
 
 export class NotificationsDetail extends Base {
   init() {

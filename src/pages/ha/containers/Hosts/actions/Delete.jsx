@@ -48,6 +48,9 @@ export default class Delete extends ConfirmAction {
 
   onSubmit = (item) => {
     const { uuid, failover_segment_id } = item || this.item;
-    return globalHostStore.delete({ segment_id: failover_segment_id, host_id: uuid });
+    return globalHostStore.delete({
+      segment_id: failover_segment_id,
+      host_id: uuid,
+    });
   };
 }

@@ -15,7 +15,10 @@ export default function Log(props) {
 
   const getLogs = async (tailSize) => {
     setLoading(true);
-    const data = await globalInstanceLogStore.fetchLogs(props.detail.id, tailSize);
+    const data = await globalInstanceLogStore.fetchLogs(
+      props.detail.id,
+      tailSize
+    );
     setLogs(data.output);
     setLoading(false);
   };
@@ -45,10 +48,7 @@ export default function Log(props) {
 
   return (
     <div>
-      <Form
-        initialValues={{ number: 35 }}
-        onFinish={onFinish}>
-
+      <Form initialValues={{ number: 35 }} onFinish={onFinish}>
         <Row gutter={16}>
           <Col className="gutter-row" span={16}>
             <h2 style={{ paddingLeft: 16 }}>{t('Instance Console Log')}</h2>
@@ -58,27 +58,20 @@ export default function Log(props) {
               <InputNumber
                 min={1}
                 max={100000}
-                placeholder={t("Log Length")}
-                style={{ width: "100%" }}
+                placeholder={t('Log Length')}
+                style={{ width: '100%' }}
                 addonafter={<SettingOutlined />}
               />
             </Form.Item>
           </Col>
           <Col className="gutter-row" span={4}>
-            <div
-              className={classnames(
-                styles['table-header-btns'])}
-            >
-              <Button
-                type="primary"
-                htmlType="submit">
+            <div className={classnames(styles['table-header-btns'])}>
+              <Button type="primary" htmlType="submit">
                 <SearchOutlined />
               </Button>
 
-              <Button
-                type="primary"
-                onClick={() => viewFullLog()}>
-                {t("View Full Log")}
+              <Button type="primary" onClick={() => viewFullLog()}>
+                {t('View Full Log')}
               </Button>
             </div>
           </Col>
@@ -95,7 +88,13 @@ export default function Log(props) {
           fontSize: 12,
         }}
       >
-        {loading ? <Skeleton loading={loading} active /> : logs ? <pre>{logs}</pre> : t('No Logs...')}
+        {loading ? (
+          <Skeleton loading={loading} active />
+        ) : logs ? (
+          <pre>{logs}</pre>
+        ) : (
+          t('No Logs...')
+        )}
       </div>
     </div>
   );

@@ -28,7 +28,7 @@ const actionConfigs = {
     ],
   },
   batchActions: [Delete],
-  primaryActions: [StepCreate]
+  primaryActions: [StepCreate],
 };
 
 export default actionConfigs;

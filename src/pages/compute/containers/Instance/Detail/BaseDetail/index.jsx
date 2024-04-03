@@ -176,11 +176,19 @@ export class BaseDetail extends Base {
   get keypairCard() {
     const keypair = this.detailData.key_name;
     const url = this.getRoutePath('keypairDetail', { id: keypair });
-    const content = keypair ? (this.isAdminPage ? <div>{keypair}</div> : <Link to={url}>{keypair}</Link>) : '-';
+    const content = keypair ? (
+      this.isAdminPage ? (
+        <div>{keypair}</div>
+      ) : (
+        <Link to={url}>{keypair}</Link>
+      )
+    ) : (
+      '-'
+    );
     const options = [
       {
         label: t('Name'),
-        content: content,
+        content,
       },
     ];
     return {
