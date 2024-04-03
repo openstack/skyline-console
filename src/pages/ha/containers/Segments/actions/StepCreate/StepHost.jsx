@@ -23,7 +23,7 @@ export class StepHost extends Base {
     this.state = {
       host: [],
       hostLoading: true,
-      ...this.state
+      ...this.state,
     };
 
     this.getHostList();
@@ -44,18 +44,18 @@ export class StepHost extends Base {
   allowed = () => Promise.resolve();
 
   async getHostList() {
-
-    const response = await globalComputeHostStore.fetchList({ binary: 'nova-compute' });
+    const response = await globalComputeHostStore.fetchList({
+      binary: 'nova-compute',
+    });
     const hostList = await globalHostStore.fetchList();
     let flag = false;
 
     if (hostList.length < 1) {
       this.setState({
-        host: response
+        host: response,
       });
-    }
-    else {
-      response.forEach(newHost => {
+    } else {
+      response.forEach((newHost) => {
         for (let i = 0; i < hostList.length; i++) {
           if (hostList[i].name === newHost.host) {
             flag = true;
@@ -69,9 +69,9 @@ export class StepHost extends Base {
     }
 
     const hostMap = Object.fromEntries(
-      this.state.host.map(host => [host.id, host])
-    )
-    this.setState({ hostMap: hostMap, hostLoading: false });
+      this.state.host.map((host) => [host.id, host])
+    );
+    this.setState({ hostMap, hostLoading: false });
   }
 
   get getHostName() {
@@ -88,7 +88,7 @@ export class StepHost extends Base {
       {
         title: t('Updated'),
         dataIndex: 'updated_at',
-        valueRender: 'toLocalTime'
+        valueRender: 'toLocalTime',
       },
       {
         name: 'reserved',
@@ -99,14 +99,14 @@ export class StepHost extends Base {
           <Switch
             checked={reserved}
             onChange={(checked) => {
-              this.setState(prevState => {
-                const host = prevState.hostMap
-                host[row.id].reserved = checked
-                return { hostMap: host }
-              })
+              this.setState((prevState) => {
+                const host = prevState.hostMap;
+                host[row.id].reserved = checked;
+                return { hostMap: host };
+              });
             }}
           />
-        )
+        ),
       },
       {
         name: 'type',
@@ -115,18 +115,18 @@ export class StepHost extends Base {
         required: true,
         render: (type, row) => (
           <Input
-            required={true}
+            required
             defaultValue={type}
             onChange={(e) => {
-              const { value } = e.target
-              this.setState(prevState => {
-                const host = prevState.hostMap
-                host[row.id].type = value
-                return { hostMap: host }
-              })
+              const { value } = e.target;
+              this.setState((prevState) => {
+                const host = prevState.hostMap;
+                host[row.id].type = value;
+                return { hostMap: host };
+              });
             }}
           />
-        )
+        ),
       },
       {
         name: 'control_attributes',
@@ -135,17 +135,17 @@ export class StepHost extends Base {
         render: (control_attribute, row) => (
           <Input
             defaultValue={control_attribute}
-            required={true}
+            required
             onChange={(e) => {
-              const { value } = e.target
-              this.setState(prevState => {
-                const host = prevState.hostMap
-                host[row.id].control_attributes = value
-                return { hostMap: host }
-              })
+              const { value } = e.target;
+              this.setState((prevState) => {
+                const host = prevState.hostMap;
+                host[row.id].control_attributes = value;
+                return { hostMap: host };
+              });
             }}
           />
-        )
+        ),
       },
       {
         name: 'on_maintenance',
@@ -155,16 +155,16 @@ export class StepHost extends Base {
           <Switch
             checked={maintain}
             onChange={(checked) => {
-              this.setState(prevState => {
-                const host = prevState.hostMap
-                host[row.id].on_maintenance = checked
-                return { hostMap: host }
-              })
+              this.setState((prevState) => {
+                const host = prevState.hostMap;
+                host[row.id].on_maintenance = checked;
+                return { hostMap: host };
+              });
             }}
           />
-        )
-      }
-    ]
+        ),
+      },
+    ];
 
     return [
       {
@@ -174,15 +174,15 @@ export class StepHost extends Base {
         required: true,
         data: this.state.host,
         isMulti: true,
-        onRow: () => { },
-        columns: columns,
+        onRow: () => {},
+        columns,
         isLoading: this.state.hostLoading,
         filterParams: [
           { label: t('Name'), name: 'host' },
           { label: t('Zone'), name: 'zone' },
-        ]
-      }
-    ]
+        ],
+      },
+    ];
   }
 }
 

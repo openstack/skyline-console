@@ -31,18 +31,26 @@ export class BaseDetail extends Base {
         label: t('Failover Segment'),
         dataIndex: 'failover_segment_id',
         render: (value, row) => {
-          return <Link to={this.getRoutePath('masakariSegmentDetail', { id: row.failover_segment_id })}>{row.failover_segment.name}</Link>
-        }
+          return (
+            <Link
+              to={this.getRoutePath('masakariSegmentDetail', {
+                id: row.failover_segment_id,
+              })}
+            >
+              {row.failover_segment.name}
+            </Link>
+          );
+        },
       },
       {
         label: t('Reserved'),
         dataIndex: 'reserved',
-        valueRender: 'yesNo'
+        valueRender: 'yesNo',
       },
       {
         label: t('On Maintenance'),
         dataIndex: 'on_maintenance',
-        valueRender: 'yesNo'
+        valueRender: 'yesNo',
       },
       {
         label: t('Type'),

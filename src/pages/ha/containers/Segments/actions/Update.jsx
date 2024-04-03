@@ -11,7 +11,7 @@
 // limitations under the License.
 
 import { inject, observer } from 'mobx-react';
-import { ModalAction } from "src/containers/Action";
+import { ModalAction } from 'src/containers/Action';
 import globalSegmentStore from 'src/stores/masakari/segments';
 
 export class Update extends ModalAction {
@@ -33,7 +33,7 @@ export class Update extends ModalAction {
 
   get defaultValue() {
     return {
-      ...this.item
+      ...this.item,
     };
   }
 
@@ -43,7 +43,7 @@ export class Update extends ModalAction {
         name: 'name',
         label: t('Segment Name'),
         type: 'input',
-        required: true
+        required: true,
       },
       {
         name: 'recovery_method',
@@ -55,20 +55,20 @@ export class Update extends ModalAction {
           { label: t('reserved_host'), value: 'reserved_host' },
           { label: t('rh_priority'), value: 'rh_priority' },
         ],
-        required: true
+        required: true,
       },
       {
         name: 'description',
         label: t('Description'),
         type: 'textarea',
-        rows: 4
+        rows: 4,
       },
-    ]
+    ];
   }
 
   onSubmit = (values) => {
-    return this.store.update(this.item.uuid, { 'segment': values });
-  }
+    return this.store.update(this.item.uuid, { segment: values });
+  };
 }
 
 export default inject('rootStore')(observer(Update));

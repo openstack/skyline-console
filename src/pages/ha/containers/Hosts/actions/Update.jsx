@@ -11,7 +11,7 @@
 // limitations under the License.
 
 import { inject, observer } from 'mobx-react';
-import { ModalAction } from "src/containers/Action";
+import { ModalAction } from 'src/containers/Action';
 import globalHostStore from 'src/stores/masakari/hosts';
 
 export class Update extends ModalAction {
@@ -33,7 +33,7 @@ export class Update extends ModalAction {
 
   get defaultValue() {
     return {
-      ...this.item
+      ...this.item,
     };
   }
 
@@ -44,40 +44,42 @@ export class Update extends ModalAction {
         label: t('Host Name'),
         type: 'input',
         disabled: true,
-        required: true
+        required: true,
       },
       {
         name: 'reserved',
         label: t('Reserved'),
         type: 'switch',
         checkedText: '',
-        uncheckedText: ''
+        uncheckedText: '',
       },
       {
         name: 'type',
         label: t('Type'),
         type: 'input',
-        required: true
+        required: true,
       },
       {
         name: 'control_attributes',
         label: t('Control Attribute'),
         type: 'input',
-        required: true
+        required: true,
       },
       {
         name: 'on_maintenance',
         label: t('On Maintenance'),
         type: 'switch',
         checkedText: '',
-        uncheckedText: ''
-      }
-    ]
+        uncheckedText: '',
+      },
+    ];
   }
 
   onSubmit = (values) => {
-    return this.store.update(this.item.failover_segment_id, this.item.uuid, { 'host': values });
-  }
+    return this.store.update(this.item.failover_segment_id, this.item.uuid, {
+      host: values,
+    });
+  };
 }
 
 export default inject('rootStore')(observer(Update));

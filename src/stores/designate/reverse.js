@@ -15,7 +15,6 @@ import client from 'client';
 import Base from 'stores/base';
 
 export class ReverseStore extends Base {
-
   get client() {
     return client.designate.reverse.floatingips;
   }
@@ -34,15 +33,16 @@ export class ReverseStore extends Base {
   }
 
   get paramsFunc() {
-    return () => { };
+    return () => {};
   }
 
   @action
-  set = ({ id }, body) => this.submitting(this.reverseClient.setReverse(id, body));
+  set = ({ id }, body) =>
+    this.submitting(this.reverseClient.setReverse(id, body));
 
   @action
-  unset = ({ id }, body) => this.submitting(this.reverseClient.unsetReverse(id, body));
-
+  unset = ({ id }, body) =>
+    this.submitting(this.reverseClient.unsetReverse(id, body));
 }
 
 const globalReverseStore = new ReverseStore();

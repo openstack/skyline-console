@@ -65,7 +65,12 @@ function PopUpContent({ name }) {
         <Col span={8}>{t('Public Access')}</Col>
         <Col span={12}>
           {data.link ? (
-            <a type="link" href={data.link.endsWith('/') ? data.link : data.link + '/'} target="_blank" rel="noreferrer">
+            <a
+              type="link"
+              href={data.link.endsWith('/') ? data.link : `${data.link}/`}
+              target="_blank"
+              rel="noreferrer"
+            >
               {t('Click To View')}
             </a>
           ) : (

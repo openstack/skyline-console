@@ -10,37 +10,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import globalContainersStore from 'src/stores/zun/containers';
 
 export default function Console(props) {
-
   useEffect(() => {
     globalContainersStore.attach(props.detail.uuid).then((res) => {
-      const head = document.head;
+      const { head } = document;
 
-      const xtermCssLink = document.createElement("link");
-      xtermCssLink.rel = "stylesheet";
-      xtermCssLink.href = "https://cdn.jsdelivr.net/npm/xterm@4.19.0/css/xterm.css";
+      const xtermCssLink = document.createElement('link');
+      xtermCssLink.rel = 'stylesheet';
+      xtermCssLink.href =
+        'https://cdn.jsdelivr.net/npm/xterm@4.19.0/css/xterm.css';
       head.appendChild(xtermCssLink);
 
-
-      const xtermScript = document.createElement("script");
-      xtermScript.src = "https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.js";
+      const xtermScript = document.createElement('script');
+      xtermScript.src =
+        'https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.js';
 
       xtermScript.onload = () => {
         const term = new window.Terminal({
           cursorBlink: true,
         });
-        term.write(" >$ ");
+        term.write(' >$ ');
         term.open(document.getElementById('terminal'));
-        let socket = new WebSocket(res, ['binary', 'base64']);
+        const socket = new WebSocket(res, ['binary', 'base64']);
         term.on('data', function (data) {
           socket.send(str2ab(data));
         });
         socket.onmessage = function (e) {
           if (e.data instanceof Blob) {
-            let f = new FileReader();
+            const f = new FileReader();
             f.onload = function () {
               term.write(f.result);
             };
@@ -50,8 +50,8 @@ export default function Console(props) {
           }
         };
         function str2ab(str) {
-          let buf = new ArrayBuffer(str.length); // 2 bytes for each char
-          let bufView = new Uint8Array(buf);
+          const buf = new ArrayBuffer(str.length); // 2 bytes for each char
+          const bufView = new Uint8Array(buf);
           for (let i = 0, strLen = str.length; i < strLen; i++) {
             bufView[i] = str.charCodeAt(i);
           }
@@ -65,14 +65,11 @@ export default function Console(props) {
         head.removeChild(xtermScript);
       };
     });
-
   }, []);
 
   return (
     <div>
-      <div id="terminal">
-      </div>
-    </div >
+      <div id="terminal" />
+    </div>
   );
-
 }

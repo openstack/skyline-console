@@ -56,7 +56,7 @@ export class PoolStep extends Base {
   }
 
   get formItems() {
-    const {pool_lb_algorithm} = this.state;
+    const { pool_lb_algorithm } = this.state;
     return [
       {
         name: 'pool_name',

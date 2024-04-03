@@ -22,7 +22,7 @@ const actionConfigs = {
       },
     ],
   },
-  batchActions: [Delete]
+  batchActions: [Delete],
 };
 
 export default actionConfigs;

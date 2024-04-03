@@ -80,10 +80,7 @@ export class BaseStep extends Base {
   };
 
   get formItems() {
-    const {
-      network_id,
-      subnetDetails = [],
-    } = this.state;
+    const { network_id, subnetDetails = [] } = this.state;
     return [
       {
         name: 'name',

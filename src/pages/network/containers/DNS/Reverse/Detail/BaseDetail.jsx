@@ -55,7 +55,6 @@ export class BaseDetail extends Base {
       options,
     };
   }
-
 }
 
 export default inject('rootStore')(observer(BaseDetail));
