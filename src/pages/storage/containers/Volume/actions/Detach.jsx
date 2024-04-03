@@ -91,7 +91,6 @@ export class Detach extends ModalAction {
         type: 'select-table',
         required: true,
         data: this.instances,
-        isMulti: true,
         filterParams: [
           {
             label: t('Name'),
@@ -108,11 +107,8 @@ export class Detach extends ModalAction {
   onSubmit = ({ instance }) => {
     const { id } = this.item;
     const { selectedRowKeys } = instance;
-    return Promise.all(
-      selectedRowKeys.map((instanceId) =>
-        this.store.detachVolume({ id: instanceId, volumes: [id] })
-      )
-    );
+    const instanceId = selectedRowKeys[0];
+    return this.store.detachVolume({ id: instanceId, volumes: [id] });
   };
 }
 
