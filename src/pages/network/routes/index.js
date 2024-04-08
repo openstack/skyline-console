@@ -45,6 +45,16 @@ import ReverseDetail from '../containers/DNS/Reverse/Detail';
 import Zones from '../containers/DNS/Zones';
 import ZonesDetail from '../containers/DNS/Zones/Detail';
 import RecordSetDetail from '../containers/DNS/Zones/Detail/RecordSets/Detail';
+import Firewall from '../containers/Firewall';
+import FirewallDetail from '../containers/Firewall/Firewall/Detail';
+import FirewallPortDetail from '../containers/Firewall/Firewall/Detail/PortDetail';
+import PolicyDetail from '../containers/Firewall/Policy/Detail';
+import RuleCreate from '../containers/Firewall/Rule/actions/Create';
+import RuleEdit from '../containers/Firewall/Rule/actions/Edit';
+import RuleDetail from '../containers/Firewall/Rule/Detail';
+import PolicyCreate from '../containers/Firewall/Policy/actions/Create';
+import PolicyEdit from '../containers/Firewall/Policy/actions/Edit';
+import FirewallCreate from '../containers/Firewall/Firewall/actions/Create';
 
 const PATH = '/network';
 export default [
@@ -275,6 +285,73 @@ export default [
       {
         path: `${PATH}/dns/reverse/detail/:id`,
         component: ReverseDetail,
+        exact: true,
+      },
+      { path: `${PATH}/firewall`, component: Firewall, exact: true },
+      {
+        path: `${PATH}/firewall/:firewallId/port/:id`,
+        component: FirewallPortDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/firewall-admin/:firewallId/port/:id`,
+        component: FirewallPortDetail,
+        exact: true,
+      },
+      { path: `${PATH}/firewall-admin`, component: Firewall, exact: true },
+      {
+        path: `${PATH}/firewall/detail/:id`,
+        component: FirewallDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/firewall-admin/detail/:id`,
+        component: FirewallDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/firewall-policy/detail/:id`,
+        component: PolicyDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/firewall-policy-admin/detail/:id`,
+        component: PolicyDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/firewall-rule/create`,
+        component: RuleCreate,
+        exact: true,
+      },
+      {
+        path: `${PATH}/firewall-rule/edit/:id`,
+        component: RuleEdit,
+        exact: true,
+      },
+      {
+        path: `${PATH}/firewall-rule/detail/:id`,
+        component: RuleDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/firewall-rule-admin/detail/:id`,
+        component: RuleDetail,
+        exact: true,
+      },
+      {
+        path: `${PATH}/firewall/create`,
+        component: FirewallCreate,
+        exact: true,
+      },
+      {
+        path: `${PATH}/firewall-policy/add`,
+        component: PolicyCreate,
+        exact: true,
+      },
+      {
+        path: `${PATH}/firewall-policy/edit/:id`,
+        component: PolicyEdit,
         exact: true,
       },
       { path: '*', component: E404 },

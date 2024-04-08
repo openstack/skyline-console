@@ -89,6 +89,7 @@ export const cinderEndpoint = () => getOriginEndpoint('cinder');
 export const manilaEndpoint = () => getOriginEndpoint('manilav2');
 export const zunEndpoint = () => getOriginEndpoint('zun');
 export const masakariEndpoint = () => getOriginEndpoint('masakari');
+export const firewallEndpoint = () => getOriginEndpoint('neutron_firewall');
 
 export const apiVersionMaps = {
   nova: {

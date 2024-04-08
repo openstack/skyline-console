@@ -14,6 +14,8 @@
 
 import React from 'react';
 import PopoverSubnets from 'components/Popover/PopoverSubnets';
+import { isEmpty } from 'lodash';
+import globalProjectStore from 'stores/keystone/project';
 
 export const networkStatus = {
   ACTIVE: t('Active'),
@@ -135,3 +137,88 @@ export const subnetColumns = [
     valueRender: 'toLocalTime',
   },
 ];
+
+// deal with quota
+export async function fetchNeutronQuota(self) {
+  self.setState({
+    quota: {},
+    quotaLoading: true,
+  });
+  const result = await globalProjectStore.fetchProjectNeutronQuota();
+  self.setState({
+    quota: result,
+    quotaLoading: false,
+  });
+}
+
+export const getQuota = (neutronQuota, quotaKeys = ['network']) => {
+  if (isEmpty(neutronQuota)) {
+    return {};
+  }
+  return quotaKeys.reduce((pre, cur) => {
+    pre[cur] = neutronQuota[cur] || {};
+    return pre;
+  }, {});
+};
+
+export const getAdd = (neutronQuota, quotaKeys = ['network'], wishes = [1]) => {
+  if (isEmpty(neutronQuota)) {
+    return [];
+  }
+  const info = getQuota(neutronQuota, quotaKeys);
+  let hasError = false;
+  quotaKeys.forEach((key, index) => {
+    if (!hasError) {
+      const quotaDetail = info[key];
+      const { left = 0 } = quotaDetail || {};
+      const wish = wishes[index];
+      if (left !== -1 && left < wish) {
+        hasError = true;
+      }
+    }
+  });
+  if (!hasError) {
+    return wishes;
+  }
+  return new Array(quotaKeys.length).fill(0);
+};
+
+const titleMap = {
+  network: t('Network'),
+  subnet: t('Subnet'),
+  port: t('Port'),
+  router: t('Router'),
+  security_group: t('Security Group'),
+  security_group_rule: t('Security Group Rule'),
+  floatingip: t('Floating IP'),
+  firewall_group: t('Firewall'),
+  firewall_policy: t('Firewall Policy'),
+  firewall_rule: t('Firewall Rule'),
+};
+
+export const getQuotaInfo = (self, quotaKeys = ['network'], wishes = [1]) => {
+  const { quota = {}, quotaLoading } = self.state;
+  if (quotaLoading || isEmpty(quota)) {
+    return [];
+  }
+  const adds = getAdd(quota, quotaKeys, wishes);
+  const infos = getQuota(quota, quotaKeys);
+  return quotaKeys.map((key, index) => {
+    const type = index === 0 ? 'ring' : 'line';
+    const title = titleMap[key];
+    const info = infos[key] || {};
+    return {
+      ...info,
+      add: adds[index],
+      name: key,
+      title,
+      type,
+    };
+  });
+};
+
+export const checkQuotaDisable = (quotaKeys, wishes) => {
+  const { neutronQuota = {} } = globalProjectStore;
+  const adds = getAdd(neutronQuota, quotaKeys, wishes);
+  return adds[0] === 0;
+};
