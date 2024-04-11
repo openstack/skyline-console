@@ -42,19 +42,21 @@ export function handleResponse(response, typeKey, deviceKey, modifyType) {
     // values for range type & value for current type
     const values = result.values || [result.value] || [];
     values.forEach((value) => {
-      const item = {
-        ...baseFixToChart(value),
-      };
-      if (typeKey) {
-        item.type = get(result.metric, typeKey);
-      }
-      if (deviceKey) {
-        item.device = get(result.metric, deviceKey);
-      }
-      if (modifyType) {
-        item.type = modifyType;
-      }
-      ret.push(item);
+      value.forEach((sub_value) => {
+        const item = {
+          ...baseFixToChart(sub_value),
+        };
+        if (typeKey) {
+          item.type = get(result.metric, typeKey);
+        }
+        if (deviceKey) {
+          item.device = get(result.metric, deviceKey);
+        }
+        if (modifyType) {
+          item.type = modifyType;
+        }
+        ret.push(item);
+      });
     });
   });
   return ret;
