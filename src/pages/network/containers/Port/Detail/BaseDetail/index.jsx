@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
-import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
 import { qosEndpoint } from 'client/client/constants';
@@ -63,12 +61,17 @@ export class BaseDetail extends Base {
         label: t('QoS Policy'),
         dataIndex: 'qos_policy_id',
         copyable: false,
-        render: (data) =>
-          data ? (
-            <Link to={`/network/qos-policy/detail/${data}`}>{data}</Link>
-          ) : (
-            '-'
-          ),
+        render: (data) => {
+          if (!data) {
+            return '-';
+          }
+          const { qosPolicy } = this.detailData;
+          const { name } = qosPolicy || {};
+          const displayName = name ? `${data}(${name})` : data;
+          return this.getLinkRender('networkQosDetail', displayName, {
+            id: data,
+          });
+        },
       });
     }
     return {

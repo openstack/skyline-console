@@ -166,6 +166,16 @@ export class PortStore extends Base {
       });
     }
     item.itemInList = itemContrib;
+    const { qos_policy_id } = item;
+    if (qos_policy_id) {
+      try {
+        const { policy } = await client.neutron.qosPolicies.show(qos_policy_id);
+        item.qosPolicy = policy;
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log('fetch qos error', e);
+      }
+    }
     return item;
   }
 
