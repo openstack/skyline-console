@@ -2502,7 +2502,7 @@
   "The name should start with upper letter, lower letter or chinese, and be a string of 1 to 64, characters can only contain \"0-9, a-z, A-Z, \"-'_()[].^\".": "名称应以大写字母，小写字母或中文开头，最长为64字符，且只包含“0-9, a-z, A-Z, \"'-_()[].^”。",
   "The name should start with upper letter, lower letter or chinese, and be a string of 3 to 63, characters can only contain \"0-9, a-z, A-Z, chinese, -, .\".": "名称应以大写字母，小写字母或中文开头，长度为3-63字符，且只包含“0-9, a-z, A-Z, 中文, -, .”。",
   "The name should start with upper letter, lower letter, and be a string of 1 to 128, characters can only contain \"0-9, a-z, A-Z, -, _\".": "名称应以大写字母或小写字母开头，最长为128字符，且只包含“0-9, a-z, A-Z, -, _”。",
-  "The name should start with upper letter, lower letter, and be a string of 2 to 255, characters can only contain \"0-9, a-z, A-Z, -, ., _\".": "名称应以大写字母或小写字母开头，最长为255字符，且只包含“0-9, a-z, A-Z, -, ., _”。",
+  "The name should start with upper letter, lower letter, and be a string of 2 to 255, characters can only contain \"0-9, a-z, A-Z, -, ., _\".": "名称应以大写字母或小写字母开头，长度为2-255字符，且只包含“0-9, a-z, A-Z, -, ., _”。",
   "The name should start with upper letter, lower letter, and be a string of 3 to 63, characters can only contain \"0-9, a-z, A-Z, -\".": "名称应以大写字母，小写字母开头，长度为3-63字符，且只包含“0-9, a-z, A-Z, -”。",
   "The new password cannot be identical to the current password.": "用户新密码不能与原密码相同。",
   "The no_proxy address to use for nodes in cluster": "集群中节点多用，无需代理",
