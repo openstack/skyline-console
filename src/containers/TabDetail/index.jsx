@@ -346,6 +346,21 @@ export default class DetailBase extends React.Component {
       const silence = !this.forceLoadingTabs.includes(this.tab.key);
       this.refreshDetailByAction(silence);
     }
+    this.setState({
+      inAction: false,
+    });
+  };
+
+  onClickAction = () => {
+    this.setState({
+      inAction: true,
+    });
+  };
+
+  onCancelAction = () => {
+    this.setState({
+      inAction: false,
+    });
   };
 
   init() {
@@ -412,6 +427,7 @@ export default class DetailBase extends React.Component {
 
   renderTabComponent(tabItem) {
     const { component, key, render } = tabItem;
+    const { inAction } = this.state;
     if (render) {
       return render;
     }
@@ -421,6 +437,7 @@ export default class DetailBase extends React.Component {
         detail={this.detailData}
         detailName={`${this.name}-${this.id}`}
         refreshDetail={this.refreshDetailByTab}
+        inAction={inAction}
       />
     ) : (
       <span>{key}</span>
@@ -467,6 +484,8 @@ export default class DetailBase extends React.Component {
         item={this.getActionData()}
         containerProps={{ isAdminPage: this.isAdminPage }}
         isAdminPage={this.isAdminPage}
+        onClickAction={this.onClickAction}
+        onCancelAction={this.onCancelAction}
         // firstActionClassName={styles['attach-btn']}
       />
     );
