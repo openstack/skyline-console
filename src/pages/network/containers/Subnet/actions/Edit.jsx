@@ -16,6 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import { ipValidate } from 'utils/validate';
 import globalSubnetStore from 'stores/neutron/subnet';
+import globalRootStore from 'stores/root';
 import networkUtil from '../../Network/actions/networkUtil';
 
 const {
@@ -100,7 +101,12 @@ export class EditSubnet extends ModalAction {
 
   static policy = 'update_subnet';
 
-  static allowed = () => Promise.resolve(true);
+  static allowed = (item, containerProps) => {
+    const { isAdminPage = false } = containerProps || {};
+    const { tenant_id } = item;
+    const result = isAdminPage || tenant_id === globalRootStore.projectId;
+    return Promise.resolve(result);
+  };
 
   get formItems() {
     const { more, disable_gateway = !this.item.gateway_ip } = this.state;

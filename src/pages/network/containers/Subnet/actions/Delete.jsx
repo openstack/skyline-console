@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { ConfirmAction } from 'containers/Action';
+import globalRootStore from 'stores/root';
 import globalSubnetStore from 'stores/neutron/subnet';
 
 export default class Delete extends ConfirmAction {
@@ -45,9 +46,9 @@ export default class Delete extends ConfirmAction {
     return this.isOwnerOrAdmin(item);
   };
 
-  isOwnerOrAdmin() {
-    // TODO: check owner
-    return true;
+  isOwnerOrAdmin(item) {
+    const { tenant_id } = item;
+    return this.isAdminPage || tenant_id === globalRootStore.projectId;
   }
 
   onSubmit = (data) => globalSubnetStore.delete(data);
