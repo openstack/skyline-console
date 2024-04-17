@@ -1895,6 +1895,7 @@
   "Please set CPU && Ram first.": "Lütfen önce CPU ve RAM ayarlayın.",
   "Please set MUNA": "Lütfen MUNA'yı ayarlayın",
   "Please set a size no less than {minSize} GiB!": "",
+  "Please set at least one role!": "Lütfen en az bir rol belirleyin!",
   "Please set the system disk size!": "",
   "Please upload files smaller than { size }GiB on the page. It is recommended to upload files over { size }GiB using API.": "Lütfen sayfada { size }GiB'den daha küçük dosyalar yükleyin. API kullanarak { size }GiB'den büyük dosyaları yüklemeniz önerilir.",
   "Pointer Record": "İşaretçi Kaydı",

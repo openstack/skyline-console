@@ -1895,6 +1895,7 @@
   "Please set CPU && Ram first.": "Пожалуйста, сначала установите CPU и RAM.",
   "Please set MUNA": "Пожалуйста, установите MUNA",
   "Please set a size no less than {minSize} GiB!": "",
+  "Please set at least one role!": "Пожалуйста, установите хотя бы одну роль!",
   "Please set the system disk size!": "",
   "Please upload files smaller than { size }GiB on the page. It is recommended to upload files over { size }GiB using API.": "Пожалуйста, загружайте файлы размером меньше { size } GiB на странице. Рекомендуется загружать файлы размером более { size } GiB с помощью API.",
   "Pointer Record": "Запись указателя",

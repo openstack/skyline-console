@@ -1895,6 +1895,7 @@
   "Please set CPU && Ram first.": "Please set CPU && Ram first.",
   "Please set MUNA": "Please set MUNA",
   "Please set a size no less than {minSize} GiB!": "Please set a size no less than {minSize} GiB!",
+  "Please set at least one role!": "Please set at least one role!",
   "Please set the system disk size!": "Please set the system disk size!",
   "Please upload files smaller than { size }GiB on the page. It is recommended to upload files over { size }GiB using API.": "Please upload files smaller than { size }GiB on the page. It is recommended to upload files over { size }GiB using API.",
   "Pointer Record": "Pointer Record",
