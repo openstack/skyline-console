@@ -20,7 +20,9 @@ import {
   getFormDefaultValues,
   getTemplate,
   rollbackTip,
+  getParamsFromContent,
 } from 'resources/heat/stack';
+import { getValue } from 'utils/yaml';
 
 export class Parameter extends Base {
   get isStep() {
@@ -70,6 +72,23 @@ export class Parameter extends Base {
   get templateFormItems() {
     return getFormItems(this.template);
   }
+
+  updateParamsInContext = (key, value) => {
+    const { params = '' } = this.props.context || {};
+    const newParams = !params ? { parameters: {} } : getYaml(params);
+    newParams.parameters[key] = value;
+    this.updateContext({ params: getValue(newParams) });
+  };
+
+  onValuesChange = (changedFields) => {
+    const params = getParamsFromContent(this.template);
+    const keys = Object.keys(params);
+    Object.keys(changedFields).forEach((key) => {
+      if (keys.includes(key)) {
+        this.updateParamsInContext(key, changedFields[key]);
+      }
+    });
+  };
 
   get rollbackOptions() {
     return [
