@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import yaml from 'js-yaml';
-import { has, isObject } from 'lodash';
+import { has, isEmpty, isObject } from 'lodash';
 import { yesNoOptions } from 'utils/constants';
 
 export const stackStatus = {
@@ -114,14 +114,26 @@ export const getFormItemType = (type) => {
   }
 };
 
-export const getFormItems = (contentYaml) => {
-  const formItems = [];
+export const getParamsFromContent = (contentYaml) => {
   try {
     const content = yaml.load(contentYaml);
     if (!isObject(content)) {
-      return formItems;
+      return {};
     }
     const params = content.parameters;
+    return params || {};
+  } catch {
+    return {};
+  }
+};
+
+export const getFormItems = (contentYaml) => {
+  const formItems = [];
+  try {
+    const params = getParamsFromContent(contentYaml);
+    if (isEmpty(params)) {
+      return formItems;
+    }
     Object.keys(params).forEach((key) => {
       const value = params[key];
       const { type = 'string', description = '', label, hidden } = value;
