@@ -136,6 +136,7 @@ export class ManageSecurityGroup extends ModalAction {
         isLoading: this.portStore.list.isLoading,
         isMulti: false,
         onChange: this.onPortChange,
+        disabledFunc: (record) => !record.port_security_enabled,
         filterParams: [
           {
             label: t('Owned Network'),
