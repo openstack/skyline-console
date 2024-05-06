@@ -145,6 +145,11 @@ export default class BaseList extends React.Component {
     return !!detail;
   }
 
+  get inDetailAction() {
+    const { inAction } = this.props;
+    return !!inAction;
+  }
+
   get detailName() {
     if (!this.inDetailPage) {
       return '';
@@ -939,6 +944,9 @@ export default class BaseList extends React.Component {
 
   handleRefresh = (force) => {
     const { inAction, inSelect } = this;
+    if (this.inDetailPage && this.inDetailAction) {
+      return;
+    }
     if (inAction || (inSelect && !force)) {
       return;
     }
