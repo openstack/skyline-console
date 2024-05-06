@@ -62,8 +62,8 @@ export const settingUrl = '/configuration-admin/setting';
 export const stackListUrl = '/heat/stack';
 
 // zun
-export const zunContainerListUrl = '/container/containers';
-export const zunCapsuleListUrl = '/container/capsules';
+export const zunContainerListUrl = '/container-service/containers';
+export const zunCapsuleListUrl = '/container-service/capsules';
 
 // manila
 export const shareTypeListUrl = '/share/share-type-admin';
