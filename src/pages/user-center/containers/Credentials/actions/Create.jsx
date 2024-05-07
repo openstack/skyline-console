@@ -105,7 +105,7 @@ export class Create extends ModalAction {
         type: 'check',
         content: t('Unrestricted'),
         extra: t(
-          'By default, for security reasons, application credentials are forbidden from being used for creating additional application credentials or keystone trusts. If your application credential needs to be able to perform these actions, check unrestricted.'
+          'By default, for security reasons, application credentials are forbidden from being used for creating or destructing additional application credentials or keystone trusts. If your application credential needs to be able to perform these actions, check unrestricted.'
         ),
       },
       {

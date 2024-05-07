@@ -288,7 +288,7 @@
   "Burkina Faso": "布基纳法索",
   "Burst limit": "突发限制",
   "Burundi": "布隆迪",
-  "By default, for security reasons, application credentials are forbidden from being used for creating additional application credentials or keystone trusts. If your application credential needs to be able to perform these actions, check unrestricted.": "默认情况下，出于安全原因，禁止将应用程序凭据用于创建其他应用程序凭据或 keystone 信任。如果您的应用程序凭据需要能够执行这些操作，请选中不受限制。",
+  "By default, for security reasons, application credentials are forbidden from being used for creating or destructing additional application credentials or keystone trusts. If your application credential needs to be able to perform these actions, check unrestricted.": "默认情况下，出于安全原因，禁止将应用程序凭据用于创建或销毁其他应用程序凭据或 keystone 信任。如果您的应用程序凭据需要能够执行这些操作，请选中不受限制。",
   "CA Certificate": "CA证书",
   "CA Certificates": "CA证书",
   "CHECK COMPLETE": "检查完成",

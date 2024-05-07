@@ -288,7 +288,7 @@
   "Burkina Faso": "Burkina Faso",
   "Burst limit": "Ek Sınır",
   "Burundi": "Burundi",
-  "By default, for security reasons, application credentials are forbidden from being used for creating additional application credentials or keystone trusts. If your application credential needs to be able to perform these actions, check unrestricted.": "Varsayılan olarak, güvenlik nedeniyle uygulama kimlik bilgilerinin ek uygulama kimlik bilgileri veya kilit taşı güvenleri oluşturmak için kullanılması yasaktır. Uygulama kimlik bilgilerinizin bu eylemleri gerçekleştirebilmesi gerekiyorsa sınırsız seçeneğini işaretleyin.",
+  "By default, for security reasons, application credentials are forbidden from being used for creating or destructing additional application credentials or keystone trusts. If your application credential needs to be able to perform these actions, check unrestricted.": "Varsayılan olarak, güvenlik nedeniyle uygulama kimlik bilgilerinin ek uygulama kimlik bilgileri veya kilit taşı güvenleri oluşturmak veya yok etmek için kullanılması yasaktır. Uygulama kimlik bilgilerinizin bu eylemleri gerçekleştirebilmesi gerekiyorsa sınırsız seçeneğini işaretleyin.",
   "CA Certificate": "CA Sertifikası",
   "CA Certificates": "CA Sertifikaları",
   "CHECK COMPLETE": "KONTROL TAMAMLANDI",
