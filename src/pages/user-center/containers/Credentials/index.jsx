@@ -68,6 +68,15 @@ export class Credentials extends Base {
         isHideable: true,
       },
       {
+        title: t('Restricted Situation'),
+        dataIndex: 'unrestricted',
+        isHideable: true,
+        render: (value) => (!value ? t('Restricted') : t('Unrestricted')),
+        titleTip: t(
+          'Used to restrict whether the application credential may be used for the creation or destruction of other application credentials or trusts.'
+        ),
+      },
+      {
         title: t('Roles'),
         dataIndex: 'roles',
         render: (roles) =>
