@@ -19,6 +19,7 @@ import { inject, observer } from 'mobx-react';
 import globalVolumeTypeStore from 'stores/cinder/volume-type';
 import globalProjectStore from 'stores/keystone/project';
 import globalRootStore from 'stores/root';
+import { firewallEndpoint } from 'client/client/constants';
 import { isNumber } from 'lodash';
 import styles from '../style.less';
 
@@ -36,6 +37,23 @@ const keyPairTitle = (
     </Tooltip>
   </span>
 );
+
+const firewallQuota = firewallEndpoint()
+  ? [
+      {
+        text: t('Firewalls'),
+        key: 'firewall_group',
+      },
+      {
+        text: t('Firewall Policies'),
+        key: 'firewall_policy',
+      },
+      {
+        text: t('Firewall Rules'),
+        key: 'firewall_rule',
+      },
+    ]
+  : [];
 
 export const quotaCardList = [
   {
@@ -86,6 +104,7 @@ export const quotaCardList = [
       { text: t('Ports'), key: 'port' },
       { text: t('Security Groups'), key: 'security_group' },
       { text: t('Security Group Rules'), key: 'security_group_rule' },
+      ...firewallQuota,
     ],
   },
 ];

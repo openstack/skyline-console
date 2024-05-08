@@ -270,3 +270,86 @@ export const portFilters = [
     name: 'name',
   },
 ];
+
+export const getPortColumns = (self) => {
+  return [
+    {
+      title: t('Port'),
+      dataIndex: 'id',
+    },
+    {
+      title: t('Bind Resource'),
+      dataIndex: 'server_name',
+      render: (server_name, item) => {
+        const { device_id, device_owner } = item;
+        if (device_id && device_owner === 'compute:nova') {
+          const value = server_name
+            ? `${device_id} (${server_name})`
+            : device_id;
+          const link = self.getLinkRender(
+            'instanceDetail',
+            value,
+            { id: item.device_id },
+            { tab: 'interface' }
+          );
+          return (
+            <>
+              {item.device_owner}
+              <br />
+              {link}
+            </>
+          );
+        }
+        return (
+          <>
+            {item.device_owner}
+            {item.device_owner && <br />}
+            {item.device_id || '-'}
+          </>
+        );
+      },
+      isHideable: true,
+      sorter: false,
+    },
+    {
+      title: t('Owned Network'),
+      dataIndex: 'network_id',
+      routeName: self.getRouteName('networkDetail'),
+      sorter: false,
+      render: (value) => {
+        const link = self.getLinkRender('networkDetail', value, { id: value });
+        return <>{link}</>;
+      },
+    },
+    {
+      title: t('Mac Address'),
+      dataIndex: 'mac_address',
+      isHideable: true,
+    },
+    {
+      title: t('Status'),
+      dataIndex: 'status',
+      width: 80,
+      valueMap: portStatus,
+    },
+  ];
+};
+
+export const portFilter = [
+  {
+    label: t('Network'),
+    name: 'network_id',
+  },
+  {
+    label: t('Status'),
+    name: 'status',
+    options: getOptions(portStatus),
+  },
+];
+
+export const instancePortOptions = (self) => {
+  return {
+    columns: getPortColumns(self),
+    filterParams: portFilter,
+  };
+};

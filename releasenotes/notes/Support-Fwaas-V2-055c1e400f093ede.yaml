@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    Support Fwaas V2:
+
+    * Support firewall group page: a tab list page includes firewall group tab, firewall policy tab and firewall rule tab.
+
+    * Support firewall page both in the console and administrator.
+
+    * Support firewall quota info in the overview page in the console.
+
+    * Support update firewall quota in the project's action in administrator.

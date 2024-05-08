@@ -451,6 +451,9 @@ export class ProjectStore extends Base {
       floatingip,
       security_group,
       port,
+      firewall_group,
+      firewall_policy,
+      firewall_rule,
     } = data;
     const neutronReqBody = {
       quota: this.omitNil({
@@ -461,6 +464,9 @@ export class ProjectStore extends Base {
         security_group,
         security_group_rule,
         port,
+        firewall_group,
+        firewall_policy,
+        firewall_rule,
       }),
     };
     return neutronReqBody;

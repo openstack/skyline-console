@@ -448,6 +448,43 @@ const renderMenu = (t) => {
           ],
         },
         {
+          path: '/network/firewall-admin',
+          name: t('Firewalls'),
+          key: 'firewallAdmin',
+          level: 1,
+          endpoints: 'neutron_firewall',
+          children: [
+            {
+              path: /^\/network\/firewall-policy-admin\/detail\/[^/]+$/,
+              name: t('Policy Detail'),
+              key: 'firewallPolicyDetailAdmin',
+              level: 2,
+              routePath: '/network/firewall-policy-admin/detail/:id',
+            },
+            {
+              path: /^\/network\/firewall-admin\/[^/]+\/port\/[^/]+$/,
+              name: t('Firewall Port'),
+              key: 'firewallPortDetailAdmin',
+              level: 2,
+              routePath: '/network/firewall-admin/:firewallId/port/:portId',
+            },
+            {
+              path: /^\/network\/firewall-admin\/detail\/[^/]+$/,
+              name: t('Firewall Detail'),
+              key: 'firewallDetailAdmin',
+              level: 2,
+              routePath: '/network/firewall-admin/detail/:id',
+            },
+            {
+              path: /^\/network\/firewall-rule-admin\/detail\/[^/]+$/,
+              name: t('Rule Detail'),
+              key: 'firewallRuleDetailAdmin',
+              level: 2,
+              routePath: '/network/firewall-rule-admin/detail/:id',
+            },
+          ],
+        },
+        {
           path: '/network/dns-admin/zones',
           name: t('DNS Zones'),
           key: 'dnsZonesAdmin',
