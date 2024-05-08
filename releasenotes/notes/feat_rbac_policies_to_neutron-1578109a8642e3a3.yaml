@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    The RBAC Policies has been added to Networks.
+
+    RBAC Policies and its actions have been included under the Networks in administrator page.
