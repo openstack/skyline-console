@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Support instance info for the openstack service monitor in the administrator:
+
+    * Add the instance info below the host of the openstack services.
