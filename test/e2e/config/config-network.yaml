@@ -15,6 +15,7 @@ env:
     - neutron::qos
     - neutron::vpn
     - neutron::port-forwarding
+    - neutron::firewall
     - octavia
 testFiles:
   # network
@@ -26,4 +27,7 @@ testFiles:
   - pages/network/security-group.spec.js
   - pages/network/vpn.spec.js
   - pages/network/lb.spec.js
+  - pages/network/firewall.spec.js
+  - pages/network/firewall-policy.spec.js
+  - pages/network/firewall-rule.spec.js
   # - pages/network/topology.spec.js

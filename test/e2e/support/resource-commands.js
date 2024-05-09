@@ -27,6 +27,7 @@ import urlMap, {
   projectListUrl,
   settingUrl,
   flavorListUrl,
+  firewallListUrl,
 } from './constants';
 
 Cypress.Commands.add('createInstance', ({ name, networkName }) => {
@@ -295,3 +296,41 @@ Cypress.Commands.add('deleteAll', (resourceName, name, tab) => {
     cy.clickHeaderConfirmButtonByTitle('Delete');
   }
 });
+
+Cypress.Commands.add(
+  'createFirewallRule',
+  ({
+    name,
+    protocol = 'TCP', // TCP UDP ICMP ANY
+    ruleAction = 'ALLOW', // ALLOW  DENY  REJECT
+    ipVersion = 'IPv4', // IPv4 IPv6
+    enabled = true,
+  }) => {
+    cy.visit(firewallListUrl)
+      .wait(5000)
+      .clickTab('Firewall Rules')
+      .clickHeaderActionButton(0)
+      .wait(2000)
+      .formInput('name', name)
+      .formRadioChooseByLabel('protocol', protocol)
+      .formSelect('action', ruleAction)
+      .formRadioChooseByLabel('ip_version', ipVersion);
+    if (!enabled) cy.formCheckboxClick('options', 0); // Enabled: default is checked
+    cy.clickFormActionSubmitButton();
+  }
+);
+
+Cypress.Commands.add(
+  'createFirewallPolicy',
+  ({ name, enableShared = false, enableAudited = false }) => {
+    cy.visit(firewallListUrl)
+      .wait(5000)
+      .clickTab('Firewall Policies')
+      .clickHeaderActionButton(0)
+      .wait(2000)
+      .formInput('name', name);
+    if (enableShared) cy.formCheckboxClick('options', 0); // Shared
+    if (enableAudited) cy.formCheckboxClick('options', 1); // Audited
+    cy.clickModalActionSubmitButton();
+  }
+);

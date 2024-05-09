@@ -17,6 +17,7 @@
           sed -i "s/- neutron::qos/# - neutron::qos/" $config_file
           sed -i "s/- neutron::vpn/# - neutron::vpn/" $config_file
           sed -i "s/- neutron::port-forwarding/# - neutron::port-forwarding/" $config_file
+          sed -i "s/- neutron::firewall/# - neutron::firewall/" $config_file
           sed -i "s/- octavia/# - octavia/" $config_file
           # TODO
           sed -i "s#- pages/network/floatingip.spec.js#\#- pages/network/floatingip.spec.js#" $config_file

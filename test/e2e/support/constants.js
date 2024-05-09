@@ -41,6 +41,7 @@ export const vpnListUrl = '/network/vpn';
 export const lbListUrl = '/network/load-balancers';
 export const topologyUrl = '/network/topo';
 export const securityGroupListUrl = '/network/security-group';
+export const firewallListUrl = '/network/firewall';
 
 // management
 export const recycleBinListUrl = '/management/recycle-bin';
@@ -86,9 +87,8 @@ export default {
   networkQosPolicy: policyListUrl,
   fip: fipListUrl,
   port: portListUrl,
-
-  // security
   securityGroup: securityGroupListUrl,
+  firewall: firewallListUrl,
 
   // identity
   project: projectListUrl,
