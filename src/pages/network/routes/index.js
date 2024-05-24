@@ -55,6 +55,8 @@ import RuleDetail from '../containers/Firewall/Rule/Detail';
 import PolicyCreate from '../containers/Firewall/Policy/actions/Create';
 import PolicyEdit from '../containers/Firewall/Policy/actions/Edit';
 import FirewallCreate from '../containers/Firewall/Firewall/actions/Create';
+import RbacPolicies from '../containers/RbacPolicies';
+import RbacPolicyDetail from '../containers/RbacPolicies/Detail';
 
 const PATH = '/network';
 export default [
@@ -352,6 +354,16 @@ export default [
       {
         path: `${PATH}/firewall-policy/edit/:id`,
         component: PolicyEdit,
+        exact: true,
+      },
+      {
+        path: `${PATH}/rbac-policies-admin`,
+        component: RbacPolicies,
+        exact: true,
+      },
+      {
+        path: `${PATH}/rbac-policies-admin/detail/:id`,
+        component: RbacPolicyDetail,
         exact: true,
       },
       { path: '*', component: E404 },

@@ -448,6 +448,21 @@ const renderMenu = (t) => {
           ],
         },
         {
+          path: '/network/rbac-policies-admin',
+          name: t('RBAC Policies'),
+          key: 'rbacPolicyAdmin',
+          level: 1,
+          children: [
+            {
+              path: /^\/network\/rbac-policies-admin\/detail\/.[^/]+$/,
+              name: t('RBAC Policy Detail'),
+              key: 'rbacPolicyDetailAdmin',
+              level: 2,
+              routePath: '/network/rbac-policies-admin/detail/:id',
+            },
+          ],
+        },
+        {
           path: '/network/firewall-admin',
           name: t('Firewalls'),
           key: 'firewallAdmin',

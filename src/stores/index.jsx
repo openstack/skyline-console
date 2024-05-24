@@ -17,6 +17,7 @@ import globalVolumeStore from 'stores/cinder/volume';
 import globalComputeHostStore from 'stores/nova/compute-host';
 import globalHypervisorStore from 'stores/nova/hypervisor';
 import globalStackStore from 'stores/heat/stack';
+import globalRbacPoliciesStore from 'stores/neutron/rbac-policies';
 
 export default {
   globalFloatingIpsStore,
@@ -38,4 +39,5 @@ export default {
   globalHypervisorStore,
   globalStackStore,
   globalPortStore,
+  globalRbacPoliciesStore,
 };

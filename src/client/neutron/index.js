@@ -98,6 +98,11 @@ export class NeutronClient extends Base {
         ],
       },
       {
+        name: 'rbacPolicies',
+        key: 'rbac-policies',
+        responseKey: 'rbac_policy',
+      },
+      {
         name: 'firewalls',
         key: 'fwaas/firewall_groups',
         responseKey: 'firewall_group',
