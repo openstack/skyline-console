@@ -5,13 +5,11 @@
 @blue-4: #005ade;
 @blue-5: rgba(25, 128, 255, 10%);
 @blue-6: #e8f2ff;
-@primary-color: @blue-1;
 @info-color: @blue-2;
-@hover-color: @blue-4;
 @heading-color: rgba(0, 0, 0, 65%);
 
 @green-1: #57e39b;
-@green-2: rgba(87, 227, 155, 65%);
+@green-2: rgba(34, 117, 74, 0.85);
 @green-3: rgba(87, 227, 155, 35%);
 @success-color: @green-1;
 
@@ -26,6 +24,10 @@
 @red-1: #eb354d;
 @red-2: rgba(235, 53, 77, 65%);
 @red-3: rgba(235, 53, 77, 35%);
+@red-4: #a33e3e;
+@red-5: #892424;
+@primary-color: @red-4;
+@hover-color: @red-5;
 @error-color: @red-1;
 @danger-color: #c4233e;
 @danger-color-hover: #f76070;
@@ -374,6 +376,7 @@
 
 :export {
   primaryColor: @primary-color;
+  normalColor: @green-2;
   successColor: @success-color;
   warnColor: @warn-color;
   warnDarkColor: @warn-dark-color;

@@ -1,6 +1,12 @@
 @import 'variables.less';
+@import 'variables-custom.less';
 
 :global {
+  ::selection {
+    color: #fff;
+    background: @gray-1;
+  }
+
   body {
     font-family: @font-family;
   }
@@ -65,7 +71,7 @@
     &:hover {
       svg {
         color: @primary-color;
-        fill: #6fb4f5;
+        fill: #ac5151;
       }
     }
   }
@@ -205,7 +211,7 @@
   }
 
   .link-class {
-    color: @blue-1;
+    color: @red-4;
     cursor: pointer;
     user-select: none;
   }
