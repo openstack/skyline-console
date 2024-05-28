@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import React, { Component } from 'react';
-import { Input, Button, Select, Row, Col } from 'antd';
+import { Input, Button, Select, Row, Col, AutoComplete } from 'antd';
 import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { InfoCircleFilled } from '@ant-design/icons';
@@ -69,13 +69,13 @@ export class Login extends Component {
   }
 
   get productName() {
-    const { product_name = { zh: t('Cloud Platform'), en: 'Cloud Platform' } } =
+    const { product_name = { zh: t('Openstack Flex'), en: 'Openstack Flex' } } =
       this.info;
     const { getLocaleShortName } = i18n;
     const language = getLocaleShortName();
     const name =
-      product_name[language] || t('Cloud Platform') || 'Cloud Platform';
-    return t('Welcome, {name}', { name });
+      product_name[language] || t('Openstack Flex') || 'Openstack Flex';
+    return t('Welcome to {name}', { name });
   }
 
   get domains() {
@@ -198,13 +198,15 @@ export class Login extends Component {
       ),
     };
     const domainItem = {
-      name: 'domain',
-      required: true,
-      message: t('Please select your Domain!'),
-      render: () => (
-        <Select placeholder={t('Select a domain')} options={this.domains} />
-      ),
-    };
+       name: 'domain',
+       required: true,
+       message: t('Please select your Domain!'),
+       render: () => (
+         <AutoComplete placeholder={t('Select a domain')} options={this.domains}
+         filterOption={(inputValue, option) => option && option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+        }/>
+       ),
+     };
     const usernameItem = {
       name: 'username',
       required: true,

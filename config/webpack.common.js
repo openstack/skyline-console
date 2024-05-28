@@ -53,6 +53,7 @@ module.exports = {
         exclude: [
           root('src/asset/image/logo.png'),
           root('src/asset/image/loginRightLogo.png'),
+          root('src/asset/image/genestackLogo.png'),
         ],
       },
       {
@@ -69,6 +70,7 @@ module.exports = {
         include: [
           root('src/asset/image/logo.png'),
           root('src/asset/image/loginRightLogo.png'),
+          root('src/asset/image/genestackLogo.png'),
         ],
       },
       {

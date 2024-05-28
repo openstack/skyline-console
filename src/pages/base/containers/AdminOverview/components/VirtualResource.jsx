@@ -31,7 +31,7 @@ export const resourceCircle = [
 ];
 
 export const color = {
-  infoColor: globalCSS.primaryColor,
+  infoColor: globalCSS.normalColor,
   warnColor: globalCSS.warnDarkColor,
   dangerColor: globalCSS.errorColor,
 };

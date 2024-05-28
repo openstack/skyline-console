@@ -168,13 +168,7 @@ export class LayoutMenu extends Component {
                   : styles['sub-menu-item-title']
               }
             >
-              {item.name.length >= this.maxTitleLength ? (
-                <Tooltip title={item.name} placement="right">
-                  {item.name}
-                </Tooltip>
-              ) : (
-                item.name
-              )}
+              {item.name}
             </span>
           </span>
         </Menu.Item>
