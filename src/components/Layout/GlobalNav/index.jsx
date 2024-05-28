@@ -96,6 +96,7 @@ export class GlobalNav extends React.Component {
           className={styles['drawer-right']}
           placement="left"
           closable
+          destroyOnClose
           onClose={this.onClose}
           visible={visible}
           style={{

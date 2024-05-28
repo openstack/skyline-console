@@ -24,7 +24,7 @@ import { isNumber } from 'lodash';
 import styles from '../style.less';
 
 const colors = {
-  normal: { color: globalCSS.primaryColor, text: t('Normal') },
+  normal: { color: globalCSS.normalColor, text: t('Normal') },
   danger: { color: globalCSS.warnDarkColor, text: t('Danger') },
   full: { color: globalCSS.errorColor, text: t('Full') },
 };
