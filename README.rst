@@ -1,7 +1,7 @@
 Instructions
 ============
 
-`简体中文 <./README.zh_CN.rst>`__\ \| English
+`简体中文 <./README/README-zh_CN.rst>`__ \| English \| `한국어 <./README/README-ko_KR.rst>`__
 
 **Table of contents**
 

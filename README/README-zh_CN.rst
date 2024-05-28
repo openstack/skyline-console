@@ -1,7 +1,7 @@
 使用说明
 ========
 
-简体中文 \| `English <./README.rst>`__
+简体中文 \| `English <../README.rst>`__ \| `한국어 <./README-ko_KR.rst>`__
 
 **目录**
 
@@ -92,35 +92,35 @@
 如何开发
 ~~~~~~~~
 
--  `开发前的准备 <docs/zh/develop/1-ready-to-work.md>`__
--  `目录结构 <docs/zh/develop/2-catalog-introduction.md>`__
--  `开发一个资源的页面 <docs/zh/develop/3-0-how-to-develop.md>`__
--  `BaseList 介绍 <docs/zh/develop/3-1-BaseList-introduction.md>`__
+-  `开发前的准备 <../docs/zh/develop/1-ready-to-work.md>`__
+-  `目录结构 <../docs/zh/develop/2-catalog-introduction.md>`__
+-  `开发一个资源的页面 <../docs/zh/develop/3-0-how-to-develop.md>`__
+-  `BaseList 介绍 <../docs/zh/develop/3-1-BaseList-introduction.md>`__
 -  `BaseTabList
-   介绍 <docs/zh/develop/3-2-BaseTabList-introduction.md>`__
--  `BaseDetail 介绍 <docs/zh/develop/3-3-BaseDetail-introduction.md>`__
+   介绍 <../docs/zh/develop/3-2-BaseTabList-introduction.md>`__
+-  `BaseDetail 介绍 <../docs/zh/develop/3-3-BaseDetail-introduction.md>`__
 -  `BaseDetailInfo
-   介绍 <docs/zh/develop/3-4-BaseDetailInfo-introduction.md>`__
--  `BaseStore 介绍 <docs/zh/develop/3-5-BaseStore-introduction.md>`__
--  `FormAction 介绍 <docs/zh/develop/3-6-FormAction-introduction.md>`__
+   介绍 <../docs/zh/develop/3-4-BaseDetailInfo-introduction.md>`__
+-  `BaseStore 介绍 <../docs/zh/develop/3-5-BaseStore-introduction.md>`__
+-  `FormAction 介绍 <../docs/zh/develop/3-6-FormAction-introduction.md>`__
 -  `ModalAction
-   介绍 <docs/zh/develop/3-7-ModalAction-introduction.md>`__
+   介绍 <../docs/zh/develop/3-7-ModalAction-introduction.md>`__
 -  `ConfirmAction
-   介绍 <docs/zh/develop/3-8-ConfirmAction-introduction.md>`__
--  `StepAction 介绍 <docs/zh/develop/3-9-StepAction-introduction.md>`__
--  `FormItem 介绍 <docs/zh/develop/3-10-FormItem-introduction.md>`__
--  `Action 介绍 <docs/zh/develop/3-11-Action-introduction.md>`__
--  `Menu 介绍 <docs/zh/develop/3-12-Menu-introduction.md>`__
--  `Route 介绍 <docs/zh/develop/3-13-Route-introduction.md>`__
--  `I18n 介绍 <docs/zh/develop/3-14-I18n-introduction.md>`__
+   介绍 <../docs/zh/develop/3-8-ConfirmAction-introduction.md>`__
+-  `StepAction 介绍 <../docs/zh/develop/3-9-StepAction-introduction.md>`__
+-  `FormItem 介绍 <../docs/zh/develop/3-10-FormItem-introduction.md>`__
+-  `Action 介绍 <../docs/zh/develop/3-11-Action-introduction.md>`__
+-  `Menu 介绍 <../docs/zh/develop/3-12-Menu-introduction.md>`__
+-  `Route 介绍 <../docs/zh/develop/3-13-Route-introduction.md>`__
+-  `I18n 介绍 <../docs/zh/develop/3-14-I18n-introduction.md>`__
 
 如何测试
 ~~~~~~~~
 
--  `两种不同的测试方式 <docs/zh/test/1-ready-to-work.md>`__
--  `目录结构 <docs/zh/test/2-catalog-introduction.md>`__
--  `如何修改 e2e 测试用例 <docs/zh/test/3-0-how-to-edit-e2e-case.md>`__
--  `E2E - 表单操作 <docs/zh/test/3-1-E2E-form-operation.md>`__
--  `E2E - 列表页操作 <docs/zh/test/3-2-E2E-table-operation.md>`__
--  `E2E - 详情页操作 <docs/zh/test/3-3-E2E-detail-operation.md>`__
--  `E2E - 资源操作 <docs/zh/test/3-4-E2E-resource-operation.md>`__
+-  `两种不同的测试方式 <../docs/zh/test/1-ready-to-work.md>`__
+-  `目录结构 <../docs/zh/test/2-catalog-introduction.md>`__
+-  `如何修改 e2e 测试用例 <../docs/zh/test/3-0-how-to-edit-e2e-case.md>`__
+-  `E2E - 表单操作 <../docs/zh/test/3-1-E2E-form-operation.md>`__
+-  `E2E - 列表页操作 <../docs/zh/test/3-2-E2E-table-operation.md>`__
+-  `E2E - 详情页操作 <../docs/zh/test/3-3-E2E-detail-operation.md>`__
+-  `E2E - 资源操作 <../docs/zh/test/3-4-E2E-resource-operation.md>`__
