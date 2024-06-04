@@ -33,13 +33,13 @@ export class AuthLayout extends Component {
   renderRight() {
     return (
       <div className={styles.right}>
-        <img src={genestackLogo} alt="" className={styles['genestack-logo']} />
         <img
           alt=""
           className={styles['login-full-image']}
           src={loginFullImage}
         />
         <div className={styles['full-image-front']} />
+        <img src={genestackLogo} alt="" className={styles['genestack-logo']} />
         <img
           src={loginRightLogo}
           alt=""

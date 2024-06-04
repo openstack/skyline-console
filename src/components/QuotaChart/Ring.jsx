@@ -25,9 +25,9 @@ import {
 import { Tooltip as AntTooltip } from 'antd';
 
 export const typeColors = {
-  used: globalCSS.primaryColor,
+  used: globalCSS.normalColor,
   reserved: '#5D7092',
-  add: globalCSS.successColor,
+  add: globalCSS.infoColor,
   left: '#eee',
   danger: globalCSS.warnDarkColor,
 };
