@@ -36,10 +36,10 @@ export class BlankLayout extends Component {
   }
 
   get title() {
-    const { title = { zh: t('Openstack Flex'), en: 'Openstack Flex' } } = this.info;
+    const { title = { zh: t('OpenStack Flex'), en: 'OpenStack Flex' } } = this.info;
     const { getLocaleShortName } = i18n;
     const language = getLocaleShortName();
-    return title[language] || t('Openstack Flex') || 'Openstack Flex';
+    return title[language] || t('OpenStack Flex') || 'OpenStack Flex';
   }
 
   render() {
