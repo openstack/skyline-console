@@ -40,7 +40,10 @@ export function handleResponse(response, typeKey, deviceKey, modifyType) {
   const ret = [];
   data.result.forEach((result) => {
     // values for range type & value for current type
-    const values = result.values || [result.value] || [];
+    const values =
+      result.values || result.value.some(Array.isArray)
+        ? result.value
+        : [result.value] || [];
     values.forEach((value) => {
       const item = {
         ...baseFixToChart(value),
