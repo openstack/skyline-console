@@ -36,7 +36,7 @@ export const getPwdOpenRc = (data) => {
     '# OpenStack API is version 3. For example, your cloud provider may implement\n' +
     '# Image API v1.1, Block Storage API v2, and Compute API v2.0. OS_AUTH_URL is\n' +
     '# only for the Identity API served through keystone.\n' +
-    `export OS_AUTH_URL=${authUrl}/v3/\n` +
+    `export OS_AUTH_URL=${authUrl}/\n` +
     '\n' +
     '# With the addition of Keystone we have standardized on the term **project**\n' +
     '# as the entity that owns the resources.\n' +
@@ -86,7 +86,7 @@ export const getCredentialOpenRc = (data) => {
     '# OpenStack API is version 3. For example, your cloud provider may implement\n' +
     '# Image API v1.1, Block Storage API v2, and Compute API v2.0. OS_AUTH_URL is\n' +
     '# only for the Identity API served through keystone.\n' +
-    `export OS_AUTH_URL=${authUrl}/v3/\n` +
+    `export OS_AUTH_URL=${authUrl}/\n` +
     '\n' +
     '# With Keystone you pass the keystone password.\n' +
     'echo "Please enter your OpenStack Credential ID as OS_APPLICATION_CREDENTIAL_ID: "\n' +
