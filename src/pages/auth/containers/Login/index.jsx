@@ -108,6 +108,7 @@ export class Login extends Component {
 
   get ssoProtocols() {
     return {
+      mapped: t('Cube Account'),
       openid: t('OpenID Connect'),
     };
   }

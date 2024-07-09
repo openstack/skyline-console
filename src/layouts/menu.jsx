@@ -678,163 +678,163 @@ const renderMenu = (t) => {
         },
       ],
     },
-    {
-      path: '/database',
-      name: t('Database'),
-      key: 'database',
-      endpoints: 'trove',
-      icon: <DatabaseFilled />,
-      children: [
-        {
-          path: '/database/instances',
-          name: t('Database Instances'),
-          key: 'databaseInstances',
-          level: 1,
-          children: [
-            {
-              path: /^\/database\/instances\/detail\/.[^/]+$/,
-              name: t('Database Instance Detail'),
-              key: 'databaseInstanceDetail',
-              level: 2,
-              routePath: '/database/instances/detail/:id',
-            },
-            {
-              path: '/database/instances/create',
-              name: t('Create Database Instance'),
-              key: 'databaseInstanceCreate',
-              level: 2,
-            },
-          ],
-        },
-        {
-          path: '/database/backups',
-          name: t('Backups'),
-          key: 'databaseBackups',
-          level: 1,
-          children: [
-            {
-              path: /^\/database\/backup\/detail\/.[^/]+$/,
-              name: t('Backup Detail'),
-              key: 'databaseBackupDetail',
-              level: 2,
-              routePath: '/database/backups/detail/:id',
-            },
-          ],
-        },
-        {
-          path: '/database/configurations',
-          name: t('Configuration Groups'),
-          key: 'configurations',
-          level: 1,
-          children: [
-            {
-              path: /^\/database\/configuration\/detail\/.[^/]+$/,
-              name: t('Configuration Detail'),
-              key: 'configurationsDetail',
-              level: 2,
-              routePath: '/database/configurations/detail/:id',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      path: '/container',
-      name: t('Container'),
-      key: 'container',
-      icon: <ContainerOutlined />,
-      children: [
-        {
-          path: '/container-service/containers',
-          name: t('Containers'),
-          key: 'zunContainers',
-          endpoints: 'zun',
-          level: 1,
-          children: [
-            {
-              path: '/container-service/containers/create',
-              name: t('Create Container'),
-              key: 'zunContainersCreateContainer',
-              level: 2,
-            },
-            {
-              path: /^\/container-service\/containers\/detail\/.[^/]+$/,
-              name: t('Container Detail'),
-              key: 'zunContainerDetail',
-              level: 2,
-              routePath: '/container-service/containers/detail/:id',
-            },
-          ],
-        },
-        {
-          path: '/container-service/capsules',
-          name: t('Capsules'),
-          key: 'zunCapsules',
-          endpoints: 'zun',
-          level: 1,
-          children: [
-            {
-              path: /^\/container-service\/capsules\/detail\/.[^/]+$/,
-              name: t('Capsule Detail'),
-              key: 'zunCapsuleDetail',
-              level: 2,
-              routePath: '/container-service/capsules/detail/:id',
-            },
-          ],
-        },
-        {
-          path: '/container-infra/clusters',
-          name: t('Clusters'),
-          key: 'containerInfraClusters',
-          endpoints: 'magnum',
-          level: 1,
-          children: [
-            {
-              path: /^\/container-infra\/clusters\/detail\/.[^/]+$/,
-              name: t('Cluster Detail'),
-              key: 'containerInfraClusterDetail',
-              level: 2,
-              routePath: '/container-infra/clusters/detail/:id',
-            },
-            {
-              path: '/container-infra/clusters/create',
-              name: t('Create Cluster'),
-              key: 'containerInfraCreateCluster',
-              level: 2,
-            },
-          ],
-        },
-        {
-          path: '/container-infra/cluster-template',
-          name: t('Cluster Templates'),
-          key: 'clusterTemplate',
-          endpoints: 'magnum',
-          level: 1,
-          children: [
-            {
-              path: /^\/container-infra\/cluster-template\/detail\/.[^/]+$/,
-              name: t('Cluster Template Detail'),
-              key: 'containerInfraClusterTemplateDetail',
-              level: 2,
-              routePath: '/container-infra/cluster-template/detail/:id',
-            },
-            {
-              path: '/container-infra/cluster-template/create',
-              name: t('Create Cluster Template'),
-              key: 'containerInfraCreateClusterTemplate',
-              level: 2,
-            },
-            {
-              path: /^\/container-infra\/cluster-template\/update\/.[^/]+$/,
-              name: t('Update Cluster Template'),
-              key: 'containerInfraUpdateClusterTemplate',
-              level: 2,
-              routePath: '/container-infra/cluster-template/update/:id',
-            },
-          ],
-        },
-      ],
-    },
+    // {
+    //   path: '/database',
+    //   name: t('Database'),
+    //   key: 'database',
+    //   endpoints: 'trove',
+    //   icon: <DatabaseFilled />,
+    //   children: [
+    //     {
+    //       path: '/database/instances',
+    //       name: t('Database Instances'),
+    //       key: 'databaseInstances',
+    //       level: 1,
+    //       children: [
+    //         {
+    //           path: /^\/database\/instances\/detail\/.[^/]+$/,
+    //           name: t('Database Instance Detail'),
+    //           key: 'databaseInstanceDetail',
+    //           level: 2,
+    //           routePath: '/database/instances/detail/:id',
+    //         },
+    //         {
+    //           path: '/database/instances/create',
+    //           name: t('Create Database Instance'),
+    //           key: 'databaseInstanceCreate',
+    //           level: 2,
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       path: '/database/backups',
+    //       name: t('Backups'),
+    //       key: 'databaseBackups',
+    //       level: 1,
+    //       children: [
+    //         {
+    //           path: /^\/database\/backup\/detail\/.[^/]+$/,
+    //           name: t('Backup Detail'),
+    //           key: 'databaseBackupDetail',
+    //           level: 2,
+    //           routePath: '/database/backups/detail/:id',
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       path: '/database/configurations',
+    //       name: t('Configuration Groups'),
+    //       key: 'configurations',
+    //       level: 1,
+    //       children: [
+    //         {
+    //           path: /^\/database\/configuration\/detail\/.[^/]+$/,
+    //           name: t('Configuration Detail'),
+    //           key: 'configurationsDetail',
+    //           level: 2,
+    //           routePath: '/database/configurations/detail/:id',
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
+    // {
+    //   path: '/container',
+    //   name: t('Container'),
+    //   key: 'container',
+    //   icon: <ContainerOutlined />,
+    //   children: [
+    //     {
+    //       path: '/container-service/containers',
+    //       name: t('Containers'),
+    //       key: 'zunContainers',
+    //       endpoints: 'zun',
+    //       level: 1,
+    //       children: [
+    //         {
+    //           path: '/container-service/containers/create',
+    //           name: t('Create Container'),
+    //           key: 'zunContainersCreateContainer',
+    //           level: 2,
+    //         },
+    //         {
+    //           path: /^\/container-service\/containers\/detail\/.[^/]+$/,
+    //           name: t('Container Detail'),
+    //           key: 'zunContainerDetail',
+    //           level: 2,
+    //           routePath: '/container-service/containers/detail/:id',
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       path: '/container-service/capsules',
+    //       name: t('Capsules'),
+    //       key: 'zunCapsules',
+    //       endpoints: 'zun',
+    //       level: 1,
+    //       children: [
+    //         {
+    //           path: /^\/container-service\/capsules\/detail\/.[^/]+$/,
+    //           name: t('Capsule Detail'),
+    //           key: 'zunCapsuleDetail',
+    //           level: 2,
+    //           routePath: '/container-service/capsules/detail/:id',
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       path: '/container-infra/clusters',
+    //       name: t('Clusters'),
+    //       key: 'containerInfraClusters',
+    //       endpoints: 'magnum',
+    //       level: 1,
+    //       children: [
+    //         {
+    //           path: /^\/container-infra\/clusters\/detail\/.[^/]+$/,
+    //           name: t('Cluster Detail'),
+    //           key: 'containerInfraClusterDetail',
+    //           level: 2,
+    //           routePath: '/container-infra/clusters/detail/:id',
+    //         },
+    //         {
+    //           path: '/container-infra/clusters/create',
+    //           name: t('Create Cluster'),
+    //           key: 'containerInfraCreateCluster',
+    //           level: 2,
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       path: '/container-infra/cluster-template',
+    //       name: t('Cluster Templates'),
+    //       key: 'clusterTemplate',
+    //       endpoints: 'magnum',
+    //       level: 1,
+    //       children: [
+    //         {
+    //           path: /^\/container-infra\/cluster-template\/detail\/.[^/]+$/,
+    //           name: t('Cluster Template Detail'),
+    //           key: 'containerInfraClusterTemplateDetail',
+    //           level: 2,
+    //           routePath: '/container-infra/cluster-template/detail/:id',
+    //         },
+    //         {
+    //           path: '/container-infra/cluster-template/create',
+    //           name: t('Create Cluster Template'),
+    //           key: 'containerInfraCreateClusterTemplate',
+    //           level: 2,
+    //         },
+    //         {
+    //           path: /^\/container-infra\/cluster-template\/update\/.[^/]+$/,
+    //           name: t('Update Cluster Template'),
+    //           key: 'containerInfraUpdateClusterTemplate',
+    //           level: 2,
+    //           routePath: '/container-infra/cluster-template/update/:id',
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
   ];
   return menu;
 };
