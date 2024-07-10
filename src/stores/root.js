@@ -129,9 +129,11 @@ export class RootStore {
     const { roles = [], base_domains, user: userInfo = {} } = user || {};
     this.roles = roles;
     this.baseDomains = base_domains;
-    this.hasAdminPageRole = await this.getUserSystemRoles(userInfo);
-    this.hasAdminRole = this.hasAdminPageRole;
     this.hasAdminOnlyRole = roles.some((it) => it.name === 'admin');
+    // Prefer allow administrative pages access whenever user owns admin role in certain project
+    //this.hasAdminPageRole = await this.getUserSystemRoles(userInfo);
+    this.hasAdminPageRole = this.hasAdminOnlyRole;
+    this.hasAdminRole = this.hasAdminPageRole;
   }
 
   @action
