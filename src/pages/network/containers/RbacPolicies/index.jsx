@@ -13,6 +13,8 @@
 import { observer, inject } from 'mobx-react';
 import Base from 'containers/List';
 import { RbacPoliciesStore } from 'src/stores/neutron/rbac-policies';
+import { objectTypes } from 'resources/neutron/rbac-policy';
+import { getOptions } from 'utils';
 import actionConfigRbacPolicies from './actions';
 
 export class RbacPolicies extends Base {
@@ -21,8 +23,8 @@ export class RbacPolicies extends Base {
     this.downloadStore = new RbacPoliciesStore();
   }
 
-  get hasTab() {
-    return false;
+  get policy() {
+    return 'get_rbac_policy';
   }
 
   get name() {
@@ -33,53 +35,74 @@ export class RbacPolicies extends Base {
     return actionConfigRbacPolicies;
   }
 
-  getColumns = () => {
+  getColumns() {
     const columns = [
-      {
-        title: t('Project'),
-        dataIndex: 'project_name',
-      },
       {
         title: t('ID'),
         dataIndex: 'id',
         routeName: this.getRouteName('rbacPolicyDetail'),
         isLink: true,
+        withoutName: true,
+      },
+      {
+        title: t('Project ID/Name'),
+        dataIndex: 'project_name',
+        isHideable: true,
       },
       {
         title: t('Object Type'),
         dataIndex: 'object_type',
+        isHideable: true,
+        valueMap: objectTypes,
       },
       {
-        title: t('Object'),
+        title: t('Object ID/Name'),
         dataIndex: 'object_name',
+        isHideable: true,
+        idKey: 'object_id',
+        isLink: true,
+        getRouteName: (value, record) => {
+          const { object_type } = record || {};
+          if (object_type === 'network') {
+            return this.getRouteName('networkDetail');
+          }
+          if (object_type === 'qos_policy') {
+            return this.getRouteName('networkQosDetail');
+          }
+          return '';
+        },
       },
       {
-        title: t('Target Project'),
+        title: t('Target Project ID/Name'),
         dataIndex: 'target_tenant_name',
+        isHideable: true,
+        idKey: 'target_tenant_id',
+        routeName: this.getRouteName('projectDetail'),
+        isLink: true,
+        emptyRender: () => {
+          return '*';
+        },
       },
     ];
     return columns;
-  };
+  }
 
   get objectTypes() {
-    return [
-      { key: 'network', label: t('Network') },
-      { key: 'qos_policy', label: t('QoS Policy') },
-    ];
+    return getOptions(objectTypes);
   }
 
   get searchFilters() {
     return [
       {
-        label: t('Project'),
-        name: 'project_name',
-      },
-      {
         label: t('Id'),
         name: 'id',
       },
       {
-        label: t('Target Project'),
+        label: t('Target Project ID'),
+        name: 'target_tenant',
+      },
+      {
+        label: t('Target Project Name'),
         name: 'target_tenant_name',
       },
       {
@@ -90,6 +113,14 @@ export class RbacPolicies extends Base {
       {
         label: t('Object'),
         name: 'object_name',
+      },
+      {
+        label: t('Project ID'),
+        name: 'project_id',
+      },
+      {
+        label: t('Project Name'),
+        name: 'project_name',
       },
     ];
   }

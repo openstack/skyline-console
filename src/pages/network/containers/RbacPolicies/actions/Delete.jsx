@@ -14,6 +14,8 @@ import { ConfirmAction } from 'containers/Action';
 import globalRbacPoliciesStore from 'stores/neutron/rbac-policies';
 
 export default class Delete extends ConfirmAction {
+  policy = 'delete_rbac_policy';
+
   get id() {
     return 'delete';
   }
@@ -28,6 +30,10 @@ export default class Delete extends ConfirmAction {
 
   get buttonText() {
     return t('Delete');
+  }
+
+  get messageHasItemName() {
+    return false;
   }
 
   get actionName() {
