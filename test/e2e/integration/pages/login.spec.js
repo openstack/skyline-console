@@ -14,20 +14,17 @@
 
 describe('The Login Page', () => {
   it('successfully loads', () => {
-    cy.intercept('GET', '/domains').as('domains');
     cy.intercept('GET', '/regions').as('regions');
 
     cy.visit('/');
     cy.waitLoginFormLoading();
-    cy.wait('@domains');
     cy.wait('@regions');
   });
 
   it('successfully error username and password', () => {
     cy.wait(5000);
     cy.loginFormSelect(0, 'RegionOne')
-      .loginFormSelect(1, 'Default')
-      .loginFormInput('username', `${Cypress.env('username')}1`)
+      .loginFormInput('domain', `${Cypress.env('username')}1`)
       .loginFormInput('password', `${Cypress.env('password')}1`)
       .loginFormSubmit()
       .get('#normal_login_error')
@@ -37,8 +34,7 @@ describe('The Login Page', () => {
   it('successfully login and check menu', () => {
     cy.wait(5000);
     cy.loginFormSelect(0, 'RegionOne')
-      .loginFormSelect(1, 'Default')
-      .loginFormInput('username', Cypress.env('username'))
+      .loginFormInput('domain', Cypress.env('username'))
       .loginFormInput('password', Cypress.env('password'))
       .loginFormSubmit()
       .wait(2000)
