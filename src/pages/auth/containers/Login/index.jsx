@@ -188,8 +188,10 @@ export class Login extends Component {
     const domainItem = {
       name: 'domain',
       required: true,
-      render: () => <Input placeholder={t('<username>@<domain name>')} />,
-      extra: t('For example: username@Default'),
+      render: () => (
+        <Input placeholder={t('<username> or <username>@<domain>')} />
+      ),
+      extra: t('Tips: without domain means "Default" domain.'),
       rules: [{ required: true, validator: this.usernameDomainValidator }],
     };
     const usernameItem = {
@@ -361,11 +363,13 @@ export class Login extends Component {
 
   usernameDomainValidator = (rule, value) => {
     if (!value || !value.trim()) {
-      return Promise.reject(t('Please input <username>@<domain name>!'));
+      return Promise.reject(
+        t('Please input <username> or <username>@<domain name>!')
+      );
     }
     const tmp = value.trim().split('@');
     const message = t(
-      'Please input the correct format: <username>@<domain name>.'
+      'Please input the correct format:  <username> or <username>@<domain name>.'
     );
     if (tmp.length > 2) {
       return Promise.reject(new Error(message));
