@@ -76,6 +76,9 @@ package: install
 	rm -rf $(ROOT_DIR)/skyline_console/static
 	yarn run build
 	echo `git rev-parse --verify HEAD` > $(ROOT_DIR)/skyline_console/static/commit_id.txt
+	# fix setuptools version as 69.2.0
+	# if we use higher version of this, we will get skyline_console tar.gz package
+	pip install --upgrade setuptools==69.2.0
 	python setup.py sdist
 	python setup.py bdist_wheel
 
