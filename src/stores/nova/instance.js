@@ -116,11 +116,14 @@ export class ServerStore extends Base {
           noReminder: true,
           all_projects,
         });
-        item.itemInList = result[0];
+        item.itemInList = result.find((it) => it.id === id);
       } else {
         const store = new RecycleBinStore();
-        const result = await store.fetchList({ uuid: id, all_projects });
-        item.itemInList = result[0];
+        const result = await store.fetchList({
+          uuid: id,
+          all_projects,
+        });
+        item.itemInList = result.find((it) => it.id === id);
       }
     } catch (e) {
       // eslint-disable-next-line no-console
