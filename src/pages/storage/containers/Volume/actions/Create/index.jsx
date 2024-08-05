@@ -189,7 +189,12 @@ export class Create extends FormAction {
   }
 
   get volumeTypes() {
-    return toJS(this.volumeTypeStore.list.data || []);
+    const list = this.volumeTypeStore.list.data || [];
+    const hasNonSpecialName = list.some((it) => !it.name.startsWith('__'));
+    const filteredList = hasNonSpecialName
+      ? list.filter((it) => !it.name.startsWith('__'))
+      : list;
+    return toJS(filteredList);
   }
 
   get backups() {

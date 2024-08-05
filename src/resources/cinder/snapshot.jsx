@@ -17,7 +17,13 @@ import { toJS } from 'mobx';
 import { cloneDeep } from 'lodash';
 
 export const volumeTypes = () => {
-  return (globalVolumeTypeStore.list.data || []).map((it) => ({
+  const list = globalVolumeTypeStore.list.data || [];
+  const hasNonSpecialName = list.some((it) => !it.name.startsWith('__'));
+  const filteredList = hasNonSpecialName
+    ? list.filter((it) => !it.name.startsWith('__'))
+    : list;
+
+  return filteredList.map((it) => ({
     label: it.name,
     value: it.id,
     originData: toJS(it),
