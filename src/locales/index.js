@@ -22,6 +22,6 @@ export default {
   'zh-hans': zhHansData,
   en: enData,
   'ko-kr': krData,
-  tr: trData,
+  'tr-tr': trData,
   ru: ruData,
 };
