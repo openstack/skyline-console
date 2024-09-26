@@ -93,7 +93,7 @@ We will install Skyline service from docker image.
 
    .. code-block:: console
 
-      $ sudo docker pull 99cloud/skyline:latest
+      $ sudo docker pull 99cloud/skyline:2023.2
 
 #. Ensure that some folders of skyline have been created
 
@@ -133,7 +133,7 @@ Finalize installation
         -e KOLLA_BOOTSTRAP="" \
         -v /etc/skyline/skyline.yaml:/etc/skyline/skyline.yaml \
         -v /var/log:/var/log \
-        --net=host 99cloud/skyline:latest
+        --net=host 99cloud/skyline:2023.2
 
    .. code-block:: text
 
@@ -164,7 +164,7 @@ Finalize installation
       $ sudo docker run -d --name skyline --restart=always \
         -v /etc/skyline/skyline.yaml:/etc/skyline/skyline.yaml \
         -v /var/log:/var/log \
-        --net=host 99cloud/skyline:latest
+        --net=host 99cloud/skyline:2023.2
 
    .. note::
 
