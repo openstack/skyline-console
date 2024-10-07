@@ -29,8 +29,9 @@ import {
 import {
   statusTypes,
   getDomainFormItem,
-  nameDomainColumns,
+  projectDomainColumns,
   transferFilterOption,
+  groupDomainColumns,
 } from 'resources/keystone/domain';
 import { roleFilterOption } from 'resources/keystone/role';
 
@@ -135,7 +136,7 @@ export class Create extends FormAction {
   static allowed = () => Promise.resolve(true);
 
   get leftProjectTable() {
-    return nameDomainColumns;
+    return projectDomainColumns;
   }
 
   get projectRoleList() {
@@ -185,7 +186,7 @@ export class Create extends FormAction {
 
   get rightProjectTable() {
     return [
-      ...nameDomainColumns,
+      ...projectDomainColumns,
       {
         title: t('Select Project Role'),
         dataIndex: 'id',
@@ -210,11 +211,11 @@ export class Create extends FormAction {
   };
 
   get leftUserGroupTable() {
-    return nameDomainColumns;
+    return groupDomainColumns;
   }
 
   get rightUserGroupTable() {
-    return nameDomainColumns;
+    return groupDomainColumns;
   }
 
   checkName = (rule, value) => {

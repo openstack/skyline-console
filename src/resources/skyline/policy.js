@@ -60,6 +60,7 @@ export const policyMap = {
     'floatingip',
     'vpnservice',
     'ipsec_site_connection',
+    'rbac_policy',
   ],
   octavia: ['os_load-balancer_api'],
   // keystone: ['identity:'],

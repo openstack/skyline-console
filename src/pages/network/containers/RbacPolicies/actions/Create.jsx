@@ -12,30 +12,34 @@
 
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import Notify from 'src/components/Notify';
 import { RbacPoliciesStore } from 'src/stores/neutron/rbac-policies';
 import { ProjectStore } from 'stores/keystone/project';
 import { NetworkStore } from 'stores/neutron/network';
 import { QoSPolicyStore } from 'stores/neutron/qos-policy';
-import { observable } from 'mobx';
+import { qosEndpoint } from 'client/client/constants';
+import { anyProject } from 'resources/neutron/rbac-policy';
 
 export class Create extends ModalAction {
   static id = 'create-policy';
 
-  static title = t('Create');
+  static title = t('Create RBAC Policy');
 
-  @observable allNetworks;
-
-  @observable allProjects;
+  static policy = 'create_rbac_policy';
 
   get name() {
     return t('Create');
+  }
+
+  get messageHasItemName() {
+    return false;
   }
 
   init() {
     this.state = {
       ...this.state,
       isReady: false,
+      allNetworks: [],
+      qosPolices: [],
     };
     this.store = new RbacPoliciesStore();
     this.projectStore = new ProjectStore();
@@ -53,33 +57,31 @@ export class Create extends ModalAction {
     this.setState({ isReady: true });
   }
 
-  get tips() {
-    return t('From here you can create a rbac policy.');
+  get enableQosPolicy() {
+    return qosEndpoint();
   }
 
   async getProjects() {
-    this.allProjects = await this.projectStore.pureFetchList();
-    this.addNewElementToProjectList();
-  }
-
-  addNewElementToProjectList() {
-    const newElement = {
-      id: '*',
-      name: '*',
-    };
-    this.allProjects.unshift(newElement);
+    const allProjects = await this.projectStore.pureFetchList();
+    allProjects.unshift(anyProject);
+    this.setState({ allProjects });
   }
 
   async getQoSPolicy() {
+    if (!this.enableQosPolicy) {
+      return;
+    }
     await this.qosPolicyStore.fetchList();
   }
 
   async getNetworks() {
-    this.allNetworks = await this.networkStore.pureFetchList();
+    const allNetworks = await this.networkStore.pureFetchList();
+    this.setState({ allNetworks });
   }
 
   get projects() {
-    return (this.allProjects || []).map((it) => ({
+    const { allProjects } = this.state;
+    return (allProjects || []).map((it) => ({
       value: it.id,
       label: it.name,
     }));
@@ -92,49 +94,65 @@ export class Create extends ModalAction {
     }));
   }
 
-  get networks() {
-    return (this.allNetworks || []).map((it) => ({
-      value: it.id,
-      label: it.name,
-    }));
+  get sharedNetworks() {
+    const { allNetworks } = this.state;
+    return (allNetworks || [])
+      .filter((it) => it.shared === true)
+      .map((it) => ({
+        value: it.id,
+        label: it.name,
+      }));
+  }
+
+  get externalNetworks() {
+    const { allNetworks } = this.state;
+    return (allNetworks || [])
+      .filter((it) => it['router:external'] === true)
+      .map((it) => ({
+        value: it.id,
+        label: it.name,
+      }));
   }
 
   onSubmit = async (values) => {
-    try {
-      const { object_type, ...rest } = values;
-      const action =
-        object_type === 'network' || object_type === 'qos_policy'
-          ? 'access_as_shared'
-          : 'access_as_external';
-      const updatedType =
-        object_type === 'external-network' ? 'network' : object_type;
-      const body = {
-        ...rest,
-        object_type: updatedType,
-        action,
-      };
+    const { object_type, ...rest } = values;
+    const action =
+      object_type === 'network' || object_type === 'qos_policy'
+        ? 'access_as_shared'
+        : 'access_as_external';
+    const updatedType =
+      object_type === 'external-network' ? 'network' : object_type;
+    const body = {
+      ...rest,
+      object_type: updatedType,
+      action,
+    };
 
-      await this.store.create(body);
-    } catch (error) {
-      Notify.errorWithDetail(null, error.toString());
-      return Promise.reject(error);
-    }
+    return this.store.create(body);
   };
 
   static allowed = () => Promise.resolve(true);
 
   get createObjectList() {
-    return [
+    const items = [
       { value: 'network', label: t('Shared Network') },
       { value: 'external-network', label: t('External Network') },
-      { value: 'qos_policy', label: t('Shared QoS Policy') },
     ];
+    if (this.enableQosPolicy) {
+      items.push({ value: 'qos_policy', label: t('Shared QoS Policy') });
+    }
+    return items;
   }
 
   onChangeHandler = async (value) => {
-    this.setState({
-      object_type: value,
-    });
+    this.setState(
+      {
+        object_type: value,
+      },
+      () => {
+        this.updateFormValue('object_id', undefined);
+      }
+    );
   };
 
   get formItems() {
@@ -156,8 +174,8 @@ export class Create extends ModalAction {
       },
       {
         name: 'object_type',
-        label: t('Action and Object Type'),
-        placeholder: t('Select action and object type'),
+        label: t('Object Type'),
+        placeholder: t('Select an object type'),
         type: 'select',
         onChange: this.onChangeHandler,
         options: this.createObjectList,
@@ -168,10 +186,9 @@ export class Create extends ModalAction {
         label: t('Shared Network'),
         placeholder: t('Select a network'),
         type: 'select',
-        options: this.networks,
+        options: this.sharedNetworks,
         hidden: !isNetwork,
         isLoading: !this.state.isReady,
-        onChange: this.onSourceEnvironmentChange,
         required: true,
       },
       {
@@ -179,7 +196,7 @@ export class Create extends ModalAction {
         label: t('External Network'),
         placeholder: t('Select a network'),
         type: 'select',
-        options: this.networks,
+        options: this.externalNetworks,
         hidden: !isExternalNetwork,
         isLoading: !this.state.isReady,
         required: true,

@@ -71,7 +71,20 @@ export const enabledColumn = {
   stringify: (val) => (val ? t('Yes') : t('No')),
 };
 
-export const nameDomainColumns = [
+export const domainColumn = {
+  dataIndex: 'domainName',
+  title: t('Domain ID/Name'),
+  render: (value, record) => {
+    return (
+      <>
+        <div>{getIdRender(record.domain_id, true, false)}</div>
+        <div>{value}</div>
+      </>
+    );
+  },
+};
+
+export const projectDomainColumns = [
   {
     dataIndex: 'name',
     title: t('Project ID/Name'),
@@ -84,18 +97,39 @@ export const nameDomainColumns = [
       );
     },
   },
+  domainColumn,
+];
+
+export const userDomainColumns = [
   {
-    dataIndex: 'domainName',
-    title: t('Domain ID/Name'),
+    dataIndex: 'name',
+    title: t('User ID/Name'),
     render: (value, record) => {
       return (
         <>
-          <div>{getIdRender(record.domain_id, true, false)}</div>
+          <div>{getIdRender(record.id, true, false)}</div>
           <div>{value}</div>
         </>
       );
     },
   },
+  domainColumn,
+];
+
+export const groupDomainColumns = [
+  {
+    dataIndex: 'name',
+    title: t('User Group ID/Name'),
+    render: (value, record) => {
+      return (
+        <>
+          <div>{getIdRender(record.id, true, false)}</div>
+          <div>{value}</div>
+        </>
+      );
+    },
+  },
+  domainColumn,
 ];
 
 export const transferFilterOption = (inputValue, record) => {

@@ -124,8 +124,7 @@ Cypress.Commands.add('loginByPage', (username, password) => {
   cy.visit('/');
   cy.waitLoginFormLoading().wait(5000);
   cy.loginFormSelect(0, 'RegionOne')
-    .loginFormSelect(1, 'Default')
-    .loginFormInput('username', username || Cypress.env('username'))
+    .loginFormInput('domain', username || Cypress.env('username'))
     .loginFormInput('password', password || Cypress.env('password'))
     .loginFormSubmit();
 });

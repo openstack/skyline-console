@@ -20,7 +20,7 @@ import { GroupStore } from 'stores/keystone/user-group';
 import globalRoleStore from 'stores/keystone/role';
 import { ModalAction } from 'containers/Action';
 import {
-  nameDomainColumns,
+  groupDomainColumns,
   transferFilterOption,
 } from 'resources/keystone/domain';
 import { roleFilterOption } from 'resources/keystone/role';
@@ -115,7 +115,7 @@ export class ManageUserGroup extends ModalAction {
   static allowed = () => Promise.resolve(true);
 
   get leftGroupGroupTable() {
-    return nameDomainColumns;
+    return groupDomainColumns;
   }
 
   onClickSelect = (e) => {
@@ -142,7 +142,7 @@ export class ManageUserGroup extends ModalAction {
 
   get rightGroupGroupTable() {
     return [
-      ...nameDomainColumns,
+      ...groupDomainColumns,
       {
         title: t('Select Project Role'),
         dataIndex: 'id',

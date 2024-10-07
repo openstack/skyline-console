@@ -20,7 +20,7 @@ import { UserStore } from 'stores/keystone/user';
 import { RoleStore } from 'stores/keystone/role';
 import { ModalAction } from 'containers/Action';
 import {
-  nameDomainColumns,
+  userDomainColumns,
   transferFilterOption,
 } from 'resources/keystone/domain';
 import { roleFilterOption } from 'resources/keystone/role';
@@ -116,12 +116,12 @@ export class ManageUser extends ModalAction {
   static allowed = () => Promise.resolve(true);
 
   get leftUserTable() {
-    return nameDomainColumns;
+    return userDomainColumns;
   }
 
   get rightUserTable() {
     return [
-      ...nameDomainColumns,
+      ...userDomainColumns,
       {
         title: t('Select Project Role'),
         dataIndex: 'id',

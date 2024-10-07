@@ -189,11 +189,11 @@ function DropdownActionButton({
   }
 
   return (
-    <>
+    <div className={styles['action-buttons']}>
       {firstElement}
       {dividerElement}
       {moreElement}
-    </>
+    </div>
   );
 }
 
