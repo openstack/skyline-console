@@ -1,5 +1,6 @@
 import Base from 'stores/base';
 import client from 'client';
+import { qosEndpoint } from 'client/client/constants';
 
 export class RbacPoliciesStore extends Base {
   get client() {
@@ -26,25 +27,31 @@ export class RbacPoliciesStore extends Base {
     return client.neutron.networks;
   }
 
+  get enableQosPolicy() {
+    return qosEndpoint();
+  }
+
   async listDidFetch(items) {
     const [
       { networks: allNetworks },
-      { policies: allPolicies },
+      qosPoliciesResult,
       { projects: allProjects },
     ] = await Promise.all([
       this.networkClient.list(),
-      this.qosClient.list(),
+      this.enableQosPolicy ? this.qosClient.list() : null,
       this.projectClient.list(),
     ]);
+    const { policies: allPolicies = [] } = qosPoliciesResult || {};
     const updatedItems = items.map((item) => {
+      const { object_id, target_tenant } = item;
       const networkOfItem = allNetworks.find(
-        (network) => network.id === item.object_id
+        (network) => network.id === object_id
       );
       const policyOfItem = allPolicies.find(
-        (policy) => policy.id === item.object_id
+        (policy) => policy.id === object_id
       );
       const targetTenant = allProjects.find(
-        (project) => project.id === item.target_tenant
+        (project) => project.id === target_tenant
       );
       return {
         ...item,
@@ -54,21 +61,34 @@ export class RbacPoliciesStore extends Base {
           ? policyOfItem.name
           : '-',
         target_tenant_name: targetTenant ? targetTenant.name : '*',
+        target_tenant_id: target_tenant === '*' ? '' : target_tenant,
       };
     });
     return updatedItems;
   }
 
-  async getProjects() {
-    await this.projectClient.list();
-  }
-
-  async getQoSPolicy() {
-    await this.qosPolicyClient.list();
-  }
-
-  async getNetworks() {
-    await this.networkClient.list();
+  async detailDidFetch(item) {
+    const { object_type, object_id, target_tenant } = item;
+    let objectRequest = null;
+    let projectRequest = null;
+    if (object_type === 'network') {
+      objectRequest = this.networkClient.show(object_id);
+    } else if (object_type === 'qos_policy') {
+      objectRequest = this.qosClient.show(object_id);
+    }
+    if (target_tenant !== '*') {
+      projectRequest = this.projectClient.show(target_tenant);
+    }
+    const [objectResult, projectResult] = await Promise.allSettled([
+      objectRequest,
+      projectRequest,
+    ]);
+    const { network, qos_policy } = objectResult.value || {};
+    return {
+      ...item,
+      object: network || qos_policy,
+      targetProject: projectResult.value?.project,
+    };
   }
 }
 

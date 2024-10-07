@@ -12,22 +12,30 @@
 
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import Notify from 'src/components/Notify';
 import { RbacPoliciesStore } from 'src/stores/neutron/rbac-policies';
 import { ProjectStore } from 'stores/keystone/project';
+import { anyProject } from 'src/resources/neutron/rbac-policy';
 
 export class Edit extends ModalAction {
   static id = 'edit-policy';
 
   static title = t('Edit');
 
+  static policy = 'update_rbac_policy';
+
   get name() {
     return t('Edit');
+  }
+
+  get messageHasItemName() {
+    return false;
   }
 
   init() {
     this.store = new RbacPoliciesStore();
     this.projectStore = new ProjectStore();
+    this.state.projects = [];
+    this.state.isReady = false;
     this.getProjects();
   }
 
@@ -36,26 +44,29 @@ export class Edit extends ModalAction {
   }
 
   async getProjects() {
-    await this.projectStore.fetchProjectsWithDomain();
-    this.setState({ ...this.state, isReady: true });
+    const projects = await this.projectStore.pureFetchList();
+    projects.unshift(anyProject);
+    this.setState({ projects, isReady: true });
   }
 
   get projects() {
-    return (this.projectStore.list.data || []).map((it) => ({
+    const { projects } = this.state;
+    return (projects || []).map((it) => ({
       value: it.id,
       label: it.name,
     }));
   }
 
+  get defaultValue() {
+    const { target_tenant } = this.item;
+    return {
+      target_tenant,
+    };
+  }
+
   onSubmit = async (values) => {
     const { id } = this.item;
-    try {
-      const { ...body } = values;
-      await this.store.update(id, body);
-    } catch (error) {
-      Notify.errorWithDetail(null, error.toString());
-      return Promise.reject(error);
-    }
+    return this.store.update({ id }, values);
   };
 
   static allowed = () => Promise.resolve(true);
@@ -68,7 +79,7 @@ export class Edit extends ModalAction {
         placeholder: t('Select a project'),
         type: 'select',
         options: this.projects,
-        isLoading: this.projectStore.list.isLoading,
+        loading: !this.state.isReady,
         required: true,
       },
     ];

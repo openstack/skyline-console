@@ -12,6 +12,7 @@
 
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
+import { objectTypes } from 'resources/neutron/rbac-policy';
 
 export class BaseDetail extends Base {
   get leftCards() {
@@ -22,20 +23,29 @@ export class BaseDetail extends Base {
   get baseInfoCard() {
     const options = [
       {
-        label: t('ID'),
-        dataIndex: 'id',
-      },
-      {
-        label: t('Project ID'),
-        dataIndex: 'project_id',
-      },
-      {
         label: t('Object Type'),
         dataIndex: 'object_type',
+        valueMap: objectTypes,
       },
       {
         label: t('Object ID'),
         dataIndex: 'object_id',
+        render: (value) => {
+          const { object_type } = this.detailData;
+          if (object_type === 'network') {
+            return this.getLinkRender('networkDetail', value, { id: value });
+          }
+          if (object_type === 'qos_policy') {
+            return this.getLinkRender('networkQosDetail', value, {
+              id: value,
+            });
+          }
+          return value;
+        },
+      },
+      {
+        label: t('Object Name'),
+        dataIndex: 'object.name',
       },
       {
         label: t('Action'),
@@ -44,11 +54,24 @@ export class BaseDetail extends Base {
       {
         label: t('Target Tenant'),
         dataIndex: 'target_tenant',
+        render: (value) => {
+          if (value === '*') {
+            return value;
+          }
+          const { targetProject } = this.detailData;
+          return this.getLinkRender(
+            'projectDetail',
+            targetProject?.name || value,
+            {
+              id: value,
+            }
+          );
+        },
       },
     ];
 
     return {
-      title: t('Rbac Policy Detail'),
+      title: t('Detail Info'),
       options,
     };
   }

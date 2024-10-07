@@ -502,31 +502,34 @@
         /opt/stack/skyline-console/test/e2e/videos: logs
 
 - job:
-    name: skyline-nodejs14-run-lint-src
+    name: skyline-nodejs16-run-lint-src
     parent: nodejs-run-lint
     description: |
-      Run lint using Node 14 for skyline-console src directory.
+      Run lint using Node 16 for skyline-console src directory.
     vars:
-      node_version: 14
+      node_version: 16
       js_build_command: lint
+    nodeset: ubuntu-jammy
 
 - job:
-    name: skyline-nodejs14-run-lint-test
+    name: skyline-nodejs16-run-lint-test
     parent: nodejs-run-lint
     description: |
-      Run lint using Node 14 for skyline-console test directory.
+      Run lint using Node 16 for skyline-console test directory.
     vars:
-      node_version: 14
+      node_version: 16
       js_build_command: lint:test
+    nodeset: ubuntu-jammy
 
 - job:
-    name: skyline-nodejs14-run-unit-test
+    name: skyline-nodejs16-run-unit-test
     parent: nodejs-run-test
     description: |
-      Run unit test using Node 14 for skyline-console.
+      Run unit test using Node 16 for skyline-console.
     vars:
-      node_version: 14
+      node_version: 16
       js_build_command: test:unit
+    nodeset: ubuntu-jammy
 
 - job:
     name: publish-skyline-console-python-branch-tarball
@@ -545,9 +548,9 @@
       - publish-openstack-docs-pti
     check:
       jobs:
-        - skyline-nodejs14-run-lint-src
-        - skyline-nodejs14-run-lint-test
-        - skyline-nodejs14-run-unit-test
+        - skyline-nodejs16-run-lint-src
+        - skyline-nodejs16-run-lint-test
+        - skyline-nodejs16-run-unit-test
         - skyline-console-devstack-e2etests-compute:
             irrelevant-files: &e2etests-compute-irrelevant-files
               # network
@@ -780,9 +783,9 @@
               - ^skyline_console/.*$
     gate:
       jobs:
-        - skyline-nodejs14-run-lint-src
-        - skyline-nodejs14-run-lint-test
-        - skyline-nodejs14-run-unit-test
+        - skyline-nodejs16-run-lint-src
+        - skyline-nodejs16-run-lint-test
+        - skyline-nodejs16-run-unit-test
         - skyline-console-devstack-e2etests-compute:
             irrelevant-files: *e2etests-compute-irrelevant-files
         - skyline-console-devstack-e2etests-network:

@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Update login form:
+
+    * Change the domain selector to input, requiring the user to enter <username>@<domain name>, such as: admin@Default.
+
+    * If the user enters only <username>, the "Default" domain will be used, such as: admin.

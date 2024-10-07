@@ -22,11 +22,20 @@ export class RbacPolicyDetail extends Base {
   }
 
   get listUrl() {
-    return this.getRoutePath('rbacPoliciesAdmin');
+    return this.getRoutePath('rbacPolicy');
   }
 
   get actionConfigs() {
     return actionConfigs;
+  }
+
+  get detailInfos() {
+    return [
+      {
+        title: t('Project ID'),
+        dataIndex: 'project_id',
+      },
+    ];
   }
 
   get tabs() {
