@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import React, { Component } from 'react';
-import { Input, Button, Select, Row, Col, AutoComplete } from 'antd';
+import { Input, Button, Select, Row, Col } from 'antd';
 import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { InfoCircleFilled } from '@ant-design/icons';
@@ -191,7 +191,7 @@ export class Login extends Component {
       render: () => (
         <Input placeholder={t('<username> or <username>@<domain>')} />
       ),
-      extra: t('Tips: without domain means "Default" domain.'),
+      extra: t('Tips: without domain means "rackspace_cloud_domain" domain.'),
       rules: [{ required: true, validator: this.usernameDomainValidator }],
     };
     const usernameItem = {
@@ -357,7 +357,7 @@ export class Login extends Component {
     const tmp = usernameDomain.trim().split('@');
     return {
       username: tmp[0],
-      domain: tmp[1] || 'Default',
+      domain: tmp[1] || 'rackspace_cloud_domain',
     };
   };
 

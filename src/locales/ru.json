@@ -2649,7 +2649,7 @@
   "Time between running the check in seconds": "Интервал выполнения проверки в секундах",
   "Timeout(Minute)": "Тайм-аут (минуты)",
   "Timeout(s)": "Тайм-аут (секунды)",
-  "Tips: without domain means \"Default\" domain.": "Советы: отсутствие домена означает домен «Default».",
+  "Tips: without domain means \"rackspace_cloud_domain\" domain.": "Советы: отсутствие домена означает домен «rackspace_cloud_domain».",
   "To open": "Открыть",
   "Today CPU usage > 80% alert": "Сегодня предупреждение: использование CPU > 80%",
   "Today Memory usage > 80% alert": "Сегодня предупреждение: использование памяти > 80%",

@@ -2649,7 +2649,7 @@
   "Time between running the check in seconds": "Saniye cinsinden kontrol çalıştırma aralığı",
   "Timeout(Minute)": "Zaman Aşımı(Dakika)",
   "Timeout(s)": "Zaman Aşımı(Saniye)",
-  "Tips: without domain means \"Default\" domain.": "İpuçları: Alan adı olmadan \"Default\" alan adı anlamına gelir.",
+  "Tips: without domain means \"rackspace_cloud_domain\" domain.": "İpuçları: Alan adı olmadan \"rackspace_cloud_domain\" alan adı anlamına gelir.",
   "To open": "Açmak için",
   "Today CPU usage > 80% alert": "Bugünkü CPU kullanımı > 80% uyarısı",
   "Today Memory usage > 80% alert": "Bugünkü bellek kullanımı > 80% uyarısı",
