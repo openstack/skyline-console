@@ -2649,7 +2649,7 @@
   "Time between running the check in seconds": "Time between running the check in seconds",
   "Timeout(Minute)": "Timeout(Minute)",
   "Timeout(s)": "Timeout(s)",
-  "Tips: without domain means \"Default\" domain.": "Tips: without domain means \"Default\" domain.",
+  "Tips: without domain means \"rackspace_cloud_domain\" domain.": "Tips: without domain means \"rackspace_cloud_domain\" domain.",
   "To open": "To open",
   "Today CPU usage > 80% alert": "Today CPU usage > 80% alert",
   "Today Memory usage > 80% alert": "Today Memory usage > 80% alert",

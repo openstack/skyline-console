@@ -2649,7 +2649,7 @@
   "Time between running the check in seconds": "검사 간격(초)",
   "Timeout(Minute)": "타임아웃(분)",
   "Timeout(s)": "타임아웃(초)",
-  "Tips: without domain means \"Default\" domain.": "팁: 도메인이 없으면 \"Default\" 도메인을 의미합니다.",
+  "Tips: without domain means \"rackspace_cloud_domain\" domain.": "팁: 도메인이 없으면 \"rackspace_cloud_domain\" 도메인을 의미합니다.",
   "To open": "열기",
   "Today CPU usage > 80% alert": "오늘 CPU 사용량 > 80% 경고",
   "Today Memory usage > 80% alert": "오늘 메모리 사용량 > 80% 경고",
