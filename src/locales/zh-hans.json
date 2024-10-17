@@ -2649,7 +2649,7 @@
   "Time between running the check in seconds": "运行检查之间的时间（以秒为单位）",
   "Timeout(Minute)": "创建超时（分钟）",
   "Timeout(s)": "检查超时时间(秒)",
-  "Tips: without domain means \"rackspace_cloud_domain\" domain.": "提示：不输入域名则默认为“rackspace_cloud_domain”域名。",
+  "Tips: without domain means \"Default\" domain.": "提示：不输入域名则默认为“Default”域名。",
   "To open": "去开通",
   "Today CPU usage > 80% alert": "今日CPU使用率大于80%的告警",
   "Today Memory usage > 80% alert": "今日内存使用率大于80%的告警",
