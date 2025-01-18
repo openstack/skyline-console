@@ -12,4 +12,5 @@ on Ubuntu 20.04 LTS and RHEL/CentOS.
 
     source-install-ubuntu
     docker-install-ubuntu
+    source-install-rhel
     docker-install-rhel
