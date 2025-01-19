@@ -76,8 +76,9 @@ package: install
 	rm -rf $(ROOT_DIR)/skyline_console/static
 	yarn run build
 	echo `git rev-parse --verify HEAD` > $(ROOT_DIR)/skyline_console/static/commit_id.txt
-	python3 setup.py sdist
-	python3 setup.py bdist_wheel
+	python3 -m pip install sdist
+	python3 -m pip install build
+	python3 -m build
 
 
 .PHONY: fmt
