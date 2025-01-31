@@ -63,12 +63,18 @@ export class Login extends Component {
   }
 
   get productName() {
-    const { product_name = { zh: t('OpenStack Flex'), en: 'OpenStack Flex' } } =
-      this.info;
+    const {
+      product_name = {
+        zh: t('Rackspace Flex Cloud'),
+        en: 'Rackspace Flex Cloud',
+      },
+    } = this.info;
     const { getLocaleShortName } = i18n;
     const language = getLocaleShortName();
     const name =
-      product_name[language] || t('OpenStack Flex') || 'OpenStack Flex';
+      product_name[language] ||
+      t('Rackspace Flex Cloud') ||
+      'Rackspace Flex Cloud';
     return t('Welcome to {name}', { name });
   }
 
