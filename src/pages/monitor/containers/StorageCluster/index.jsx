@@ -214,7 +214,7 @@ const StorageCluster = () => {
                   strokeColor={
                     progressPercentage > 80
                       ? globalCSS.warnDarkColor
-                      : globalCSS.primaryColor
+                      : globalCSS.normalColor
                   }
                   showInfo={progressPercentage !== 100}
                 />

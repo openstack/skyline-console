@@ -148,7 +148,7 @@ export class Topology extends React.Component {
           fill: '#FFFFFFFF',
           stroke:
             router.status === 'ACTIVE'
-              ? globalCSS.successColor
+              ? globalCSS.normalColor
               : errorStrokeColor,
           shadowColor:
             router.status === 'ACTIVE' ? activeShadowColor : errorShadowColor,
@@ -343,7 +343,7 @@ export class Topology extends React.Component {
             fill: '#FFFFFFFF',
             stroke:
               server.vm_state === 'active'
-                ? globalCSS.successColor
+                ? globalCSS.normalColor
                 : errorStrokeColor,
             shadowColor:
               server.vm_state === 'active'
@@ -413,7 +413,7 @@ export class Topology extends React.Component {
               fill: '#FFFFFFFF',
               stroke:
                 server.vm_state === 'active'
-                  ? globalCSS.successColor
+                  ? globalCSS.normalColor
                   : errorStrokeColor,
               shadowColor:
                 server.vm_state === 'active'

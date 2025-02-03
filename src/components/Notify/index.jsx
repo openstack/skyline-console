@@ -46,7 +46,7 @@ const open = (args) => {
     iconColor = globalCSS.primaryColor;
     icon = <InfoCircleOutlined theme="filled" style={{ color: iconColor }} />;
   } else if (type === 'success') {
-    iconColor = globalCSS.successColor;
+    iconColor = globalCSS.normalColor;
     icon = <CheckCircleOutlined theme="filled" style={{ color: iconColor }} />;
   } else if (type === 'error') {
     iconColor = globalCSS.errorColor;

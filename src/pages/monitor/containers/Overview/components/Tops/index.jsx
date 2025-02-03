@@ -24,7 +24,7 @@ export const renderTopProgress = ({ data }) => {
       {data.map((d) => {
         const percentage = get(d, 'y', 0);
         const percentageColor =
-          percentage > 80 ? globalCSS.warnDarkColor : globalCSS.primaryColor;
+          percentage > 80 ? globalCSS.warnDarkColor : globalCSS.normalColor;
         return (
           <Col span={24} key={d.type}>
             <div>{d.type}</div>

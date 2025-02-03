@@ -391,7 +391,7 @@ export const cephStatusMap = {
 };
 
 export const cephStatusColorMap = {
-  0: globalCSS.successColor,
+  0: globalCSS.normalColor,
   1: globalCSS.warnDarkColor,
   2: globalCSS.errorColor,
 };

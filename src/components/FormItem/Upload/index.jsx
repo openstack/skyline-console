@@ -29,7 +29,7 @@ export default class index extends Component {
     return {
       strokeColor: {
         '0%': globalCSS.primaryColor,
-        '100%': globalCSS.successColor,
+        '100%': globalCSS.normalColor,
       },
       strokeWidth: 3,
       format: (percent) => `${parseFloat(percent.toFixed(2))}%`,

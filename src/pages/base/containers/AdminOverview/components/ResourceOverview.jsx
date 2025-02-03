@@ -68,14 +68,14 @@ export const smallCard = [
 ];
 
 const instanceColors = {
-  active: { color: globalCSS.successColor, text: t('Active Status') },
+  active: { color: globalCSS.normalColor, text: t('Active Status') },
   error: { color: globalCSS.errorColor, text: t('Error') },
   shutoff: { color: '#E6F2E0', text: t('Shutoff') },
   other: { color: globalCSS.warnLightColor, text: t('Others') },
 };
 
 const volumeColors = {
-  active: { color: globalCSS.successColor, text: t('Attaching') },
+  active: { color: globalCSS.normalColor, text: t('Attaching') },
   error: { color: globalCSS.errorColor, text: t('Error') },
   available: { color: '#E6F2E0', text: t('Unattached') },
   other: { color: globalCSS.warnLightColor, text: t('Others') },
