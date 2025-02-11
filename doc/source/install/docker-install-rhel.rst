@@ -10,21 +10,21 @@ least it includes ``keystone, glance, nova and neutron service``.
 Prerequisites
 -------------
 
-#. Add the Docker Repository:
+Add the Docker Repository:
 RHEL and CentOS does not come with Docker in the default repository. Therefore, you will need to add the Docker repository to your system:
 
    .. code-block:: console
 
       $ sudo dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
 
-#. Install Docker Engine:
+Install Docker Engine:
 With the Docker repo added, you can now install the Docker engine using the following command:
 
    .. code-block:: console
 
       $ sudo dnf install docker-ce docker-ce-cli containerd.io
 
-#. Start and Enable Docker:
+Start and Enable Docker:
 Once the installation is complete, start the Docker service and enable it to launch at boot:
 
    .. code-block:: console

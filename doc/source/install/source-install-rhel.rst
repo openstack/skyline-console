@@ -14,7 +14,7 @@ For more information about skyline-apiserver installation, refer to the
 Prerequisites
 -------------
 
-#. Install system dependencies
+Install system dependencies
 `PowerTools/CRB repository should be already enabled
 <https://docs.openstack.org/install-guide/environment-packages-rdo.html#prerequisites>`__.
 
