@@ -16,13 +16,23 @@ Prerequisites
 
 #. Install system dependencies
 
+If your use Ubuntu 20.04 64 bit or Ubuntu 22.04 64 bit
+
    .. code-block:: shell
 
       sudo apt update
-      sudo apt install -y git python3-pip nginx make ssl-cert
-      sudo apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+      sudo apt install git python3-pip nginx make ssl-cert
+      sudo apt install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
 
-#. Install nvm ( version control system for nodejs )
+If your use Ubuntu 24.04 64 bit
+
+   .. code-block:: shell
+
+      sudo apt update
+      sudo apt install git python3-pip nginx make ssl-cert
+      sudo apt install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2t64 libxtst6 xauth xvfb
+
+#. Install nvm (version control system for Node.js)
 
    .. code:: shell
 
@@ -34,9 +44,21 @@ Prerequisites
 
    .. code:: shell
 
-      nvm install --lts=Erbium
-      nvm alias default lts/erbium
+      nvm install --lts=gallium
+      nvm alias default lts/gallium
       nvm use default
+
+#. Check version node and npm
+
+   .. code:: shell
+
+      node -v
+      v16.*.*
+
+   .. code:: shell
+
+      npm -v
+      8.*.*
 
 #. Install yarn
 
@@ -53,7 +75,7 @@ We will install the Skyline Console service from source code.
 
    .. code-block:: shell
 
-      cd ${HOME}
+      cd /root
       git clone https://opendev.org/openstack/skyline-console.git
 
    .. note::
@@ -67,9 +89,9 @@ We will install the Skyline Console service from source code.
 
    .. code-block:: shell
 
-      cd ${HOME}/skyline-console
+      cd /root/skyline-console
       make package
-      sudo pip3 install --force-reinstall dist/skyline_console-*.whl
+      sudo python3 -m pip install --force-reinstall dist/skyline_console-*.whl
 
 #. Ensure that skyline folders have been created
 
