@@ -12,15 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
+import React, { createRef } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Spin, Divider } from 'antd';
-import { AppstoreOutlined, SwapOutlined } from '@ant-design/icons';
+import { Spin } from 'antd';
+import applicationIcon from 'asset/cube/monochrome/applications.svg';
 import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
 import styles from './index.less';
 import ProjectSelect from './ProjectTable';
 
 export class ProjectDropdown extends React.Component {
+  itemActionRef = createRef();
+
   get user() {
     const { user } = this.props.rootStore;
     return user;
@@ -41,6 +43,21 @@ export class ProjectDropdown extends React.Component {
     };
   }
 
+  handleButtonClick = () => {
+    if (this.itemActionRef.current) {
+      const button = this.itemActionRef.current.querySelector('button');
+      if (button) {
+        button.click();
+      }
+    }
+  };
+
+  handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      this.handleButtonClick();
+    }
+  };
+
   render() {
     if (!this.user) {
       return (
@@ -57,14 +74,26 @@ export class ProjectDropdown extends React.Component {
     const { projectName, userDomainName } = this.project;
     return (
       <div className={styles.project} id="project-switch">
-        <ItemActionButtons
-          actions={{ moreActions: [{ action: ProjectSelect }] }}
-        />
-        <AppstoreOutlined style={{ marginRight: 10 }} />
-        {/* style={{ display: 'inline-block', width: '115px' }} */}
-        <span>{projectName}</span>
-        <SwapOutlined style={{ color: '#A3A3A3', marginLeft: 24 }} />
-        <Divider type="vertical" />
+        <div
+          className="project-switch-btn"
+          role="button"
+          tabIndex={0}
+          onClick={this.handleButtonClick}
+          onKeyDown={this.handleKeyDown}
+        >
+          <img
+            src={applicationIcon}
+            alt="project-icon"
+            width="16px"
+            height="16px"
+          />
+          {projectName}
+          <ItemActionButtons
+            ref={this.itemActionRef}
+            actions={{ moreActions: [{ action: ProjectSelect }] }}
+          />
+        </div>
+
         <span className={styles.domain}>{userDomainName}</span>
       </div>
     );

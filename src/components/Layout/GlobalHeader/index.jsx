@@ -14,8 +14,8 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import cloudLogo from 'asset/image/cloud-logo.svg';
-import cloudLogoWhite from 'asset/image/cloud-logo-white.svg';
+import cubeCosLogo from 'asset/cube/custom/logo-cube-cos.png';
+import skylineLogo from 'asset/cube/custom/logo-skyline.png';
 import { getPath } from 'utils/route-map';
 import classnames from 'classnames';
 import GlobalNav from '../GlobalNav';
@@ -36,14 +36,21 @@ export default function HeaderContent(props) {
 
   const renderLogo = () => {
     const homeUrl = getRoutePath('overview');
-    const logoSrc =
-      GLOBAL_VARIABLES.skylineThemeName === 'default'
-        ? cloudLogo
-        : cloudLogoWhite;
     return (
       <div className={classnames(styles.logo)}>
         <Link to={homeUrl}>
-          <img src={logoSrc} alt="logo" className={styles['logo-image']} />
+          <img
+            src={cubeCosLogo}
+            alt="logo-cube-cos"
+            className={styles['logo-image']}
+          />
+        </Link>
+        <Link to={homeUrl}>
+          <img
+            src={skylineLogo}
+            alt="logo-skyline"
+            className={styles['logo-image']}
+          />
         </Link>
       </div>
     );
@@ -51,10 +58,18 @@ export default function HeaderContent(props) {
 
   return (
     <div className={styles.header}>
-      <GlobalNav navItems={navItems} />
-      {renderLogo()}
-      {!isAdminPage && <ProjectDropdown />}
-      <RightContent {...props} />
+      <div className={styles['header-left']}>
+        <GlobalNav navItems={navItems} />
+        {renderLogo()}
+      </div>
+      <div
+        className={
+          isAdminPage ? styles['header-right-admin'] : styles['header-right']
+        }
+      >
+        {!isAdminPage && <ProjectDropdown />}
+        <RightContent {...props} />
+      </div>
     </div>
   );
 }

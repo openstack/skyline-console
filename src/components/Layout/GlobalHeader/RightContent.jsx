@@ -14,7 +14,7 @@
 
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Button, Col, Row } from 'antd';
+import { Button } from 'antd';
 import Avatar from './AvatarDropdown';
 import styles from './index.less';
 
@@ -71,17 +71,11 @@ export class GlobalHeaderRight extends Component {
   render() {
     return (
       <div className={styles.right}>
-        <Row justify="space-between" align="middle" gutter={10}>
-          <Col>
-            {this.renderExtraLink()}
-            {this.renderConsole()}
-            {this.renderAdministrator()}
-          </Col>
-          {this.renderExtra()}
-          <Col>
-            <Avatar menu />
-          </Col>
-        </Row>
+        {this.renderExtraLink()}
+        {this.renderConsole()}
+        {this.renderAdministrator()}
+        {this.renderExtra()}
+        <Avatar menu />
       </div>
     );
   }

@@ -17,7 +17,7 @@ import { observer } from 'mobx-react';
 import { CloseOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { Drawer } from 'antd';
-import menuIcon from 'asset/image/global-menu.png';
+import menuIcon from 'asset/cube/monochrome/menu.svg';
 import { navItemPropType } from './common';
 import Left from './Left';
 import Right from './Right';
