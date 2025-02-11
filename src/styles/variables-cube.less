@@ -1,0 +1,354 @@
+// Colors - default
+// ---
+@primary-0: #f9faff;
+@primary-50: #e8ebfe;
+@primary-100: #d6ddfe;
+@primary-150: #c5cefd;
+@primary-200: #b4c0fd;
+@primary-300: #91a2fb;
+@primary-400: #6f85fa;
+@primary-500: #4c68f9;
+@primary-600: #3e59e4;
+@primary-700: #3049ce;
+@primary-800: #213ab9;
+@primary-850: #1a32ae;
+@primary-default: @primary-500;
+// ---
+@secondary-0: #effcfc;
+@secondary-50: #e0f9f9;
+@secondary-100: #d1f7f7;
+@secondary-150: #c1f4f4;
+@secondary-200: #b2f2f2;
+@secondary-300: #94ecec;
+@secondary-400: #75e7e7;
+@secondary-500: #57e2e2;
+@secondary-600: #4acccc;
+@secondary-700: #3cb6b6;
+@secondary-800: #2f9f9f;
+@secondary-850: #289494;
+@secondary-default: @secondary-500;
+// ---
+@dark-0: #fbfbfc;
+@dark-50: #e8e9eb;
+@dark-100: #d5d6da;
+@dark-150: #c3c4c9;
+@dark-200: #b0b2b8;
+@dark-300: #8a8d97;
+@dark-400: #656975;
+@dark-500: #3f4453;
+@dark-600: #323642;
+@dark-700: #262932;
+@dark-800: #191b21;
+@dark-850: #131419;
+// ---
+@grey-0: #fff;
+@grey-50: #fbfbfd;
+@grey-100: #f7f7fa;
+@grey-150: #f3f4f8;
+@grey-200: #eff0f5;
+@grey-300: #e7e8f1;
+@grey-400: #dfe1ec;
+@grey-500: #d7d9e7;
+@grey-600: #c2c5da;
+@grey-700: #adb1ce;
+@grey-800: #989dc1;
+@grey-850: #8e93bb;
+// ---
+@blue-0: #f3fcff;
+@blue-50: #e0f6ff;
+@blue-100: #ccf1ff;
+@blue-150: #b9ebff;
+@blue-200: #a5e6ff;
+@blue-300: #7fdaff;
+@blue-400: #58cfff;
+@blue-500: #31c4ff;
+@blue-600: #27ade2;
+@blue-700: #1d95c5;
+@blue-800: #147ea8;
+@blue-850: #0f729a;
+// ---
+@green-0: #effffb;
+@green-50: #d7fbf2;
+@green-100: #bff7e9;
+@green-150: #a7f2e0;
+@green-200: #8feed7;
+@green-300: #60e6c6;
+@green-400: #30ddb4;
+@green-500: #00d5a2;
+@green-600: #00aa82;
+@green-700: #008061;
+@green-800: #005541;
+@green-850: #004031;
+// ---
+@yellow-0: #fffbef;
+@yellow-50: #fef5d7;
+@yellow-100: #fef0bf;
+@yellow-150: #fdeaa7;
+@yellow-200: #fde58f;
+@yellow-300: #fbd960;
+@yellow-400: #face30;
+@yellow-500: #f9c300;
+@yellow-600: #c89d00;
+@yellow-700: #977600;
+@yellow-800: #665000;
+@yellow-850: #4e3d00;
+// ---
+@red-0: #fff6f6;
+@red-50: #ffe7e7;
+@red-100: #ffd7d7;
+@red-150: #ffc8c8;
+@red-200: #ffb9b9;
+@red-300: #ff9a9a;
+@red-400: #ff7c7c;
+@red-500: #ff5d5d;
+@red-600: #f34a4a;
+@red-700: #e73838;
+@red-800: #db2525;
+@red-850: #d51c1c;
+
+// Colors - cosmos
+// ---
+@cosmos-primary: @primary-default;
+@cosmos-secondary: @secondary-default;
+
+// Colors - scene
+// ---
+@scene-gradient: linear-gradient(
+  90deg,
+  #2700c3 0%,
+  #4c68f9 30%,
+  #31c4ff 65%,
+  #57e2e2 100%
+);
+@scene-background: @grey-100;
+
+// Colors - functional
+// ---
+@functional-title: #282d39;
+@functional-text: #3f4453;
+@functional-text-light: #858a9a;
+@functional-hover-primary: #607aff;
+@functional-hover-secondary: #e8ebfe;
+@functional-hover-grey: #fbfbfd;
+@functional-hover-grey-darker: #eff0f5;
+@functional-border-divider: #dfe1ec;
+@functional-border-darker: #a9afbc;
+@functional-disable: #e4e9f3;
+@functional-disable-text: #d7d9e7;
+@functional-disable-light: #f0f4ff;
+@functional-skeleton: #eef0f6;
+
+// Colors - status
+// ---
+@status-positive: #00d5a2;
+@status-positive-text: #00be90;
+@status-negative: #ff5d5d;
+@status-warning: #f9c300;
+@status-neutral: #4c68f9;
+
+// Colors - chart
+// ---
+@chart-1: #57e2e2;
+@chart-2: #4c68f9;
+@chart-3: #58cfff;
+@chart-4: #face30;
+@chart-5: #147ea8;
+@chart-6: #ff9a9a;
+@chart-7: #989dc1;
+@chart-8: #00d5a2;
+@chart-9: #3049ce;
+@chart-10: #3cb6b6;
+
+// Font family
+// ---
+@font-urbanist: 'Urbanist', sans;
+@font-inter: 'Inter', sans;
+@font-sans: 'Inter', sans;
+
+// Font weight
+// ---
+@font-weight-regular: 400;
+@font-weight-medium: 500;
+@font-weight-semibold: 600;
+
+// Font styles
+// ---
+@letter-spacing-default: 0.02em;
+// ---
+.primary-h1 {
+  font-weight: @font-weight-semibold;
+  font-size: 30px;
+  font-family: @font-urbanist;
+  line-height: 38px;
+  letter-spacing: @letter-spacing-default;
+}
+// ---
+.primary-h2 {
+  font-weight: @font-weight-semibold;
+  font-size: 24px;
+  font-family: @font-urbanist;
+  line-height: 30px;
+  letter-spacing: @letter-spacing-default;
+}
+// ---
+.primary-h3 {
+  font-weight: @font-weight-semibold;
+  font-size: 20px;
+  font-family: @font-urbanist;
+  line-height: 24px;
+  letter-spacing: @letter-spacing-default;
+}
+// ---
+.primary-h4 {
+  font-weight: @font-weight-semibold;
+  font-size: 18px;
+  font-family: @font-urbanist;
+  line-height: 22px;
+  letter-spacing: @letter-spacing-default;
+}
+// ---
+.primary-h5 {
+  font-weight: @font-weight-semibold;
+  font-size: 16px;
+  font-family: @font-urbanist;
+  line-height: 20px;
+  letter-spacing: @letter-spacing-default;
+}
+// ---
+.secondary-h1 {
+  font-weight: @font-weight-semibold;
+  font-size: 30px;
+  font-family: @font-inter;
+  line-height: 38px;
+  letter-spacing: @letter-spacing-default;
+}
+// ---
+.secondary-h2 {
+  font-weight: @font-weight-semibold;
+  font-size: 24px;
+  font-family: @font-inter;
+  line-height: 30px;
+  letter-spacing: @letter-spacing-default;
+}
+// ---
+.secondary-h3 {
+  font-weight: @font-weight-semibold;
+  font-size: 20px;
+  font-family: @font-inter;
+  line-height: 24px;
+  letter-spacing: @letter-spacing-default;
+}
+// ---
+.secondary-h4 {
+  font-weight: @font-weight-semibold;
+  font-size: 18px;
+  font-family: @font-inter;
+  line-height: 22px;
+  letter-spacing: @letter-spacing-default;
+}
+// ---
+.secondary-h5 {
+  font-weight: @font-weight-semibold;
+  font-size: 16px;
+  font-family: @font-inter;
+  line-height: 20px;
+  letter-spacing: @letter-spacing-default;
+}
+// ---
+.primary-body1 {
+  font-weight: @font-weight-regular;
+  font-size: 15px;
+  font-family: @font-inter;
+  line-height: 22px;
+}
+// ---
+.primary-body2 {
+  font-weight: @font-weight-regular;
+  font-size: 14px;
+  font-family: @font-inter;
+  line-height: 20px;
+}
+// ---
+.primary-body3 {
+  font-weight: @font-weight-regular;
+  font-size: 13px;
+  font-family: @font-inter;
+  line-height: 18px;
+}
+// ---
+.primary-body4 {
+  font-weight: @font-weight-regular;
+  font-size: 12px;
+  font-family: @font-inter;
+  line-height: 16px;
+}
+// ---
+.primary-body5 {
+  font-weight: @font-weight-regular;
+  font-size: 11px;
+  font-family: @font-inter;
+  line-height: 15px;
+}
+// ---
+.primary-body6 {
+  font-weight: @font-weight-regular;
+  font-size: 10px;
+  font-family: @font-inter;
+  line-height: 13px;
+}
+// ---
+.secondary-body1 {
+  font-weight: @font-weight-regular;
+  font-size: 15px;
+  font-family: @font-urbanist;
+  line-height: 22px;
+  letter-spacing: @letter-spacing-default;
+}
+// ---
+.secondary-body2 {
+  font-weight: @font-weight-regular;
+  font-size: 14px;
+  font-family: @font-urbanist;
+  line-height: 18px;
+  letter-spacing: @letter-spacing-default;
+}
+// ---
+.secondary-body3 {
+  font-weight: @font-weight-regular;
+  font-size: 13px;
+  font-family: @font-urbanist;
+  line-height: 16px;
+  letter-spacing: @letter-spacing-default;
+}
+// ---
+.secondary-body4 {
+  font-weight: @font-weight-regular;
+  font-size: 12px;
+  font-family: @font-urbanist;
+  line-height: 16px;
+  letter-spacing: @letter-spacing-default;
+}
+// ---
+.secondary-body5 {
+  font-weight: @font-weight-regular;
+  font-size: 11px;
+  font-family: @font-urbanist;
+  line-height: 15px;
+  letter-spacing: @letter-spacing-default;
+}
+// ---
+.secondary-body6 {
+  font-weight: @font-weight-regular;
+  font-size: 10px;
+  font-family: @font-urbanist;
+  line-height: 14px;
+  letter-spacing: @letter-spacing-default;
+}
+// ---
+.secondary-body7 {
+  font-weight: @font-weight-regular;
+  font-size: 9px;
+  font-family: @font-urbanist;
+  line-height: 12px;
+  letter-spacing: @letter-spacing-default;
+}
