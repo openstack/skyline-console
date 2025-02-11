@@ -34,6 +34,10 @@ export class Role extends Base {
     return false;
   }
 
+  get fetchDataByAllProjects() {
+    return false;
+  }
+
   get actionConfigs() {
     return actionConfigs;
   }
