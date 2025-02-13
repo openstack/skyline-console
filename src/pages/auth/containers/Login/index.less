@@ -5,12 +5,15 @@
 }
 
 .welcome {
-  margin-top: 24px;
-  margin-bottom: 24px;
+  margin-top: 16px;
+  margin-bottom: 48px;
+  .primary-h1();
+
+  font-size: 32px;
 }
 
 .login-form {
-  width: 310px;
+  max-width: 504px;
 }
 
 .login-error {
@@ -26,5 +29,19 @@
     .anticon {
       margin-right: 8px;
     }
+  }
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+
+  .copyright,
+  .terms {
+    margin: 0;
+    color: @functional-text;
+    .primary-body2();
   }
 }
