@@ -18,12 +18,9 @@ import {
   DatabaseOutlined,
   CreditCardOutlined,
   GlobalOutlined,
-  MonitorOutlined,
   SettingOutlined,
   HomeOutlined,
   SwitcherOutlined,
-  ContainerOutlined,
-  DatabaseFilled,
   DeploymentUnitOutlined,
 } from '@ant-design/icons';
 
