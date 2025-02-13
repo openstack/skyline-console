@@ -1,5 +1,20 @@
+====================================
+Skyline (OpenStack Modern Dashboard)
+====================================
+
+Skyline Console is a modern dashboard for OpenStack - UI.
+
+-  `Documentation <https://docs.openstack.org/skyline-console/latest/index.html>`__
+-  `Installing Guide <https://docs.openstack.org/skyline-console/latest/install/index.html>`__
+-  `Issue tracking: <https://launchpad.net/skyline-console>`__
+-  `Release notes: <https://docs.openstack.org/releasenotes/skyline-console/>`__
+-  `Wiki <https://wiki.openstack.org/wiki/Skyline>`__
+
+.. image:: https://governance.openstack.org/tc/badges/skyline-console.svg
+    :target: https://governance.openstack.org/tc/reference/tags/
+
 Instructions
-============
+------------
 
 `简体中文 <./README/README-zh_CN.rst>`__ \| English \| `한국어 <./README/README-ko_KR.rst>`__
 
@@ -7,86 +22,18 @@ Instructions
 
 -  `Instructions <#instructions>`__
 
-   -  `Resources <#resources>`__
-   -  `Prerequisites <#prerequisites>`__
-   -  `Local Environment <#local-environment>`__
-   -  `Usage <#usage>`__
+   -  `Using Skyline <#usingskyline>`__
    -  `Docs <#docs>`__
 
       -  `How to develop <#how-to-develop>`__
       -  `How to test <#how-to-test>`__
 
-Resources
----------
-
--  `Wiki <https://wiki.openstack.org/wiki/Skyline>`__
--  `Bug Tracker <https://launchpad.net/skyline-console>`__
-
-Prerequisites
+Using Skyline
 -------------
 
--  ``node``: lts/erbium (v12.*)
--  ``yarn``: 1.22.4 +
+See doc/source/install/index.rst about how to install Skyline in your OpenStack setup. It describes the example steps and has pointers for more detailed settings and configurations.
 
-Local Environment
------------------
-
-Take CentOS as an example
-
--  Install nvm ( version control system for nodejs )
-
-   .. code:: shell
-
-      wget -P /root/ --tries=10 --retry-connrefused --waitretry=60 --no-dns-cache --no-cache  https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh
-      bash /root/install.sh
-      . /root/.nvm/nvm.sh
-
--  Install nodejs
-
-   .. code:: shell
-
-      NODE_VERSION=erbium
-      nvm install --lts=$NODE_VERSION
-      nvm alias default lts/$NODE_VERSION
-      nvm use default
-
--  Verify nodejs and npm versions
-
-   .. code:: shell
-
-      node -v
-      # v12.*.*
-      npm -v
-      # 6.*.*
-
--  Install yarn
-
-   .. code:: shell
-
-      npm install -g yarn
-
--  Install the project dependency under the root directory, with
-   ``package.json`` in the same place.
-
-   .. code:: shell
-
-      yarn install
-
-   After those steps, please just wait until the installation is
-   complete.
-
-Usage
------
-
-Under the root directory, with ``package.json`` in the same place.
-
--  ``yarn run mock``: Use the mock interface of
-   `rap2 <http://rap2.taobao.org/>`__
--  ``yarn run dev``: To use the actual interface, you can copy
-   ``config/config.yaml`` to ``config/local_config.yaml`` , and
-   replace the ``server`` value with the correct address.
--  ``yarn run build``: Build packages and then you can hand over the
-   contents of the generated *dist* directory to the back end.
+It is also available at `Installing Guide <https://docs.openstack.org/skyline-console/latest/install/index.html>`__.
 
 Docs
 ----
