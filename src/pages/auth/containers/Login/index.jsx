@@ -13,14 +13,17 @@
 // limitations under the License.
 
 import React, { Component } from 'react';
-import { Input, Button, Select, Row, Col } from 'antd';
+import { Button, Row, Col } from 'antd';
 import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { InfoCircleFilled } from '@ant-design/icons';
+import { isEmpty } from 'lodash';
 import SimpleForm from 'components/SimpleForm';
 import globalSkylineStore from 'stores/skyline/skyline';
 import i18n from 'core/i18n';
-import { isEmpty } from 'lodash';
+import CubeInput from 'src/components/cube/CubeInput';
+import CubePasswordInput from 'src/components/cube/CubePasswordInput';
+import CubeSelect from 'src/components/cube/CubeSelect';
 import styles from './index.less';
 
 export class Login extends Component {
@@ -195,7 +198,7 @@ export class Login extends Component {
       required: true,
       message: t('Please select your Region!'),
       render: () => (
-        <Select placeholder={t('Select a region')} options={this.regions} />
+        <CubeSelect placeholder={t('Select a region')} options={this.regions} />
       ),
     };
     const domainItem = {
@@ -203,20 +206,20 @@ export class Login extends Component {
       required: true,
       message: t('Please select your Domain!'),
       render: () => (
-        <Select placeholder={t('Select a domain')} options={this.domains} />
+        <CubeSelect placeholder={t('Select a domain')} options={this.domains} />
       ),
     };
     const usernameItem = {
       name: 'username',
       required: true,
       message: t('Please input your Username!'),
-      render: () => <Input placeholder={t('Username')} />,
+      render: () => <CubeInput placeholder={t('Username')} />,
     };
     const passwordItem = {
       name: 'password',
       required: true,
       message: t('Please input your Password!'),
-      render: () => <Input.Password placeholder={t('Password')} />,
+      render: () => <CubePasswordInput placeholder={t('Password')} />,
     };
     const extraItem = {
       name: 'extra',
@@ -237,18 +240,14 @@ export class Login extends Component {
     const submitItem = {
       name: 'submit',
       render: () => (
-        <Row gutter={8}>
-          <Col span={12}>
-            <Button
-              loading={loading}
-              type="primary"
-              htmlType="submit"
-              className="login-form-button"
-            >
-              {t('Log in')}
-            </Button>
-          </Col>
-        </Row>
+        <Button
+          loading={loading}
+          type="primary"
+          htmlType="submit"
+          style={{ width: '100%' }}
+        >
+          {t('Log in')}
+        </Button>
       ),
     };
     const namePasswordItems = [
@@ -267,7 +266,7 @@ export class Login extends Component {
         'If you are not sure which authentication method to use, please contact your administrator.'
       ),
       render: () => (
-        <Select
+        <CubeSelect
           placeholder={t('Select a login type')}
           options={this.loginTypeOptions}
           onChange={this.onLoginTypeChange}
@@ -387,6 +386,17 @@ export class Login extends Component {
     return null;
   }
 
+  renderFooter() {
+    return (
+      <div className={styles.footer}>
+        <p className={styles.copyright}>Copyright©Bigstack</p>
+        <a href="/" className={styles.terms}>
+          Terms & Policy
+        </a>
+      </div>
+    );
+  }
+
   render() {
     return (
       <>
@@ -401,6 +411,7 @@ export class Login extends Component {
           size="large"
         />
         {this.renderExtra()}
+        {this.renderFooter()}
       </>
     );
   }

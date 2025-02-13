@@ -1,20 +1,26 @@
+@import '~styles/variables';
+
 .container {
   position: relative;
-  display: flex;
-  flex-flow: row;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background-color: #fff;
+  background-color: @white;
 
   .left {
     position: relative;
-    width: 576px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 20px;
+    padding-left: 20px;
     overflow-y: auto;
 
     /* TODO wait for RGB
     // background: rgb(253, 249, 252) no-repeat fixed left bottom;
     // background-size: 556px; */
-
     .lang {
       position: absolute;
       top: 20px;
@@ -24,30 +30,9 @@
       text-align: right;
     }
 
-    .main {
-      margin-top: 10vh;
-      padding: 0 130px;
-
-      .top {
-        text-align: center;
-
-        .header {
-          height: 56px;
-          line-height: 56px;
-          text-align: left;
-
-          a {
-            text-decoration: none;
-          }
-
-          .logo {
-            //width: 87px;
-            height: 56px;
-            margin-right: 16px;
-            vertical-align: top;
-          }
-        }
-      }
+    .logo {
+      width: 133.55px;
+      height: 30px;
     }
   }
 
@@ -55,7 +40,7 @@
     position: relative;
     flex: 1 1;
     text-align: center;
-    background-color: #21242a;
+    background-color: @primary-color;
   }
 }
 
