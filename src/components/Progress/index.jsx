@@ -18,7 +18,7 @@ import PropTypes from 'prop-types';
 
 export default class index extends Component {
   static propTypes = {
-    wanValue: PropTypes.number,
+    warnValue: PropTypes.number,
     dangerValue: PropTypes.number,
     infoColor: PropTypes.string,
     warnColor: PropTypes.string,
@@ -28,18 +28,18 @@ export default class index extends Component {
   };
 
   static defaultProps = {
-    wanValue: 70,
+    warnValue: 70,
     dangerValue: 90,
-    infoColor: globalCSS.primaryColor,
+    infoColor: globalCSS.normalColor,
     warnColor: globalCSS.warnDarkColor,
     dangerColor: globalCSS.dangerColor,
     label: '',
   };
 
   getColor = () => {
-    const { value, wanValue, dangerValue, infoColor, warnColor, dangerColor } =
+    const { value, warnValue, dangerValue, infoColor, warnColor, dangerColor } =
       this.props;
-    if (value < wanValue) {
+    if (value < warnValue) {
       return infoColor;
     }
     if (value < dangerValue) {

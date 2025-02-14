@@ -100,7 +100,7 @@ export class ResourceCircle extends Component {
                 backgroundColor: '##A3A3A3',
               }}
             />
-            {`${t('Unused')}: ${unUsed > 0 ? unUsed : '0'}`}
+            {`${t('Available')}: ${unUsed > 0 ? unUsed : '0'}`}
           </Col>
         </Row>
       </Col>

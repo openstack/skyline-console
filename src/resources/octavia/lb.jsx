@@ -159,7 +159,7 @@ export const healthProtocols = [
 export const INSERT_HEADERS = {
   'X-Forwarded-For': t('Specify the client IP address'),
   'X-Forwarded-Port': t('Specify the listener port'),
-  'X-Forwarded-Proto': t('When true this header is inserted'),
+  'X-Forwarded-Proto': t('When checked this header is inserted'),
 };
 
 export const insertHeaderOptions = Object.keys(INSERT_HEADERS).map((key) => ({
