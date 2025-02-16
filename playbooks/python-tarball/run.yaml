@@ -31,6 +31,6 @@
         chdir: "src/{{ zuul.project.canonical_name }}/dist"
 
     - name: Rename tar.gz files to branch specific name
-      shell: "mv skyline-console*.tar.gz skyline-console-{{ zuul.branch | replace('/', '-') }}.tar.gz"
+      shell: "mv skyline_console*.tar.gz skyline-console-{{ zuul.branch | replace('/', '-') }}.tar.gz"
       args:
         chdir: "src/{{ zuul.project.canonical_name }}/dist"
