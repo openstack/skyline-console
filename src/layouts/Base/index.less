@@ -216,7 +216,6 @@
 
 .content {
   height: calc(100vh - @header-height);
-  background-color: @background-color;
 }
 
 .sub-menu {
@@ -383,6 +382,8 @@
   right: 0;
   left: @sider-width;
   height: calc(100vh - @header-height);
+  overflow-y: auto;
+  background-color: @background-color;
 }
 
 .base-layout-right-collapsed {
@@ -468,6 +469,7 @@
     margin: 0;
     padding: 3px 0;
     .primary-body5();
+
     color: @functional-text;
   }
 

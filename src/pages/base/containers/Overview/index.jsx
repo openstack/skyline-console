@@ -15,10 +15,10 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { Row, Col } from 'antd';
-import overviewInstance from 'asset/image/overview-instance.svg';
-import overviewNetwork from 'asset/image/overview-network.svg';
-import overviewRouter from 'asset/image/overview-router.svg';
-import overviewVolume from 'asset/image/overview-volume.svg';
+import overviewInstance from 'asset/cube/custom/icon-instance.png';
+import overviewNetwork from 'asset/cube/custom/icon-networks.png';
+import overviewRouter from 'asset/cube/custom/icon-router.png';
+import overviewVolume from 'asset/cube/custom/icon-volumes.png';
 import { Link } from 'react-router-dom';
 import globalRootStore from 'stores/root';
 import styles from './style.less';
@@ -68,14 +68,10 @@ export class Overview extends Component {
   }
 
   renderAction = (item) => (
-    <Row className={styles['action-button']}>
-      <Col span={8} className={styles['main-icon']}>
-        <img alt="avatar" src={item.avatar} className={styles['action-icon']} />
-      </Col>
-      <Col span={16} style={{ textAlign: 'center' }}>
-        {item.label}
-      </Col>
-    </Row>
+    <div className={styles['action-button']}>
+      <img alt="avatar" src={item.avatar} className={styles['action-icon']} />
+      <p className={styles['action-label']}>{item.label}</p>
+    </div>
   );
 
   renderActions() {
