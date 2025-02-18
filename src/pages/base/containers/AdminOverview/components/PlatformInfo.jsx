@@ -14,36 +14,31 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Card, Descriptions } from 'antd';
 import { inject, observer } from 'mobx-react';
-import {
-  AppstoreAddOutlined,
-  UserOutlined,
-  DatabaseOutlined,
-} from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import layerIcon from 'asset/cube/monochrome/layer.svg';
+import userIcon from 'asset/cube/monochrome/user.svg';
+import nodeIcon from 'asset/cube/monochrome/node.svg';
+import CubeCard from 'src/components/cube/CubeCard';
 import styles from '../style.less';
 
 export const actions = [
   {
     key: 'projectNum',
     label: t('Projects'),
-    avatar: <AppstoreAddOutlined />,
-    color: '#000000',
+    avatar: <img src={layerIcon} alt="avatar" width={24} height={24} />,
     to: '/identity/project-admin',
   },
   {
     key: 'userNum',
     label: t('Users'),
-    avatar: <UserOutlined />,
-    color: '#000000',
+    avatar: <img src={userIcon} alt="avatar" width={24} height={24} />,
     to: '/identity/user-admin',
   },
   {
     key: 'nodeNum',
     label: t('Nodes'),
-    avatar: <DatabaseOutlined />,
-    color: '#000000',
+    avatar: <img src={nodeIcon} alt="avatar" width={24} height={24} />,
     to: '/compute/hypervisors-admin?tab=ComputeHost',
   },
 ];
@@ -60,41 +55,26 @@ export class ProjectInfo extends Component {
   render() {
     const { projectInfoLoading, platformNum } = this.props.store;
     return (
-      <Card
+      <CubeCard
         loading={projectInfoLoading}
         className={styles.project}
         title={t('Platform Info')}
         bordered={false}
       >
-        <Descriptions column={1}>
-          <div className="site-card-wrapper">
-            <Row>
-              {this.actions.map((item) => (
-                <Col key={item.key} style={{ margin: 'auto' }}>
-                  <Link to={item.to} style={{ color: item.color }}>
-                    <Row>
-                      <Col
-                        span={24}
-                        style={{ fontSize: '40px', textAlign: 'center' }}
-                      >
-                        {platformNum[item.key]}
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col
-                        span={24}
-                        style={{ fontSize: '16px', textAlign: 'center' }}
-                      >
-                        {item.avatar} {item.label}
-                      </Col>
-                    </Row>
-                  </Link>
-                </Col>
-              ))}
-            </Row>
-          </div>
-        </Descriptions>
-      </Card>
+        <div className={styles['platform-info']}>
+          {this.actions.map((item) => (
+            <Link key={item.key} to={item.to} className={styles['info-link']}>
+              <div className={styles['info-title']}>
+                {platformNum[item.key]}
+              </div>
+              <div className={styles['info-text']}>
+                {item.avatar}
+                <span>{item.label}</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </CubeCard>
     );
   }
 }

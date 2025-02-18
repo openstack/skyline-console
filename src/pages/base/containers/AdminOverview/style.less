@@ -2,44 +2,145 @@
 @import '~styles/variables';
 
 .container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
   height: 100%;
-  padding: @overview-padding;
+  padding: 16px 24px;
   overflow: auto;
 
-  :global {
-    .ant-card {
-      box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 9%);
-    }
+  .platform-info {
+    display: flex;
+    justify-content: space-evenly;
 
-    .ant-card-head {
-      font-size: 16px;
-    }
-  }
+    .info-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      margin: 16px;
+      color: @functional-title;
 
-  .chart {
-    .resource {
-      display: block;
-      margin-right: 20px;
-      padding-bottom: 12px;
-      font-size: 16px;
-    }
+      .info-title {
+        padding: 4px 8px;
+        .primary-h1();
+      }
 
-    .num {
-      padding-top: 12px;
-      color: #a3a3a3;
-      font-size: 14px;
+      .info-text {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 8px;
 
-      :global {
-        .ant-avatar-square {
-          border-radius: 3px !important;
+        span {
+          .primary-body2();
+
+          font-weight: @font-weight-medium;
         }
       }
     }
+  }
 
-    :global {
-      .ant-progress-text {
-        color: #222b26;
+  .virtual-resources-overview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    justify-content: space-evenly;
+
+    .overview-link {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+
+      .overview-info {
+        display: flex;
+        padding: 8px;
+
+        .info-text {
+          display: flex;
+          align-items: center;
+
+          .info-number {
+            padding: 4px 16px;
+            color: @functional-title;
+            .primary-h1();
+          }
+
+          .info-label {
+            .primary-body2();
+
+            color: @functional-text;
+            font-weight: @font-weight-semibold;
+          }
+        }
       }
+
+      .overview-indicator {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        justify-content: center;
+        width: fit-content;
+
+        .status {
+          display: flex;
+          gap: 4px;
+          align-items: center;
+          color: @functional-text;
+          font-weight: @font-weight-medium;
+          .primary-body5();
+
+          p {
+            margin: 0;
+            padding: 4px 8px;
+            color: @functional-title;
+            .primary-h5();
+          }
+        }
+      }
+    }
+  }
+
+  .virtual-resources-used {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    justify-content: space-evenly;
+
+    .chart-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+      padding: 16px;
+
+      .chart-title {
+        .primary-body2();
+
+        font-weight: @font-weight-medium;
+      }
+
+      .chart-indicator {
+        display: flex;
+      }
+    }
+  }
+
+  .service-card {
+    display: grid;
+    grid-template-columns: [first] 24px [line2] 40% [line3] 20% [end]auto;
+    padding: 5px 8px;
+
+    .avatar-checked {
+      filter: brightness(0) saturate(100%) invert(71%) sepia(66%)
+        saturate(4168%) hue-rotate(123deg) brightness(100%) contrast(101%);
+    }
+
+    .avatar-crossed {
+      filter: brightness(0) saturate(100%) invert(70%) sepia(25%)
+        saturate(6151%) hue-rotate(318deg) brightness(94%) contrast(114%);
     }
   }
 
@@ -56,44 +157,11 @@
         display: block;
         font-size: 24px;
       }
-
-      .status {
-        color: #a3a3a3;
-      }
-
-      :global {
-        .ant-badge-status-text {
-          margin-right: 8px;
-          margin-left: 4px;
-          color: #a3a3a3;
-          font-size: 14px;
-        }
-      }
     }
   }
 
   .right {
     height: 100%;
-
-    .top {
-      .sider-card {
-        margin: 4px 0;
-        font-size: 14px;
-      }
-
-      :global {
-        .ant-descriptions-view {
-          width: 100%;
-          height: 130px;
-          overflow: auto;
-          border-radius: 4px;
-        }
-
-        .ant-descriptions-item-label {
-          width: 130px;
-        }
-      }
-    }
   }
 }
 

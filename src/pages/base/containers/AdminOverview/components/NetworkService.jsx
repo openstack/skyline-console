@@ -14,12 +14,10 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Card, Descriptions } from 'antd';
 import { inject, observer } from 'mobx-react';
-import {
-  CheckCircleTwoTone,
-  CloseCircleTwoTone,
-} from '@ant-design/icons/lib/icons';
+import circleFill from 'asset/cube/monochrome/circle_fill.svg';
+import crossFill from 'asset/cube/monochrome/cross_fill.svg';
+import CubeCard from 'src/components/cube/CubeCard';
 import styles from '../style.less';
 
 export class NetworkService extends Component {
@@ -27,52 +25,46 @@ export class NetworkService extends Component {
     this.props.store.getNetworkService();
   }
 
+  renderIcon = (isServiceUp) =>
+    isServiceUp ? (
+      <img
+        src={circleFill}
+        alt="avatar"
+        width={16}
+        height={16}
+        className={styles['avatar-checked']}
+      />
+    ) : (
+      <img
+        src={crossFill}
+        alt="avatar"
+        width={16}
+        height={16}
+        className={styles['avatar-crossed']}
+      />
+    );
+
   renderAction = (item, index) => (
-    <Row className={styles['sider-card']} key={`${item.binary}-${index}`}>
-      <Col
-        span={8}
-        style={{ textAlign: 'left', whiteSpace: 'nowrap', overflow: 'hidden' }}
-      >
-        {item.binary}
-      </Col>
-      <Col span={8} style={{ textAlign: 'center' }}>
-        {item.host}
-      </Col>
-      <Col span={8} style={{ textAlign: 'center' }}>
-        <span>{item.alive ? t('Up') : t('Down')}</span>
-        {item.alive ? (
-          <CheckCircleTwoTone
-            style={{ marginLeft: 12 }}
-            twoToneColor="#52c41a"
-          />
-        ) : (
-          <CloseCircleTwoTone
-            style={{ marginLeft: 12 }}
-            twoToneColor="#ff4d4f"
-          />
-        )}
-      </Col>
-    </Row>
+    <div key={`${item.binary}-${index}`} className={styles['service-card']}>
+      <div>{this.renderIcon(item.alive)}</div>
+      <div style={{ fontWeight: '500' }}>{item.binary}</div>
+      <div>{item.host}</div>
+      <div>{item.alive ? t('Up') : t('Down')}</div>
+    </div>
   );
 
   render() {
     const { networkServiceLoading, networkService = [] } = this.props.store;
 
     return (
-      <Card
+      <CubeCard
         loading={networkServiceLoading}
         className={styles.top}
         title={t('Network Service')}
         bordered={false}
       >
-        <Descriptions column={1}>
-          <div className="site-card-wrapper">
-            {networkService.map((item, index) =>
-              this.renderAction(item, index)
-            )}
-          </div>
-        </Descriptions>
-      </Card>
+        {networkService.map((item, index) => this.renderAction(item, index))}
+      </CubeCard>
     );
   }
 }
