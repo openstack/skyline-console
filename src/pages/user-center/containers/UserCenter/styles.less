@@ -2,25 +2,32 @@
 
 .content {
   height: 100%;
-  padding: 24px;
+  padding: 16px 24px;
   overflow: auto;
 
   .user-info-card {
-    height: 255px;
+    display: flex;
+    gap: 32px;
 
     .user-info-detail {
-      height: 100%;
-      padding: 24px;
-      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: auto;
 
       .user-info-detail-item {
-        display: flex;
-        align-items: center;
-        height: 100%;
-        padding-left: 3rem;
-        color: @color-text-body;
-        font-weight: 400;
-        font-size: 16px;
+        display: grid;
+        grid-template-columns: [first] 180px [end]auto;
+        .primary-body4();
+
+        .item-title {
+          color: @functional-title;
+          font-weight: @font-weight-medium;
+        }
+
+        .item-text {
+          color: @functional-text;
+        }
       }
     }
   }
