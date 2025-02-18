@@ -13,8 +13,9 @@
 // limitations under the License.
 
 import React, { Component } from 'react';
-import { Row, Col, Card, Descriptions, Progress, Avatar } from 'antd';
+import { Progress, Avatar } from 'antd';
 import { inject, observer } from 'mobx-react';
+import CubeCard from 'src/components/cube/CubeCard';
 import styles from '../style.less';
 
 export const resourceCircle = [
@@ -45,10 +46,6 @@ export class ResourceCircle extends Component {
     return this.props.resourceCircle || resourceCircle;
   }
 
-  get resourceCircleSpan() {
-    return this.props.resourceCircleSpan || 12;
-  }
-
   renderCircle = (item, index) => {
     const { overview } = this.props.store;
     const resource = overview[item.resource];
@@ -64,12 +61,8 @@ export class ResourceCircle extends Component {
       circleColor = color.dangerColor;
     }
     return (
-      <Col
-        span={this.resourceCircleSpan}
-        style={{ textAlign: 'center' }}
-        key={`${resource}-${index}`}
-      >
-        <span className={styles.resource}>{item.label}</span>
+      <div key={`${resource}-${index}`} className={styles['chart-container']}>
+        <p className={styles['chart-title']}>{item.label}</p>
         <Progress
           type="circle"
           width={150}
@@ -77,8 +70,8 @@ export class ResourceCircle extends Component {
           strokeColor={circleColor}
           format={(percent) => `${percent}%`}
         />
-        <Row className={styles.num}>
-          <Col span={12} style={{ textAlign: 'right' }}>
+        <div className={styles['chart-indicator']}>
+          <div>
             <Avatar
               shape="square"
               size={15}
@@ -89,8 +82,8 @@ export class ResourceCircle extends Component {
               }}
             />
             {`${t('Used')}: ${used}`}
-          </Col>
-          <Col span={12} style={{ textAlign: 'left', paddingLeft: 20 }}>
+          </div>
+          <div style={{ textAlign: 'left', paddingLeft: 20 }}>
             <Avatar
               shape="square"
               size={15}
@@ -101,31 +94,22 @@ export class ResourceCircle extends Component {
               }}
             />
             {`${t('Unused')}: ${unUsed > 0 ? unUsed : '0'}`}
-          </Col>
-        </Row>
-      </Col>
+          </div>
+        </div>
+      </div>
     );
   };
 
   render() {
     const { isLoading } = this.props.store;
     return (
-      <Card
-        loading={isLoading}
-        className={styles.chart}
-        title={t('Virtual Resources Used')}
-        bordered={false}
-      >
-        <Descriptions column={1}>
-          <div className="site-card-wrapper">
-            <Row gutter={16}>
-              {this.resourceCircle.map((item, index) => {
-                return this.renderCircle(item, index);
-              })}
-            </Row>
-          </div>
-        </Descriptions>
-      </Card>
+      <CubeCard loading={isLoading} title={t('Virtual Resources Used')}>
+        <div className={styles['virtual-resources-used']}>
+          {this.resourceCircle.map((item, index) => {
+            return this.renderCircle(item, index);
+          })}
+        </div>
+      </CubeCard>
     );
   }
 }
