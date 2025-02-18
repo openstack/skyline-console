@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
-import { HomeOutlined, UserOutlined } from '@ant-design/icons';
+import homepageIcon from 'asset/cube/monochrome/home_02.svg';
+import applicationCredentialsPageIcon from 'asset/cube/monochrome/user.svg';
 
 const renderMenu = (t) => {
   if (!t) {
@@ -24,7 +24,7 @@ const renderMenu = (t) => {
       path: '/user/center',
       name: t('User Center'),
       key: 'userCenter',
-      icon: <HomeOutlined />,
+      icon: homepageIcon,
       level: 0,
       hasBreadcrumb: false,
       hasChildren: false,
@@ -34,7 +34,7 @@ const renderMenu = (t) => {
       name: t('Application Credentials'),
       key: 'applicationCredential',
       level: 0,
-      icon: <UserOutlined />,
+      icon: applicationCredentialsPageIcon,
       children: [],
       hasChildren: false,
     },

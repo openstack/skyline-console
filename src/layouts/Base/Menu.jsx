@@ -129,7 +129,11 @@ export class LayoutMenu extends Component {
 
   // eslint-disable-next-line no-unused-vars
   renderMenuItemIcon = ({ item, collapsed, isSubMenu }) => {
-    return item.icon;
+    if (item.icon) {
+      return (
+        <img src={item.icon} alt="menu-item-icon" width="16px" height="16px" />
+      );
+    }
   };
 
   renderMenuItem = (item, isSubMenu) => {
@@ -249,7 +253,7 @@ export class LayoutMenu extends Component {
     const newSelectedKeys = this.getSelectedKeysForMenu(selectedKeys);
     return (
       <Menu
-        theme={GLOBAL_VARIABLES.menuTheme}
+        theme="light"
         mode="inline"
         className={collapsed ? styles['menu-collapsed'] : styles.menu}
         defaultSelectedKeys={newSelectedKeys}
@@ -323,6 +327,21 @@ export class LayoutMenu extends Component {
     );
   }
 
+  renderCopyright() {
+    const { hover, collapsed } = this.state;
+    const showCopyright = !collapsed || hover;
+    return (
+      <div
+        className={
+          showCopyright ? styles.copyright : styles['copyright-collapsed']
+        }
+      >
+        <p className={styles['sidebar-copyright-title']}>CubeCOS</p>
+        <p className={styles['sidebar-copyright-text']}>Copyright©Bigstack</p>
+      </div>
+    );
+  }
+
   render() {
     const { currentRoutes } = this.props;
     const selectedKeys = this.getSelectedKeys(currentRoutes);
@@ -340,6 +359,7 @@ export class LayoutMenu extends Component {
         onMouseLeave={this.onMouseLeave}
       >
         {this.renderMenu(selectedKeys)}
+        {this.renderCopyright()}
         {trigger}
       </div>
     );

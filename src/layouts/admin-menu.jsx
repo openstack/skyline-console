@@ -12,17 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
-import {
-  DesktopOutlined,
-  DatabaseOutlined,
-  CreditCardOutlined,
-  GlobalOutlined,
-  SettingOutlined,
-  HomeOutlined,
-  SwitcherOutlined,
-  DeploymentUnitOutlined,
-} from '@ant-design/icons';
+import homepageIcon from 'asset/cube/monochrome/home_02.svg';
+import computePageIcon from 'asset/cube/monochrome/monitor.svg';
+import storagePageIcon from 'asset/cube/monochrome/database.svg';
+import networksPageIcon from 'asset/cube/monochrome/networking.svg';
+import fileSharePageIcon from 'asset/cube/monochrome/file.svg';
+import identityPageIcon from 'asset/cube/monochrome/information_square.svg';
+import globalSettingPageIcon from 'asset/cube/monochrome/settings.svg';
+import instanceHAPageIcon from 'asset/cube/monochrome/instance.svg';
 
 const renderMenu = (t) => {
   if (!t) {
@@ -33,7 +30,7 @@ const renderMenu = (t) => {
       path: '/base/overview-admin',
       name: t('Home'),
       key: 'overviewAdmin',
-      icon: <HomeOutlined />,
+      icon: homepageIcon,
       level: 0,
       hasBreadcrumb: false,
       hasChildren: false,
@@ -42,7 +39,7 @@ const renderMenu = (t) => {
       path: '/compute',
       name: t('Compute'),
       key: 'computeAdmin',
-      icon: <DesktopOutlined />,
+      icon: computePageIcon,
       children: [
         {
           path: '/compute/instance-admin',
@@ -188,7 +185,7 @@ const renderMenu = (t) => {
       path: '/storage',
       name: t('Storage'),
       key: 'storageAdmin',
-      icon: <DatabaseOutlined />,
+      icon: storagePageIcon,
       children: [
         {
           path: '/storage/volume-admin',
@@ -275,7 +272,7 @@ const renderMenu = (t) => {
       path: '/network',
       name: t('Network'),
       key: '/networkAdmin',
-      icon: <GlobalOutlined />,
+      icon: networksPageIcon,
       children: [
         {
           path: '/network/networks-admin',
@@ -512,7 +509,7 @@ const renderMenu = (t) => {
       name: t('Share File Storage'),
       key: 'fileStorageAdmin',
       endpoints: 'manilav2',
-      icon: <SwitcherOutlined />,
+      icon: fileSharePageIcon,
       children: [
         {
           path: '/share/share-admin',
@@ -632,7 +629,7 @@ const renderMenu = (t) => {
       path: '/identity',
       name: t('Identity'),
       key: '/identity',
-      icon: <CreditCardOutlined />,
+      icon: identityPageIcon,
       children: [
         {
           path: '/identity/domain-admin',
@@ -892,7 +889,7 @@ const renderMenu = (t) => {
       path: '/configuration-admin',
       name: t('Global Setting'),
       key: 'configurationAdmin',
-      icon: <SettingOutlined />,
+      icon: globalSettingPageIcon,
       children: [
         {
           path: '/configuration-admin/info',
@@ -1015,7 +1012,7 @@ const renderMenu = (t) => {
       path: '/ha',
       name: t('Instance-HA'),
       key: 'masakari',
-      icon: <DeploymentUnitOutlined />,
+      icon: instanceHAPageIcon,
       endpoints: 'masakari',
       children: [
         {
