@@ -4,6 +4,7 @@
 .container {
   height: 100%;
   padding: 16px 24px;
+  overflow-y: auto;
 
   .main-icon {
     display: flex;
@@ -34,43 +35,55 @@
     padding: 8px;
   }
 
-  :global {
-    .ant-card {
-      box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 9%);
-    }
-
-    .ant-card-head {
-      font-size: 16px;
-    }
-  }
-
   .left {
     height: 100%;
 
-    .top {
-      .title {
-        display: table-cell;
-        vertical-align: bottom;
+    .content {
+      .quota-card {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        width: 100%;
 
-        .text {
-          color: #252525;
-          font-size: 21px;
+        &:not(:last-child) {
+          margin-bottom: 16px;
         }
 
-        .action {
-          margin-left: 40px;
-          color: #000;
-          font-size: 16px;
+        .card-title {
+          padding-top: 8px;
+          padding-bottom: 8px;
+          font-weight: 600;
+          .primary-body2();
+        }
+
+        .card-content {
+          .quota-column-container {
+            .quota-column {
+              .label-text {
+                margin: 0;
+                padding-top: 4px;
+                padding-bottom: 4px;
+                overflow: hidden;
+                font-weight: @font-weight-medium;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                .primary-body4();
+
+                span {
+                  font-weight: @font-weight-regular;
+                }
+              }
+            }
+          }
         }
       }
     }
   }
 
   .right {
-    height: 100%;
-
     .project {
-      position: relative;
+      display: flex;
+      flex-direction: column;
 
       .meta {
         margin-bottom: 16px;
@@ -78,9 +91,23 @@
         border-bottom: 1px dashed #e8e8e8;
       }
 
-      :global {
-        .ant-descriptions-item-label {
-          width: 130px;
+      .project-column {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding-top: 8px;
+        padding-bottom: 8px;
+
+        .column-label {
+          .primary-body4();
+
+          color: @functional-title;
+          font-weight: 500;
+        }
+
+        .column-text {
+          .primary-body4();
+
+          color: @functional-text;
         }
       }
     }
@@ -121,64 +148,11 @@
     }
   }
 
-  .title {
-    .text {
-      color: #252525;
-      font-size: 16px;
-    }
-
-    .badge {
-      margin-left: 22px;
-
-      :global {
-        .ant-badge-status-dot {
-          width: 10px;
-          height: 10px;
-        }
-
-        .ant-badge-status-text {
-          font-size: 14px;
-        }
-      }
-    }
-  }
-
   .action {
     float: right;
     margin-top: 6px;
     color: @primary-color;
     font-size: 12px;
     cursor: pointer;
-  }
-
-  .content {
-    .card {
-      padding: 8px;
-
-      :global {
-        .ant-card-head {
-          border-bottom: none;
-
-          .ant-card-head-title {
-            padding-bottom: 0;
-            color: #565656;
-            font-weight: 500;
-            font-size: 16px;
-          }
-        }
-
-        .ant-card-body {
-          padding: 12px !important;
-          box-shadow: unset !important;
-        }
-      }
-
-      .progress-title {
-        overflow: hidden;
-        font-size: 14px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-      }
-    }
   }
 }

@@ -1,0 +1,25 @@
+@import '~styles/variables';
+
+.cube-card {
+  border: 1px solid @grey-200;
+  border-radius: 2px;
+
+  :global {
+    .ant-card-head {
+      margin: 0;
+      padding: 16px;
+
+      .ant-card-head-wrapper {
+        .ant-card-head-title {
+          padding: 0;
+          color: @functional-title;
+          .secondary-h5();
+        }
+      }
+    }
+
+    .ant-card-body {
+      padding: 16px;
+    }
+  }
+}

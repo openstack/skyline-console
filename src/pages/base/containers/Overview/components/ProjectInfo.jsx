@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import React, { Component } from 'react';
-import { Card, Descriptions } from 'antd';
 import { inject, observer } from 'mobx-react';
+import CubeCard from '../../../../../components/cube/CubeCard';
 import styles from '../style.less';
 
 export class ProjectInfo extends Component {
@@ -34,37 +34,32 @@ export class ProjectInfo extends Component {
 
   renderAccount() {
     return (
-      <Descriptions.Item
-        label={t('User Account')}
-        labelStyle={{ fontSize: 14 }}
-        contentStyle={{ fontSize: 14 }}
-      >
-        {this.currentUser.name}
-      </Descriptions.Item>
+      <div className={styles['project-column']}>
+        <div className={styles['column-label']}>{t('User Account')}</div>
+        <div className={styles['column-text']}>{this.currentUser.name}</div>
+      </div>
     );
   }
 
   renderRoles() {
     return (
-      <Descriptions.Item
-        label={t('My Role')}
-        labelStyle={{ fontSize: 14 }}
-        contentStyle={{ fontSize: 14 }}
-      >
-        {this.roles.map((item) => item.name).join(', ')}
-      </Descriptions.Item>
+      <div className={styles['project-column']}>
+        <div className={styles['column-label']}>{t('My Role')}</div>
+        <div className={styles['column-text']}>
+          {this.roles.map((item) => item.name).join(', ')}
+        </div>
+      </div>
     );
   }
 
   renderDomain() {
     return (
-      <Descriptions.Item
-        label={t('Affiliated Domain')}
-        labelStyle={{ fontSize: 14 }}
-        contentStyle={{ fontSize: 14 }}
-      >
-        {this.currentUser.domain.name}
-      </Descriptions.Item>
+      <div className={styles['project-column']}>
+        <div className={styles['column-label']}>{t('Affiliated Domain')}</div>
+        <div className={styles['column-text']}>
+          {this.currentUser.domain.name}
+        </div>
+      </div>
     );
   }
 
@@ -73,17 +68,13 @@ export class ProjectInfo extends Component {
       return null;
     }
     return (
-      <Card
-        className={styles.project}
-        title={t('Hello, {name}', { name: this.currentUser.name })}
-        bordered={false}
-      >
-        <Descriptions column={1}>
+      <CubeCard title={t('Hello, {name}', { name: this.currentUser.name })}>
+        <div className={styles.project}>
           {this.renderAccount()}
           {this.renderRoles()}
           {this.renderDomain()}
-        </Descriptions>
-      </Card>
+        </div>
+      </CubeCard>
     );
   }
 }
