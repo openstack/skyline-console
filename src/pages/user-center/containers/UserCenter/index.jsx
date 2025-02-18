@@ -14,10 +14,10 @@
 
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Row, Layout, Col, Avatar } from 'antd';
-import globalUserStore from 'stores/keystone/user';
+import { Layout } from 'antd';
 import ProfileSvgIcon from 'asset/image/profile.svg';
-import classnames from 'classnames';
+import globalUserStore from 'stores/keystone/user';
+import CubeCard from 'components/cube/CubeCard';
 import styles from './styles.less';
 
 export class Overview extends Component {
@@ -44,10 +44,10 @@ export class Overview extends Component {
 
   renderInfoItem(item) {
     return (
-      <Row className={styles['user-info-detail-item']}>
-        <Col span={6}>{item.label}</Col>
-        <Col span={18}>{item.value}</Col>
-      </Row>
+      <div className={styles['user-info-detail-item']}>
+        <div className={styles['item-title']}>{item.label}</div>
+        <div className={styles['item-text']}>{item.value}</div>
+      </div>
     );
   }
 
@@ -61,31 +61,21 @@ export class Overview extends Component {
       [t('User ID')]: detail.id,
     };
     return (
-      <>
-        <Col
-          span={3}
-          className={classnames(styles.hvc, styles['user-info-avatar'])}
-        >
-          <Avatar
-            size={{ xs: 33, sm: 44, md: 55, lg: 88, xl: 110, xxl: 138 }}
-            src={ProfileSvgIcon}
-          />
-        </Col>
-        <Col span={21}>
-          <Row className={styles['user-info-detail']}>
-            {Object.keys(data).map((item) => {
-              return (
-                <Col span={12} key={`user_info_detail_${item}`}>
-                  {this.renderInfoItem({
-                    label: item,
-                    value: data[item],
-                  })}
-                </Col>
-              );
-            })}
-          </Row>
-        </Col>
-      </>
+      <div className={styles['user-info-card']}>
+        <ProfileSvgIcon />
+        <div className={styles['user-info-detail']}>
+          {Object.keys(data).map((item) => {
+            return (
+              <div key={`user_info_detail_${item}`}>
+                {this.renderInfoItem({
+                  label: item,
+                  value: data[item],
+                })}
+              </div>
+            );
+          })}
+        </div>
+      </div>
     );
   }
 
@@ -96,9 +86,7 @@ export class Overview extends Component {
   render() {
     return (
       <Layout.Content className={styles.content}>
-        <Row className={classnames(styles.bgc, styles['user-info-card'])}>
-          {this.renderUserInfo()}
-        </Row>
+        <CubeCard>{this.renderUserInfo()}</CubeCard>
         {this.renderExtra()}
       </Layout.Content>
     );
