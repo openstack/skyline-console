@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import React from 'react';
-import emptyCard from 'asset/image/empty-card.svg';
+import EmptyCardSvgIcon from 'asset/image/empty-card.svg';
 import { firstUpperCase } from 'utils/index';
 import { Link } from 'react-router-dom';
 import styles from './index.less';
@@ -58,7 +58,7 @@ export default class NotFound extends React.Component {
     );
     return (
       <div className={styles.wrapper}>
-        <img className={styles.image} src={emptyCard} alt="" />
+        <EmptyCardSvgIcon className={styles.image} />
         <div className={styles.text}>
           <div className="h1">{h}</div>
           {p}

@@ -14,10 +14,9 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import imageSvg from 'asset/image/image.svg';
-import securityImg from 'asset/image/security-group.svg';
-import lbImg from 'asset/image/load-balancer.png';
-
+import ImageSvgIcon from 'asset/image/image.svg';
+import SecuritySvgIcon from 'asset/image/security-group.svg';
+import lbImgPath from 'asset/image/load-balancer.png';
 import {
   DesktopOutlined,
   BorderOuterOutlined,
@@ -40,15 +39,24 @@ import {
 } from '@ant-design/icons';
 import styles from './index.less';
 
-const ImageIcon = (
-  <img src={imageSvg} alt="image_icon" style={{ width: '12px' }} />
+const ICON_SIZE = 12;
+
+const ImageIcon = (props) => (
+  <ImageSvgIcon width={ICON_SIZE} height={ICON_SIZE} {...props} />
 );
 
-const SecurityIcon = (
-  <img src={securityImg} alt="security_icon" style={{ width: '12px' }} />
+const SecurityIcon = (props) => (
+  <SecuritySvgIcon width={ICON_SIZE} height={ICON_SIZE} {...props} />
 );
 
-const LBIcon = <img src={lbImg} alt="lb_icon" style={{ width: '12px' }} />;
+const LBIcon = (props) => (
+  <img
+    src={lbImgPath}
+    alt="lb_icon"
+    style={{ width: `${ICON_SIZE}px`, ...props.style }}
+    {...props}
+  />
+);
 
 const iconTypeMap = {
   instance: <DesktopOutlined />,
@@ -62,13 +70,13 @@ const iconTypeMap = {
   snapshot: <CameraOutlined />,
   backup: <SaveOutlined />,
   keypair: <KeyOutlined />,
-  image: ImageIcon,
+  image: <ImageIcon />,
   aggregate: <ClusterOutlined />,
   metadata: <TagOutlined />,
   flavor: <HddOutlined />,
   host: <CloudServerOutlined />,
-  security: SecurityIcon,
-  lb: LBIcon,
+  security: <SecurityIcon />,
+  lb: <LBIcon />,
   group: <TeamOutlined />,
   project: <ProjectOutlined />,
   floatingIp: <AimOutlined />,
@@ -91,19 +99,18 @@ export default class index extends Component {
 
   renderIcon() {
     const { icon, iconType } = this.props;
-    if (iconType) {
-      const iconComp = iconTypeMap[iconType] || null;
-      return <span className={styles.icon}>{iconComp}</span>;
-    }
-    return <span className={styles.icon}>{icon || null}</span>;
+    const iconComp = icon || iconTypeMap[iconType] || null;
+    return <span className={styles.icon}>{iconComp}</span>;
   }
 
   render() {
-    const { content, value, iconType, showLoading, ...rest } = this.props;
+    const { content, value, showLoading, ...rest } = this.props;
     const failValues = [undefined, null, ''];
-    if (content) {
+
+    if (content !== undefined && content !== null && content !== '') {
       return content;
     }
+
     return (
       <span {...rest}>
         {this.renderIcon()}

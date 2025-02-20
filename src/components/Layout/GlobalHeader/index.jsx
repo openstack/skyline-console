@@ -14,10 +14,10 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import cloudLogo from 'asset/image/cloud-logo.svg';
-import cloudLogoWhite from 'asset/image/cloud-logo-white.svg';
-import { getPath } from 'utils/route-map';
 import classnames from 'classnames';
+import { getPath } from 'utils/route-map';
+import CloudLogoSvgIcon from 'asset/image/cloud-logo.svg';
+import CloudLogoWhiteSvgIcon from 'asset/image/cloud-logo-white.svg';
 import GlobalNav from '../GlobalNav';
 import ProjectDropdown from './ProjectDropdown';
 import RightContent from './RightContent';
@@ -36,14 +36,15 @@ export default function HeaderContent(props) {
 
   const renderLogo = () => {
     const homeUrl = getRoutePath('overview');
-    const logoSrc =
+    const LogoComponent =
       GLOBAL_VARIABLES.skylineThemeName === 'default'
-        ? cloudLogo
-        : cloudLogoWhite;
+        ? CloudLogoSvgIcon
+        : CloudLogoWhiteSvgIcon;
+
     return (
       <div className={classnames(styles.logo)}>
         <Link to={homeUrl}>
-          <img src={logoSrc} alt="logo" className={styles['logo-image']} />
+          <LogoComponent className={styles.logoImage} />
         </Link>
       </div>
     );

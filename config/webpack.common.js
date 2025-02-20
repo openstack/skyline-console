@@ -72,23 +72,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.svg$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: false,
-              name: normalize('asset/image/[name].[ext]'),
-            },
-          },
-        ],
-        include: [
-          root('src/asset/image/cloud-logo.svg'),
-          root('src/asset/image/cloud-logo-white.svg'),
-        ],
-      },
-      {
-        test: /\.(woff|woff2|ttf|eot|svg)$/,
+        test: /\.(woff|woff2|ttf|eot)$/,
         use: [
           {
             loader: 'url-loader',
@@ -98,10 +82,11 @@ module.exports = {
             },
           },
         ],
-        exclude: [
-          root('src/asset/image/cloud-logo.svg'),
-          root('src/asset/image/cloud-logo-white.svg'),
-        ],
+      },
+      {
+        test: /\.svg$/,
+        issuer: /\.jsx?$/,
+        use: ['@svgr/webpack'],
       },
     ],
   },
