@@ -99,6 +99,7 @@
     "@cypress/code-coverage": "^3.9.5",
     "@cypress/skip-test": "^2.6.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.4",
+    "@svgr/webpack": "5.5.0",
     "autoprefixer": "^9.3.1",
     "babel-eslint": "^9.0.0",
     "babel-jest": "^26.6.3",

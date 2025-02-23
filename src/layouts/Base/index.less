@@ -1,5 +1,4 @@
 @import '~styles/variables';
-@import '~styles/variables-cube';
 
 .nav {
   left: -(@nav-width + 10px);
@@ -101,11 +100,6 @@
         > span > span {
           color: @sider-menu-hover-title-color !important;
         }
-
-        > span > img {
-          filter: invert(31%) sepia(84%) saturate(2535%) hue-rotate(223deg)
-            brightness(102%) contrast(95%) !important;
-        }
       }
     }
 
@@ -131,20 +125,9 @@
       color: @sider-menu-item-selected-text-color !important;
     }
 
-    .ant-menu-item-selected > span > img,
-    .ant-menu-item-selected > span > img:hover {
-      filter: invert(31%) sepia(84%) saturate(2535%) hue-rotate(223deg)
-        brightness(102%) contrast(95%);
-    }
-
     .ant-menu-submenu-selected > .ant-menu-submenu-title {
       color: @sider-menu-hover-title-color !important;
       font-size: @size-normal;
-    }
-
-    .ant-menu-submenu-selected > .ant-menu-submenu-title > span > img {
-      filter: invert(31%) sepia(84%) saturate(2535%) hue-rotate(223deg)
-        brightness(102%) contrast(95%);
     }
 
     .anticon {
@@ -162,11 +145,6 @@
 
     .ant-menu-item-selected {
       background-color: @sider-menu-item-selected-background !important;
-
-      > img {
-        filter: invert(31%) sepia(84%) saturate(2535%) hue-rotate(223deg)
-          brightness(102%) contrast(95%);
-      }
     }
 
     .ant-menu-sub.ant-menu-inline {
@@ -187,11 +165,6 @@
 
     .ant-menu-submenu-title:hover {
       color: @sider-menu-item-selected-text-color;
-
-      > span > img {
-        filter: invert(31%) sepia(84%) saturate(2535%) hue-rotate(223deg)
-          brightness(102%) contrast(95%);
-      }
     }
 
     .ant-menu-submenu-title:active {

@@ -23,6 +23,8 @@ import { getPath } from 'utils/route-map';
 import i18n from 'core/i18n';
 import styles from './index.less';
 
+const ICON_SIZE = 16;
+
 const { SubMenu } = Menu;
 
 const { getLocaleShortName } = i18n;
@@ -127,21 +129,20 @@ export class LayoutMenu extends Component {
     }
   };
 
-  // eslint-disable-next-line no-unused-vars
-  renderMenuItemIcon = ({ item, collapsed, isSubMenu }) => {
+  renderMenuItemIcon = ({ item }) => {
     if (item.icon) {
-      return (
-        <img src={item.icon} alt="menu-item-icon" width="16px" height="16px" />
-      );
+      const ItemIcon = item.icon;
+      return <ItemIcon width={ICON_SIZE} height={ICON_SIZE} />;
     }
+    return null;
   };
 
-  renderMenuItem = (item, isSubMenu) => {
+  renderMenuItem = (item) => {
     const { collapsed, hover } = this.state;
     if (collapsed && !hover) {
       return (
         <Menu.Item key={item.key} className={styles['menu-item-collapsed']}>
-          {this.renderMenuItemIcon({ item, collapsed, isSubMenu })}
+          {this.renderMenuItemIcon({ item })}
         </Menu.Item>
       );
     }
@@ -163,8 +164,7 @@ export class LayoutMenu extends Component {
           onClick={this.onClickMenuItem}
         >
           <span className={styles['menu-item-title-wrapper']}>
-            {/* <Menu.Item key={item.key} className={styles['menu-item-no-child']}> */}
-            {this.renderMenuItemIcon({ item, isSubMenu })}
+            {this.renderMenuItemIcon({ item })}
             <span
               className={
                 item.level === 0 || (item.level === 1 && !showChildren)

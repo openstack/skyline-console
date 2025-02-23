@@ -19,8 +19,8 @@ import { ActionLogStore } from 'stores/nova/action-log';
 import { ironicOriginEndpoint } from 'client/client/constants';
 import { projectTagsColors } from 'src/utils/constants';
 import PopActionEvent from 'src/components/Popover/PopActionEvent';
-import lockSvg from 'asset/image/lock.svg';
-import unlockSvg from 'asset/image/unlock.svg';
+import LockSvgIcon from 'asset/image/lock.svg';
+import UnlockSvgIcon from 'asset/image/unlock.svg';
 import { isEmpty } from 'lodash';
 
 const lockIcon = (
@@ -29,12 +29,10 @@ const lockIcon = (
       'The instance has been locked. If you want to do more, please unlock it first.'
     )}
   >
-    <img src={lockSvg} alt="lock" style={{ width: '12px' }} />
+    <LockSvgIcon width={12} height={12} />
   </Tooltip>
 );
-const unlockIcon = (
-  <img src={unlockSvg} alt="unlock" style={{ width: '12px' }} />
-);
+const unlockIcon = <UnlockSvgIcon width={12} height={12} />;
 
 export const transitionStatus = {
   build: t('Build'),
