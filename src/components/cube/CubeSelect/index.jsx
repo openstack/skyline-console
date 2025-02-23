@@ -1,6 +1,6 @@
 import React, { Component, createRef } from 'react';
 import { Select } from 'antd';
-import ChevronDown from 'asset/cube/monochrome/chevron_down.svg';
+import ChevronDownSvgIcon from 'asset/cube/monochrome/chevron_down.svg';
 import styles from './index.less';
 
 export default class CubeSelect extends Component {
@@ -15,21 +15,15 @@ export default class CubeSelect extends Component {
     }
   }
 
-  renderIcon = () => {
-    return (
-      <div className={styles.icon}>
-        <img src={ChevronDown} alt="dropdown-icon" />
-      </div>
-    );
-  };
-
   render() {
     return (
       <Select
         ref={this.inputRef}
         size="md"
         {...this.props}
-        suffixIcon={this.renderIcon()}
+        suffixIcon={
+          <ChevronDownSvgIcon width={14} height={12} className={styles.icon} />
+        }
       />
     );
   }

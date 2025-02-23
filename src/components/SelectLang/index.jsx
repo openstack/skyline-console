@@ -16,7 +16,7 @@ import { Menu, Dropdown } from 'antd';
 import i18n from 'core/i18n';
 import React from 'react';
 import classNames from 'classnames';
-import networkingIcon from 'asset/cube/monochrome/networking.svg';
+import NetworkSvgIcon from 'asset/cube/monochrome/networking.svg';
 import styles from './index.less';
 
 const { getLocale, setLocale, SUPPORT_LOCALES } = i18n;
@@ -56,7 +56,7 @@ const SelectLang = (props) => {
   return (
     <Dropdown overlay={langMenu} placement="bottomRight">
       <span className={classNames(styles['drop-down'], className)}>
-        <img src={networkingIcon} alt="language-icon" />
+        <NetworkSvgIcon width={16} height={16} />
       </span>
     </Dropdown>
   );
