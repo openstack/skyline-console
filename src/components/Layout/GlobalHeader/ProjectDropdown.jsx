@@ -88,7 +88,6 @@ export class ProjectDropdown extends React.Component {
             actions={{ moreActions: [{ action: ProjectSelect }] }}
           />
         </div>
-
         <span className={styles.domain}>{userDomainName}</span>
       </div>
     );
