@@ -15,10 +15,10 @@
 import React, { createRef } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Spin } from 'antd';
-import applicationIcon from 'asset/cube/monochrome/applications.svg';
+import ApplicationSvgIcon from 'asset/cube/monochrome/applications.svg';
 import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
-import styles from './index.less';
 import ProjectSelect from './ProjectTable';
+import styles from './index.less';
 
 export class ProjectDropdown extends React.Component {
   itemActionRef = createRef();
@@ -81,12 +81,7 @@ export class ProjectDropdown extends React.Component {
           onClick={this.handleButtonClick}
           onKeyDown={this.handleKeyDown}
         >
-          <img
-            src={applicationIcon}
-            alt="project-icon"
-            width="16px"
-            height="16px"
-          />
+          <ApplicationSvgIcon width={16} height={16} />
           {projectName}
           <ItemActionButtons
             ref={this.itemActionRef}
