@@ -16,7 +16,7 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Row, Layout, Col, Avatar } from 'antd';
 import globalUserStore from 'stores/keystone/user';
-import ProfileIcon from 'asset/image/profile.svg';
+import ProfileSvgIcon from 'asset/image/profile.svg';
 import classnames from 'classnames';
 import styles from './styles.less';
 
@@ -68,7 +68,7 @@ export class Overview extends Component {
         >
           <Avatar
             size={{ xs: 33, sm: 44, md: 55, lg: 88, xl: 110, xxl: 138 }}
-            src={ProfileIcon}
+            src={ProfileSvgIcon}
           />
         </Col>
         <Col span={21}>

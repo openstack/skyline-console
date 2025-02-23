@@ -15,10 +15,11 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { Row, Col } from 'antd';
-import overviewInstance from 'asset/image/overview-instance.svg';
-import overviewNetwork from 'asset/image/overview-network.svg';
-import overviewRouter from 'asset/image/overview-router.svg';
-import overviewVolume from 'asset/image/overview-volume.svg';
+// TODO: Replace img with svg
+// import overviewInstance from 'asset/image/overview-instance.svg';
+// import overviewNetwork from 'asset/image/overview-network.svg';
+// import overviewRouter from 'asset/image/overview-router.svg';
+// import overviewVolume from 'asset/image/overview-volume.svg';
 import { Link } from 'react-router-dom';
 import globalRootStore from 'stores/root';
 import styles from './style.less';
@@ -29,25 +30,25 @@ const actions = [
   {
     key: 'instance',
     label: t('Instances'),
-    avatar: overviewInstance,
+    // avatar: overviewInstance,
     to: '/compute/instance',
   },
   {
     key: 'volume',
     label: t('Volumes'),
-    avatar: overviewVolume,
+    // avatar: overviewVolume,
     to: '/storage/volume',
   },
   {
     key: 'network',
     label: t('Networks'),
-    avatar: overviewNetwork,
+    // avatar: overviewNetwork,
     to: '/network/networks',
   },
   {
     key: 'router',
     label: t('Routers'),
-    avatar: overviewRouter,
+    // avatar: overviewRouter,
     to: '/network/router',
   },
 ];

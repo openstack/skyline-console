@@ -15,6 +15,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import { Tooltip } from 'antd';
 import centosIcon from 'asset/image/centos.svg';
 import ubuntuIcon from 'asset/image/ubuntu.svg';
 import fedoraIcon from 'asset/image/fedora.svg';
@@ -24,7 +25,6 @@ import coreosIcon from 'asset/image/coreos.svg';
 import archIcon from 'asset/image/arch.svg';
 import freebsdIcon from 'asset/image/freebsd.svg';
 import othersIcon from 'asset/image/others.svg';
-import { Tooltip } from 'antd';
 import styles from './index.less';
 
 export default class index extends Component {
@@ -53,31 +53,14 @@ export default class index extends Component {
     };
   }
 
-  getImageSrc = () => {
-    const { type } = this.props;
-    return type ? this.icons[type.toLowerCase()] || othersIcon : othersIcon;
-  };
-
   render() {
-    const src = this.getImageSrc();
     const { type, className, title } = this.props;
-    if (title) {
-      return (
-        <Tooltip title={title}>
-          <img
-            src={src}
-            alt={title}
-            className={classnames(styles.image, className)}
-          />
-        </Tooltip>
-      );
-    }
-    return (
-      <img
-        src={src}
-        alt={type}
-        className={classnames(styles.image, className)}
-      />
+    const IconComponent = this.icons[type?.toLowerCase()] || othersIcon;
+
+    const iconElement = (
+      <IconComponent className={classnames(styles.image, className)} />
     );
+
+    return title ? <Tooltip title={title}>{iconElement}</Tooltip> : iconElement;
   }
 }

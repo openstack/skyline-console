@@ -14,28 +14,28 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Badge, Row, Col, Card } from 'antd';
 import { inject, observer } from 'mobx-react';
-import adminInstance from 'asset/image/admin-instance.svg';
-import adminVolume from 'asset/image/admin-volume.svg';
-import { Link } from 'react-router-dom';
-import adminNetwork from 'asset/image/admin-network.svg';
-import adminImage from 'asset/image/admin-image.svg';
-import adminSecurityGroup from 'asset/image/admin-security-group.svg';
-import adminRouter from 'asset/image/admin-router.svg';
+import AdminInstance from 'asset/image/admin-instance.svg';
+import AdminVolume from 'asset/image/admin-volume.svg';
+import AdminNetwork from 'asset/image/admin-network.svg';
+import AdminImage from 'asset/image/admin-image.svg';
+import AdminSecurityGroup from 'asset/image/admin-security-group.svg';
+import AdminRouter from 'asset/image/admin-router.svg';
 import styles from '../style.less';
 
 export const card = [
   {
     key: 'serviceNum',
     label: t('Instances'),
-    avatar: adminInstance,
+    Avatar: AdminInstance,
     to: '/compute/instance-admin',
   },
   {
     key: 'volumeNum',
     label: t('Volumes'),
-    avatar: adminVolume,
+    Avatar: AdminVolume,
     to: '/storage/volume-admin',
   },
 ];
@@ -44,25 +44,25 @@ export const smallCard = [
   {
     key: 'networkNum',
     label: t('Network'),
-    avatar: adminNetwork,
+    Avatar: AdminNetwork,
     to: '/network/networks-admin',
   },
   {
     key: 'imageNum',
     label: t('Image'),
-    avatar: adminImage,
+    Avatar: AdminImage,
     to: '/compute/image-admin',
   },
   {
     key: 'routerNum',
     label: t('Router'),
-    avatar: adminRouter,
+    Avatar: AdminRouter,
     to: '/network/router-admin',
   },
   {
     key: 'securityGroupNum',
     label: t('Security Group'),
-    avatar: adminSecurityGroup,
+    Avatar: AdminSecurityGroup,
     to: '/network/security-group-admin',
   },
 ];
@@ -128,11 +128,7 @@ export class virtualResourceInfo extends Component {
               <Link to={item.to} style={{ color: '#000000' }}>
                 <Row>
                   <Col span={8} style={{ textAlign: 'center' }}>
-                    <img
-                      alt="avatar"
-                      src={item.avatar}
-                      style={{ paddingTop: '14px' }}
-                    />
+                    <item.Avatar style={{ paddingTop: '14px' }} />
                   </Col>
                   <Col span={16} style={{ textAlign: 'left' }}>
                     <span className={styles.label}>{item.label}</span>
@@ -169,7 +165,7 @@ export class virtualResourceInfo extends Component {
               <Link to={item.to} style={{ color: '#000000' }}>
                 <Row>
                   <Col span={12} style={{ textAlign: 'center' }}>
-                    <img alt="avatar" src={item.avatar} />
+                    <item.Avatar />
                   </Col>
                   <Col span={12} style={{ textAlign: 'left' }}>
                     <span className={styles.label}>{item.label}</span>

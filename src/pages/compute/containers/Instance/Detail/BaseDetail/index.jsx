@@ -13,24 +13,15 @@
 // limitations under the License.
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { toJS } from 'mobx';
 import { inject, observer } from 'mobx-react';
-import { ServerStore } from 'stores/nova/instance';
-import { InstanceVolumeStore } from 'stores/nova/instance-volume';
-import { PortStore } from 'stores/neutron/port';
-import { ServerGroupStore } from 'stores/nova/server-group';
-import Base from 'containers/BaseDetail';
-import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
-import { Link } from 'react-router-dom';
-// render topo content
 import { Col, Row, Button } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
-import Status from 'components/Status';
-import volumeIcon from 'asset/image/volume.svg';
-import instanceIcon from 'asset/image/instance.svg';
-import interfaceIcon from 'asset/image/interface.svg';
 import classnames from 'classnames';
-import ImageType from 'components/ImageType';
+import VolumeSvgIcon from 'asset/image/volume.svg';
+import InstanceSvgIcon from 'asset/image/instance.svg';
+import InterfaceSvgIcon from 'asset/image/interface.svg';
 import {
   instanceStatus,
   isIronicInstance,
@@ -38,8 +29,16 @@ import {
 } from 'resources/nova/instance';
 import { generateId } from 'utils/index';
 import { getSinceTime, getLocalTimeStr } from 'utils/time';
-import AttachVolume from 'pages/compute/containers/Instance/actions/AttachVolume';
 import globalRootStore from 'stores/root';
+import { ServerStore } from 'stores/nova/instance';
+import { InstanceVolumeStore } from 'stores/nova/instance-volume';
+import { PortStore } from 'stores/neutron/port';
+import { ServerGroupStore } from 'stores/nova/server-group';
+import Base from 'containers/BaseDetail';
+import Status from 'components/Status';
+import ImageType from 'components/ImageType';
+import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
+import AttachVolume from 'pages/compute/containers/Instance/actions/AttachVolume';
 import styles from './index.less';
 
 export class BaseDetail extends Base {
@@ -321,10 +320,10 @@ export class BaseDetail extends Base {
             {info.networkName} ( {info.name} ){' '}
           </div>
           <div>
-            <img
-              alt="interface_icon"
-              src={interfaceIcon}
-              style={{ height: 28, paddingLeft: 6, marginRight: 10 }}
+            <InterfaceSvgIcon
+              width={28}
+              height={28}
+              style={{ paddingLeft: 6, marginRight: 10 }}
             />
             <div style={{ display: 'inline-table' }}>
               {info.address.map((it) => (
@@ -355,7 +354,7 @@ export class BaseDetail extends Base {
     return (
       <Row className={classnames(styles.vm)}>
         <div className={styles['vm-icon']}>
-          <img alt="instance_icon" src={instanceIcon} style={{ height: 36 }} />
+          <InstanceSvgIcon width={36} height={36} />
         </div>
         <div className={styles['vm-info']}>
           <div className={styles['info-item']}>
@@ -417,7 +416,7 @@ export class BaseDetail extends Base {
           <div className={styles['attached-volume-line']} />
           <div className={styles['attached-volume-content']}>
             <div className={styles['volume-icon']}>
-              <img alt="volume_icon" src={volumeIcon} style={{ height: 36 }} />
+              <VolumeSvgIcon width={36} height={36} />
             </div>
             <div className={styles['volume-info']}>{volumeInfoItem}</div>
           </div>
