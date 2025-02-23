@@ -14,7 +14,7 @@
 
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import CubeCard from '../../../../../components/cube/CubeCard';
+import CubeCard from 'components/cube/CubeCard';
 import styles from '../style.less';
 
 export class ProjectInfo extends Component {

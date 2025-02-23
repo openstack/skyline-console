@@ -21,7 +21,7 @@ import globalProjectStore from 'stores/keystone/project';
 import globalRootStore from 'stores/root';
 import { firewallEndpoint } from 'client/client/constants';
 import { isNumber } from 'lodash';
-import CubeCard from '../../../../../components/cube/CubeCard';
+import CubeCard from 'components/cube/CubeCard';
 import styles from '../style.less';
 
 const colors = {
