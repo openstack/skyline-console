@@ -364,10 +364,10 @@ export class BaseTable extends React.Component {
       return title;
     }
     return (
-      <span>
+      <span className={styles['column-title-wrap']}>
         {title}
         <Tooltip title={titleTip}>
-          <QuestionMarkSvgIcon style={{ marginLeft: 8 }} />
+          <QuestionMarkSvgIcon width={16} height={16} />
         </Tooltip>
       </span>
     );

@@ -122,6 +122,7 @@ export default class TablePrimaryButtons extends Component {
           containerProps={containerProps}
           onClickAction={onClickAction}
           onCancelAction={onCancelAction}
+          isCreateIcon
         />
       );
     });
