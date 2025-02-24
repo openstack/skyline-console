@@ -15,11 +15,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import FileSaver from 'file-saver';
-import { DownloadOutlined, CloseOutlined } from '@ant-design/icons';
-import { Button, Menu, Dropdown, Progress, Tooltip } from 'antd';
+import { Menu, Dropdown, Progress, Tooltip } from 'antd';
 import { get, isObject, isArray } from 'lodash';
 import { Parser } from 'json2csv';
 import { toLocalTimeFilter } from 'utils/index';
+import DownloadSvgIcon from 'asset/cube/monochrome/download.svg';
+import CancelSvgIcon from 'asset/cube/monochrome/cross_fill.svg';
+import CubeIconButton from 'components/cube/CubeButton/CubeIconButton';
 import Notify from 'components/Notify';
 import Confirm from 'components/Confirm';
 import styles from './index.less';
@@ -313,10 +315,10 @@ export default class index extends Component {
   renderDownloadCurrent() {
     return (
       <Tooltip title={t('Download all data')}>
-        <Button
+        <CubeIconButton
           type="default"
           onClick={this.exportCurrentDataAll}
-          icon={<DownloadOutlined />}
+          icon={DownloadSvgIcon}
         />
       </Tooltip>
     );
@@ -339,12 +341,10 @@ export default class index extends Component {
     }
     return (
       <Tooltip title={t('Cancel Download')}>
-        <Button
+        <CubeIconButton
           type="danger"
-          shape="circle"
           onClick={this.cancelDownload}
-          icon={<CloseOutlined />}
-          size="small"
+          icon={CancelSvgIcon}
         />
       </Tooltip>
     );
@@ -364,7 +364,7 @@ export default class index extends Component {
     return (
       <>
         <Dropdown overlay={menu}>
-          <Button type="default" icon={<DownloadOutlined />} />
+          <CubeIconButton type="default" icon={DownloadSvgIcon} />
         </Dropdown>
         {this.renderProgress()}
         {this.renderCancelBtn()}

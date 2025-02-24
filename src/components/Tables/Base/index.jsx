@@ -17,18 +17,18 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import isEqual from 'react-fast-compare';
 import { toJS } from 'mobx';
+import { inject } from 'mobx-react';
 import { includes, get, isArray, isString } from 'lodash';
 import { Button, Table, Dropdown, Input, Typography, Tooltip } from 'antd';
+import ViewSvgIcon from 'asset/cube/monochrome/view.svg';
+import PauseSvgIcon from 'asset/cube/monochrome/pause.svg';
+import RefreshSvgIcon from 'asset/cube/monochrome/arrow_refresh_02.svg';
+import PlaySvgIcon from 'asset/cube/monochrome/play.svg';
+import FileSvgIcon from 'asset/cube/monochrome/file.svg';
+import QuestionMarkSvgIcon from 'asset/cube/monochrome/question_mark.svg';
+import CubeIconButton from 'components/cube/CubeButton/CubeIconButton';
 import MagicInput from 'components/MagicInput';
 import Pagination from 'components/Pagination';
-import {
-  EyeOutlined,
-  SyncOutlined,
-  QuestionCircleOutlined,
-  PlayCircleOutlined,
-  PauseCircleOutlined,
-  FileTextOutlined,
-} from '@ant-design/icons';
 import TimeFilter from 'components/TimeFilter';
 import {
   getColumnSorter,
@@ -48,13 +48,11 @@ import {
 } from 'utils/table';
 import { getNoValue } from 'utils/index';
 import { getLocalStorageItem, setLocalStorageItem } from 'utils/local-storage';
-import { inject } from 'mobx-react';
 import CustomColumns from './CustomColumns';
 import ItemActionButtons from './ItemActionButtons';
 import PrimaryActionButtons from './PrimaryActionButtons';
 import BatchActionButtons from './BatchActionButtons';
 import Download from './Download';
-
 import styles from './index.less';
 
 export class BaseTable extends React.Component {
@@ -341,7 +339,7 @@ export class BaseTable extends React.Component {
     };
   };
 
-  getTipRender = (tip, render, dataIndex, Icon = FileTextOutlined) => {
+  getTipRender = (tip, render, dataIndex, Icon = FileSvgIcon) => {
     const newRender = (value, record) => {
       const tipValue = tip(value, record);
       const realValue = render ? render(value, record) : get(record, dataIndex);
@@ -369,7 +367,7 @@ export class BaseTable extends React.Component {
       <span>
         {title}
         <Tooltip title={titleTip}>
-          <QuestionCircleOutlined style={{ marginLeft: 8 }} />
+          <QuestionMarkSvgIcon style={{ marginLeft: 8 }} />
         </Tooltip>
       </span>
     );
@@ -695,11 +693,7 @@ export class BaseTable extends React.Component {
     }
     return (
       <Dropdown overlay={this.renderRowMenu()}>
-        <Button
-          className={styles['custom-button']}
-          type="default"
-          icon={<EyeOutlined />}
-        />
+        <CubeIconButton type="default" icon={ViewSvgIcon} />
       </Dropdown>
     );
   }
@@ -742,9 +736,9 @@ export class BaseTable extends React.Component {
       return null;
     }
     return (
-      <Button
+      <CubeIconButton
         type="default"
-        icon={<SyncOutlined />}
+        icon={RefreshSvgIcon}
         onClick={this.handleRefresh}
       />
     );
@@ -762,9 +756,9 @@ export class BaseTable extends React.Component {
       const tip = t('Stop auto refreshing data');
       return (
         <Tooltip title={tip}>
-          <Button
+          <CubeIconButton
             type="primary"
-            icon={<PauseCircleOutlined />}
+            icon={PauseSvgIcon}
             onClick={this.stopRefreshAuto}
           />
         </Tooltip>
@@ -774,9 +768,9 @@ export class BaseTable extends React.Component {
     const tip = t('Start auto refreshing data');
     return (
       <Tooltip title={tip}>
-        <Button
+        <CubeIconButton
           type="default"
-          icon={<PlayCircleOutlined />}
+          icon={PlaySvgIcon}
           onClick={this.startRefreshAuto}
         />
       </Tooltip>
@@ -921,7 +915,7 @@ export class BaseTable extends React.Component {
       scroll.y = scrollY || 400;
     }
     return (
-      <div>
+      <div className={styles['table-container']}>
         {header}
         <Table
           className={classnames(styles.table, 'sl-table', className)}
