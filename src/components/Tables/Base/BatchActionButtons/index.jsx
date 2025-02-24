@@ -13,10 +13,10 @@
 // limitations under the License.
 
 import React from 'react';
-import { Dropdown, Menu, Button, Tooltip } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
+import { Dropdown, Menu, Button, Tooltip } from 'antd';
 import { generateId } from 'utils/index';
+import ChevronDownSvgIcon from 'asset/cube/monochrome/chevron_down.svg';
 import ActionButton from '../ActionButton';
 import { getActionsByPolicy } from '../Action';
 import styles from './index.less';
@@ -87,8 +87,9 @@ function DropdownActionButton({
   const menu = <Menu>{menuItems}</Menu>;
   return (
     <Dropdown overlay={menu} overlayClassName={styles['table-batch-menu']}>
-      <Button type="primary">
-        {t('More Actions')} {<DownOutlined />}
+      <Button type="primary" className={styles['more-action-trigger']}>
+        {t('More Actions')}
+        <ChevronDownSvgIcon width={14} height={12} />
       </Button>
     </Dropdown>
   );
