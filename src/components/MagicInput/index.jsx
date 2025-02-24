@@ -14,10 +14,11 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Input, Tag, Menu, Divider, Button, Checkbox, Row, Col } from 'antd';
-import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
+import { Input, Tag, Menu, Divider, Button, Checkbox, Row, Col } from 'antd';
 import { isEmpty, isBoolean } from 'lodash';
+import SearchSvgIcon from 'asset/cube/monochrome/search.svg';
+import CloseSvgIcon from 'asset/cube/monochrome/x.svg';
 import styles from './index.less';
 
 const option = PropTypes.shape({
@@ -374,7 +375,7 @@ class MagicInput extends PureComponent {
       <Button
         className={styles['close-option-btn']}
         type="link"
-        icon={<CloseOutlined />}
+        icon={<CloseSvgIcon width={12} height={12} />}
         onClick={this.clearOptions}
       />
     );
@@ -390,7 +391,7 @@ class MagicInput extends PureComponent {
         <Button
           className={styles['close-btn']}
           type="link"
-          icon={<CloseOutlined />}
+          icon={<CloseSvgIcon width={12} height={12} />}
           onClick={this.clearAll}
         />
       </Col>
@@ -583,16 +584,17 @@ class MagicInput extends PureComponent {
               onPressEnter={this.handleEnter}
               onKeyUp={this.handleKeyUp}
               value={inputValue}
+              size="large"
             />
             {this.renderMenu()}
           </Col>
-          <Col
+          <div
             className={`${styles['search-icon']} ${
               isFocus ? styles['search-icon-hidden'] : ''
             }`}
           >
-            <SearchOutlined />
-          </Col>
+            <SearchSvgIcon width={12} height={12} />
+          </div>
           {this.renderClose()}
         </Row>
       </div>

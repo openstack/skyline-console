@@ -757,7 +757,7 @@ export class BaseTable extends React.Component {
       return (
         <Tooltip title={tip}>
           <CubeIconButton
-            type="primary"
+            type="default"
             icon={PauseSvgIcon}
             onClick={this.stopRefreshAuto}
           />
