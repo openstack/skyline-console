@@ -15,9 +15,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { inject, observer } from 'mobx-react';
-import circleFill from 'asset/cube/monochrome/circle_fill.svg';
-import crossFill from 'asset/cube/monochrome/cross_fill.svg';
-import CubeCard from 'src/components/cube/CubeCard';
+import CircleFillSvgIcon from 'asset/cube/monochrome/circle_fill.svg';
+import CrossFillSvgIcon from 'asset/cube/monochrome/cross_fill.svg';
+import CubeCard from 'components/cube/CubeCard';
 import styles from '../style.less';
 
 export class NetworkService extends Component {
@@ -27,17 +27,13 @@ export class NetworkService extends Component {
 
   renderIcon = (isServiceUp) =>
     isServiceUp ? (
-      <img
-        src={circleFill}
-        alt="avatar"
+      <CircleFillSvgIcon
         width={16}
         height={16}
         className={styles['avatar-checked']}
       />
     ) : (
-      <img
-        src={crossFill}
-        alt="avatar"
+      <CrossFillSvgIcon
         width={16}
         height={16}
         className={styles['avatar-crossed']}

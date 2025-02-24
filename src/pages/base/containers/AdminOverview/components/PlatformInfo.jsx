@@ -16,29 +16,29 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import layerIcon from 'asset/cube/monochrome/layer.svg';
-import userIcon from 'asset/cube/monochrome/user.svg';
-import nodeIcon from 'asset/cube/monochrome/node.svg';
-import CubeCard from 'src/components/cube/CubeCard';
+import LayerSvgIcon from 'asset/cube/monochrome/layer.svg';
+import UserSvgIcon from 'asset/cube/monochrome/user.svg';
+import NodeSvgIcon from 'asset/cube/monochrome/node.svg';
+import CubeCard from 'components/cube/CubeCard';
 import styles from '../style.less';
 
 export const actions = [
   {
     key: 'projectNum',
     label: t('Projects'),
-    avatar: <img src={layerIcon} alt="avatar" width={24} height={24} />,
+    Avatar: LayerSvgIcon,
     to: '/identity/project-admin',
   },
   {
     key: 'userNum',
     label: t('Users'),
-    avatar: <img src={userIcon} alt="avatar" width={24} height={24} />,
+    Avatar: UserSvgIcon,
     to: '/identity/user-admin',
   },
   {
     key: 'nodeNum',
     label: t('Nodes'),
-    avatar: <img src={nodeIcon} alt="avatar" width={24} height={24} />,
+    Avatar: NodeSvgIcon,
     to: '/compute/hypervisors-admin?tab=ComputeHost',
   },
 ];
@@ -68,7 +68,7 @@ export class ProjectInfo extends Component {
                 {platformNum[item.key]}
               </div>
               <div className={styles['info-text']}>
-                {item.avatar}
+                <item.Avatar width={24} height={24} />
                 <span>{item.label}</span>
               </div>
             </Link>

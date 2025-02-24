@@ -17,25 +17,26 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Badge, Row, Col, Card } from 'antd';
 import { inject, observer } from 'mobx-react';
-import AdminInstance from 'asset/image/admin-instance.svg';
-import AdminVolume from 'asset/image/admin-volume.svg';
+import adminInstance from 'asset/cube/custom/icon-instance.png';
+import adminVolume from 'asset/cube/custom/icon-volumes.png';
 import AdminNetwork from 'asset/image/admin-network.svg';
 import AdminImage from 'asset/image/admin-image.svg';
 import AdminSecurityGroup from 'asset/image/admin-security-group.svg';
 import AdminRouter from 'asset/image/admin-router.svg';
+import CubeCard from 'components/cube/CubeCard';
 import styles from '../style.less';
 
 export const card = [
   {
     key: 'serviceNum',
     label: t('Instances'),
-    Avatar: AdminInstance,
+    avatar: adminInstance,
     to: '/compute/instance-admin',
   },
   {
     key: 'volumeNum',
     label: t('Volumes'),
-    Avatar: AdminVolume,
+    avatar: adminVolume,
     to: '/storage/volume-admin',
   },
 ];
@@ -126,35 +127,26 @@ export class virtualResourceInfo extends Component {
     return (
       <div className={styles['virtual-resources-overview']}>
         {this.card.map((item) => (
-          <Col span={span} style={{ textAlign: 'center' }} key={item.key}>
-            <Card className={styles.card}>
-              <Link to={item.to} style={{ color: '#000000' }}>
-                <Row>
-                  <Col span={8} style={{ textAlign: 'center' }}>
-                    <item.Avatar style={{ paddingTop: '14px' }} />
-                  </Col>
-                  <Col span={16} style={{ textAlign: 'left' }}>
-                    <span className={styles.label}>{item.label}</span>
-                    <span className={styles.all}>
-                      {virtualResource[item.key]
-                        ? virtualResource[item.key].all
-                        : null}
-                    </span>
-                    <Row>
-                      {virtualResource[item.key]
-                        ? this.renderStatusColor(
-                            virtualResource[item.key],
-                            item.key
-                          )
-                        : null}
-                    </Row>
-                  </Col>
-                </Row>
-              </Link>
-            </Card>
-          </Col>
+          <Link key={item.key} to={item.to} className={styles['overview-link']}>
+            <div className={styles['overview-info']}>
+              <img src={item.avatar} alt="icon" width={80} height={80} />
+              <div className={styles['info-text']}>
+                <div className={styles['info-number']}>
+                  {virtualResource[item.key]
+                    ? virtualResource[item.key].all
+                    : null}
+                </div>
+                <div className={styles['info-label']}>{item.label}</div>
+              </div>
+            </div>
+            <div className={styles['overview-indicator']}>
+              {virtualResource[item.key]
+                ? this.renderStatusColor(virtualResource[item.key], item.key)
+                : null}
+            </div>
+          </Link>
         ))}
-      </Row>
+      </div>
     );
   }
 

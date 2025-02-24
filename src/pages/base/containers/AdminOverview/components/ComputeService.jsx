@@ -16,9 +16,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { inject, observer } from 'mobx-react';
 import { serviceState } from 'resources/nova/service';
-import circleFill from 'asset/cube/monochrome/circle_fill.svg';
-import crossFill from 'asset/cube/monochrome/cross_fill.svg';
-import CubeCard from 'src/components/cube/CubeCard';
+import CircleFillSvgIcon from 'asset/cube/monochrome/circle_fill.svg';
+import CrossFillSvgIcon from 'asset/cube/monochrome/cross_fill.svg';
+import CubeCard from 'components/cube/CubeCard';
 import styles from '../style.less';
 
 export class ComputeService extends Component {
@@ -28,17 +28,13 @@ export class ComputeService extends Component {
 
   renderIcon = (isServiceUp) =>
     isServiceUp ? (
-      <img
-        src={circleFill}
-        alt="avatar"
+      <CircleFillSvgIcon
         width={16}
         height={16}
         className={styles['avatar-checked']}
       />
     ) : (
-      <img
-        src={crossFill}
-        alt="avatar"
+      <CrossFillSvgIcon
         width={16}
         height={16}
         className={styles['avatar-crossed']}
@@ -47,10 +43,10 @@ export class ComputeService extends Component {
 
   renderAction = (item, index) => (
     <div key={`${item.binary}-${index}`} className={styles['service-card']}>
-      <div>{this.renderIcon(item.state === 'up')}</div>
-      <div style={{ fontWeight: '500' }}>{item.binary}</div>
-      <div>{item.host}</div>
-      <div>{serviceState[item.state]}</div>
+      {this.renderIcon(item.state === 'up')}
+      <div className={styles.binary}>{item.binary}</div>
+      <div className={styles.host}>{item.host}</div>
+      <div className={styles.state}>{serviceState[item.state]}</div>
     </div>
   );
 

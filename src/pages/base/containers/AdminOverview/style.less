@@ -124,6 +124,14 @@
 
       .chart-indicator {
         display: flex;
+        gap: 8px;
+
+        .indivator-item-wrap {
+          display: flex;
+          flex-wrap: nowrap;
+          gap: 2px;
+          align-items: center;
+        }
       }
     }
   }
@@ -132,15 +140,27 @@
     display: grid;
     grid-template-columns: [first] 24px [line2] 40% [line3] 20% [end]auto;
     padding: 5px 8px;
+    .primary-body4();
 
     .avatar-checked {
-      filter: brightness(0) saturate(100%) invert(71%) sepia(66%)
-        saturate(4168%) hue-rotate(123deg) brightness(100%) contrast(101%);
+      color: @status-positive;
     }
 
     .avatar-crossed {
-      filter: brightness(0) saturate(100%) invert(70%) sepia(25%)
-        saturate(6151%) hue-rotate(318deg) brightness(94%) contrast(114%);
+      color: @status-negative;
+    }
+
+    .binary {
+      color: @functional-title;
+      font-weight: @font-weight-medium;
+    }
+
+    .host {
+      color: @functional-text;
+    }
+
+    .state {
+      color: @functional-text;
     }
   }
 

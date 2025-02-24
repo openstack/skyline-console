@@ -13,9 +13,9 @@
 // limitations under the License.
 
 import React, { Component } from 'react';
-import { Progress, Avatar } from 'antd';
+import { Progress } from 'antd';
 import { inject, observer } from 'mobx-react';
-import CubeCard from 'src/components/cube/CubeCard';
+import CubeCard from 'components/cube/CubeCard';
 import styles from '../style.less';
 
 export const resourceCircle = [
@@ -71,26 +71,24 @@ export class ResourceCircle extends Component {
           format={(percent) => `${percent}%`}
         />
         <div className={styles['chart-indicator']}>
-          <div>
-            <Avatar
-              shape="square"
-              size={15}
+          <div className={styles['indivator-item-wrap']}>
+            <div
               style={{
-                marginBottom: 2,
-                marginRight: 2,
+                width: 12,
+                height: 12,
+                borderRadius: 2,
                 backgroundColor: circleColor,
               }}
             />
             {`${t('Used')}: ${used}`}
           </div>
-          <div style={{ textAlign: 'left', paddingLeft: 20 }}>
-            <Avatar
-              shape="square"
-              size={15}
+          <div className={styles['indivator-item-wrap']}>
+            <div
               style={{
-                marginBottom: 2,
-                marginRight: 2,
-                backgroundColor: '##A3A3A3',
+                width: 12,
+                height: 12,
+                borderRadius: 2,
+                backgroundColor: '#a9afbc',
               }}
             />
             {`${t('Unused')}: ${unUsed > 0 ? unUsed : '0'}`}
