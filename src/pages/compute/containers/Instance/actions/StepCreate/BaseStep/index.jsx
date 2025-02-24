@@ -263,7 +263,15 @@ export class BaseStep extends Base {
   };
 
   get systemTabs() {
-    return getImageSystemTabs();
+    const data = this.imageStore.list.data || [];
+    const availableImages = data.map((it) => ({
+      ...it,
+      key: it.id,
+    }));
+    const tabs = getImageSystemTabs() || [];
+    return tabs.filter((tab) => {
+      return availableImages.some((image) => getImageOS(image) === tab.value);
+    });
   }
 
   checkSystemDisk = (rule, value) => {
@@ -660,6 +668,7 @@ export class BaseStep extends Base {
     const imageLoading = image
       ? this.imageStore.isLoading
       : this.imageStore.list.isLoading;
+    const availableTabs = this.systemTabs;
     return [
       {
         name: 'project',
@@ -727,9 +736,9 @@ export class BaseStep extends Base {
           },
         ],
         columns: this.imageColumns,
-        tabs: this.systemTabs,
+        tabs: availableTabs,
         defaultTabValue:
-          this.locationParams.os_distro || this.systemTabs[0].value,
+          this.locationParams.os_distro || availableTabs[0].value,
         selectedLabel: t('Image'),
         onTabChange: this.onImageTabChange,
       },
