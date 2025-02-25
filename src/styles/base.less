@@ -163,6 +163,10 @@
     }
   }
 
+  .ant-table-container {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 5%);
+  }
+
   .sl-table,
   .sl-simple-table {
     .ant-table-thead > tr > th {
@@ -184,10 +188,19 @@
 
     .ant-table-column-sorters {
       padding: 16px 0;
+      background-color: @white;
     }
 
     .ant-table-footer {
       padding: 8px 16px;
+      background-color: @white;
+      border-top: 1px solid @functional-border-divider;
+    }
+
+    .ant-table-pagination.ant-pagination {
+      margin: 0;
+      padding: 8px 16px;
+      border-top: 1px solid @functional-border-divider;
     }
 
     .ant-table-thead > tr > th.ant-table-selection-column:first-child {
