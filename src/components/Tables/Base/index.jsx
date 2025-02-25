@@ -27,8 +27,8 @@ import PlaySvgIcon from 'asset/cube/monochrome/play.svg';
 import FileSvgIcon from 'asset/cube/monochrome/file.svg';
 import QuestionMarkSvgIcon from 'asset/cube/monochrome/question_mark.svg';
 import CubeIconButton from 'components/cube/CubeButton/CubeIconButton';
+import CubePagination from 'components/cube/CubePagination';
 import MagicInput from 'components/MagicInput';
-import Pagination from 'components/Pagination';
 import TimeFilter from 'components/TimeFilter';
 import {
   getColumnSorter,
@@ -221,6 +221,7 @@ export class BaseTable extends React.Component {
     }
   };
 
+  // TODO
   handlePageChange = (current, pageSize) => {
     const { filters } = this.state;
     const { onFetch, defaultSortKey, defaultSortOrder } = this.props;
@@ -839,7 +840,7 @@ export class BaseTable extends React.Component {
       this.props.pagination;
     const { isLoading, hideTotal } = this.props;
     return (
-      <Pagination
+      <CubePagination
         current={page || current || 1}
         pageSize={pageSize}
         onChange={this.handlePageChange}
