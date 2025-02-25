@@ -8,41 +8,33 @@
 @resource-box-bg: #fbfdff;
 @resource-box-border: 1px solid #cfe1ff;
 
-.card {
-  flex: 1;
-  margin-bottom: @mid-space;
-  background-color: #fff;
-  border-radius: @border-radius;
-  box-shadow: @box-shadow;
+.detail-card-title-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-  .card-content {
-    padding: @mid-space;
+  .detail-card-title {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+}
 
-    .card-item {
-      margin-bottom: @min-space;
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 
-      h3 {
-        margin-bottom: 0;
-      }
+  .card-item {
+    margin-bottom: @min-space;
 
-      .title-help {
-        margin-left: @min-space;
-        line-height: 26px;
-      }
-
-      div {
-        word-break: break-all;
-      }
+    .title-help {
+      margin-left: @min-space;
+      line-height: 26px;
     }
 
-    :last-child {
-      margin-bottom: 0;
-    }
-
-    :global {
-      .ant-typography {
-        word-break: break-all;
-      }
+    div {
+      word-break: break-all;
     }
   }
 }

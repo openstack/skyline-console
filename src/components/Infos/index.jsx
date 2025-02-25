@@ -13,31 +13,32 @@
 // limitations under the License.
 
 import React from 'react';
-import { Descriptions, Skeleton } from 'antd';
 import PropTypes from 'prop-types';
+import { Skeleton } from 'antd';
 import { generateId } from 'utils/index';
 import styles from './index.less';
 
 const Infos = ({ title, descriptions, loading }) => {
-  const descItems = descriptions.map((it) => {
-    if (typeof it.content === 'number') {
-      it.content = it.content.toString();
-    }
-    return (
-      <Descriptions.Item
-        label={it.label}
-        className={styles.item}
-        key={`label-${generateId()}`}
-      >
-        {it.content}
-      </Descriptions.Item>
-    );
-  });
+  const descItems = (
+    <div className={styles['items-container']}>
+      {descriptions.map((item) => {
+        if (typeof item.content === 'number') {
+          item.content = item.content.toString();
+        }
+        return (
+          <div key={`label-${generateId()}`} className={styles.item}>
+            <div className={styles.label}>{item.label}</div>
+            <div className={styles.content}>{item.content}</div>
+          </div>
+        );
+      })}
+    </div>
+  );
+
   return (
     <Skeleton loading={loading}>
-      <Descriptions colon={false} title={title}>
-        {descItems}
-      </Descriptions>
+      {title}
+      {descItems}
     </Skeleton>
   );
 };

@@ -13,18 +13,18 @@
 // limitations under the License.
 
 import React from 'react';
-import { isFunction, has, isObject, isEmpty } from 'lodash';
-import Notify from 'components/Notify';
-import { Row, Col, Form, Button, Spin, Progress } from 'antd';
 import classnames from 'classnames';
-import { InfoCircleOutlined } from '@ant-design/icons';
-import { isAdminPage, firstUpperCase, unescapeHtml } from 'utils/index';
-import { parse } from 'qs';
-import FormItem from 'components/FormItem';
 import { CancelToken } from 'axios';
-import { getPath, getLinkRender } from 'utils/route-map';
+import { parse } from 'qs';
+import { isFunction, has, isObject, isEmpty } from 'lodash';
+import { Row, Col, Form, Button, Spin, Progress } from 'antd';
+import InfoCircleSvgIcon from 'asset/cube/monochrome/information_circle.svg';
+import Notify from 'components/Notify';
+import FormItem from 'components/FormItem';
 import InfoButton from 'components/InfoButton';
 import QuotaChart from 'components/QuotaChart';
+import { isAdminPage, firstUpperCase, unescapeHtml } from 'utils/index';
+import { getPath, getLinkRender } from 'utils/route-map';
 import styles from './index.less';
 
 export default class BaseForm extends React.Component {
@@ -34,9 +34,9 @@ export default class BaseForm extends React.Component {
     this.options = options;
 
     this.state = {
-      // eslint-disable-next-line react/no-unused-state
+      /* eslint-disable react/no-unused-state */
       defaultValue: {},
-      // eslint-disable-next-line react/no-unused-state
+      /* eslint-disable react/no-unused-state */
       formData: {},
       isSubmitting: false,
       percent: '',
@@ -553,7 +553,11 @@ export default class BaseForm extends React.Component {
     if (this.tips) {
       return (
         <div className={styles.tips} ref={this.tipRef} id="tips">
-          <InfoCircleOutlined className={styles['tips-icon']} />
+          <InfoCircleSvgIcon
+            width={16}
+            height={16}
+            className={styles['tips-icon']}
+          />
           {this.tips}
         </div>
       );
@@ -569,12 +573,15 @@ export default class BaseForm extends React.Component {
     if (!this.hasFooter) {
       return null;
     }
+
     const footerStyle = {};
+
     if (this.tips) {
       const height =
         ((document.getElementById('tips') || {}).clientHeight || 35) + 16;
       footerStyle.bottom = height;
     }
+
     return (
       <div
         className={styles.footer}

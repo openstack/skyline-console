@@ -1,0 +1,42 @@
+@import '~styles/variables';
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 24px;
+
+  .log-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .title {
+      margin: 0;
+      color: @functional-title;
+      .primary-h4();
+    }
+
+    .form {
+      display: flex;
+      gap: 8px;
+
+      :global {
+        .ant-row {
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  .log-content {
+    padding: 32px 40px;
+    background-color: @functional-title;
+    border-radius: @border-radius;
+
+    pre {
+      color: @primary-0;
+      word-break: break-word;
+    }
+  }
+}

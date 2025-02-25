@@ -23,3 +23,29 @@
     }
   }
 }
+
+.cube-card-small {
+  border: 1px solid @grey-200;
+  border-radius: 2px;
+
+  :global {
+    .ant-card-head {
+      margin: 0;
+      padding: 8px 16px;
+
+      .ant-card-head-wrapper {
+        .ant-card-head-title {
+          padding: 0;
+          color: @functional-title;
+          .primary-body2();
+
+          font-weight: @font-weight-semibold;
+        }
+      }
+    }
+
+    .ant-card-body {
+      padding: 16px;
+    }
+  }
+}

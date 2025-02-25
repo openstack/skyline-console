@@ -17,6 +17,7 @@ import { Skeleton } from 'antd';
 import Ring from './Ring';
 import Line from './Line';
 import QuotaInfo from './Info';
+import styles from './index.less';
 
 function renderItem(props) {
   const { type = 'ring', limit, unlimitByTable = false } = props;
@@ -46,13 +47,5 @@ export default function QuotaChart(props) {
     );
   });
 
-  const style = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    overflowY: 'auto',
-    overflowX: 'hidden',
-    maxHeight: 400,
-  };
-  return <div style={style}>{items}</div>;
+  return <div className={styles['quota-container']}>{items}</div>;
 }

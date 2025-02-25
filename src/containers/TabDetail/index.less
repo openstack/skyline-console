@@ -2,8 +2,6 @@
 
 .main {
   position: relative;
-  height: 100%;
-  overflow: auto;
 }
 
 .sider {
@@ -70,41 +68,104 @@
   text-align: center;
 }
 
-.header {
-  padding-right: @body-padding;
-  padding-bottom: 30px;
-  padding-left: @body-padding;
+.detail-title-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px 16px;
   background-color: @white;
 
-  :global {
-    .ant-descriptions-title {
-      margin-bottom: 0;
+  .title-wrap {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+
+    .go-back-button {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      padding: 6px;
+      border-radius: @border-radius;
+      cursor: pointer;
+
+      &:hover {
+        background-color: @functional-hover-grey;
+      }
+    }
+
+    .title {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      .primary-h4();
+
+      .title-paragraph {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    .collapse-trigger {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      padding: 6px;
+      border-radius: @border-radius;
+      cursor: pointer;
+
+      &:hover {
+        background-color: @functional-hover-grey;
+      }
+    }
+
+    :global {
+      .ant-btn-link {
+        padding: 5.6px 15px !important;
+        border-color: @primary-color;
+      }
+
+      .ant-divider-vertical {
+        border-left: none;
+      }
+
+      .ant-btn-dangerous {
+        color: @danger-color;
+        background: transparent;
+        border-color: @danger-color;
+      }
+
+      .ant-btn-link[disabled],
+      .ant-btn-link[disabled]:hover,
+      .ant-btn-link[disabled]:focus,
+      .ant-btn-link[disabled]:active {
+        border-color: rgba(0, 0, 0, 25%);
+      }
+
+      .ant-btn-dangerous.ant-btn-link:active {
+        color: @danger-color;
+        background: transparent;
+        border-color: @danger-color;
+      }
+
+      .ant-btn-dangerous:hover,
+      .ant-btn-dangerous:focus {
+        color: @danger-color-hover;
+        background: @white;
+        border-color: @danger-color-hover;
+      }
     }
   }
 }
 
-.header-title {
-  font-style: italic;
-}
-
-.title-label {
-  margin-right: 8px;
-  font-style: italic;
-}
-
-.header-button {
-  float: right;
-}
-
-.header-divider {
-  width: 2px;
-  margin: 0 14px 0 24px;
-  background-color: @color-text-caption;
-}
-
 .tabs {
-  margin-top: -42px;
-
   :global {
     .ant-tabs-bar {
       padding-right: @body-padding;
@@ -112,7 +173,10 @@
     }
 
     .ant-tabs-nav-wrap {
-      padding-left: 30px;
+      margin: 0;
+      padding: 0 24px;
+      overflow-x: auto;
+      background-color: @white;
     }
   }
 }
@@ -123,48 +187,6 @@
   :global {
     .list-container {
       margin-top: 0;
-    }
-  }
-}
-
-.action-wrapper {
-  position: absolute;
-  right: 80px;
-
-  :global {
-    .ant-btn-link {
-      padding: 5.6px 15px !important;
-      border-color: @primary-color;
-    }
-
-    .ant-divider-vertical {
-      border-left: none;
-    }
-
-    .ant-btn-dangerous {
-      color: @danger-color;
-      background: transparent;
-      border-color: @danger-color;
-    }
-
-    .ant-btn-link[disabled],
-    .ant-btn-link[disabled]:hover,
-    .ant-btn-link[disabled]:focus,
-    .ant-btn-link[disabled]:active {
-      border-color: rgba(0, 0, 0, 25%);
-    }
-
-    .ant-btn-dangerous.ant-btn-link:active {
-      color: @danger-color;
-      background: transparent;
-      border-color: @danger-color;
-    }
-
-    .ant-btn-dangerous:hover,
-    .ant-btn-dangerous:focus {
-      color: @danger-color-hover;
-      background: @white;
-      border-color: @danger-color-hover;
     }
   }
 }

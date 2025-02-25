@@ -1,27 +1,50 @@
 @import '~styles/variables';
 
 .wrapper {
-  min-height: calc(100vh - 108px);
-  padding: 0 @body-padding;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 24px;
 }
 
 .collapse {
-  margin-bottom: 24px;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .panel {
-  margin-bottom: 24px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  font-size: larger;
-  background: #fff;
-}
+  background: @white;
+  border-radius: 2px;
 
-.header-divider {
-  width: 2px;
-  margin: 0 5px;
-  background-color: @color-text-caption;
+  .panel-title-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .panel-title-text {
+      .primary-body1();
+
+      color: @functional-title;
+      font-weight: @font-weight-semibold;
+
+      span {
+        margin-left: 12px;
+        color: @primary-color;
+        .primary-body4();
+      }
+    }
+  }
+
+  :global {
+    .ant-collapse-content-box {
+      padding: 0 0 16px !important;
+    }
+
+    .ant-table-container {
+      padding: 16px 24px;
+    }
+  }
 }
 
 .image {
@@ -32,15 +55,32 @@
 .radio-button {
   :global {
     .ant-radio-button-wrapper {
-      width: 250px;
-      height: 100px;
-      margin-right: 40px;
-      margin-bottom: 20px;
-      padding: 10px 6px;
+      width: fit-content;
+      height: fit-content;
+      padding: 16px;
+      border-radius: @border-radius;
+
+      &:not(:last-child) {
+        margin-right: 16px;
+      }
     }
   }
 }
 
-.security-group-text {
-  font-size: 12px;
+.radio-button-content {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  .primary-body4();
+
+  .icon {
+    flex-shrink: 0;
+    padding: 8px;
+  }
+
+  .button-text {
+    display: flex;
+    flex-direction: column;
+    padding: 4px 8px;
+  }
 }
