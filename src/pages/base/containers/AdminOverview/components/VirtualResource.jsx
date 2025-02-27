@@ -71,7 +71,7 @@ export class ResourceCircle extends Component {
           format={(percent) => `${percent}%`}
         />
         <div className={styles['chart-indicator']}>
-          <div className={styles['indivator-item-wrap']}>
+          <div className={styles['indicator-item-wrap']}>
             <div
               style={{
                 width: 12,
@@ -80,9 +80,11 @@ export class ResourceCircle extends Component {
                 backgroundColor: circleColor,
               }}
             />
-            {`${t('Used')}: ${used}`}
+            <span className={styles['indicator-item-text']}>
+              {`${t('Used')}: ${used}`}
+            </span>
           </div>
-          <div className={styles['indivator-item-wrap']}>
+          <div className={styles['indicator-item-wrap']}>
             <div
               style={{
                 width: 12,
@@ -91,7 +93,9 @@ export class ResourceCircle extends Component {
                 backgroundColor: '#a9afbc',
               }}
             />
-            {`${t('Unused')}: ${unUsed > 0 ? unUsed : '0'}`}
+            <span className={styles['indicator-item-text']}>
+              {`${t('Unused')}: ${unUsed > 0 ? unUsed : '0'}`}
+            </span>
           </div>
         </div>
       </div>

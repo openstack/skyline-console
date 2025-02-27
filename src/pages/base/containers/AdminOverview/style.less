@@ -32,12 +32,9 @@
         gap: 10px;
         align-items: center;
         padding: 8px;
-
-        span {
-          .primary-body2();
-
-          font-weight: @font-weight-medium;
-        }
+        color: @functional-text;
+        font-weight: @font-weight-semibold;
+        .primary-body2();
       }
     }
   }
@@ -98,6 +95,16 @@
             color: @functional-title;
             .primary-h5();
           }
+
+          :global {
+            .ant-badge-status-dot {
+              top: 0;
+            }
+
+            .ant-badge-status-text {
+              margin-left: 4px;
+            }
+          }
         }
       }
     }
@@ -126,11 +133,16 @@
         display: flex;
         gap: 8px;
 
-        .indivator-item-wrap {
+        .indicator-item-wrap {
           display: flex;
           flex-wrap: nowrap;
           gap: 2px;
           align-items: center;
+
+          .indicator-item-text {
+            color: @grey-700;
+            font-weight: @font-weight-medium;
+          }
         }
       }
     }
