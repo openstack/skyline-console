@@ -16,6 +16,7 @@ import React, { createRef } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Spin } from 'antd';
 import ApplicationSvgIcon from 'asset/cube/monochrome/applications.svg';
+import ChevronDownIcon from 'asset/cube/monochrome/chevron_down.svg';
 import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
 import ProjectSelect from './ProjectTable';
 import styles from './index.less';
@@ -86,6 +87,11 @@ export class ProjectDropdown extends React.Component {
           <ItemActionButtons
             ref={this.itemActionRef}
             actions={{ moreActions: [{ action: ProjectSelect }] }}
+          />
+          <ChevronDownIcon
+            className={styles['chevron-down-icon']}
+            width={10}
+            height={10}
           />
         </div>
         <span className={styles.domain}>{userDomainName}</span>

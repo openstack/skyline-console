@@ -70,7 +70,7 @@ export class GlobalNav extends React.Component {
     return (
       <>
         <div className={styles['global-nav-icon']} onClick={this.onToggleOpen}>
-          <MenuSvgIcon width={20} height={20} />
+          <MenuSvgIcon width={24} height={24} />
         </div>
         <Drawer
           title={t('Service List')}
