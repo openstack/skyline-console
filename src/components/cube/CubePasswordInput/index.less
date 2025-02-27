@@ -5,3 +5,11 @@
     border-radius: 0;
   }
 }
+
+:global {
+  .ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled) {
+    &:not(:hover):not(.ant-input-affix-wrapper-focused) {
+      border-color: @functional-border-darker;
+    }
+  }
+}

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import React, { Component } from 'react';
-import { Badge, Card, Col, List, Progress, Row, Spin, Tooltip } from 'antd';
+import { Badge, Col, List, Progress, Row, Spin, Tooltip } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { inject, observer } from 'mobx-react';
 import globalVolumeTypeStore from 'stores/cinder/volume-type';
@@ -21,6 +21,7 @@ import globalProjectStore from 'stores/keystone/project';
 import globalRootStore from 'stores/root';
 import { firewallEndpoint } from 'client/client/constants';
 import { isNumber } from 'lodash';
+import CubeCard from 'components/cube/CubeCard';
 import styles from '../style.less';
 
 const colors = {
@@ -302,23 +303,30 @@ export class QuotaOverview extends Component {
       (percent >= 90 && colors.full.color) ||
       (percent >= 80 && colors.danger.color) ||
       colors.normal.color;
-    let title = (
-      <span>
-        {i.text} : {used}
-      </span>
-    );
+
     const { server_group_members } = data;
+
+    let extraText = '';
+
     if (i.key === 'server_groups' && server_group_members) {
-      title = (
-        <span>
-          {title} ({t('Members of Each Group')} :
-          {server_group_members.limit === -1
-            ? t('Unlimit')
-            : server_group_members.limit}
-          )
-        </span>
-      );
+      const limitText =
+        server_group_members.limit === -1
+          ? t('Unlimit')
+          : server_group_members.limit;
+      extraText = ` (${t('Members of Each Group')}: ${limitText})`;
     }
+
+    const title = (
+      <p className={styles['label-text']}>
+        <span className={styles['item-title']}>{i.text}</span>
+        <span className={styles.semicolon}>:</span>
+        <span className={styles.usage}>
+          {used}
+          {extraText}
+        </span>
+      </p>
+    );
+
     return (
       <>
         <div className={styles['progress-title']}>{title}</div>
@@ -328,7 +336,7 @@ export class QuotaOverview extends Component {
           getPopupContainer={(node) => node.parentNode}
         >
           <Progress
-            style={{ marginTop: 13, marginBottom: 13 }}
+            style={{ marginTop: 4, marginBottom: 4 }}
             percent={percent}
             showInfo={false}
             strokeColor={strokeColor}
@@ -339,36 +347,35 @@ export class QuotaOverview extends Component {
   };
 
   renderQuotaCardList = () => {
-    const { isLoading } = this.state;
     return (
       <Row className={styles.content}>
         {this.quotaCardList.map((item) => (
-          <Col className={styles.card} span={24} key={item.type}>
-            <Card
-              title={item.text}
-              bordered={false}
-              loading={isLoading}
-              size="small"
+          <div key={item.type} className={styles['quota-card']}>
+            <div className={styles['card-title']}>{item.text}</div>
+            <div
+              className={styles['card-content']}
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+                gap: '16px',
+              }}
             >
-              <Row gutter={24}>{this.renderQuotaCardContent(item)}</Row>
-            </Card>
-          </Col>
+              {this.renderQuotaCardContent(item)}
+            </div>
+          </div>
         ))}
         {this.enableCinder ? (
-          <Col
-            className={styles.card}
-            span={24}
+          <div
             key={this.volumeTypesQuota.type}
+            className={styles['quota-card']}
           >
-            <Card
-              title={this.volumeTypesQuota.text}
-              bordered={false}
-              loading={isLoading}
-              size="small"
-            >
+            <div className={styles['card-title']}>
+              {this.volumeTypesQuota.text}
+            </div>
+            <div className={styles['card-content']}>
               {this.renderVolumeTypes()}
-            </Card>
-          </Col>
+            </div>
+          </div>
         ) : null}
       </Row>
     );
@@ -387,9 +394,11 @@ export class QuotaOverview extends Component {
 
   renderQuotaCard = (data, item = []) =>
     item.map((i) => (
-      <Col key={i.text} span={12}>
-        {this.getItemInfo(data, i)}
-      </Col>
+      <div key={i.text} className={styles['quota-column-container']}>
+        <div className={styles['quota-column']}>
+          {this.getItemInfo(data, i)}
+        </div>
+      </div>
     ));
 
   renderVolumeTypes = () => {
@@ -407,10 +416,11 @@ export class QuotaOverview extends Component {
           size: 'small',
         }}
         dataSource={this.volumeTypesQuota.value}
+        className={styles['quota-column-container']}
         renderItem={(item) => (
           <Row key={item.index} gutter={[16]}>
             {item.value.map((i) => (
-              <Col span={8} key={i.text}>
+              <Col span={8} key={i.text} className={styles['quota-column']}>
                 {this.getItemInfo(this.projectStore.quota, i)}
               </Col>
             ))}
@@ -423,25 +433,27 @@ export class QuotaOverview extends Component {
   render() {
     const { isLoading } = this.state;
     return (
-      <Card
-        className={styles.bottom}
-        bodyStyle={{ padding: 0 }}
+      <CubeCard
         loading={isLoading}
-        headStyle={{ paddingLeft: '20px' }}
         title={
-          <div className={styles.title}>
-            <span className={styles.text}>{t('Quota Overview')}</span>
-            {Object.keys(colors).map((key) => (
-              <span key={key} className={styles.badge}>
-                <Badge color={colors[key].color} text={colors[key].text} />
-              </span>
-            ))}
+          <div className={styles['quota-overview-card-title']}>
+            {t('Quota Overview')}
+            <div className={styles['status-badge-list']}>
+              {Object.keys(colors).map((key) => (
+                <Badge
+                  key={key}
+                  className={styles['status-badge']}
+                  color={colors[key].color}
+                  text={colors[key].text}
+                />
+              ))}
+            </div>
           </div>
         }
         extra={this.quotaAction}
       >
         {this.renderQuotaCardList()}
-      </Card>
+      </CubeCard>
     );
   }
 }
