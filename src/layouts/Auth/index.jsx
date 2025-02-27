@@ -16,10 +16,7 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import renderRoutes from 'utils/RouterConfig';
 import SelectLang from 'components/SelectLang';
-
-import logo from 'asset/image/logo.png';
-import loginFullImage from 'asset/image/login-full.png';
-import loginRightLogo from 'asset/image/loginRightLogo.png';
+import logo from 'asset/cube/custom/logo-cube-cos.png';
 import styles from './index.less';
 
 export class AuthLayout extends Component {
@@ -30,21 +27,7 @@ export class AuthLayout extends Component {
   }
 
   renderRight() {
-    return (
-      <div className={styles.right}>
-        <img
-          alt=""
-          className={styles['login-full-image']}
-          src={loginFullImage}
-        />
-        <div className={styles['full-image-front']} />
-        <img
-          src={loginRightLogo}
-          alt=""
-          className={styles['login-right-logo']}
-        />
-      </div>
-    );
+    return <div className={styles.right} />;
   }
 
   render() {
