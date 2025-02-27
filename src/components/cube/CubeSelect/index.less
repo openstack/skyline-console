@@ -5,3 +5,11 @@
   align-items: center;
   color: @functional-border-darker;
 }
+
+:global {
+  .ant-select:not(.ant-select-disabled):not(.ant-select-open):not(:hover) {
+    .ant-select-selector {
+      border-color: @functional-border-darker;
+    }
+  }
+}

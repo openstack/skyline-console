@@ -1,5 +1,6 @@
 import React, { Component, createRef } from 'react';
 import { Input } from 'antd';
+import './index.less';
 
 export default class CubeInput extends Component {
   constructor(props) {
