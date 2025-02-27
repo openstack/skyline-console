@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React, { Component, forwardRef } from 'react';
+import React, { Component } from 'react';
 import { inject } from 'mobx-react';
 import { Menu, Dropdown, Button, Divider } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
@@ -242,20 +242,18 @@ function getActionList(actions, item, containerProps) {
   };
 }
 
-class ItemActionButtonsInner extends Component {
+export class ItemActionButtons extends Component {
   constructor(props) {
     super(props);
     this.actionList = [];
     this.firstAction = null;
     this.moreActions = [];
-    this._isMounted = false;
     this.state = {
       results: [],
     };
   }
 
-  componentDidMount() {
-    this._isMounted = true;
+  async componentDidMount() {
     const { item, containerProps } = this.props;
     this.updateResult(item, containerProps);
   }
@@ -271,10 +269,6 @@ class ItemActionButtonsInner extends Component {
       return true;
     }
     return false;
-  }
-
-  componentWillUnmount() {
-    this._isMounted = false;
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -308,9 +302,9 @@ class ItemActionButtonsInner extends Component {
       containerProps,
       isAdminPage,
     });
-    if (this._isMounted) {
-      this.setState({ results });
-    }
+    this.setState({
+      results,
+    });
   }
 
   render() {
@@ -322,33 +316,24 @@ class ItemActionButtonsInner extends Component {
       onClickAction,
       onCancelAction,
       isWide,
-      innerRef,
     } = this.props;
-
     const { results } = this.state;
-
     return (
-      <div ref={innerRef}>
-        <DropdownActionButton
-          onFinishAction={onFinishAction}
-          onCancelAction={onCancelAction}
-          firstAction={this.firstAction}
-          moreActions={this.moreActions}
-          alloweds={results}
-          item={item}
-          routing={this.routing}
-          containerProps={containerProps}
-          firstActionClassName={firstActionClassName}
-          onClickAction={onClickAction}
-          isWide={isWide}
-        />
-      </div>
+      <DropdownActionButton
+        onFinishAction={onFinishAction}
+        onCancelAction={onCancelAction}
+        firstAction={this.firstAction}
+        moreActions={this.moreActions}
+        alloweds={results}
+        item={item}
+        routing={this.routing}
+        containerProps={containerProps}
+        firstActionClassName={firstActionClassName}
+        onClickAction={onClickAction}
+        isWide={isWide}
+      />
     );
   }
 }
 
-const InjectedItemActionButtons = inject('rootStore')(ItemActionButtonsInner);
-
-export default forwardRef((props, ref) => (
-  <InjectedItemActionButtons {...props} innerRef={ref} />
-));
+export default inject('rootStore')(ItemActionButtons);

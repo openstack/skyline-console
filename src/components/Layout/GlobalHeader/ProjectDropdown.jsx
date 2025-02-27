@@ -22,7 +22,7 @@ import ProjectSelect from './ProjectTable';
 import styles from './index.less';
 
 export class ProjectDropdown extends React.Component {
-  itemActionRef = createRef();
+  projectSwitchBtnRef = createRef();
 
   get user() {
     const { user } = this.props.rootStore;
@@ -44,18 +44,11 @@ export class ProjectDropdown extends React.Component {
     };
   }
 
-  handleButtonClick = () => {
-    if (this.itemActionRef.current) {
-      const button = this.itemActionRef.current.querySelector('button');
-      if (button) {
-        button.click();
-      }
-    }
-  };
-
   handleKeyDown = (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
-      this.handleButtonClick();
+      const antButton =
+        this.projectSwitchBtnRef.current?.querySelector('button');
+      antButton?.click();
     }
   };
 
@@ -76,16 +69,15 @@ export class ProjectDropdown extends React.Component {
     return (
       <div className={styles.project} id="project-switch">
         <div
+          ref={this.projectSwitchBtnRef}
           className="project-switch-btn"
           role="button"
           tabIndex={0}
-          onClick={this.handleButtonClick}
           onKeyDown={this.handleKeyDown}
         >
           <ApplicationSvgIcon width={16} height={16} />
           {projectName}
           <ItemActionButtons
-            ref={this.itemActionRef}
             actions={{ moreActions: [{ action: ProjectSelect }] }}
           />
           <ChevronDownIcon
