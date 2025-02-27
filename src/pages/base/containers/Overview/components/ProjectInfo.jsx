@@ -36,6 +36,7 @@ export class ProjectInfo extends Component {
     return (
       <div className={styles['project-column']}>
         <div className={styles['column-label']}>{t('User Account')}</div>
+        <span className={styles['column-semicolon']}>:</span>
         <div className={styles['column-text']}>{this.currentUser.name}</div>
       </div>
     );
@@ -45,6 +46,7 @@ export class ProjectInfo extends Component {
     return (
       <div className={styles['project-column']}>
         <div className={styles['column-label']}>{t('My Role')}</div>
+        <span className={styles['column-semicolon']}>:</span>
         <div className={styles['column-text']}>
           {this.roles.map((item) => item.name).join(', ')}
         </div>
@@ -56,6 +58,7 @@ export class ProjectInfo extends Component {
     return (
       <div className={styles['project-column']}>
         <div className={styles['column-label']}>{t('Affiliated Domain')}</div>
+        <span className={styles['column-semicolon']}>:</span>
         <div className={styles['column-text']}>
           {this.currentUser.domain.name}
         </div>

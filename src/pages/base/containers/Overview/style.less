@@ -52,8 +52,9 @@
         .card-title {
           padding-top: 8px;
           padding-bottom: 8px;
-          font-weight: 600;
           .primary-body2();
+
+          font-weight: @font-weight-semibold;
         }
 
         .card-content {
@@ -69,8 +70,14 @@
                 text-overflow: ellipsis;
                 .primary-body4();
 
-                span {
-                  font-weight: @font-weight-regular;
+                .item-title {
+                  font-weight: @font-weight-medium;
+                }
+
+                .semicolon {
+                  margin-right: 8px;
+                  margin-left: 6px;
+                  color: @functional-text-light;
                 }
               }
             }
@@ -92,16 +99,24 @@
       }
 
       .project-column {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        display: flex;
+        align-items: center;
         padding-top: 8px;
         padding-bottom: 8px;
 
         .column-label {
+          width: 108px;
           .primary-body4();
 
           color: @functional-title;
           font-weight: 500;
+        }
+
+        .column-semicolon {
+          .primary-body4();
+
+          margin-right: 8px;
+          color: @functional-text-light;
         }
 
         .column-text {
@@ -154,5 +169,35 @@
     color: @primary-color;
     font-size: 12px;
     cursor: pointer;
+  }
+}
+
+.quota-overview-card-title {
+  display: flex;
+  align-items: center;
+  column-gap: 24px;
+}
+
+.status-badge-list {
+  display: flex;
+  align-items: center;
+  column-gap: 16px;
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  .primary-body5();
+
+  font-weight: @font-weight-medium;
+
+  :global {
+    .ant-badge-status-dot {
+      top: 0;
+    }
+
+    .ant-badge-status-text {
+      margin-left: 4px;
+    }
   }
 }

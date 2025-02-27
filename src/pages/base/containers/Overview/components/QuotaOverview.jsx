@@ -304,27 +304,29 @@ export class QuotaOverview extends Component {
       (percent >= 80 && colors.danger.color) ||
       colors.normal.color;
 
-    let title = (
+    const { server_group_members } = data;
+
+    let extraText = '';
+
+    if (i.key === 'server_groups' && server_group_members) {
+      const limitText =
+        server_group_members.limit === -1
+          ? t('Unlimit')
+          : server_group_members.limit;
+      extraText = ` (${t('Members of Each Group')}: ${limitText})`;
+    }
+
+    const title = (
       <p className={styles['label-text']}>
-        {i.text} : <span className={styles.usage}>{used}</span>
+        <span className={styles['item-title']}>{i.text}</span>
+        <span className={styles.semicolon}>:</span>
+        <span className={styles.usage}>
+          {used}
+          {extraText}
+        </span>
       </p>
     );
 
-    const { server_group_members } = data;
-
-    if (i.key === 'server_groups' && server_group_members) {
-      title = (
-        <p className={styles['label-text']}>
-          {title} ({t('Members of Each Group')} :{' '}
-          <span className={styles.usage}>
-            {server_group_members.limit === -1
-              ? t('Unlimit')
-              : server_group_members.limit}
-            )
-          </span>
-        </p>
-      );
-    }
     return (
       <>
         <div className={styles['progress-title']}>{title}</div>
@@ -434,12 +436,13 @@ export class QuotaOverview extends Component {
       <CubeCard
         loading={isLoading}
         title={
-          <div style={{ display: 'flex', gap: '24px' }}>
+          <div className={styles['quota-overview-card-title']}>
             {t('Quota Overview')}
-            <div style={{ display: 'flex', gap: '16px' }}>
+            <div className={styles['status-badge-list']}>
               {Object.keys(colors).map((key) => (
                 <Badge
                   key={key}
+                  className={styles['status-badge']}
                   color={colors[key].color}
                   text={colors[key].text}
                 />
