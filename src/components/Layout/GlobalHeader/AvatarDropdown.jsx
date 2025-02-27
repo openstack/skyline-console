@@ -15,8 +15,8 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { Menu, Spin, Button, Select } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
 import i18n from 'core/i18n';
+import UserSvgIcon from 'asset/cube/monochrome/user.svg';
 import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
 import Password from './Password';
 import Token from './Token';
@@ -187,7 +187,7 @@ export class AvatarDropdown extends React.Component {
         <div className={`${styles.action}`}>
           <Button
             shape="circle"
-            icon={<UserOutlined />}
+            icon={<UserSvgIcon width={16} height={16} />}
             className={styles.avatar}
           />
         </div>

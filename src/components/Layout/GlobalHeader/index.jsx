@@ -13,11 +13,11 @@
 // limitations under the License.
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 import classnames from 'classnames';
+import { Link } from 'react-router-dom';
 import { getPath } from 'utils/route-map';
-import CloudLogoSvgIcon from 'asset/image/cloud-logo.svg';
-import CloudLogoWhiteSvgIcon from 'asset/image/cloud-logo-white.svg';
+import cubeCosLogo from 'asset/cube/custom/logo-cube-cos.png';
+import skylineLogo from 'asset/cube/custom/logo-skyline.png';
 import GlobalNav from '../GlobalNav';
 import ProjectDropdown from './ProjectDropdown';
 import RightContent from './RightContent';
@@ -36,15 +36,21 @@ export default function HeaderContent(props) {
 
   const renderLogo = () => {
     const homeUrl = getRoutePath('overview');
-    const LogoComponent =
-      GLOBAL_VARIABLES.skylineThemeName === 'default'
-        ? CloudLogoSvgIcon
-        : CloudLogoWhiteSvgIcon;
-
     return (
       <div className={classnames(styles.logo)}>
         <Link to={homeUrl}>
-          <LogoComponent className={styles.logoImage} />
+          <img
+            src={cubeCosLogo}
+            alt="logo-cube-cos"
+            className={styles['logo-image']}
+          />
+        </Link>
+        <Link to={homeUrl}>
+          <img
+            src={skylineLogo}
+            alt="logo-skyline"
+            className={styles['logo-image']}
+          />
         </Link>
       </div>
     );
@@ -52,10 +58,18 @@ export default function HeaderContent(props) {
 
   return (
     <div className={styles.header}>
-      <GlobalNav navItems={navItems} />
-      {renderLogo()}
-      {!isAdminPage && <ProjectDropdown />}
-      <RightContent {...props} />
+      <div className={styles['header-left']}>
+        <GlobalNav navItems={navItems} />
+        {renderLogo()}
+      </div>
+      <div
+        className={
+          isAdminPage ? styles['header-right-admin'] : styles['header-right']
+        }
+      >
+        {!isAdminPage && <ProjectDropdown />}
+        <RightContent {...props} />
+      </div>
     </div>
   );
 }

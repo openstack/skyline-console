@@ -15,10 +15,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Input } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
+import SearchSvgIcon from 'asset/cube/monochrome/search.svg';
 import { navItemPropType } from '../common';
-
 import styles from './index.less';
 
 export default class Right extends React.Component {
@@ -113,7 +112,7 @@ export default class Right extends React.Component {
     return (
       <div className={styles.search}>
         <Input
-          prefix={<SearchOutlined />}
+          prefix={<SearchSvgIcon width={12} height={12} />}
           placeholder={t('Search')}
           allowClear
           onChange={this.onInputChange}

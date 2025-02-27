@@ -13,15 +13,14 @@
 // limitations under the License.
 
 import React from 'react';
-import { observer } from 'mobx-react';
-import { CloseOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
+import { observer } from 'mobx-react';
 import { Drawer } from 'antd';
-import menuIcon from 'asset/image/global-menu.png';
+import MenuSvgIcon from 'asset/cube/monochrome/menu.svg';
+import CloseSvgIcon from 'asset/cube/monochrome/x.svg';
 import { navItemPropType } from './common';
 import Left from './Left';
 import Right from './Right';
-
 import styles from './index.less';
 
 export class GlobalNav extends React.Component {
@@ -71,11 +70,7 @@ export class GlobalNav extends React.Component {
     return (
       <>
         <div className={styles['global-nav-icon']} onClick={this.onToggleOpen}>
-          <img
-            src={menuIcon}
-            alt="menu-icon"
-            className={styles['global-nav-icon-icon']}
-          />
+          <MenuSvgIcon width={24} height={24} />
         </div>
         <Drawer
           title={t('Service List')}
@@ -106,7 +101,7 @@ export class GlobalNav extends React.Component {
           mask
           width={productsColumnWidth * 4}
           maskStyle={{ backgroundColor: 'transparent' }}
-          closeIcon={<CloseOutlined style={{ fontSize: '20px' }} />}
+          closeIcon={<CloseSvgIcon width={20} height={20} />}
         >
           <div className={styles.main}>
             <Right items={navItems} onClose={this.onClose} />

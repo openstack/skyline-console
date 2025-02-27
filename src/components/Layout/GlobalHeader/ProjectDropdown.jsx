@@ -12,15 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
+import React, { createRef } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Spin, Divider } from 'antd';
-import { AppstoreOutlined, SwapOutlined } from '@ant-design/icons';
+import { Spin } from 'antd';
+import ApplicationSvgIcon from 'asset/cube/monochrome/applications.svg';
+import ChevronDownIcon from 'asset/cube/monochrome/chevron_down.svg';
 import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
-import styles from './index.less';
 import ProjectSelect from './ProjectTable';
+import styles from './index.less';
 
 export class ProjectDropdown extends React.Component {
+  projectSwitchBtnRef = createRef();
+
   get user() {
     const { user } = this.props.rootStore;
     return user;
@@ -41,6 +44,14 @@ export class ProjectDropdown extends React.Component {
     };
   }
 
+  handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      const antButton =
+        this.projectSwitchBtnRef.current?.querySelector('button');
+      antButton?.click();
+    }
+  };
+
   render() {
     if (!this.user) {
       return (
@@ -57,14 +68,24 @@ export class ProjectDropdown extends React.Component {
     const { projectName, userDomainName } = this.project;
     return (
       <div className={styles.project} id="project-switch">
-        <ItemActionButtons
-          actions={{ moreActions: [{ action: ProjectSelect }] }}
-        />
-        <AppstoreOutlined style={{ marginRight: 10 }} />
-        {/* style={{ display: 'inline-block', width: '115px' }} */}
-        <span>{projectName}</span>
-        <SwapOutlined style={{ color: '#A3A3A3', marginLeft: 24 }} />
-        <Divider type="vertical" />
+        <div
+          ref={this.projectSwitchBtnRef}
+          className="project-switch-btn"
+          role="button"
+          tabIndex={0}
+          onKeyDown={this.handleKeyDown}
+        >
+          <ApplicationSvgIcon width={16} height={16} />
+          {projectName}
+          <ItemActionButtons
+            actions={{ moreActions: [{ action: ProjectSelect }] }}
+          />
+          <ChevronDownIcon
+            className={styles['chevron-down-icon']}
+            width={10}
+            height={10}
+          />
+        </div>
         <span className={styles.domain}>{userDomainName}</span>
       </div>
     );
