@@ -71,22 +71,28 @@
   gap: 8px;
 
   :global {
-    .ant-btn-dangerous {
-      color: @table-header-danger-button-color;
+    .ant-btn {
+      svg {
+        width: 14px;
+        height: 14px;
+      }
     }
 
-    .ant-btn-dangerous:hover {
-      color: @error-color;
-      border-color: @error-color;
+    .ant-btn-dangerous:not(:disabled) {
+      color: @cosmos-primary;
+      background-color: @grey-0;
+      border-color: @cosmos-primary;
+
+      &:hover {
+        color: #7893ff;
+        border-color: #7893ff;
+      }
     }
 
-    .ant-btn[disabled],
-    .ant-btn[disabled]:hover,
-    .ant-btn[disabled]:focus,
-    .ant-btn[disabled]:active {
-      color: @table-header-disable-button-color;
-      background: @table-header-disable-button-background;
-      border-color: @table-header-disable-button-border;
+    .ant-btn-primary.ant-dropdown-trigger:not(:disabled) {
+      color: @functional-text;
+      background-color: @grey-0;
+      border-color: @functional-border-darker;
     }
   }
 }
