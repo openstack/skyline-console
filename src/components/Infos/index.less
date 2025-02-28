@@ -14,13 +14,20 @@
     .primary-body4();
 
     .label {
+      display: flex;
       grid-column: 1 span;
+      justify-content: space-between;
       color: @functional-text-light;
+    }
+
+    .colon {
+      margin-right: 4px;
     }
 
     .content {
       grid-column: 2 span;
       color: @functional-text;
+      .primary-body4();
     }
   }
 }

@@ -319,7 +319,7 @@ export class QuotaOverview extends Component {
     const title = (
       <p className={styles['label-text']}>
         <span className={styles['item-title']}>{i.text}</span>
-        <span className={styles.semicolon}>:</span>
+        <span className={styles.colon}>:</span>
         <span className={styles.usage}>
           {used}
           {extraText}

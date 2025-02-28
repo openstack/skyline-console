@@ -19,7 +19,8 @@
   }
 
   .vm-interface {
-    display: inline-block;
+    display: flex;
+    align-items: flex-end;
     margin-left: 35px;
     padding-bottom: 20px;
 
@@ -43,9 +44,9 @@
     border-radius: 4px;
 
     .vm-icon {
-      display: inline;
-      padding-right: @lg-space;
-      font-size: 25px;
+      width: 52px;
+      height: 52px;
+      padding: 8px;
     }
 
     .vm-status {
@@ -58,15 +59,27 @@
     }
 
     .vm-info {
-      display: inline;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
 
       .info-item {
-        padding-bottom: @min-space;
+        display: flex;
+        align-items: center;
+        padding: 4px 8px;
+        color: @functional-text;
+        .primary-body4();
 
         .info-item-icon {
-          display: inline;
+          width: 16px;
           height: 16px;
-          padding-right: @min-space;
+          margin-right: 8px;
+        }
+
+        :global {
+          .ant-badge {
+            padding-left: 2px;
+          }
         }
       }
 
@@ -78,6 +91,7 @@
 
   .vm-volume {
     display: flex;
+    margin-top: -12px;
 
     .volume-inline {
       width: 36px;
@@ -87,6 +101,12 @@
 
     .volume-content {
       flex: 1;
+
+      :global {
+        .ant-btn-link span {
+          max-width: 200px;
+        }
+      }
 
       .attached-volume {
         display: flex;
@@ -101,6 +121,7 @@
         .attached-volume-content {
           display: flex;
           flex: 1;
+          align-items: center;
           padding: @mid-space;
           background-color: @resource-box-bg;
           border: @resource-box-border;
@@ -119,6 +140,13 @@
 
               .info-key {
                 margin-right: @min-space;
+                font-weight: @font-weight-medium;
+                .primary-body4();
+              }
+
+              .volume-info-value {
+                color: @functional-text;
+                .primary-body4();
               }
             }
 

@@ -27,7 +27,10 @@ const Infos = ({ title, descriptions, loading }) => {
         }
         return (
           <div key={`label-${generateId()}`} className={styles.item}>
-            <div className={styles.label}>{item.label}</div>
+            <div className={styles.label}>
+              <span>{item.label}</span>
+              <span className={styles.colon}>:</span>
+            </div>
             <div className={styles.content}>{item.content}</div>
           </div>
         );

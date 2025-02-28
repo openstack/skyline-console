@@ -89,11 +89,11 @@ const renderTitle = (title, tooltip, button) => (
 const renderLabel = (option) => {
   const { label, tooltip = '' } = option;
   if (!tooltip) {
-    return label;
+    return <span className={styles.label}>{label}</span>;
   }
   return (
     <Tooltip title={tooltip}>
-      <span>{label}</span>
+      <span className={styles.label}>{label}</span>
     </Tooltip>
   );
 };

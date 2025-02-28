@@ -20,7 +20,7 @@ import { Col, Row, Button } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
 import VolumeSvgIcon from 'asset/image/volume.svg';
-import InstanceSvgIcon from 'asset/image/instance.svg';
+import InstanceSvgIcon from 'asset/image/instance_thin.svg';
 import InterfaceSvgIcon from 'asset/image/interface.svg';
 import {
   instanceStatus,
@@ -319,16 +319,25 @@ export class BaseDetail extends Base {
           <div style={{ marginBottom: 8 }}>
             {info.networkName} ( {info.name} ){' '}
           </div>
-          <div>
-            <InterfaceSvgIcon
-              width={28}
-              height={28}
-              style={{ paddingLeft: 6, marginRight: 10 }}
-            />
-            <div style={{ display: 'inline-table' }}>
-              {info.address.map((it) => (
-                <div key={`${it}-${index}`}>{it}</div>
-              ))}
+          <div style={{ height: '28px', position: 'relative' }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                position: 'absolute',
+                bottom: '-12px',
+              }}
+            >
+              <InterfaceSvgIcon
+                width={28}
+                height={28}
+                style={{ paddingLeft: 6, marginRight: 10 }}
+              />
+              <div style={{ display: 'inline-table' }}>
+                {info.address.map((it) => (
+                  <div key={`${it}-${index}`}>{it}</div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -378,7 +387,11 @@ export class BaseDetail extends Base {
       const volumeInfos = [
         {
           label: item.disk_tag === 'os_disk' ? t('Root Disk') : t('Data Disk'),
-          value: item.name || '-',
+          value: (
+            <span className={styles['volume-info-value']}>
+              {item.name || '-'}
+            </span>
+          ),
         },
         {
           label: t('ID'),
@@ -386,15 +399,27 @@ export class BaseDetail extends Base {
         },
         {
           label: t('Size'),
-          value: item.size ? `${item.size}GiB` : '-',
+          value: (
+            <span className={styles['volume-info-value']}>
+              {item.size ? `${item.size}GiB` : '-'}
+            </span>
+          ),
         },
         {
           label: t('Volume Type'),
-          value: item.volume_type || '-',
+          value: (
+            <span className={styles['volume-info-value']}>
+              {item.volume_type || '-'}
+            </span>
+          ),
         },
         {
           label: t('Create Time'),
-          value: getSinceTime(item.created_at) || '-',
+          value: (
+            <span className={styles['volume-info-value']}>
+              {getSinceTime(item.created_at) || '-'}
+            </span>
+          ),
         },
       ];
       const volumeInfoItem = volumeInfos.map((info) => (
@@ -428,16 +453,23 @@ export class BaseDetail extends Base {
         <div className={styles['volume-inline']} />
         <div className={styles['volume-content']}>
           {attachedVolumes}
-          <div>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
             <div className={styles['attach-action-line']} />
             {/* <a onClick={this.info}>{t('Attach volume')}</a> */}
-            <ItemActionButtons
-              actions={this.volumeActions}
-              onFinishAction={this.handleRefreshVolume}
-              item={this.detailData}
-              containerProps={this.props}
-              firstActionClassName={styles['attach-btn']}
-            />
+            <div style={{ marginTop: '20px' }}>
+              <ItemActionButtons
+                actions={this.volumeActions}
+                onFinishAction={this.handleRefreshVolume}
+                item={this.detailData}
+                containerProps={this.props}
+                firstActionClassName={styles['attach-btn']}
+              />
+            </div>
           </div>
         </div>
       </Row>
@@ -476,7 +508,6 @@ export class BaseDetail extends Base {
       <Button
         size="small"
         type="default"
-        shape="circle"
         style={{ marginLeft: 16 }}
         onClick={() => refreshDetail()}
         icon={<SyncOutlined />}
