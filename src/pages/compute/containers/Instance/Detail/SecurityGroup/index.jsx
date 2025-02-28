@@ -13,31 +13,22 @@
 // limitations under the License.
 
 import React from 'react';
+import classnames from 'classnames';
 import { observer, inject } from 'mobx-react';
 import { toJS } from 'mobx';
-import globalServerStore from 'stores/nova/instance';
-import {
-  Button,
-  Table,
-  Collapse,
-  Divider,
-  Col,
-  Row,
-  Radio,
-  Spin,
-  Tabs,
-} from 'antd';
+import { Table, Collapse, Radio, Spin, Tabs } from 'antd';
+import LayerSvgIcon from 'asset/cube/monochrome/layer.svg';
+import CaretRightSvgIcon from 'asset/cube/monochrome/caret_right.svg';
+import CaretDownSvgIcon from 'asset/cube/monochrome/caret_down.svg';
 import PrimaryActionButtons from 'components/Tables/Base/PrimaryActionButtons';
-import classnames from 'classnames';
-import interfaceImg from 'asset/image/interface.png';
-import { CaretRightOutlined } from '@ant-design/icons';
 import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
 import { getSelfColumns } from 'resources/neutron/security-group-rule';
 import { isAdminPage } from 'utils/index';
 import { getPath } from 'utils/route-map';
-import styles from './index.less';
+import globalServerStore from 'stores/nova/instance';
 import Detach from './action/Detach';
 import ManageSecurityGroup from './action/ManageSecurityGroup';
+import styles from './index.less';
 
 const { Panel } = Collapse;
 const { TabPane } = Tabs;
@@ -110,26 +101,21 @@ export class SecurityGroup extends React.Component {
       filterData,
     };
     return (
-      <div>
-        <Row>
-          <Col span={22}>
-            <span>{t('Security Group')}</span>
-            <Divider type="vertical" className={styles['header-divider']} />
-            <Button type="link">{item.name}</Button>
-          </Col>
-          <Col span={2}>
-            {filterData.length !== 1 && this.showActions ? (
-              <ItemActionButtons
-                actions={{ firstAction: Detach }}
-                onFinishAction={this.actionCallback}
-                item={newItem}
-                containerProps={this.props}
-              >
-                {t('Detach')}
-              </ItemActionButtons>
-            ) : null}
-          </Col>
-        </Row>
+      <div className={styles['panel-title-container']}>
+        <div className={styles['panel-title-text']}>
+          {t('Security Group')}
+          <span className={styles.name}>{item.name}</span>
+        </div>
+        {filterData.length !== 1 && this.showActions ? (
+          <ItemActionButtons
+            actions={{ firstAction: Detach }}
+            onFinishAction={this.actionCallback}
+            item={newItem}
+            containerProps={this.props}
+          >
+            {t('Detach')}
+          </ItemActionButtons>
+        ) : null}
       </div>
     );
   }
@@ -143,8 +129,8 @@ export class SecurityGroup extends React.Component {
     );
     return (
       <Panel
-        header={this.renderPanelTitle(item, index)}
         key={item.id}
+        header={this.renderPanelTitle(item, index)}
         className={styles.panel}
       >
         <Tabs defaultActiveKey={`${item.id}-1`}>
@@ -179,21 +165,16 @@ export class SecurityGroup extends React.Component {
         onClick={() => this.filterSecurityGroup(item)}
         value={index}
       >
-        <div>
-          <Row>
-            <Col span={8}>
-              <img className={styles.image} alt="example" src={interfaceImg} />
-            </Col>
-            <Col span={16}>
-              {/* <span style={{ fontSize: 20 }}>Interface</span> */}
-              <div style={{ fontSize: 12 }}>
-                {t('Interface Name:')} {item.id.substring(0, 8)}{' '}
-              </div>
-              <div className={styles['security-group-text']}>
-                {t('Security Group Num:')} {item.security_groups.length}
-              </div>
-            </Col>
-          </Row>
+        <div className={styles['radio-button-content']}>
+          <div className={styles.icon}>
+            <LayerSvgIcon width={36} height={36} />
+          </div>
+          <div className={styles['button-text']}>
+            {t('Interface Name:')} {item.id.substring(0, 8)}
+            <span>
+              {t('Security Group Num:')} {item.security_groups.length}
+            </span>
+          </div>
         </div>
       </Radio.Button>
     );
@@ -222,8 +203,9 @@ export class SecurityGroup extends React.Component {
           </Radio.Group>
         </Spin>
         {this.showActions && port_security_enabled && (
-          <div style={{ marginBottom: 20, marginTop: 20 }}>
+          <div>
             <PrimaryActionButtons
+              isCreateIcon={false}
               primaryActions={[ManageSecurityGroup]}
               onFinishAction={this.actionCallback}
               containerProps={{
@@ -235,7 +217,6 @@ export class SecurityGroup extends React.Component {
             >
               {t('Attach Security Group')}
             </PrimaryActionButtons>
-            {/* <Button type="primary" shape="circle" size={5} onClick={this.refresh}>{t('Attach Security Group')}</Button> */}
           </div>
         )}
         {filterData && filterData.length ? (
@@ -245,7 +226,10 @@ export class SecurityGroup extends React.Component {
               accordion
               bordered={false}
               expandIcon={({ isActive }) => (
-                <CaretRightOutlined rotate={isActive ? 90 : 0} />
+                <div>
+                  {!isActive && <CaretRightSvgIcon width={16} height={16} />}
+                  {isActive && <CaretDownSvgIcon width={16} height={16} />}
+                </div>
               )}
             >
               {filterData.map((item, index) => this.renderPanel(item, index))}

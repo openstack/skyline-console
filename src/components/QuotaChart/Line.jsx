@@ -15,6 +15,7 @@
 import React from 'react';
 import { Progress, Tooltip } from 'antd';
 import { typeColors, getUsedValueColor } from './Ring';
+import styles from './index.less';
 
 export default function Line(props) {
   const {
@@ -42,11 +43,12 @@ export default function Line(props) {
   const allPercent = parseInt((allCount / limit) * 100, 10);
   const usedPercent = parseInt(((used + reserved) / limit) * 100, 10);
   const usedColor = getUsedValueColor(allPercent);
+
   const resourceTitle = (
-    <span>
-      {`${title} ${secondTitle}: `}{' '}
+    <div>
+      <span className={styles.title}> {`${title} ${secondTitle}: `} </span>
       <span style={{ color: usedColor }}>{`${allCount}/${limitStr}`}</span>
-    </span>
+    </div>
   );
 
   const progress = isLimit ? (
@@ -61,10 +63,8 @@ export default function Line(props) {
   );
 
   return (
-    <div style={{ width: 150 }}>
-      <div style={{ fontWeight: 'bold', textAlign: 'center' }}>
-        {resourceTitle}
-      </div>
+    <div className={styles['quota-text-wrap']}>
+      {resourceTitle}
       <Tooltip title={tipTitle}>{progress}</Tooltip>
     </div>
   );

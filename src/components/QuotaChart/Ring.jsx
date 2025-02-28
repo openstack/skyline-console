@@ -143,6 +143,7 @@ export default function Ring(props) {
             fontSize: titleFontSize,
             fill: '#000',
             textAlign: 'center',
+            fontFamily: 'Inter',
           }}
         />
         <Annotation.Text
@@ -153,6 +154,7 @@ export default function Ring(props) {
             fontSize: 14,
             fill: '#000',
             textAlign: 'center',
+            fontFamily: 'Inter',
           }}
         />
         <Annotation.Text
@@ -163,7 +165,7 @@ export default function Ring(props) {
             fontSize: 14,
             fill: getUsedValueColor(percent),
             textAlign: 'center',
-            fontWeight: 'bold',
+            fontFamily: 'Inter',
           }}
         />
       </View>

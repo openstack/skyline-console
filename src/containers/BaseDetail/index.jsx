@@ -14,7 +14,7 @@
 
 import React from 'react';
 import classnames from 'classnames';
-import Card from 'components/DetailCard';
+import DetailCard from 'components/DetailCard';
 import { toJS } from 'mobx';
 import { has } from 'lodash';
 import { isAdminPage } from 'utils/index';
@@ -137,9 +137,8 @@ export default class BaseDetail extends React.Component {
         return render();
       }
       return (
-        <Card
+        <DetailCard
           key={`card-left-${index}`}
-          className="detail-left-card"
           data={sourceData || this.detailData}
           title={title}
           titleHelp={titleHelp}
@@ -167,7 +166,7 @@ export default class BaseDetail extends React.Component {
         contentCol = 24 - realLabelCol;
       }
       return (
-        <Card
+        <DetailCard
           key={`card-right-${index}`}
           className={classnames('detail-right-card', className)}
           data={this.detailData}

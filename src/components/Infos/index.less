@@ -1,15 +1,33 @@
-.item {
-  margin-bottom: 10px;
-  background-color: #fff;
+@import '~styles/variables';
 
-  :global {
-    .ant-descriptions-item-label {
-      width: 100px;
-      color: #8a8a8a;
+.items-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 8px 24px 24px;
+  background-color: @white;
+
+  .item {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    .primary-body4();
+
+    .label {
+      display: flex;
+      grid-column: 1 span;
+      justify-content: space-between;
+      color: @functional-text-light;
     }
 
-    .ant-descriptions-item-content {
-      word-break: break-all;
+    .colon {
+      margin-right: 4px;
+    }
+
+    .content {
+      grid-column: 2 span;
+      color: @functional-text;
+      .primary-body4();
     }
   }
 }

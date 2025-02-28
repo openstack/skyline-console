@@ -13,16 +13,17 @@
 // limitations under the License.
 
 import React from 'react';
-import { observer, inject } from 'mobx-react';
-import { PortStore } from 'stores/neutron/port-extension';
-import { Button, Table, Collapse, Divider, Col, Row, Spin, Empty } from 'antd';
-import ManageSecurityGroup from 'pages/network/containers/Port/actions/ManageSecurityGroup';
-import { Link } from 'react-router-dom';
 import classnames from 'classnames';
+import { Link } from 'react-router-dom';
+import { observer, inject } from 'mobx-react';
 import { toJS } from 'mobx';
-import { CaretRightOutlined } from '@ant-design/icons';
+import { Table, Collapse, Spin, Empty } from 'antd';
+import CaretRightSvgIcon from 'asset/cube/monochrome/caret_right.svg';
+import CaretDownSvgIcon from 'asset/cube/monochrome/caret_down.svg';
 import PrimaryActionButtons from 'components/Tables/Base/PrimaryActionButtons';
 import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
+import ManageSecurityGroup from 'pages/network/containers/Port/actions/ManageSecurityGroup';
+import { PortStore } from 'stores/neutron/port-extension';
 import { getSelfColumns } from 'resources/neutron/security-group-rule';
 import { isAdminPage } from 'utils/index';
 import { getPath } from 'utils/route-map';
@@ -70,42 +71,37 @@ export class SecurityGroup extends React.Component {
     } = this.store;
     const detailUrl = this.getDetailUrl(item.id);
     return (
-      <Row>
-        <Col span={18}>
-          <span>{t('Security Group')}</span>
-          <Divider type="vertical" className={styles['header-divider']} />
-          <Button type="link">{item.name}</Button>
-        </Col>
-        <Col span={6}>
+      <div className={styles['panel-title-container']}>
+        <div className={styles['panel-title-text']}>
+          {t('Security Group')}
+          <span className={styles.name}>{item.name}</span>
+        </div>
+        <div className={styles['panel-title-buttons']}>
           {!this.isAdminPage && (
-            <>
-              <Link style={{ fontSize: 12, marginRight: 16 }} to={detailUrl}>
-                {t('Edit Rule')}
-              </Link>
-            </>
+            <Link style={{ fontSize: 12, marginRight: 16 }} to={detailUrl}>
+              {t('Edit Rule')}
+            </Link>
           )}
           {!this.isAdminPage && data.length !== 1 && (
-            <>
-              <ItemActionButtons
-                actions={{ firstAction: Detach }}
-                onFinishAction={this.refreshSecurityGroup}
-                item={item}
-                containerProps={this.props}
-              >
-                {t('Detach')}
-              </ItemActionButtons>
-            </>
+            <ItemActionButtons
+              actions={{ firstAction: Detach }}
+              onFinishAction={this.refreshSecurityGroup}
+              item={item}
+              containerProps={this.props}
+            >
+              {t('Detach')}
+            </ItemActionButtons>
           )}
-        </Col>
-      </Row>
+        </div>
+      </div>
     );
   }
 
   renderPanel(item, index) {
     return (
       <Panel
-        header={this.renderPanelTitle(item, index)}
         key={index}
+        header={this.renderPanelTitle(item, index)}
         className={styles.panel}
       >
         <Table
@@ -128,8 +124,9 @@ export class SecurityGroup extends React.Component {
     return (
       <div className={classnames(styles.wrapper, this.className)}>
         {this.isAdminPage ? null : (
-          <div style={{ marginBottom: 20 }}>
+          <div>
             <PrimaryActionButtons
+              isCreateIcon={false}
               containerProps={this.props}
               primaryActions={[ManageSecurityGroup]}
               onFinishAction={this.refreshSecurityGroup}
@@ -143,7 +140,10 @@ export class SecurityGroup extends React.Component {
               accordion
               bordered={false}
               expandIcon={({ isActive }) => (
-                <CaretRightOutlined rotate={isActive ? 90 : 0} />
+                <div>
+                  {!isActive && <CaretRightSvgIcon width={16} height={16} />}
+                  {isActive && <CaretDownSvgIcon width={16} height={16} />}
+                </div>
               )}
             >
               {security_groups.data.map((item, index) =>

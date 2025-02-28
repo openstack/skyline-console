@@ -13,18 +13,24 @@
 // limitations under the License.
 
 import React from 'react';
-import { parse } from 'qs';
 import classnames from 'classnames';
+import { parse } from 'qs';
 import { isEmpty, get } from 'lodash';
-import { renderFilterMap, isAdminPage } from 'utils/index';
-import { Button, Divider, Tabs, Typography } from 'antd';
-import { UpOutlined, DownOutlined, SyncOutlined } from '@ant-design/icons';
+import { Tabs, Typography } from 'antd';
+import { toJS } from 'mobx';
+//
+import ChevronDownSvgIcon from 'asset/cube/monochrome/chevron_down.svg';
+import ChevronUpSvgIcon from 'asset/cube/monochrome/chevron_up.svg';
+import ArrowLeftSvgIcon from 'asset/cube/monochrome/arrow_left.svg';
+import ArrowRefreshSvgIcon from 'asset/cube/monochrome/arrow_refresh_02.svg';
+import CopySvgIcon from 'asset/cube/monochrome/copy.svg';
+import CubeIconButton from 'components/cube/CubeButton/CubeIconButton';
+import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
 import NotFound from 'components/Cards/NotFound';
 import Infos from 'components/Infos';
 import Notify from 'components/Notify';
-import { toJS } from 'mobx';
 import checkItemPolicy from 'resources/skyline/policy';
-import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
+import { renderFilterMap, isAdminPage } from 'utils/index';
 import { emptyActionConfig } from 'utils/constants';
 import { getPath, getLinkRender } from 'utils/route-map';
 import { getValueMapRender, getUnitRender } from 'utils/table';
@@ -160,37 +166,6 @@ export default class DetailBase extends React.Component {
 
   get titleValue() {
     return this.params.id;
-  }
-
-  get detailTitle() {
-    const { collapsed } = this.state;
-    const { Paragraph } = Typography;
-    const icon = collapsed ? <DownOutlined /> : <UpOutlined />;
-    return (
-      <div>
-        <span className={styles['title-label']}>{this.titleLabel}</span>
-        <span className={styles['header-title']}>
-          <Paragraph style={{ display: 'inherit' }} copyable>
-            {this.titleValue}
-          </Paragraph>
-        </span>
-        <Divider type="vertical" className={styles['header-divider']} />
-        <Button onClick={this.goBack} type="link">
-          {t('Back')}
-        </Button>
-        <Button
-          type="link"
-          icon={<SyncOutlined />}
-          onClick={this.handleRefresh}
-        />
-        <Button
-          onClick={this.handleDetailInfo}
-          icon={icon}
-          type="link"
-          className={styles['header-button']}
-        />
-      </div>
-    );
   }
 
   get className() {
@@ -370,24 +345,85 @@ export default class DetailBase extends React.Component {
     };
   }
 
+  renderActions() {
+    const data = this.getActionData();
+    if (isEmpty(data) || this.store.isLoading) {
+      return null;
+    }
+    return (
+      <ItemActionButtons
+        actions={this.actionConfigs.rowActions || this.actions}
+        onFinishAction={this.onFinishAction}
+        item={this.getActionData()}
+        containerProps={{ isAdminPage: this.isAdminPage }}
+        isAdminPage={this.isAdminPage}
+        onClickAction={this.onClickAction}
+        onCancelAction={this.onCancelAction}
+      />
+    );
+  }
+
+  renderCollapseTrigger() {
+    const { collapsed } = this.state;
+    const IconElement = collapsed ? ChevronDownSvgIcon : ChevronUpSvgIcon;
+    return (
+      <IconElement
+        width={20}
+        height={20}
+        onClick={this.handleDetailInfo}
+        className={styles['collapse-trigger']}
+      />
+    );
+  }
+
+  renderDetailTitle() {
+    const { Paragraph } = Typography;
+    return (
+      <div className={styles['detail-title-container']}>
+        <div className={styles['title-wrap']}>
+          <div className={styles['go-back-button']}>
+            <ArrowLeftSvgIcon width={20} height={20} onClick={this.goBack} />
+          </div>
+          <div className={styles.title}>
+            {this.titleLabel}
+            <Paragraph
+              className={styles['title-paragraph']}
+              copyable={{
+                icon: <CubeIconButton type="default" icon={CopySvgIcon} />,
+              }}
+            >
+              {this.titleValue}
+            </Paragraph>
+            <CubeIconButton
+              type="default"
+              icon={ArrowRefreshSvgIcon}
+              onClick={this.handleRefresh}
+            />
+          </div>
+        </div>
+        <div className={styles['action-buttons']}>
+          {this.renderActions()}
+          {this.renderCollapseTrigger()}
+        </div>
+      </div>
+    );
+  }
+
   renderDetailInfos() {
     const { Paragraph } = Typography;
     const { collapsed } = this.state;
+
+    const title = this.renderDetailTitle();
+
     if (isEmpty(this.detailData)) {
-      return (
-        <Infos
-          title={this.detailTitle}
-          descriptions={[]}
-          loading={this.isLoading}
-        />
-      );
+      return <Infos title={title} descriptions={[]} loading={this.isLoading} />;
     }
     const descriptions = collapsed
       ? []
       : this.detailInfos
           .filter((it) => !it.hidden)
           .map((it) => {
-            const { title, dataIndex, copyable } = it;
+            const { title: descTitle, dataIndex, copyable } = it;
             let desc;
             if (
               this.isLoading ||
@@ -412,13 +448,13 @@ export default class DetailBase extends React.Component {
               }
             }
             return {
-              label: title,
+              label: descTitle,
               content: desc,
             };
           });
     return (
       <Infos
-        title={this.detailTitle}
+        title={title}
         descriptions={descriptions}
         loading={this.isLoading}
       />
@@ -472,25 +508,6 @@ export default class DetailBase extends React.Component {
     );
   }
 
-  renderActions() {
-    const data = this.getActionData();
-    if (isEmpty(data) || this.store.isLoading) {
-      return null;
-    }
-    return (
-      <ItemActionButtons
-        actions={this.actionConfigs.rowActions || this.actions}
-        onFinishAction={this.onFinishAction}
-        item={this.getActionData()}
-        containerProps={{ isAdminPage: this.isAdminPage }}
-        isAdminPage={this.isAdminPage}
-        onClickAction={this.onClickAction}
-        onCancelAction={this.onCancelAction}
-        // firstActionClassName={styles['attach-btn']}
-      />
-    );
-  }
-
   render() {
     if (this.state.notFound) {
       return <NotFound title={this.name} link={this.listUrl} goList />;
@@ -498,8 +515,7 @@ export default class DetailBase extends React.Component {
 
     return (
       <div className={classnames(styles.main, this.className, 'detail-main')}>
-        <div className={styles['action-wrapper']}>{this.renderActions()}</div>
-        <div className={styles.header}>{this.renderDetailInfos()}</div>
+        {this.renderDetailInfos()}
         <div className={styles.tabs}>{this.renderTabs()}</div>
       </div>
     );

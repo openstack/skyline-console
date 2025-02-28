@@ -15,6 +15,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Card, Tooltip, Switch } from 'antd';
 import { ExpandOutlined, CompressOutlined } from '@ant-design/icons';
+import styles from './index.less';
 
 const seconds = 5;
 
@@ -113,10 +114,9 @@ export default function InfoButton(props) {
   if (collapsed) {
     return (
       <div
-        style={{ padding: 8 }}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        className="content-wrapper"
+        className={styles['content-wrapper-collapsed']}
       >
         <Tooltip title={t('Expand')}>
           <Button onClick={open} size={size}>
@@ -126,6 +126,7 @@ export default function InfoButton(props) {
       </div>
     );
   }
+
   const closeButton = (
     <Tooltip title={t('Close')}>
       <Button onClick={close} size={size}>
@@ -137,8 +138,7 @@ export default function InfoButton(props) {
     <div
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className="content-wrapper"
-      style={{ minWidth: 150 }}
+      className={styles['content-wrapper']}
     >
       <Card title={renderSwitch()} extra={closeButton}>
         {content}

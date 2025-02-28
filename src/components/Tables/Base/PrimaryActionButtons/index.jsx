@@ -31,6 +31,7 @@ export default class TablePrimaryButtons extends Component {
       containerProps: PropTypes.object,
       onClickAction: PropTypes.func,
       primaryActionsExtra: PropTypes.any,
+      isCreateIcon: PropTypes.bool,
     };
   }
 
@@ -41,6 +42,7 @@ export default class TablePrimaryButtons extends Component {
     onCancelAction: null,
     containerProps: {},
     primaryActionsExtra: null,
+    isCreateIcon: true,
   };
 
   constructor(props) {
@@ -98,6 +100,7 @@ export default class TablePrimaryButtons extends Component {
       containerProps,
       onCancelAction,
       onClickAction,
+      isCreateIcon,
     } = this.props;
     const primaryActionButtons = this.actionList.map((it, index) => {
       const key = `primary-${generateId()}`;
@@ -122,7 +125,7 @@ export default class TablePrimaryButtons extends Component {
           containerProps={containerProps}
           onClickAction={onClickAction}
           onCancelAction={onCancelAction}
-          isCreateIcon
+          isCreateIcon={isCreateIcon}
         />
       );
     });

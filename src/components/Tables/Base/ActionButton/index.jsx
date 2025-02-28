@@ -19,6 +19,7 @@ import { inject, observer } from 'mobx-react';
 import { Modal, Button, Tooltip } from 'antd';
 import { isArray, isFunction, isBoolean, isEmpty } from 'lodash';
 import { firstUpperCase, allSettled } from 'utils';
+import CancelSvgIcon from 'asset/cube/monochrome/x.svg';
 import CubeCreateButton from 'components/cube/CubeButton/CubeCreateButton';
 import Notify from 'components/Notify';
 import Confirm from 'components/Confirm';
@@ -539,7 +540,10 @@ export class ActionButton extends Component {
       modalProps.cancelButtonProps = cancelButtonProps;
     }
     return (
-      <Modal {...modalProps}>
+      <Modal
+        {...modalProps}
+        closeIcon={<CancelSvgIcon width={16} height={16} />}
+      >
         <ActionComponent
           item={item}
           items={items}

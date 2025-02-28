@@ -15,6 +15,7 @@
 import React, { Component } from 'react';
 import { Modal, Button } from 'antd';
 import PropTypes from 'prop-types';
+import CancelSvgIcon from 'asset/cube/monochrome/x.svg';
 import { generateId } from 'utils/index';
 
 export default class ModalButton extends Component {
@@ -247,7 +248,11 @@ export default class ModalButton extends Component {
       };
     }
     return (
-      <Modal {...configs} className="modal-button-modal">
+      <Modal
+        {...configs}
+        className="modal-button-modal"
+        closeIcon={<CancelSvgIcon width={16} height={16} />}
+      >
         {content}
       </Modal>
     );

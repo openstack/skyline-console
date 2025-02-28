@@ -1,19 +1,19 @@
 @import '~styles/variables';
 
-@min-space: 8px;
-@mid-space: 16px;
-@lg-space: 24px;
-
 .main {
-  display: flex;
-  padding: 0 @mid-space;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 16px 24px;
 
   .left-side {
-    width: 380px;
-    padding-right: @mid-space;
+    display: flex;
+    flex-direction: column;
+    grid-column: span 1;
+    gap: 10px;
   }
 
   .right-side {
-    flex: 1;
+    grid-column: span 2;
   }
 }

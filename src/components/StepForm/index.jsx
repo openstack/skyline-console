@@ -13,15 +13,15 @@
 // limitations under the License.
 
 import React from 'react';
-import { cloneDeep, isEmpty } from 'lodash';
-import Notify from 'components/Notify';
-import { Button, Steps, Spin } from 'antd';
 import classnames from 'classnames';
-import { firstUpperCase, unescapeHtml } from 'utils/index';
 import { parse } from 'qs';
+import { cloneDeep, isEmpty } from 'lodash';
+import { Button, Steps, Spin } from 'antd';
+import Notify from 'components/Notify';
 import NotFound from 'components/Cards/NotFound';
 import InfoButton from 'components/InfoButton';
 import QuotaChart from 'components/QuotaChart';
+import { firstUpperCase, unescapeHtml } from 'utils/index';
 import { getPath, getLinkRender } from 'utils/route-map';
 import styles from './index.less';
 
@@ -253,7 +253,7 @@ export default class BaseStepForm extends React.Component {
     }
     const preTitle = this.steps[current - 1].title;
     return (
-      <Button style={{ margin: '0 8px' }} onClick={() => this.prev()}>
+      <Button onClick={() => this.prev()}>
         {`${t('Previous')}: ${preTitle}`}
       </Button>
     );
@@ -430,7 +430,7 @@ export default class BaseStepForm extends React.Component {
     const { current } = this.state;
     const { Step } = Steps;
     return (
-      <div>
+      <div className={styles['steps-form-container']}>
         <div className={styles.step}>
           <Steps current={current}>
             {this.steps.map((item) => (
@@ -438,11 +438,7 @@ export default class BaseStepForm extends React.Component {
             ))}
           </Steps>
         </div>
-
-        <div className={styles.form}>
-          {/* {this.steps[current].content} */}
-          {this.renderForms()}
-        </div>
+        <div className={styles.form}>{this.renderForms()}</div>
       </div>
     );
   }

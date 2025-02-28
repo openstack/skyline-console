@@ -13,13 +13,14 @@
 // limitations under the License.
 
 import React from 'react';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { Row, Col, Skeleton, Tooltip, Typography, Popover } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { has, get, isNumber } from 'lodash';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import { renderFilterMap } from 'utils/index';
 import { getValueMapRender, getUnitRender } from 'utils/table';
+import CubeCardDetail from 'components/cube/CubeCard/CubeCardDetail';
 import Status from 'components/Status';
 import styles from './index.less';
 
@@ -27,7 +28,7 @@ const { Paragraph } = Typography;
 
 const getContentValue = (value, dataIndex, data, copyable) => {
   const status = get(data, dataIndex);
-  // get status
+
   if (
     dataIndex.toLowerCase().indexOf('status') >= 0 ||
     dataIndex.toLowerCase().indexOf('state') >= 0
@@ -75,14 +76,24 @@ const getContent = (data, option) => {
   return getContentValue(value, dataIndex, data, copyable);
 };
 
+const renderTitle = (title, tooltip, button) => (
+  <div className={styles['detail-card-title-wrap']}>
+    <div className={styles['detail-card-title']}>
+      {title}
+      {tooltip}
+    </div>
+    {button}
+  </div>
+);
+
 const renderLabel = (option) => {
   const { label, tooltip = '' } = option;
   if (!tooltip) {
-    return label;
+    return <span className={styles.label}>{label}</span>;
   }
   return (
     <Tooltip title={tooltip}>
-      <span>{label}</span>
+      <span className={styles.label}>{label}</span>
     </Tooltip>
   );
 };
@@ -119,6 +130,7 @@ const DetailCard = ({
   button,
 }) => {
   let titleHelpValue;
+
   if (titleHelp) {
     titleHelpValue = (
       <Popover
@@ -131,19 +143,16 @@ const DetailCard = ({
       </Popover>
     );
   }
+
   return (
-    <div className={classnames(styles.card, className)}>
+    <CubeCardDetail
+      title={renderTitle(title, titleHelpValue, button)}
+      className={className}
+    >
       <div className={styles['card-content']}>
-        <Skeleton loading={loading}>
-          <Row className={classnames(styles['card-item'], 'sl-card-item')}>
-            <h3> {title} </h3>
-            {titleHelpValue}
-            {button}
-          </Row>
-        </Skeleton>
         {renderOptions(options, data, loading, labelCol, contentCol)}
       </div>
-    </div>
+    </CubeCardDetail>
   );
 };
 
