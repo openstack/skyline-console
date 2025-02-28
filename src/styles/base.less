@@ -163,14 +163,18 @@
     }
   }
 
+  .ant-table-container {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 5%);
+  }
+
   .sl-table,
   .sl-simple-table {
     .ant-table-thead > tr > th {
-      background: rgba(0, 104, 255, 2%);
+      background-color: #fafafa;
     }
 
     .ant-table-thead th.ant-table-column-has-sorters:hover {
-      background: rgba(0, 104, 255, 10%);
+      background-color: #fafafa;
     }
 
     .ant-table-tbody > tr.ant-table-row-selected > td,
@@ -184,10 +188,19 @@
 
     .ant-table-column-sorters {
       padding: 16px 0;
+      background-color: #fafafa;
     }
 
     .ant-table-footer {
-      padding: 8px 16px;
+      padding: 16px;
+      background-color: @white;
+      border-top: 1px solid @functional-border-divider;
+    }
+
+    .ant-table-pagination.ant-pagination {
+      margin: 0;
+      padding: 16px;
+      border-top: 1px solid @functional-border-divider;
     }
 
     .ant-table-thead > tr > th.ant-table-selection-column:first-child {
@@ -235,5 +248,14 @@
   // Global input style
   .ant-form-item .ant-form-item-control-input {
     min-height: auto !important;
+  }
+
+  // Global checkbox style
+  .ant-checkbox-inner {
+    border-radius: 2px !important;
+  }
+
+  .ant-pagination-options-quick-jumper input {
+    margin: 0 0 0 7px !important;
   }
 }

@@ -1,0 +1,27 @@
+@import '~styles/variables';
+
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .icon-primary {
+    color: @white;
+  }
+
+  .icon-default {
+    color: @primary-color;
+  }
+
+  &:hover {
+    > .icon-default {
+      color: @functional-hover-primary;
+    }
+  }
+}
+
+.create-button {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}

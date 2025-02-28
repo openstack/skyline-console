@@ -13,11 +13,11 @@
 // limitations under the License.
 
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import { inject } from 'mobx-react';
-import { Menu, Dropdown, Button, Divider } from 'antd';
+import { Menu, Dropdown, Button } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { isArray, isEqual } from 'lodash';
-import classnames from 'classnames';
 import { getAllowedResults, getAction } from '../Action';
 import ActionButton from '../ActionButton';
 import styles from './index.less';
@@ -65,7 +65,6 @@ function DropdownActionButton({
     return null;
   }
   let firstElement = null;
-  let dividerElement = null;
   let moreElement = null;
   if (firstAction) {
     const isAllowed = getIsAllowedValue(alloweds, 0);
@@ -167,19 +166,12 @@ function DropdownActionButton({
 
     const menu = <Menu>{menuContent}</Menu>;
 
-    if (firstAction && moreActions.length > 0 && allowedFatherCount > 0) {
-      dividerElement = <Divider type="vertical" />;
-    }
-
     if (allowedFatherCount === 1 && allowedAll === 1 && actionButton) {
       const className = isWide ? '' : styles['single-more-action'];
       moreElement = <span className={className}>{actionButton}</span>;
     } else if (allowedFatherCount > 0) {
       moreElement = (
-        <Dropdown
-          overlay={menu}
-          // trigger={['click']}
-        >
+        <Dropdown overlay={menu}>
           <Button type="link" className={styles['more-action']}>
             {t('More')} {<DownOutlined />}
           </Button>
@@ -189,11 +181,10 @@ function DropdownActionButton({
   }
 
   return (
-    <>
+    <div className={styles['action-buttons-wrap']}>
       {firstElement}
-      {dividerElement}
       {moreElement}
-    </>
+    </div>
   );
 }
 
