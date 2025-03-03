@@ -18,34 +18,31 @@
 /* eslint-disable react/no-unused-state */
 
 import React from 'react';
-import { Card, Button, Spin, Checkbox } from 'antd';
 import G6 from '@antv/g6';
-import image from 'asset/image/cloud.png';
-import { RedoOutlined } from '@ant-design/icons';
+import { toJS } from 'mobx';
+import { Card, Spin, Checkbox } from 'antd';
 import { observer, inject } from 'mobx-react';
 import globalNetworkStore from 'stores/neutron/network';
-import {
-  combosBackground,
-  combosColors,
-  subnetsColors,
-} from 'resources/neutron/topology-color';
-import PrimaryActionButtons from 'components/Tables/Base/PrimaryActionButtons';
 import { ipValidate } from 'utils/validate';
-import { toJS } from 'mobx';
+import { subnetsColors } from 'resources/neutron/topology-color';
 import { getAnchorData, isExternalNetwork } from 'resources/neutron/network';
-import styles from './index.less';
+import couldIcon from 'asset/cube/custom/icon-cloud.png';
+import RefreshSvgIcon from 'asset/cube/monochrome/arrow_refresh_02.svg';
+import PrimaryActionButtons from 'components/Tables/Base/PrimaryActionButtons';
+import CubeIconButton from 'components/cube/CubeButton/CubeIconButton';
 import CreateRouter from '../Router/actions/Create';
 import CreateNetwork from '../Network/actions/CreateNetwork';
 import CreateInstance from '../../../compute/containers/Instance/actions/StepCreate';
 import InstanceCard from './InstanceCard';
 import NodeCard from './NodeCard';
+import styles from './index.less';
 
 let graph = null;
 const { isIpInRangeAll } = ipValidate;
 
-export const activeShadowColor = 'rgba(87,227,155,0.61)';
-export const errorShadowColor = 'rgba(237,33,48,1)';
-export const errorStrokeColor = '#DB3A3A';
+export const activeShadowColor = 'rgba(87, 226, 226, 1)'; // COS Secondary color
+export const errorShadowColor = 'rgba(255, 93, 93, 1)'; // COS Status Negative color
+export const errorStrokeColor = 'rgba(213, 28, 28, 1)'; // COS Red color
 
 export class Topology extends React.Component {
   constructor(props) {
@@ -59,7 +56,6 @@ export class Topology extends React.Component {
       extendWidth: 0,
       loading: true,
       showAll: true,
-      // networkData: null,
       withoutServerData: null,
       allData: null,
     };
@@ -118,7 +114,6 @@ export class Topology extends React.Component {
       insCard: [],
       extendWidth: 0,
       loading: true,
-      // networkData: null,
       withoutServerData: null,
       allData: null,
       showAll: true,
@@ -134,25 +129,22 @@ export class Topology extends React.Component {
       const routerX = parseFloat(
         ((width / 10) * index + (width / 20) * 3).toFixed(0)
       );
-      nodeXY.push({ nodeCardX: routerX, nodeCardY: 190 });
+      nodeXY.push({ nodeCardX: routerX, nodeCardY: 200 });
       data.nodes.push({
         id,
         x: routerX,
-        y: 190,
+        y: 200,
         type: 'rect',
         nodeType: 'router',
         infoIndex: index,
         size: [66, 56],
         style: {
-          radius: 4,
-          fill: '#FFFFFFFF',
+          radius: 6,
+          fill: '#FFFFFF',
           stroke:
             router.status === 'ACTIVE'
               ? globalCSS.successColor
               : errorStrokeColor,
-          shadowColor:
-            router.status === 'ACTIVE' ? activeShadowColor : errorShadowColor,
-          shadowBlur: router.status === 'ACTIVE' ? 5 : 4,
         },
         anchorPoints: [[0.5, 0]],
       });
@@ -216,14 +208,11 @@ export class Topology extends React.Component {
 
   renderNetworkNode = (data, width) => {
     const { subnets, networks } = this.topoInfo;
-    // const colorNum = combosColors.length;
-    // let combosIndex = 0;
     const { extendWidth } = this.state;
     data.subnetNodes = [];
     networks.forEach((network) => {
       if (!isExternalNetwork(network)) {
         const networkSubnet = [];
-        // const firstSubnetY = 250 + (netIndex * 150);
         const { firstSubnetY } = this.state;
         network.subnets.forEach((subnetId) => {
           subnets.forEach((subnet) => {
@@ -232,7 +221,9 @@ export class Topology extends React.Component {
             }
           });
         });
+        // Position of the Network cards
         const cardY = firstSubnetY + networkSubnet.length * 32 + 60;
+
         networkSubnet.forEach((subnet, index) => {
           const colors = subnetsColors[0];
           const subnetsColor = colors[index % colors.length];
@@ -243,11 +234,11 @@ export class Topology extends React.Component {
               position: 'right',
               offset: -(width / 2),
               style: {
-                fill: '#000000',
+                fill: '#3F4453',
               },
             },
             type: 'rect',
-            x: width / 2,
+            x: width / 2 - 10,
             y: firstSubnetY + index * 32,
             cardY,
             anchorPoints: [
@@ -256,42 +247,42 @@ export class Topology extends React.Component {
             ],
             comboId: network.id,
             style: {
-              radius: 4,
+              radius: 6,
               fill: subnetsColor,
               stroke: subnetsColor,
-              width: width + extendWidth - 50,
-              height: 20,
+              width: width + extendWidth - 76,
+              height: 23,
             },
             pools: subnet.allocation_pools,
             networkId: subnet.network_id,
           });
         });
+
         if (networkSubnet.length !== 0) {
           this.setState({
             firstSubnetY: data.subnetNodes[data.subnetNodes.length - 1].y + 200,
           });
+
           data.combos.push({
             id: network.id,
             label: network.name,
             type: 'rect',
-            // x: width / 2,
-            // y: 150,
-            size: [width - 40, 30], // mininimum size of Combo
             style: {
-              // fill: combosBackground[combosIndex % colorNum],
-              fill: combosBackground[0],
-              stroke: combosColors[0],
-              radius: 4,
+              radius: 6,
+              fill: '#FFFFFF',
+              stroke: '#C5CEFD',
+              width: width - 30,
             },
             labelCfg: {
-              refY: 1,
+              refY: 5,
+              refX: 32,
               position: 'top',
               style: {
-                fontSize: 12,
+                fontSize: 11,
+                fill: '#3F4453',
               },
             },
           });
-          // combosIndex += 1;
         }
       }
     });
@@ -304,7 +295,6 @@ export class Topology extends React.Component {
       const { fixed_addresses, fixed_networks } = server;
       let insX = parseFloat(((width / 10) * 2).toFixed(0));
       let insY = null;
-      // const subnetNum = fixed_ip_address.length;
       let topAnchorNum = 0;
       const extSubnetId = [];
       extNetwork.forEach((it) => extSubnetId.push(...toJS(it.subnets)));
@@ -333,23 +323,17 @@ export class Topology extends React.Component {
           id: server.id,
           x: insX,
           y: insY,
-          // label: `ins: ${server.name}`,
           type: 'rect',
           nodeType: 'ins',
           infoIndex: index,
           size: [66, 56],
           style: {
             radius: 4,
-            fill: '#FFFFFFFF',
+            fill: '#FFFFFF',
             stroke:
               server.vm_state === 'active'
                 ? globalCSS.successColor
                 : errorStrokeColor,
-            shadowColor:
-              server.vm_state === 'active'
-                ? activeShadowColor
-                : errorShadowColor,
-            shadowBlur: server.vm_state === 'active' ? 5 : 4,
           },
         });
       }
@@ -367,7 +351,6 @@ export class Topology extends React.Component {
         });
         data.subnetNodes.forEach((item, dataIndex) => {
           const network_index = fixed_networks.indexOf(item.networkId);
-          // const ip_index = (fixed_ip_address[network_index] || []).indexOf(fixed_address);
           if (network_index !== -1) {
             item.pools.forEach((pool) => {
               if (isIpInRangeAll(fixed_address, pool.start, pool.end)) {
@@ -393,33 +376,22 @@ export class Topology extends React.Component {
               });
             }
           });
-          // lbCard.forEach((item) => {
-          //   if (item[0] === insX && item[1] === insY) {
-          //     insX += parseFloat((width / 10).toFixed(0));
-          //   }
-          // });
           nodeXY.push([insX, insY]);
           data.nodes.push({
             id: server.id,
             x: insX,
             y: insY,
-            // label: `ins: ${server.name}`,
             type: 'rect',
             nodeType: 'ins',
             infoIndex: index,
             size: [66, 56],
             style: {
-              radius: 4,
-              fill: '#FFFFFFFF',
+              radius: 6,
+              fill: '#FFFFFF',
               stroke:
                 server.vm_state === 'active'
                   ? globalCSS.successColor
                   : errorStrokeColor,
-              shadowColor:
-                server.vm_state === 'active'
-                  ? activeShadowColor
-                  : errorShadowColor,
-              shadowBlur: server.vm_state === 'active' ? 5 : 4,
             },
           });
         }
@@ -432,7 +404,6 @@ export class Topology extends React.Component {
             topAnchorNum += 1;
           }
           // todo: There is more to consider about edge cover
-          // const offsetIndex = [];
           for (let i = 0; i < nodeXY.length; i++) {
             const offsetIndex = data.edges.filter(
               (it) =>
@@ -480,7 +451,6 @@ export class Topology extends React.Component {
               source_y: insY,
               target_y: subnetY,
             },
-            // offset: offsetIndex.length,
           });
           anchorIndex += 1;
         }
@@ -527,16 +497,8 @@ export class Topology extends React.Component {
               ['M', startPoint.x, startPoint.y],
               ['L', startPoint.x, endPoint.y],
             ],
-            endArrow: {
-              path: G6.Arrow.vee(4, 8, -4),
-              d: 1,
-            },
-            startArrow: {
-              path: G6.Arrow.vee(4, 8, -4),
-              d: 1,
-            },
-            stroke: color || '#C8DEFF',
-            lineWidth: 2,
+            stroke: color || '#607AFF',
+            lineWidth: 1,
           },
           name: 'path-shape',
         });
@@ -551,17 +513,11 @@ export class Topology extends React.Component {
       nodes: [
         {
           id: 'networkImage',
-          x: width / 2,
-          y: 50,
-          img: image,
           type: 'image',
+          img: couldIcon,
           size: 56,
-          // crop picture configuration
-          clipCfg: {
-            show: false,
-            type: 'circle',
-            r: 15,
-          },
+          x: width / 2 - 10,
+          y: 30,
         },
         {
           id: 'extNet',
@@ -571,21 +527,21 @@ export class Topology extends React.Component {
             position: 'right',
             offset: -(width / 2),
             style: {
-              fill: '#000000',
+              fill: '#3F4453',
             },
           },
-          x: width / 2,
-          y: 100,
+          x: width / 2 - 10,
+          y: 120,
           anchorPoints: [
             [0.5, 0],
             [0, 1],
           ],
           style: {
-            radius: 4,
-            fill: '#FFFFFFFF',
-            stroke: subnetsColors[0][0],
-            width: width - 10,
-            height: 20,
+            radius: 6,
+            fill: '#FFFFFF',
+            stroke: '#C5CEFD',
+            width: width - 30,
+            height: 55,
           },
         },
       ],
@@ -593,15 +549,10 @@ export class Topology extends React.Component {
         {
           id: 'edge3',
           target: 'networkImage',
-          // targetAnchor: 1,
           source: 'extNet',
           style: {
-            startArrow: {
-              path: G6.Arrow.vee(4, 6, -1),
-              d: 2,
-            },
             lineWidth: 1,
-            stroke: subnetsColors[0][0],
+            stroke: '#607AFF',
           },
         },
       ],
@@ -609,9 +560,9 @@ export class Topology extends React.Component {
     };
 
     const { servers } = this.topoInfo;
+
     if (servers) {
       data = graph.cfg.data;
-      // const { networkData } = this.state;
       this.renderRouterNode(data, width);
       this.extendNetworkWidth(data, width);
       const withoutServerData = JSON.parse(JSON.stringify(data));
@@ -627,37 +578,18 @@ export class Topology extends React.Component {
     } else {
       this.renderNetworkNode(data, width);
       this.extendNetworkWidth(data, width);
-      // const networkData = JSON.parse(JSON.stringify(data));
-      // this.setState({
-      //   networkData,
-      // });
     }
 
-    // initialize the G6 graph
     if (graph) {
       graph.clear();
       graph.destroy();
     }
-    const { firstSubnetY: Y, extendWidth } = this.state;
+    const { firstSubnetY, extendWidth } = this.state;
     graph = new G6.Graph({
       container: 'container',
       width: width + extendWidth,
-      height: Y,
-      nodeStateStyles: {
-        // the style for hover
-        hover: {
-          lineWidth: 3,
-        },
-      },
-      // modes: {
-      //   default: [
-      //     'drag-canvas',
-      //     'drag-node',
-      //   ],
-      // },
+      height: firstSubnetY,
     });
-    // }
-    // graph.read(data);
     graph.data(data);
     graph.render();
     this.bindEvents();
@@ -669,9 +601,10 @@ export class Topology extends React.Component {
   extendNetworkWidth = (data, width) => {
     const { subnetNodes, nodes } = data;
     const { extendWidth } = this.state;
+
     if (extendWidth > 0) {
       subnetNodes.forEach((subnet) => {
-        subnet.style.width = width - 50 + extendWidth;
+        subnet.style.width = width + extendWidth - 50;
         subnet.x = (width + extendWidth) / 2;
         subnet.labelCfg.offset = -((width + extendWidth) / 2);
       });
@@ -686,13 +619,8 @@ export class Topology extends React.Component {
   };
 
   onCheckChange = () => {
-    const {
-      firstSubnetY: Y,
-      extendWidth,
-      showAll,
-      withoutServerData,
-      allData,
-    } = this.state;
+    const { firstSubnetY, extendWidth, showAll, withoutServerData, allData } =
+      this.state;
     const width = document.getElementById('container').scrollWidth;
     const showIns = !showAll;
     this.setState({
@@ -708,21 +636,8 @@ export class Topology extends React.Component {
     graph = new G6.Graph({
       container: 'container',
       width: updateWidth,
-      height: Y,
-      nodeStateStyles: {
-        hover: {
-          lineWidth: 3,
-        },
-      },
-      // modes: {
-      //   default: [
-      //     'drag-canvas',
-      //     'drag-node',
-      //   ],
-      // },
+      height: firstSubnetY,
     });
-    // }
-    // graph.read(data);
     graph.data(showIns ? allData : withoutServerData);
     graph.render();
     this.bindEvents();
@@ -762,7 +677,7 @@ export class Topology extends React.Component {
     const { topology } = this.store;
     return (
       <div className={styles.main}>
-        <div style={{ marginBottom: 16, marginTop: 16, marginLeft: 16 }}>
+        <div className={styles['button-container']}>
           <PrimaryActionButtons primaryActions={[CreateRouter]}>
             {t('create router')}
           </PrimaryActionButtons>
@@ -772,19 +687,17 @@ export class Topology extends React.Component {
           <PrimaryActionButtons primaryActions={[CreateInstance]}>
             {t('Create Instance')}
           </PrimaryActionButtons>
-          <Button
-            type="primary"
-            shape="circle"
-            style={{ marginLeft: 16 }}
+          <CubeIconButton
+            type="default"
             onClick={() => this.updateGraph()}
-            icon={<RedoOutlined />}
+            icon={RefreshSvgIcon}
           />
           <Checkbox onChange={() => this.onCheckChange()} checked={showAll}>
             {t('Show Instance')}
           </Checkbox>
         </div>
         <Spin spinning={loading}>
-          <Card style={{ margin: 16 }} id="card" className={styles.container}>
+          <Card id="card" className={styles.container}>
             <div id="container">
               {topology &&
                 nodeCard.map((card, index) => (

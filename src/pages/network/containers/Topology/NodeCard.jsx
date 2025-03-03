@@ -13,12 +13,12 @@
 // limitations under the License.
 
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Descriptions, Popover, Button } from 'antd';
 import { generateId } from 'utils/index';
 import { getLocalTimeStr } from 'utils/time';
 import { routerStatus } from 'resources/neutron/router';
-import { Descriptions, Popover, Button, Avatar } from 'antd';
-import { Link } from 'react-router-dom';
-import routerImage from 'asset/image/router.png';
+import InstanceSvgIcon from 'asset/cube/monochrome/instance.svg';
 import styles from './index.less';
 
 export default class NodeCard extends React.Component {
@@ -97,7 +97,6 @@ export default class NodeCard extends React.Component {
             </span>
           ));
         },
-        // render: value => subnets.filter(it => it.id === value)[0].name,
       },
     ];
   }
@@ -199,23 +198,16 @@ export default class NodeCard extends React.Component {
     return (
       <div
         className={styles['node-tooltips']}
-        style={{ top: `${y}px`, left: `${x}px` }}
+        style={{ top: `${y - 10}px`, left: `${x - 16}px` }}
       >
         <Popover
           placement="rightTop"
           content={this.renderCard(430, detailData)}
           title={this.renderTitle(t('Router'), detailData.name)}
         >
-          <div
-            style={{
-              textAlign: 'center',
-              width: '50px',
-              height: '50px',
-              overflow: 'hidden',
-            }}
-          >
-            <Avatar src={routerImage} shape="square" size={30} />
-            <div style={{ transform: 'scale(0.9,1)' }}>{detailData.name}</div>
+          <div className={styles['node-content']}>
+            <InstanceSvgIcon width={28} height={28} />
+            <div className={styles.text}>{detailData.name}</div>
           </div>
         </Popover>
       </div>

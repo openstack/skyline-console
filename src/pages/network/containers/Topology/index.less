@@ -1,11 +1,44 @@
-.node-tooltips {
+@import '~styles/variables';
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 24px;
+}
+
+.container {
+  overflow-y: auto;
+  border-radius: 2px;
+
   :global {
     .ant-card-body {
-      padding: 15px;
+      padding: 16px;
     }
   }
+}
 
+.button-container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.node-tooltips {
   position: absolute;
+
+  .node-content {
+    width: 66px;
+    height: 50px;
+    padding: 4px;
+    overflow: hidden;
+    text-align: center;
+
+    .text {
+      color: @functional-text;
+      .primary-body4();
+    }
+  }
 }
 
 .image-icon {
@@ -37,19 +70,4 @@
       margin-right: 6px;
     }
   }
-}
-
-.main {
-  height: 100%;
-
-  :global {
-    .ant-btn-primary {
-      margin-right: 16px;
-    }
-  }
-}
-
-.container {
-  height: calc(100vh - 170px);
-  overflow-y: auto;
 }
