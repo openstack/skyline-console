@@ -268,7 +268,15 @@ export class Create extends FormAction {
   };
 
   get systemTabs() {
-    return getImageSystemTabs();
+    const data = this.imageStore.list.data || [];
+    const availableImages = data.map((it) => ({
+      ...it,
+      key: it.id,
+    }));
+    const tabs = getImageSystemTabs() || [];
+    return tabs.filter((tab) => {
+      return availableImages.some((image) => getImageOS(image) === tab.value);
+    });
   }
 
   getVolumeTypeExtra() {
@@ -437,7 +445,7 @@ export class Create extends FormAction {
         ],
         columns: getImageColumns(this),
         tabs: this.systemTabs,
-        defaultTabValue: this.systemTabs[0].value,
+        defaultTabValue: this.systemTabs[0]?.value,
         selectedLabel: t('Image'),
         onTabChange: this.onImageTabChange,
       },
