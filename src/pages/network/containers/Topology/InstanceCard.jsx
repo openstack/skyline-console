@@ -13,13 +13,13 @@
 // limitations under the License.
 
 import React from 'react';
-import { Popover, Avatar } from 'antd';
-import { instanceStatus } from 'resources/nova/instance';
-import instanceImage from 'asset/image/instance.png';
-import ImageType from 'components/ImageType';
 import { Link } from 'react-router-dom';
-import styles from './index.less';
+import { Popover } from 'antd';
+import { instanceStatus } from 'resources/nova/instance';
+import InstanceSvgIcon from 'asset/cube/monochrome/instance.svg';
+import ImageType from 'components/ImageType';
 import NodeCard from './NodeCard';
+import styles from './index.less';
 
 export default class InstanceCard extends NodeCard {
   constructor(props) {
@@ -151,23 +151,16 @@ export default class InstanceCard extends NodeCard {
     return (
       <div
         className={styles['node-tooltips']}
-        style={{ top: `${y}px`, left: `${x - 8}px` }}
+        style={{ top: `${y - 10}px`, left: `${x - 16}px` }}
       >
         <Popover
           placement="rightTop"
           content={this.renderCard(435, detailData)}
           title={this.renderTitle(t('Instance'), detailData.name)}
         >
-          <div
-            style={{
-              textAlign: 'center',
-              width: '66px',
-              height: '50px',
-              overflow: 'hidden',
-            }}
-          >
-            <Avatar src={instanceImage} shape="square" size={28} />
-            <div>{detailData.name}</div>
+          <div className={styles['node-content']}>
+            <InstanceSvgIcon width={24} height={24} />
+            <div className={styles.text}>{detailData.name}</div>
           </div>
         </Popover>
       </div>

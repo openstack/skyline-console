@@ -19,11 +19,11 @@ export const combosBackground = [
   'rgba(255,255,240,0.3)',
 ];
 
-export const combosColors = ['#9AC3FF', '#A5FFF0', '#ECDCFF', '#FFFF00'];
+export const combosColors = ['#58cfff', '#57e2e2', '#989dc1', '#face30']; // chart colors
 
 export const subnetsColors = [
-  ['#9AC3FF', '#4C95FF', '#0068FF', '#0080FF', '#0066CC', '#0000FF'],
-  ['#CCF2EC', '#92DACF', '#46B1A5', '#CCF2EC', '#92DACF', '#46B1A5'],
-  ['#ECDCFF', '#D6B3FF', '#BA80FF', '#ECDCFF', '#D6B3FF', '#BA80FF'],
-  ['#FFFACD', '#FFFF00', '#FFD700', '#FFFACD', '#FFFF00', '#FFD700'],
+  ['#d1f7f7', '#c1f4f4', '#b2f2f2', '#94ecec', '#75e7e7', '#57e2e2'], // secondary colors
+  ['#d6ddfe', '#c5cefd', '#b4c0fd', '#91a2fb', '#6f85fa', '#4c68f9'], // primary colors
+  ['#ccf1ff', '#b9ebff', '#a5e6ff', '#7fdaff', '#58cfff', '#31c4ff'], // blue colors
+  ['#fef5d7', '#fef0bf', '#fdeaa7', '#fde58f', '#fbd960', '#face30'], // yellow colors
 ];
