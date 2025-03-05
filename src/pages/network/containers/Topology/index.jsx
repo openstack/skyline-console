@@ -44,12 +44,14 @@ export const activeShadowColor = 'rgba(87, 226, 226, 1)'; // COS Secondary color
 export const errorShadowColor = 'rgba(255, 93, 93, 1)'; // COS Status Negative color
 export const errorStrokeColor = 'rgba(213, 28, 28, 1)'; // COS Red color
 
+const DEFAULT_FIRST_SUBNET_Y = 290;
+
 export class Topology extends React.Component {
   constructor(props) {
     super(props);
     this.init();
     this.state = {
-      firstSubnetY: 290,
+      firstSubnetY: DEFAULT_FIRST_SUBNET_Y,
       nodeCard: [],
       lbCard: [],
       insCard: [],
@@ -108,7 +110,7 @@ export class Topology extends React.Component {
       graph = null;
     }
     this.setState({
-      firstSubnetY: 290,
+      firstSubnetY: DEFAULT_FIRST_SUBNET_Y,
       nodeCard: [],
       lbCard: [],
       insCard: [],
@@ -267,6 +269,7 @@ export class Topology extends React.Component {
             id: network.id,
             label: network.name,
             type: 'rect',
+            padding: [40, 16, 16, 16],
             style: {
               radius: 6,
               fill: '#FFFFFF',
@@ -274,7 +277,7 @@ export class Topology extends React.Component {
               width: width - 30,
             },
             labelCfg: {
-              refY: 5,
+              refY: 20,
               refX: 32,
               position: 'top',
               style: {
