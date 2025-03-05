@@ -264,7 +264,7 @@ export class NetworkStore extends Base {
         );
         return it;
       });
-      resData.extNetwork = resData.networks.filter((it) =>
+      resData.extNetwork = (resData.networks ?? []).filter((it) =>
         isExternalNetwork(it)
       );
       this.topology = resData;
