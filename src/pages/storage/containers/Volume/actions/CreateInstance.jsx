@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { inject, observer } from 'mobx-react';
 import CreateInstance from 'pages/compute/containers/Instance/actions/StepCreate';
 import { canCreateInstance } from 'resources/cinder/volume';
 
@@ -32,4 +31,4 @@ export class StepCreate extends CreateInstance {
   }
 }
 
-export default inject('rootStore')(observer(StepCreate));
+export default StepCreate;
