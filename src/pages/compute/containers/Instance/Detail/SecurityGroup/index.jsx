@@ -142,6 +142,7 @@ export class SecurityGroup extends React.Component {
               {...this.state}
               columns={this.tableColumns}
               dataSource={egressData}
+              rowKey="id"
             />
           </TabPane>
           <TabPane tab={t('Ingress')} key={`${item.id}-2`}>
@@ -152,6 +153,7 @@ export class SecurityGroup extends React.Component {
               {...this.state}
               columns={this.tableColumns}
               dataSource={IngressData}
+              rowKey="id"
             />
           </TabPane>
         </Tabs>
@@ -162,6 +164,7 @@ export class SecurityGroup extends React.Component {
   renderRadio(item, index) {
     return (
       <Radio.Button
+        key={item?.id || index}
         onClick={() => this.filterSecurityGroup(item)}
         value={index}
       >
