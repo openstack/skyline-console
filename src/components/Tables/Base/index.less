@@ -116,3 +116,22 @@
     flex-shrink: 0;
   }
 }
+
+:global {
+  .go-to-grafana {
+    padding: 6px 16px;
+    color: @cosmos-primary;
+    background-color: @grey-0;
+    border-color: @cosmos-primary;
+
+    &:hover {
+      color: #7893ff;
+      border-color: #7893ff;
+    }
+
+    &:focus {
+      background-color: @grey-0;
+      border-color: @cosmos-primary;
+    }
+  }
+}
