@@ -113,6 +113,13 @@ export default class TablePrimaryButtons extends Component {
         isDanger,
         actionType,
         action: it,
+        buttonClassName: it?.buttonClassName,
+      };
+      const getIsCreateIcon = () => {
+        if (it?.id === 'go-to-grafana') {
+          return false;
+        }
+        return isCreateIcon;
       };
       return (
         <ActionButton
@@ -125,7 +132,7 @@ export default class TablePrimaryButtons extends Component {
           containerProps={containerProps}
           onClickAction={onClickAction}
           onCancelAction={onCancelAction}
-          isCreateIcon={isCreateIcon}
+          isCreateIcon={getIsCreateIcon()}
         />
       );
     });

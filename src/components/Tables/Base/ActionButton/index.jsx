@@ -124,13 +124,18 @@ export class ActionButton extends Component {
         break;
       case 'link': {
         const { action, item, containerProps } = this.props;
-        const { path } = action;
-        if (isFunction(path)) {
-          const newPath = path(item, containerProps);
-          this.routing.push(newPath);
-        } else {
-          this.routing.push(path);
-        }
+        const { path, target } = action;
+
+        const goToPage = (url) => {
+          if (target === '_blank') {
+            window.open(url, target);
+          } else {
+            this.routing.push(url);
+          }
+        };
+
+        const url = isFunction(path) ? path(item, containerProps) : path;
+        goToPage(url);
         break;
       }
       default:
