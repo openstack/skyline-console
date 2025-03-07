@@ -181,8 +181,10 @@ const checkItemPolicy = ({
     return false;
   }
   if (!policy && !aliasPolicy) {
-    // eslint-disable-next-line no-console
-    console.log('has no policy', policy, item, actionName);
+    if (actionName !== 'Go to Grafana') {
+      // eslint-disable-next-line no-console
+      console.log('has no policy', policy, item, actionName);
+    }
     return true;
   }
   const usePolicy = aliasPolicy || policy;

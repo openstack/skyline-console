@@ -16,7 +16,8 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { inject } from 'mobx-react';
 import { Menu, Dropdown, Button } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import ChevronDown from 'asset/cube/monochrome/chevron_down.svg';
+import ChevronRight from 'asset/cube/monochrome/chevron_right.svg';
 import { isArray, isEqual } from 'lodash';
 import { getAllowedResults, getAction } from '../Action';
 import ActionButton from '../ActionButton';
@@ -135,7 +136,7 @@ function DropdownActionButton({
         }
         const config = getActionConf(action.action, item);
         return (
-          <Menu.Item key={key}>
+          <Menu.Item key={key} title={config?.name || config?.title}>
             <ActionButton
               {...config}
               isAllowed={isAllowed}
@@ -158,6 +159,13 @@ function DropdownActionButton({
           title={it.title}
           disabled={allowedCount === 0}
           key={menuKey}
+          icon={
+            <ChevronRight
+              className="chevron-right-icon"
+              width={10}
+              height={10}
+            />
+          }
         >
           {menuItems}
         </SubMenu>
@@ -173,7 +181,7 @@ function DropdownActionButton({
       moreElement = (
         <Dropdown overlay={menu}>
           <Button type="link" className={styles['more-action']}>
-            {t('More')} {<DownOutlined />}
+            {t('More')} <ChevronDown width={10} height={10} />
           </Button>
         </Dropdown>
       );
