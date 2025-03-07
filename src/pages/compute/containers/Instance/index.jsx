@@ -19,14 +19,33 @@ import Base from 'containers/List';
 import {
   instanceStatus,
   transitionStatus,
-  lockRender,
   instanceStatusFilter,
+  lockRender,
   isIronicInstance,
-  SimpleTag,
 } from 'resources/nova/instance';
 import globalServerStore, { ServerStore } from 'stores/nova/instance';
 import { ServerGroupInstanceStore } from 'stores/skyline/server-group-instance';
+import { CubeCopyButton } from 'components/cube/CubeCopyButton/CubeCopyButton';
+import { Tooltip } from 'antd';
+import { Link } from 'react-router-dom';
 import actionConfigs from './actions';
+import styles from './instance-table.less';
+
+const PlainTag = (props) => {
+  const { children } = props;
+
+  // Copied from `SimpleTag`
+  const shouldTruncate = children?.length > 20;
+  const text = shouldTruncate ? `${children?.slice?.(0, 20)}...` : children;
+
+  const tagElement = <span className={styles['plain-tag']}>{text}</span>;
+
+  if (shouldTruncate) {
+    return <Tooltip title={children}>{tagElement}</Tooltip>;
+  }
+
+  return tagElement;
+};
 
 export class Instance extends Base {
   init() {
@@ -121,20 +140,38 @@ export class Instance extends Base {
         dataIndex: 'name',
         routeName: this.getRouteName('instanceDetail'),
         sortKey: 'display_name',
+        render: (_, row) => {
+          return (
+            <div className={styles['title-col']}>
+              <span className={styles['instance-name']}>{row.name}</span>
+              <div className={styles['instance-id-row']}>
+                <Tooltip title={row.id}>
+                  <Link
+                    className={styles['instance-id-link']}
+                    to={`/compute/instance/detail/${row.id}`}
+                  >
+                    {row.id}
+                  </Link>
+                </Tooltip>
+                <CubeCopyButton>{row.id}</CubeCopyButton>
+              </div>
+            </div>
+          );
+        },
       },
-      {
-        title: t('Project ID/Name'),
-        dataIndex: 'project_name',
-        isHideable: true,
-        hidden: !this.isAdminPage,
-        sortKey: 'project_id',
-      },
-      {
-        title: t('Host'),
-        dataIndex: 'host',
-        isHideable: true,
-        hidden: !this.isAdminPage,
-      },
+      // {
+      //   title: t('Project ID/Name'),
+      //   dataIndex: 'project_name',
+      //   isHideable: true,
+      //   hidden: !this.isAdminPage,
+      //   sortKey: 'project_id',
+      // },
+      // {
+      //   title: t('Host'),
+      //   dataIndex: 'host',
+      //   isHideable: true,
+      //   hidden: !this.isAdminPage,
+      // },
       {
         title: t('Image'),
         dataIndex: 'image_os_distro',
@@ -194,9 +231,25 @@ export class Instance extends Base {
         render: (value) => instanceStatus[value && value.toLowerCase()] || '-',
       },
       {
+        title: 'vCPUs',
+        dataIndex: ['flavor_info', 'vcpus'],
+        sorter: false,
+      },
+      {
+        title: 'RAM',
+        dataIndex: ['flavor_info', 'ram'],
+        sorter: false,
+      },
+      {
         title: t('Tags'),
         dataIndex: 'tags',
-        render: (tags) => tags.map((tag, index) => SimpleTag({ tag, index })),
+        render: (tags) => (
+          <div className={styles['tag-list']}>
+            {tags.map((tag, index) => (
+              <PlainTag key={index}>{tag}</PlainTag>
+            ))}
+          </div>
+        ),
         isHideable: true,
         sorter: false,
       },
