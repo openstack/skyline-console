@@ -31,6 +31,27 @@ export class LbaasStore extends Base {
     return true;
   }
 
+  async buildMarkers(params, page, all_projects) {
+    if (page <= 0 || this.list.markers.length >= page) {
+      return;
+    }
+
+    await this.buildMarkers(params, page - 1, all_projects);
+
+    const marker = this.getMarker(page);
+    if (marker) {
+      params.marker = marker;
+    }
+
+    const newParams = this.paramsFuncPage(params, all_projects);
+    const result = await this.client.list(newParams);
+    const allData = this.listResponseKey
+      ? get(result, this.listResponseKey, [])
+      : result;
+
+    this.updateMarker(allData, page, result);
+  }
+
   @action
   async fetchListByPageWithFip({
     limit = 10,
@@ -50,6 +71,8 @@ export class LbaasStore extends Base {
         params.all_projects = true;
       }
     }
+
+    await this.buildMarkers({ ...params }, page - 1, all_projects);
 
     const marker = this.getMarker(page);
     if (marker) {

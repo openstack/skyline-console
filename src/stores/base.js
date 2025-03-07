@@ -444,6 +444,25 @@ export default class BaseStore {
   // eslint-disable-next-line no-unused-vars
   getOtherInfo = (result) => {};
 
+  async buildMarkers(params, page, filters, all_projects) {
+    if (page <= 0 || this.list.markers.length >= page) {
+      return;
+    }
+
+    await this.buildMarkers(params, page - 1, filters, all_projects);
+
+    const marker = this.getMarker(page);
+    if (marker) {
+      params.marker = marker;
+    }
+
+    const newParams = this.paramsFuncPage(params, all_projects);
+    const result = await this.requestListByPage(newParams, page, filters);
+    const allData = this.getListDataFromResult(result);
+
+    this.updateMarker(allData, page, result, allData, params);
+  }
+
   @action
   async fetchListByPage({
     limit = 10,
@@ -464,6 +483,8 @@ export default class BaseStore {
         params.all_projects = true;
       }
     }
+
+    await this.buildMarkers({ ...params }, page - 1, filters, all_projects);
 
     const marker = this.getMarker(page);
     if (marker) {
