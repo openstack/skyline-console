@@ -29,16 +29,16 @@
   }
 
   .name-item {
-    padding: 0 12px;
+    justify-content: space-between;
     font-weight: bold;
-    line-height: 40px;
+
+    .user-label-wrap {
+      padding-top: 3px;
+      font-weight: @font-weight-medium;
+    }
 
     .user-label {
       margin-right: 8px;
-    }
-
-    span {
-      line-height: 40px;
     }
   }
 
@@ -56,6 +56,10 @@
     }
   }
 
+  .language-item {
+    justify-content: space-between;
+  }
+
   .menu-btn {
     color: @avatar-dropdown-button-color;
   }
@@ -67,11 +71,6 @@
 
 .no-padding-top {
   padding-top: 0;
-}
-
-.logout {
-  float: right;
-  line-height: 40px;
 }
 
 .right {
@@ -186,69 +185,6 @@
   justify-content: flex-end;
   padding-right: 24px;
   padding-left: 24px;
-}
-
-.header-left {
-  display: flex;
-  width: 256px;
-}
-
-.header-right {
-  display: flex;
-  flex-grow: 1;
-  justify-content: space-between;
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
-.header-right-admin {
-  display: flex;
-  flex-grow: 1;
-  justify-content: flex-end;
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
-.header-left {
-  display: flex;
-  width: 256px;
-}
-
-.header-right {
-  display: flex;
-  flex-grow: 1;
-  justify-content: space-between;
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
-.header-right-admin {
-  display: flex;
-  flex-grow: 1;
-  justify-content: flex-end;
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
-.header-left {
-  display: flex;
-  width: 256px;
-}
-
-.header-right {
-  display: flex;
-  flex-grow: 1;
-  justify-content: space-between;
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
-.header-right-admin {
-  display: flex;
-  flex-grow: 1;
-  justify-content: flex-end;
-  padding-right: 16px;
-  padding-left: 16px;
 }
 
 .avatar {

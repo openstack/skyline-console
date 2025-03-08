@@ -1,0 +1,30 @@
+@import '~styles/variables';
+
+.title-col {
+  display: flex;
+  flex-direction: column;
+  row-gap: 4px;
+}
+
+.volume-name {
+  .primary-body4();
+
+  color: @functional-title;
+  font-weight: @font-weight-medium;
+}
+
+.volume-id-row {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+}
+
+.volume-id-link {
+  .primary-body5();
+
+  max-width: 202px;
+  overflow: hidden;
+  font-weight: @font-weight-medium;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

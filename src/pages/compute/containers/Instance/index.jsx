@@ -140,38 +140,42 @@ export class Instance extends Base {
         dataIndex: 'name',
         routeName: this.getRouteName('instanceDetail'),
         sortKey: 'display_name',
-        render: (_, row) => {
-          return (
-            <div className={styles['title-col']}>
-              <span className={styles['instance-name']}>{row.name}</span>
-              <div className={styles['instance-id-row']}>
-                <Tooltip title={row.id}>
-                  <Link
-                    className={styles['instance-id-link']}
-                    to={`/compute/instance/detail/${row.id}`}
-                  >
-                    {row.id}
-                  </Link>
-                </Tooltip>
-                <CubeCopyButton>{row.id}</CubeCopyButton>
-              </div>
+        render: (_, row) => (
+          <div className={styles['title-col']}>
+            <span className={styles['instance-name']}>{row.name}</span>
+            <div className={styles['instance-id-row']}>
+              <Tooltip title={row.id}>
+                <Link
+                  className={styles['instance-id-link']}
+                  to={
+                    this.isAdminPage
+                      ? `/compute/instance-admin/detail/${row.id}`
+                      : `/compute/instance/detail/${row.id}`
+                  }
+                >
+                  {row.id}
+                </Link>
+              </Tooltip>
+              <CubeCopyButton>{row.id}</CubeCopyButton>
             </div>
-          );
-        },
+          </div>
+        ),
       },
-      // {
-      //   title: t('Project ID/Name'),
-      //   dataIndex: 'project_name',
-      //   isHideable: true,
-      //   hidden: !this.isAdminPage,
-      //   sortKey: 'project_id',
-      // },
-      // {
-      //   title: t('Host'),
-      //   dataIndex: 'host',
-      //   isHideable: true,
-      //   hidden: !this.isAdminPage,
-      // },
+      {
+        title: t('Project ID/Name'),
+        dataIndex: 'project_name',
+        isHideable: true,
+        isDefaultHidden: true,
+        hidden: !this.isAdminPage,
+        sortKey: 'project_id',
+      },
+      {
+        title: t('Host'),
+        dataIndex: 'host',
+        isHideable: true,
+        isDefaultHidden: true,
+        hidden: !this.isAdminPage,
+      },
       {
         title: t('Image'),
         dataIndex: 'image_os_distro',
@@ -243,13 +247,16 @@ export class Instance extends Base {
       {
         title: t('Tags'),
         dataIndex: 'tags',
-        render: (tags) => (
-          <div className={styles['tag-list']}>
-            {tags.map((tag, index) => (
-              <PlainTag key={index}>{tag}</PlainTag>
-            ))}
-          </div>
-        ),
+        render: (tags) =>
+          !tags?.length ? (
+            '-'
+          ) : (
+            <div className={styles['tag-list']}>
+              {tags.map((tag, index) => (
+                <PlainTag key={index}>{tag}</PlainTag>
+              ))}
+            </div>
+          ),
         isHideable: true,
         sorter: false,
       },

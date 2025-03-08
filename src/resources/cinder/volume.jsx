@@ -19,6 +19,10 @@ import globalProjectStore from 'stores/keystone/project';
 import globalVolumeStore from 'stores/cinder/volume';
 import { isEmpty } from 'lodash';
 import { idNameColumn } from 'utils/table';
+import { Tooltip } from 'antd';
+import { Link } from 'react-router-dom';
+import { CubeCopyButton } from 'components/cube/CubeCopyButton/CubeCopyButton';
+import styles from './volume-table.less';
 
 export const volumeStatus = {
   available: t('Available'),
@@ -245,6 +249,26 @@ export const getVolumeColumnsList = (self) => {
       dataIndex: 'name',
       routeName: self.getRouteName('volumeDetail'),
       sortKey: 'name',
+      render: (name, row) => (
+        <div className={styles['title-col']}>
+          <span className={styles['volume-name']}>{name}</span>
+          <div className={styles['volume-id-row']}>
+            <Tooltip title={row.id}>
+              <Link
+                className={styles['volume-id-link']}
+                to={
+                  self.isAdminPage
+                    ? `/storage/volume-admin/detail/${row.id}`
+                    : `/storage/volume/detail/${row.id}`
+                }
+              >
+                {row.id}
+              </Link>
+            </Tooltip>
+            <CubeCopyButton>{row.id}</CubeCopyButton>
+          </div>
+        </div>
+      ),
     },
     {
       title: t('Project ID/Name'),

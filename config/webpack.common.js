@@ -26,6 +26,11 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.svg$/,
+        issuer: /\.jsx?$/,
+        use: ['@svgr/webpack'],
+      },
+      {
         test: /\.jsx$/,
         loader: resolve('config/js-string-replace-loader'),
         include: [root('src/core')],
@@ -82,11 +87,6 @@ module.exports = {
             },
           },
         ],
-      },
-      {
-        test: /\.svg$/,
-        issuer: /\.jsx?$/,
-        use: ['@svgr/webpack'],
       },
     ],
   },

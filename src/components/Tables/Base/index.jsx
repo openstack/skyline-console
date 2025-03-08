@@ -129,7 +129,10 @@ export class BaseTable extends React.Component {
     super(props);
     this.state = {
       hideRow:
-        getLocalStorageItem(`${this.useId}-${this.props.resourceName}`) || [],
+        getLocalStorageItem(`${this.useId}-${props.resourceName}`) ||
+        props.columns
+          .filter((col) => col.isDefaultHidden)
+          .map((col) => this.getDataIndex(col.dataIndex) || col.key),
       // eslint-disable-next-line react/no-unused-state
       filters: [],
       timeFilter: {},

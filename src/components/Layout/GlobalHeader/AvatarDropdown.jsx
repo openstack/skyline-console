@@ -110,7 +110,7 @@ export class AvatarDropdown extends React.Component {
     return (
       <Menu.Item
         key="language"
-        className={`${styles['no-hover']} ${styles['menu-item']}`}
+        className={`${styles['no-hover']} ${styles['menu-item']} ${styles['language-item']}`}
       >
         <span>{t('Switch Language')}</span>
         {this.renderLanguageSwitch()}
@@ -138,7 +138,7 @@ export class AvatarDropdown extends React.Component {
           key="user"
           className={`${styles['no-hover']} ${styles['name-item']} ${styles['menu-item']}`}
         >
-          <span>
+          <span className={styles['user-label-wrap']}>
             <span className={styles['user-label']}>{t('User')}</span>
             <span>{username}</span>
           </span>
@@ -154,7 +154,7 @@ export class AvatarDropdown extends React.Component {
         {this.renderLanguageMenuItem()}
         <Menu.Divider className={styles['menu-divider']} />
         <Menu.Item key="userCenter" className={styles['menu-item']}>
-          <Button href="/user/center" type="link" style={{ textAlign: 'left' }}>
+          <Button href="/user/center" type="link">
             {t('User Center')}
           </Button>
         </Menu.Item>
