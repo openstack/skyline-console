@@ -31,7 +31,6 @@ import CreateTransfer from './CreateTransfer';
 import CancelTransfer from './CancelTransfer';
 import CreateInstance from './CreateInstance';
 import Bootable from './Bootable';
-import { GoToGrafana } from './GoToGrafana';
 
 const dataProtectionActions = {
   title: t('Data Protection'),
@@ -89,7 +88,7 @@ const instanceDetailConfig = {
     ],
   },
   batchActions: [],
-  primaryActions: [GoToGrafana],
+  primaryActions: [],
 };
 
 const adminConfig = {
@@ -118,7 +117,7 @@ const instanceDetailAdminConfig = {
     ],
   },
   batchActions: [],
-  primaryActions: [GoToGrafana],
+  primaryActions: [],
 };
 
 export default {
