@@ -48,6 +48,7 @@ import DeleteIronic from './DeleteIronic';
 import ConfirmResize from './ConfirmResize';
 import RevertResize from './RevertResize';
 import ModifyTags from './ModifyTags';
+import { GoToGrafana } from './GoToGrafana';
 
 const statusActions = [
   StartAction,
@@ -96,6 +97,7 @@ const batchActionsForOthers = batchActions.slice(0, -1);
 
 const actionConfigs = {
   rowActions: {
+    realFirstAction: GoToGrafana,
     firstAction: Console,
     moreActions: [
       {
@@ -140,6 +142,7 @@ const actionConfigs = {
 
 const adminActions = {
   rowActions: {
+    realFirstAction: GoToGrafana,
     firstAction: Console,
     moreActions: [
       {

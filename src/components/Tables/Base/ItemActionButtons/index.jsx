@@ -47,6 +47,7 @@ function getIsAllowedValue(alloweds, index) {
 
 // The first action must be reserved, shown as: first action | more actions
 function DropdownActionButton({
+  realFirstAction = null,
   firstAction = null,
   moreActions = [],
   alloweds = [],
@@ -54,6 +55,7 @@ function DropdownActionButton({
   onFinishAction,
   routing,
   containerProps,
+  realFirstActionClassName,
   firstActionClassName,
   onClickAction,
   onCancelAction,
@@ -62,11 +64,37 @@ function DropdownActionButton({
   if (alloweds.length === 0) {
     return null;
   }
-  if (!firstAction && moreActions.length === 0) {
+  if (!realFirstAction && !firstAction && moreActions.length === 0) {
     return null;
   }
+  let realFirstElement = null;
   let firstElement = null;
   let moreElement = null;
+
+  if (realFirstAction) {
+    const isAllowed = getIsAllowedValue(alloweds, 0);
+    const config = getActionConf(realFirstAction.action, item);
+    realFirstElement = (
+      <ActionButton
+        {...config}
+        buttonType="link"
+        routing={routing}
+        needHide={false}
+        isAllowed={isAllowed}
+        item={item}
+        onFinishAction={onFinishAction}
+        onCancelAction={onCancelAction}
+        buttonClassName={classnames(
+          styles['real-first-action'],
+          realFirstActionClassName
+        )}
+        containerProps={containerProps}
+        maxLength={8}
+        onClickAction={onClickAction}
+      />
+    );
+  }
+
   if (firstAction) {
     const isAllowed = getIsAllowedValue(alloweds, 0);
     const config = getActionConf(firstAction.action, item);
@@ -190,6 +218,7 @@ function DropdownActionButton({
 
   return (
     <div className={styles['action-buttons-wrap']}>
+      {realFirstElement}
       {firstElement}
       {moreElement}
     </div>
@@ -197,8 +226,21 @@ function DropdownActionButton({
 }
 
 function getActionList(actions, item, containerProps) {
-  const { firstAction = null, moreActions = [] } = actions;
+  const {
+    realFirstAction = null,
+    firstAction = null,
+    moreActions = [],
+  } = actions;
   const actionList = [];
+  const newRealFirst = realFirstAction
+    ? {
+        action: getAction(realFirstAction, item, containerProps),
+        allowedIndex: 0,
+      }
+    : null;
+  if (realFirstAction) {
+    actionList.push(newRealFirst);
+  }
   const newFirst = firstAction
     ? {
         action: getAction(firstAction, item, containerProps),
@@ -236,6 +278,7 @@ function getActionList(actions, item, containerProps) {
   });
   return {
     actionList,
+    realFirstAction: newRealFirst,
     firstAction: newFirst,
     moreActions: newMoreActions,
   };
@@ -245,6 +288,7 @@ export class ItemActionButtons extends Component {
   constructor(props) {
     super(props);
     this.actionList = [];
+    this.realFirstAction = null;
     this.firstAction = null;
     this.moreActions = [];
     this.state = {
@@ -286,12 +330,10 @@ export class ItemActionButtons extends Component {
 
   async updateResult(item, containerProps) {
     const { actions, isAdminPage } = this.props;
-    const { actionList, firstAction, moreActions } = getActionList(
-      actions,
-      item,
-      containerProps
-    );
+    const { actionList, realFirstAction, firstAction, moreActions } =
+      getActionList(actions, item, containerProps);
     this.actionList = actionList;
+    this.realFirstAction = realFirstAction;
     this.firstAction = firstAction;
     this.moreActions = moreActions;
     const results = await getAllowedResults({
@@ -311,6 +353,7 @@ export class ItemActionButtons extends Component {
       item,
       onFinishAction,
       containerProps,
+      realFirstActionClassName,
       firstActionClassName,
       onClickAction,
       onCancelAction,
@@ -321,12 +364,14 @@ export class ItemActionButtons extends Component {
       <DropdownActionButton
         onFinishAction={onFinishAction}
         onCancelAction={onCancelAction}
+        realFirstAction={this.realFirstAction}
         firstAction={this.firstAction}
         moreActions={this.moreActions}
         alloweds={results}
         item={item}
         routing={this.routing}
         containerProps={containerProps}
+        realFirstActionClassName={realFirstActionClassName}
         firstActionClassName={firstActionClassName}
         onClickAction={onClickAction}
         isWide={isWide}

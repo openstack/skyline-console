@@ -1,11 +1,12 @@
 @import '~styles/variables';
 
+.real-first-action,
 .first-action {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 24px;
-  padding: 5px 8px;
+  height: 32px;
+  padding: 6px 16px;
   text-align: left;
 
   &:not(:disabled) {
@@ -15,21 +16,21 @@
       border-color: @cosmos-primary;
     }
   }
+}
 
-  span {
-    display: block;
-    max-width: 48px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
+.first-action span {
+  display: block;
+  max-width: 48px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .more-action {
   display: inline-flex;
   align-items: center;
-  height: 24px;
-  padding: 5px 8px;
+  height: 32px;
+  padding: 6px 16px;
   column-gap: 8px;
 }
 
@@ -64,6 +65,6 @@
 
 .action-buttons-wrap {
   display: flex;
-  gap: 4px;
+  gap: 8px;
   align-items: center;
 }
