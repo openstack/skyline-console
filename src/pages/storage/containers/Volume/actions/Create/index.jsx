@@ -401,6 +401,10 @@ export class Create extends FormAction {
   get formItems() {
     const { initVolumeType } = this.state;
     const minSize = this.getDiskMinSize();
+    const filteredTabs = this.systemTabs;
+    if (!filteredTabs || filteredTabs.length === 0) {
+      return [];
+    }
     return [
       {
         name: 'project',
@@ -444,8 +448,8 @@ export class Create extends FormAction {
           },
         ],
         columns: getImageColumns(this),
-        tabs: this.systemTabs,
-        defaultTabValue: this.systemTabs[0]?.value,
+        tabs: filteredTabs,
+        defaultTabValue: this.locationParams.os_distro || filteredTabs[0].value,
         selectedLabel: t('Image'),
         onTabChange: this.onImageTabChange,
       },

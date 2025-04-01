@@ -53,6 +53,9 @@ export class DisassociateFip extends ModalAction {
   static allowed = (item) => Promise.resolve(this.hasFip(item));
 
   get formItems() {
+    if (!this.fips || this.fips.length === 0) {
+      return [];
+    }
     return [
       {
         name: 'instance',
@@ -65,6 +68,7 @@ export class DisassociateFip extends ModalAction {
         label: t('Floating Ip'),
         type: 'select',
         required: true,
+        defaultValue: this.fips[0].value,
         options: this.fips,
       },
     ];

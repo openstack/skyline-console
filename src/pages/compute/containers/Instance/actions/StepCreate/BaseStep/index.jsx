@@ -668,6 +668,10 @@ export class BaseStep extends Base {
     const imageLoading = image
       ? this.imageStore.isLoading
       : this.imageStore.list.isLoading;
+    const filteredTabs = this.systemTabs;
+    if (!filteredTabs || filteredTabs.length === 0) {
+      return [];
+    }
     return [
       {
         name: 'project',
@@ -735,9 +739,8 @@ export class BaseStep extends Base {
           },
         ],
         columns: this.imageColumns,
-        tabs: this.systemTabs,
-        defaultTabValue:
-          this.locationParams.os_distro || this.systemTabs[0]?.value,
+        tabs: filteredTabs,
+        defaultTabValue: this.locationParams.os_distro || filteredTabs[0].value,
         selectedLabel: t('Image'),
         onTabChange: this.onImageTabChange,
       },

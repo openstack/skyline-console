@@ -72,6 +72,18 @@ export class DetachVolume extends ModalAction {
   };
 
   get formItems() {
+    if (this.volumeStore.list.isLoading) {
+      return [];
+    }
+    if (!this.volumes || this.volumes.length === 0) {
+      return [
+        {
+          type: 'label',
+          name: 'no-volumes',
+          content: t('No volumes are attached to this instance.'),
+        },
+      ];
+    }
     return [
       {
         name: 'instance',
@@ -85,6 +97,10 @@ export class DetachVolume extends ModalAction {
         type: 'select-table',
         required: true,
         data: this.volumes,
+        initValue: {
+          selectedRowKeys: [this.volumes[0].id],
+          selectedRows: [this.volumes[0]],
+        },
         isLoading: this.volumeStore.list.isLoading,
         filterParams: [
           {

@@ -74,6 +74,20 @@ export class DetachInterface extends ModalAction {
     return value;
   }
 
+  // get defaultValue() {
+  //   const { name } = this.item;
+  //   const firstPort = this.ports?.[0];
+  //   return {
+  //     instance: name,
+  //     interfaces: firstPort
+  //       ? {
+  //           selectedRowKeys: [firstPort.id],
+  //           selectedRows: [firstPort],
+  //         }
+  //       : undefined,
+  //   };
+  // }
+
   static policy = 'os_compute_api:os-attach-interfaces:delete';
 
   static hasInterfaces = (item) => item.fixed_addresses.length > 0;
@@ -85,6 +99,9 @@ export class DetachInterface extends ModalAction {
 
   get formItems() {
     const { portLoading } = this.state;
+    if (!this.ports || this.ports.length === 0) {
+      return [];
+    }
     return [
       {
         name: 'instance',
@@ -100,6 +117,10 @@ export class DetachInterface extends ModalAction {
         data: this.ports,
         isLoading: portLoading,
         isMulti: true,
+        value: {
+          selectedRowKeys: [this.ports[0]?.id],
+          selectedRows: [this.ports[0]],
+        },
         filterParams: [
           {
             label: t('Ip Address'),

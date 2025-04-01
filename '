@@ -1,0 +1,156 @@
+Automatically select the default volume when only one volume exists during instance volume detachment
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Date:      Tue Apr 1 12:06:08 2025 +0530
+#
+# On branch master
+# Your branch is up to date with 'origin/master'.
+#
+# Changes to be committed:
+#	renamed:    skyline_console/static/Container.bundle.1742885870.js -> skyline_console/static/Container.bundle.1744624640.js
+#	renamed:    skyline_console/static/Container.bundle.1742885870.js.gz -> skyline_console/static/Container.bundle.1744624640.js.gz
+#	renamed:    skyline_console/static/Inctance-HA.bundle.1742885870.js -> skyline_console/static/Inctance-HA.bundle.1744624640.js
+#	renamed:    skyline_console/static/Inctance-HA.bundle.1742885870.js.gz -> skyline_console/static/Inctance-HA.bundle.1744624640.js.gz
+#	renamed:    skyline_console/static/asset/image/cloud.1742885870.png -> skyline_console/static/asset/image/cloud.1744624640.png
+#	renamed:    skyline_console/static/asset/image/empty-card.1742885870.svg -> skyline_console/static/asset/image/empty-card.1744624640.svg
+#	renamed:    skyline_console/static/asset/image/load-balancer.1742885870.png -> skyline_console/static/asset/image/load-balancer.1744624640.png
+#	renamed:    skyline_console/static/asset/image/login-full.1742885870.png -> skyline_console/static/asset/image/login-full.1744624640.png
+#	renamed:    skyline_console/static/asset/image/router.1742885870.png -> skyline_console/static/asset/image/router.1744624640.png
+#	deleted:    skyline_console/static/auth.bundle.1742885870.js.gz
+#	renamed:    skyline_console/static/auth.bundle.1742885870.js -> skyline_console/static/auth.bundle.1744624640.js
+#	new file:   skyline_console/static/auth.bundle.1744624640.js.gz
+#	renamed:    skyline_console/static/base.bundle.1742885870.js -> skyline_console/static/base.bundle.1744624640.js
+#	renamed:    skyline_console/static/base.bundle.1742885870.js.gz -> skyline_console/static/base.bundle.1744624640.js.gz
+#	renamed:    skyline_console/static/basic.bundle.1742885870.js -> skyline_console/static/basic.bundle.1744624640.js
+#	renamed:    skyline_console/static/basic.bundle.1742885870.js.gz -> skyline_console/static/basic.bundle.1744624640.js.gz
+#	renamed:    skyline_console/static/common.bundle.1742885870.js -> skyline_console/static/common.bundle.1744624640.js
+#	renamed:    skyline_console/static/common.bundle.1742885870.js.gz -> skyline_console/static/common.bundle.1744624640.js.gz
+#	deleted:    skyline_console/static/compute.bundle.1742885870.js
+#	deleted:    skyline_console/static/compute.bundle.1742885870.js.gz
+#	new file:   skyline_console/static/compute.bundle.1744624640.js
+#	new file:   skyline_console/static/compute.bundle.1744624640.js.gz
+#	renamed:    skyline_console/static/configuration.bundle.1742885870.js -> skyline_console/static/configuration.bundle.1744624640.js
+#	renamed:    skyline_console/static/configuration.bundle.1742885870.js.gz -> skyline_console/static/configuration.bundle.1744624640.js.gz
+#	renamed:    skyline_console/static/container-infra.bundle.1742885870.js -> skyline_console/static/container-infra.bundle.1744624640.js
+#	renamed:    skyline_console/static/container-infra.bundle.1742885870.js.gz -> skyline_console/static/container-infra.bundle.1744624640.js.gz
+#	renamed:    skyline_console/static/heat.bundle.1742885870.js -> skyline_console/static/heat.bundle.1744624640.js
+#	renamed:    skyline_console/static/heat.bundle.1742885870.js.gz -> skyline_console/static/heat.bundle.1744624640.js.gz
+#	renamed:    skyline_console/static/identity.bundle.1742885870.js -> skyline_console/static/identity.bundle.1744624640.js
+#	renamed:    skyline_console/static/identity.bundle.1742885870.js.gz -> skyline_console/static/identity.bundle.1744624640.js.gz
+#	modified:   skyline_console/static/index.html
+#	renamed:    skyline_console/static/main.bundle.1742885870.js -> skyline_console/static/main.bundle.1744624640.js
+#	renamed:    skyline_console/static/main.bundle.1742885870.js.gz -> skyline_console/static/main.bundle.1744624640.js.gz
+#	renamed:    skyline_console/static/management.bundle.1742885870.js -> skyline_console/static/management.bundle.1744624640.js
+#	renamed:    skyline_console/static/monitor-center.bundle.1742885870.js -> skyline_console/static/monitor-center.bundle.1744624640.js
+#	renamed:    skyline_console/static/monitor-center.bundle.1742885870.js.gz -> skyline_console/static/monitor-center.bundle.1744624640.js.gz
+#	renamed:    skyline_console/static/network.bundle.1742885870.js -> skyline_console/static/network.bundle.1744624640.js
+#	renamed:    skyline_console/static/network.bundle.1742885870.js.gz -> skyline_console/static/network.bundle.1744624640.js.gz
+#	renamed:    skyline_console/static/runtime.1742885870.js -> skyline_console/static/runtime.1744624640.js
+#	renamed:    skyline_console/static/share.bundle.1742885870.js -> skyline_console/static/share.bundle.1744624640.js
+#	renamed:    skyline_console/static/share.bundle.1742885870.js.gz -> skyline_console/static/share.bundle.1744624640.js.gz
+#	renamed:    skyline_console/static/storage.bundle.1742885870.js -> skyline_console/static/storage.bundle.1744624640.js
+#	renamed:    skyline_console/static/storage.bundle.1742885870.js.gz -> skyline_console/static/storage.bundle.1744624640.js.gz
+#	renamed:    skyline_console/static/user-center.bundle.1742885870.js -> skyline_console/static/user-center.bundle.1744624640.js
+#	renamed:    skyline_console/static/user-center.bundle.1742885870.js.gz -> skyline_console/static/user-center.bundle.1744624640.js.gz
+#	renamed:    skyline_console/static/vendor.bundle.1742885870.js -> skyline_console/static/vendor.bundle.1744624640.js
+#	renamed:    skyline_console/static/vendor.bundle.1742885870.js.gz -> skyline_console/static/vendor.bundle.1744624640.js.gz
+#	modified:   src/pages/compute/containers/Instance/actions/DetachVolume.jsx
+#	modified:   src/pages/compute/containers/Instance/actions/StepCreate/BaseStep/index.jsx
+#	modified:   src/pages/compute/containers/Instance/actions/StepCreate/NetworkStep/index.jsx
+#	modified:   src/pages/network/containers/FloatingIp/actions/Allocate.jsx
+#	modified:   src/pages/storage/containers/Volume/actions/Create/index.jsx
+#
+# Changes not staged for commit:
+#	deleted:    skyline_console/static/Container.bundle.1744624640.js
+#	deleted:    skyline_console/static/Container.bundle.1744624640.js.gz
+#	deleted:    skyline_console/static/Inctance-HA.bundle.1744624640.js
+#	deleted:    skyline_console/static/Inctance-HA.bundle.1744624640.js.gz
+#	deleted:    skyline_console/static/asset/image/cloud.1744624640.png
+#	deleted:    skyline_console/static/asset/image/empty-card.1744624640.svg
+#	deleted:    skyline_console/static/asset/image/load-balancer.1744624640.png
+#	deleted:    skyline_console/static/asset/image/login-full.1744624640.png
+#	deleted:    skyline_console/static/asset/image/router.1744624640.png
+#	deleted:    skyline_console/static/auth.bundle.1744624640.js
+#	deleted:    skyline_console/static/auth.bundle.1744624640.js.gz
+#	deleted:    skyline_console/static/base.bundle.1744624640.js
+#	deleted:    skyline_console/static/base.bundle.1744624640.js.gz
+#	deleted:    skyline_console/static/basic.bundle.1744624640.js
+#	deleted:    skyline_console/static/basic.bundle.1744624640.js.gz
+#	deleted:    skyline_console/static/common.bundle.1744624640.js
+#	deleted:    skyline_console/static/common.bundle.1744624640.js.gz
+#	deleted:    skyline_console/static/compute.bundle.1744624640.js
+#	deleted:    skyline_console/static/compute.bundle.1744624640.js.gz
+#	deleted:    skyline_console/static/configuration.bundle.1744624640.js
+#	deleted:    skyline_console/static/configuration.bundle.1744624640.js.gz
+#	deleted:    skyline_console/static/container-infra.bundle.1744624640.js
+#	deleted:    skyline_console/static/container-infra.bundle.1744624640.js.gz
+#	deleted:    skyline_console/static/heat.bundle.1744624640.js
+#	deleted:    skyline_console/static/heat.bundle.1744624640.js.gz
+#	deleted:    skyline_console/static/identity.bundle.1744624640.js
+#	deleted:    skyline_console/static/identity.bundle.1744624640.js.gz
+#	modified:   skyline_console/static/index.html
+#	deleted:    skyline_console/static/main.bundle.1744624640.js
+#	deleted:    skyline_console/static/main.bundle.1744624640.js.gz
+#	deleted:    skyline_console/static/management.bundle.1744624640.js
+#	deleted:    skyline_console/static/monitor-center.bundle.1744624640.js
+#	deleted:    skyline_console/static/monitor-center.bundle.1744624640.js.gz
+#	deleted:    skyline_console/static/network.bundle.1744624640.js
+#	deleted:    skyline_console/static/network.bundle.1744624640.js.gz
+#	deleted:    skyline_console/static/runtime.1744624640.js
+#	deleted:    skyline_console/static/share.bundle.1744624640.js
+#	deleted:    skyline_console/static/share.bundle.1744624640.js.gz
+#	deleted:    skyline_console/static/storage.bundle.1744624640.js
+#	deleted:    skyline_console/static/storage.bundle.1744624640.js.gz
+#	deleted:    skyline_console/static/user-center.bundle.1744624640.js
+#	deleted:    skyline_console/static/user-center.bundle.1744624640.js.gz
+#	deleted:    skyline_console/static/vendor.bundle.1744624640.js
+#	deleted:    skyline_console/static/vendor.bundle.1744624640.js.gz
+#	modified:   src/pages/compute/containers/Instance/actions/DetachVolume.jsx
+#
+# Untracked files:
+#	skyline_console/static/Container.bundle.1744625603.js
+#	skyline_console/static/Container.bundle.1744625603.js.gz
+#	skyline_console/static/Inctance-HA.bundle.1744625603.js
+#	skyline_console/static/Inctance-HA.bundle.1744625603.js.gz
+#	skyline_console/static/asset/image/cloud.1744625603.png
+#	skyline_console/static/asset/image/empty-card.1744625603.svg
+#	skyline_console/static/asset/image/load-balancer.1744625603.png
+#	skyline_console/static/asset/image/login-full.1744625603.png
+#	skyline_console/static/asset/image/router.1744625603.png
+#	skyline_console/static/auth.bundle.1744625603.js
+#	skyline_console/static/auth.bundle.1744625603.js.gz
+#	skyline_console/static/base.bundle.1744625603.js
+#	skyline_console/static/base.bundle.1744625603.js.gz
+#	skyline_console/static/basic.bundle.1744625603.js
+#	skyline_console/static/basic.bundle.1744625603.js.gz
+#	skyline_console/static/common.bundle.1744625603.js
+#	skyline_console/static/common.bundle.1744625603.js.gz
+#	skyline_console/static/compute.bundle.1744625603.js
+#	skyline_console/static/compute.bundle.1744625603.js.gz
+#	skyline_console/static/configuration.bundle.1744625603.js
+#	skyline_console/static/configuration.bundle.1744625603.js.gz
+#	skyline_console/static/container-infra.bundle.1744625603.js
+#	skyline_console/static/container-infra.bundle.1744625603.js.gz
+#	skyline_console/static/heat.bundle.1744625603.js
+#	skyline_console/static/heat.bundle.1744625603.js.gz
+#	skyline_console/static/identity.bundle.1744625603.js
+#	skyline_console/static/identity.bundle.1744625603.js.gz
+#	skyline_console/static/main.bundle.1744625603.js
+#	skyline_console/static/main.bundle.1744625603.js.gz
+#	skyline_console/static/management.bundle.1744625603.js
+#	skyline_console/static/monitor-center.bundle.1744625603.js
+#	skyline_console/static/monitor-center.bundle.1744625603.js.gz
+#	skyline_console/static/network.bundle.1744625603.js
+#	skyline_console/static/network.bundle.1744625603.js.gz
+#	skyline_console/static/runtime.1744625603.js
+#	skyline_console/static/share.bundle.1744625603.js
+#	skyline_console/static/share.bundle.1744625603.js.gz
+#	skyline_console/static/storage.bundle.1744625603.js
+#	skyline_console/static/storage.bundle.1744625603.js.gz
+#	skyline_console/static/user-center.bundle.1744625603.js
+#	skyline_console/static/user-center.bundle.1744625603.js.gz
+#	skyline_console/static/vendor.bundle.1744625603.js
+#	skyline_console/static/vendor.bundle.1744625603.js.gz
+#
