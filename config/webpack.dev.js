@@ -21,6 +21,7 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const common = require('./webpack.common');
+const cosApiProxy = require('./cosApiProxy');
 
 const server = require('./server.dev');
 
@@ -61,7 +62,14 @@ module.exports = (env) => {
   };
 
   if (API === 'mock' || API === 'dev') {
-    devServer.proxy = proxy;
+    devServer.proxy = {
+      ...proxy,
+      '/cos-api': cosApiProxy,
+    };
+  } else {
+    devServer.proxy = {
+      '/cos-api': cosApiProxy,
+    };
   }
 
   const { version, ...restConfig } = common;

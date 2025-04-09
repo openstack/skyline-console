@@ -138,6 +138,12 @@ export class ActionButton extends Component {
         goToPage(url);
         break;
       }
+      case 'asyncCallback': {
+        const { action, item } = this.props;
+        const { onClick } = action;
+        onClick?.(item);
+        break;
+      }
       default:
         this.formRef = React.createRef();
         this.showModalAction();

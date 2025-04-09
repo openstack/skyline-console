@@ -404,7 +404,17 @@ export default class BaseList extends React.Component {
   }
 
   get itemActions() {
-    return this.actionConfigs.rowActions;
+    if (this.inDetailPage) {
+      return this.actionConfigs.rowActions;
+    }
+    const objNotArray = { ...this.actionConfigs.rowActions };
+    if (
+      objNotArray.realFirstAction &&
+      objNotArray.realFirstAction.hideInTable
+    ) {
+      delete objNotArray.realFirstAction;
+    }
+    return objNotArray;
   }
 
   get searchFilters() {
