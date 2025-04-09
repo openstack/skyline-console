@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import zhHansData from './zh-hans.json';
+import zhHantData from './zh-hant.json';
 import enData from './en.json';
 import krData from './ko-kr.json';
 import trData from './tr-tr.json';
@@ -20,6 +21,7 @@ import ruData from './ru.json';
 
 export default {
   'zh-hans': zhHansData,
+  'zh-hant': zhHantData,
   en: enData,
   'ko-kr': krData,
   tr: trData,

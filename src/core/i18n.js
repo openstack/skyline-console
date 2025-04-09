@@ -32,10 +32,17 @@ const SUPPORT_LOCALES_ALL = [
     momentName: 'en',
   },
   {
+    name: '繁體中文',
+    value: 'zh-hant',
+    shortName: 'zh-tw',
+    icon: 'zh-tw',
+    momentName: 'zhTW',
+  },
+  {
     name: '简体中文',
     value: 'zh-hans',
     shortName: 'zh',
-    icon: 'zh',
+    icon: 'zh-cn',
     momentName: 'zhCN',
   },
   {
@@ -170,6 +177,25 @@ const init = () => {
         yy: '%d年',
         past: '%s前',
         future: '在%s后',
+      },
+    });
+  } else if (lang === 'zh-hant') {
+    moment.locale('zh-tw', {
+      relativeTime: {
+        s: '1秒',
+        ss: '%d秒',
+        m: '1分鐘',
+        mm: '%d分鐘',
+        h: '1小時',
+        hh: '%d小時',
+        d: '1天',
+        dd: '%d天',
+        M: '1個月',
+        MM: '%d個月',
+        y: '1年',
+        yy: '%d年',
+        past: '%s前',
+        future: '在%s後',
       },
     });
   } else if (lang === 'tr-tr') {

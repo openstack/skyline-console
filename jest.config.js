@@ -35,7 +35,7 @@ module.exports = {
   globals: {
     GLOBAL_VARIABLES: {
       defaultLanguage: 'en',
-      supportLanguages: ['en', 'zh-hans'],
+      supportLanguages: ['en', 'zh-hant', 'zh-hans'],
     },
   },
 };
