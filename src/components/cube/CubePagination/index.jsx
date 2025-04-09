@@ -91,6 +91,11 @@ export default class CubePagination extends Component {
 
   onPageChange = (pageNumber) => {
     const { pageSize } = this.state;
+    if (pageNumber === this.state.current) {
+      // Check for equality because this function will be called on show size change
+      // by the design of antd Pagination.
+      return;
+    }
     this.setState(
       {
         current: pageNumber,
