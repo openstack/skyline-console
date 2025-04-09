@@ -1,10 +1,18 @@
+import { grafanaApi } from 'src/apis/grafanaApi';
+
 export const GoToGrafana = {
   id: 'go-to-grafana',
-  actionType: 'link',
+  actionType: 'asyncCallback',
   title: t('Go to Grafana'),
   allowed: () => true,
-  // TODO: Replace this URL with API data or env variable.
-  path: 'https://localhost:1234/grrrrrfana',
-  target: '_blank',
   buttonClassName: 'go-to-grafana',
+  hideInTable: true,
+  onClick: async (row) => {
+    try {
+      const link = await grafanaApi.getInstanceLink(row?.id);
+      window.open(link, '_blank');
+    } catch (error) {
+      console.error('Failed to get instance grafana link: ', error);
+    }
+  },
 };

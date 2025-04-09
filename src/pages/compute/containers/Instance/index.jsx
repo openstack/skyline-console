@@ -180,6 +180,7 @@ export class Instance extends Base {
         title: t('Image'),
         dataIndex: 'image_os_distro',
         isHideable: true,
+        isDefaultHidden: true,
         render: (value, record) => (
           <ImageType type={value} title={record.image_name} />
         ),
