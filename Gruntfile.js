@@ -19,7 +19,7 @@ module.exports = function (grunt) {
         src: ['src/**/*.{jsx,js}'],
         dest: 'src',
         options: {
-          lngs: ['en', 'zh-hans', 'ko-kr', 'tr-tr', 'ru'],
+          lngs: ['en', 'zh-hant', 'zh-hans', 'ko-kr', 'tr-tr', 'ru'],
           removeUnusedKeys: true,
           sort: true,
           keySeparator: false,
@@ -29,9 +29,7 @@ module.exports = function (grunt) {
             suffix: '}}',
           },
           resource: {
-            // loadPath: 'src/locales/{{lng}}/{{ns}}.json',
             loadPath: 'src/locales/{{lng}}.json',
-            // savePath: 'locales/{{lng}}/{{ns}}.json'
             savePath: 'locales/{{lng}}.json',
           },
           func: {

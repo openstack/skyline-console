@@ -9,6 +9,7 @@ globalVariables:
   defaultLanguage: en
   supportLanguages: # use value in i18n.js
     - en
+    - zh-hant
     - zh-hans
     - ko-kr
     - ru
