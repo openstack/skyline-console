@@ -68,7 +68,6 @@ export class DisassociateFip extends ModalAction {
         label: t('Floating Ip'),
         type: 'select',
         required: true,
-        defaultValue: this.fips[0].value,
         options: this.fips,
       },
     ];

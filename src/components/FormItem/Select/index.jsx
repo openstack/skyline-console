@@ -20,7 +20,18 @@ import styles from './index.less';
 export default class index extends Component {
   constructor(props) {
     super(props);
-    const { checkOptions } = props;
+    const {
+      checkOptions = [],
+      options = [],
+      value,
+      isWrappedValue = false,
+      onChange = () => {},
+    } = props;
+    if ((isUndefined(value) || isNull(value)) && options.length > 0) {
+      const firstOption = options[0];
+      const firstValue = isWrappedValue ? firstOption : firstOption.value;
+      onChange(firstValue);
+    }
     if (checkOptions) {
       this.state = {
         selectAll: false,

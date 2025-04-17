@@ -18,6 +18,7 @@ import TabSelectTable from 'components/FormItem/TabSelectTable';
 import { NetworkStore } from 'stores/neutron/network';
 import { yesNoOptions } from 'utils/constants';
 import { networkColumns, networkSortProps } from 'resources/neutron/network';
+import { SubnetStore } from 'stores/neutron/subnet';
 import { isAdminPage } from 'utils/index';
 import { getPath } from 'utils/route-map';
 
@@ -30,6 +31,16 @@ export class NetworkSelectTable extends Component {
       external: new NetworkStore(),
       all: new NetworkStore(),
     };
+    this.subnetStore = new SubnetStore();
+    this.state = {
+      subnets: [],
+      subnetsLoaded: false,
+    };
+  }
+
+  async componentDidMount() {
+    const subnets = await this.fetchSubnets();
+    this.setState({ subnets, subnetsLoaded: true });
   }
 
   get location() {
@@ -78,15 +89,27 @@ export class NetworkSelectTable extends Component {
     return tabs;
   }
 
-  getSelectTableProps = (tab) => ({
-    columns: this.getColumns(tab),
-    filterParams: this.getNetworkFilters(tab),
-    extraParams: this.getNetworkExtraParams(tab),
-    backendPageStore: this.getStore(tab),
-    disabledFunc: this.getDisabledFunc(),
-    isMulti: this.props.isMulti || false,
-    ...networkSortProps,
-  });
+  get filterPublicNetworks() {
+    return this.props.filterPublicNetworks === true;
+  }
+
+  getSelectTableProps = (tab) => {
+    const store = this.getStore(tab);
+    if (this.filterPublicNetworks) {
+      store.listDidFetch = (items) => this.filterNetworks(items);
+    } else {
+      store.listDidFetch = null;
+    }
+    return {
+      columns: this.getColumns(tab),
+      filterParams: this.getNetworkFilters(tab),
+      extraParams: this.getNetworkExtraParams(tab),
+      backendPageStore: store,
+      disabledFunc: this.getDisabledFunc(),
+      isMulti: this.props.isMulti || false,
+      ...networkSortProps,
+    };
+  };
 
   getRouteName(routeName) {
     return this.isAdminPage ? `${routeName}Admin` : routeName;
@@ -179,8 +202,47 @@ export class NetworkSelectTable extends Component {
     return this.props.disabledFunc;
   }
 
+  fetchSubnets = async () => {
+    try {
+      const subnets = await this.subnetStore.fetchList();
+      return subnets;
+    } catch (error) {
+      console.error('Error fetching subnets:', error);
+      return [];
+    }
+  };
+
+  filterNetworks = (networks) => {
+    const { subnets: allSubnets = [] } = this.state;
+    return networks
+      .map((network) => {
+        const networkSubnetObjs = allSubnets.filter(
+          (s) => s.network_id === network.id
+        );
+        const eligibleSubnets = networkSubnetObjs.filter((subnet) => {
+          const serviceTypes = subnet.service_types || [];
+          return (
+            !serviceTypes.includes('network:floatingip') &&
+            !serviceTypes.includes('network:router_gateway')
+          );
+        });
+        if (eligibleSubnets.length === 0) {
+          return null;
+        }
+        return {
+          ...network,
+          subnets: eligibleSubnets,
+        };
+      })
+      .filter(Boolean);
+  };
+
   render() {
     const { isMulti = false, header, value } = this.props;
+    const { subnetsLoaded } = this.state;
+    if (!subnetsLoaded && this.filterPublicNetworks) {
+      return null;
+    }
     return (
       <TabSelectTable
         tabs={this.networkTabs}

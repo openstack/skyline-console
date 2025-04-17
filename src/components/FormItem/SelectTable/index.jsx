@@ -104,6 +104,7 @@ export default class SelectTable extends React.Component {
     imageTabAuto: PropTypes.bool,
     refreshFunc: PropTypes.func,
     hideRefresh: PropTypes.bool,
+    marksFirstAsDefault: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -131,12 +132,24 @@ export default class SelectTable extends React.Component {
     imageTabAuto: false,
     refreshFunc: null,
     hideRefresh: false,
+    marksFirstAsDefault: true,
   };
 
   constructor(props) {
     super(props);
-    const { data = [], pageSize, initValue = {} } = props;
-    const { selectedRowKeys, selectedRows } = this.getInitValue(props);
+    const { marksFirstAsDefault, data = [], pageSize, initValue = {} } = props;
+    let { selectedRowKeys, selectedRows } = this.getInitValue(props);
+    if (
+      marksFirstAsDefault !== false &&
+      selectedRowKeys.length === 0 &&
+      data &&
+      data.length > 0
+    ) {
+      const firstRow = data[0];
+      const firstRowKey = getItemKey(firstRow);
+      selectedRowKeys = [firstRowKey];
+      selectedRows = [firstRow];
+    }
     this.state = {
       data,
       filters: null,
@@ -154,6 +167,16 @@ export default class SelectTable extends React.Component {
 
   componentDidMount() {
     this.getData();
+    const { marksFirstAsDefault } = this.props;
+    if (
+      marksFirstAsDefault !== false &&
+      this.state.selectedRowKeys &&
+      this.state.selectedRowKeys.length > 0
+    ) {
+      this.onChange({
+        selectedRowKeys: this.state.selectedRowKeys,
+      });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {

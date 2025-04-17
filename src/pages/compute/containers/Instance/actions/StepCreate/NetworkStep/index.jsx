@@ -219,6 +219,7 @@ export class NetworkStep extends Base {
         label: t('Networks'),
         type: 'network-select-table',
         disabledFunc: this.disabledNetwork,
+        filterPublicNetworks: true,
         onChange: this.onNetworkChange,
         showExternal: true,
         isMulti: true,

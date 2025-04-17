@@ -69,9 +69,6 @@ export class Allocate extends ModalAction {
     this.getExternalNetworks();
     this.isAdminPage && this.fetchProjectList();
     this.getQuota();
-    if (this.state.networks.length > 0) {
-      this.handleNetworkChange(this.state.networks[0].id);
-    }
   }
 
   async fetchProjectList() {
@@ -86,9 +83,6 @@ export class Allocate extends ModalAction {
     this.setState({
       networks,
     });
-    if (networks.length > 0 && !this.state.selectedNetwork) {
-      await this.handleNetworkChange(networks[0].id);
-    }
   }
 
   get messageHasItemName() {
@@ -278,7 +272,6 @@ export class Allocate extends ModalAction {
         options: networkItems,
         onChange: this.handleNetworkChange,
         required: true,
-        defaultValue: selectedNetwork || networkItems[0].value,
       },
       {
         name: 'project_id',
