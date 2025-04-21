@@ -931,7 +931,14 @@ export class BaseTable extends React.Component {
           pagination={newPagination}
           rowSelection={rowSelection}
           sortDirections={['ascend', 'descend', 'ascend']}
-          scroll={scroll}
+          // Skyline renders the table header separately from the main table,
+          // which can cause the headers and columns to get out of sync when
+          // scrolling.
+          // To ensure the header and body are scrolled together, we have to
+          // manually apply `overflow-x: auto` to `.ant-table-container` and
+          // remove the `scroll` prop on Ant table because it causes the
+          // `table-layout: fixed` style to be applied to the table element.
+          // scroll={scroll}
           showSorterTooltip={false}
           expandable={expandable}
           footer={footer}

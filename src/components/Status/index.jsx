@@ -104,14 +104,22 @@ export default class index extends Component {
     style: {},
   };
 
+  getStyle() {
+    const { style } = this.props;
+    return {
+      ...style,
+      whiteSpace: 'nowrap',
+    };
+  }
+
   render() {
-    const { status, text, style } = this.props;
+    const { status, text } = this.props;
     let realStatus = 'default';
     if (isBoolean(status)) {
       realStatus = status ? 'success' : 'error';
     } else if (isString(status)) {
       realStatus = getStatus(status.toLowerCase());
     }
-    return <Badge status={realStatus} text={text} style={style} />;
+    return <Badge status={realStatus} text={text} style={this.getStyle()} />;
   }
 }
