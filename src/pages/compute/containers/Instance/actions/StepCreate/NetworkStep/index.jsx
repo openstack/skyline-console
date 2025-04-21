@@ -213,6 +213,12 @@ export class NetworkStep extends Base {
     const showNetworks = networkSelectRows.length > 0;
     const networkRequired = ports.length === 0;
     const portRequired = networkSelectRows.length === 0;
+
+    const securityGroupDefaultSelectedRowKey =
+      this.securityGroupStore?.list?.data?.find(
+        (item) => item.name?.toLowerCase() === 'default'
+      )?.id;
+
     return [
       {
         name: 'networkSelect',
@@ -318,6 +324,10 @@ export class NetworkStep extends Base {
         ),
         filterParams: securityGroupFilter,
         columns: securityGroupColumns,
+        initValue:
+          this.showSecurityGroups && securityGroupDefaultSelectedRowKey
+            ? { selectedRowKeys: [securityGroupDefaultSelectedRowKey] }
+            : undefined,
       },
     ];
   }

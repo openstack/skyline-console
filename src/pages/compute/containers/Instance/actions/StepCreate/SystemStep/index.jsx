@@ -165,6 +165,10 @@ export class SystemStep extends Base {
   get loginTypes() {
     return [
       {
+        label: t('No Change'),
+        value: '',
+      },
+      {
         label: t('Keypair'),
         value: 'keypair',
         disabled: this.isWindowsImage,
@@ -229,9 +233,19 @@ export class SystemStep extends Base {
     });
   };
 
+  get isNoChange() {
+    const { loginType } = this.state;
+    return !loginType;
+  }
+
+  get isKeyPair() {
+    const { loginType } = this.state;
+    return loginType === 'keypair';
+  }
+
   get isPassword() {
     const { loginType } = this.state;
-    return loginType === this.loginTypes[1].value;
+    return loginType === 'password';
   }
 
   get usernameFormItem() {
@@ -282,8 +296,8 @@ export class SystemStep extends Base {
         type: 'select-table',
         data: this.keypairs,
         isLoading: this.keyPairStore.list.isLoading,
-        required: !this.isPassword,
-        hidden: this.isPassword,
+        required: !this.isKeyPair,
+        hidden: !this.isKeyPair,
         header: getKeyPairHeader(this),
         initValue: initKeyPair,
         tip: t(

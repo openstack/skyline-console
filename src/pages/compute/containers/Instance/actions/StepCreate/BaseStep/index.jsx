@@ -155,7 +155,7 @@ export class BaseStep extends Base {
   get defaultVolumeType() {
     const data = {
       size: 10,
-      deleteType: 1,
+      deleteType: 0,
     };
     return data;
   }
@@ -794,6 +794,11 @@ export class BaseStep extends Base {
         label: t('System Disk'),
         type: 'instance-volume',
         options: this.volumeTypes,
+        defaultOptionValue: this.volumeTypeStore.list?.isLoading
+          ? undefined
+          : this.volumeTypes.find(
+              (option) => option.label?.toLowerCase() === 'cubestorage'
+            )?.value,
         required: this.showSystemDiskByBootFromVolume,
         hidden: !this.showSystemDiskByBootFromVolume,
         validator: this.checkSystemDisk,

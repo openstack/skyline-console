@@ -22,12 +22,14 @@ export default class InstanceVolume extends React.Component {
     options: PropTypes.array,
     value: PropTypes.any,
     minSize: PropTypes.number,
+    defaultOptionValue: PropTypes.string,
   };
 
   static defaultProps = {
     options: [],
     value: {},
     minSize: 0,
+    defaultOptionValue: undefined,
   };
 
   constructor(props) {
@@ -59,6 +61,19 @@ export default class InstanceVolume extends React.Component {
 
   componentDidMount() {
     this.onChange();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { defaultOptionValue, options } = this.props;
+    if (
+      defaultOptionValue &&
+      defaultOptionValue !== prevProps.defaultOptionValue
+    ) {
+      const option = options.find((opt) => opt.value === defaultOptionValue);
+      if (option) {
+        this.onSelectChange(defaultOptionValue);
+      }
+    }
   }
 
   checkVolume = (callback) => {

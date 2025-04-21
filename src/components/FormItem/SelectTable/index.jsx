@@ -165,6 +165,16 @@ export default class SelectTable extends React.Component {
     if (!isEqual(newKeys, oldKeys)) {
       this.onChange({ selectedRowKeys: newKeys });
     }
+
+    if (
+      this.props.initValue?.selectedRowKeys &&
+      !prevProps.initValue?.selectedRowKeys
+    ) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        ...this.getInitValue(this.props),
+      });
+    }
   }
 
   getData() {
