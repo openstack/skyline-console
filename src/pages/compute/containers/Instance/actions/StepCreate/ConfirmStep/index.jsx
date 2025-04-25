@@ -30,6 +30,10 @@ export class ConfirmStep extends Base {
     return 'ConfirmStep';
   }
 
+  get isStep() {
+    return true;
+  }
+
   get enableCinder() {
     return this.props.rootStore.checkEndpoint('cinder');
   }
