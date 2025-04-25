@@ -40,6 +40,10 @@ export class SystemStep extends Base {
     this.getServerGroups();
   }
 
+  get isStep() {
+    return true;
+  }
+
   get hypervisorColumns() {
     const columns = [...hypervisorColumns];
     columns[0] = {

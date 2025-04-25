@@ -52,6 +52,10 @@ export class NetworkStep extends Base {
     return 'NetworkStep';
   }
 
+  get isStep() {
+    return true;
+  }
+
   get defaultValue() {
     const data = {
       networks: [],
