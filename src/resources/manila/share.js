@@ -41,13 +41,18 @@ export const replicaState = {
   out_of_sync: t('Out of Sync'),
 };
 
+/**
+ * Currently, only NFS and CIFS are supported as share protocol options.
+ * Other options have been commented out rather than removed entirely,
+ * in case support for them is reinstated in the future.
+ */
 export const shareProtocol = {
   NFS: t('NFS'),
   CIFS: t('CIFS'),
-  GlusterFS: t('GlusterFS'),
-  HDFS: t('HDFS'),
-  CephFS: t('CephFS'),
-  MAPRFS: t('MAPRFS'),
+  // GlusterFS: t('GlusterFS'),
+  // HDFS: t('HDFS'),
+  // CephFS: t('CephFS'),
+  // MAPRFS: t('MAPRFS'),
 };
 
 export const shareVisibility = {
