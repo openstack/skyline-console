@@ -48,6 +48,10 @@ export class ParamSetting extends Base {
     this.updateDefaultValue();
   }
 
+  get isStep() {
+    return true;
+  }
+
   get familyItemValue() {
     return getFamilyItemValue(this.settingStore.list.data);
   }

@@ -23,6 +23,10 @@ export class AccessTypeSetting extends Base {
     this.getProjects();
   }
 
+  get isStep() {
+    return true;
+  }
+
   get projects() {
     return this.projectStore.list.data || [];
   }
