@@ -74,7 +74,8 @@ export class VolumeTypeStore extends Base {
         items.forEach((it) => {
           if (it.qos_specs_id) {
             it.qos_specs = qosItems.find((qos) => qos.id === it.qos_specs_id);
-            it.qos_specs_name = (it.qos_specs || {}).name;
+            it.qos_specs_name = it.qos_specs?.name;
+            it.qos_props = it.qos_specs?.properties || {};
           }
         });
       }
