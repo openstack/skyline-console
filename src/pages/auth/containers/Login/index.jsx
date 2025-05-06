@@ -419,7 +419,12 @@ export class Login extends Component {
       <div className={styles.footer}>
         {/* eslint-disable-next-line spellcheck/spell-checker */}
         <p className={styles.copyright}>Copyright©Bigstack</p>
-        <a href="/" className={styles.terms}>
+        <a
+          href="https://www.bigstack.co/privacy-policy"
+          target="_blank"
+          rel="noreferrer"
+          className={styles.terms}
+        >
           Terms & Policy
         </a>
       </div>
