@@ -12,10 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { useEffect } from 'react';
 import renderRoutes from 'utils/RouterConfig';
-
 import routes from './routes';
+import globalRootStore from '../../stores/root';
+import { dataCenterStore } from '../../stores/datacenters/DataCenterStore';
 
-const App = (props) => renderRoutes(routes, props);
+const App = (props) => {
+  const { user } = globalRootStore;
+
+  useEffect(() => {
+    if (user) {
+      dataCenterStore.fetchDataCenters();
+    }
+  }, [user]);
+
+  return renderRoutes(routes, props);
+};
 
 export default App;

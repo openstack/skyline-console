@@ -14,7 +14,7 @@
 
 import React from 'react';
 import ImageType from 'components/ImageType';
-import { Tag, Tooltip } from 'antd';
+import { Button, Tag, Tooltip } from 'antd';
 import { ActionLogStore } from 'stores/nova/action-log';
 import { ironicOriginEndpoint } from 'client/client/constants';
 import { projectTagsColors } from 'src/utils/constants';
@@ -22,6 +22,7 @@ import PopActionEvent from 'src/components/Popover/PopActionEvent';
 import LockSvgIcon from 'asset/cube/monochrome/lock.svg';
 import UnlockSvgIcon from 'asset/cube/monochrome/unlock.svg';
 import { isEmpty } from 'lodash';
+import { openSearchApi } from 'src/apis/openSearchApi';
 
 const lockIcon = (
   <Tooltip
@@ -536,6 +537,27 @@ export const actionColumn = (self) => {
           />
         </>
       ),
+    },
+    {
+      title: t('OpenSearch'),
+      dataIndex: 'request_id',
+      isHideable: true,
+      render: (requestId) => {
+        const onClick = async () => {
+          try {
+            const link = await openSearchApi.getRequestLink(requestId);
+            window.open(link, '_blank');
+          } catch (error) {
+            console.error('Failed to get opensearch request link: ', error);
+          }
+        };
+
+        return (
+          <Button type="link" className="go-to-open-search" onClick={onClick}>
+            OpenSearch Dashboard
+          </Button>
+        );
+      },
     },
     {
       title: t('User ID'),

@@ -7,9 +7,4 @@ module.exports = {
   },
   secure: false,
   changeOrigin: true,
-  onProxyReq: (proxyReq, req) => {
-    if (req.headers.cookie) {
-      proxyReq.setHeader('Cookie', req.headers.cookie);
-    }
-  },
 };

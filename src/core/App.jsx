@@ -22,7 +22,6 @@ import 'styles/main.less';
 
 import routes from './routes';
 import i18n from './i18n';
-import { dataCenterStore } from '../stores/datacenters/DataCenterStore';
 
 class App extends Component {
   static propTypes = {
@@ -33,7 +32,6 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = { initDone: false };
-    dataCenterStore.fetchDataCenters();
   }
 
   componentDidMount() {
