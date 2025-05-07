@@ -2613,6 +2613,8 @@
   "The zone name should end with \".\"": "영역 이름은 \".\"로 끝나야 합니다.",
   "The {action} instruction has been issued, instance: {name}. \n You can wait for a few seconds to follow the changes of the list data or manually refresh the data to get the final display result.": "{action} 명령이 {name} 인스턴스에 대해 실행되었습니다. 목록 데이터의 변경 사항을 확인하기 위해 몇 초를 기다리거나 수동으로 데이터를 새로 고쳐 최종 결과를 얻을 수 있습니다.",
   "The {action} instruction has been issued. \n You can wait for a few seconds to follow the changes of the list data or manually refresh the data to get the final display result.": "{action} 명령이 실행되었습니다. 목록 데이터의 변경 사항을 확인하려면 몇 초 기다리거나 수동으로 데이터를 새로 고쳐 최종 표시 결과를 얻을 수 있습니다.",
+  "The {action} instruction has been issued, instance: {name}. \n To complete this instance resize, please go to More > Configuration Update > Confirm Resize or Migrate.": "{action} 명령이 {name} 인스턴스에 대해 실행되었습니다. \n 인스턴스 크기 조정을 완료하려면 ‘더보기’ > ‘구성 업데이트’ > ‘크기 조정 또는 마이그레이션 확인’으로 이동하세요.",
+  "The {action} instruction has been issued. \n To complete this instance resize, please go to More > Configuration Update > Confirm Resize or Migrate.": "{action} 명령이 실행되었습니다. \n 인스턴스 크기 조정을 완료하려면 ‘더보기’ > ‘구성 업데이트’ > ‘크기 조정 또는 마이그레이션 확인’으로 이동하세요.",
   "The {name} has already been used by other {resource}({content}), please change.": "{name}은(는) 이미 다른 {resource}({content})에서 사용 중입니다. 다른 이름으로 변경해주세요.",
   "The {name} {ports} have already been used, please change.": "해당 {name} {ports}는 이미 사용 중입니다. 변경해주세요.",
   "There are resources that cannot {action} in the selected resources, such as:": "선택한 자원 중에서 {action}할 수 없는 자원이 있습니다. 예):",

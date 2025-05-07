@@ -2613,6 +2613,8 @@
   "The zone name should end with \".\"": "",
   "The {action} instruction has been issued, instance: {name}. \n You can wait for a few seconds to follow the changes of the list data or manually refresh the data to get the final display result.": "Выдана инструкция {action}, инстанс: {name}. \n Вы можете подождать несколько секунд, чтобы отследить изменения списка данных, или вручную обновить данные, чтобы получить окончательный результат отображения.",
   "The {action} instruction has been issued. \n You can wait for a few seconds to follow the changes of the list data or manually refresh the data to get the final display result.": "Выдана инструкция {action}. \n Вы можете подождать несколько секунд, чтобы отследить изменения списка данных",
+  "The {action} instruction has been issued, instance: {name}. \n To complete this instance resize, please go to More > Configuration Update > Confirm Resize or Migrate.": "Выдана инструкция {action}, инстанс: {name}. \n Чтобы завершить изменение размера экземпляра, перейдите в «Дополнительно» > «Обновление конфигурации» > «Подтвердить изменение размера или миграцию».",
+  "The {action} instruction has been issued. \n To complete this instance resize, please go to More > Configuration Update > Confirm Resize or Migrate.": "Выдана инструкция {action}. \n Чтобы завершить изменение размера экземпляра, перейдите в «Дополнительно» > «Обновление конфигурации» > «Подтвердить изменение размера или миграцию».",
   "The {name} has already been used by other {resource}({content}), please change.": "",
   "The {name} {ports} have already been used, please change.": "",
   "There are resources that cannot {action} in the selected resources, such as:": "",

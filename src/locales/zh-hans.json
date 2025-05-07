@@ -2613,6 +2613,8 @@
   "The zone name should end with \".\"": "区域名称应以“.”结尾。",
   "The {action} instruction has been issued, instance: {name}. \n You can wait for a few seconds to follow the changes of the list data or manually refresh the data to get the final display result.": "{action}指令已下发，实例名称：{name}。 \n 您可等待几秒关注列表数据的变更或是手动刷新数据，以获取最终展示结果。",
   "The {action} instruction has been issued. \n You can wait for a few seconds to follow the changes of the list data or manually refresh the data to get the final display result.": "{action}指令已下发。 \n 您可等待几秒关注列表数据的变更或是手动刷新数据，以获取最终展示结果。",
+  "The {action} instruction has been issued, instance: {name}. \n To complete this instance resize, please go to More > Configuration Update > Confirm Resize or Migrate.": "{action}指令已下发，实例名称：{name}。 \n 请前往「更多」>「配置更新」>「确认调整配置或迁移」，以完成虚拟机规格更新操作。",
+  "The {action} instruction has been issued. \n To complete this instance resize, please go to More > Configuration Update > Confirm Resize or Migrate.": "{action}指令已下发。 \n 请前往「更多」>「配置更新」>「确认调整配置或迁移」，以完成虚拟机规格更新操作。",
   "The {name} has already been used by other {resource}({content}), please change.": "{name} 已经被其他{resource}使用({content})，请修改。",
   "The {name} {ports} have already been used, please change.": "{name} {ports} 已经被使用，请修改。",
   "There are resources that cannot {action} in the selected resources, such as:": "您选中的资源中有无法{action}的资源，如：",

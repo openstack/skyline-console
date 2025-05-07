@@ -24,7 +24,7 @@ import {
 } from 'resources/nova/instance';
 import globalProjectStore from 'stores/keystone/project';
 import { isEmpty } from 'lodash';
-import { getGiBValue, formatSize } from 'utils/index';
+import { getGiBValue, formatSize, firstUpperCase } from 'utils/index';
 import FlavorSelectTable from '../components/FlavorSelectTable';
 
 export async function fetchQuota(self) {
@@ -134,6 +134,34 @@ export class Resize extends ModalAction {
 
   get isAsyncAction() {
     return true;
+  }
+
+  get successText() {
+    if (this.messageHasItemName) {
+      if (this.isAsyncAction) {
+        return firstUpperCase(
+          t(
+            'The {action} instruction has been issued, instance: {name}. \n To complete this instance resize, please go to More > Configuration Update > Confirm Resize or Migrate.',
+            { action: this.name.toLowerCase(), name: this.instanceName }
+          )
+        );
+      }
+      return firstUpperCase(
+        t('{action} successfully, instance: {name}.', {
+          action: this.name.toLowerCase(),
+          name: this.instanceName,
+        })
+      );
+    }
+    if (this.isAsyncAction) {
+      return firstUpperCase(
+        t(
+          'The {action} instruction has been issued. \n To complete this instance resize, please go to More > Configuration Update > Confirm Resize or Migrate.',
+          { action: this.name.toLowerCase() }
+        )
+      );
+    }
+    return firstUpperCase(t('{action} successfully.', { action: this.name }));
   }
 
   getModalSize() {
