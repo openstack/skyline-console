@@ -78,7 +78,7 @@ export class Create extends ModalAction {
     const { detail: { share_proto: proto } = {} } = this.containerProps || {};
     const ipTipTypes = ['NFS', 'CIFS'];
     if (ipTipTypes.includes(proto) && type === 'ip') {
-      return t('All network segments are indicated by "*", not "0.0.0.0/0"');
+      return t('All network segments are indicated by "0.0.0.0/0"');
     }
     return '';
   }
