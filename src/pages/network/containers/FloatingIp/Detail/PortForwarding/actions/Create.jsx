@@ -400,7 +400,7 @@ export class CreatePortForwarding extends ModalAction {
     if (error) {
       return error;
     }
-    if (!portRangeRegex.test(internalPortInput)) {
+    if (!portRangeRegex(internalPortInput)) {
       return '';
     }
     const { length: internalLength } = this.checkRangeInput(internalPortInput);
@@ -415,7 +415,7 @@ export class CreatePortForwarding extends ModalAction {
     const { internal_port: internalPort } = this.formRef.current.getFieldsValue(
       ['internal_port']
     );
-    if (!portRangeRegex.test(value)) {
+    if (!portRangeRegex(value)) {
       return Promise.resolve(true);
     }
     const result = this.checkExternalPortInput(
@@ -457,7 +457,7 @@ export class CreatePortForwarding extends ModalAction {
     if (error) {
       return error;
     }
-    if (!portRangeRegex.test(externalPortInput)) {
+    if (!portRangeRegex(externalPortInput)) {
       return '';
     }
     const { length: externalLength } = this.checkRangeInput(externalPortInput);
@@ -469,7 +469,7 @@ export class CreatePortForwarding extends ModalAction {
 
   validateInternalPort = (_, val) => {
     const value = val === undefined || val === null ? '' : `${val}`;
-    if (!portRangeRegex.test(value)) {
+    if (!portRangeRegex(value)) {
       return Promise.resolve(true);
     }
     const { external_port: externalPort } = this.formRef.current.getFieldsValue(

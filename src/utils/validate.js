@@ -19,14 +19,38 @@ import { isValidPhoneNumber } from 'libphonenumber-js';
 
 const { v4, v6 } = cidrRegex;
 
+function isValidPort(portStr) {
+  if (/^\d+$/.test(portStr) && (portStr === '0' || portStr[0] !== '0')) {
+    const port = parseInt(portStr, 10);
+    return port >= 0 && port <= 65535;
+  }
+  return false;
+}
+
+function validatePortRange(inputStr) {
+  const parts = inputStr.split(':');
+
+  if (parts.length > 2) {
+    return false;
+  }
+
+  for (let i = 0; i < parts.length; i++) {
+    if (!isValidPort(parts[i])) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+const portRangeRegex = validatePortRange;
+
 const cidr = cidrRegex({ exact: true });
 const ipCidr = v4({ exact: true });
 const ipv6Cidr = v6({ exact: true });
 const nameRegex =
   /^[a-zA-Z\u4e00-\u9fa5][\u4e00-\u9fa5\w"'\[\]^.:()_-]{0,127}$/; // eslint-disable-line
 const macRegex = /^[A-F0-9]{2}(:[A-F0-9]{2}){5}$/;
-const portRangeRegex =
-  /^([1-9]|[1-5]?[0-9]{2,4}|6[1-4][0-9]{3}|65[1-4][0-9]{2}|655[1-2][0-9]|6553[1-5])(:([1-9]|[1-5]?[0-9]{2,4}|6[1-4][0-9]{3}|65[1-4][0-9]{2}|655[1-2][0-9]|6553[1-5]))?$/;
 const ipWithMask =
   /^(?:(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\/([1-9]|[1-2]\d|3[0-2])$/;
 const passwordRegex =
@@ -565,7 +589,7 @@ export const portRangeValidate = (rule, value) => {
   if (!value && required) {
     return Promise.reject(message || t('Please input'));
   }
-  if (portRangeRegex.test(value)) {
+  if (portRangeRegex(value)) {
     const ports = value.split(':');
     if (Number(ports[0]) > Number(ports[1])) {
       return Promise.reject(new Error(`${t('Invalid: ')}${rangeMessage}`));
