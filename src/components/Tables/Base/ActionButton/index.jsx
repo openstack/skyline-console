@@ -109,6 +109,7 @@ export class ActionButton extends Component {
     this.state = {
       visible: false,
       submitLoading: false,
+      isAsyncCallbackLoading: false,
     };
   }
 
@@ -141,7 +142,12 @@ export class ActionButton extends Component {
       case 'asyncCallback': {
         const { action, item } = this.props;
         const { onClick } = action;
-        onClick?.(item);
+
+        this.setState({ isAsyncCallbackLoading: true });
+
+        onClick?.(item)?.finally(() => {
+          this.setState({ isAsyncCallbackLoading: false });
+        });
         break;
       }
       default:
@@ -585,6 +591,8 @@ export class ActionButton extends Component {
       isCreateIcon,
     } = this.props;
 
+    const { isAsyncCallbackLoading } = this.state;
+
     if (!isAllowed && needHide) {
       return null;
     }
@@ -614,6 +622,7 @@ export class ActionButton extends Component {
         danger={isDanger}
         onClick={this.onClick}
         key={id}
+        loading={isAsyncCallbackLoading}
         disabled={!isAllowed}
         className={buttonClassName}
         style={style}

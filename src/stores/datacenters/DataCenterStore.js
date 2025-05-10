@@ -1,5 +1,5 @@
+import axios from 'axios';
 import { action, observable, runInAction } from 'mobx';
-import { dataCenterApi } from 'src/apis/dataCenterApi';
 
 class DataCenterStore {
   @observable
@@ -11,7 +11,8 @@ class DataCenterStore {
   @action.bound
   async fetchDataCenters() {
     try {
-      const dataCenters = await dataCenterApi.getDataCenters();
+      const dataCenters = (await axios.get('/cos-api/v1/datacenters')).data
+        ?.data;
       runInAction(() => {
         this.dataCenter = dataCenters.find((item) => item.isLocal);
       });

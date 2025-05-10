@@ -116,7 +116,7 @@ export default class TablePrimaryButtons extends Component {
         buttonClassName: it?.buttonClassName,
       };
       const getIsCreateIcon = () => {
-        if (it?.id === 'go-to-grafana') {
+        if (it?.id === 'monitor') {
           return false;
         }
         return isCreateIcon;

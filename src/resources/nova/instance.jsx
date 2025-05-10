@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
+import React, { useState } from 'react';
 import ImageType from 'components/ImageType';
 import { Button, Tag, Tooltip } from 'antd';
 import { ActionLogStore } from 'stores/nova/action-log';
@@ -543,17 +543,27 @@ export const actionColumn = (self) => {
       dataIndex: 'request_id',
       isHideable: true,
       render: (requestId) => {
+        const [isLoading, setIsLoading] = useState(false);
+
         const onClick = async () => {
+          setIsLoading(true);
           try {
             const link = await openSearchApi.getRequestLink(requestId);
             window.open(link, '_blank');
           } catch (error) {
             console.error('Failed to get opensearch request link: ', error);
+          } finally {
+            setIsLoading(false);
           }
         };
 
         return (
-          <Button type="link" className="go-to-open-search" onClick={onClick}>
+          <Button
+            type="link"
+            className="go-to-open-search"
+            loading={isLoading}
+            onClick={onClick}
+          >
             OpenSearch Dashboard
           </Button>
         );

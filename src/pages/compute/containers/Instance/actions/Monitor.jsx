@@ -1,11 +1,11 @@
 import { grafanaApi } from 'src/apis/grafanaApi';
 
-export const GoToGrafana = {
-  id: 'go-to-grafana',
+export const Monitor = {
+  id: 'monitor',
   actionType: 'asyncCallback',
-  title: t('Go to Grafana'),
+  title: t('Monitor'),
   allowed: () => true,
-  buttonClassName: 'go-to-grafana',
+  buttonClassName: 'monitor',
   hideInTable: true,
   onClick: async (row) => {
     try {

@@ -147,10 +147,20 @@ const getGlobalVariables = () => {
   return JSON.stringify(allVariables);
 };
 
+const getCosApiTokenCredentials = () => {
+  const username = JSON.stringify(getConfig('cosApiTokenUsername'));
+  const password = JSON.stringify(getConfig('cosApiTokenPassword'));
+  return {
+    username,
+    password,
+  };
+};
+
 module.exports = {
   getServerConfig,
   root,
   getGlobalVariables,
   getThemeConfig,
   getCustomStyleVariables,
+  getCosApiTokenCredentials,
 };
