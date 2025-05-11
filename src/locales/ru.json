@@ -130,6 +130,7 @@
   "All UDP": "Все UDP",
   "All data downloaded.": "Все данные загружены.",
   "All network segments are indicated by \"*\", not \"0.0.0.0/0\"": "Все сегменты сети обозначаются символом \"*\", а не \"0.0.0.0/0\"",
+  "All network segments are indicated by \"0.0.0.0/0\"": "Все сегменты сети обозначены как \"0.0.0.0/0\".",
   "Allocate IP": "Выделить IP",
   "Allocation Pools": "Пулы выделения",
   "Allowed Address Pairs": "Разрешенные пары адресов",

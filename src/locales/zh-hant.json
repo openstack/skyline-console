@@ -130,6 +130,7 @@
   "All UDP": "所有 UDP 協定",
   "All data downloaded.": "所有資料已下載完成。",
   "All network segments are indicated by \"*\", not \"0.0.0.0/0\"": "以「*」表示所有網段，不支援以「0.0.0.0/0」表示所有網段",
+  "All network segments are indicated by \"0.0.0.0/0\"": "以「0.0.0.0/0」表示所有網段",
   "Allocate IP": "分配 IP",
   "Allocation Pools": "分配集區",
   "Allowed Address Pairs": "可用位址配對",

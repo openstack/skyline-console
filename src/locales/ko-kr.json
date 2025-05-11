@@ -130,6 +130,7 @@
   "All UDP": "모든 UDP",
   "All data downloaded.": "모든 데이터가 다운로드 되었습니다.",
   "All network segments are indicated by \"*\", not \"0.0.0.0/0\"": "모든 네트워크 세그먼트는 \"0.0.0.0/0\"이 아닌 \"*\"로 표시됩니다.",
+  "All network segments are indicated by \"0.0.0.0/0\"": "모든 네트워크 세그먼트는 \"0.0.0.0/0\"으로 표시됩니다.",
   "Allocate IP": "IP 할당",
   "Allocation Pools": "할당 풀",
   "Allowed Address Pairs": "허용된 주소 쌍",

@@ -130,6 +130,7 @@
   "All UDP": "Tüm UDP",
   "All data downloaded.": "Tüm veriler indirildi.",
   "All network segments are indicated by \"*\", not \"0.0.0.0/0\"": "Tüm ağ segmentleri \"0.0.0.0/0\" ile değil, \"*\" ile gösterilir",
+  "All network segments are indicated by \"0.0.0.0/0\"": "Tüm ağ segmentleri \"0.0.0.0/0\" ile gösterilir",
   "Allocate IP": "IP Ayır",
   "Allocation Pools": "Dağıtım Havuzları",
   "Allowed Address Pairs": "İzin Verilen Adres Çiftleri",
