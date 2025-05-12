@@ -279,16 +279,35 @@ export class StepCreate extends StepAction {
   }
 
   getQuotaMessage(value, quota, name) {
-    const { left = 0 } = quota || {};
+    /**
+     * `quota` may be undefined,
+     * return an empty string to avoid unexpected errors.
+     */
+    if (!quota) return '';
+    /**
+     * Get the remaining quota (`left`), defaulting to 0
+     */
+    const left = quota.left ?? 0;
+    /**
+     * If `left` is -1, there is no message needed.
+     */
     if (left === -1) {
       return '';
     }
+    /**
+     * If the input value exceeds the remaining quota,
+     * return a warning message with the relevant values.
+     */
     if (value > left) {
       return t(
         'Insufficient {name} quota to create resources (left { quota }, input { input }).',
         { name, quota: left, input: value }
       );
     }
+    /**
+     * If none of the above conditions apply,
+     * return an empty string (no warning needed).
+     */
     return '';
   }
 
