@@ -2,8 +2,6 @@ host: 0.0.0.0
 port: 8088
 server: http://localhost
 cosApiUrl: https://localhost:4443/api
-cosApiTokenUsername: admin
-cosApiTokenPassword: admin
 
 theme: default
 
