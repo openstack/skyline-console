@@ -22,7 +22,6 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const common = require('./webpack.common');
-const cosApiProxy = require('./cosApiProxy');
 
 const { getThemeConfig, getCustomStyleVariables } = require('./utils');
 
@@ -49,11 +48,6 @@ module.exports = (env) => {
     },
     mode: 'production',
     // devtool: 'inline-source-map',
-    devServer: {
-      proxy: {
-        '/cos-api': cosApiProxy,
-      },
-    },
     module: {
       rules: [
         {
