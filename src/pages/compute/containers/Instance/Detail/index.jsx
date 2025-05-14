@@ -150,7 +150,7 @@ export class InstanceDetail extends Base {
         component: ActionLog,
       },
       {
-        title: t('Logs'),
+        title: t('Console Logs'),
         key: 'logs',
         component: Log,
       },

@@ -80,7 +80,7 @@ export class ContainerDetail extends Base {
     ];
     if (this.showLogs) {
       items.push({
-        title: t('Logs'),
+        title: t('Console Logs'),
         key: 'logs',
         component: Logs,
       });

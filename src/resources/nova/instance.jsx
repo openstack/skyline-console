@@ -507,7 +507,7 @@ export const actionEvent = {
 export const actionColumn = (self) => {
   return [
     {
-      title: t('Operation Name'),
+      title: t('Action'),
       dataIndex: 'action',
       valueMap: actionMap,
     },
@@ -518,7 +518,7 @@ export const actionColumn = (self) => {
       hidden: !self.isAdminPage,
     },
     {
-      title: t('Operation Time'),
+      title: t('Time'),
       dataIndex: 'start_time',
       valueRender: 'toLocalTimeMoment',
     },
@@ -539,7 +539,7 @@ export const actionColumn = (self) => {
       ),
     },
     {
-      title: t('OpenSearch'),
+      title: t('Trace'),
       dataIndex: 'request_id',
       isHideable: true,
       render: (requestId) => {
@@ -564,7 +564,7 @@ export const actionColumn = (self) => {
             loading={isLoading}
             onClick={onClick}
           >
-            OpenSearch Dashboard
+            {t('Analyze')}
           </Button>
         );
       },
