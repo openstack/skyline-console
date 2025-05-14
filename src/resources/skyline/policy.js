@@ -71,6 +71,8 @@ export const policyMap = {
     'secret:decrypt',
     'secret:delete',
     'containers:post',
+    'container:get',
+    'container:delete',
   ],
   zun: ['capsule:', 'container:', 'host:get'],
   panko: ['segregation', 'telemetry:events:index'],
