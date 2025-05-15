@@ -23,6 +23,7 @@ import LockSvgIcon from 'asset/cube/monochrome/lock.svg';
 import UnlockSvgIcon from 'asset/cube/monochrome/unlock.svg';
 import { isEmpty } from 'lodash';
 import { openSearchApi } from 'src/apis/openSearchApi';
+import { dataCenterStore } from 'src/stores/datacenters/DataCenterStore';
 
 const lockIcon = (
   <Tooltip
@@ -505,7 +506,9 @@ export const actionEvent = {
 };
 
 export const actionColumn = (self) => {
-  return [
+  const { dataCenter } = dataCenterStore;
+
+  const result = [
     {
       title: t('Action'),
       dataIndex: 'action',
@@ -538,7 +541,10 @@ export const actionColumn = (self) => {
         </>
       ),
     },
-    {
+  ];
+
+  if (dataCenter?.type !== 'edge') {
+    result.push({
       title: t('Trace'),
       dataIndex: 'request_id',
       isHideable: true,
@@ -568,16 +574,19 @@ export const actionColumn = (self) => {
           </Button>
         );
       },
-    },
-    {
-      title: t('User ID'),
-      dataIndex: 'user_id',
-      isHideable: true,
-      hidden: !self.isAdminPage,
-      render: (value) =>
-        self.getLinkRender('userDetail', value, { id: value }, null),
-    },
-  ];
+    });
+  }
+
+  result.push({
+    title: t('User ID'),
+    dataIndex: 'user_id',
+    isHideable: true,
+    hidden: !self.isAdminPage,
+    render: (value) =>
+      self.getLinkRender('userDetail', value, { id: value }, null),
+  });
+
+  return result;
 };
 
 export const SimpleTag = ({ tag, index }) => {
