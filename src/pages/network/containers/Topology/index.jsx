@@ -511,6 +511,23 @@ export class Topology extends React.Component {
 
     const width = document.getElementById('container').scrollWidth;
 
+    /**
+     * Ideally, each external network should be displayed in its own row.
+     * However, as a temporary workaround for phase 1, all external networks
+     * will be listed in a single row.
+     */
+    const getExtNetworkNames = () => {
+      const { networks } = this.store.topology;
+      if (!networks) return 'External Network';
+
+      const externalNetworks = networks
+        .filter((network) => isExternalNetwork(network))
+        .map((network) => network.name)
+        .join(', ');
+
+      return `External Network(s): ${externalNetworks}`;
+    };
+
     // data required for rendering
     let data = {
       nodes: [
@@ -525,7 +542,7 @@ export class Topology extends React.Component {
         {
           id: 'extNet',
           type: 'rect',
-          label: 'extNetwork',
+          label: getExtNetworkNames(),
           labelCfg: {
             position: 'right',
             offset: -(width / 2),
