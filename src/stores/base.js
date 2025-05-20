@@ -493,6 +493,26 @@ export default class BaseStore {
     const newParams = this.paramsFuncPage(params, all_projects);
     const result = await this.requestListByPage(newParams, page, filters);
     const allData = this.getListDataFromResult(result);
+
+    const getActualTotalCount = async () => {
+      try {
+        const unlimitedResult = await this.requestListByPage(
+          {
+            ...newParams,
+            marker: undefined,
+            limit: 9999,
+          },
+          page,
+          filters
+        );
+        const totalData = this.getListDataFromResult(unlimitedResult);
+        return totalData.length;
+      } catch {
+        return 0;
+      }
+    };
+    const actualTotalCount = await getActualTotalCount();
+
     this.updateMarker(allData, page, result, allData, params);
     const allDataNew = allData.map(this.mapperBeforeFetchProject);
     let newData = await this.listDidFetchProject(allDataNew, all_projects);
@@ -524,7 +544,7 @@ export default class BaseStore {
       filters,
       timeFilter,
       isLoading: false,
-      total: count || total,
+      total: actualTotalCount || count || total || newData?.length || 0,
       ...(this.list.silent ? {} : { selectedRowKeys: [] }),
       ...others,
     });
