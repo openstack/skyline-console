@@ -23,7 +23,7 @@ export class FixedIpStore extends Base {
   }
 
   get paramsFunc() {
-    return ({ all_projects, ...rest }) => rest;
+    return ({ all_projects, networkId, instanceId, subnetId, ...rest }) => rest;
   }
 
   async getItemFloatingIPs(fixed_ip, portId) {
