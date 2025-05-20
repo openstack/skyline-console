@@ -351,10 +351,10 @@ export class BaseTable extends React.Component {
         return realValue;
       }
       return (
-        <div>
+        <div style={{ display: 'flex' }}>
           {realValue}
           <Tooltip title={tipValue}>
-            <Icon style={{ marginLeft: 8 }} />
+            <Icon width={16} height={16} style={{ marginLeft: 8 }} />
           </Tooltip>
         </div>
       );
