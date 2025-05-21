@@ -46,6 +46,12 @@ export const errorStrokeColor = 'rgba(213, 28, 28, 1)'; // COS Red color
 
 const DEFAULT_FIRST_SUBNET_Y = 290;
 
+// Constants for Node cards
+const nodeCardWidth = 66;
+const nodeCardHeight = 56;
+const nodeCardOffsetX = nodeCardWidth;
+const nodeCardMargin = 20;
+
 export class Topology extends React.Component {
   constructor(props) {
     super(props);
@@ -126,30 +132,35 @@ export class Topology extends React.Component {
   renderRouterNode = (data, width) => {
     const { routers } = this.topoInfo;
     const nodeXY = [];
+    const routerY = 200;
+
     routers.forEach((router, index) => {
-      const { id, external_gateway_info, subnets, name } = router;
-      const routerX = parseFloat(
-        ((width / 10) * index + (width / 20) * 3).toFixed(0)
-      );
-      nodeXY.push({ nodeCardX: routerX, nodeCardY: 200 });
+      const { id, external_gateway_info, subnets, name, status } = router;
+
+      // Calculate router X position
+      const routerX =
+        nodeCardOffsetX + (nodeCardWidth + nodeCardMargin) * index;
+      nodeXY.push({ nodeCardX: routerX, nodeCardY: routerY });
+
+      // Add router node to data
       data.nodes.push({
         id,
         x: routerX,
-        y: 200,
+        y: routerY,
         type: 'rect',
         nodeType: 'router',
         infoIndex: index,
-        size: [66, 56],
+        size: [nodeCardWidth, nodeCardHeight],
         style: {
           radius: 6,
           fill: '#FFFFFF',
           stroke:
-            router.status === 'ACTIVE'
-              ? globalCSS.successColor
-              : errorStrokeColor,
+            status === 'ACTIVE' ? globalCSS.successColor : errorStrokeColor,
         },
         anchorPoints: [[0.5, 0]],
       });
+
+      // Add edge to external network if gateway exists
       if (external_gateway_info !== null) {
         data.edges.push({
           id: `edge-${name}-ext`,
@@ -163,6 +174,8 @@ export class Topology extends React.Component {
           },
         });
       }
+
+      // Add edges to subnets if available
       if (subnets.length !== 0) {
         let subnetNum = 0;
         subnets.forEach((subnet_id) => {
@@ -187,12 +200,16 @@ export class Topology extends React.Component {
             });
           }
         });
+
+        // Update anchor points based on number of subnets
         data.nodes[data.nodes.length - 1].anchorPoints = this.getAnchorPoints(
           1,
           subnetNum
         );
       }
     });
+
+    // Auto-extend canvas width if last router node overflows
     if (nodeXY[0]) {
       const lastRouterNode = nodeXY[nodeXY.length - 1].nodeCardX;
       const { extendWidth } = this.state;
@@ -295,32 +312,36 @@ export class Topology extends React.Component {
     const { servers, subnets, extNetwork } = this.topoInfo;
     const nodeXY = [];
     servers.forEach((server, index) => {
-      const { fixed_addresses, fixed_networks } = server;
-      let insX = parseFloat(((width / 10) * 2).toFixed(0));
+      const { fixed_addresses, fixed_networks, vm_state } = server;
+
+      let insX = nodeCardOffsetX;
       let insY = null;
       let topAnchorNum = 0;
+
       const extSubnetId = [];
       extNetwork.forEach((it) => extSubnetId.push(...toJS(it.subnets)));
+
       const extSubnet = subnets.filter(
         (it) => extSubnetId.indexOf(it.id) !== -1
       );
+
+      // Handle servers without fixed addresses
       if (!fixed_addresses[0]) {
         const { insCard } = this.state;
         insY = data.subnetNodes[0].cardY;
-        insCard.forEach((item) => {
-          if (item[0] === insX && item[1] === insY) {
-            insX += parseFloat((width / 10).toFixed(0));
+
+        // Adjust position if overlapping
+        insCard.forEach(([x, y]) => {
+          if (x === insX && y === insY) {
+            insX += nodeCardWidth;
           }
           if (Math.round(insX) >= width + this.state.extendWidth) {
-            this.setState((pre) => {
-              const extendWidth =
-                pre.extendWidth + parseFloat((width / 10).toFixed(0));
-              return {
-                extendWidth,
-              };
-            });
+            this.setState((prev) => ({
+              extendWidth: prev.extendWidth + Math.round(width),
+            }));
           }
         });
+
         nodeXY.push([insX, insY]);
         data.nodes.push({
           id: server.id,
@@ -329,21 +350,24 @@ export class Topology extends React.Component {
           type: 'rect',
           nodeType: 'ins',
           infoIndex: index,
-          size: [66, 56],
+          size: [nodeCardWidth, nodeCardHeight],
           style: {
             radius: 4,
             fill: '#FFFFFF',
             stroke:
-              server.vm_state === 'active'
-                ? globalCSS.successColor
-                : errorStrokeColor,
+              vm_state === 'active' ? globalCSS.successColor : errorStrokeColor,
           },
         });
       }
+
       let anchorIndex = 0;
+
+      // Iterate over all fixed IPs
       fixed_addresses.forEach((fixed_address) => {
         let subnet_id = null;
         let subnetIndex = 0;
+
+        // Match fixed IP with external subnet
         extSubnet.forEach((item) => {
           item.allocation_pools.forEach((pool) => {
             if (isIpInRangeAll(fixed_address, pool.start, pool.end)) {
@@ -352,6 +376,8 @@ export class Topology extends React.Component {
             }
           });
         });
+
+        // Match fixed IP with internal subnet
         data.subnetNodes.forEach((item, dataIndex) => {
           const network_index = fixed_networks.indexOf(item.networkId);
           if (network_index !== -1) {
@@ -363,22 +389,24 @@ export class Topology extends React.Component {
             });
           }
         });
+
+        // If server node hasn't been added yet and subnet is matched, add it
         if (data.nodes[data.nodes.length - 1].id !== server.id && subnet_id) {
           const { insCard } = this.state;
           insY = data.subnetNodes[subnetIndex].cardY;
-          insCard.forEach((item) => {
-            if (item[0] === insX && item[1] === insY) {
-              insX += parseFloat((width / 10).toFixed(0));
+
+          // Avoid overlapping positions
+          insCard.forEach(([x, y]) => {
+            if (x === insX && y === insY) {
+              insX += nodeCardWidth + nodeCardMargin;
             }
             if (insX >= width + this.state.extendWidth) {
-              this.setState((pre) => {
-                const extendWidth = pre.extendWidth + width / 10;
-                return {
-                  extendWidth,
-                };
-              });
+              this.setState((prev) => ({
+                extendWidth: prev.extendWidth + width,
+              }));
             }
           });
+
           nodeXY.push([insX, insY]);
           data.nodes.push({
             id: server.id,
@@ -387,7 +415,7 @@ export class Topology extends React.Component {
             type: 'rect',
             nodeType: 'ins',
             infoIndex: index,
-            size: [66, 56],
+            size: [nodeCardWidth, nodeCardHeight],
             style: {
               radius: 6,
               fill: '#FFFFFF',
@@ -398,15 +426,17 @@ export class Topology extends React.Component {
             },
           });
         }
+
         if (subnet_id) {
-          const {
-            style: { stroke },
-          } = data.subnetNodes[subnetIndex];
+          const { stroke } = data.subnetNodes[subnetIndex].style;
           const subnetY = data.subnetNodes[subnetIndex].y;
+
+          // Determine top or bottom anchor
           if (subnetY < insY) {
             topAnchorNum += 1;
           }
-          // todo: There is more to consider about edge cover
+          // TODO: There is more to consider about edge cover
+          // Prevent edge and node overlap
           for (let i = 0; i < nodeXY.length; i++) {
             const offsetIndex = data.edges.filter(
               (it) =>
@@ -419,25 +449,27 @@ export class Topology extends React.Component {
                   (it.linePath.source_y <= insY &&
                     it.linePath.target_y >= subnetY))
             );
+
             const overlapIndex = data.nodes.filter(
               (it) => it.x === insX && it.y === insY && it.id !== server.id
             );
+
             if (offsetIndex.length !== 0 || overlapIndex.length !== 0) {
-              insX += parseFloat((width / 10).toFixed(0));
+              insX += Math.round(width);
               data.nodes[data.nodes.length - 1].x = insX;
               nodeXY[nodeXY.length - 1] = [insX, insY];
             } else {
               break;
             }
+
             if (Math.round(insX) >= width + this.state.extendWidth) {
-              this.setState((pre) => {
-                const extendWidth = pre.extendWidth + width / 10;
-                return {
-                  extendWidth,
-                };
-              });
+              this.setState((prev) => ({
+                extendWidth: prev.extendWidth + width,
+              }));
             }
           }
+
+          // Push edge from instance to subnet
           data.edges.push({
             id: `edge-${server.id}-${fixed_address}`,
             target: subnet_id,
@@ -455,15 +487,20 @@ export class Topology extends React.Component {
               target_y: subnetY,
             },
           });
+
           anchorIndex += 1;
         }
       });
+
+      // Generate anchor points based on number of edges
       const anchorData = this.getAnchorPoints(
         topAnchorNum,
         anchorIndex - topAnchorNum
       );
-      const sererEdges = data.edges.filter((it) => it.source === server.id);
-      sererEdges.forEach((it, i) => {
+
+      // Swap anchor point for external network to the top if necessary
+      const serverEdges = data.edges.filter((it) => it.source === server.id);
+      serverEdges.forEach((it, i) => {
         if (it.target === 'extNet' && anchorData[i][1] === 1) {
           [anchorData[i], anchorData[topAnchorNum - 1]] = [
             anchorData[topAnchorNum - 1],
@@ -471,7 +508,11 @@ export class Topology extends React.Component {
           ];
         }
       });
+
+      // Assign anchor points to instance node
       data.nodes[data.nodes.length - 1].anchorPoints = anchorData;
+
+      // Store final positions
       this.setState({
         insCard: nodeXY,
       });
