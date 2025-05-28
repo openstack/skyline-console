@@ -48,6 +48,7 @@ import DeleteIronic from './DeleteIronic';
 import ConfirmResize from './ConfirmResize';
 import RevertResize from './RevertResize';
 import ModifyTags from './ModifyTags';
+import Rescue from './Rescue';
 
 const statusActions = [
   StartAction,
@@ -62,6 +63,7 @@ const statusActions = [
   UnpauseAction,
   Shelve,
   Unshelve,
+  Rescue,
 ];
 
 const resourceActions = [
