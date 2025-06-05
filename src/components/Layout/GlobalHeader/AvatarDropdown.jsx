@@ -74,6 +74,7 @@ export class AvatarDropdown extends React.Component {
       return (
         <div style={{ float: 'right' }}>
           <Select
+            className="language-select"
             options={options}
             value={selectedLang}
             onChange={this.changeLang}
