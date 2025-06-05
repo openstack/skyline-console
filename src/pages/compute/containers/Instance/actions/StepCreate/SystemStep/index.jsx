@@ -145,9 +145,11 @@ export class SystemStep extends Base {
     const { servergroup } = this.locationParams;
     const { context = {} } = this.props;
     const data = {
-      loginType:
-        context.loginType ||
-        (this.isWindowsImage ? this.loginTypes[1] : this.loginTypes[0]),
+      /**
+       * If context.loginType exists, use it;
+       * Otherwise, default to "No Change"
+       */
+      loginType: context.loginType || this.loginTypes[0],
       more: false,
       physicalNodeType: physicalNodeTypes[0],
       userData: '',
