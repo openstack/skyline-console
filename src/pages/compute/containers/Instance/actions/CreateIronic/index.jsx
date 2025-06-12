@@ -24,6 +24,7 @@ import { isEmpty, isFinite } from 'lodash';
 import {
   getUserData,
   canCreateIronicByEndpoint,
+  hashPasswordForCloudInit,
 } from 'resources/nova/instance';
 import { ironicOriginEndpoint } from 'client/client/constants';
 import Notify from 'components/Notify';
@@ -331,6 +332,9 @@ export class CreateIronic extends StepAction {
       server.user_data = btoa(
         getUserData(server.adminPass, userData, username || 'root')
       );
+    }
+    if (server.adminPass) {
+      server.adminPass = hashPasswordForCloudInit(server.adminPass);
     }
     return {
       server,

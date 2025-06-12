@@ -18,6 +18,7 @@ import client from 'client';
 import Base from 'stores/base';
 import { mapperRule } from 'resources/neutron/security-group-rule';
 import { RecycleBinStore } from '../skyline/recycle-server';
+import { hashPasswordForCloudInit } from 'src/resources/nova/instance';
 
 export class ServerStore extends Base {
   @observable
@@ -380,7 +381,7 @@ export class ServerStore extends Base {
   async changePassword({ id, password }) {
     const body = {
       changePassword: {
-        adminPass: password,
+        adminPass: hashPasswordForCloudInit(password),
       },
     };
     return this.operation({ body, id });

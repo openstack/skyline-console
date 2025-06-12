@@ -22,6 +22,7 @@ import PopActionEvent from 'src/components/Popover/PopActionEvent';
 import lockSvg from 'asset/image/lock.svg';
 import unlockSvg from 'asset/image/unlock.svg';
 import { isEmpty } from 'lodash';
+import { sha512 } from 'sha512-crypt-ts';
 
 const lockIcon = (
   <Tooltip
@@ -217,7 +218,7 @@ const passwordAndUserData =
   'Content-Disposition: attachment; filename="passwd-script.txt" \n' +
   '\n' +
   '#!/bin/sh\n' +
-  "echo 'USER_NAME:USER_PASSWORD' | chpasswd\n" +
+  "echo 'USER_NAME:USER_PASSWORD' | chpasswd  --encrypted \n" +
   '\n' +
   '--===============2309984059743762475==\n' +
   'Content-Type: text/x-shellscript; charset="us-ascii" \n' +
@@ -250,7 +251,7 @@ const onlyPassword =
   'Content-Disposition: attachment; filename="passwd-script.txt" \n' +
   '\n' +
   '#!/bin/sh\n' +
-  "echo 'USER_NAME:USER_PASSWORD' | chpasswd\n" +
+  "echo 'USER_NAME:USER_PASSWORD' | chpasswd --encrypted \n" +
   '\n' +
   '--===============2309984059743762475==--';
 
@@ -264,18 +265,22 @@ const onlyUserData =
   'Content-Transfer-Encoding: 7bit\n' +
   'Content-Disposition: attachment; filename="init-shell.txt" \n' +
   '\n' +
-  'USER_DATA\n' +
+  'USER_DATA | chpasswd --encrypted\n' +
   '\n' +
   '--===============2309984059743762475==--';
 
 export const getUserData = (password, userData, username = 'root') => {
+  const hashedPassword = hashPasswordForCloudInit(password);
+
+
+
   if (password && userData) {
-    let str = passwordAndUserData.replace(/USER_PASSWORD/g, password);
+    let str = passwordAndUserData.replace(/USER_PASSWORD/g, hashedPassword);
     str = str.replace(/USER_NAME/g, username);
     return str.replace(/USER_DATA/g, userData);
   }
   if (password) {
-    const str = onlyPassword.replace(/USER_PASSWORD/g, password);
+    const str = onlyPassword.replace(/USER_PASSWORD/g, hashedPassword);
     return str.replace(/USER_NAME/g, username);
   }
   return onlyUserData.replace(/USER_DATA/g, userData);
@@ -583,3 +588,17 @@ export const isBootFromVolume = (item) => {
   }
   return !item.image;
 };
+
+export const hashPasswordForCloudInit = (password) => {
+  const hashedPassword = sha512.crypt(password, randomSalt());
+  return hashedPassword;
+};
+const randomSalt = () => {
+  const alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ./';
+  const length = 8 + Math.random() * 8;
+  let result = '';
+  for (let i = length; i > 0; --i) {
+    result += alphabet[Math.floor(Math.random() * alphabet.length)];
+  }
+  return result;
+}
