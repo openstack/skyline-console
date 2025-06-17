@@ -15,7 +15,6 @@
 import { action, observable } from 'mobx';
 import List from 'stores/base-list';
 import client from 'client';
-import globalRootStore from 'stores/root';
 import globalProjectStore from 'stores/keystone/project';
 import globalGroupStore from 'stores/keystone/user-group';
 import Base from 'stores/base';
@@ -46,6 +45,10 @@ export class UserStore extends Base {
 
   get projectClient() {
     return client.keystone.projects;
+  }
+
+  get authProjectClient() {
+    return client.keystone.authProjects;
   }
 
   get systemUserClient() {
@@ -126,12 +129,7 @@ export class UserStore extends Base {
     this.userProjects.update({
       isLoading: true,
     });
-    const {
-      user: {
-        user: { id },
-      },
-    } = globalRootStore;
-    const { projects } = await this.client.projects.list(id);
+    const { projects } = await this.authProjectClient.list();
     this.userProjects.update({
       data: projects,
       isLoading: false,
