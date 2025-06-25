@@ -24,7 +24,9 @@
     "test:e2e:open": "cypress open",
     "test:e2e:server": "cross-env NODE_ENV=test webpack-dev-server --open --progress --config config/webpack.e2e.js",
     "test:unit": "cross-env NODE_ENV=development jest",
-    "test:unit:coverage": "cross-env NODE_ENV=development jest --coverage"
+    "test:unit:coverage": "cross-env NODE_ENV=development jest --coverage",
+    "deploy-dev": "./scripts/deployToDevRemote.sh",
+    "predeploy-dev": "yarn build"
   },
   "husky": {
     "hooks": {
