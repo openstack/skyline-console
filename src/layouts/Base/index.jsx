@@ -22,6 +22,7 @@ import checkItemPolicy from 'resources/skyline/policy';
 import { Layout } from 'antd';
 import GlobalHeader from 'components/Layout/GlobalHeader';
 import { setRouteMap, getPath } from 'utils/route-map';
+import { getLocalStorageItem } from 'utils/local-storage';
 import renderAdminMenu from '../admin-menu';
 import renderMenu from '../menu';
 import renderUserMenu from '../user-menu';
@@ -42,7 +43,7 @@ export class BaseLayout extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      collapsed: false,
+      collapsed: getLocalStorageItem('menuCollapsed') || false,
     };
     this.init();
   }

@@ -20,6 +20,7 @@ import { toJS } from 'mobx';
 import { isString, isEqual } from 'lodash';
 import classnames from 'classnames';
 import { getPath } from 'utils/route-map';
+import { getLocalStorageItem, setLocalStorageItem } from 'utils/local-storage';
 import i18n from 'core/i18n';
 import styles from './index.less';
 
@@ -31,7 +32,7 @@ export class LayoutMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      collapsed: false,
+      collapsed: getLocalStorageItem('menuCollapsed') || false,
       hover: false,
       openKeys: [],
     };
@@ -93,6 +94,7 @@ export class LayoutMenu extends Component {
       collapsed: !collapsed,
       hover: false,
     });
+    setLocalStorageItem('menuCollapsed', !collapsed);
     const { onCollapseChange } = this.props;
     onCollapseChange && onCollapseChange(!collapsed);
   };
