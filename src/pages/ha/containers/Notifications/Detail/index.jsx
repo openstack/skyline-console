@@ -14,6 +14,7 @@ import { inject, observer } from 'mobx-react';
 import Base from 'containers/TabDetail';
 import globalNotificationStore from 'stores/masakari/notifications';
 import BaseDetail from './BaseDetail';
+import ProgressDetails from './ProgressDetails';
 
 export class NotificationsDetail extends Base {
   init() {
@@ -51,6 +52,11 @@ export class NotificationsDetail extends Base {
         title: t('Detail'),
         key: 'baseDetail',
         component: BaseDetail,
+      },
+      {
+        title: t('Progress Details'),
+        key: 'progressDetails',
+        component: ProgressDetails,
       },
     ];
   }

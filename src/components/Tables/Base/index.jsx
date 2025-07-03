@@ -879,7 +879,6 @@ export class BaseTable extends React.Component {
 
     let rowSelection = null;
 
-    const props = {};
     const newPagination =
       ableSkipPageByBackend || !isPageByBack
         ? {
@@ -888,8 +887,9 @@ export class BaseTable extends React.Component {
           }
         : false;
 
+    let header;
     if (!hideHeader) {
-      props.title = this.renderTableTitle;
+      header = this.renderTableTitle();
     }
     const footer = !(ableSkipPageByBackend || !isPageByBack)
       ? this.renderTableFooter
@@ -909,7 +909,6 @@ export class BaseTable extends React.Component {
       };
     }
 
-    const header = this.renderTableTitle();
     const currentColumns = this.getColumns();
     const scroll = {
       // x: 'max-content',

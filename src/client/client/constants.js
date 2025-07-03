@@ -120,6 +120,10 @@ export const apiVersionMaps = {
     key: 'OpenStack-API-Version',
     value: 'container 1.40',
   },
+  masakari: {
+    key: 'OpenStack-API-Version',
+    value: 'instance-ha 1.1',
+  },
 };
 
 export const getOpenstackApiVersion = (url) => {
