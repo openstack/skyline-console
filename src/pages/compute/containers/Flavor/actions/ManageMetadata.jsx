@@ -145,7 +145,7 @@ export class ManageMetadata extends ModalAction {
         label: t('Custom Metadata'),
         type: 'add-select',
         itemComponent: KeyValueInput,
-        addText: t('Add Custom Metadata'),
+        addText: t('New Custom Metadata'),
         validator: (rule, value) => {
           if (!this.checkCustoms(value)) {
             // eslint-disable-next-line prefer-promise-reject-errors

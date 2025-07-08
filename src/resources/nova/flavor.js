@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { createElement } from 'react';
 import { formatSize, getOptions } from 'utils';
+import styles from './flavor.less';
 
 export const cpuPolicyList = {
   dedicated: t('Dedicated'),
@@ -195,6 +197,20 @@ export const extraColumns = [
     dataIndex: 'is_public',
     isHideable: true,
     valueRender: 'yesNo',
+  },
+  {
+    title: t('Metadata'),
+    dataIndex: 'extra_specs',
+    isHideable: true,
+    render: (value) => {
+      return createElement(
+        'div',
+        {
+          className: styles.metadata,
+        },
+        JSON.stringify(value ?? {})
+      );
+    },
   },
 ];
 

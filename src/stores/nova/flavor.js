@@ -68,7 +68,8 @@ export class FlavorStore extends Base {
 
   get mapperBeforeFetchProject() {
     return (data) => {
-      const { extra_specs: { key, ...extraRest } = {}, ...rest } = data;
+      const { extra_specs = {}, ...rest } = data;
+      const { key, ...extraRest } = extra_specs;
       const gpuInfo = this.getGpuInfo(data);
       return {
         ...rest,
@@ -77,6 +78,7 @@ export class FlavorStore extends Base {
         category: extraRest[':category'],
         ...gpuInfo,
         is_public: rest['os-flavor-access:is_public'],
+        extra_specs,
         originData: data,
       };
     };
@@ -99,11 +101,18 @@ export class FlavorStore extends Base {
   }
 
   async listDidFetch(items, _, filters) {
-    const { tab } = filters;
-    const newItems = tab
-      ? items.filter((it) => it.architecture === tab)
-      : items;
-    return newItems;
+    const { tab, tabs } = filters;
+
+    if (tab) {
+      return items.filter((it) => it.architecture === tab);
+    }
+
+    if (tabs) {
+      const set = new Set(tabs);
+      return items.filter((item) => set.has(item.architecture));
+    }
+
+    return items;
   }
 
   @action

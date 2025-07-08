@@ -13,43 +13,51 @@
 // limitations under the License.
 
 import { observer, inject } from 'mobx-react';
-import Base from 'containers/TabList';
-import globalSettingStore from 'stores/skyline/setting';
-import { flavorArchitectures, getAllArchitecture } from 'resources/nova/flavor';
-import X86 from './X86';
-import Heterogeneous from './Heterogeneous';
-import Arm from './Arm';
-import BareMetal from './BareMetal';
-import Other from './Other';
+import Base from 'containers/List';
+import { FlavorStore } from 'stores/nova/flavor';
+import { emptyActionConfig } from 'utils/constants';
+import {
+  getBaseColumns,
+  extraColumns,
+  getFlavorSearchFilters,
+  x86CategoryList,
+} from 'resources/nova/flavor';
+import actionConfigs from './Other/actions';
 
 export class Flavor extends Base {
   init() {
-    this.settingStore = globalSettingStore;
-    this.getSettings();
+    this.store = new FlavorStore();
   }
 
-  async getSettings() {
-    await this.settingStore.fetchList();
-    const architectures = getAllArchitecture(this.settingStore.list.data);
-    this.setState({
-      architectures,
-    });
+  get policy() {
+    return 'os_compute_api:os-flavor-extra-specs:index';
   }
 
-  get tabs() {
-    const { architectures = [] } = this.state;
-    const allMap = {
-      x86_architecture: X86,
-      heterogeneous_computing: Heterogeneous,
-      bare_metal: BareMetal,
-      arm_architecture: Arm,
-      custom: Other,
-    };
-    return architectures.map((it) => ({
-      title: flavorArchitectures[it],
-      key: it,
-      component: allMap[it],
-    }));
+  get name() {
+    return `${t('Custom')} ${t('Flavors')}`;
+  }
+
+  get hasTab() {
+    return true;
+  }
+
+  getColumns = () => {
+    const newBaseColumns = [...getBaseColumns(this)];
+    newBaseColumns.splice(1, 1);
+    return [...newBaseColumns, ...extraColumns];
+  };
+
+  updateFetchParams = (params) => ({
+    ...params,
+    tabs: ['x86_architecture', 'custom'],
+  });
+
+  get actionConfigs() {
+    return this.isAdminPage ? actionConfigs : emptyActionConfig;
+  }
+
+  get searchFilters() {
+    return getFlavorSearchFilters(x86CategoryList);
   }
 }
 

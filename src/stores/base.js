@@ -345,7 +345,10 @@ export default class BaseStore {
     ...filters
   } = {}) {
     // todo: no page, no limit, fetch all
-    const { tab, all_projects, ...rest } = filters;
+    // Destruct fields such as `tab` and `tabs` because those properties are only used
+    // by the frontend, and will lead to 400 Bad Request error when making API requests
+    // because they are unrecognized by the API server.
+    const { tab, tabs, all_projects, ...rest } = filters;
     const params = { ...rest };
     if (all_projects) {
       if (!this.listFilterByProject) {
@@ -368,7 +371,10 @@ export default class BaseStore {
   } = {}) {
     this.list.isLoading = true;
     // todo: no page, no limit, fetch all
-    const { tab, all_projects, ...rest } = filters;
+    // Destruct fields such as `tab` and `tabs` because those properties are only used
+    // by the frontend, and will lead to 400 Bad Request error when making API requests
+    // because they are unrecognized by the API server.
+    const { tab, tabs, all_projects, ...rest } = filters;
     const params = { ...rest };
     this.updateParamsSort(params, sortKey, sortOrder);
     if (all_projects) {
@@ -475,7 +481,10 @@ export default class BaseStore {
   } = {}) {
     this.list.isLoading = true;
     // todo: no page, no limit, fetch all
-    const { tab, all_projects, ...rest } = filters;
+    // Destruct fields such as `tab` and `tabs` because those properties are only used
+    // by the frontend, and will lead to 400 Bad Request error when making API requests
+    // because they are unrecognized by the API server.
+    const { tab, tabs, all_projects, ...rest } = filters;
     const params = { limit, ...rest, current: page };
     this.updateParamsSortPage(params, sortKey, sortOrder);
     if (all_projects) {
