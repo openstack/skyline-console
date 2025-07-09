@@ -33,7 +33,6 @@ import {
 } from 'resources/nova/flavor';
 import globalSettingStore from 'stores/skyline/setting';
 import { getOptions } from 'utils/index';
-import { parse } from 'qs';
 import KeyValueInput from 'components/FormItem/KeyValueInput';
 import { isEmpty } from 'lodash';
 
@@ -57,9 +56,12 @@ export class ParamSetting extends Base {
   }
 
   get tab() {
-    const params = parse(this.routing.location.search.slice(1));
-    const { tab } = params;
-    return tab;
+    // Returns fixed 'x86_architecture' as x86 is the only option for now.
+    return 'x86_architecture';
+
+    // const params = parse(this.routing.location.search.slice(1));
+    // const { tab } = params;
+    // return tab;
   }
 
   get flavorArchitectures() {
@@ -323,13 +325,14 @@ export class ParamSetting extends Base {
         label: t('Basic Parameters'),
         type: 'title',
       },
-      {
-        name: 'architecture',
-        label: t('Architecture'),
-        type: 'radio',
-        options: this.flavorArchitectures,
-        required: true,
-      },
+      // Architecture is temporarily hidden as x86 is the only option for now.
+      // {
+      //   name: 'architecture',
+      //   label: t('Architecture'),
+      //   type: 'radio',
+      //   options: this.flavorArchitectures,
+      //   required: true,
+      // },
       {
         name: 'category',
         label: t('Type'),

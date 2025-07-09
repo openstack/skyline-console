@@ -47,8 +47,12 @@ export class StepCreate extends StepAction {
   }
 
   get listUrl() {
-    const { architecture } = this.values || {};
-    const tab = architecture || this.tab;
+    // const { architecture } = this.values || {};
+    // const tab = architecture || this.tab;
+
+    // Set tab to fixed `null` to avoid showing the tab query param on Flavors List page.
+    const tab = null;
+
     return this.getRoutePath('flavor', null, { tab });
   }
 

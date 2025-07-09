@@ -101,15 +101,15 @@ export class FlavorStore extends Base {
   }
 
   async listDidFetch(items, _, filters) {
-    const { tab, tabs } = filters;
-
-    if (tab) {
-      return items.filter((it) => it.architecture === tab);
-    }
+    const { tabs, tab } = filters;
 
     if (tabs) {
       const set = new Set(tabs);
       return items.filter((item) => set.has(item.architecture));
+    }
+
+    if (tab) {
+      return items.filter((it) => it.architecture === tab);
     }
 
     return items;

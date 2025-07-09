@@ -19,7 +19,7 @@ export default class Create extends StepCreate {
 
   static title = t('Create Flavor');
 
-  static path = '/compute/flavor-admin/create?tab=x86_architecture';
+  static path = '/compute/flavor-admin/create';
 
   static policy = 'os_compute_api:os-flavor-manage:create';
 

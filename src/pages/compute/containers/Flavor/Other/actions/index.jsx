@@ -16,6 +16,7 @@
 import DeleteAction from '../../actions/Delete';
 import ManageAccess from '../../actions/ManageAccess';
 import ManageMetadata from '../../actions/ManageMetadata';
+import CreateAction from '../../X86/actions/Create';
 
 const actionConfigs = {
   rowActions: {
@@ -31,7 +32,7 @@ const actionConfigs = {
     ],
   },
   batchActions: [DeleteAction],
-  primaryActions: [],
+  primaryActions: [CreateAction],
 };
 
 export default actionConfigs;
