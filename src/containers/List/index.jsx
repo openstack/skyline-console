@@ -908,7 +908,7 @@ export default class BaseList extends React.Component {
     // Destruct fields such as `tab` and `tabs` because those properties are only used
     // by the frontend, and will lead to 400 Bad Request error when making API requests
     // because they are unrecognized by the API server.
-    const { id, tab, tabs, ...rest } = filters;
+    const { id, tab, ...rest } = filters;
     const newFilters = rest;
     let items = [];
     if (this.isFilterByBackend) {

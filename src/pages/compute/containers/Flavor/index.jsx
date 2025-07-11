@@ -49,7 +49,6 @@ export class Flavor extends Base {
 
   updateFetchParams = (params) => ({
     ...params,
-    tabs: ['x86_architecture', 'custom'],
   });
 
   get actionConfigs() {

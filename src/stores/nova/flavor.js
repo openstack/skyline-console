@@ -100,18 +100,14 @@ export class FlavorStore extends Base {
     };
   }
 
-  async listDidFetch(items, _, filters) {
-    const { tabs, tab } = filters;
+  async listDidFetch(items) {
+    // const { tab } = filters;
 
-    if (tabs) {
-      const set = new Set(tabs);
-      return items.filter((item) => set.has(item.architecture));
-    }
+    // if (tab) {
+    //   return items.filter((it) => it.architecture === tab);
+    // }
 
-    if (tab) {
-      return items.filter((it) => it.architecture === tab);
-    }
-
+    // Returns all flavors regardless of tab.
     return items;
   }
 
