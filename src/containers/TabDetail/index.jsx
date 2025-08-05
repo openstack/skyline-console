@@ -283,7 +283,7 @@ export default class DetailBase extends React.Component {
         message: t("You don't have access to get {name}.", {
           name: this.name.toLowerCase(),
         }),
-        status: 401,
+        status: 403,
       };
       Notify.errorWithDetail(
         error,

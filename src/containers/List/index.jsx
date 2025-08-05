@@ -51,6 +51,8 @@ export default class BaseList extends React.Component {
 
     this.options = options;
 
+    this.tableRef = React.createRef();
+
     this.state = {
       filters: {},
       timeFilter: {},
@@ -581,6 +583,11 @@ export default class BaseList extends React.Component {
     this.stopRefreshAuto();
   };
 
+  onStopRefreshAutoWhenError = () => {
+    // When an api error occurs, stop the auto refresh
+    this.tableRef.current?.wrappedInstance?.stopRefreshAuto();
+  };
+
   onClickAction = () => {
     this.inAction = true;
     this.autoRefreshCount = 0;
@@ -672,7 +679,7 @@ export default class BaseList extends React.Component {
         message: t("You don't have access to get {name}.", {
           name: this.name.toLowerCase(),
         }),
-        status: 401,
+        status: 403,
       };
       Notify.errorWithDetail(
         error,
@@ -680,6 +687,7 @@ export default class BaseList extends React.Component {
       );
       this.list.isLoading = false;
       this.list.silent = false;
+      this.onStopRefreshAutoWhenError();
       return;
     }
     this.getData(params);
@@ -708,6 +716,7 @@ export default class BaseList extends React.Component {
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log('fetch list error', e);
+      this.onStopRefreshAutoWhenError();
       const { message = '', data, status } = (e || {}).response || e || {};
       if (status === 401) {
         const title = t('The session has expired, please log in again.');
@@ -1167,7 +1176,7 @@ export default class BaseList extends React.Component {
   renderTable() {
     try {
       const props = this.getBaseTableProps();
-      return <BaseTable {...props} />;
+      return <BaseTable ref={this.tableRef} {...props} />;
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log(e);
