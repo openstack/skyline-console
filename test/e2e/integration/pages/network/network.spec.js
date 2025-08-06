@@ -69,6 +69,7 @@ describe('The Network Page', () => {
     cy.tableSearchText(name).checkTableFirstRow(name).goToDetail();
     cy.clickDetailTab('Subnets');
     cy.tableSearchText(subnetName2).clickConfirmActionButton('Delete');
+    cy.wait(10000);
     cy.tableSearchText(subnetName2).checkEmptyTable();
   });
 

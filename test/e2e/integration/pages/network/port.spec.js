@@ -71,7 +71,7 @@ describe('The Port Page', () => {
     cy.goBackToList(listUrl);
   });
 
-  it('successfully create allowed address pair', () => {
+  it('successfully create and delete allowed address pair', () => {
     cy.tableSearchText(name)
       .goToDetail()
       .clickDetailTab('Allowed Address Pairs')
@@ -81,13 +81,7 @@ describe('The Port Page', () => {
       .formSelect('mac_address')
       .clickModalActionSubmitButton()
       .wait(10000);
-  });
-
-  it('successfully delete allowed address pair', () => {
-    cy.tableSearchText(name)
-      .goToDetail()
-      .clickDetailTab('Allowed Address Pairs')
-      .clickConfirmActionInFirst();
+    cy.clickConfirmActionInFirst();
   });
 
   it('successfully associate floating IP', () => {

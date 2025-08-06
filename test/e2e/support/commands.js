@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { v4 as uuidv4 } from 'uuid';
 import getTitle from './common';
 
 Cypress.Commands.add('setLanguage', (value) => {
@@ -69,10 +70,14 @@ Cypress.Commands.add(
       region: Cypress.env('region'),
       domain: Cypress.env('domain'),
     };
+    const uuid = uuidv4();
     cy.request({
       url: '/api/openstack/skyline/api/v1/login',
       body,
       method: 'POST',
+      headers: {
+        'X-Openstack-Request-Id': `req-${uuid}`,
+      },
     }).then((res) => {
       const { body: resBody, headers } = res;
       const [sessionCookie, ...rest] = headers['set-cookie'];
