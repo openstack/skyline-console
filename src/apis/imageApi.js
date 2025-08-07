@@ -37,21 +37,26 @@ export const imageApi = {
     return response.data.data;
   },
   /**
-   * @param {Object} image
-   * @param {string($binary)} image.image (required)
-   * @param {string} image.file (required)
-   * @param {string} image.name (required)
-   * @param {string} image.os (required)
-   * @param {string} image.destination (required)
-   * @param {string} image.domain (required)
-   * @param {string} image.project (required)
-   * @param {boolean} image.sourceFromAnotherHypervisor (required)
-   * @param {string} image.visibility (optional)
-   * @returns {Promise<Object>}
+   * @param {Object} queryParams
+   * @param {string} queryParams.file - Name of the file to store
+   * @param {string} queryParams.name - Human-readable name of the image
+   * @param {string} queryParams.os
+   * @param {string} queryParams.destination
+   * @param {string} queryParams.domain
+   * @param {string} queryParams.project
+   * @param {boolean} queryParams.sourceFromAnotherHypervisor
+   * @param {string} [queryParams.visibility]
+   * @param {File} body
+   * @returns {Promise<any>}
    */
-  createImage: async (image) => {
+  createImage: async (queryParams, body) => {
     const url = await composeApiUrl('/images');
-    const response = await cosApiClientV1.post(url, image);
+    const response = await cosApiClientV1.post(url, body, {
+      headers: {
+        'Content-Type': 'application/octet-stream',
+      },
+      params: queryParams,
+    });
     return response.data.data;
   },
 };

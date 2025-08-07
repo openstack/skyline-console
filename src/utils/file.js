@@ -38,3 +38,11 @@ export function getArrayBuffer(file) {
     reader.onerror = (error) => reject(error);
   });
 }
+
+export function removeExtension(filename) {
+  const lastDotIndex = filename.lastIndexOf('.');
+  if (lastDotIndex === -1) {
+    return filename;
+  }
+  return filename.substring(0, lastDotIndex);
+}

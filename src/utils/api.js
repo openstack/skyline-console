@@ -2,7 +2,7 @@ import { dataCenterStore } from '../stores/datacenters/DataCenterStore';
 
 /**
  * @param {string} path
- * @returns {string}
+ * @returns {Promise<string>}
  * @example
  * composeApiUrl('/images')
  */
