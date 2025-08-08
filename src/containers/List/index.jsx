@@ -510,19 +510,9 @@ export default class BaseList extends React.Component {
     };
   }
 
-  getBaseTableProps() {
-    const {
-      keyword,
-      selectedRowKeys,
-      total,
-      page,
-      limit,
-      silent,
-      sortKey,
-      sortOrder,
-      timerFilter,
-    } = this.list;
-    const pagination = {
+  getPagination() {
+    const { total, page, limit } = this.list;
+    return {
       total,
       current: Number(page),
       pageSize: this.getTablePageSize(limit),
@@ -530,6 +520,18 @@ export default class BaseList extends React.Component {
       showTotal: (total) => t('Total {total} items', { total }),
       showSizeChanger: true,
     };
+  }
+
+  getBaseTableProps() {
+    const {
+      keyword,
+      selectedRowKeys,
+      silent,
+      sortKey,
+      sortOrder,
+      timerFilter,
+    } = this.list;
+    const pagination = this.getPagination();
     if (this.pageSizeOptions) {
       pagination.pageSizeOptions = this.pageSizeOptions;
     }
@@ -914,10 +916,13 @@ export default class BaseList extends React.Component {
     if (this.isFilterByBackend) {
       items = toJS(data);
     } else {
-      items = (toJS(data) || []).filter((it) =>
+      const matchedItems = (toJS(data) || []).filter((it) =>
         this.filterData(it, toJS(newFilters), toJS(timeFilter))
       );
-      this.updateList({ total: items.length });
+      const { current, pageSize } = this.getPagination();
+      const skip = (current - 1) * pageSize;
+      items = matchedItems.slice(skip, skip + pageSize);
+      this.updateList({ total: matchedItems.length });
     }
     const hasTransData = items.some((item) =>
       this.itemInTransitionFunction(item)

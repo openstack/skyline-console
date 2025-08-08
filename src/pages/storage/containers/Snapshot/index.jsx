@@ -52,7 +52,7 @@ export class Snapshots extends Base {
   }
 
   get isFilterByBackend() {
-    return true;
+    return false;
   }
 
   get isSortByBackend() {

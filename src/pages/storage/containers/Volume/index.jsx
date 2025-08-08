@@ -77,7 +77,7 @@ export class Volume extends Base {
   }
 
   get isFilterByBackend() {
-    return !this.inDetailPage;
+    return false;
   }
 
   get isSortByBackend() {

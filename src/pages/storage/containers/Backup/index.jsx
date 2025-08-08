@@ -48,7 +48,7 @@ export class Backup extends Base {
   }
 
   get isFilterByBackend() {
-    return true;
+    return false;
   }
 
   get isSortByBackend() {
