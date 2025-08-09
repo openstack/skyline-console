@@ -179,6 +179,25 @@ export class HttpRequest {
   }
 
   /**
+   * Recursively trim leading/trailing whitespace from all string values
+   * in params objects/arrays. Non-objects are returned as-is.
+   */
+  trimParams(value) {
+    if (value == null) return value;
+    if (typeof value === 'string') return value.trim();
+    if (Array.isArray(value)) {
+      return value.map((item) => this.trimParams(item));
+    }
+    if (typeof value === 'object') {
+      return Object.keys(value).reduce((acc, key) => {
+        acc[key] = this.trimParams(value[key]);
+        return acc;
+      }, {});
+    }
+    return value;
+  }
+
+  /**
    * build request
    * @param {Object} config requests config
    * @returns {Promise} axios instance return promise
@@ -188,7 +207,7 @@ export class HttpRequest {
     const options = { ...config };
     // Only get and head, we need to use null for some posts requests
     if (options.params && ['get', 'head'].includes(method)) {
-      options.params = this.omitNil(options.params);
+      options.params = this.trimParams(this.omitNil(options.params));
       options.paramsSerializer = (p) =>
         qs.stringify(p, { arrayFormat: 'repeat' });
     }
