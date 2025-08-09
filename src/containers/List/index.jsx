@@ -710,6 +710,16 @@ export default class BaseList extends React.Component {
     return [];
   }
 
+  // Trim string values in filters before sending to backend or applying locally
+  trimFilters = (filters = {}) => {
+    const trimmed = {};
+    Object.keys(filters).forEach((key) => {
+      const value = filters[key];
+      trimmed[key] = typeof value === 'string' ? value.trim() : value;
+    });
+    return trimmed;
+  };
+
   fetchListWithTry = async (func) => {
     try {
       func && (await func());
@@ -1063,9 +1073,10 @@ export default class BaseList extends React.Component {
   };
 
   handleFilterChange = (filters, timeFilter) => {
-    const { page, limit, sortKey, sortOrder, ...rest } = filters;
+    const safeFilters = this.trimFilters(filters || {});
+    const { page, limit, sortKey, sortOrder, ...rest } = safeFilters;
     if (this.isFilterByBackend) {
-      this.list.filters = filters;
+      this.list.filters = safeFilters;
       // this.list.timeFilter = timeFilter;
       this.setState(
         {
@@ -1073,7 +1084,7 @@ export default class BaseList extends React.Component {
           timeFilter,
         },
         () => {
-          this.handleFetch(filters, true);
+          this.handleFetch(safeFilters, true);
         }
       );
       // this.routing.query(filters, true);
