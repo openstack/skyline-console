@@ -246,15 +246,26 @@ export class Instance extends Base {
   }
 
   get searchFilters() {
+    const ipFilter = this.isFilterByBackend
+      ? {
+          label: t('Fixed IP'),
+          name: 'ip',
+        }
+      : {
+          label: t('Fixed IP'),
+          name: 'fixed_addresses',
+          filterFunc: (val, filterVal) => {
+            return (val || []).some((v) =>
+              v.includes((filterVal || '').trim())
+            );
+          },
+        };
     return [
       {
         label: t('Name'),
         name: 'name',
       },
-      {
-        label: t('Fixed IP'),
-        name: 'ip',
-      },
+      ipFilter,
       ...(this.isAdminPage
         ? [
             {
