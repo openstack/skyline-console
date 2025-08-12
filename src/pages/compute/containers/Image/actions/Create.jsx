@@ -57,6 +57,9 @@ export class CreateForm extends FormAction {
   };
 
   get listUrl() {
+    if (this.state.sourceFromAnotherHypervisor) {
+      return this.getRoutePath('volume');
+    }
     return this.getRoutePath('image');
   }
 
@@ -338,16 +341,12 @@ export class CreateForm extends FormAction {
     // Otherwise, create it as an image.
     if (this.state.sourceFromAnotherHypervisor) {
       await volumeApi.createVolumeFromImage(queryParams, body);
-      this.props.history.push(
-        this.isAdminPage ? '/storage/volume-admin' : '/storage/volume'
-      );
     } else {
       await imageApi.createImage(queryParams, body);
-      this.props.history.push(
-        this.isAdminPage ? '/compute/image-admin' : '/compute/image'
-      );
     }
   };
+
+  renderSubmittingTip() {}
 }
 
 export default inject('rootStore')(observer(CreateForm));

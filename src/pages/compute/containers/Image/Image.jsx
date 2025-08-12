@@ -13,25 +13,39 @@
 // limitations under the License.
 
 import React from 'react';
+import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
+import { upperFirst } from 'lodash';
+import { computeSizeMiB } from 'utils/image';
+import { imageFormats } from 'resources/glance/image';
 import ImageType from 'components/ImageType';
-import Base from 'containers/List';
-import {
-  imageStatus,
-  imageVisibility,
-  imageUsage,
-  imageFormats,
-  transitionStatusList,
-  imageContainerFormats,
-} from 'resources/glance/image';
-import { ImageStore } from 'stores/glance/image';
-import { getOptions } from 'utils/index';
+import ImportStatus from 'components/ImportStatus';
+import BaseList from 'containers/List';
+import cosImageStore from 'stores/cos/image';
+import { getIdRender, getNameRenderWithStyle } from 'utils/table';
+import { getLinkRender } from 'utils/route-map';
 import actionConfigs from './actions';
 
-export class Image extends Base {
+const imageStaticStatuses = [
+  'queued',
+  'active',
+  'deactivated',
+  'killed',
+  'deleted',
+  'pending_delete',
+];
+
+const imageTransitionStatuses = ['saving', 'uploading', 'importing'];
+
+const imageStatuses = [...imageStaticStatuses, ...imageTransitionStatuses];
+
+export class Image extends BaseList {
   init() {
-    this.store = new ImageStore();
-    this.downloadStore = new ImageStore();
+    this.store = cosImageStore;
+    this.downloadStore = cosImageStore;
+    // Controls auto-refreshing while the data is in transition
+    this.dataDurationTransition = 0.5;
+    this.prevHasTransitionData = false;
   }
 
   get policy() {
@@ -48,8 +62,16 @@ export class Image extends Base {
       : actionConfigs.actionConfigs;
   }
 
-  get transitionStatusList() {
-    return transitionStatusList;
+  get hideRefresh() {
+    return true;
+  }
+
+  get hideCustom() {
+    return true;
+  }
+
+  get ableAutoFresh() {
+    return false;
   }
 
   get isFilterByBackend() {
@@ -57,7 +79,7 @@ export class Image extends Base {
   }
 
   get isSortByBackend() {
-    return true;
+    return false;
   }
 
   get defaultSortKey() {
@@ -67,6 +89,56 @@ export class Image extends Base {
   get hasTab() {
     return !this.isAdminPage;
   }
+
+  get itemInTransitionFunction() {
+    return ({ imageStatus }) => {
+      return imageStatus.isProcessing;
+    };
+  }
+
+  getDataSource = () => {
+    const { data, filters = {} } = this.list;
+    const { timeFilter = {} } = this.state;
+    const { id, tab, ...rest } = filters;
+    const newFilters = rest;
+
+    let items = [];
+    if (this.isFilterByBackend) {
+      items = toJS(data);
+    } else {
+      items = (toJS(data) || []).filter((it) =>
+        this.filterData(
+          it,
+          toJS(newFilters),
+          Object.keys(timeFilter).length ? toJS(timeFilter) : undefined
+        )
+      );
+      this.updateList({ total: items.length });
+    }
+
+    // Check if any item is still in transition
+    const hasTransData = items.some((item) =>
+      this.itemInTransitionFunction(item)
+    );
+
+    // When there are items in transition → use short polling
+    // When transitioning from "has transition" → "no transition"
+    if (hasTransData) {
+      this.setRefreshDataTimerTransition();
+    } else {
+      // Trigger one more immediate refresh to ensure the list is up-to-date
+      if (this.prevHasTransitionData) {
+        this.handleRefresh(true);
+      }
+      // Fall back to normal polling
+      this.setRefreshDataTimerAuto();
+    }
+
+    this.prevHasTransData = hasTransData;
+    this.updateHintsByData(items);
+    this.setTableHeight();
+    return items;
+  };
 
   updateFetchParams = (params) => {
     if (this.isAdminPage) {
@@ -110,7 +182,7 @@ export class Image extends Base {
   }
 
   get adminPageHasProjectFilter() {
-    return true;
+    return false;
   }
 
   get projectFilterKey() {
@@ -121,95 +193,102 @@ export class Image extends Base {
     return [
       {
         title: t('ID/Name'),
-        dataIndex: 'name',
-        routeName: this.getRouteName('imageDetail'),
+        dataIndex: 'imageName',
+        sorter: false,
+        render: (name, row) => {
+          const nameValue = name || '-';
+          const renderName = getNameRenderWithStyle(nameValue, true);
+
+          const routeName = this.getRouteName('imageDetail');
+          const idValue = row.imageId || row.id;
+
+          if (!idValue) return renderName;
+
+          const renderId = getIdRender(idValue, true, true);
+          const renderLink = getLinkRender({
+            key: routeName,
+            params: { id: idValue },
+            value: renderId,
+          });
+
+          return (
+            <div>
+              {renderLink}
+              {renderName}
+            </div>
+          );
+        },
       },
       {
-        title: t('Project ID/Name'),
-        dataIndex: 'project_name',
+        title: t('Project'),
+        dataIndex: 'imageProject',
         hidden: !this.isAdminPage && this.tab !== 'all',
         sorter: false,
+        render: (value) => upperFirst(value) || '-',
       },
       {
-        title: t('Description'),
-        dataIndex: 'description',
-        isHideable: true,
-        sorter: false,
-      },
-      {
-        title: t('Use Type'),
-        dataIndex: 'usage_type',
-        isHideable: true,
-        valueMap: imageUsage,
-        sorter: false,
-      },
-      {
-        title: t('Container Format'),
-        dataIndex: 'container_format',
-        valueMap: imageContainerFormats,
-        isHideable: true,
-      },
-      {
-        title: t('Type'),
-        dataIndex: 'os_distro',
-        isHideable: true,
-        render: (value) => <ImageType type={value} title={value} />,
+        title: t('OS'),
+        dataIndex: 'os',
         width: 80,
         sorter: false,
+        render: (value) => <ImageType type={value} title={value} />,
       },
       {
-        title: t('Status'),
-        dataIndex: 'status',
-        valueMap: imageStatus,
-      },
-      {
-        title: t('Visibility'),
-        dataIndex: 'visibility',
-        valueMap: imageVisibility,
+        title: t('Domain'),
+        dataIndex: 'imageDomain',
         sorter: false,
+        render: (value) => upperFirst(value) || '-',
+      },
+      {
+        title: t('Destination'),
+        dataIndex: 'imageDestination',
+        sorter: false,
+        render: (value) => upperFirst(value) || '-',
       },
       {
         title: t('Disk Format'),
         dataIndex: 'disk_format',
-        isHideable: true,
+        sorter: false,
         valueMap: imageFormats,
       },
       {
+        title: t('Visibility'),
+        dataIndex: 'imageVisibility',
+        sorter: false,
+        render: (value) => upperFirst(value) || '-',
+      },
+      {
         title: t('Size'),
-        dataIndex: 'size',
-        isHideable: true,
-        valueRender: 'formatSize',
+        dataIndex: 'imageSize',
+        sorter: false,
+        render: (value) => computeSizeMiB(value),
       },
       {
         title: t('Created At'),
         dataIndex: 'created_at',
-        isHideable: true,
         valueRender: 'sinceTime',
+      },
+      {
+        title: t('Status'),
+        dataIndex: 'imageStatus',
+        isStatus: false,
+        sorter: false,
+        render: ({ current, isProcessing, processPercent }) => {
+          if (!imageStatuses.includes(current)) return <span>-</span>;
+          return (
+            <ImportStatus
+              current={current}
+              isProcessing={isProcessing}
+              processPercent={processPercent}
+            />
+          );
+        },
       },
     ];
   }
 
   get searchFilters() {
-    const filters = [
-      {
-        label: t('Name'),
-        name: 'name',
-      },
-      {
-        label: t('Status'),
-        name: 'status',
-        options: getOptions(imageStatus),
-      },
-    ];
-    const values = ['public', 'shared'];
-    if (values.indexOf(this.tab) < 0) {
-      filters.push({
-        label: t('Visibility'),
-        name: 'visibility',
-        options: getOptions(imageVisibility),
-      });
-    }
-    return filters;
+    return [{ label: t('Name'), name: 'name' }];
   }
 }
 

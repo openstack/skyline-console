@@ -17,10 +17,8 @@ export const imageApi = {
    */
   getImageList: async (queryParams = {}) => {
     const url = await composeApiUrl('/images');
-    const defaultQueryParams = { watch: true };
-    const mergedQueryParams = { ...defaultQueryParams, ...queryParams };
     const response = await cosApiClientV1.get(url, {
-      params: mergedQueryParams,
+      params: queryParams,
     });
     return response.data.data;
   },
