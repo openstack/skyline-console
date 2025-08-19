@@ -59,6 +59,10 @@ export default class BaseStore {
     return globalRootStore.projectId;
   }
 
+  get currentProjectName() {
+    return globalRootStore.projectName;
+  }
+
   get hasAdminRole() {
     return globalRootStore.hasAdminRole;
   }

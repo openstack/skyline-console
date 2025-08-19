@@ -59,3 +59,19 @@ export const toUtcFormat = (dateString) => {
 
   return date.toISOString().replace(/\.\d{3}Z$/, 'Z');
 };
+
+/**
+ * @param {string} current
+ * @param {string} primaryStatus
+ * @param {string} secondaryStatus
+ * @returns {string} color
+ */
+export const getProgressBarColorByStatus = (
+  current,
+  primaryStatus,
+  secondaryStatus
+) => {
+  if (current === primaryStatus) return globalCSS.primaryColor;
+  if (current === secondaryStatus) return globalCSS.secondaryColor;
+  return globalCSS.successColor;
+};

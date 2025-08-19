@@ -107,6 +107,13 @@ export class CosImageStore extends BaseStore {
     return items.filter((it) => !isSnapshot(it));
   }
 
+  // Build params with sorting applied
+  buildParams(rest, sortKey, sortOrder) {
+    const params = { ...rest };
+    this.updateParamsSort(params, sortKey, sortOrder);
+    return params;
+  }
+
   @action
   async update({ id }, newBody) {
     return this.client.patch(id, newBody);
@@ -165,20 +172,16 @@ export class CosImageStore extends BaseStore {
 
     const { tab, all_projects, ...rest } = filters;
 
-    const params = { ...rest };
-
-    this.updateParamsSort(params, sortKey, sortOrder);
-
-    const newParams = this.paramsFunc(params);
-
     let processedData;
 
     try {
+      const params = this.buildParams(rest, sortKey, sortOrder);
+      const newParams = this.paramsFunc(params);
       // Fetch image from both COS and OpenStack APIs in parallel
       // - imageApi.getImageList returns an object with an `images` array
       // - this.requestList fetches the image list based on newParams and filters
       const [{ images: cosImages }, originImages] = await Promise.all([
-        imageApi.getImageList({ pageSize: 100, pageNum: 1 }),
+        imageApi.getImageList({ pageSize: 9999, pageNum: 1 }),
         this.requestList(newParams, filters),
       ]);
 
@@ -212,14 +215,15 @@ export class CosImageStore extends BaseStore {
 
     try {
       finalData = await this.listDidFetch(finalData, all_projects, filters);
-    } catch (e) {
+    } catch (error) {
       // eslint-disable-next-line no-console
-      console.error(e);
+      console.error(error);
     }
 
+    // Final mapping & sorting
+    // Sort the list so that items still in processing appear first
     finalData = finalData
       .map((item) => this.mapper(item))
-      // Sort the list so that items still in processing appear first.
       .sort((a, b) => {
         const aProcessing = a.imageStatus?.isProcessing ? 1 : 0;
         const bProcessing = b.imageStatus?.isProcessing ? 1 : 0;

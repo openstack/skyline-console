@@ -12,20 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
-import Base from 'containers/List';
+import BaseList from 'containers/List';
 import {
   volumeTransitionStatuses,
   volumeFilters,
   getVolumeColumnsList,
 } from 'resources/cinder/volume';
-import globalVolumeStore, { VolumeStore } from 'stores/cinder/volume';
+import cosVolumeStore from 'stores/cos/volume';
 import { SnapshotVolumeStore } from 'stores/cinder/snapshot-volume';
 import { InstanceVolumeStore } from 'stores/nova/instance-volume';
 import { emptyActionConfig } from 'utils/constants';
 import actionConfigs from './actions';
 
-export class Volume extends Base {
+export class Volume extends BaseList {
   init() {
     if (this.isVolumeSnapshotDetail) {
       this.store = new SnapshotVolumeStore();
@@ -33,8 +34,11 @@ export class Volume extends Base {
       this.store = new InstanceVolumeStore();
       this.downloadStore = this.store;
     } else {
-      this.store = globalVolumeStore;
-      this.downloadStore = new VolumeStore();
+      this.store = cosVolumeStore;
+      this.downloadStore = cosVolumeStore;
+      // Controls auto-refreshing while the data is in transition
+      this.dataDurationTransition = 0.5;
+      this.prevHasTransitionData = false;
     }
   }
 
@@ -92,6 +96,11 @@ export class Volume extends Base {
     return 'created_at';
   }
 
+  get pageSizeOptions() {
+    // should be array of numbers
+    return [10];
+  }
+
   getColumns = () => {
     return getVolumeColumnsList(this);
   };
@@ -99,6 +108,56 @@ export class Volume extends Base {
   get searchFilters() {
     return volumeFilters;
   }
+
+  get itemInTransitionFunction() {
+    return ({ volumeStatus }) => {
+      return volumeStatus.isProcessing;
+    };
+  }
+
+  getDataSource = () => {
+    const { data, filters = {} } = this.list;
+    const { timeFilter = {} } = this.state;
+    const { id, tab, ...rest } = filters;
+    const newFilters = rest;
+
+    let items = [];
+    if (this.isFilterByBackend) {
+      items = toJS(data);
+    } else {
+      items = (toJS(data) || []).filter((it) =>
+        this.filterData(
+          it,
+          toJS(newFilters),
+          Object.keys(timeFilter).length ? toJS(timeFilter) : undefined
+        )
+      );
+      this.updateList({ total: items.length });
+    }
+
+    // Check if any item is still in transition
+    const hasTransData = items.some((item) =>
+      this.itemInTransitionFunction(item)
+    );
+
+    // When there are items in transition → use short polling
+    // When transitioning from "has transition" → "no transition"
+    if (hasTransData) {
+      this.setRefreshDataTimerTransition();
+    } else {
+      // Trigger one more immediate refresh to ensure the list is up-to-date
+      if (this.prevHasTransitionData) {
+        this.handleRefresh(true);
+      }
+      // Fall back to normal polling
+      this.setRefreshDataTimerAuto();
+    }
+
+    this.prevHasTransData = hasTransData;
+    this.updateHintsByData(items);
+    this.setTableHeight();
+    return items;
+  };
 
   updateFetchParams = (params) => {
     if (this.isVolumeSnapshotDetail) {

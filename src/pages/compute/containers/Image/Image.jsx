@@ -16,7 +16,7 @@ import React from 'react';
 import { toJS } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { upperFirst } from 'lodash';
-import { computeSizeMiB } from 'utils/image';
+import { computeSizeMiB, getProgressBarColorByStatus } from 'utils/image';
 import { imageFormats } from 'resources/glance/image';
 import ImageType from 'components/ImageType';
 import ImportStatus from 'components/ImportStatus';
@@ -275,8 +275,16 @@ export class Image extends BaseList {
         sorter: false,
         render: ({ current, isProcessing, processPercent }) => {
           if (!imageStatuses.includes(current)) return <span>-</span>;
+
+          const color = getProgressBarColorByStatus(
+            current,
+            'uploading',
+            'importing'
+          );
+
           return (
             <ImportStatus
+              color={color}
               current={current}
               isProcessing={isProcessing}
               processPercent={processPercent}

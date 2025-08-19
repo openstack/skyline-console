@@ -13,15 +13,17 @@
 // limitations under the License.
 
 import React from 'react';
-import { yesNoOptions } from 'utils/constants';
-import { renderFilterMap } from 'utils/index';
+import { isEmpty } from 'lodash';
+import { Link } from 'react-router-dom';
+import { Tooltip } from 'antd';
+import { CubeCopyButton } from 'components/cube/CubeCopyButton/CubeCopyButton';
+import ImportStatus from 'components/ImportStatus';
 import globalProjectStore from 'stores/keystone/project';
 import globalVolumeStore from 'stores/cinder/volume';
-import { isEmpty } from 'lodash';
+import { yesNoOptions } from 'utils/constants';
+import { renderFilterMap } from 'utils/index';
 import { idNameColumn } from 'utils/table';
-import { Tooltip } from 'antd';
-import { Link } from 'react-router-dom';
-import { CubeCopyButton } from 'components/cube/CubeCopyButton/CubeCopyButton';
+import { computeSizeMiB, getProgressBarColorByStatus } from 'utils/image';
 import styles from './volume-table.less';
 
 export const volumeStatus = {
@@ -104,6 +106,21 @@ export const isAttachIsoVolume = (item) => {
   }
   return false;
 };
+
+const volumeStatuses = [
+  'uploading',
+  'importing',
+  'available',
+  'creating',
+  'attaching',
+  'detaching',
+  'deleting',
+  'reserved',
+  'maintenance',
+  'backing-up',
+  'restoring-backup',
+  'in-use',
+];
 
 export const volumeTransitionStatuses = [
   'creating',
@@ -246,29 +263,41 @@ export const getVolumeColumnsList = (self) => {
   return [
     {
       title: t('ID/Name'),
-      dataIndex: 'name',
+      dataIndex: 'volumeName',
       routeName: self.getRouteName('volumeDetail'),
       sortKey: 'name',
-      render: (name, row) => (
-        <div className={styles['title-col']}>
-          <span className={styles['volume-name']}>{name}</span>
-          <div className={styles['volume-id-row']}>
-            <Tooltip title={row.id}>
-              <Link
-                className={styles['volume-id-link']}
-                to={
-                  self.isAdminPage
-                    ? `/storage/volume-admin/detail/${row.id}`
-                    : `/storage/volume/detail/${row.id}`
-                }
-              >
-                {row.id}
-              </Link>
-            </Tooltip>
-            <CubeCopyButton>{row.id}</CubeCopyButton>
+      render: (name, row) => {
+        const nameValue = name || '-';
+        const idValue = row.volumeId || row.id;
+
+        const renderId = () => {
+          if (!idValue) return null;
+          return (
+            <div className={styles['volume-id-row']}>
+              <Tooltip title={idValue}>
+                <Link
+                  className={styles['volume-id-link']}
+                  to={
+                    self.isAdminPage
+                      ? `/storage/volume-admin/detail/${idValue}`
+                      : `/storage/volume/detail/${idValue}`
+                  }
+                >
+                  {idValue}
+                </Link>
+              </Tooltip>
+              <CubeCopyButton>{idValue}</CubeCopyButton>
+            </div>
+          );
+        };
+
+        return (
+          <div className={styles['title-col']}>
+            <span className={styles['volume-name']}>{nameValue}</span>
+            {renderId()}
           </div>
-        </div>
-      ),
+        );
+      },
     },
     {
       title: t('Project ID/Name'),
@@ -286,25 +315,44 @@ export const getVolumeColumnsList = (self) => {
     },
     {
       title: t('Size'),
-      dataIndex: 'size',
-      isHideable: true,
-      unit: 'GiB',
+      dataIndex: 'volumeSize',
+      sorter: false,
+      render: (value) => computeSizeMiB(value),
     },
     {
       title: t('Status'),
-      dataIndex: 'status',
-      valueMap: volumeStatus,
+      dataIndex: 'volumeStatus',
+      isStatus: false,
+      sorter: false,
+      render: ({ current, isProcessing, processPercent }) => {
+        if (!volumeStatuses.includes(current)) return <span>-</span>;
+
+        const color = getProgressBarColorByStatus(
+          current,
+          'uploading',
+          'importing'
+        );
+
+        return (
+          <ImportStatus
+            color={color}
+            current={current}
+            isProcessing={isProcessing}
+            processPercent={processPercent}
+          />
+        );
+      },
     },
     {
       title: t('Type'),
-      dataIndex: 'volume_type',
+      dataIndex: 'volumeType',
       isHideable: true,
       width: 100,
       sorter: false,
     },
     {
       title: t('Disk Tag'),
-      dataIndex: 'disk_tag',
+      dataIndex: 'volumeDiskTag',
       isHideable: true,
       valueMap: diskTag,
       sorter: false,
@@ -348,13 +396,14 @@ export const getVolumeColumnsList = (self) => {
       titleTip: t(
         'When the volume is "bootable" and the status is "available", it can be used as a startup source to create an instance.'
       ),
-      dataIndex: 'bootable',
+      dataIndex: 'volumeBootable',
       isHideable: true,
       valueMap: bootableType,
+      sorter: false,
     },
     {
       title: t('Shared'),
-      dataIndex: 'multiattach',
+      dataIndex: 'volumeShared',
       valueRender: 'yesNo',
       titleTip: multiTip,
       width: 80,
