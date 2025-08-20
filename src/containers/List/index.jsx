@@ -28,7 +28,7 @@ import {
 } from 'lodash';
 import { Menu, Icon, Dropdown, Button, Alert } from 'antd';
 import BaseTable from 'components/Tables/Base';
-import { isAdminPage } from 'utils/index';
+import { isAdminPage, paginate } from 'utils/index';
 import Notify from 'components/Notify';
 import { checkTimeIn } from 'utils/time';
 import checkItemPolicy from 'resources/skyline/policy';
@@ -920,8 +920,7 @@ export default class BaseList extends React.Component {
         this.filterData(it, toJS(newFilters), toJS(timeFilter))
       );
       const { current, pageSize } = this.getPagination();
-      const skip = (current - 1) * pageSize;
-      items = matchedItems.slice(skip, skip + pageSize);
+      items = paginate(matchedItems, current, pageSize);
       this.updateList({ total: matchedItems.length });
     }
     const hasTransData = items.some((item) =>

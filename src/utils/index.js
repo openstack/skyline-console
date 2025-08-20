@@ -298,3 +298,14 @@ export const allSettled = (promises) => {
   }
   return Promise.allSettled(promises);
 };
+
+/**
+ * @param {T[]} items
+ * @param {number} currentPage
+ * @param {number} pageSize
+ * @returns {T[]}
+ */
+export const paginate = (items, currentPage, pageSize) => {
+  const skip = (currentPage - 1) * pageSize;
+  return items.slice(skip, skip + pageSize);
+};
