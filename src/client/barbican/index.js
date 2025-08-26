@@ -37,6 +37,11 @@ export class BarbicanClient extends Base {
         key: 'containers',
         responseKey: 'container',
       },
+      {
+        name: 'orders',
+        key: 'orders',
+        responseKey: 'order',
+      },
     ];
   }
 }
