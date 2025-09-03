@@ -1262,6 +1262,7 @@
   "If you choose a port which subnet is different from the subnet of LB, please ensure connectivity between the two.": "Если вы выбираете порт, который находится в другой подсети по сравнению с подсетью балансировщика нагрузки, пожалуйста, обеспечьте соединение между ними.",
   "If you do not fill in parameters such as cpus, memory_mb, local_gb, cpu_arch, etc., you can automatically inject the configuration and Mac address of the physical machine by performing the \"Auto Inspect\" operation.": "Если вы не заполняете параметры, такие как cpus, memory_mb, local_gb, cpu_arch и др., вы можете автоматически внедрить конфигурацию и MAC-адрес физической машины, выполнив операцию \"Автоинспекция\".",
   "If you still want to keep the disk data, it is recommended that you create a backup for the disk before deleting.": "Если вы все еще хотите сохранить данные на диске, рекомендуется создать резервную копию диска перед удалением.",
+  "Tips: If no domain is provided, the configured domain will be used.": "Совет: если домен не указан, будет использоваться настроенный домен.",
   "Illegal JSON scheme": "Недопустимая схема JSON",
   "Image": "Образ",
   "Image & OS": "Образ и ОС",

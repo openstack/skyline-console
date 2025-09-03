@@ -1262,6 +1262,7 @@
   "If you choose a port which subnet is different from the subnet of LB, please ensure connectivity between the two.": "YD (Yük Dengeleyici)'nin alt ağından farklı bir alt ağa sahip bir ağ adaptörü seçerseniz, iki alt ağ arasında bağlantı sağlamayı unutmayın.",
   "If you do not fill in parameters such as cpus, memory_mb, local_gb, cpu_arch, etc., you can automatically inject the configuration and Mac address of the physical machine by performing the \"Auto Inspect\" operation.": "CPUs, bellek miktarı, yerel disk boyutu, CPU mimarisi gibi parametreleri doldurmadıysanız, \"Otomatik İnceleme\" işlemini gerçekleştirerek fiziksel makinenin yapılandırmasını ve MAC adresini otomatik olarak ekleyebilirsiniz.",
   "If you still want to keep the disk data, it is recommended that you create a backup for the disk before deleting.": "",
+  "Tips: If no domain is provided, the configured domain will be used.": "İpucu: Eğer alan adı belirtilmezse, yapılandırılmış alan adı kullanılacaktır.",
   "Illegal JSON scheme": "Geçersiz JSON şeması",
   "Image": "İmaj",
   "Image & OS": "İmaj & İşletim Sistemi",

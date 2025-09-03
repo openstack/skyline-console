@@ -1262,6 +1262,7 @@
   "If you choose a port which subnet is different from the subnet of LB, please ensure connectivity between the two.": "如果你选择了和LB子网不同的网卡，请确保两者的连通性。",
   "If you do not fill in parameters such as cpus, memory_mb, local_gb, cpu_arch, etc., you can automatically inject the configuration and Mac address of the physical machine by performing the \"Auto Inspect\" operation.": "如不填写cpus、memory_mb、local_gb、cpu_arch等参数，您可以通过执行“自动检测”操作来自动注入物理机的配置和 Mac 地址。",
   "If you still want to keep the disk data, it is recommended that you create a backup for the disk before deleting.": "如果您仍想保留云硬盘数据，建议您在删除之前为云硬盘创建备份。",
+  "Tips: If no domain is provided, the configured domain will be used.": "提示：如果未提供域名，将使用配置的域名。",
   "Illegal JSON scheme": "不合法的JSON格式",
   "Image": "镜像",
   "Image & OS": "镜像和操作系统",
