@@ -1,0 +1,50 @@
+name: Build skyline-console Wheel
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pulling from Github
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Use Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version: 12.22.12
+          cache: "yarn"
+          cache-dependency-path: yarn.lock
+
+      - name: Set ENV
+        run: |
+          echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+          echo "BUILD_NUMBER=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Build Wheel
+        run: |
+          make package
+
+      - name: List Builds
+        run: |
+          ls -ahl ./dist
+
+      - name: Create a Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REF: ${{ github.ref_name }}
+        run: |
+          BUILD=$(ls ./dist/*.whl | cut -d" " -f1)
+          FILE_NAME="skyline_console-$(echo "$VERSION" | sed 's/^v//')-py3-none-any.whl"
+          mv ./$BUILD ./dist/$FILE_NAME
+          if [[ "$REF" =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]] ; then \
+            TAG="skyline-console-$REF"
+          else
+            TAG="skyline-console-$VERSION-dev-$BUILD_NUMBER"
+          fi
+          gh release create "$TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --generate-notes \
+            ./dist/$FILE_NAME

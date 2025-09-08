@@ -135,3 +135,8 @@ How to test
 -  `E2E - Detail operation <docs/en/test/3-3-E2E-detail-operation.md>`__
 -  `E2E - Resource
    operation <docs/en/test/3-4-E2E-resource-operation.md>`__
+
+How to build
+~~~~~~~~~~~~
+
+- `Build Wheel <docs/en/develop/4-0-build-wheel.md>`__
