@@ -48,37 +48,36 @@ export class CosImageStore extends BaseStore {
 
   get mergeData() {
     return (originImages, cosImages) => {
+      const originMap = new Map(originImages.map((img) => [img.id, img]));
+
       return cosImages.map((cosImage) => {
-        const matchedOriginImage = originImages.find(
-          (originImage) => originImage.id === cosImage.id
-        );
+        const matchedOriginImage = originMap.get(cosImage.id);
 
         const createdAt = toUtcFormat(cosImage.createdAt);
 
-        const renamedCosImage = {
-          imageId: cosImage?.id,
-          imageName: cosImage?.name,
-          imageProject: cosImage?.project,
-          imageOS: cosImage?.os,
-          imageDomain: cosImage?.domain,
-          imageDestination: cosImage?.destination,
-          imageVisibility: cosImage?.visibility,
-          imageSize: cosImage?.sizeMiB,
-          imageCreatedAt: cosImage?.createdAt,
-          imageStatus: cosImage?.status || '',
-        };
+        const osDistro = imageOS[matchedOriginImage?.os_distro]
+          ? matchedOriginImage.os_distro
+          : 'others';
 
-        if (!matchedOriginImage) {
-          return {
-            ...renamedCosImage,
-            created_at: createdAt || null,
-          };
-        }
+        const normalizedCosImage = {
+          imageId: cosImage.id,
+          imageName: cosImage.name,
+          imageProject: cosImage.project,
+          imageOS: cosImage.os,
+          imageDomain: cosImage.domain,
+          imageDestination: cosImage.destination,
+          imageVisibility: cosImage.visibility,
+          imageSize: cosImage.sizeMiB,
+          imageCreatedAt: cosImage.createdAt,
+          imageStatus: cosImage.status || '',
+        };
 
         return {
           ...matchedOriginImage,
-          ...renamedCosImage,
-          created_at: createdAt || matchedOriginImage.created_at || null,
+          ...normalizedCosImage,
+          id: cosImage.id,
+          created_at: createdAt || matchedOriginImage?.created_at || null,
+          os_distro: osDistro,
         };
       });
     };
@@ -90,13 +89,6 @@ export class CosImageStore extends BaseStore {
       ...data,
       project_id: data.owner,
       project_name: data.owner_project_name || data.project_name,
-    });
-  }
-
-  get mapper() {
-    return (data) => ({
-      ...data,
-      os_distro: imageOS[data.os_distro] ? data.os_distro : 'others',
     });
   }
 

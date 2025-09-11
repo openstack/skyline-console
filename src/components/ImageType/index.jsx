@@ -50,6 +50,7 @@ export default class index extends Component {
       coreos: coreosIcon,
       arch: archIcon,
       freebsd: freebsdIcon,
+      // The following two are for compatibility
       other: othersIcon,
       others: othersIcon,
     };
@@ -62,7 +63,8 @@ export default class index extends Component {
       coreos: 'CoreOS',
       arch: 'Arch',
       freebsd: 'FreeBSD',
-      other: 'Other',
+      // The following two are for compatibility
+      other: 'Others',
       others: 'Others',
     };
   }
