@@ -15,6 +15,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import { upperFirst } from 'lodash';
 import { Tooltip } from 'antd';
 import centosIcon from 'asset/image/centos.svg';
 import ubuntuIcon from 'asset/image/ubuntu.svg';
@@ -49,13 +50,30 @@ export default class index extends Component {
       coreos: coreosIcon,
       arch: archIcon,
       freebsd: freebsdIcon,
+      other: othersIcon,
       others: othersIcon,
+    };
+    this.titles = {
+      centos: 'CentOS',
+      ubuntu: 'Ubuntu',
+      fedora: 'Fedora',
+      windows: 'Windows',
+      debian: 'Debian',
+      coreos: 'CoreOS',
+      arch: 'Arch',
+      freebsd: 'FreeBSD',
+      other: 'Other',
+      others: 'Others',
     };
   }
 
   render() {
-    const { type, className, title } = this.props;
+    const { type, className, title: titleProp } = this.props;
+
     const IconComponent = this.icons[type?.toLowerCase()] || othersIcon;
+
+    const title =
+      this.titles[titleProp?.toLowerCase()] || upperFirst(titleProp);
 
     const iconElement = (
       <IconComponent className={classnames(styles.image, className)} />
