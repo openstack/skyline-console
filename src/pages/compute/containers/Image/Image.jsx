@@ -228,7 +228,7 @@ export class Image extends BaseList {
       },
       {
         title: t('OS'),
-        dataIndex: 'os',
+        dataIndex: 'imageOS',
         width: 80,
         sorter: false,
         render: (value) => <ImageType type={value} title={value} />,
