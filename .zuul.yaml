@@ -99,6 +99,7 @@
         DEFAULT_INSTANCE_TYPE: baremetal
         IRONIC_RPC_TRANSPORT: json-rpc
         IRONIC_RAMDISK_TYPE: tinyipa
+        IPA_DOWNLOAD_BRANCH: stable/2025.1
         IRONIC_DEPLOY_DRIVER: ipmi
         # The parameters below represent the minimum possible values to create
         # functional nodes.
