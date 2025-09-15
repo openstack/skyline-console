@@ -1,7 +1,7 @@
 ---
 - hosts: controller
   vars:
-    - devstack_base_dir: /opt/stack
+    devstack_base_dir: /opt/stack
   tasks:
     - name: Run e2e tests
       shell:
