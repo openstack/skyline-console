@@ -5,7 +5,7 @@
 
 - hosts: controller
   vars:
-    - devstack_base_dir: /opt/stack
+    devstack_base_dir: /opt/stack
   tasks:
     - name: Copy skyline-apiserver repos into devstack working directory
       command: rsync -a {{ item }} {{ devstack_base_dir }}
