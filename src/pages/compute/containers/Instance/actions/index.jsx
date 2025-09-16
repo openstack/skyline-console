@@ -49,6 +49,7 @@ import ConfirmResize from './ConfirmResize';
 import RevertResize from './RevertResize';
 import ModifyTags from './ModifyTags';
 import Rescue from './Rescue';
+import Unrescue from './Unrescue';
 
 const statusActions = [
   StartAction,
@@ -64,6 +65,7 @@ const statusActions = [
   Shelve,
   Unshelve,
   Rescue,
+  Unrescue,
 ];
 
 const resourceActions = [

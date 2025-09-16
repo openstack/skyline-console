@@ -238,7 +238,7 @@ export class ServerStore extends Base {
       sgItems = result.map((it) =>
         this.mapperSecurityGroupRule(it.security_group)
       );
-    } catch (e) { }
+    } catch (e) {}
     this.securityGroups = {
       data: sgItems || [],
       interfaces: ports,
@@ -354,6 +354,14 @@ export class ServerStore extends Base {
   @action
   async rescue(id, rescue) {
     return this.client.action(id, rescue);
+  }
+
+  @action
+  async unrescue({ id }) {
+    const body = {
+      unrescue: null,
+    };
+    return this.operation({ body, id });
   }
 
   @action
