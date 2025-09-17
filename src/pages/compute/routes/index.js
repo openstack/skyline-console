@@ -24,6 +24,7 @@ import CreateIronic from '../containers/Instance/actions/CreateIronic';
 import TabImage from '../containers/Image';
 import ImageAdmin from '../containers/Image/Image';
 import ImageCreate from '../containers/Image/actions/Create';
+import ImageEdit from '../containers/Image/actions/Edit';
 import InstanceSnapshot from '../containers/InstanceSnapshot';
 import Keypair from '../containers/Keypair';
 import KeypairDetail from '../containers/Keypair/Detail';
@@ -116,13 +117,31 @@ export default [
       },
       { path: `${PATH}/image`, component: TabImage, exact: true },
       { path: `${PATH}/image-admin`, component: ImageAdmin, exact: true },
-      { path: `${PATH}/image/create`, component: ImageCreate, exact: true },
+      {
+        path: `${PATH}/image/create`,
+        component: ImageCreate,
+        exact: true,
+      },
       {
         path: `${PATH}/image-admin/create`,
         component: ImageCreate,
         exact: true,
       },
-      { path: `${PATH}/image/detail/:id`, component: ImageDetail, exact: true },
+      {
+        path: `${PATH}/image/edit/:id`,
+        component: ImageEdit,
+        exact: true,
+      },
+      {
+        path: `${PATH}/image-admin/edit/:id`,
+        component: ImageEdit,
+        exact: true,
+      },
+      {
+        path: `${PATH}/image/detail/:id`,
+        component: ImageDetail,
+        exact: true,
+      },
       {
         path: `${PATH}/image-admin/detail/:id`,
         component: ImageDetail,

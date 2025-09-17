@@ -130,6 +130,13 @@ const renderMenu = (t) => {
               key: 'imageCreate',
               level: 2,
             },
+            {
+              path: /^\/compute\/image\/edit\/.([^/]+)$/,
+              name: t('Edit Image'),
+              key: 'imageEdit',
+              level: 2,
+              routePath: '/compute/image/edit/:id',
+            },
           ],
         },
         {

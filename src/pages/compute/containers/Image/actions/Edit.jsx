@@ -12,18 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { ModalAction } from 'containers/Action';
-import globalImageStore from 'stores/glance/image';
-import { imageOS, isOwner } from 'resources/glance/image';
-import { has, get, isNumber } from 'lodash';
+import { Spin } from 'antd';
+import { upperFirst } from 'lodash';
+import memoize from 'lodash/memoize';
+import cosImageStore from 'stores/cos/image';
+import { FormAction } from 'containers/Action';
+import { isOwner } from 'resources/glance/image';
 import { isActive } from 'resources/nova/instance';
-import { NoSetValue, getOptionsWithNoSet } from 'utils/index';
-import { cpuPolicyList, cpuThreadPolicyList } from 'resources/nova/flavor';
+import { stringsToOptions } from 'utils/image';
+import { osTitleMap } from 'src/utils/os';
 
-export class Edit extends ModalAction {
+export class Edit extends FormAction {
   init() {
-    this.store = globalImageStore;
+    this.store = cosImageStore;
+
+    const { id } = this.params;
+
+    this.getImageMaterials().catch(console.error);
+
+    if (id) {
+      this.store.fetchDetail({ id }).then(() => {
+        this.updateDefaultValue();
+      });
+    }
   }
 
   static id = 'image-edit';
@@ -31,6 +44,17 @@ export class Edit extends ModalAction {
   static title = t('Edit Image');
 
   static buttonText = t('Edit');
+
+  static path = (item, containerProps) => {
+    const { isAdminPage = false } = containerProps || {};
+    const base = isAdminPage ? '/compute/image-admin' : '/compute/image';
+    const id = item?.id || item?.imageId;
+    return `${base}/edit/${id}`;
+  };
+
+  get listUrl() {
+    return this.getRoutePath('image');
+  }
 
   get name() {
     return t('edit image');
@@ -42,28 +66,61 @@ export class Edit extends ModalAction {
 
   get labelCol() {
     return {
-      xs: { span: 8 },
-      sm: { span: 8 },
+      xs: { span: 6 },
+      sm: { span: 5 },
     };
   }
 
   get defaultValue() {
     const {
-      visibility,
-      hw_qemu_guest_agent,
-      hw_cpu_policy,
-      hw_cpu_thread_policy,
-      min_ram,
-    } = this.item;
+      imageName = '',
+      imageProject = '',
+      imageOS = '',
+      imageDestination = '',
+      imageDomain = '',
+      imageVisibility,
+    } = this.store.detail || {};
+
+    const osKey = typeof imageOS === 'string' ? imageOS.toLowerCase() : '';
+    const osLabel = osKey ? osTitleMap[osKey] : undefined;
+
     return {
-      ...this.item,
-      protected: this.item.protected,
-      visibility: visibility === 'public',
-      hw_qemu_guest_agent,
-      hw_cpu_policy: hw_cpu_policy || NoSetValue,
-      hw_cpu_thread_policy: hw_cpu_thread_policy || NoSetValue,
-      min_ram: min_ram / 1024,
+      name: imageName,
+      project: imageProject,
+      os: osLabel,
+      destination: imageDestination,
+      domain: imageDomain ? upperFirst(imageDomain) : '',
+      visibility: imageVisibility,
     };
+  }
+
+  async getImageMaterials() {
+    await this.store.fetchImageMaterials();
+  }
+
+  computeImageMaterials = memoize((materials) => {
+    const { oses = [], visibilities = [] } = materials || {};
+
+    return {
+      oses: stringsToOptions(oses),
+      visibilities: stringsToOptions(visibilities),
+    };
+  });
+
+  get imageMaterials() {
+    return this.computeImageMaterials(this.store.imageMaterials);
+  }
+
+  get isImageMaterialsLoading() {
+    return this.store.isImageMaterialsLoading;
+  }
+
+  get isDetailLoading() {
+    return this.store.isLoading;
+  }
+
+  get isPageLoading() {
+    return this.isImageMaterialsLoading || this.isDetailLoading;
   }
 
   static policy = 'modify_image';
@@ -73,197 +130,73 @@ export class Edit extends ModalAction {
     return Promise.resolve((isActive(item) && isOwner(item)) || isAdminPage);
   };
 
-  get osList() {
-    return Object.keys(imageOS).map((key) => ({
-      value: key,
-      label: imageOS[key],
-    }));
-  }
-
-  get yesNoList() {
-    return [
-      { value: 'yes', label: t('Yes') },
-      { value: 'no', label: t('No') },
-    ];
-  }
-
-  getOptions() {
-    return [{ label: t('Protected'), value: 'protected' }];
-  }
-
   get formItems() {
-    const { more } = this.state;
-    const zeroTip = t('If the value is set to 0, it means unlimited');
     return [
       {
         name: 'name',
-        label: t('Name'),
+        label: t('Specify Image Name'),
         type: 'input-name',
         isImage: true,
         required: true,
       },
       {
-        name: 'os_distro',
+        name: 'project',
+        label: t('Owned Project'),
+        type: 'input',
+        required: this.isAdminPage,
+        hidden: !this.isAdminPage,
+        disabled: true,
+      },
+      {
+        name: 'os',
         label: t('OS'),
         type: 'select',
-        options: this.osList,
         required: true,
+        options: this.imageMaterials?.oses || [],
+        isLoading: this.isImageMaterialsLoading,
       },
       {
-        name: 'os_version',
-        label: t('OS Version'),
+        name: 'destination',
+        label: t('Destination'),
         type: 'input',
         required: true,
+        disabled: true,
       },
       {
-        name: 'os_admin_user',
-        label: t('OS Admin'),
+        name: 'domain',
+        label: t('Domain'),
         type: 'input',
         required: true,
-        extra: t(
-          'In general, administrator for Windows, root for Linux, please fill by image uploading.'
-        ),
-      },
-      {
-        name: 'min_disk',
-        label: t('Min System Disk (GiB)'),
-        type: 'input-int',
-        min: 0,
-        max: 500,
-        display: this.enableCinder,
-        required: this.enableCinder,
-        extra: this.enableCinder ? zeroTip : null,
-      },
-      {
-        name: 'min_ram',
-        label: t('Min Memory (GiB)'),
-        type: 'input-int',
-        min: 0,
-        max: 500,
-        required: true,
-        extra: zeroTip,
+        disabled: true,
       },
       {
         name: 'visibility',
         label: t('Visibility'),
-        type: 'check',
-        content: t('Public'),
-        hidden: !this.isAdminPage,
-      },
-      {
-        name: 'protected',
-        label: t('Protected'),
-        type: 'check',
-        content: t('Protected'),
-      },
-      {
-        name: 'description',
-        label: t('Description'),
-        type: 'textarea',
-        maxLength: 255,
-      },
-      {
-        name: 'more',
-        label: t('Advanced Options'),
-        type: 'more',
-      },
-      {
-        name: 'hw_qemu_guest_agent',
-        label: t('qemu_guest_agent enabled'),
         type: 'radio',
-        onlyRadio: true,
-        options: this.yesNoList,
-        tip: t(
-          'It is recommended to install and use this agent. The instance created with this image can be used to modify the password (qemu_guest_agent needs to be installed when creating the image).'
-        ),
-        hidden: !more,
-      },
-      {
-        name: 'hw_cpu_policy',
-        label: t('CPU Policy'),
-        type: 'select',
-        options: getOptionsWithNoSet(cpuPolicyList),
-        hidden: !more,
-        required: more,
-      },
-      {
-        name: 'hw_cpu_thread_policy',
-        label: t('CPU Thread Policy'),
-        type: 'select',
-        options: getOptionsWithNoSet(cpuThreadPolicyList),
-        hidden: !more,
-        required: more,
+        optionType: 'default',
+        options: this.imageMaterials?.visibilities || [],
+        required: true,
       },
     ];
   }
 
   onSubmit = (values) => {
-    const {
-      more,
-      protected: isProtected = false,
-      visibility = false,
-      hw_cpu_policy,
-      hw_cpu_thread_policy,
-      min_ram,
-      ...rest
-    } = values;
-    const newValues = {
-      protected: isProtected,
-      visibility: visibility ? 'public' : 'private',
-      ...rest,
-    };
-    if (isNumber(min_ram)) {
-      newValues.min_ram = min_ram * 1024;
-    }
-    if (hw_cpu_policy !== NoSetValue) {
-      newValues.hw_cpu_policy =
-        hw_cpu_policy || this.item.originData.hw_cpu_policy;
-    }
-    if (hw_cpu_thread_policy !== NoSetValue) {
-      newValues.hw_cpu_thread_policy =
-        hw_cpu_thread_policy || this.item.originData.hw_cpu_thread_policy;
-    }
-    const changeValues = [];
-    Object.keys(newValues).forEach((key) => {
-      if (
-        has(this.item.originData, key) &&
-        get(this.item.originData, key) !== newValues[key]
-      ) {
-        const item = {
-          op: 'replace',
-          path: `/${key}`,
-          value: newValues[key],
-        };
-        changeValues.push(item);
-      } else if (!has(this.item.originData, key) && newValues[key]) {
-        const item = {
-          op: 'add',
-          path: `/${key}`,
-          value: newValues[key],
-        };
-        changeValues.push(item);
-      }
-    });
-    if (this.item.originData.hw_cpu_policy && hw_cpu_policy === NoSetValue) {
-      changeValues.push({
-        op: 'remove',
-        path: '/hw_cpu_policy',
-      });
-    }
-    if (
-      this.item.originData.hw_cpu_thread_policy &&
-      hw_cpu_thread_policy === NoSetValue
-    ) {
-      changeValues.push({
-        op: 'remove',
-        path: '/hw_cpu_thread_policy',
-      });
-    }
-    if (changeValues.length === 0) {
-      return Promise.resolve();
-    }
-    return this.store.update({ id: this.item.id }, changeValues);
+    console.log('values', values);
+    // TODO: implement edit image
   };
+
+  render() {
+    // Show loading spinner while data is being fetched
+    if (this.isPageLoading) {
+      return (
+        <div style={{ textAlign: 'center', padding: '50px' }}>
+          <Spin size="large" />
+        </div>
+      );
+    }
+
+    return super.render();
+  }
 }
 
 export default inject('rootStore')(observer(Edit));

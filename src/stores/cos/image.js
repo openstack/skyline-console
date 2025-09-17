@@ -212,16 +212,13 @@ export class CosImageStore extends BaseStore {
       console.error(error);
     }
 
-    // Final mapping & sorting
     // Sort the list so that items still in processing appear first
-    finalData = finalData
-      .map((item) => this.mapper(item))
-      .sort((a, b) => {
-        const aProcessing = a.imageStatus?.isProcessing ? 1 : 0;
-        const bProcessing = b.imageStatus?.isProcessing ? 1 : 0;
+    finalData = finalData.sort((a, b) => {
+      const aProcessing = a.imageStatus?.isProcessing ? 1 : 0;
+      const bProcessing = b.imageStatus?.isProcessing ? 1 : 0;
 
-        return bProcessing - aProcessing;
-      });
+      return bProcessing - aProcessing;
+    });
 
     this.list.update({
       data: finalData,
@@ -265,6 +262,23 @@ export class CosImageStore extends BaseStore {
       this.error = error;
     } finally {
       this.isImageCreating = false;
+    }
+  }
+
+  @action
+  async fetchDetail(params) {
+    const { id, silent } = params || {};
+
+    if (!silent) {
+      this.isLoading = true;
+    }
+
+    try {
+      const items = await this.fetchList();
+      const item = items.find((it) => it.id === id);
+      this.detail = item;
+    } finally {
+      this.isLoading = false;
     }
   }
 }
