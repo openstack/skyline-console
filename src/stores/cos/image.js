@@ -66,6 +66,7 @@ export class CosImageStore extends BaseStore {
           imageOS: cosImage.os,
           imageDomain: cosImage.domain,
           imageDestination: cosImage.destination,
+          imageDiskType: cosImage.diskType,
           imageVisibility: cosImage.visibility,
           imageSize: cosImage.sizeMiB,
           imageCreatedAt: cosImage.createdAt,

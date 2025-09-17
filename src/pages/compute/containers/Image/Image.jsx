@@ -247,7 +247,7 @@ export class Image extends BaseList {
       },
       {
         title: t('Disk Format'),
-        dataIndex: 'disk_format',
+        dataIndex: 'imageDiskType',
         sorter: false,
         valueMap: imageFormats,
       },
