@@ -57,4 +57,21 @@ export const imageApi = {
     });
     return response.data.data;
   },
+  /**
+   * @param {string} imageId
+   * @param {Object} body
+   * @param {string} [body.name]
+   * @param {string} [body.os]
+   * @param {string} [body.visibility]
+   * @returns {Promise}
+   */
+  updateImage: async (imageId, body) => {
+    const url = await composeApiUrl(`/images/${imageId}`);
+    const response = await cosApiClientV1.patch(url, body, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data.data;
+  },
 };

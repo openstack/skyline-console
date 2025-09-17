@@ -21,10 +21,11 @@ import cosImageStore from 'stores/cos/image';
 import { FormAction } from 'containers/Action';
 import { stringsToOptions } from 'utils/image';
 import { osTitleMap } from 'src/utils/os';
+import { imageApi } from 'src/apis/imageApi';
 
 const ACTIVE_STATUSES = ['active'];
 
-export class Edit extends FormAction {
+export class EditForm extends FormAction {
   init() {
     this.store = cosImageStore;
 
@@ -179,9 +180,13 @@ export class Edit extends FormAction {
     ];
   }
 
-  onSubmit = (values) => {
-    console.log('values', values);
-    // TODO: implement edit image
+  onSubmit = async (values) => {
+    const { name, os, visibility } = values;
+    const { id } = this.params;
+
+    const body = { name, os, visibility };
+
+    await imageApi.updateImage(id, body);
   };
 
   render() {
@@ -198,4 +203,4 @@ export class Edit extends FormAction {
   }
 }
 
-export default inject('rootStore')(observer(Edit));
+export default inject('rootStore')(observer(EditForm));
