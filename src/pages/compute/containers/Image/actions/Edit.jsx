@@ -19,10 +19,10 @@ import { upperFirst } from 'lodash';
 import memoize from 'lodash/memoize';
 import cosImageStore from 'stores/cos/image';
 import { FormAction } from 'containers/Action';
-import { isOwner } from 'resources/glance/image';
-import { isActive } from 'resources/nova/instance';
 import { stringsToOptions } from 'utils/image';
 import { osTitleMap } from 'src/utils/os';
+
+const ACTIVE_STATUSES = ['active'];
 
 export class Edit extends FormAction {
   init() {
@@ -125,9 +125,8 @@ export class Edit extends FormAction {
 
   static policy = 'modify_image';
 
-  static allowed = (item, containerProps) => {
-    const { isAdminPage } = containerProps;
-    return Promise.resolve((isActive(item) && isOwner(item)) || isAdminPage);
+  static allowed = (item) => {
+    return ACTIVE_STATUSES.includes(item.imageStatus.current);
   };
 
   get formItems() {

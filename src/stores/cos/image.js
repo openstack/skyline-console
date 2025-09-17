@@ -266,17 +266,32 @@ export class CosImageStore extends BaseStore {
   }
 
   @action
-  async fetchDetail(params) {
-    const { id, silent } = params || {};
+  async fetchDetail(params = {}) {
+    const { id, silent } = params;
 
     if (!silent) {
       this.isLoading = true;
     }
 
     try {
-      const items = await this.fetchList();
-      const item = items.find((it) => it.id === id);
-      this.detail = item;
+      // If the list is empty, fetch it first
+      let items = this.list.data;
+      if (!items || items.length === 0) {
+        items = await this.fetchList();
+      }
+
+      const item = items.find((it) => it.id === id || it.imageId === id);
+
+      if (item) {
+        this.detail = item;
+      } else {
+        // If not found, clear detail and optionally throw error
+        this.detail = {};
+        throw new Error(`Image with id ${id} not found`);
+      }
+    } catch (error) {
+      console.error('Error fetching image detail:', error);
+      this.detail = {};
     } finally {
       this.isLoading = false;
     }
