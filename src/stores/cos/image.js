@@ -71,6 +71,7 @@ export class CosImageStore extends BaseStore {
           imageSize: cosImage.sizeMiB,
           imageCreatedAt: cosImage.createdAt,
           imageStatus: cosImage.status || '',
+          imageMetadata: cosImage.metadata || {},
         };
 
         return {

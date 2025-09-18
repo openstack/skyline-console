@@ -38,6 +38,7 @@ export default class index extends Component {
     readonlyKeys: PropTypes.array,
     disableEditKeys: PropTypes.array,
     disabledRemoveFunc: PropTypes.func,
+    hideAddButton: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -52,6 +53,7 @@ export default class index extends Component {
     readonlyKeys: [],
     disableEditKeys: [],
     disabledRemoveFunc: null,
+    hideAddButton: false,
   };
 
   constructor(props) {
@@ -263,7 +265,7 @@ export default class index extends Component {
   }
 
   renderAdd() {
-    const { maxCount, addText, addTextTips } = this.props;
+    const { maxCount, addText, addTextTips, hideAddButton } = this.props;
     const { items } = this.state;
     let tips = '';
     if (maxCount !== Infinity) {
@@ -272,6 +274,8 @@ export default class index extends Component {
         name: addTextTips || '',
       });
     }
+
+    if (hideAddButton) return null;
 
     return (
       <div>

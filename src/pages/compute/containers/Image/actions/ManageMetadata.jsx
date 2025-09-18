@@ -13,27 +13,31 @@
 // limitations under the License.
 
 import { inject, observer } from 'mobx-react';
+import { toJS } from 'mobx';
+import { has, isEmpty } from 'lodash';
 import globalImageStore from 'stores/glance/image';
-import { ModalAction } from 'containers/Action';
 import KeyValueInput from 'components/FormItem/KeyValueInput';
+import { ModalAction } from 'containers/Action';
 import { MetadataStore } from 'stores/glance/metadata';
-import { isEmpty, has } from 'lodash';
 import { isOwner } from 'resources/glance/image';
+import { normalizeImageSystemMetadata } from 'utils/image';
+
+const HIDDEN_KEYS = [
+  'os_hash_algo',
+  'os_hash_value',
+  'direct_url',
+  'locations',
+];
 
 export class ManageMetadata extends ModalAction {
-  static id = 'ManageMetadata';
-
-  static title = t('Manage Metadata');
-
   init() {
     this.store = globalImageStore;
     this.metadataStore = new MetadataStore();
-    this.getMetadata();
   }
 
-  get name() {
-    return t('Manage Metadata');
-  }
+  static id = 'ManageMetadata';
+
+  static title = t('Manage Metadata');
 
   static get modalSize() {
     return 'large';
@@ -41,6 +45,10 @@ export class ManageMetadata extends ModalAction {
 
   getModalSize() {
     return 'large';
+  }
+
+  get name() {
+    return t('Manage Metadata');
   }
 
   get wrapperCol() {
@@ -57,70 +65,51 @@ export class ManageMetadata extends ModalAction {
     return Promise.resolve(isOwner(item) || isAdminPage);
   };
 
-  async getMetadata() {
-    const resourceType = 'OS::Glance::Image';
-    await this.metadataStore.fetchList({
-      manage: true,
-      resource_types: resourceType,
-    });
-    this.updateDefaultValue();
-  }
-
   get metadata() {
-    return this.metadataStore.list.data || [];
+    // MetadataTransfer expects an array of metadata schema objects
+    // For now, return empty array to prevent errors
+    // TODO: We'll need to implement proper metadata schema fetching
+    return [];
   }
 
-  getItemMetadata() {
-    const {
-      container_format,
-      disk_format,
-      id,
-      min_disk,
-      min_ram,
-      name,
-      protected: imageProtected,
-      tags,
-      visibility,
-      owner,
-      created_at,
-      is_public,
-      updated_at,
-      status,
-      locations,
-      file,
-      size,
-      image_type,
-      self,
-      virtual_size,
-      ...rest
-    } = this.item.originData;
-    return rest;
+  get existingMetadata() {
+    const { item } = this.props;
+    return item.imageMetadata || {};
   }
 
-  checkKeyInSystem = (key) => {
-    const item = this.metadata.find((it) => {
-      const { detail: { properties = {} } = {} } = it;
-      return Object.keys(properties).indexOf(key) >= 0;
-    });
-    return !!item;
-  };
+  get nonStringFieldKeys() {
+    const existingMetadata = this.existingMetadata || {};
+    return Object.keys(existingMetadata).filter(
+      (key) => typeof existingMetadata[key] !== 'string'
+    );
+  }
+
+  getExistingMetadataKeys() {
+    const existingMetadata = this.existingMetadata || {};
+    return Object.keys(existingMetadata);
+  }
+
+  getNonStringFieldKeys() {
+    return this.nonStringFieldKeys || [];
+  }
 
   parseExistMetadata() {
     const customs = [];
-    const systems = {};
-    if (this.metadata.length > 0) {
-      const metadata = this.getItemMetadata();
-      Object.keys(metadata).forEach((key) => {
-        if (this.checkKeyInSystem(key)) {
-          systems[key] = metadata[key];
-        } else {
-          customs.push({
-            index: customs.length,
-            value: { key, value: metadata[key] },
+    const systems = [];
+
+    const existingMetadata = this.existingMetadata || {};
+
+    if (Object.keys(existingMetadata).length > 0) {
+      Object.entries(existingMetadata).forEach(([key, value]) => {
+        if (typeof value === 'string' && !HIDDEN_KEYS.includes(key)) {
+          systems.push({
+            index: systems.length,
+            value: { key, value: toJS(value) },
           });
         }
       });
     }
+
     return {
       customs,
       systems,
@@ -138,20 +127,29 @@ export class ManageMetadata extends ModalAction {
     return value;
   }
 
-  checkCustoms = (values) => {
-    if (isEmpty(values)) {
-      return true;
-    }
-    const item = values.find((it) => {
-      const { key, value } = it.value || {};
-      return !key || value === undefined || value === null;
+  isCustomMetadataFilled = (values = []) => {
+    if (isEmpty(values)) return true;
+
+    return values.every((item) => {
+      const { key, value } = item.value || {};
+      return key && value !== undefined && value !== null;
     });
-    return !item;
   };
 
-  hasNoValue = (values) => {
-    const item = Object.keys(values).find((it) => values[it] === undefined);
-    return !!item;
+  isCustomMetadataUnique = (values = []) => {
+    const keys = values.map((item) => item.value?.key);
+    const uniqueKeys = new Set(keys);
+
+    return keys.length === uniqueKeys.size;
+  };
+
+  isCustomMetadataNew = (values = []) => {
+    const existingKeys = new Set(this.getExistingMetadataKeys());
+
+    return values.every((item) => {
+      const { key } = item.value || {};
+      return !existingKeys.has(key);
+    });
   };
 
   get formItems() {
@@ -163,28 +161,31 @@ export class ManageMetadata extends ModalAction {
         iconType: 'aggregate',
       },
       {
-        name: 'customs',
-        label: t('Custom Metadata'),
+        name: 'systems',
+        label: t('Existing Metadata'),
         type: 'add-select',
         itemComponent: KeyValueInput,
-        addText: t('Add Custom Metadata'),
-        validator: (rule, value) => {
-          if (!this.checkCustoms(value)) {
-            // eslint-disable-next-line prefer-promise-reject-errors
-            return Promise.reject(t('Please enter complete key value!'));
-          }
-          return Promise.resolve();
-        },
+        keySpan: 8,
+        valueSpan: 10,
+        readonlyKeys: this.getExistingMetadataKeys(),
+        hideAddButton: true,
       },
       {
-        name: 'systems',
-        label: t('Metadata'),
-        type: 'metadata-transfer',
-        metadata: this.metadata,
-        validator: (rule, value) => {
-          if (this.hasNoValue(value)) {
-            // eslint-disable-next-line prefer-promise-reject-errors
-            return Promise.reject(t('Please input value'));
+        name: 'customs',
+        label: t('Add New Metadata'),
+        type: 'add-select',
+        itemComponent: KeyValueInput,
+        keySpan: 8,
+        valueSpan: 10,
+        validator: (_, value) => {
+          if (!this.isCustomMetadataFilled(value)) {
+            return Promise.reject(t('Please input key and value'));
+          }
+          if (!this.isCustomMetadataUnique(value)) {
+            return Promise.reject(t('Metadata key must be unique'));
+          }
+          if (!this.isCustomMetadataNew(value)) {
+            return Promise.reject(t('Metadata key already exists'));
           }
           return Promise.resolve();
         },
@@ -193,68 +194,62 @@ export class ManageMetadata extends ModalAction {
   }
 
   onSubmit = (values) => {
-    const { customs: oldCustoms, systems: oldSystems } =
-      this.parseExistMetadata();
-    const { customs, systems } = values;
+    const { systems: prevSystemsArray } = this.parseExistMetadata();
+    const { customs, systems: nextSystemsArray } = values;
+
+    const prevSystems = normalizeImageSystemMetadata(prevSystemsArray);
+    const nextSystems = normalizeImageSystemMetadata(nextSystemsArray);
+
     const adds = [];
     const removes = [];
     const replaces = [];
-    customs.forEach((it) => {
-      const { key, value } = it.value || {};
-      const oldItem = oldCustoms.find((c) => c.value.key === key);
-      if (!oldItem) {
-        adds.push(it.value);
-      } else if (oldItem.value.value !== value) {
-        replaces.push(it.value);
+
+    customs.forEach((item) => {
+      const { key, value } = item.value || {};
+      const prevValue = prevSystems[key];
+
+      if (prevValue === undefined) {
+        adds.push({ key, value });
+      } else if (prevValue !== value) {
+        replaces.push({ key, value });
       }
     });
-    Object.keys(systems).forEach((key) => {
-      const item = {
-        key,
-        value: systems[key],
-      };
-      if (!has(oldSystems, key)) {
-        adds.push(item);
-      } else if (systems[key] !== oldSystems[key]) {
-        replaces.push(item);
+
+    Object.keys(nextSystems).forEach((key) => {
+      if (!has(prevSystems, key)) {
+        adds.push({ key, value: nextSystems[key] });
+      } else if (nextSystems[key] !== prevSystems[key]) {
+        replaces.push({ key, value: nextSystems[key] });
       }
     });
-    oldCustoms.forEach((it) => {
-      const item = customs.find((custom) => custom.value.key === it.value.key);
-      if (!item) {
-        removes.push(it.value.key);
-      }
-    });
-    Object.keys(oldSystems).forEach((key) => {
-      if (!has(systems, key)) {
+
+    Object.keys(prevSystems).forEach((key) => {
+      if (!has(nextSystems, key)) {
         removes.push(key);
       }
     });
-    const changeValues = [];
-    adds.forEach((it) => {
-      changeValues.push({
+
+    const metadataChanges = [
+      ...adds.map((item) => ({
         op: 'add',
-        path: `/${it.key}`,
-        value: it.value,
-      });
-    });
-    replaces.forEach((it) => {
-      changeValues.push({
+        path: `/${item.key}`,
+        value: item.value,
+      })),
+      ...replaces.map((item) => ({
         op: 'replace',
-        path: `/${it.key}`,
-        value: it.value,
-      });
-    });
-    removes.forEach((it) => {
-      changeValues.push({
+        path: `/${item.key}`,
+        value: item.value,
+      })),
+      ...removes.map((key) => ({
         op: 'remove',
-        path: `/${it}`,
-      });
-    });
-    if (changeValues.length === 0) {
+        path: `/${key}`,
+      })),
+    ];
+
+    if (metadataChanges.length === 0) {
       return Promise.resolve();
     }
-    return this.store.update({ id: this.item.id }, changeValues);
+    return this.store.update({ id: this.item.id }, metadataChanges);
   };
 }
 

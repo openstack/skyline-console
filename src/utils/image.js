@@ -75,3 +75,15 @@ export const getProgressBarColorByStatus = (
   if (current === secondaryStatus) return globalCSS.secondaryColor;
   return globalCSS.successColor;
 };
+
+/**
+ * @param {Array} systemsArray
+ * @returns {Object}
+ */
+export const normalizeImageSystemMetadata = (systemsArray = []) =>
+  systemsArray.reduce((acc, { value }) => {
+    if (value?.key) {
+      acc[value.key] = value.value;
+    }
+    return acc;
+  }, {});
