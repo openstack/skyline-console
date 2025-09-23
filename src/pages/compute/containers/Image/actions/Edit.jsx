@@ -22,6 +22,8 @@ import { FormAction } from 'containers/Action';
 import { stringsToOptions } from 'utils/image';
 import { osTitleMap } from 'src/utils/os';
 import { imageApi } from 'src/apis/imageApi';
+import NotFound from 'src/components/Cards/NotFound';
+import Notify from 'src/components/Notify';
 
 const ACTIVE_STATUSES = ['active'];
 
@@ -124,6 +126,10 @@ export class EditForm extends FormAction {
     return this.isImageMaterialsLoading || this.isDetailLoading;
   }
 
+  get notFound() {
+    return !this.isDetailLoading && !this.store.detail;
+  }
+
   static policy = 'modify_image';
 
   static allowed = (item) => {
@@ -196,6 +202,18 @@ export class EditForm extends FormAction {
         <div style={{ textAlign: 'center', padding: '50px' }}>
           <Spin size="large" />
         </div>
+      );
+    }
+
+    if (this.notFound) {
+      Notify.warn(
+        t('{name} {id} could not be found.', {
+          name: t('image'),
+          id: this.params.id,
+        })
+      );
+      return (
+        <NotFound title={t('image')} link="/compute/image" goList isAction />
       );
     }
 

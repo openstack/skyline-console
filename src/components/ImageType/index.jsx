@@ -17,12 +17,11 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { upperFirst } from 'lodash';
 import { Tooltip } from 'antd';
-import { osIconMap, osTitleMap } from 'utils/os';
-import othersIcon from 'image/others.svg';
+import { osTitleMap, getOsIcon } from 'utils/os';
 import styles from './index.less';
 
 const Index = ({ type, className, title: titleProp }) => {
-  const IconComponent = osIconMap[type?.toLowerCase()] || othersIcon;
+  const IconComponent = getOsIcon(type);
 
   const title = osTitleMap[titleProp?.toLowerCase()] || upperFirst(titleProp);
 

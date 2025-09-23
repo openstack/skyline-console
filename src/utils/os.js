@@ -22,7 +22,7 @@ export const osTitleMap = {
   others: 'Others',
 };
 
-export const osIconMap = {
+const osIconMap = {
   centos: centosIcon,
   ubuntu: ubuntuIcon,
   fedora: fedoraIcon,
@@ -31,7 +31,12 @@ export const osIconMap = {
   coreos: coreosIcon,
   arch: archIcon,
   freebsd: freebsdIcon,
-  // The following two are for compatibility
-  other: othersIcon,
-  others: othersIcon,
+};
+
+/**
+ * @param {string | undefined} type
+ * @returns {JSX.Element}
+ */
+export const getOsIcon = (type) => {
+  return osIconMap[type?.toLowerCase()] ?? othersIcon;
 };

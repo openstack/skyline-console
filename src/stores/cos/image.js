@@ -286,9 +286,8 @@ export class CosImageStore extends BaseStore {
       if (item) {
         this.detail = item;
       } else {
-        // If not found, clear detail and optionally throw error
-        this.detail = {};
-        throw new Error(`Image with id ${id} not found`);
+        // If not found, return `false`
+        this.detail = false;
       }
     } catch (error) {
       console.error('Error fetching image detail:', error);
