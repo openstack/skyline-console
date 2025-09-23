@@ -140,3 +140,10 @@ export const projectTagsColors = shuffle([
   'geekblue',
   'purple',
 ]);
+
+export const loadingFormItems = [
+  {
+    name: 'loading',
+    type: 'loading',
+  },
+];
