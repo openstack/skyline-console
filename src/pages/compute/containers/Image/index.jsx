@@ -29,11 +29,12 @@ export class TabImage extends Base {
         key: 'public',
         component: Image,
       },
-      {
-        title: t('Shared Images'),
-        key: 'shared',
-        component: Image,
-      },
+      // Shared Image is currently hidden since it's not in use
+      // {
+      //   title: t('Shared Images'),
+      //   key: 'shared',
+      //   component: Image,
+      // },
     ];
     if (this.hasAdminRole) {
       tabs.push({

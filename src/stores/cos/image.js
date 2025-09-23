@@ -108,6 +108,24 @@ export class CosImageStore extends BaseStore {
     return params;
   }
 
+  dedupeById(list = []) {
+    const seen = new Set();
+    return list.filter((item) => {
+      if (seen.has(item.id)) return false;
+      seen.add(item.id);
+      return true;
+    });
+  }
+
+  async fetchListFromSources(cosParams = {}, glanceParams = {}) {
+    const [{ images: cosImages }, originImages] = await Promise.all([
+      imageApi.getImageList({ pageSize: 9999, pageNum: 1, ...cosParams }),
+      this.requestList(glanceParams),
+    ]);
+
+    return { cosImages, originImages };
+  }
+
   @action
   async update({ id }, newBody) {
     return this.client.patch(id, newBody);
@@ -164,58 +182,87 @@ export class CosImageStore extends BaseStore {
   } = {}) {
     this.list.isLoading = true;
 
-    const { tab, all_projects, ...rest } = filters;
+    const { tab = 'project', all_projects } = filters;
 
-    let processedData;
+    const isAdminPage = Boolean(all_projects) && tab !== 'all';
+
+    let fetchedData;
 
     try {
-      const params = this.buildParams(rest, sortKey, sortOrder);
-      const newParams = this.paramsFunc(params);
       // Fetch image from both COS and OpenStack APIs in parallel
       // - imageApi.getImageList returns an object with an `images` array
       // - this.requestList fetches the image list based on newParams and filters
-      const [{ images: cosImages }, originImages] = await Promise.all([
-        imageApi.getImageList({ pageSize: 9999, pageNum: 1 }),
-        this.requestList(newParams, filters),
-      ]);
-
-      // Merge the two image lists into a single data set,
-      // then apply a series of transformations:
-      // 1. Map: prepare each item before fetching project-related data.
-      // 2. Filter by:
-      //    - (1) Project scope
-      //    - (2) Tab selection
-      processedData = this.mergeData(originImages, cosImages)
-        .map((item) => this.mapperBeforeFetchProject(item, filters))
-        .filter((item) => {
-          // (1) Filter by project scope
-          if (
-            this.listFilterByProject &&
-            !this.itemInCurrentProject(item, all_projects)
-          ) {
-            return false;
+      if (isAdminPage) {
+        // Admin page ignores tabs
+        fetchedData = await this.fetchListFromSources();
+      } else {
+        switch (tab) {
+          case 'project': {
+            fetchedData = await this.fetchListFromSources(
+              { project: this.currentProjectName },
+              { owner: this.currentProjectId }
+            );
+            break;
           }
+          case 'public': {
+            fetchedData = await this.fetchListFromSources(
+              { visibility: 'public' },
+              { visibility: 'public' }
+            );
+            break;
+          }
+          case 'all': {
+            const [
+              fetchedByProject,
+              fetchedByVisibilityPublic,
+              fetchedByVisibilityShared,
+            ] = await Promise.all([
+              this.fetchListFromSources(
+                { project: this.currentProjectName },
+                { owner: this.currentProjectId }
+              ),
+              this.fetchListFromSources(
+                { visibility: 'public' },
+                { visibility: 'public' }
+              ),
+              this.fetchListFromSources(
+                { visibility: 'shared' },
+                { visibility: 'shared' }
+              ),
+            ]);
 
-          // (2) Filter by tab selection
-          if (tab === 'public') return item.imageVisibility === 'public';
-          if (tab === 'shared') return item.imageVisibility === 'shared';
-          return true;
-        });
+            fetchedData = {
+              cosImages: this.dedupeById([
+                ...(fetchedByProject.cosImages || []),
+                ...(fetchedByVisibilityPublic.cosImages || []),
+                ...(fetchedByVisibilityShared.cosImages || []),
+              ]),
+              originImages: this.dedupeById([
+                ...(fetchedByProject.originImages || []),
+                ...(fetchedByVisibilityPublic.originImages || []),
+                ...(fetchedByVisibilityShared.originImages || []),
+              ]),
+            };
+            break;
+          }
+          default: {
+            // fallback if tab is missing/unknown
+            fetchedData = { cosImages: [], originImages: [] };
+          }
+        }
+      }
     } catch (error) {
-      throw new Error(error);
+      this.list.isLoading = false;
+      throw error;
     }
 
-    let finalData = await this.listDidFetchProject(processedData, all_projects);
-
-    try {
-      finalData = await this.listDidFetch(finalData, all_projects, filters);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-    }
+    let processedData = this.mergeData(
+      fetchedData.originImages,
+      fetchedData.cosImages
+    );
 
     // Sort the list so that items still in processing appear first
-    finalData = finalData.sort((a, b) => {
+    processedData = processedData.sort((a, b) => {
       const aProcessing = a.imageStatus?.isProcessing ? 1 : 0;
       const bProcessing = b.imageStatus?.isProcessing ? 1 : 0;
 
@@ -223,8 +270,8 @@ export class CosImageStore extends BaseStore {
     });
 
     this.list.update({
-      data: finalData,
-      total: finalData.length || 0,
+      data: processedData,
+      total: processedData.length || 0,
       limit: Number(limit) || 10,
       page: Number(page) || 1,
       sortKey,
@@ -235,7 +282,7 @@ export class CosImageStore extends BaseStore {
       ...(this.list.silent ? {} : { selectedRowKeys: [] }),
     });
 
-    return finalData;
+    return processedData;
   }
 
   @action
