@@ -93,6 +93,11 @@ export class CreateForm extends FormAction {
 
   async getImageMaterials() {
     await this.store.fetchImageMaterials();
+    // Set default destination when materials are loaded
+    const { defaultDestination } = this;
+    if (defaultDestination) {
+      this.updateFormValue('destination', defaultDestination);
+    }
   }
 
   get projects() {
@@ -101,6 +106,7 @@ export class CreateForm extends FormAction {
 
   get defaultValue() {
     return {
+      destination: this.defaultDestination,
       visibility: this.state.sourceFromAnotherHypervisor ? undefined : 'public',
     };
   }
@@ -127,10 +133,14 @@ export class CreateForm extends FormAction {
       projects = [],
     } = materials || {};
 
+    const destinationNames = destinations.map(
+      (destination) => destination.name
+    );
+
     return {
       reservedImages,
       oses: stringsToOptions(oses),
-      destinations: stringsToOptions(destinations),
+      destinations: stringsToOptions(destinationNames),
       domains: stringsToOptions(domains),
       visibilities: stringsToOptions(visibilities),
       projects: stringsToOptions(projects),
@@ -139,6 +149,11 @@ export class CreateForm extends FormAction {
 
   get imageMaterials() {
     return this.computeImageMaterials(this.store.imageMaterials);
+  }
+
+  get defaultDestination() {
+    const { destinations = [] } = this.store.imageMaterials || {};
+    return destinations.find((dest) => dest.isDefault)?.name;
   }
 
   get isImageMaterialsLoading() {
@@ -161,7 +176,7 @@ export class CreateForm extends FormAction {
     this.updateFormValues({
       os: undefined,
       project: { selectedRowKeys: [], selectedRows: [] },
-      destination: undefined,
+      destination: this.defaultDestination,
       domain: undefined,
       source: false,
       visibility: 'public',
