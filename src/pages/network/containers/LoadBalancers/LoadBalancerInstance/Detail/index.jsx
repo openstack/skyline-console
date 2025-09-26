@@ -71,6 +71,10 @@ export class LoadBalancerDetail extends Base {
         dataIndex: 'vip_subnet_id',
       },
       {
+        title: t('Flavor'),
+        dataIndex: 'flavor_id',
+      },
+      {
         title: t('IP'),
         dataIndex: 'vip_address',
       },
