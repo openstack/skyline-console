@@ -56,7 +56,7 @@ export const stableStatus = {
   paused: t('Paused'),
   error: t('Error'),
   resize: t('Resizing or Migrating'),
-  verify_resize: t('Resizing or Migrating'),
+  verify_resize: t('Verify Resize/Migrate'),
   revert_resize: t('Revert Resize/Migrate'),
   // reboot: t('Reboot'),
   // hard_reboot: t('Hard Reboot'),

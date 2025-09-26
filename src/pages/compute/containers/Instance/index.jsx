@@ -14,8 +14,10 @@
 
 import React from 'react';
 import { observer, inject } from 'mobx-react';
+import { reaction } from 'mobx';
 import ImageType from 'components/ImageType';
 import Base from 'containers/List';
+import Notify from 'components/Notify';
 import {
   instanceStatus,
   transitionStatus,
@@ -29,6 +31,8 @@ import { ServerGroupInstanceStore } from 'stores/skyline/server-group-instance';
 import actionConfigs from './actions';
 
 export class Instance extends Base {
+  notifiedInstances = new Set();
+
   init() {
     if (!this.inDetailPage) {
       this.store = globalServerStore;
@@ -112,6 +116,45 @@ export class Instance extends Base {
     return {
       name: record.name,
     };
+  }
+
+  componentDidMount() {
+    super.componentDidMount();
+
+    this.dispose = reaction(
+      () => {
+        const { data } = this.store.list;
+        return data && data.length > 0
+          ? data.filter((instance) => instance.status === 'verify_resize')
+          : [];
+      },
+      (verifyResizeInstances) => {
+        if (verifyResizeInstances.length === 0) return;
+        verifyResizeInstances.forEach((instance) => {
+          if (!this.notifiedInstances.has(instance.id)) {
+            Notify.warn(
+              t(
+                `Waiting for user to Confirm/Revert the Resize for\n ${instance.id}`
+              )
+            );
+            this.notifiedInstances.add(instance.id);
+          }
+        });
+      },
+      {
+        fireImmediately: false,
+        delay: 100,
+      }
+    );
+  }
+
+  componentWillUnmount() {
+    super.componentWillUnmount();
+
+    if (this.dispose) {
+      this.dispose();
+    }
+    this.notifiedInstances.clear();
   }
 
   getColumns() {
