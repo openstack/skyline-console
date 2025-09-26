@@ -227,7 +227,7 @@ export class Create extends FormAction {
   }
 
   async getVolumeTypes() {
-    const types = await this.volumeTypeStore.fetchList();
+    const types = await this.volumeTypeStore.fetchList({ showQoS: true });
     if (types.length > 0) {
       const defaultType = types[0];
       const { id, name } = defaultType;
@@ -263,7 +263,17 @@ export class Create extends FormAction {
   };
 
   get systemTabs() {
-    return getImageSystemTabs();
+    const data = this.imageStore.list.data || [];
+    const availableImages = data
+      .filter((it) => it.status === 'active')
+      .map((it) => ({
+        ...it,
+        key: it.id,
+      }));
+    const tabs = getImageSystemTabs() || [];
+    return tabs.filter((tab) => {
+      return availableImages.some((image) => getImageOS(image) === tab.value);
+    });
   }
 
   getVolumeTypeExtra() {
@@ -432,7 +442,7 @@ export class Create extends FormAction {
         ],
         columns: getImageColumns(this),
         tabs: this.systemTabs,
-        defaultTabValue: this.systemTabs[0].value,
+        defaultTabValue: this.systemTabs[0]?.value,
         selectedLabel: t('Image'),
         onTabChange: this.onImageTabChange,
       },

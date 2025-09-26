@@ -43,6 +43,16 @@ export const volumeTypeColumns = [
     valueRender: 'noValue',
   },
   {
+    title: t('Read IOPS/GB'),
+    dataIndex: ['qos_props', 'read_iops_sec_per_gb'],
+    render: (value) => value || '-',
+  },
+  {
+    title: t('Write IOPS/GB'),
+    dataIndex: ['qos_props', 'write_iops_sec_per_gb'],
+    render: (value) => value || '-',
+  },
+  {
     title: t('Public'),
     dataIndex: 'is_public',
     valueRender: 'yesNo',
