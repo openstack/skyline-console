@@ -136,6 +136,10 @@ export class ProjectSelect extends ModalAction {
             dataIndex: 'id',
           },
           {
+            title: t('Description'),
+            dataIndex: 'description',
+          },
+          {
             title: t('Enabled'),
             dataIndex: 'enabled',
             valueRender: 'yesNo',

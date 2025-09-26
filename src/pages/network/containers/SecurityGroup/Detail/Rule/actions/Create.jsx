@@ -261,16 +261,14 @@ export class Create extends ModalAction {
       },
       {
         name: 'sourcePort',
-        label:
+        label: t('Port or Port Range'),
+        extra:
           direction === 'egress'
-            ? t('Destination Port/Port Range')
-            : t('Source Port/Port Range'),
+            ? t('Input destination port or port range (example: 80 or 80:160)')
+            : t('Input source port or port range (example: 80 or 80:160)'),
         type: 'port-range',
         required: showSourcePort,
         hidden: !showSourcePort,
-        extra:
-          direction === 'egress' &&
-          t('Input destination port or port range (example: 80 or 80:160)'),
       },
       {
         name: 'ipProtocol',
@@ -301,6 +299,13 @@ export class Create extends ModalAction {
         required: false,
         hidden: !isCustomIcmp,
         help: t('Please input ICMP code(0-255)'),
+      },
+      {
+        name: 'description',
+        label: t('Description'),
+        type: 'textarea',
+        required: false,
+        placeholder: t('Description for this rule'),
       },
       {
         name: 'remoteType',

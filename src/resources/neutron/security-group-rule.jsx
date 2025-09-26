@@ -78,6 +78,11 @@ export const getSelfColumns = (self) => [
     isHideable: true,
   },
   {
+    title: t('Description'),
+    dataIndex: 'description',
+    isHideable: true,
+  },
+  {
     title: t('Remote IP Prefix'),
     dataIndex: 'remote_ip_prefix',
     render: (value, record) =>
