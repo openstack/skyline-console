@@ -43,6 +43,11 @@ export class DisassociateFip extends ModalAction {
     const value = {
       instance: name,
     };
+
+    if (this.fips && this.fips.length > 0) {
+      value.address = this.fips[0].value;
+    }
+
     return value;
   }
 

@@ -80,9 +80,22 @@ export class Allocate extends ModalAction {
     const networks = await this.networkStore.pureFetchList({
       'router:external': true,
     });
-    this.setState({
-      networks,
-    });
+    this.setState(
+      {
+        networks,
+      },
+      () => {
+        if (networks && networks.length > 0) {
+          const firstId = networks[0].id;
+          if (this.formRef && this.formRef.current) {
+            this.formRef.current.setFieldsValue({
+              floating_network_id: firstId,
+            });
+          }
+          this.handleNetworkChange(firstId);
+        }
+      }
+    );
   }
 
   get messageHasItemName() {

@@ -38,6 +38,7 @@ export class Detach extends ModalAction {
     this.store = globalServerStore;
     this.instanceStore = new ServerGroupInstanceStore();
     this.getInstances();
+    this.state.autoSelectInstance = null;
   }
 
   static get modalSize() {
@@ -52,9 +53,22 @@ export class Detach extends ModalAction {
     return this.instanceStore.list.data || [];
   }
 
-  getInstances() {
+  async getInstances() {
     const members = (this.item.attachments || []).map((it) => it.server_id);
-    this.instanceStore.fetchList({ members });
+    await this.instanceStore.fetchList({ members });
+
+    if (this.instances && this.instances.length === 1) {
+      const [{ id }] = this.instances;
+      const selected = { selectedRowKeys: [id] };
+
+      this.setState({ autoSelectInstance: selected }, () => {
+        const setForm = () =>
+          this.formRef?.current?.setFieldsValue({ instance: selected });
+        if (!setForm()) {
+          Promise.resolve().then(setForm);
+        }
+      });
+    }
   }
 
   get defaultValue() {
@@ -78,6 +92,7 @@ export class Detach extends ModalAction {
   disabledInstance = (ins) => !allowAttachVolumeInstance(ins);
 
   get formItems() {
+    const { autoSelectInstance } = this.state;
     return [
       {
         name: 'volume',
@@ -91,6 +106,7 @@ export class Detach extends ModalAction {
         type: 'select-table',
         required: true,
         data: this.instances,
+        initValue: autoSelectInstance || {},
         filterParams: [
           {
             label: t('Name'),
