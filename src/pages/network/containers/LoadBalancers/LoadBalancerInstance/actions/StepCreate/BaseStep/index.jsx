@@ -16,13 +16,16 @@ import Base from 'components/Form';
 import { inject, observer } from 'mobx-react';
 import { NetworkStore } from 'stores/neutron/network';
 import { SubnetStore } from 'stores/neutron/subnet';
+import globalLoadBalancerFlavorStore from 'stores/octavia/flavor';
 import { LbaasStore } from 'stores/octavia/loadbalancer';
 
 export class BaseStep extends Base {
   init() {
     this.store = new LbaasStore();
+    this.flavorStore = globalLoadBalancerFlavorStore;
     this.networkStore = new NetworkStore();
     this.subnetStore = new SubnetStore();
+    this.getFlavors();
   }
 
   get title() {
@@ -79,6 +82,14 @@ export class BaseStep extends Base {
     });
   };
 
+  async getFlavors() {
+    await this.flavorStore.fetchList({ enabled: true });
+    this.setState({
+      flavorList: this.flavorStore.list.data || [],
+      loading: false,
+    });
+  }
+
   get formItems() {
     const { network_id, subnetDetails = [] } = this.state;
     return [
@@ -93,6 +104,42 @@ export class BaseStep extends Base {
         name: 'description',
         label: t('Description'),
         type: 'textarea',
+      },
+      {
+        name: 'flavor_id',
+        label: t('Flavors'),
+        type: 'select-table',
+        data: this.state.flavorList || [],
+        required: false,
+        filterParams: [
+          {
+            name: 'id',
+            label: t('ID'),
+          },
+          {
+            name: 'name',
+            label: t('Name'),
+          },
+        ],
+        columns: [
+          {
+            title: t('ID'),
+            dataIndex: 'id',
+          },
+          {
+            title: t('Name'),
+            dataIndex: 'name',
+          },
+          {
+            title: t('Description'),
+            dataIndex: 'description',
+          },
+          {
+            title: t('Enabled'),
+            dataIndex: 'enabled',
+            valueRender: 'yesNo',
+          },
+        ],
       },
       {
         name: 'vip_network_id',

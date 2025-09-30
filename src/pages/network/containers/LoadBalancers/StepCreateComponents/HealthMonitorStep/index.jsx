@@ -42,6 +42,7 @@ export class HealthMonitorStep extends Base {
       health_max_retries: 3,
       health_type: '',
       monitor_admin_state_up: true,
+      health_url_path: '/',
     };
   }
 
@@ -122,6 +123,28 @@ export class HealthMonitorStep extends Base {
         label: t('Admin State Up'),
         type: 'switch',
         tip: t('Defines the admin state of the health monitor.'),
+        hidden: !enableHealthMonitor,
+      },
+      {
+        name: 'health_url_path',
+        label: t('Monitoring URL'),
+        type: 'input',
+        rules: [
+          { required: false },
+          {
+            validator: (_, value) => {
+              if (value && !value.startsWith('/')) {
+                return Promise.reject(new Error(t('URL must start with /')));
+              }
+              return Promise.resolve();
+            },
+          },
+        ],
+        initialValue: '/',
+        placeholder: t('e.g., /status.html or /healthcheck.html'),
+        extra: t(
+          'Defaults to "/" if left blank. Recommended: use a dedicated status page like "/status.html".'
+        ),
         hidden: !enableHealthMonitor,
       },
     ];

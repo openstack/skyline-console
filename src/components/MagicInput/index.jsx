@@ -276,7 +276,7 @@ class MagicInput extends PureComponent {
     const { tags } = this.state;
     const tagItems = tags.map((it) => {
       const { filter, value } = it;
-      const { options } = filter;
+      const { options } = filter || {};
       let label = value;
       if (options) {
         const current = options.find((item) => {

@@ -95,6 +95,8 @@ export class StepCreate extends StepAction {
       pool_admin_state_up,
       monitor_admin_state_up,
       insert_headers,
+      flavor_id,
+      health_url_path,
       ...rest
     } = values;
     const data = {
@@ -108,6 +110,9 @@ export class StepCreate extends StepAction {
       data.vip_address = ip_address.ip;
     }
     data.admin_state_up = admin_state_enabled;
+    if (flavor_id?.selectedRowKeys?.length) {
+      data.flavor_id = flavor_id.selectedRowKeys[0];
+    }
 
     const listenerData = {
       admin_state_up: listener_admin_state_up,
@@ -141,7 +146,10 @@ export class StepCreate extends StepAction {
     }
 
     const poolData = { admin_state_up: pool_admin_state_up };
-    const healthMonitorData = { admin_state_up: monitor_admin_state_up };
+    const healthMonitorData = {
+      admin_state_up: monitor_admin_state_up,
+      url_path: health_url_path,
+    };
     Object.keys(rest).forEach((i) => {
       if (i.indexOf('listener') === 0) {
         listenerData[i.replace('listener_', '')] = values[i];
@@ -153,7 +161,10 @@ export class StepCreate extends StepAction {
     });
 
     if (enableHealthMonitor) {
-      poolData.healthmonitor = healthMonitorData;
+      poolData.healthmonitor = {
+        ...healthMonitorData,
+        url_path: healthMonitorData.url_path ?? '/',
+      };
     }
     const {
       extMembers = [],

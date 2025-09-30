@@ -85,7 +85,8 @@ export class BaseDetail extends Base {
 
   get healthMonitor() {
     const healthMonitor = this.detailData.healthMonitor || {};
-    const { type, delay, timeout, max_retries, admin_state_up } = healthMonitor;
+    const { type, delay, timeout, max_retries, admin_state_up, url_path } =
+      healthMonitor;
     const options = [
       {
         label: t('Enable Health Monitor'),
@@ -114,6 +115,10 @@ export class BaseDetail extends Base {
           {
             label: t('Admin State Up'),
             content: admin_state_up ? t('On') : t('Off'),
+          },
+          {
+            label: t('Monitoring URL'),
+            content: url_path || '/',
           },
         ]
       );

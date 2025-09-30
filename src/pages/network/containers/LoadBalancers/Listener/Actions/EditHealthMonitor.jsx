@@ -69,6 +69,7 @@ export class EditHealthMonitor extends ModalAction {
         max_retries: 3,
         enableHealthMonitor: false,
         admin_state_up: true,
+        url_path: '/',
       };
     }
     const {
@@ -78,6 +79,7 @@ export class EditHealthMonitor extends ModalAction {
       delay,
       timeout,
       max_retries,
+      url_path,
     } = healthMonitor;
     return {
       enableHealthMonitor: true,
@@ -87,6 +89,7 @@ export class EditHealthMonitor extends ModalAction {
       delay,
       timeout,
       max_retries,
+      url_path,
     };
   }
 
@@ -194,6 +197,23 @@ export class EditHealthMonitor extends ModalAction {
         tip: t('Defines the admin state of the health monitor.'),
         hidden: !enableHealthMonitor,
       },
+      {
+        name: 'url_path',
+        label: t('Monitoring URL'),
+        type: 'input',
+        required: false,
+        validator: (_, value) => {
+          if (value && !value.startsWith('/')) {
+            return Promise.reject(new Error(t('URL must start with /')));
+          }
+          return Promise.resolve();
+        },
+        placeholder: t('e.g., /status.html or /healthcheck.html'),
+        extra: t(
+          'Defaults to "/" if left blank. Recommended: use a dedicated status page like "/status.html".'
+        ),
+        hidden: !enableHealthMonitor,
+      },
     ];
   }
 
@@ -201,12 +221,16 @@ export class EditHealthMonitor extends ModalAction {
     const { default_pool_id } = this.item;
     const { healthMonitor } = this.state;
     const { id } = healthMonitor || {};
-    const { enableHealthMonitor, type, ...others } = values;
+    const { enableHealthMonitor, type, url_path, ...others } = values;
+    const updatedUrlPath = url_path ?? '/';
     if (id) {
       if (!enableHealthMonitor) {
         return globalHealthMonitorStore.delete({ id });
       }
-      return globalHealthMonitorStore.edit({ id }, others);
+      return globalHealthMonitorStore.edit(
+        { id },
+        { ...others, url_path: updatedUrlPath }
+      );
     }
     if (!enableHealthMonitor) {
       return Promise.resolve();
@@ -215,6 +239,7 @@ export class EditHealthMonitor extends ModalAction {
       type,
       ...others,
       pool_id: default_pool_id,
+      url_path: updatedUrlPath,
     };
     return globalHealthMonitorStore.create(data);
   };
