@@ -50,6 +50,9 @@ const Database = lazy(() =>
 const Share = lazy(() =>
   import(/* webpackChunkName: "share" */ 'pages/share/App')
 );
+const Barbican = lazy(() =>
+  import(/* webpackChunkName: "barbican" */ 'pages/barbican/App')
+);
 const ContainerInfra = lazy(() =>
   import(/* webpackChunkName: "container-infra" */ 'pages/container-infra/App')
 );
@@ -110,6 +113,10 @@ export default [
       {
         path: `/share`,
         component: Share,
+      },
+      {
+        path: `/key-manager`,
+        component: Barbican,
       },
       {
         path: `/container-infra`,

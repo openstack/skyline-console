@@ -618,6 +618,29 @@ const renderMenu = (t) => {
         },
       ],
     },
+    {
+      path: '/key-manager',
+      name: t('Key Manager'),
+      key: 'keyManager',
+      icon: <ContainerOutlined />,
+      children: [
+        {
+          path: '/key-manager/secret',
+          name: t('Secrets'),
+          key: 'keyManagerSecret',
+          level: 1,
+          children: [
+            {
+              path: /^\/key-manager\/secret\/detail\/.[^/]+$/,
+              name: t('Secret Detail'),
+              key: 'secretDetail',
+              level: 2,
+              routePath: '/key-manager/secret/detail/:id',
+            },
+          ],
+        },
+      ],
+    },
     // {
     //   path: '/management',
     //   name: t('Maintenance'),

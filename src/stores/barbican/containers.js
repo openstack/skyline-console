@@ -150,11 +150,45 @@ export class ContainersStore extends Base {
     });
     // Determine if the certificate is used in the listener
     this.updateItem(item, listeners);
-    // Fetch secrets payload
+    // Fetch secrets payload with proper decoding
     const payloads = await Promise.all(
-      secretIds.map((id) =>
-        this.payloadClient.list(id, {}, { headers: { Accept: 'text/plain' } })
-      )
+      secretIds.map(async (id) => {
+        try {
+          const payload = await this.payloadClient.list(id, null, {
+            headers: {
+              Accept: '*/*',
+            },
+            responseType: 'arraybuffer',
+          });
+
+          // Decode payload if it's binary
+          if (payload instanceof ArrayBuffer) {
+            const bytes = new Uint8Array(payload);
+
+            // Check if it's actually text by trying to decode it
+            const textDecoder = new TextDecoder('utf-8', { fatal: false });
+            const decodedText = textDecoder.decode(bytes);
+
+            // Check if the decoded text contains valid printable characters
+            const isValidText = /^[\x20-\x7E\n\r\t]*$/.test(decodedText);
+
+            if (isValidText) {
+              // It's valid text, use it
+              return decodedText;
+            }
+            // It's binary data, convert to base64
+            let binary = '';
+            for (let i = 0; i < bytes.byteLength; i++) {
+              binary += String.fromCharCode(bytes[i]);
+            }
+            return btoa(binary);
+          }
+          return payload;
+        } catch (error) {
+          console.error(`Failed to fetch payload for secret ${id}:`, error);
+          return null;
+        }
+      })
     );
     (payloads || []).forEach((it, index) => {
       secret_refs[index].secret_info.payload = it;

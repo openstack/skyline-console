@@ -43,14 +43,21 @@ export class SecretsStore extends Base {
 
   get mapper() {
     return (data) => {
-      const { secret_ref, algorithm } = data;
+      const { secret_ref, algorithm, expiration } = data;
       const [, uuid] = secret_ref.split('/secrets/');
-      const { domain, expiration } = algorithm ? JSON.parse(algorithm) : {};
+      let extractedExpiration = expiration;
+      if (algorithm && algorithm.startsWith('{')) {
+        try {
+          const parsed = JSON.parse(algorithm);
+          extractedExpiration = parsed.expiration || expiration;
+        } catch {
+          // Do nothing, Keep original expiration if parsing fails
+        }
+      }
       return {
         ...data,
         id: uuid,
-        domain,
-        expiration,
+        expiration: extractedExpiration,
       };
     };
   }
@@ -97,11 +104,58 @@ export class SecretsStore extends Base {
       this.isLoading = true;
     }
     const [item, payload, listeners] = await Promise.all([
-      this.client.show(id, {}, { headers: { Accept: 'application/json' } }),
-      this.payloadClient.list(id, {}, { headers: { Accept: 'text/plain' } }),
+      this.client.show(id, null, {
+        headers: {
+          Accept: 'application/json',
+        },
+      }),
+      this.payloadClient.list(id, null, {
+        headers: {
+          Accept: '*/*',
+        },
+        responseType: 'arraybuffer',
+      }),
       globalListenerStore.fetchList(),
     ]);
-    item.payload = payload;
+
+    let decodedPayload = payload;
+    if (payload) {
+      try {
+        if (payload instanceof ArrayBuffer) {
+          const bytes = new Uint8Array(payload);
+          const contentType = item.payload_content_type || 'text/plain';
+
+          const textDecoder = new TextDecoder('utf-8', { fatal: false });
+          const decodedText = textDecoder.decode(bytes);
+
+          const isValidText = /^[\x20-\x7E\n\r\t]*$/.test(decodedText);
+
+          if (
+            isValidText &&
+            (contentType.includes('text') ||
+              contentType.includes('plain') ||
+              contentType.includes('json'))
+          ) {
+            decodedPayload = decodedText;
+          } else {
+            let binary = '';
+            for (let i = 0; i < bytes.byteLength; i++) {
+              binary += String.fromCharCode(bytes[i]);
+            }
+            decodedPayload = btoa(binary);
+          }
+        } else if (typeof payload === 'string') {
+          decodedPayload = payload;
+        } else {
+          decodedPayload = JSON.stringify(payload, null, 2);
+        }
+      } catch (error) {
+        console.error('Error decoding payload:', error);
+        decodedPayload = 'Error decoding payload';
+      }
+    }
+
+    item.payload = decodedPayload;
     // Determine if the certificate is used in the listener
     this.updateItem(item, listeners);
     const detail = this.mapper(item || {});
@@ -124,15 +178,25 @@ export class SecretsStore extends Base {
 
   @action
   async create(data) {
-    const { expiration, domain, algorithm, ...rest } = data;
+    const {
+      expiration,
+      secret_type,
+      algorithm,
+      bit_length,
+      mode,
+      payload_content_encoding,
+      ...rest
+    } = data;
+
     const body = {
       ...rest,
-      algorithm:
-        algorithm ||
-        JSON.stringify({
-          domain,
-          expiration,
-        }),
+      ...(secret_type && secret_type.trim() !== '' && { secret_type }),
+      ...(algorithm && algorithm.trim() !== '' && { algorithm }),
+      ...(bit_length && { bit_length }),
+      ...(mode && mode.trim() !== '' && { mode }),
+      ...(payload_content_encoding &&
+        payload_content_encoding.trim() !== '' && { payload_content_encoding }),
+      ...(expiration && { expiration }),
     };
     return this.client.create(body);
   }

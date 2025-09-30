@@ -315,7 +315,6 @@ export default class BaseForm extends React.Component {
 
   onOk = (values, containerProps, callback) => {
     // eslint-disable-next-line no-console
-    console.log('onOk', values);
     this.values = values;
     if (this.codeError) {
       return;
