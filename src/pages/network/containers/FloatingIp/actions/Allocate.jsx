@@ -25,6 +25,7 @@ import { qosEndpoint } from 'client/client/constants';
 import { projectTableOptions } from 'resources/keystone/project';
 import { isAdminPage } from 'utils';
 import { toJS } from 'mobx';
+import { checkPolicyRule } from 'resources/skyline/policy';
 
 export class Allocate extends ModalAction {
   static id = 'allocate';
@@ -261,6 +262,13 @@ export class Allocate extends ModalAction {
     );
   };
 
+  canSpecifyFloatingIp() {
+    return (
+      checkPolicyRule('create_floatingip') &&
+      checkPolicyRule('create_floatingip:floating_ip_address')
+    );
+  }
+
   get formItems() {
     const {
       networks,
@@ -338,6 +346,7 @@ export class Allocate extends ModalAction {
         name: 'floating_ip_address',
         label: t('Floating IP Address'),
         hidden: !selectedSubnet || batchAllocate,
+        display: this.canSpecifyFloatingIp(),
         type: 'ip-input',
         version: selectedSubnet && (selectedSubnet.ip_version || 4),
       },
