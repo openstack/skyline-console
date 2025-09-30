@@ -13,6 +13,8 @@
 // limitations under the License.
 
 import DeleteAction from './DeleteMember';
+import DisableAction from './DisableMember';
+import EnableAction from './EnableMember';
 import CreateAction from './CreateMember';
 import Edit from './EditMember';
 
@@ -22,6 +24,12 @@ export const actionConfigs = {
     moreActions: [
       {
         action: DeleteAction,
+      },
+      {
+        action: DisableAction,
+      },
+      {
+        action: EnableAction,
       },
     ],
   },
@@ -36,6 +44,12 @@ export const adminActions = {
     moreActions: [
       {
         action: DeleteAction,
+      },
+      {
+        action: DisableAction,
+      },
+      {
+        action: EnableAction,
       },
     ],
   },
