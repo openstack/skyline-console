@@ -60,6 +60,7 @@ import TabSelectTable from './TabSelectTable';
 import TreeSelect from './TreeSelect';
 import SelectWithInput from './SelectWithInput';
 import InternationalPhoneNumberInput from './InternationalPhoneNumberInput';
+import Loading from './Loading';
 // import styles from './index.less';
 
 export const type2component = {
@@ -107,6 +108,7 @@ export const type2component = {
   'tree-select': TreeSelect,
   'select-input': SelectWithInput,
   phone: InternationalPhoneNumberInput,
+  loading: Loading,
 };
 
 export default class FormItem extends React.Component {
