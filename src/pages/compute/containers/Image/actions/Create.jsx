@@ -331,10 +331,10 @@ export class CreateForm extends FormAction {
 
   onSubmit = async (values) => {
     // If on the admin page, use the first selected project's name
-    // Otherwise (console view), default to 'admin'
+    // Otherwise (console view), default to current project name
     const selectedProject = this.isAdminPage
       ? values.project?.selectedRows?.[0]?.name
-      : 'admin';
+      : this.currentProjectName;
 
     const queryParams = {
       file: values.name,
