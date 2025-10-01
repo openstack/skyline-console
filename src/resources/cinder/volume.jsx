@@ -263,6 +263,149 @@ export const getVolumeColumnsList = (self) => {
   return [
     {
       title: t('ID/Name'),
+      dataIndex: 'name',
+      routeName: self.getRouteName('volumeDetail'),
+      sortKey: 'name',
+      render: (name, row) => {
+        const nameValue = name || '-';
+        const idValue = row.id;
+
+        const renderId = () => {
+          if (!idValue) return null;
+          return (
+            <div className={styles['volume-id-row']}>
+              <Tooltip title={idValue}>
+                <Link
+                  className={styles['volume-id-link']}
+                  to={
+                    self.isAdminPage
+                      ? `/storage/volume-admin/detail/${idValue}`
+                      : `/storage/volume/detail/${idValue}`
+                  }
+                >
+                  {idValue}
+                </Link>
+              </Tooltip>
+              <CubeCopyButton>{idValue}</CubeCopyButton>
+            </div>
+          );
+        };
+
+        return (
+          <div className={styles['title-col']}>
+            <span className={styles['volume-name']}>{nameValue}</span>
+            {renderId()}
+          </div>
+        );
+      },
+    },
+    {
+      title: t('Project ID/Name'),
+      dataIndex: 'project_name',
+      hidden: !self.isAdminPage,
+      isHideable: true,
+      sorter: false,
+    },
+    {
+      title: t('Host'),
+      dataIndex: 'host',
+      isHideable: true,
+      hidden: !self.isAdminPage,
+      sorter: false,
+    },
+    {
+      title: t('Size'),
+      dataIndex: 'size',
+      isHideable: true,
+      unit: 'GiB',
+    },
+    {
+      title: t('Status'),
+      dataIndex: 'status',
+      valueMap: volumeStatus,
+    },
+    {
+      title: t('Type'),
+      dataIndex: 'volume_type',
+      isHideable: true,
+      width: 100,
+      sorter: false,
+    },
+    {
+      title: t('Disk Tag'),
+      dataIndex: 'disk_tag',
+      isHideable: true,
+      valueMap: diskTag,
+      sorter: false,
+    },
+    {
+      title: t('Attached To'),
+      dataIndex: 'attachments',
+      isHideable: true,
+      sorter: false,
+      render: (value) => {
+        if (!value?.length) return '-';
+
+        return value.map((it) => {
+          const linkInstance = self.getLinkRender?.(
+            'instanceDetail',
+            it.server_name || it.server_id,
+            { id: it.server_id },
+            { tab: 'volumes' }
+          );
+
+          return (
+            <div key={it.server_id}>
+              {it.device}{' '}
+              {!self.isInstanceDetail && linkInstance && (
+                <span>on {linkInstance}</span>
+              )}
+            </div>
+          );
+        });
+      },
+      stringify: (value) => {
+        if (value && value.length) {
+          return value
+            .map((it) => {
+              const { device, server_name, server_id } = it;
+              return `${device} on ${server_name || '-'}(${server_id})`;
+            })
+            .join(',');
+        }
+        return '-';
+      },
+    },
+    {
+      title: t('Bootable'),
+      titleTip: t(
+        'When the volume is "bootable" and the status is "available", it can be used as a startup source to create an instance.'
+      ),
+      dataIndex: 'bootable',
+      isHideable: true,
+      valueMap: bootableType,
+    },
+    {
+      title: t('Shared'),
+      dataIndex: 'multiattach',
+      valueRender: 'yesNo',
+      titleTip: multiTip,
+      width: 80,
+      sorter: false,
+    },
+    {
+      title: t('Created At'),
+      dataIndex: 'created_at',
+      isHideable: true,
+      valueRender: 'sinceTime',
+    },
+  ];
+};
+
+export const getCosVolumeColumnsList = (self) => {
+  return [
+    {
+      title: t('ID/Name'),
       dataIndex: 'volumeName',
       routeName: self.getRouteName('volumeDetail'),
       sortKey: 'name',
