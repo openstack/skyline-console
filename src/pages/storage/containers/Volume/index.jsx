@@ -19,6 +19,7 @@ import {
   volumeTransitionStatuses,
   volumeFilters,
   getVolumeColumnsList,
+  getCosVolumeColumnsList,
 } from 'resources/cinder/volume';
 import cosVolumeStore from 'stores/cos/volume';
 import { SnapshotVolumeStore } from 'stores/cinder/snapshot-volume';
@@ -102,7 +103,12 @@ export class Volume extends BaseList {
   }
 
   getColumns = () => {
-    return getVolumeColumnsList(this);
+    // In Volume Snapshot page or Instance detail page, use the cinder volume columns
+    // In Volume list page, use the COS volume columns instead
+    if (this.isVolumeSnapshotDetail || this.inDetailPage) {
+      return getVolumeColumnsList(this);
+    }
+    return getCosVolumeColumnsList(this);
   };
 
   get searchFilters() {
@@ -111,7 +117,7 @@ export class Volume extends BaseList {
 
   get itemInTransitionFunction() {
     return ({ volumeStatus }) => {
-      return volumeStatus.isProcessing;
+      return volumeStatus?.isProcessing || false;
     };
   }
 
