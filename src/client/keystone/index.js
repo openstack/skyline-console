@@ -28,6 +28,11 @@ export class KeystoneClient extends Base {
         responseKey: 'catalog',
       },
       {
+        name: 'authProjects',
+        key: 'auth/projects',
+        responseKey: 'project',
+      },
+      {
         key: 'projects',
         responseKey: 'project',
         extendOperations: [
