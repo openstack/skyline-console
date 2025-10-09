@@ -6,6 +6,7 @@ import debianIcon from 'asset/image/debian.svg';
 import coreosIcon from 'asset/image/coreos.svg';
 import archIcon from 'asset/image/arch.svg';
 import freebsdIcon from 'asset/image/freebsd.svg';
+import rockyIcon from 'asset/image/rocky.svg';
 import othersIcon from 'asset/image/others.svg';
 
 export const osTitleMap = {
@@ -17,6 +18,7 @@ export const osTitleMap = {
   coreos: 'CoreOS',
   arch: 'Arch',
   freebsd: 'FreeBSD',
+  rocky: 'Rocky',
   // The following two are for compatibility
   other: 'Others',
   others: 'Others',
@@ -31,6 +33,7 @@ const osIconMap = {
   coreos: coreosIcon,
   arch: archIcon,
   freebsd: freebsdIcon,
+  rocky: rockyIcon,
 };
 
 /**

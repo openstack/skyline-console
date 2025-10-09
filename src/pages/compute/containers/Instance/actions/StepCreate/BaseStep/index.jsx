@@ -298,18 +298,20 @@ export class BaseStep extends Base {
   }
 
   getSystemDiskMinSize() {
-    const flavorSize = (this.state.flavor || {}).disk || 0;
-    let imageSize = 0;
+    const flavorSize = this.state.flavor?.disk || 0;
+
     if (this.sourceTypeIsImage) {
       const { min_disk = 0, size = 0 } = this.state.image || {};
       const sizeGiB = Math.ceil(size / 1024 / 1024 / 1024);
-      imageSize = Math.max(min_disk, sizeGiB, 1);
+      const imageSize = Math.max(min_disk, sizeGiB, 1);
       return Math.max(flavorSize, imageSize, 1);
     }
+
     if (this.sourceTypeIsSnapshot) {
       const { instanceSnapshotMinSize = 0 } = this.state;
       return Math.max(flavorSize, instanceSnapshotMinSize, 1);
     }
+
     return Math.max(flavorSize, 1);
   }
 
@@ -655,6 +657,20 @@ export class BaseStep extends Base {
     return <FlavorSelectTable onChange={this.onFlavorChange} />;
   }
 
+  getSystemDiskMinSizeText() {
+    const minSize = this.getSystemDiskMinSize();
+    const minSizeLabel = t('Min size');
+    const note = t(
+      'Disk size is limited by the min disk of flavor, image, etc.'
+    );
+
+    if (!minSize || minSize <= 0) {
+      return `${minSizeLabel}: - GiB. ${note}`;
+    }
+
+    return `${minSizeLabel}: ${minSize} GiB. ${note}`;
+  }
+
   get formItems() {
     const { image } = this.locationParams;
     const imageLoading = image
@@ -803,9 +819,10 @@ export class BaseStep extends Base {
         hidden: !this.showSystemDiskByBootFromVolume,
         validator: this.checkSystemDisk,
         minSize: this.getSystemDiskMinSize(),
-        extra: t('Disk size is limited by the min disk of flavor, image, etc.'),
+        extra: this.getSystemDiskMinSizeText(),
         onChange: this.onSystemDiskChange,
         dependencies: ['flavor', 'image', 'instanceSnapshot', 'bootFromVolume'],
+        value: this.getSystemDiskMinSize(),
       },
       {
         name: 'deleteVolumeInstance',

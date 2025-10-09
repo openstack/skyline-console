@@ -18,41 +18,35 @@ import PropTypes from 'prop-types';
 import styles from './index.less';
 
 export default class InstanceVolume extends React.Component {
-  static propTypes = {
-    options: PropTypes.array,
-    value: PropTypes.any,
-    minSize: PropTypes.number,
-    defaultOptionValue: PropTypes.string,
-  };
-
-  static defaultProps = {
-    options: [],
-    value: {},
-    minSize: 0,
-    defaultOptionValue: undefined,
-  };
-
   constructor(props) {
     super(props);
-    const { type, size, deleteType } = props.value || {};
-    const { minSize } = props;
+
+    const { value = {}, minSize } = props;
+
     this.state = {
-      type,
-      size,
-      deleteType,
+      ...value,
       minSize,
+      validateStatus: undefined,
+      errorMsg: undefined,
     };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (
-      nextProps.options !== prevState.options ||
-      nextProps.minSize !== prevState.minSize
-    ) {
-      const { options, value, minSize } = nextProps;
+    const { value = {}, minSize, options } = nextProps;
+
+    // Only updates when options or minSize changes
+    const hasOptionChanged = options !== prevState.options;
+    const hasMinSizeChanged = minSize !== prevState.minSize;
+
+    if (hasOptionChanged || hasMinSizeChanged) {
+      // If minSize changed and current size is smaller than new minSize, update size
+      const currentSize = value.size || prevState.size;
+      const nextSize = Math.max(minSize, currentSize);
+
       return {
+        ...value,
+        size: nextSize,
         options,
-        type: value.type,
         minSize,
       };
     }
@@ -60,28 +54,53 @@ export default class InstanceVolume extends React.Component {
   }
 
   componentDidMount() {
-    this.onChange();
+    this.triggerChange();
   }
 
-  componentDidUpdate(prevProps) {
-    const { defaultOptionValue, options } = this.props;
+  componentDidUpdate(prevProps, prevState) {
+    const { defaultOptionValue, options, minSize } = this.props;
+    const { size } = this.state;
+
+    // Detecting defaultOptionValue updates
+    // If the defaultOptionValue exists in the options, update the select value
     if (
       defaultOptionValue &&
       defaultOptionValue !== prevProps.defaultOptionValue
     ) {
-      const option = options.find((opt) => opt.value === defaultOptionValue);
-      if (option) {
-        this.onSelectChange(defaultOptionValue);
+      const optionExists = options.some(
+        (option) => option.value === defaultOptionValue
+      );
+
+      if (optionExists) {
+        this.handleTypeChange(defaultOptionValue);
       }
+    }
+
+    // Checks both `minSize` and `size` actually changed;
+    // Prevents extra onChange triggers when nothing meaningful changed.
+    if (prevState.size !== size && prevProps.minSize !== minSize) {
+      this.triggerChange();
     }
   }
 
-  checkVolume = (callback) => {
-    const { type } = this.state;
+  validateVolume = (callback) => {
+    const { type, size, minSize } = this.state;
     if (!type) {
       this.setState(
         {
           errorMsg: t('Please select a type!'),
+          validateStatus: 'error',
+        },
+        callback
+      );
+      return;
+    }
+    if (!size || size < minSize) {
+      this.setState(
+        {
+          errorMsg: t('Please set a size no less than {minSize} GiB!', {
+            minSize,
+          }),
           validateStatus: 'error',
         },
         callback
@@ -97,91 +116,49 @@ export default class InstanceVolume extends React.Component {
     );
   };
 
-  onChange = () => {
-    this.checkVolume(() => {
-      const { onChange, options = [] } = this.props;
-      if (onChange) {
-        const { type, deleteType } = this.state;
-        const deleteTypeLabel =
-          deleteType === 1
-            ? t('Deleted with the instance')
-            : t('Not deleted with the instance');
-        const typeOption = options.find((it) => it.value === type);
-        const value = {
-          ...this.state,
-          deleteTypeLabel,
-          typeOption,
-        };
-        onChange(value);
-      }
+  triggerChange = () => {
+    const { onChange, options = [] } = this.props;
+    if (!onChange) return;
+
+    this.validateVolume(() => {
+      const { type, deleteType, ...restStates } = this.state;
+      const deleteTypeLabel =
+        deleteType === 1
+          ? t('Deleted with the instance')
+          : t('Not deleted with the instance');
+      const typeOption = options.find((it) => it.value === type);
+
+      onChange({
+        ...restStates,
+        type,
+        deleteType,
+        deleteTypeLabel,
+        typeOption,
+      });
     });
   };
 
-  onSelectChange = (value) => {
-    this.setState(
-      {
-        type: value,
-      },
-      this.onChange
-    );
+  handleTypeChange = (type) => {
+    this.setState({ type }, this.triggerChange);
   };
 
-  onInputChange = (value) => {
-    this.setState(
-      {
-        size: value,
-      },
-      this.onChange
-    );
+  handleSizeChange = (size) => {
+    const { minSize } = this.state;
+    this.setState({ size: size ?? minSize }, this.triggerChange);
   };
 
-  onDeleteChange = () => {
-    const { deleteType } = this.state;
+  handleDeleteToggle = () => {
     this.setState(
-      {
-        deleteType: 1 - deleteType,
-      },
-      this.onChange
+      ({ deleteType }) => ({ deleteType: 1 - deleteType }),
+      this.triggerChange
     );
   };
 
   render() {
-    const {
-      options,
-      type,
-      size,
-      deleteType,
-      validateStatus,
-      errorMsg,
-      minSize,
-    } = this.state;
-    const { name, showDelete = true } = this.props;
-    const selects = (
-      <Select
-        value={type}
-        options={options}
-        onChange={this.onSelectChange}
-        className={styles.select}
-        placeholder={t('Please select type')}
-      />
-    );
-    const input = (
-      <InputNumber
-        value={size}
-        onChange={this.onInputChange}
-        min={minSize}
-        style={{ maxWidth: '60%' }}
-        precision={0}
-        formatter={(value) => `$ ${value}`.replace(/\D/g, '')}
-        onInput={(e) => this.onInputChange(e * 1)}
-      />
-    );
-    const deleteValue = deleteType === 1;
-    const checkbox = showDelete ? (
-      <Checkbox onChange={this.onDeleteChange} checked={deleteValue}>
-        {t('Deleted with the instance')}
-      </Checkbox>
-    ) : null;
+    const { type, size, deleteType, validateStatus, errorMsg, minSize } =
+      this.state;
+
+    const { options, name, showDelete = true } = this.props;
 
     return (
       <Form.Item
@@ -193,16 +170,55 @@ export default class InstanceVolume extends React.Component {
         <Row gutter={24}>
           <Col span={8}>
             <span className={styles.label}>{t('Type')}</span>
-            {selects}
+            <Select
+              value={type}
+              options={options}
+              onChange={this.handleTypeChange}
+              className={styles.select}
+              placeholder={t('Please select type')}
+            />
           </Col>
           <Col span={14}>
             <span className={styles.label}>{t('Size')}</span>
-            {input}
+            <InputNumber
+              value={size}
+              min={minSize}
+              onChange={this.handleSizeChange}
+              style={{ maxWidth: '60%' }}
+              precision={0}
+            />
             <span className={styles['size-label']}>GiB</span>
-            {checkbox}
+            {showDelete && (
+              <Checkbox
+                checked={deleteType === 1}
+                onChange={this.handleDeleteToggle}
+              >
+                {t('Deleted with the instance')}
+              </Checkbox>
+            )}
           </Col>
         </Row>
       </Form.Item>
     );
   }
 }
+
+InstanceVolume.propTypes = {
+  options: PropTypes.arrayOf(PropTypes.object),
+  value: PropTypes.shape(PropTypes.object),
+  minSize: PropTypes.number,
+  defaultOptionValue: PropTypes.string,
+  onChange: PropTypes.func,
+  name: PropTypes.string,
+  showDelete: PropTypes.bool,
+};
+
+InstanceVolume.defaultProps = {
+  options: [],
+  value: {},
+  minSize: 0,
+  defaultOptionValue: undefined,
+  onChange: undefined,
+  name: '',
+  showDelete: true,
+};

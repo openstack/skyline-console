@@ -45,6 +45,7 @@ export const imageOS = {
   coreos: t('CoreOS'),
   arch: t('Arch'),
   freebsd: t('FreeBSD'),
+  rocky: t('Rocky'),
   others: t('Others'),
 };
 
@@ -158,6 +159,7 @@ export const getImageSystemTabs = () => {
     'coreos',
     'arch',
     'freebsd',
+    'rocky',
   ];
   return valueList.map((value) => {
     const label =
