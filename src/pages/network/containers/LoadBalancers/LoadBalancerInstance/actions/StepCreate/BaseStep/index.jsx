@@ -17,15 +17,23 @@ import { inject, observer } from 'mobx-react';
 import { NetworkStore } from 'stores/neutron/network';
 import { SubnetStore } from 'stores/neutron/subnet';
 import globalLoadBalancerFlavorStore from 'stores/octavia/flavor';
+import globalLoadBalancerProviderStore from 'stores/octavia/provider';
 import { LbaasStore } from 'stores/octavia/loadbalancer';
 
 export class BaseStep extends Base {
   init() {
     this.store = new LbaasStore();
     this.flavorStore = globalLoadBalancerFlavorStore;
+    this.providerStore = globalLoadBalancerProviderStore;
     this.networkStore = new NetworkStore();
     this.subnetStore = new SubnetStore();
+    this.state = {
+      providerList: [],
+      provider: 'amphora',
+      providersLoaded: false,
+    };
     this.getFlavors();
+    this.getProviders();
   }
 
   get title() {
@@ -41,9 +49,13 @@ export class BaseStep extends Base {
   }
 
   get defaultValue() {
+    const { providerList = [] } = this.state;
+    const defaultProvider =
+      providerList.find((p) => p.value === 'amphora') || providerList[0];
     return {
       project_id: this.props.rootStore.user.project.id,
       admin_state_enabled: true,
+      provider: defaultProvider?.value || 'amphora',
     };
   }
 
@@ -90,8 +102,38 @@ export class BaseStep extends Base {
     });
   }
 
+  async getProviders() {
+    const providerList = await this.providerStore.fetchList();
+    const defaultProvider =
+      providerList.find((p) => p.value === 'amphora') || providerList[0];
+
+    this.setState(
+      (prevState) => ({
+        providerList,
+        provider: defaultProvider?.value || 'amphora',
+        providersLoaded: true,
+        loading: !prevState.flavorsLoaded,
+      }),
+      () => {
+        // Update form default value if needed
+        if (defaultProvider && this.formRef && this.formRef.current) {
+          const current = this.formRef.current.getFieldValue('provider');
+          if (!current) {
+            this.formRef.current.setFieldsValue({
+              provider: defaultProvider.value,
+            });
+          }
+        }
+      }
+    );
+  }
+
+  onProviderChange = (value) => {
+    this.setState({ provider: value });
+  };
+
   get formItems() {
-    const { network_id, subnetDetails = [] } = this.state;
+    const { network_id, subnetDetails = [], providerList = [] } = this.state;
     return [
       {
         name: 'name',
@@ -106,11 +148,26 @@ export class BaseStep extends Base {
         type: 'textarea',
       },
       {
+        name: 'provider',
+        label: t('Provider'),
+        type: 'select',
+        required: true,
+        options:
+          providerList.length > 0
+            ? providerList
+            : [
+                { label: 'amphora', value: 'amphora' },
+                { label: 'ovn', value: 'ovn' },
+              ],
+        onChange: this.onProviderChange,
+      },
+      {
         name: 'flavor_id',
         label: t('Flavors'),
         type: 'select-table',
         data: this.state.flavorList || [],
         required: false,
+        hidden: this.state.provider === 'ovn',
         filterParams: [
           {
             name: 'id',

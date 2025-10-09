@@ -29,9 +29,19 @@ export class HealthMonitorStep extends Base {
     return true;
   }
 
+  get isOVN() {
+    const { context: { provider } = {} } = this.props;
+    return provider === 'ovn';
+  }
+
   get filteredProtocolOptions() {
     const { context: { listener_protocol = '' } = {} } = this.props;
-    return healthProtocols.filter((it) => listener_protocol.includes(it.label));
+    const base = healthProtocols.filter((it) =>
+      listener_protocol.includes(it.label)
+    );
+    return this.isOVN
+      ? base.filter((it) => ['TCP', 'UDP-CONNECT'].includes(it.value))
+      : base;
   }
 
   get defaultValue() {
@@ -145,7 +155,7 @@ export class HealthMonitorStep extends Base {
         extra: t(
           'Defaults to "/" if left blank. Recommended: use a dedicated status page like "/status.html".'
         ),
-        hidden: !enableHealthMonitor,
+        hidden: !enableHealthMonitor || this.isOVN,
       },
     ];
   }

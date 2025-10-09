@@ -14,7 +14,11 @@
 
 import { inject, observer } from 'mobx-react';
 import Base from 'components/Form';
-import { Algorithm, algorithmTip } from 'resources/octavia/pool';
+import {
+  Algorithm,
+  algorithmTip,
+  OvnPoolAlgorithm,
+} from 'resources/octavia/pool';
 import { poolProtocols } from 'resources/octavia/lb';
 
 export class PoolStep extends Base {
@@ -30,6 +34,11 @@ export class PoolStep extends Base {
     return true;
   }
 
+  get isOVN() {
+    const { context: { provider } = {} } = this.props;
+    return provider === 'ovn';
+  }
+
   get filterOptions() {
     const { context: { listener_protocol = '' } = {} } = this.props;
     return poolProtocols.filter((it) => listener_protocol.includes(it.label));
@@ -38,8 +47,10 @@ export class PoolStep extends Base {
   allowed = () => Promise.resolve();
 
   init() {
+    const { context: { provider } = {} } = this.props;
+    const defaultAlgo = provider === 'ovn' ? 'SOURCE_IP_PORT' : undefined;
     this.state = {
-      pool_lb_algorithm: undefined,
+      pool_lb_algorithm: defaultAlgo,
     };
   }
 
@@ -50,8 +61,10 @@ export class PoolStep extends Base {
   };
 
   get defaultValue() {
+    const { context: { provider } = {} } = this.props;
     return {
       pool_admin_state_up: true,
+      ...(provider === 'ovn' && { pool_lb_algorithm: 'SOURCE_IP_PORT' }),
     };
   }
 
@@ -73,7 +86,7 @@ export class PoolStep extends Base {
         name: 'pool_lb_algorithm',
         label: t('Pool Algorithm'),
         type: 'select',
-        options: Algorithm,
+        options: this.isOVN ? OvnPoolAlgorithm : Algorithm,
         onChange: this.handleAlgorithmChange,
         extra: pool_lb_algorithm && algorithmTip[pool_lb_algorithm],
         required: true,
@@ -82,7 +95,9 @@ export class PoolStep extends Base {
         name: 'pool_protocol',
         label: t('Pool Protocol'),
         type: 'select',
-        options: this.filterOptions,
+        options: this.isOVN
+          ? this.filterOptions.filter((it) => ['TCP', 'UDP'].includes(it.value))
+          : this.filterOptions,
         onChange: () => {
           this.updateContext({
             health_type: '',

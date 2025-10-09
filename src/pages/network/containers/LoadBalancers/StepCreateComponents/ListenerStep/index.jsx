@@ -43,6 +43,11 @@ export class ListenerStep extends Base {
     return true;
   }
 
+  get isOVN() {
+    const { context: { provider } = {} } = this.props;
+    return provider === 'ovn';
+  }
+
   fetchContainers() {
     this.containersStore.fetchList();
   }
@@ -89,7 +94,10 @@ export class ListenerStep extends Base {
       listener_sni_enabled,
     } = this.state;
 
-    const insertHeadersFormItem = getListenerInsertHeadersFormItem();
+    const insertHeadersFormItem = {
+      ...getListenerInsertHeadersFormItem(),
+      hidden: this.isOVN,
+    };
     return [
       {
         name: 'listener_name',
@@ -106,7 +114,9 @@ export class ListenerStep extends Base {
         name: 'listener_protocol',
         label: t('Listener Protocol'),
         type: 'select',
-        options: listenerProtocols,
+        options: this.isOVN
+          ? listenerProtocols.filter((it) => ['TCP', 'UDP'].includes(it.value))
+          : listenerProtocols,
         onChange: () => {
           this.updateContext({
             pool_protocol: '',
@@ -121,7 +131,7 @@ export class ListenerStep extends Base {
         type: 'select',
         options: sslParseMethod,
         required: true,
-        display: listener_protocol === 'TERMINATED_HTTPS',
+        display: !this.isOVN && listener_protocol === 'TERMINATED_HTTPS',
       },
       {
         name: 'listener_default_tls_container_ref',
@@ -138,7 +148,7 @@ export class ListenerStep extends Base {
           },
         ],
         columns: getCertificateColumns(this),
-        display: listener_protocol === 'TERMINATED_HTTPS',
+        display: !this.isOVN && listener_protocol === 'TERMINATED_HTTPS',
       },
       {
         name: 'listener_client_ca_tls_container_ref',
@@ -158,6 +168,7 @@ export class ListenerStep extends Base {
           (it) => it.dataIndex !== 'domain'
         ),
         display:
+          !this.isOVN &&
           listener_protocol === 'TERMINATED_HTTPS' &&
           listener_ssl_parsing_method === 'two-way',
       },
@@ -165,7 +176,7 @@ export class ListenerStep extends Base {
         name: 'listener_sni_enabled',
         label: t('SNI Enabled'),
         type: 'switch',
-        display: listener_protocol === 'TERMINATED_HTTPS',
+        display: !this.isOVN && listener_protocol === 'TERMINATED_HTTPS',
       },
       {
         name: 'listener_sni_container_refs',
@@ -183,7 +194,9 @@ export class ListenerStep extends Base {
         ],
         columns: getCertificateColumns(this),
         display:
-          listener_protocol === 'TERMINATED_HTTPS' && listener_sni_enabled,
+          listener_protocol === !this.isOVN &&
+          'TERMINATED_HTTPS' &&
+          listener_sni_enabled,
       },
       {
         name: 'listener_protocol_port',

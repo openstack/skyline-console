@@ -15,7 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalPoolStore from 'stores/octavia/pool';
-import { Algorithm } from 'resources/octavia/pool';
+import { Algorithm, OvnPoolAlgorithm } from 'resources/octavia/pool';
 import { poolProtocols } from 'resources/octavia/lb';
 import globalLbaasStore from 'stores/octavia/loadbalancer';
 
@@ -46,6 +46,12 @@ export class EditPoolInfo extends ModalAction {
   get filteredProtocolOptions() {
     const { pool: { protocol = '' } = {} } = this.state;
     return poolProtocols.filter((it) => protocol.includes(it.label));
+  }
+
+  get isOVN() {
+    const { detail } = this.props.containerProps || {};
+    const lbDetail = this.item.loadBalancer || detail;
+    return lbDetail && lbDetail.provider === 'ovn';
   }
 
   get defaultValue() {
@@ -108,7 +114,7 @@ export class EditPoolInfo extends ModalAction {
         name: 'lb_algorithm',
         label: t('LB Algorithm'),
         type: 'select',
-        options: Algorithm,
+        options: this.isOVN ? OvnPoolAlgorithm : Algorithm,
         required: true,
       },
       {
