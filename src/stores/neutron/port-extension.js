@@ -183,7 +183,7 @@ export class PortStore extends Base {
     if (!items.length) {
       return items;
     }
-    const { subnetId } = filters;
+    const { subnetId, withInstanceName } = filters;
     if (subnetId) {
       const newItems = [];
       items.forEach((it) => {
@@ -208,7 +208,7 @@ export class PortStore extends Base {
       return newItems;
     }
     const fips = (await globalFloatingIpsStore.pureFetchList()) || [];
-    const newItems = items.map((it) => {
+    let newItems = items.map((it) => {
       it.associatedDetail = fips.filter(
         (f) =>
           f.port_id === it.id &&
@@ -216,6 +216,29 @@ export class PortStore extends Base {
       );
       return it;
     });
+
+    if (withInstanceName) {
+      try {
+        const computePorts = newItems.filter(
+          (port) => port.device_owner?.startsWith('compute:') && port.device_id
+        );
+        if (computePorts.length > 0) {
+          const serverList = await client.nova.servers.list();
+          const serverMap = new Map(
+            serverList.servers?.map((s) => [s.id, s.name]) || []
+          );
+          newItems = newItems.map((port) => {
+            if (port.device_owner?.startsWith('compute:') && port.device_id) {
+              port.instance_name = serverMap.get(port.device_id) || '';
+            }
+            return port;
+          });
+        }
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.warn('Failed to fetch instance names:', error);
+      }
+    }
     return newItems;
   }
 }

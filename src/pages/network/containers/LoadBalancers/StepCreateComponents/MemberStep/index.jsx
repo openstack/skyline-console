@@ -23,7 +23,7 @@ export class MemberStep extends Base {
     this.state = {
       ports: [],
     };
-    this.store.fetchList().then((ports) => {
+    this.store.fetchList({ withInstanceName: true }).then((ports) => {
       this.setState({
         ports: ports.filter(
           (port) =>
