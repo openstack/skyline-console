@@ -547,6 +547,16 @@ export const actionColumn = (self) => {
       render: (value) =>
         self.getLinkRender('userDetail', value, { id: value }, null),
     },
+    {
+      title: t('User ID'),
+      dataIndex: 'user_id',
+      isHideable: true,
+      hidden: self.isAdminPage,
+      render: (value) => {
+        const isSelf = value === self?.currentUser?.user?.id;
+        return isSelf ? `${value}(${'Current User'})` : value;
+      },
+    },
   ];
 };
 
