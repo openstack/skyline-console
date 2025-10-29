@@ -96,6 +96,7 @@ export class StepCreate extends StepAction {
       monitor_admin_state_up,
       insert_headers,
       flavor_id,
+      provider,
       health_url_path,
       ...rest
     } = values;
@@ -110,7 +111,10 @@ export class StepCreate extends StepAction {
       data.vip_address = ip_address.ip;
     }
     data.admin_state_up = admin_state_enabled;
-    if (flavor_id?.selectedRowKeys?.length) {
+    if (provider) {
+      data.provider = provider;
+    }
+    if (provider !== 'ovn' && flavor_id?.selectedRowKeys?.length) {
       data.flavor_id = flavor_id.selectedRowKeys[0];
     }
 
@@ -120,7 +124,7 @@ export class StepCreate extends StepAction {
     };
 
     const insertHeaders = getInsertHeadersValueFromForm(insert_headers);
-    if (insertHeaders) {
+    if (provider !== 'ovn' && insertHeaders) {
       listenerData.insert_headers = insertHeaders;
     }
 
@@ -148,8 +152,12 @@ export class StepCreate extends StepAction {
     const poolData = { admin_state_up: pool_admin_state_up };
     const healthMonitorData = {
       admin_state_up: monitor_admin_state_up,
-      url_path: health_url_path,
     };
+
+    if (provider !== 'ovn') {
+      healthMonitorData.url_path = health_url_path;
+    }
+
     Object.keys(rest).forEach((i) => {
       if (i.indexOf('listener') === 0) {
         listenerData[i.replace('listener_', '')] = values[i];
@@ -163,7 +171,15 @@ export class StepCreate extends StepAction {
     if (enableHealthMonitor) {
       poolData.healthmonitor = {
         ...healthMonitorData,
-        url_path: healthMonitorData.url_path ?? '/',
+        ...(provider !== 'ovn'
+          ? {
+              url_path:
+                healthMonitorData.url_path === '' ||
+                healthMonitorData.url_path == null
+                  ? '/'
+                  : healthMonitorData.url_path,
+            }
+          : {}),
       };
     }
     const {
