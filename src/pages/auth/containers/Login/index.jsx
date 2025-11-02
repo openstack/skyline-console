@@ -38,6 +38,7 @@ export class Login extends Component {
   componentDidMount() {
     this.getRegions();
     this.getSSO();
+    this.getUserDefaultDomain();
   }
 
   async getRegions() {
@@ -51,6 +52,10 @@ export class Login extends Component {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  async getUserDefaultDomain() {
+    await this.store.fetchUserDefaultDomain();
   }
 
   get rootStore() {
@@ -191,7 +196,9 @@ export class Login extends Component {
       render: () => (
         <Input placeholder={t('<username> or <username>@<domain>')} />
       ),
-      extra: t('Tips: without domain means "Default" domain.'),
+      extra: t(
+        'Tips: If no domain is provided, the configured domain will be used.'
+      ),
       rules: [{ required: true, validator: this.usernameDomainValidator }],
     };
     const usernameItem = {
@@ -353,11 +360,29 @@ export class Login extends Component {
   }
 
   getUsernameAndDomain = (values) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const { usernameDomain } = values;
-    const tmp = usernameDomain.trim().split('@');
+    const trimmedUsernameDomain = usernameDomain.trim();
+    let username;
+    let domain;
+
+    if (emailRegex.test(trimmedUsernameDomain)) {
+      username = trimmedUsernameDomain;
+      domain = this.store.userDefaultDomain || 'Default';
+    } else {
+      const lastAtIndex = trimmedUsernameDomain.lastIndexOf('@');
+      username =
+        lastAtIndex > 0
+          ? trimmedUsernameDomain.slice(0, lastAtIndex)
+          : trimmedUsernameDomain;
+      domain =
+        lastAtIndex > 0
+          ? trimmedUsernameDomain.slice(lastAtIndex + 1)
+          : this.store.userDefaultDomain || 'Default';
+    }
     return {
-      username: tmp[0],
-      domain: tmp[1] || 'Default',
+      username,
+      domain,
     };
   };
 
@@ -371,7 +396,7 @@ export class Login extends Component {
     const message = t(
       'Please input the correct format:  <username> or <username>@<domain name>.'
     );
-    if (tmp.length > 2) {
+    if (tmp.length > 3) {
       return Promise.reject(new Error(message));
     }
     const { username, domain } = this.getUsernameAndDomain({

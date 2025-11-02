@@ -1262,6 +1262,7 @@
   "If you choose a port which subnet is different from the subnet of LB, please ensure connectivity between the two.": "If you choose a port which subnet is different from the subnet of LB, please ensure connectivity between the two.",
   "If you do not fill in parameters such as cpus, memory_mb, local_gb, cpu_arch, etc., you can automatically inject the configuration and Mac address of the physical machine by performing the \"Auto Inspect\" operation.": "If you do not fill in parameters such as cpus, memory_mb, local_gb, cpu_arch, etc., you can automatically inject the configuration and Mac address of the physical machine by performing the \"Auto Inspect\" operation.",
   "If you still want to keep the disk data, it is recommended that you create a backup for the disk before deleting.": "If you still want to keep the disk data, it is recommended that you create a backup for the disk before deleting.",
+  "Tips: If no domain is provided, the configured domain will be used.": "Tips: If no domain is provided, the configured default domain will be used.",
   "Illegal JSON scheme": "Illegal JSON scheme",
   "Image": "Image",
   "Image & OS": "Image & OS",

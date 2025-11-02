@@ -129,6 +129,16 @@ export class SkylineClient extends Base {
       {
         key: 'sso',
       },
+      {
+        key: 'config',
+        isResource: false,
+        extendOperations: [
+          {
+            key: 'getUserDefaultDomain',
+            url: () => 'config',
+          },
+        ],
+      },
     ];
   }
 }
