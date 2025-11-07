@@ -298,13 +298,15 @@ export class CosVolumeStore extends BaseStore {
       // Fetch volumes from both COS and OpenStack APIs in parallel
       // - volumeApi.getVolumeList returns an object with an `images` array
       // - this.requestListByPage fetches the volume list based on newParams and filters
+      const isAdminPage = Boolean(all_projects);
       const [{ volumes: cosVolumes }, originVolumes] = await Promise.all([
         volumeApi.getVolumeList({
-          pageSize: limit,
-          pageNum: page,
-          project: this.currentProjectName,
+          pageSize: 9999,
+          pageNum: 1,
+          // If admin page, don't filter by project
+          project: isAdminPage ? undefined : this.currentProjectName,
         }),
-        this.requestListByPage(newParams, page, filters),
+        this.requestList(newParams, filters),
       ]);
 
       const cinderVolumes = this.getListDataFromResult(originVolumes);
