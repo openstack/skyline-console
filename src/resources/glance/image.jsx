@@ -162,20 +162,17 @@ export const getImageSystemTabs = () => {
     'rocky',
   ];
   return valueList.map((value) => {
-    const label =
-      value !== 'others'
-        ? value.slice(0, 1).toUpperCase() + value.slice(1)
-        : t('Others');
     return {
-      label,
+      label: imageOS[value] || value,
       value,
       component: <ImageType type={value} />,
     };
   });
 };
 
-export const getImageOS = (item) =>
-  imageOS[item.os_distro] ? item.os_distro : 'others';
+export const getImageOS = (item) => {
+  return item.os_distro ?? 'others';
+};
 
 export const getImageColumns = (self) => [
   {
