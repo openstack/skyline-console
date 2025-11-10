@@ -129,6 +129,19 @@ export class Backup extends Base {
     ];
   }
 
+  // `updateFetchParamsByPage` is not called when `isFilterByBackend` is false,
+  // so this ensures the `volume_id` parameter is included on the detail page.
+  updateFetchParams = (params) => {
+    if (this.inDetailPage) {
+      const { id, ...rest } = params;
+      return {
+        volume_id: id,
+        ...rest,
+      };
+    }
+    return params;
+  };
+
   updateFetchParamsByPage = (params) => {
     if (this.inDetailPage) {
       const { id, ...rest } = params;

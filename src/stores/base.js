@@ -120,6 +120,7 @@ export default class BaseStore {
         'peer_ep_group_id',
         'local_ep_group_id',
         'vpnservice_id',
+        'volume_id',
       ];
       const newParams = {};
       Object.keys(params).forEach((key) => {
