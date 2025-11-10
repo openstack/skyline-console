@@ -72,7 +72,7 @@ export class ImageStore extends Base {
 
   get mapper() {
     return (data) => {
-      const { os_distro } = data;
+      const os_distro = data?.os_distro?.toLowerCase?.() ?? '';
       const os = imageOS[os_distro] ? os_distro : 'others';
       return {
         ...data,
