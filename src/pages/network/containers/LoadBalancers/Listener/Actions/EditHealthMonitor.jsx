@@ -31,6 +31,7 @@ export class EditHealthMonitor extends ModalAction {
       enableHealthMonitor: false,
       dataLoading: true,
       healthMonitor: null,
+      healthType: '',
     };
   }
 
@@ -59,6 +60,12 @@ export class EditHealthMonitor extends ModalAction {
     const { protocol = '' } = this.item;
     return healthProtocols.filter((it) => protocol.includes(it.label));
   }
+
+  handleHealthTypeChange = (value) => {
+    this.setState({
+      healthType: value,
+    });
+  };
 
   get defaultValue() {
     const { healthMonitor } = this.state;
@@ -115,6 +122,7 @@ export class EditHealthMonitor extends ModalAction {
       {
         healthMonitor,
         enableHealthMonitor: !!healthMonitor,
+        healthType: healthMonitor?.type || '',
         dataLoading: false,
       },
       () => {
@@ -124,7 +132,8 @@ export class EditHealthMonitor extends ModalAction {
   }
 
   get formItems() {
-    const { enableHealthMonitor, dataLoading, healthMonitor } = this.state;
+    const { enableHealthMonitor, dataLoading, healthMonitor, healthType } =
+      this.state;
     if (dataLoading) {
       return [
         {
@@ -158,6 +167,7 @@ export class EditHealthMonitor extends ModalAction {
         hidden: !enableHealthMonitor,
         required: true,
         disabled: !!healthMonitor,
+        onChange: this.handleHealthTypeChange,
       },
       {
         name: 'delay',
@@ -210,9 +220,10 @@ export class EditHealthMonitor extends ModalAction {
         },
         placeholder: t('e.g., /status.html or /healthcheck.html'),
         extra: t(
-          'Defaults to "/" if left blank. Recommended: use a dedicated status page like "/status.html".'
+          'Defaults to "/" if left blank. Recommended: use a dedicated status page like "/status.html". This option is not applicable for TCP and UDP health monitor types.'
         ),
         hidden: !enableHealthMonitor,
+        disabled: healthType === 'TCP' || healthType === 'UDP-CONNECT',
       },
     ];
   }
@@ -227,10 +238,12 @@ export class EditHealthMonitor extends ModalAction {
       if (!enableHealthMonitor) {
         return globalHealthMonitorStore.delete({ id });
       }
-      return globalHealthMonitorStore.edit(
-        { id },
-        { ...others, url_path: updatedUrlPath }
-      );
+      // Exclude url_path from payload when TCP or UDP-CONNECT is selected
+      const editData = { ...others };
+      if (type !== 'TCP' && type !== 'UDP-CONNECT') {
+        editData.url_path = updatedUrlPath;
+      }
+      return globalHealthMonitorStore.edit({ id }, editData);
     }
     if (!enableHealthMonitor) {
       return Promise.resolve();
@@ -239,8 +252,11 @@ export class EditHealthMonitor extends ModalAction {
       type,
       ...others,
       pool_id: default_pool_id,
-      url_path: updatedUrlPath,
     };
+    // Exclude url_path from payload when TCP or UDP-CONNECT is selected
+    if (type !== 'TCP' && type !== 'UDP-CONNECT') {
+      data.url_path = updatedUrlPath;
+    }
     return globalHealthMonitorStore.create(data);
   };
 }
