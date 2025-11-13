@@ -309,7 +309,7 @@ export class BaseStep extends Base {
 
     if (this.sourceTypeIsSnapshot) {
       const { instanceSnapshotMinSize = 0 } = this.state;
-      return Math.max(instanceSnapshotMinSize, 1);
+      return Math.max(flavorSize, instanceSnapshotMinSize, 1);
     }
 
     return Math.max(flavorSize, 1);
@@ -369,7 +369,13 @@ export class BaseStep extends Base {
   };
 
   onInstanceSnapshotChange = async (value) => {
-    const { size, id } = value.selectedRows[0] || {};
+    const {
+      // GB
+      min_disk,
+      // Bytes
+      size,
+      id,
+    } = value.selectedRows[0] || {};
     if (!id) {
       this.updateContext({
         instanceSnapshotDisk: null,
@@ -385,7 +391,8 @@ export class BaseStep extends Base {
     const detail =
       await this.instanceSnapshotStore.fetchInstanceSnapshotVolumeData({ id });
     const {
-      block_device_mapping = '',
+      snapshotDetail: { size: snapshotSize = 0 } = {},
+      block_device_mapping = '[]',
       volumeDetail,
       snapshotDetail,
       instanceSnapshotDataVolumes = [],
@@ -404,6 +411,8 @@ export class BaseStep extends Base {
         bootFromVolume: true,
       });
     }
+    const sizeGiB = Math.ceil(size / 1024 / 1024 / 1024);
+    const minSize = Math.max(min_disk, sizeGiB, snapshotSize);
 
     const bdmFormatData = JSON.parse(block_device_mapping) || [];
     const systemDiskBdm = bdmFormatData[0] || {};
@@ -419,7 +428,7 @@ export class BaseStep extends Base {
     });
     this.setState({
       instanceSnapshotDisk,
-      instanceSnapshotMinSize: size,
+      instanceSnapshotMinSize: minSize,
       instanceSnapshotDataVolumes,
     });
   };
@@ -465,10 +474,20 @@ export class BaseStep extends Base {
     if (disk === null) {
       return null;
     }
-    const { deleteTypeLabel, typeOption = {}, size } = disk || {};
-    if (!size) {
+
+    const { deleteTypeLabel, typeOption = {}, size: diskSize } = disk || {};
+    if (!diskSize) {
       return null;
     }
+
+    let size = 0;
+
+    if (this.sourceTypeIsSnapshot) {
+      size = this.getSystemDiskMinSize();
+    } else {
+      size = diskSize;
+    }
+
     const style = {
       marginRight: 10,
       maxWidth: '20%',
