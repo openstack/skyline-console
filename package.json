@@ -83,6 +83,7 @@
     "react-fast-compare": "^3.0.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
+    "sha512-crypt-ts": "^0.1.26",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

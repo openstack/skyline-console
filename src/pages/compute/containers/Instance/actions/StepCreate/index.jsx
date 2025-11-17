@@ -21,7 +21,7 @@ import globalServerStore from 'stores/nova/instance';
 import globalProjectStore from 'stores/keystone/project';
 import classnames from 'classnames';
 import { isEmpty, isFinite, isString } from 'lodash';
-import { getUserData } from 'resources/nova/instance';
+import { getUserData, hashPasswordForCloudInit } from 'resources/nova/instance';
 import { getAllDataDisks } from 'resources/cinder/snapshot';
 import { getGiBValue } from 'utils/index';
 import Notify from 'components/Notify';
@@ -747,6 +747,9 @@ export class StepCreate extends StepAction {
       server.user_data = btoa(
         getUserData(server.adminPass, userData, username || 'root')
       );
+    }
+    if (server.adminPass) {
+      server.adminPass = hashPasswordForCloudInit(server.adminPass);
     }
     const body = {
       server,
