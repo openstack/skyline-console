@@ -279,7 +279,7 @@ export class CosVolumeStore extends BaseStore {
 
     const { tab, all_projects, ...rest } = filters;
 
-    const params = { limit, ...rest, current: page };
+    const params = { limit: 9999, ...rest, current: page };
 
     this.updateParamsSortPage(params, sortKey, sortOrder);
 

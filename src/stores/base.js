@@ -444,8 +444,14 @@ export default class BaseStore {
 
   getDetailParams = () => undefined;
 
-  getListDataFromResult = (result) =>
-    this.listResponseKey ? get(result, this.listResponseKey, []) : result;
+  getListDataFromResult = (result) => {
+    if (Array.isArray(result)) {
+      return result;
+    }
+    return this.listResponseKey
+      ? get(result, this.listResponseKey, [])
+      : result;
+  };
 
   // eslint-disable-next-line no-unused-vars
   async getCountForPage(newParams, newData, all_projects, result, params) {
