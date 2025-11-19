@@ -12,10 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
+import Tags from 'components/Tags';
+import Notify from 'components/Notify';
 import globalDomainStore from 'stores/keystone/domain';
 import globalProjectStore from 'stores/keystone/project';
+import globalTagStore from 'stores/keystone/tag';
 import { regex } from 'utils/validate';
 import { statusTypes, getDomainFormItem } from 'resources/keystone/domain';
 
@@ -26,6 +30,7 @@ export class Create extends ModalAction {
       domain: null,
       newUserRoles: {},
       newGroupRoles: {},
+      tags: [],
     };
   }
 
@@ -45,6 +50,7 @@ export class Create extends ModalAction {
 
   static policy = [
     'identity:create_project',
+    'identity:update_project_tags',
     'identity:list_domains',
     'identity:list_roles',
     'identity:list_users',
@@ -124,12 +130,102 @@ export class Create extends ModalAction {
         label: t('Description'),
         type: 'textarea',
       },
+      {
+        name: 'tags',
+        label: t('Tags'),
+        component: (
+          <Tags
+            tags={this.state.tags}
+            onChange={(newTags) => {
+              this.setState({ tags: newTags });
+              // Also update form value
+              if (this.formRef.current) {
+                this.formRef.current.setFieldsValue({ tags: newTags });
+              }
+            }}
+          />
+        ),
+        validator: (rule, val) => {
+          if (!val || val.length === 0) {
+            return Promise.resolve(true);
+          }
+
+          // API pattern: ^[^,/]*$ - tags cannot contain comma or forward slash
+          const tagPattern = /^[^,/]*$/;
+          let errorTag = '';
+          if (
+            val.some((tag) => {
+              const ret = !tagPattern.test(tag);
+              ret && (errorTag = tag);
+              return ret;
+            })
+          ) {
+            return Promise.reject(
+              new Error(t('Invalid Tag Value: {tag}', { tag: errorTag }))
+            );
+          }
+
+          // check for duplicates
+          const uniqueTags = new Set();
+          const duplicateTags = [];
+          val.forEach((tag) => {
+            const lowerTag = tag.toLowerCase();
+            if (uniqueTags.has(lowerTag)) {
+              duplicateTags.push(tag);
+            } else {
+              uniqueTags.add(lowerTag);
+            }
+          });
+          if (duplicateTags.length > 0) {
+            return Promise.reject(
+              new Error(
+                t('Duplicate tag name: {tag}', { tag: duplicateTags[0] })
+              )
+            );
+          }
+          return Promise.resolve(true);
+        },
+        extra: (
+          <div>
+            <div>1. {t('Tags are not case sensitive')}</div>
+            <div>
+              2. {t('Forward Slash ‘/’ is not allowed to be in a tag name')}
+            </div>
+            <div>
+              3.{' '}
+              {t(
+                'Commas ‘,’ are not allowed to be in a tag name in order to simplify requests that specify lists of tags'
+              )}
+            </div>
+          </div>
+        ),
+      },
     ];
   }
 
-  onSubmit = (values) => {
-    values.enabled = values.enabled.value;
-    return this.projectStore.create(values);
+  onSubmit = async (values) => {
+    const { tags, ...projectData } = values;
+    projectData.enabled = projectData.enabled.value;
+
+    // Create the project first
+    const result = await this.projectStore.create(projectData);
+
+    // If tags were provided, add them after project creation
+    if (tags && tags.length > 0 && result?.project?.id) {
+      try {
+        await globalTagStore.update(
+          { project_id: result.project.id },
+          { tags }
+        );
+      } catch (error) {
+        // Don't fail the entire operation if tag update fails
+        Notify.warn(
+          t('Project created successfully, but failed to add tags'),
+          t('You can modify the tags later using the Modify Tags action.')
+        );
+      }
+    }
+    return result;
   };
 }
 

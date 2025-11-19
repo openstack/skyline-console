@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import React, { useEffect, useState } from 'react';
-import { Col, Input, Row, Tag, Tooltip } from 'antd';
+import { Col, Input, Row, Tag, Tooltip, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { projectTagsColors } from 'src/utils/constants';
 import PropTypes from 'prop-types';
@@ -58,14 +58,29 @@ const Tags = ({ tags: source, onChange, maxLength, maxCount }) => {
   }
 
   function handleInputConfirm() {
-    const retVal = inputValue.toLocaleLowerCase();
-    if (inputValue && !tags.some((tag) => tag.toLowerCase() === retVal)) {
+    const trimmedValue = inputValue.trim();
+    if (!trimmedValue) {
+      setInputVisible(false);
+      setInputValue('');
+      return;
+    }
+    const retVal = trimmedValue.toLocaleLowerCase();
+    if (!tags.some((tag) => tag.toLowerCase() === retVal)) {
       if (tagCount !== -1 && tags.length < maxCount) {
-        setTags([...tags, inputValue]);
+        setTags([...tags, trimmedValue]);
       } else if (tagCount === -1) {
-        setTags([...tags, inputValue]);
+        setTags([...tags, trimmedValue]);
       }
     }
+    setInputVisible(false);
+    setInputValue('');
+  }
+
+  function handleAddClick() {
+    handleInputConfirm();
+  }
+
+  function handleCancel() {
     setInputVisible(false);
     setInputValue('');
   }
@@ -141,20 +156,27 @@ const Tags = ({ tags: source, onChange, maxLength, maxCount }) => {
       })}
       <Col span={24}>
         {inputVisible && (
-          <Input
-            ref={saveInputRef}
-            style={{ width: 78, marginRight: 8, verticalAlign: 'top' }}
-            type="text"
-            size="small"
-            value={inputValue}
-            onChange={handleInputChange}
-            onBlur={handleInputConfirm}
-            onPressEnter={handleInputConfirm}
-            {...tagLength}
-          />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Input
+              ref={saveInputRef}
+              style={{ width: 78, verticalAlign: 'top' }}
+              type="text"
+              size="small"
+              value={inputValue}
+              onChange={handleInputChange}
+              onPressEnter={handleAddClick}
+              {...tagLength}
+            />
+            <Button size="small" type="primary" onClick={handleAddClick}>
+              {t('Add')}
+            </Button>
+            <Button size="small" onClick={handleCancel}>
+              {t('Cancel')}
+            </Button>
+          </div>
         )}
         {!inputVisible && (
-          <Tag onClick={showInput}>
+          <Tag onClick={showInput} style={{ cursor: 'pointer' }}>
             <PlusOutlined /> {t('New Tag')}
           </Tag>
         )}

@@ -103,7 +103,7 @@ export class SecretsStore extends Base {
     if (!silent) {
       this.isLoading = true;
     }
-    const [item, payload, listeners] = await Promise.all([
+    const [item, payload] = await Promise.all([
       this.client.show(id, null, {
         headers: {
           Accept: 'application/json',
@@ -115,8 +115,14 @@ export class SecretsStore extends Base {
         },
         responseType: 'arraybuffer',
       }),
-      globalListenerStore.fetchList(),
     ]);
+
+    let listeners = [];
+    try {
+      listeners = await globalListenerStore.fetchList();
+    } catch (e) {
+      listeners = [];
+    }
 
     let decodedPayload = payload;
     if (payload) {
@@ -166,7 +172,12 @@ export class SecretsStore extends Base {
 
   async listDidFetch(items) {
     if (items.length === 0) return items;
-    const listeners = await globalListenerStore.fetchList();
+    let listeners = [];
+    try {
+      listeners = await globalListenerStore.fetchList();
+    } catch (e) {
+      listeners = [];
+    }
     return items.map((it) => {
       // Determine if the certificate is used in the listener
       this.updateItem(it, listeners);

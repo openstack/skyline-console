@@ -16,6 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import { allCanReadPolicy } from 'resources/skyline/policy';
 import globalUserStore from 'stores/keystone/user';
+import { SimpleTag } from 'resources/nova/instance';
 
 export class ProjectSelect extends ModalAction {
   static id = 'project-id';
@@ -138,6 +139,16 @@ export class ProjectSelect extends ModalAction {
           {
             title: t('Description'),
             dataIndex: 'description',
+          },
+          {
+            title: t('Tags'),
+            dataIndex: 'tags',
+            render: (tags) => {
+              if (!tags || !Array.isArray(tags) || tags.length === 0) {
+                return '-';
+              }
+              return tags.map((tag, index) => SimpleTag({ tag, index }));
+            },
           },
           {
             title: t('Enabled'),
