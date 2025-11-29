@@ -55,7 +55,7 @@ export class CreateAction extends ModalAction {
       })
       .then((lb) => {
         this.lbDetail = lb;
-        return this.store.fetchList();
+        return this.store.fetchList({ withInstanceName: true });
       })
       .then((ports) => {
         this.setState({

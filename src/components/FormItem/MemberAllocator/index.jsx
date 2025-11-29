@@ -67,6 +67,10 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
               dataIndex: 'server_name',
             },
             {
+              title: t('Instance Name'),
+              dataIndex: 'instance_name',
+            },
+            {
               title: t('IP'),
               dataIndex: 'fixed_ips',
               render: (fixed_ips, record) => {
