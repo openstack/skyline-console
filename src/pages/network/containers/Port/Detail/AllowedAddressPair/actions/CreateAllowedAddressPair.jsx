@@ -18,7 +18,7 @@ import globalPortStore from 'stores/neutron/port-extension';
 import { ipValidate } from 'utils/validate';
 import { isEmpty } from 'lodash';
 
-const { isIpCidr, isIPv6Cidr } = ipValidate;
+const { isIPv4, isIpv6, isIpCidr, isIPv6Cidr } = ipValidate;
 
 export class CreateAllowedAddressPair extends ModalAction {
   static id = 'create-ip';
@@ -71,14 +71,16 @@ export class CreateAllowedAddressPair extends ModalAction {
       });
   };
 
-  checkCidr = (value) => {
+  checkIpOrCidr = (value) => {
     if (isEmpty(value)) return false;
 
     const { ip_version = 'ipv4' } = this.state;
 
-    if (ip_version === 'ipv4' && !isIpCidr(value)) return false;
+    if (ip_version === 'ipv4' && !(isIPv4(value) || isIpCidr(value)))
+      return false;
 
-    if (ip_version === 'ipv6' && !isIPv6Cidr(value)) return false;
+    if (ip_version === 'ipv6' && !(isIpv6(value) || isIPv6Cidr(value)))
+      return false;
 
     return true;
   };
@@ -117,13 +119,12 @@ export class CreateAllowedAddressPair extends ModalAction {
       },
       {
         name: 'ip_address',
-        label: t('CIDR'),
+        label: t('CIDR or IP'),
         type: 'input',
-        // placeholder: isIpv4 ? '192.168.0.0/24' : '1001:1001::/64',
         required: true,
         validator: (rule, value) => {
-          if (!this.checkCidr(value)) {
-            return Promise.reject(new Error(t('Invalid CIDR.')));
+          if (!this.checkIpOrCidr(value)) {
+            return Promise.reject(new Error(t('Invalid CIDR or IP address.')));
           }
           return Promise.resolve();
         },
