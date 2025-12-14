@@ -2,6 +2,10 @@
 Skyline (OpenStack Modern Dashboard)
 ====================================
 
+.. image:: https://governance.openstack.org/tc/badges/skyline-console.svg
+
+.. Change things from this point on
+
 Skyline Console is a modern dashboard for OpenStack - UI.
 
 * Project documentation: https://docs.openstack.org/skyline-console/latest/
@@ -10,9 +14,6 @@ Skyline Console is a modern dashboard for OpenStack - UI.
 * Issue tracking: https://launchpad.net/skyline-console
 * Release notes: https://docs.openstack.org/releasenotes/skyline-console/
 * Wiki: https://wiki.openstack.org/wiki/Skyline
-
-.. image:: https://governance.openstack.org/tc/badges/skyline-console.svg
-    :target: https://governance.openstack.org/tc/reference/tags/
 
 Using Skyline
 =============
