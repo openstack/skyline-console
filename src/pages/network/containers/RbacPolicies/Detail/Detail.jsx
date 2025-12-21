@@ -52,7 +52,7 @@ export class BaseDetail extends Base {
         dataIndex: 'action',
       },
       {
-        label: t('Target Tenant'),
+        label: t('Target Project'),
         dataIndex: 'target_tenant',
         render: (value) => {
           if (value === '*') {
