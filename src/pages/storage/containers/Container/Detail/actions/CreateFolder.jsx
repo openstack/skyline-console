@@ -42,15 +42,17 @@ export class CreateFolder extends ModalAction {
   }
 
   get defaultValue() {
-    const { name, folder } = this.store.container || {};
+    const { name, folder, prefix } = this.store.container || {};
+    const destFolder = prefix || folder || '';
     return {
       container: name,
-      dest_folder: folder,
+      dest_folder: destFolder,
     };
   }
 
   get formItems() {
-    const { folder } = this.store.container || {};
+    const { folder, prefix } = this.store.container || {};
+    const destFolder = prefix || folder || '';
     return [
       {
         name: 'container',
@@ -61,7 +63,7 @@ export class CreateFolder extends ModalAction {
         name: 'dest_folder',
         label: t('Dest Folder'),
         type: 'label',
-        hidden: !folder,
+        hidden: !destFolder,
       },
       {
         name: 'folder_name',
@@ -70,16 +72,6 @@ export class CreateFolder extends ModalAction {
         required: true,
         isSwiftFile: true,
         maxLength: 63,
-        validator: (rule, value) => {
-          if (value.length < 2) {
-            return Promise.reject(
-              new Error(
-                `${t('Invalid: ')}${t('Please input at least 2 characters.')}`
-              )
-            );
-          }
-          return Promise.resolve();
-        },
       },
     ];
   }

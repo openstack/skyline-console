@@ -170,9 +170,10 @@ export class ContainerObject extends Base {
 
   updateFetchParams = (params) => {
     const { folder } = this.params;
+    const prefix = this.getRequestFolder(folder);
     return {
       ...params,
-      folder: this.getRequestFolder(folder),
+      prefix,
     };
   };
 

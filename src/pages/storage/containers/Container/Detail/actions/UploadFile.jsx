@@ -47,10 +47,11 @@ export class UploadFile extends ModalAction {
   }
 
   get defaultValue() {
-    const { name, folder } = globalObjectStore.container || {};
+    const { name, folder, prefix } = globalObjectStore.container || {};
+    const destFolder = prefix || folder || '';
     return {
       container: name,
-      dest_folder: folder,
+      dest_folder: destFolder,
     };
   }
 
@@ -71,7 +72,8 @@ export class UploadFile extends ModalAction {
   };
 
   get formItems() {
-    const { folder } = globalObjectStore.container || {};
+    const { folder, prefix } = globalObjectStore.container || {};
+    const destFolder = prefix || folder || '';
     return [
       {
         name: 'container',
@@ -82,7 +84,7 @@ export class UploadFile extends ModalAction {
         name: 'dest_folder',
         label: t('Dest Folder'),
         type: 'label',
-        hidden: !folder,
+        hidden: !destFolder,
       },
       {
         name: 'file',
