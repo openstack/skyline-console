@@ -84,7 +84,7 @@ export class UserDetail extends Base {
         render: (email) => email || '-',
       },
       {
-        title: t('phone'),
+        title: t('Phone'),
         dataIndex: 'phone',
       },
       {
