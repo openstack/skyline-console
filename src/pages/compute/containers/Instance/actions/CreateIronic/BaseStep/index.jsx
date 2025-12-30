@@ -155,7 +155,7 @@ export class BaseStep extends Base {
       },
       {
         name: 'availableZone',
-        label: t('Available Zone'),
+        label: t('Availability Zone'),
         type: 'select',
         placeholder: t('Please select'),
         isWrappedValue: true,

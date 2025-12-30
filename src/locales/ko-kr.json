@@ -218,7 +218,6 @@
   "Availability Zones": "가용 영역",
   "Availability zone refers to a physical area where power and network are independent of each other in the same area. In the same region, the availability zone and the availability zone can communicate with each other in the intranet, and the available zones can achieve fault isolation.": "가용영역은 동일한 지역에서 서로 다른 전원 및 네트워크를 가진 물리적인 영역을 의미합니다. 동일한 영역에서 가용 영역과 가용 영역은 인터넷을 통해 연결될 수 있으며 가용영역은 장애를 격리 시킬수 있습니다. ",
   "Available": "사용 가능",
-  "Available Zone": "가용 영역",
   "Average PGs per OSD": "OSD당 평균 PG",
   "Awaiting Transfer": "전송 대기 중",
   "Azerbaijan": "아제르바이젠",

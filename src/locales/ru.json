@@ -221,7 +221,6 @@
   "Availability Zones": "Зоны доступности",
   "Availability zone refers to a physical area where power and network are independent of each other in the same area. In the same region, the availability zone and the availability zone can communicate with each other in the intranet, and the available zones can achieve fault isolation.": "Зона доступности относится к физической области, где электропитание и сеть независимы друг от друга в одной области. В одном регионе зона доступности и зона доступности могут взаимодействовать друг с другом внутри сети, и доступные зоны могут обеспечить изоляцию от сбоев.",
   "Available": "Доступно",
-  "Available Zone": "Зона доступности",
   "Average PGs per OSD": "Среднее количество PG на OSD",
   "Awaiting Transfer": "Ожидание передачи",
   "Azerbaijan": "Азербайджан",

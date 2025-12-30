@@ -218,7 +218,6 @@
   "Availability Zones": "可用域",
   "Availability zone refers to a physical area where power and network are independent of each other in the same area. In the same region, the availability zone and the availability zone can communicate with each other in the intranet, and the available zones can achieve fault isolation.": "可用区是指在同一地域内，电力和网络互相独立的物理区域。在同一地域内可用区与可用区之间内网互通，可用区之间能做到故障隔离。",
   "Available": "可用",
-  "Available Zone": "可用域",
   "Average PGs per OSD": "每个OSD平均PG数量",
   "Awaiting Transfer": "等待转让",
   "Azerbaijan": "阿塞拜疆",

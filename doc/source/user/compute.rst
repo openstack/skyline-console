@@ -50,7 +50,7 @@ Launch an instance
 
 #. On the :guilabel:`Create Instance` page, enter the instance values.
 
-   :guilabel:`Available Zone`: The availability zone from which to launch the server.
+   :guilabel:`Availability Zone`: The availability zone from which to launch the server.
 
    :guilabel:`Specification`: Select a flavor for your server instance.
 

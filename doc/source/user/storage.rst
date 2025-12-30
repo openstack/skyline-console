@@ -28,7 +28,7 @@ Create a volume
 
 #. On the :guilabel:`Create Volume` page, specify the following values.
 
-   :guilabel:`Available Zone`: Select a availability zone for the volume.
+   :guilabel:`Availability Zone`: Select a availability zone for the volume.
 
    :guilabel:`Data Source Type`: Select one of the following options:
 
