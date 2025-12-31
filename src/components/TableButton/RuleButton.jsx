@@ -31,7 +31,7 @@ export default class RuleButton extends Component {
       buttonType: 'link',
       title: t('Security Group Rules'),
       buttonText: t('View Rules'),
-      modalSize: 'middle',
+      modalSize: 'large',
       columns: getSelfColumns(this),
       data,
       hasPagination: false,
