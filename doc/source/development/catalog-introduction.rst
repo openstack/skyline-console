@@ -58,7 +58,7 @@ Introduction to the first-level directory
 -  :guilabel:`tools`: Other tools folder, containing git tools
 
 Catalog Introduction-Image Version
------------------------------------
+----------------------------------
 
 .. code-block:: text
 

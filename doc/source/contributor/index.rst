@@ -1,6 +1,6 @@
-===========================
- Contributor Documentation
-===========================
+=========================
+Contributor Documentation
+=========================
 
 In this section you will find information on how to contribute to
 skyline-console. Content includes architectural overviews, tips and tricks
@@ -8,6 +8,7 @@ for setting up a development environment.
 
 Getting Started
 ---------------
+
 .. toctree::
     :maxdepth: 2
 

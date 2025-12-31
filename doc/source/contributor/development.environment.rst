@@ -113,4 +113,4 @@ Once your work is complete you may wish to contribute it to the project.
 skyline-console uses the Gerrit code review system. For information on
 how to submit your branch to Gerrit, see GerritWorkflow_.
 
-.. _GerritWorkflow: https://docs.openstack.org/infra/manual/developers.html#development-workflow
+.. _GerritWorkflow: https://docs.opendev.org/opendev/infra-manual/latest/developers.html#development-workflow

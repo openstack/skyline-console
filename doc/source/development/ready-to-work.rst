@@ -1,5 +1,5 @@
 Ready To Work
-~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
 
 For more information about installation, refer to the :ref:`source-install-ubuntu`
 
@@ -88,7 +88,7 @@ The packaged files are in the ``dist`` directory and handed over
 to the deployment personnel.
 
 Front-end package used for testing
------------------------------------
+----------------------------------
 
 Have the required ``nodejs`` and ``yarn``
 
@@ -99,10 +99,10 @@ as ``package.json``
 
  yarn run build:test
 
-The packaged files are in the ``dist`` directory
+The packaged files are in the ``dist`` directory.
 
 .. note::
 
- This test package is designed to measure code coverage
+ This test package is designed to measure code coverage.
 
- It is recommended to use nginx to complete the E2E test with code coverage
+ It is recommended to use nginx to complete the E2E test with code coverage.

@@ -1,5 +1,5 @@
 Manage projects, users and roles (Identity tab)
-================================================
+===============================================
 
 OpenStack administrators can create projects, create accounts for new users
 and create roles.
@@ -52,7 +52,7 @@ Edit a role
    A message indicates whether the action was successful.
 
 Delete a role
---------------
+-------------
 
 #. Log into the OpenStack Dashboard as the Admin user.
 
@@ -121,7 +121,7 @@ Update a project
       list.
 
 Add a new user
----------------
+--------------
 
 #. Log into the OpenStack Dashboard as the Admin user.
 
@@ -141,7 +141,7 @@ Add a new user
    The new user is now displayed in the :guilabel:`Users` list.
 
 Delete a user
---------------
+-------------
 
 #. Log into the OpenStack Dashboard as the Admin user.
 

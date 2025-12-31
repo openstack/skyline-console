@@ -1,5 +1,5 @@
 Contributing Documentation to Skyline Console
-==============================================
+=============================================
 
 This page provides guidance on how to provide documentation for those
 who may not have previously been active writing documentation for
@@ -33,7 +33,7 @@ and links related to RST.
 .. _RST conventions: https://docs.openstack.org/doc-contrib-guide/rst-conv.html
 
 Building Skyline Console's Documentation
-------------------------------------------
+----------------------------------------
 
 To build documentation the following command should be used:
 
@@ -63,6 +63,7 @@ the ``doc/build/html`` directory structure.
 
 Review and Release Process
 --------------------------
+
 Documentation changes go through the same review process as all other changes.
 
 .. note::
