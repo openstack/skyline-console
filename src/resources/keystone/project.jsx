@@ -73,7 +73,7 @@ export const projectColumns = [
     valueRender: 'yesNo',
   },
   {
-    title: t('description'),
+    title: t('Description'),
     dataIndex: 'description',
     isHideable: true,
   },
