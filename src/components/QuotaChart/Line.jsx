@@ -32,7 +32,7 @@ export default function Line(props) {
   const usedTip = `${t('Used')}: ${used}`;
   const reservedTip = reserved ? `${t('Reserved')}: ${reserved}` : '';
   const newTip = `${t('New')}: ${add}`;
-  const leftTip = `${t('Left')}: ${left}`;
+  const leftTip = `${t('Available')}: ${left}`;
   const tips = isLimit ? [usedTip, newTip, leftTip] : [usedTip, newTip];
   if (reserved) {
     tips.splice(1, 0, reservedTip);

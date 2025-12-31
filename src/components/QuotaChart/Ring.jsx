@@ -89,7 +89,7 @@ export default function Ring(props) {
     color: typeColors.add,
   });
   data.push({
-    type: t('Left'),
+    type: t('Available'),
     value: left,
     color: typeColors.left,
   });
