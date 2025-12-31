@@ -140,7 +140,7 @@ export class User extends Base {
         isHideable: true,
       },
       {
-        title: t('phone'),
+        title: t('Phone'),
         dataIndex: 'phone',
         isHideable: true,
       },
