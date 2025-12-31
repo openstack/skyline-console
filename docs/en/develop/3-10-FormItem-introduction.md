@@ -37,7 +37,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
       ```javascript
       {
         name: 'availableZone',
-        label: t('Available Zone'),
+        label: t('Availability Zone'),
         type: 'select',
         placeholder: t('Please select'),
         isWrappedValue: true,
@@ -261,7 +261,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
 
       {
         name: 'availableZone',
-        label: t('Available Zone'),
+        label: t('Availability Zone'),
         type: 'select',
         placeholder: t('Please select'),
         isWrappedValue: true,
@@ -689,7 +689,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
             value: this.getSystemDisk(),
           },
           {
-            label: t('Available Zone'),
+            label: t('Availability Zone'),
             value: context.availableZone.label,
           },
           {
