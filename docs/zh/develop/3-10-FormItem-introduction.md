@@ -37,7 +37,7 @@
       ```javascript
       {
         name: 'availableZone',
-        label: t('Available Zone'),
+        label: t('Availability Zone'),
         type: 'select',
         placeholder: t('Please select'),
         isWrappedValue: true,
@@ -261,7 +261,7 @@
 
       {
         name: 'availableZone',
-        label: t('Available Zone'),
+        label: t('Availability Zone'),
         type: 'select',
         placeholder: t('Please select'),
         isWrappedValue: true,
@@ -687,7 +687,7 @@
             value: this.getSystemDisk(),
           },
           {
-            label: t('Available Zone'),
+            label: t('Availability Zone'),
             value: context.availableZone.label,
           },
           {
