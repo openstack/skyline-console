@@ -218,7 +218,6 @@
   "Availability Zones": "Kullanılabilirlik Bölgeleri",
   "Availability zone refers to a physical area where power and network are independent of each other in the same area. In the same region, the availability zone and the availability zone can communicate with each other in the intranet, and the available zones can achieve fault isolation.": "Kullanılabilirlik bölgesi, aynı alanda gücün ve ağın birbirinden bağımsız olduğu fiziksel bir alanı ifade eder. Aynı bölgede, kullanılabilirlik bölgeleri birbirleriyle intranette iletişim kurabilir ve kullanılabilir bölgeler arasında hata izolasyonu sağlayabilir.",
   "Available": "Mevcut",
-  "Available Zone": "Mevcut Bölge",
   "Average PGs per OSD": "OSD başına ortalama PG",
   "Awaiting Transfer": "Transfer Bekliyor",
   "Azerbaijan": "Azerbaycan",

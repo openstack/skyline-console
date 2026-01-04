@@ -218,7 +218,6 @@
   "Availability Zones": "Availability Zones",
   "Availability zone refers to a physical area where power and network are independent of each other in the same area. In the same region, the availability zone and the availability zone can communicate with each other in the intranet, and the available zones can achieve fault isolation.": "Availability zone refers to a physical area where power and network are independent of each other in the same area. In the same region, the availability zone and the availability zone can communicate with each other in the intranet, and the available zones can achieve fault isolation.",
   "Available": "Available",
-  "Available Zone": "Available Zone",
   "Average PGs per OSD": "Average PGs per OSD",
   "Awaiting Transfer": "Awaiting Transfer",
   "Azerbaijan": "Azerbaijan",

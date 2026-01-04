@@ -104,7 +104,7 @@ export class ConfirmStep extends Base {
         },
         items: [
           {
-            label: t('Available Zone'),
+            label: t('Availability Zone'),
             value: context.availableZone.label,
           },
           {

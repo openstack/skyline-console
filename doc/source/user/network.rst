@@ -36,7 +36,7 @@ Create a network
    :guilabel:`Shared`: Share the network with other projects. Non admin users
    are not allowed to set shared option.
 
-   :guilabel:`Available Zone`: Select a availability zone for the network.
+   :guilabel:`Availability Zone`: Select a availability zone for the network.
 
    :guilabel:`Port Security Enabled`: Select the port security status of the network.
 

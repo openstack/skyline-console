@@ -406,7 +406,7 @@ export class Create extends FormAction {
       },
       {
         name: 'availableZone',
-        label: t('Available Zone'),
+        label: t('Availability Zone'),
         type: 'select',
         placeholder: t('Please select'),
         options: this.availableZones,
