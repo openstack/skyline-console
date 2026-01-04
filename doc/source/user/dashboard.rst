@@ -5,17 +5,17 @@ Openstack Dashboard
 ===================
 
 Console page
-~~~~~~~~~~~~~
+~~~~~~~~~~~~
 
 Home tab
----------
+--------
 
 Home tab shows user information and details of quota about
 Compute, Storage, Network, etc. And it provides a button to quickly
 jump to Instances, Volumes, Networks and Routers page.
 
 Compute tab
-------------
+-----------
 
 * :guilabel:`Instances`: View, launch, delete, create a snapshot from,
   attach or detach interface to, attach or detach volume to,
@@ -36,7 +36,7 @@ Compute tab
 * :guilabel:`Key Pairs`: View, create, edit, import, and delete key pairs.
 
 Storage tab
-------------
+-----------
 
 * :guilabel:`Volumes`: View, create, edit, and delete volumes. Create volume
   snapshot, create volume backup, clone volume, extend volume or change volume
@@ -49,7 +49,7 @@ Storage tab
   And create volumes from them.
 
 Network tab
-------------
+-----------
 
 * :guilabel:`Networks`: View, create, edit and delete networks.
 
@@ -66,16 +66,16 @@ Network tab
   groups and security group rules.
 
 User page
-~~~~~~~~~~
+~~~~~~~~~
 
 User center tab
-----------------
+---------------
 
 User center shows the details of user, including Username, Email, Phone,
 Real Name and User ID.
 
 Application credentials tab
-----------------------------
+---------------------------
 
 Application credentials provide a way to delegate a user authorization
 to an application without sharing the user password authentication.
@@ -91,14 +91,14 @@ Administrator page
 ~~~~~~~~~~~~~~~~~~
 
 Home tab
----------
+--------
 
 Home tab shows basic platform information (the numbers of projects, users,
 nodes), virtual resource usage (CPU usages, memory usages), compute and
 network services status.
 
 Compute tab
-------------
+-----------
 
 * :guilabel:`Instances`: View, stop, suspend, cold or live migrate,
   soft or hard reboot, and delete instances that belong to all projects.
@@ -121,7 +121,7 @@ Compute tab
   delete host aggregates. View the list of availability zones.
 
 Storage tab
-------------
+-----------
 
 * :guilabel:`Volumes`: View, update status for, migrate and delete volumes.
 
@@ -135,7 +135,7 @@ Storage tab
 * :guilabel:`Storage Backends`: View storage backends.
 
 Network tab
-------------
+-----------
 
 * :guilabel:`Networks`: View, create and delete networks.
 

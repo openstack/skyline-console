@@ -115,7 +115,7 @@ Launch an instance
    to get the final display result.
 
 Create an instance snapshot
-----------------------------
+---------------------------
 
 #. Log in to the dashboard.
 
@@ -136,7 +136,7 @@ Create an instance snapshot
    The dashboard shows the new instance snapshot in :guilabel:`Instance Snapshots` tab.
 
 Control the state of an instance
----------------------------------
+--------------------------------
 
 #. Log in to the dashboard.
 
@@ -151,7 +151,7 @@ Control the state of an instance
    :guilabel:`Instance Status` and select the status.
 
 Allocate a floating IP address to an instance
-----------------------------------------------
+---------------------------------------------
 
 #. Log in to the dashboard.
 

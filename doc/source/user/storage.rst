@@ -15,7 +15,7 @@ your OpenStack Compute instances. For detailed information, refer to the
 <https://docs.openstack.org/cinder/latest/admin/index.html>`__.
 
 Create a volume
-----------------
+---------------
 
 #. Log in to the dashboard.
 
@@ -58,7 +58,7 @@ Create a volume
    the :guilabel:`Volumes` tab.
 
 Attach a volume to an instance
--------------------------------
+------------------------------
 
 After you create one or more volumes, you can attach them to instances.
 You can attach a volume to one instance at a time.
@@ -107,7 +107,7 @@ Detach a volume from an instance
    A message indicates whether the action was successful.
 
 Create a snapshot from a volume
---------------------------------
+-------------------------------
 
 #. Log in to the dashboard.
 
@@ -128,7 +128,7 @@ Create a snapshot from a volume
    The dashboard shows the new volume snapshot in :guilabel:`Volume Snapshots` tab.
 
 Edit a volume
---------------
+-------------
 
 #. Log in to the dashboard.
 
@@ -151,7 +151,7 @@ Edit a volume
       new value for volume size.
 
 Delete a volume
-----------------
+---------------
 
 When you delete an instance, the data in its attached volumes is not
 deleted.

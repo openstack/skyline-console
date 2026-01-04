@@ -15,7 +15,7 @@ instructions for creating a network and a router. For detailed
 information about managing networks, refer to the `OpenStack Networking Guide
 <https://docs.openstack.org/neutron/latest/admin/>`__.
 
-create a network
+Create a network
 ----------------
 
 #. Log in to the dashboard.
@@ -69,8 +69,8 @@ create a network
 
    The dashboard shows the network on the :guilabel:`Networks` tab.
 
-create a router
-----------------
+Create a router
+---------------
 
 #. Log in to the dashboard.
 
@@ -106,8 +106,8 @@ create a router
 You have successfully created the router. You can view the new topology
 from the :guilabel:`Topology` tab.
 
-create a port
---------------
+Create a port
+-------------
 
 #. Log in to the dashboard.
 
@@ -140,8 +140,8 @@ create a port
 
    The new port is now displayed in the :guilabel:`Ports` list.
 
-create a fip
--------------
+Create a fip
+------------
 
 #. Log in to the dashboard.
 
@@ -167,8 +167,8 @@ create a fip
 
    The dashboard shows the floating ip on the :guilabel:`Floating IPs` tab.
 
-create a security group
-------------------------
+Create a security group
+-----------------------
 
 #. Log in to the dashboard.
 
