@@ -17,6 +17,12 @@ import Base from 'containers/BaseDetail';
 import { qosEndpoint } from 'client/client/constants';
 
 export class BaseDetail extends Base {
+  get leftCardsStyle() {
+    return {
+      flex: 1,
+    };
+  }
+
   get leftCards() {
     return [this.baseInfoCard];
   }
