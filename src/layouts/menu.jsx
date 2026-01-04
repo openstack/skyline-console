@@ -622,6 +622,7 @@ const renderMenu = (t) => {
       path: '/key-manager',
       name: t('Key Manager'),
       key: 'keyManager',
+      endpoints: 'barbican',
       icon: <ContainerOutlined />,
       children: [
         {
