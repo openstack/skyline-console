@@ -139,7 +139,7 @@ export const filterParams = [
 
 export const mapperRule = (data) => {
   let icmpTypeCode = '';
-  let port_range = 'Any';
+  let port_range = t('Any');
   const {
     ethertype,
     protocol,
