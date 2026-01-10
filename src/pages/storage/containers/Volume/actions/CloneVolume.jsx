@@ -31,7 +31,7 @@ export class CloneVolume extends ModalAction {
   static title = t('Clone Volume');
 
   get name() {
-    return t('Clone volume');
+    return t('Clone Volume');
   }
 
   get tips() {

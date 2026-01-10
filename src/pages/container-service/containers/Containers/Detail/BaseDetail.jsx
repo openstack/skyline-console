@@ -291,11 +291,11 @@ export class BaseDetail extends Base {
   get statsCard() {
     const options = [
       {
-        label: t('BLOCK I/O(B)'),
+        label: t('BLOCK I/O (B)'),
         dataIndex: 'stats[BLOCK I/O(B)]',
       },
       {
-        label: t('NET I/O(B)'),
+        label: t('NET I/O (B)'),
         dataIndex: 'stats[NET I/O(B)]',
       },
       {

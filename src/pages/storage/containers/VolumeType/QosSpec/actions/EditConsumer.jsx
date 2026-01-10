@@ -46,9 +46,9 @@ export class EditConsumer extends ModalAction {
         label: t('Consumer'),
         type: 'select',
         options: [
-          { value: 'front-end', label: t('Frontend') },
-          { value: 'back-end', label: t('Backend') },
-          { value: 'both', label: t('Both of Frontend and Backend') },
+          { value: 'front-end', label: t('Front-End') },
+          { value: 'back-end', label: t('Back-End') },
+          { value: 'both', label: t('Both of Front-End and Back-End') },
         ],
         required: true,
       },

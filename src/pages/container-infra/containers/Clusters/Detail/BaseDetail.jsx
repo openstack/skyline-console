@@ -125,7 +125,7 @@ export class BaseDetail extends Base {
           ),
       },
       {
-        label: t('Timeout(Minute)'),
+        label: t('Timeout (Minute)'),
         dataIndex: 'create_timeout',
       },
       {

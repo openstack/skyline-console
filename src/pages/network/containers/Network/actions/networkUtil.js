@@ -34,7 +34,7 @@ const checkAllocation_pools = (rule, value) => {
       : Promise.reject(
           new Error(
             t(
-              'Invalid: Allocation Pools Format Error(e.g. 192.168.1.2,192.168.1.200) and start ip should be less than end ip'
+              'Invalid: Allocation Pools Format Error (e.g. 192.168.1.2,192.168.1.200) and start IP should be less than end IP'
             )
           )
         );
@@ -62,7 +62,7 @@ const checkIpv6Allocation_pools = (rule, value) => {
       : Promise.reject(
           new Error(
             t(
-              'Invalid: Allocation Pools Format Error(e.g. fd00:dead:beef:58::9,fd00:dead:beef:58::13) and start ip should be less than end ip'
+              'Invalid: Allocation Pools Format Error (e.g. fd00:dead:beef:58::9,fd00:dead:beef:58::13) and start IP should be less than end IP'
             )
           )
         );
@@ -130,7 +130,7 @@ function validateAllocationPoolsWithGatewayIp(rule, value) {
           return Promise.reject(
             new Error(
               t(
-                'Gateway ip {gateway_ip} conflicts with allocation pool {pool}',
+                'Gateway IP {gateway_ip} conflicts with allocation pool {pool}',
                 {
                   gateway_ip,
                   pool: conflictPool.replace(',', '-'),
@@ -193,7 +193,7 @@ const checkDNS = (rule, value) => {
     return flag
       ? Promise.resolve(true)
       : Promise.reject(
-          new Error(t('Invalid: DNS Format Error(e.g. 114.114.114.114)'))
+          new Error(t('Invalid: DNS Format Error (e.g. 114.114.114.114)'))
         );
   }
   return Promise.resolve(true);
@@ -209,7 +209,7 @@ const checkIpv6DNS = (rule, value) => {
     return flag
       ? Promise.resolve(true)
       : Promise.reject(
-          new Error(t('Invalid: DNS Format Error(e.g. 1001:1001::)'))
+          new Error(t('Invalid: DNS Format Error (e.g. 1001:1001::)'))
         );
   }
   return Promise.resolve(true);
@@ -226,7 +226,7 @@ const checkHostRoutes = (rule, value) => {
       ? Promise.resolve(true)
       : Promise.reject(
           new Error(
-            t('Host Routes Format Error(e.g. 192.168.200.0/24,10.56.1.254)')
+            t('Host Routes Format Error (e.g. 192.168.200.0/24,10.56.1.254)')
           )
         );
   }
@@ -245,7 +245,7 @@ const checkIpv6HostRoutes = (rule, value) => {
       ? Promise.resolve(true)
       : Promise.reject(
           new Error(
-            t('Host Routes Format Error(e.g. ::0a38:01fe/24,::0a38:01fe)')
+            t('Host Routes Format Error (e.g. ::0a38:01fe/24,::0a38:01fe)')
           )
         );
   }

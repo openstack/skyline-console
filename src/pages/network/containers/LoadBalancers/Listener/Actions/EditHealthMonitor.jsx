@@ -171,7 +171,7 @@ export class EditHealthMonitor extends ModalAction {
       },
       {
         name: 'delay',
-        label: t('Delay Interval(s)'),
+        label: t('Delay Interval (s)'),
         type: 'input-int',
         min: 0,
         extra: t('Maximum interval time for each health check response'),
@@ -180,7 +180,7 @@ export class EditHealthMonitor extends ModalAction {
       },
       {
         name: 'timeout',
-        label: t('Timeout(s)'),
+        label: t('Timeout (s)'),
         type: 'input-int',
         min: 0,
         extra: t(

@@ -200,7 +200,7 @@ export class ParamSetting extends Base {
       const vcpus = getFieldValue('vcpus');
       const memoryGb = getFieldValue('memoryGb');
       if (!vcpus || !memoryGb) {
-        return Promise.reject(t('Please set CPU && Ram first.'));
+        return Promise.reject(t('Please set CPU and RAM first.'));
       }
       const ram = memoryGb * 1024;
       let totalCpu = 0;
@@ -350,7 +350,7 @@ export class ParamSetting extends Base {
       },
       {
         name: 'vcpus',
-        label: t('CPU(Core)'),
+        label: t('CPU (Core)'),
         type: 'input-int',
         min: 1,
         extra: t(
@@ -360,7 +360,7 @@ export class ParamSetting extends Base {
       },
       {
         name: 'memoryGb',
-        label: t('Ram Size (GiB)'),
+        label: t('RAM Size (GiB)'),
         type: 'input-int',
         min: 1,
         required: true,
@@ -449,7 +449,7 @@ export class ParamSetting extends Base {
         required: isGpuComputeType,
         options: this.gpuTypes,
         tip: t(
-          'GPU pass-through will load GPU devices directly to the instance for use. VGPU is a GPU virtualization solution. GPU resources will be segmented and distributed to multiple instances for shared use.'
+          'GPU pass-through will load GPU devices directly to the instance for use. vGPU is a GPU virtualization solution. GPU resources will be segmented and distributed to multiple instances for shared use.'
         ),
       },
       {
@@ -545,7 +545,7 @@ export class ParamSetting extends Base {
       },
       {
         name: 'usbType',
-        label: t('Usb Controller'),
+        label: t('USB Controller'),
         type: 'select',
         hidden: !attachUsb,
         required: attachUsb,
@@ -553,7 +553,7 @@ export class ParamSetting extends Base {
       },
       {
         name: 'usbNumber',
-        label: t('Number of Usb Controller'),
+        label: t('Number of USB Controller'),
         type: 'input-int',
         min: 1,
         hidden: !attachUsb,
@@ -561,7 +561,7 @@ export class ParamSetting extends Base {
       },
       {
         name: 'bare-metal-type',
-        label: t('BareMetal Parameters'),
+        label: t('Bare Metal Parameters'),
         type: 'title',
         hidden: !isBareMetal,
       },

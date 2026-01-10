@@ -33,7 +33,7 @@ export class Migrate extends ModalAction {
   }
 
   get name() {
-    return t('Migrate volume');
+    return t('Migrate Volume');
   }
 
   init() {

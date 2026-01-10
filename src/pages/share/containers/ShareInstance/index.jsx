@@ -78,7 +78,7 @@ export class ShareInstance extends Base {
       withoutName: true,
     },
     {
-      title: t('Share Id'),
+      title: t('Share ID'),
       dataIndex: 'share_id',
       isLink: true,
       routeName: this.getRouteName('shareDetail'),

@@ -43,12 +43,12 @@ export class HypervisorDetail extends Base {
         dataIndex: 'hypervisor_type',
       },
       {
-        title: t('VCPU (Core)'),
+        title: t('vCPU (Core)'),
         dataIndex: 'vcpus_used_percent',
         render: (value, record) =>
           record.hypervisor_type === 'ironic' ? (
             <Tooltip
-              title={t('vCPUs and ram are not used for bare metal scheduling')}
+              title={t('vCPUs and RAM are not used for bare metal scheduling.')}
             >
               <span>-</span>
             </Tooltip>
@@ -62,7 +62,7 @@ export class HypervisorDetail extends Base {
         render: (value, record) =>
           record.hypervisor_type === 'ironic' ? (
             <Tooltip
-              title={t('vCPUs and ram are not used for bare metal scheduling')}
+              title={t('vCPUs and RAM are not used for bare metal scheduling.')}
             >
               <span>-</span>
             </Tooltip>
@@ -74,7 +74,7 @@ export class HypervisorDetail extends Base {
     const { vgpus, vgpus_used } = this.store.detail;
     if (vgpus) {
       info.push({
-        title: t('VGPU (Core)'),
+        title: t('vGPU (Core)'),
         dataIndex: 'vgpus',
         render: () => `${vgpus_used} / ${vgpus}`,
       });

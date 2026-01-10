@@ -53,7 +53,7 @@ export class StepManagement extends Base {
       },
       {
         name: 'create_timeout',
-        label: t('Timeout(Minute)'),
+        label: t('Timeout (Minute)'),
         type: 'input-int',
         min: 1,
         tip: t('The timeout for cluster creation in minutes.'),

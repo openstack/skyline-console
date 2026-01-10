@@ -230,7 +230,7 @@ const ipv4Validator = (item, value) => {
     if (isIPv4(value)) {
       return Promise.resolve(true);
     }
-    return Promise.reject(new Error(t('Invalid: Please input a valid ipv4')));
+    return Promise.reject(new Error(t('Invalid: Please input a valid IPv4.')));
   }
   if (required && (isNil(value) || value === '')) {
     return Promise.reject();
@@ -244,7 +244,7 @@ const ipv6Validator = (item, value) => {
     if (isIpv6(value)) {
       return Promise.resolve(true);
     }
-    return Promise.reject(new Error(t('Invalid: Please input a valid ipv4')));
+    return Promise.reject(new Error(t('Invalid: Please input a valid IPv4.')));
   }
   if (required && (isNil(value) || value === '')) {
     return Promise.reject();
@@ -568,7 +568,7 @@ export const cidrAllValidate = (rule, value) => {
   }
   return Promise.reject(
     getErrorMessage(
-      t('CIDR Format Error(e.g. 192.168.0.0/24, 2001:DB8::/48)'),
+      t('CIDR Format Error (e.g. 192.168.0.0/24, 2001:DB8::/48)'),
       true
     )
   );

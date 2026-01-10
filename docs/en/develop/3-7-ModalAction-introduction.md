@@ -74,7 +74,7 @@ English | [简体中文](../../zh/develop/3-7-ModalAction-introduction.md)
 
     ```javascript
     get name() {
-      return t('Attach volume');
+      return t('Attach Volume');
     }
     ```
 

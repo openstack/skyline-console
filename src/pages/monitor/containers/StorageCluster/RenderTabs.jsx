@@ -1,3 +1,17 @@
+// Copyright 2021 99cloud
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 import React, { useContext, useEffect, useState } from 'react';
 import { get } from 'lodash';
 import { Tabs } from 'antd';
@@ -206,7 +220,7 @@ const poolsColumns = [
     isHideable: true,
   },
   {
-    title: t('Object Count '),
+    title: t('Object Count'),
     dataIndex: 'ceph_pool_objects',
     isHideable: true,
   },
@@ -246,12 +260,12 @@ const osdsColumns = [
     isHideable: true,
   },
   {
-    title: t('Apply Latency(ms)'),
+    title: t('Apply Latency (ms)'),
     dataIndex: 'ceph_osd_apply_latency_ms',
     isHideable: true,
   },
   {
-    title: t('Commit Latency(ms)'),
+    title: t('Commit Latency (ms)'),
     dataIndex: 'ceph_osd_commit_latency_ms',
     isHideable: true,
   },
