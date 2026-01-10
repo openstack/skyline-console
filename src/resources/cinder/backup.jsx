@@ -48,7 +48,7 @@ export const createTip = (
 
 export const backupModeList = [
   { value: false, label: t('Full Backup') },
-  { value: true, label: t('Increment Backup') },
+  { value: true, label: t('Incremental Backup') },
 ];
 
 export const modeTip = t(

@@ -59,7 +59,7 @@ describe('The Network Page', () => {
     cy.tableSearchText(name)
       .clickActionInMore('Create Subnet', 5000)
       .formInput('subnet_name', subnetName2)
-      .formSelect('ip_version', 'ipv6')
+      .formSelect('ip_version', 'IPv6')
       .formInput('cidr', cidrV6)
       .clickModalActionSubmitButton();
     cy.tableSearchText(name).checkColumnValue(5, 2);

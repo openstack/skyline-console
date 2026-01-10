@@ -65,7 +65,7 @@ export class PortForwarding extends Base {
       },
     },
     {
-      title: t('Internal Ip Address'),
+      title: t('Internal IP Address'),
       dataIndex: 'internal_ip_address',
       isHideable: true,
     },
@@ -110,7 +110,7 @@ export class PortForwarding extends Base {
         },
       },
       {
-        label: t('Internal Ip Address'),
+        label: t('Internal IP Address'),
         name: 'internal_ip_address',
         filterFunc: (value, filter) => {
           return value.includes(filter);

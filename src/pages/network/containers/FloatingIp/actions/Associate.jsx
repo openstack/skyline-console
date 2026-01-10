@@ -241,7 +241,7 @@ export class Associate extends ModalAction {
     const ret = [
       {
         name: 'floatingIp',
-        label: t('Floating Ip'),
+        label: t('Floating IP'),
         type: 'label',
         iconType: 'floatingIp',
       },
@@ -280,17 +280,17 @@ export class Associate extends ModalAction {
               isMulti: false,
               filterParams: [
                 {
-                  label: t('Ip Address'),
+                  label: t('IP Address'),
                   name: 'name',
                 },
               ],
               columns: [
                 {
-                  title: t('Ip Address'),
+                  title: t('IP Address'),
                   dataIndex: 'name',
                 },
                 {
-                  title: t('Mac Address'),
+                  title: t('MAC Address'),
                   dataIndex: 'mac_address',
                 },
                 {

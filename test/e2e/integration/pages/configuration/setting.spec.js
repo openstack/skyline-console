@@ -41,7 +41,7 @@ describe('The Setting Page', () => {
         .clickTab('Custom', 'custom')
         .clickTab('Heterogeneous Computing', 'heterogeneous_computing')
         .clickTab('ARM Architecture', 'arm_architecture')
-        .clickTab('X86 Architecture', 'x86_architecture')
+        .clickTab('x86 Architecture', 'x86_architecture')
         .clickTab('Bare Metal', 'bare_metal');
     });
   });

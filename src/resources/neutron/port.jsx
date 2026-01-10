@@ -62,7 +62,7 @@ export function getPortsAndReasons(
       available = false;
       // already has FIP
     } else if (it.floatingIP) {
-      reason = `${t('Is associate to floating ip: ')} ${it.floatingIP}`;
+      reason = `${t('Is associate to floating IP: ')} ${it.floatingIP}`;
       available = false;
       // subnet unreachable by all FIPs
     } else if (
@@ -71,8 +71,8 @@ export function getPortsAndReasons(
       ) < 0
     ) {
       reason = forOneFIP
-        ? `${t('It is unreachable for this floating ip.')}`
-        : `${t('It is unreachable for all floating ips.')}`;
+        ? `${t('It is unreachable for this floating IP.')}`
+        : `${t('It is unreachable for all floating IPs.')}`;
       available = false;
     }
     return {
@@ -207,13 +207,13 @@ export function getPortFormItem(withResourceNameAndStatusFilter = true) {
       isMulti: false,
       filterParams: [
         {
-          label: t('Ip Address'),
+          label: t('IP Address'),
           name: 'name',
         },
       ],
       columns: [
         {
-          title: t('Ip Address'),
+          title: t('IP Address'),
           dataIndex: 'name',
         },
         {
@@ -252,7 +252,7 @@ export const portColumns = [
     sorter: false,
   },
   {
-    title: t('Mac Address'),
+    title: t('MAC Address'),
     dataIndex: 'mac_address',
     sorter: false,
   },
@@ -322,7 +322,7 @@ export const getPortColumns = (self) => {
       },
     },
     {
-      title: t('Mac Address'),
+      title: t('MAC Address'),
       dataIndex: 'mac_address',
       isHideable: true,
     },

@@ -116,13 +116,13 @@ export class DetachInterface extends ModalAction {
         initValue: autoSelectInterface || {},
         filterParams: [
           {
-            label: t('Ip Address'),
+            label: t('IP Address'),
             name: 'name',
           },
         ],
         columns: [
           {
-            title: t('Ip Address'),
+            title: t('IP Address'),
             dataIndex: 'fixed_ips',
             render: (value) =>
               value.map((item) => (
@@ -135,7 +135,7 @@ export class DetachInterface extends ModalAction {
             valueMap: portStatus,
           },
           {
-            title: t('Mac Address'),
+            title: t('MAC Address'),
             dataIndex: 'mac_addr',
           },
         ],

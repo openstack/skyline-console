@@ -68,7 +68,7 @@ class MacAddressInput extends Component {
               options={
                 options || [
                   {
-                    label: t('Auto allocate mac address'),
+                    label: t('Auto allocate MAC address'),
                     value: 'auto',
                   },
                   {

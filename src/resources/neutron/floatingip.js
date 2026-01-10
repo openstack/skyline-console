@@ -265,17 +265,17 @@ export const getFixedIPFormItemForAssociate = (label, self) => {
     isMulti: false,
     filterParams: [
       {
-        label: t('Ip Address'),
+        label: t('IP Address'),
         name: 'name',
       },
     ],
     columns: [
       {
-        title: t('Ip Address'),
+        title: t('IP Address'),
         dataIndex: 'name',
       },
       {
-        title: t('Mac Address'),
+        title: t('MAC Address'),
         dataIndex: 'mac_address',
       },
       {
@@ -314,7 +314,7 @@ export const getFIPFormItemForAssociate = (self) => {
   const { canAssociateFloatingIPs, fipLoading } = self.state;
   return {
     name: 'fip',
-    label: t('Floating Ip Address'),
+    label: t('Floating IP Address'),
     type: 'select-table',
     required: true,
     data: canAssociateFloatingIPs,
@@ -324,13 +324,13 @@ export const getFIPFormItemForAssociate = (self) => {
     disabledFunc: self.disableFIPAssociate,
     filterParams: [
       {
-        label: t('Floating Ip Address'),
+        label: t('Floating IP Address'),
         name: 'name',
       },
     ],
     columns: [
       {
-        title: t('Floating Ip Address'),
+        title: t('Floating IP Address'),
         dataIndex: 'name',
       },
       {

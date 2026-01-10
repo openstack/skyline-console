@@ -262,11 +262,11 @@ export class CreateSubnet extends ModalAction {
         type: 'select',
         options: [
           {
-            label: 'ipv4',
+            label: t('IPv4'),
             value: 'ipv4',
           },
           {
-            label: 'ipv6',
+            label: t('IPv6'),
             value: 'ipv6',
           },
         ],
@@ -283,15 +283,15 @@ export class CreateSubnet extends ModalAction {
         type: 'select',
         options: [
           {
-            label: 'dhcpv6-stateful',
+            label: t('DHCPv6-stateful'),
             value: 'dhcpv6-stateful',
           },
           {
-            label: 'dhcpv6-stateless',
+            label: t('DHCPv6-stateless'),
             value: 'dhcpv6-stateless',
           },
           {
-            label: 'slaac',
+            label: t('SLAAC'),
             value: 'slaac',
           },
         ],
@@ -319,15 +319,15 @@ export class CreateSubnet extends ModalAction {
         type: 'select',
         options: [
           {
-            label: 'dhcpv6-stateful',
+            label: t('DHCPv6-stateful'),
             value: 'dhcpv6-stateful',
           },
           {
-            label: 'dhcpv6-stateless',
+            label: t('DHCPv6-stateless'),
             value: 'dhcpv6-stateless',
           },
           {
-            label: 'slaac',
+            label: t('SLAAC'),
             value: 'slaac',
           },
         ],
@@ -382,7 +382,7 @@ export class CreateSubnet extends ModalAction {
             ? (rule, value) => {
                 if (!this.checkGateway(value)) {
                   return Promise.reject(
-                    new Error(t('Invalid: Please input a valid ipv6.'))
+                    new Error(t('Invalid: Please input a valid IPv6.'))
                   );
                 }
                 return Promise.resolve();
@@ -410,7 +410,7 @@ export class CreateSubnet extends ModalAction {
         name: 'allocation_pools',
         label: t('Allocation Pools'),
         type: 'textarea',
-        extra: t('IP address allocation polls, one enter per line(e.g. {ip})', {
+        extra: t('IP address allocation polls, one enter per line (e.g. {ip})', {
           ip: isIpv4 ? '192.168.1.2,192.168.1.200' : '1001:1001::,1001:1002::',
         }),
         hidden: !more,
@@ -420,7 +420,7 @@ export class CreateSubnet extends ModalAction {
         name: 'dns',
         label: t('DNS'),
         type: 'textarea',
-        extra: t('One entry per line(e.g. {ip})', {
+        extra: t('One entry per line (e.g. {ip})', {
           ip: isIpv4 ? '114.114.114.114' : '1001:1001::',
         }),
         hidden: !more,
@@ -431,7 +431,7 @@ export class CreateSubnet extends ModalAction {
         label: t('Host Routes'),
         type: 'textarea',
         extra: t(
-          'Additional routes announced to the instance, one entry per line(e.g. {ip})',
+          'Additional routes announced to the instance, one entry per line (e.g. {ip})',
           {
             ip: isIpv4
               ? '192.168.200.0/24,10.56.1.254'

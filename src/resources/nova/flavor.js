@@ -21,15 +21,15 @@ export const cpuPolicyList = {
 
 export const cpuThreadPolicyList = [
   {
-    label: t('Prefer(Thread siblings are preferred)'),
+    label: t('Prefer (Thread siblings are preferred)'),
     value: 'prefer',
   },
   {
-    label: t('Isolate(No multithreading)'),
+    label: t('Isolate (No multithreading)'),
     value: 'isolate',
   },
   {
-    label: t('Require(Need multithreading)'),
+    label: t('Require (Need multithreading)'),
     value: 'require',
   },
 ];
@@ -42,15 +42,15 @@ export const cpuThreadPolicyMap = {
 
 export const pageTypeList = [
   {
-    label: t('Large(Optimal performance)'),
+    label: t('Large (Optimal performance)'),
     value: 'large',
   },
   {
-    label: t('Small(Not recommended)'),
+    label: t('Small (Not recommended)'),
     value: 'small',
   },
   {
-    label: t('Any(Random)'),
+    label: t('Any (Random)'),
     value: 'any',
   },
   {
@@ -66,7 +66,7 @@ export const pageTypeMap = {
 };
 
 export const flavorArchitectures = {
-  x86_architecture: t('X86 Architecture'),
+  x86_architecture: t('x86 Architecture'),
   heterogeneous_computing: t('Heterogeneous Computing'),
   bare_metal: t('Bare Metal'),
   arm_architecture: t('ARM Architecture'),
@@ -149,7 +149,7 @@ export const getBaseColumns = (self) => [
     valueMap: flavorCategoryList,
   },
   {
-    title: t('CPU'),
+    title: t('vCPU'),
     dataIndex: 'vcpus',
     isHideable: true,
   },
@@ -199,7 +199,7 @@ export const extraColumns = [
 ];
 
 export const cpuArchColumn = {
-  title: t('CPU Arch'),
+  title: t('CPU Architecture'),
   dataIndex: 'cpu_arch',
   isHideable: true,
 };

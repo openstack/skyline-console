@@ -906,7 +906,7 @@ const renderMenu = (t) => {
     },
     {
       path: '/configuration-admin',
-      name: t('Global Setting'),
+      name: t('Global Settings'),
       key: 'configurationAdmin',
       icon: <SettingOutlined />,
       children: [
@@ -950,7 +950,7 @@ const renderMenu = (t) => {
     },
     {
       path: '/container',
-      name: t('Container'),
+      name: t('Containers'),
       key: 'containerAdmin',
       icon: <ContainerOutlined />,
       children: [

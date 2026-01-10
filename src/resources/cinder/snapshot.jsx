@@ -33,8 +33,8 @@ export const getDiskInfo = (detail) => {
   const { delete_on_termination } = selfBdmData;
   const deleteType = delete_on_termination ? 1 : 0;
   const deleteTypeLabel = delete_on_termination
-    ? t('Deleted with the instance')
-    : t('Not deleted with the instance');
+    ? t('Delete with the instance')
+    : t('Do not delete with the instance');
   const volumeTypeItem = volumeTypes().find((it) => it.label === volume_type);
   const diskInfo = {
     type: volumeTypeItem?.value,

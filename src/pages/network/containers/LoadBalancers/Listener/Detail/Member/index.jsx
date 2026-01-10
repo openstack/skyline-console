@@ -85,7 +85,7 @@ export class Members extends Base {
       isHideable: true,
     },
     {
-      title: t('Ip Address'),
+      title: t('IP Address'),
       dataIndex: 'address',
       isHideable: true,
     },

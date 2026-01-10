@@ -32,7 +32,7 @@ export class CreateAllowedAddressPair extends ModalAction {
   }
 
   get name() {
-    return t('create allowed address pair');
+    return t('Create Allowed Address Pair');
   }
 
   get instanceName() {
@@ -96,11 +96,11 @@ export class CreateAllowedAddressPair extends ModalAction {
         type: 'select',
         options: [
           {
-            label: 'ipv4',
+            label: t('IPv4'),
             value: 'ipv4',
           },
           {
-            label: 'ipv6',
+            label: t('IPv6'),
             value: 'ipv6',
           },
         ],
@@ -131,7 +131,7 @@ export class CreateAllowedAddressPair extends ModalAction {
       },
       {
         name: 'mac_address',
-        label: t('Mac Address'),
+        label: t('MAC Address'),
         wrapperCol: { span: 16 },
         required: true,
         // component: <MacAddressInput />,
