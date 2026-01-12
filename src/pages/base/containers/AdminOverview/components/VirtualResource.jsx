@@ -21,12 +21,12 @@ export const resourceCircle = [
   {
     resource: 'vcpus',
     used: 'vcpus_used',
-    label: t('CPU Usages (Core)'),
+    label: t('CPU Usage (Core)'),
   },
   {
     resource: 'memory_mb',
     used: 'memory_mb_used',
-    label: t('Memory Usages (GiB)'),
+    label: t('Memory Usage (GiB)'),
   },
 ];
 
