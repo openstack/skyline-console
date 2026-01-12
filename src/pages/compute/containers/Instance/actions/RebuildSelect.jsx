@@ -15,8 +15,6 @@
 import { inject, observer } from 'mobx-react';
 import globalImageStore from 'stores/glance/image';
 import globalServerStore from 'stores/nova/instance';
-import { InstanceVolumeStore } from 'stores/nova/instance-volume';
-import { SnapshotStore } from 'stores/cinder/snapshot';
 import { ModalAction } from 'containers/Action';
 import {
   isActiveOrShutOff,
@@ -28,8 +26,11 @@ import {
   getImageColumns,
   canImageCreateInstance,
   getImageSystemTabs,
+  imageFormats,
+  imageStatus,
 } from 'resources/glance/image';
-import { isOsDisk } from 'resources/cinder/volume';
+import globalInstanceSnapshotStore from 'src/stores/glance/instance-snapshot';
+import { getDiskInfo } from 'src/resources/cinder/snapshot';
 
 export class Rebuild extends ModalAction {
   static id = 'rebuild';
@@ -39,10 +40,10 @@ export class Rebuild extends ModalAction {
   init() {
     this.store = globalServerStore;
     this.imageStore = globalImageStore;
-    this.instanceVolumeStore = new InstanceVolumeStore();
-    this.snapshotStore = new SnapshotStore();
+    this.instanceSnapshotStore = globalInstanceSnapshotStore;
+    this.state.source = 'image';
     this.getImages();
-    this.getRootVolumeSnapshots();
+    this.getInstanceSnapshots();
   }
 
   get name() {
@@ -87,16 +88,24 @@ export class Rebuild extends ModalAction {
     this.imageStore.fetchList({ all_projects: this.hasAdminRole });
   }
 
-  async getRootVolumeSnapshots() {
-    const volumes = await this.instanceVolumeStore.fetchList({
-      serverId: this.item.id,
-    });
-    const rootDisk = volumes.find((v) => isOsDisk(v));
-    if (!rootDisk) {
-      return;
-    }
-    const snapshots = await this.snapshotStore.fetchList({ id: rootDisk.id });
-    this.setState({ snapshots });
+  async getInstanceSnapshots() {
+    await this.instanceSnapshotStore.fetchList();
+  }
+
+  get snapshots() {
+    const {
+      list: { data },
+    } = this.instanceSnapshotStore;
+    return data || [];
+  }
+
+  get sourceTypeIsSnapshot() {
+    const { source } = this.state;
+    return source === 'instanceSnapshot';
+  }
+
+  onSourceChange(value) {
+    this.setState({ source: value });
   }
 
   get systemTabs() {
@@ -107,13 +116,13 @@ export class Rebuild extends ModalAction {
     const { name } = this.item;
     const value = {
       instance: name,
+      source: 'image',
     };
     return value;
   }
 
   static policy = 'os_compute_api:servers:rebuild';
 
-  // todo:
   static isRootVolumeInUse = () => true;
 
   static allowed = (item) => {
@@ -131,12 +140,108 @@ export class Rebuild extends ModalAction {
     });
   };
 
+  get instanceSnapshotColumns() {
+    return [
+      {
+        title: t('Name'),
+        dataIndex: 'name',
+      },
+      {
+        title: t('Disk Format'),
+        dataIndex: 'disk_format',
+        valueMap: imageFormats,
+      },
+      {
+        title: t('Min System Disk'),
+        dataIndex: 'min_disk',
+        unit: 'GiB',
+      },
+      {
+        title: t('Min Memory'),
+        dataIndex: 'min_ram',
+        render: (text) => `${text / 1024}GiB`,
+      },
+      {
+        title: t('Status'),
+        dataIndex: 'status',
+        valueMap: imageStatus,
+      },
+      {
+        title: t('Created At'),
+        dataIndex: 'created_at',
+        isHideable: true,
+        valueRender: 'sinceTime',
+      },
+    ];
+  }
+
+  onInstanceSnapshotChange = async (value) => {
+    const { min_disk, size, id } = value.selectedRows[0] || {};
+    if (!id) {
+      this.setState({
+        instanceSnapshotDisk: null,
+        instanceSnapshotMinSize: 0,
+        instanceSnapshotDataVolumes: [],
+      });
+      return;
+    }
+    const detail =
+      await this.instanceSnapshotStore.fetchInstanceSnapshotVolumeData({ id });
+    const {
+      snapshotDetail: { size: snapshotSize = 0 } = {},
+      block_device_mapping = '',
+      volumeDetail,
+      snapshotDetail,
+      instanceSnapshotDataVolumes = [],
+    } = detail;
+    if (!volumeDetail) {
+      this.updateFormValue('bootFromVolume', true);
+      this.setState({
+        instanceSnapshotDisk: null,
+        instanceSnapshotMinSize: 0,
+        instanceSnapshotDataVolumes: [],
+        bootFromVolume: true,
+      });
+    }
+    const minSize = Math.max(min_disk, size, snapshotSize);
+
+    const bdmFormatData = JSON.parse(block_device_mapping) || [];
+    const systemDiskBdm = bdmFormatData[0] || {};
+    const instanceSnapshotDisk = getDiskInfo({
+      volumeDetail,
+      snapshotDetail,
+      selfBdmData: systemDiskBdm,
+    });
+    this.updateFormValue('instanceSnapshotDisk', instanceSnapshotDisk);
+    this.setState({
+      instanceSnapshotDisk,
+      instanceSnapshotMinSize: minSize,
+      instanceSnapshotDataVolumes,
+    });
+  };
+
+  get sourceTypeIsImage() {
+    const { source } = this.state;
+    return source === 'image';
+  }
+
   get instanceExtra() {
     const { snapshots = [] } = this.state;
     if (!snapshots.length) {
       return '';
     }
     return t('The root disk of the instance has snapshots');
+  }
+
+  get sourceTypes() {
+    const types = [
+      { label: t('Image'), value: 'image' },
+      {
+        label: t('Instance Snapshot'),
+        value: 'instanceSnapshot',
+      },
+    ];
+    return types;
   }
 
   get formItems() {
@@ -149,12 +254,26 @@ export class Rebuild extends ModalAction {
         extra: this.instanceExtra,
       },
       {
+        name: 'source',
+        label: t('Start Source'),
+        type: 'radio',
+        options: this.sourceTypes,
+        required: true,
+        tip: t(
+          'The start source is a template used to create an instance. You can choose an image.'
+        ),
+        onChange: (value) => {
+          this.onSourceChange(value);
+        },
+      },
+      {
         name: 'image',
         label: t('Operating System'),
         type: 'select-table',
         data: this.images,
         isLoading: this.imageStore.list.isLoading,
-        required: true,
+        required: this.sourceTypeIsImage,
+        display: this.sourceTypeIsImage,
         isMulti: false,
         filterParams: [
           {
@@ -168,15 +287,37 @@ export class Rebuild extends ModalAction {
         selectedLabel: t('Image'),
         onTabChange: this.onImageTabChange,
       },
+      {
+        name: 'instanceSnapshot',
+        label: t('Instance Snapshot'),
+        type: 'select-table',
+        data: this.snapshots,
+        required: this.sourceTypeIsSnapshot,
+        isMulti: false,
+        hidden: !this.sourceTypeIsSnapshot,
+        display: this.sourceTypeIsSnapshot,
+        onChange: this.onInstanceSnapshotChange,
+        filterParams: [
+          {
+            label: t('Name'),
+            name: 'name',
+          },
+        ],
+        columns: this.instanceSnapshotColumns,
+      },
     ];
   }
 
   onSubmit = (values) => {
     const { id } = this.item;
     const {
-      image: { selectedRowKeys = [] },
-    } = values;
-    return this.store.rebuild({ id, image: selectedRowKeys[0] });
+      source,
+      image: { selectedRowKeys: imageSelected = [] } = {},
+      instanceSnapshot: { selectedRowKeys: snapshotSelected = [] } = {},
+    } = values || {};
+    const imageRef =
+      source === 'instanceSnapshot' ? snapshotSelected[0] : imageSelected[0];
+    return this.store.rebuild({ id, imageRef });
   };
 }
 

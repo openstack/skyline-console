@@ -17,8 +17,8 @@ import { get } from 'lodash';
 import client from 'client';
 import Base from 'stores/base';
 import { mapperRule } from 'resources/neutron/security-group-rule';
-import { RecycleBinStore } from '../skyline/recycle-server';
 import { hashPasswordForCloudInit } from 'src/resources/nova/instance';
+import { RecycleBinStore } from '../skyline/recycle-server';
 
 export class ServerStore extends Base {
   @observable
@@ -411,10 +411,10 @@ export class ServerStore extends Base {
   }
 
   @action
-  async rebuild({ id, image }) {
+  async rebuild({ id, imageRef }) {
     const body = {
       rebuild: {
-        imageRef: image,
+        imageRef,
       },
     };
     return this.operation({ body, id });
