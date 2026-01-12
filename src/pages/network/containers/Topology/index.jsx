@@ -780,7 +780,7 @@ export class Topology extends React.Component {
             icon={<RedoOutlined />}
           />
           <Checkbox onChange={() => this.onCheckChange()} checked={showAll}>
-            {t('Show Instance')}
+            {t('Show Instances')}
           </Checkbox>
         </div>
         <Spin spinning={loading}>
