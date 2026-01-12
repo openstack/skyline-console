@@ -75,7 +75,7 @@ const instanceColors = {
 };
 
 const volumeColors = {
-  active: { color: globalCSS.successColor, text: t('Attaching') },
+  active: { color: globalCSS.successColor, text: t('Attached') },
   error: { color: globalCSS.errorColor, text: t('Error') },
   available: { color: '#E6F2E0', text: t('Unattached') },
   other: { color: globalCSS.warnLightColor, text: t('Others') },
