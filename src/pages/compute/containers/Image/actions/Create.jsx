@@ -210,7 +210,7 @@ export class CreateForm extends FormAction {
       },
       {
         name: 'owner',
-        label: t('Owned Project'),
+        label: t('Project'),
         type: 'select-table',
         required: this.isAdminPage,
         hidden: !this.isAdminPage,

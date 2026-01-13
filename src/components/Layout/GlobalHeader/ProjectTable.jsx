@@ -116,7 +116,7 @@ export class ProjectSelect extends ModalAction {
     return [
       {
         name: 'project',
-        label: t('Owned Project'),
+        label: t('Project'),
         type: 'select-table',
         data: this.projects,
         isLoading: globalUserStore.userProjects.isLoading,
