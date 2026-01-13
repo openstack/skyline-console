@@ -43,7 +43,7 @@ export const imageOS = {
   windows: t('Windows'),
   debian: t('Debian'),
   coreos: t('CoreOS'),
-  arch: t('Arch'),
+  arch: t('Arch Linux'),
   freebsd: t('FreeBSD'),
   others: t('Others'),
 };

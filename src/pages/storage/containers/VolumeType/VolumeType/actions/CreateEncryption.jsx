@@ -64,8 +64,8 @@ export class CreateEncryption extends ModalAction {
         label: t('Control Location'),
         type: 'select',
         options: [
-          { value: 'front-end', label: t('Front End') },
-          { value: 'back-end', label: t('Back End') },
+          { value: 'front-end', label: t('Front-End') },
+          { value: 'back-end', label: t('Back-End') },
         ],
         required: true,
       },

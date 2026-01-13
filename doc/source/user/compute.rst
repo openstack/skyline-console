@@ -164,14 +164,14 @@ Allocate a floating IP address to an instance
    and click :guilabel:`Associate Floating IP`.
 
 #. In the :guilabel:`Associate Floating IP` dialog box, select
-   :guilabel:`Instance IP` and :guilabel:`Floating Ip Address`.
+   :guilabel:`Instance IP` and :guilabel:`Floating IP Address`.
 
 #. Click :guilabel:`OK`.
 
 .. note::
 
    To disassociate an IP address from an instance, click the
-   :guilabel:`Disassociate Floating Ip` button.
+   :guilabel:`Disassociate Floating IP` button.
 
 Upload an image
 ---------------

@@ -111,7 +111,7 @@ export class PortDetail extends Base {
         valueRender: 'yesNo',
       },
       {
-        title: t('Mac Address'),
+        title: t('MAC Address'),
         dataIndex: 'mac_address',
       },
       {

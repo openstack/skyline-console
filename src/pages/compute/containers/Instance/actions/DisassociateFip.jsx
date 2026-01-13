@@ -19,14 +19,14 @@ import { ModalAction } from 'containers/Action';
 export class DisassociateFip extends ModalAction {
   static id = 'DisassociateFip';
 
-  static title = t('Disassociate Floating Ip');
+  static title = t('Disassociate Floating IP');
 
   init() {
     this.store = new FloatingIpStore();
   }
 
   get name() {
-    return t('disassociate floating ip');
+    return t('disassociate floating IP');
   }
 
   get fips() {
@@ -67,7 +67,7 @@ export class DisassociateFip extends ModalAction {
       },
       {
         name: 'address',
-        label: t('Floating Ip'),
+        label: t('Floating IP'),
         type: 'select',
         required: true,
         options: this.fips,

@@ -38,7 +38,7 @@ export default class index extends Component {
     const { componentProps = {}, formItemProps = {} } = this.props;
     const { version = 4, ...componentRest } = componentProps;
     const placeholder =
-      version === 4 ? t('Please input ipv4') : t('Please input ipv6');
+      version === 4 ? t('Please input IPv4') : t('Please input IPv6');
     const props = {
       placeholder,
       ...componentRest,

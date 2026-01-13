@@ -67,7 +67,7 @@ const IPDistributor = ({ componentProps, formItemProps }) => {
                                 if (!isIPv4(ip) && !isIpv6(ip)) {
                                   return Promise.reject(
                                     new Error(
-                                      t('Invalid: Please input a valid ip')
+                                      t('Invalid: Please input a valid IP')
                                     )
                                   );
                                 }

@@ -72,7 +72,7 @@ export class Edit extends ModalAction {
     }
     return Promise.reject(
       t(
-        'Please upload files smaller than { size }GiB on the page. It is recommended to upload files over { size }GiB using API.',
+        'Please upload files smaller than { size } GiB on the page. It is recommended to upload files over { size } GiB using API.',
         { size: this.maxSize }
       )
     );

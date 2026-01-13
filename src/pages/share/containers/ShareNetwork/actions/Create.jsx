@@ -146,7 +146,7 @@ export class Create extends ModalAction {
             dataIndex: 'name',
           },
           {
-            title: t('Cidr'),
+            title: t('CIDR'),
             dataIndex: 'cidr',
           },
           {

@@ -93,7 +93,7 @@ class MacAddressInput extends Component {
                     validator: macAddressValidate,
                     required: true,
                     message: t(
-                      'Invalid Mac Address. Please Use ":" as separator.'
+                      'Invalid MAC Address. Please use ":" as separator.'
                     ),
                   },
                 ]}
@@ -103,7 +103,7 @@ class MacAddressInput extends Component {
               </Form.Item>
             ) : null
             // <span style={{ lineHeight: '32px', display: type !== 'auto' ? 'none' : '' }}>
-            //   {t('Mac Address Numbers can be use {num}'
+            //   {t('MAC Address Numbers can be use {num}'
             //     , { num: 123 })}
             // </span>
           }

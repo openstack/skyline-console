@@ -62,7 +62,7 @@ const Item = ({ subnetsAvailable, onChange, value }) => {
           onChange={handleSelectChange}
         />
         {subnetItem && (
-          <div style={{ marginTop: 16 }}>{`${t('Cidr')}: ${
+          <div style={{ marginTop: 16 }}>{`${t('CIDR')}: ${
             subnetItem.cidr
           }`}</div>
         )}

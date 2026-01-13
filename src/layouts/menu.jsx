@@ -351,7 +351,7 @@ const renderMenu = (t) => {
           children: [
             {
               path: /^\/network\/floatingip\/detail\/.[^/]+$/,
-              name: t('Floating Ip Detail'),
+              name: t('Floating IP Detail'),
               key: 'fipDetail',
               level: 2,
               routePath: '/network/floatingip/detail/:id',
@@ -374,7 +374,7 @@ const renderMenu = (t) => {
           children: [
             {
               path: '/network/load-balancers/create',
-              name: t('Create Loadbalancer'),
+              name: t('Create Load Balancer'),
               key: 'lbCreate',
               level: 2,
             },

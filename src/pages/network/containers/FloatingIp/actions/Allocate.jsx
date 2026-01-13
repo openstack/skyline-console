@@ -304,7 +304,7 @@ export class Allocate extends ModalAction {
       },
       {
         name: 'subnet_id',
-        label: t('Owned Subnet'),
+        label: t('Subnet'),
         type: 'select',
         options: subnets,
         isWrappedValue: true,

@@ -866,7 +866,7 @@
       ```javascript
       {
         name: 'fixed_ips',
-        label: t('Owned Subnet'),
+        label: t('Subnet'),
         type: 'ip-distributer',
         subnets: subnetDetails,
         hidden: !network_id,
@@ -884,7 +884,7 @@
       ```javascript
       {
         name: 'mac_address',
-        label: t('Mac Address'),
+        label: t('MAC Address'),
         wrapperCol: { span: 16 },
         type: 'mac-address',
         required: true,
@@ -901,7 +901,7 @@
       ```javascript
       {
         name: 'network_id',
-        label: t('Owned Network'),
+        label: t('Network'),
         type: 'network-select-table',
         onChange: this.handleOwnedNetworkChange,
         required: true,

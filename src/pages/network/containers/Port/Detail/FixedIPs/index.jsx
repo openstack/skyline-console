@@ -62,7 +62,7 @@ export class FixedIP extends Base {
       },
     },
     {
-      title: t('Owned Subnet'),
+      title: t('Subnet'),
       dataIndex: 'subnet',
       render: (value) => (value && value.name) || '-',
     },
@@ -75,7 +75,7 @@ export class FixedIP extends Base {
         name: 'ip_address',
       },
       {
-        label: t('Owned Subnet'),
+        label: t('Subnet'),
         name: 'subnet',
         filterFunc: (record, val) => record.name === val,
       },

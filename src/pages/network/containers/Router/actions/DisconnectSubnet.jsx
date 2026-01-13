@@ -121,7 +121,7 @@ export class DisconnectSubnet extends ModalAction {
             render: (value) => (value && value.name) || '-',
           },
           {
-            title: t('Cidr'),
+            title: t('CIDR'),
             dataIndex: 'cidr',
           },
           {

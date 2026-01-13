@@ -48,7 +48,7 @@ export class BareMetalNodePortGroup extends Base {
       dataIndex: 'name',
     },
     {
-      title: t('Mac Address'),
+      title: t('MAC Address'),
       dataIndex: 'address',
     },
     {

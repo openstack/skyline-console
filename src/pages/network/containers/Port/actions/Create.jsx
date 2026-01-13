@@ -274,14 +274,14 @@ export class CreateAction extends ModalAction {
       },
       {
         name: 'mac_address',
-        label: t('Mac Address'),
+        label: t('MAC Address'),
         wrapperCol: { span: 16 },
         required: true,
         type: 'mac-address',
       },
       // {
       //   name: 'qos_policy',
-      //   label: t('Qos Policy'),
+      //   label: t('QoS Policy'),
       //   type: 'radio',
       //   optionType: 'default',
       //   options: [{

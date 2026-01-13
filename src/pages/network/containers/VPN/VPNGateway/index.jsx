@@ -103,11 +103,11 @@ export class VPNGateway extends Base {
         name: 'router_id',
       },
       {
-        label: t('External IP(V4)'),
+        label: t('External IPv4'),
         name: 'external_v4_ip',
       },
       {
-        label: t('External IP(V6)'),
+        label: t('External IPv6'),
         name: 'external_v6_ip',
       },
     ];

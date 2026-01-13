@@ -156,12 +156,12 @@ export class Resize extends ModalAction {
         label: t('Nodes To Remove'),
         type: 'textarea',
         placeholder: t(
-          'Please enter the server id to be reduced, and separate different id with ","'
+          'Please enter the server ID to be reduced, and separate different ID with ","'
         ),
         validator: (rule, value) => {
           const pattern = /^[0-9a-zA-Z]+([0-9a-zA-Z,-][0-9a-zA-Z]+)*$/;
           if (value && !pattern.test(value)) {
-            return Promise.reject(new Error(t('Please enter the correct id')));
+            return Promise.reject(new Error(t('Please enter the correct ID')));
           }
           return Promise.resolve();
         },

@@ -44,7 +44,7 @@ export class BareMetalNodePort extends Base {
       dataIndex: 'uuid',
     },
     {
-      title: t('Mac Address'),
+      title: t('MAC Address'),
       dataIndex: 'address',
     },
     {
