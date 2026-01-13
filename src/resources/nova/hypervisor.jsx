@@ -26,12 +26,12 @@ export const hypervisorColumns = [
     dataIndex: 'hypervisor_type',
   },
   {
-    title: t('VCPU (Core)'),
+    title: t('vCPU (Core)'),
     dataIndex: 'vcpus_used_percent',
     render: (value, record) =>
       record.hypervisor_type === 'ironic' ? (
         <Tooltip
-          title={t('vCPUs and ram are not used for bare metal scheduling')}
+          title={t('vCPUs and RAM are not used for bare metal scheduling.')}
         >
           <span>-</span>
         </Tooltip>
@@ -55,7 +55,7 @@ export const hypervisorColumns = [
     render: (value, record) =>
       record.hypervisor_type === 'ironic' ? (
         <Tooltip
-          title={t('vCPUs and ram are not used for bare metal scheduling')}
+          title={t('vCPUs and RAM are not used for bare metal scheduling.')}
         >
           <span>-</span>
         </Tooltip>

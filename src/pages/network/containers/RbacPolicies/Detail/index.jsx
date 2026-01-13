@@ -18,7 +18,7 @@ import Detail from './Detail';
 
 export class RbacPolicyDetail extends Base {
   get name() {
-    return t('Rbac Policy');
+    return t('RBAC Policy');
   }
 
   get listUrl() {

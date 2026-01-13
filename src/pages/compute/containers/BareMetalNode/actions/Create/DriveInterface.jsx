@@ -19,7 +19,7 @@ export class NodeInterface extends Base {
   get bootInterfaces() {
     return [
       { value: 'pxe', label: t('PXE') },
-      { value: 'ipxe', label: t('IPXE') },
+      { value: 'ipxe', label: t('iPXE') },
       { value: 'fake', label: t('FAKE') },
     ];
   }
@@ -37,7 +37,7 @@ export class NodeInterface extends Base {
 
   get raidInterfaces() {
     return [
-      { value: 'no-raid', label: t('No Raid') },
+      { value: 'no-raid', label: t('No RAID') },
       { value: 'agent', label: t('Agent') },
     ];
   }
@@ -99,7 +99,7 @@ export class NodeInterface extends Base {
       },
       {
         name: 'raid_interface',
-        label: t('Raid Interface'),
+        label: t('RAID Interface'),
         type: 'select',
         options: this.raidInterfaces,
         tip: t('Interface used for configuring RAID on this node'),

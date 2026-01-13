@@ -16,19 +16,19 @@ import { isEmpty } from 'lodash';
 import { multiTip } from './volume';
 
 export const consumerTypes = {
-  'front-end': t('Frontend'),
-  'back-end': t('Backend'),
-  both: t('Both of Frontend and Backend'),
+  'front-end': t('Front-End'),
+  'back-end': t('Back-End'),
+  both: t('Both of Front-End and Back-End'),
 };
 
 export const creationMethod = {
-  manu: t('Manu'),
+  manu: t('Manual'),
   auto: t('Auto'),
 };
 
 export const controls = {
-  'front-end': t('Front End'),
-  'back-end': t('Back End'),
+  'front-end': t('Front-End'),
+  'back-end': t('Back-End'),
 };
 
 export const volumeTypeColumns = [

@@ -106,7 +106,7 @@ export const getQuotaInfo = (self) => {
 
 export const getFlavorLabel = (self) => {
   const { flavor, flavor_info: { vcpus, ram } = {} } = self.item;
-  return `${flavor} (${t('VCPUs')}: ${vcpus}, ${t('Memory')}: ${formatSize(
+  return `${flavor} (${t('vCPU')}: ${vcpus}, ${t('Memory')}: ${formatSize(
     ram,
     2
   )})`;

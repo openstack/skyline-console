@@ -140,7 +140,7 @@ export const topCardList = [
 
 export const chartCardList = [
   {
-    title: t('CPU Usage(%)'),
+    title: t('CPU Usage (%)'),
     createFetchParams: {
       metricKey: 'physicalNode.cpuUsage',
     },
@@ -182,7 +182,7 @@ export const chartCardList = [
     },
   },
   {
-    title: t('DISK Usage(%)'),
+    title: t('DISK Usage (%)'),
     createFetchParams: {
       metricKey: 'physicalNode.diskUsage',
     },
@@ -193,7 +193,7 @@ export const chartCardList = [
     chartProps: {
       scale: {
         y: {
-          alias: t('DISK Usage(%)'),
+          alias: t('DISK Usage (%)'),
         },
       },
       chartType: ChartType.ONELINEDEVICES,

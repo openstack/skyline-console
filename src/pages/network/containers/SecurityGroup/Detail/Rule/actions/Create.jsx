@@ -288,7 +288,7 @@ export class Create extends ModalAction {
         max: 255,
         required: false,
         hidden: !isCustomIcmp,
-        help: t('Please input ICMP type(0-255)'),
+        help: t('Please input ICMP type (0-255)'),
       },
       {
         name: 'icmpCode',
@@ -298,7 +298,7 @@ export class Create extends ModalAction {
         max: 255,
         required: false,
         hidden: !isCustomIcmp,
-        help: t('Please input ICMP code(0-255)'),
+        help: t('Please input ICMP code (0-255)'),
       },
       {
         name: 'description',
@@ -325,9 +325,9 @@ export class Create extends ModalAction {
         hidden: !showRemoteIpPrefix,
         required: showRemoteIpPrefix,
         validator: showRemoteIpPrefix ? cidrAllValidate : null,
-        placeholder: t('Please input IPv4 or IPv6 cidr'),
+        placeholder: t('Please input IPv4 or IPv6 CIDR'),
         extra: t(
-          'Please input IPv4 or IPv6 cidr, (e.g. 192.168.0.0/24, 2001:DB8::/48)'
+          'Please input IPv4 or IPv6 CIDR, (e.g. 192.168.0.0/24, 2001:DB8::/48)'
         ),
       },
       {

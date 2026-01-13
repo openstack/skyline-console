@@ -226,7 +226,7 @@ export class Create extends ModalAction {
       {
         name: 'password',
         type: 'input-password',
-        label: t('Pre-Shared Key(PSK) String'),
+        label: t('Pre-Shared Key (PSK) String'),
         otherRule: getPasswordOtherRule('password', 'instance'),
         required: true,
       },

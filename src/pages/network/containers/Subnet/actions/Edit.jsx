@@ -186,7 +186,7 @@ export class EditSubnet extends ModalAction {
         label: t('Allocation Pools'),
         type: 'textarea',
         extra: t(
-          'IP address allocation polls, one enter per line(e.g. 192.168.1.2,192.168.1.200)'
+          'IP address allocation polls, one enter per line (e.g. 192.168.1.2,192.168.1.200)'
         ),
         hidden: !more,
         validator:
@@ -198,7 +198,7 @@ export class EditSubnet extends ModalAction {
         name: 'dns',
         label: t('DNS'),
         type: 'textarea',
-        extra: t('One entry per line(e.g. 114.114.114.114)'),
+        extra: t('One entry per line (e.g. 114.114.114.114)'),
         hidden: !more,
         validator: this.subnet.ip_version === 4 ? checkDNS : checkIpv6DNS,
       },
@@ -207,7 +207,7 @@ export class EditSubnet extends ModalAction {
         label: t('Host Routes'),
         type: 'textarea',
         extra: t(
-          'Additional routes announced to the instance, one entry per line(e.g. 192.168.200.0/24,10.56.1.254)'
+          'Additional routes announced to the instance, one entry per line (e.g. 192.168.200.0/24,10.56.1.254)'
         ),
         hidden: !more,
         validator:

@@ -64,7 +64,7 @@ describe('The Qos Specs Page', () => {
   it('successfully edit consumer', () => {
     cy.tableSearchText(name)
       .clickFirstActionButton()
-      .formSelect('consumer', 'Backend')
+      .formSelect('consumer', 'Back-End')
       .clickModalActionSubmitButton();
   });
 

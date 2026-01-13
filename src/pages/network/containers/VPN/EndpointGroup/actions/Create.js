@@ -192,7 +192,7 @@ export class Create extends ModalAction {
             return Promise.resolve(true);
           }
           return Promise.reject(
-            new Error(t('Invalid: CIDR Format Error(e.g. 10.10.10.0/24)'))
+            new Error(t('Invalid: CIDR Format Error (e.g. 10.10.10.0/24)'))
           );
         },
         extra: t(

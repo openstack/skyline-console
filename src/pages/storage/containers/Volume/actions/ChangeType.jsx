@@ -24,7 +24,7 @@ export class ChangeType extends ModalAction {
   static title = t('Change Type');
 
   get name() {
-    return t('Change type');
+    return t('Change Type');
   }
 
   static policy = 'volume:retype';

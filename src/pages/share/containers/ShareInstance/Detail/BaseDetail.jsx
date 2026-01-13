@@ -46,7 +46,7 @@ export class BaseDetail extends Base {
         dataIndex: 'share_server_id',
       },
       {
-        label: t('Share Id'),
+        label: t('Share ID'),
         dataIndex: 'share_id',
       },
       {

@@ -74,7 +74,7 @@
 
     ```javascript
     get name() {
-      return t('Attach volume');
+      return t('Attach Volume');
     }
     ```
 

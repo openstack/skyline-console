@@ -101,11 +101,11 @@ export class BaseDetail extends Base {
             content: type,
           },
           {
-            label: t('Delay Interval(s)'),
+            label: t('Delay Interval (s)'),
             content: delay,
           },
           {
-            label: t('Timeout(s)'),
+            label: t('Timeout (s)'),
             content: timeout,
           },
           {

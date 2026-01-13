@@ -30,7 +30,7 @@ export class AttachVolume extends ModalAction {
   }
 
   get name() {
-    return t('Attach volume');
+    return t('Attach Volume');
   }
 
   get isAsyncAction() {

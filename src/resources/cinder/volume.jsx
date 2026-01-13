@@ -46,7 +46,7 @@ export const volumeStatus = {
 };
 
 export const creationMethod = {
-  manu: t('Manu'),
+  manu: t('Manual'),
   auto: t('Auto'),
 };
 
@@ -232,7 +232,7 @@ export const snapshotTypeTip = (
     </p>
     <p>
       {t(
-        'If the volume associated with the snapshot has changed the volume type, please modify this option manually; if the volume associated with the snapshot keeps the volume type unchanged, please ignore this option. (no need to change).'
+        'If the volume associated with the snapshot has changed the volume type, please modify this option manually, if the volume associated with the snapshot keeps the volume type unchanged, please ignore this option. (no need to change).'
       )}
     </p>
   </>
@@ -398,7 +398,7 @@ const getErrorMessage = ({ name, left, input }) => {
     });
   }
   const error = t(
-    'Quota: Insufficient { name } quota to create resources, please adjust resource quantity or quota(left { left }, input { input }).',
+    'Quota: Insufficient { name } quota to create resources, please adjust resource quantity or quota (available { left }, input { input }).',
     {
       name,
       left,

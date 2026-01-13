@@ -153,7 +153,7 @@ export class BaseDetail extends Base {
         content: `${flavor.ram / 1024} GiB`,
       },
       {
-        label: t('VCPUs'),
+        label: t('vCPU'),
         content: flavor.vcpus,
       },
     ];
@@ -163,7 +163,7 @@ export class BaseDetail extends Base {
         'visualization_compute_optimized_type_with_gpu'
     ) {
       options.push({
-        label: t('VGPU'),
+        label: t('vGPU'),
         content: extra_specs['resources:VGPU'],
       });
     }
@@ -431,7 +431,7 @@ export class BaseDetail extends Base {
           {attachedVolumes}
           <div>
             <div className={styles['attach-action-line']} />
-            {/* <a onClick={this.info}>{t('Attach volume')}</a> */}
+            {/* <a onClick={this.info}>{t('Attach Volume')}</a> */}
             <ItemActionButtons
               actions={this.volumeActions}
               onFinishAction={this.handleRefreshVolume}

@@ -94,7 +94,7 @@ export class RbacPolicies extends Base {
   get searchFilters() {
     return [
       {
-        label: t('Id'),
+        label: t('ID'),
         name: 'id',
       },
       {
