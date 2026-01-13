@@ -200,14 +200,14 @@ export class BaseStep extends Base {
       },
       {
         name: 'vip_network_id',
-        label: t('Owned Network'),
+        label: t('Network'),
         type: 'network-select-table',
         onChange: this.handleOwnedNetworkChange,
         required: true,
       },
       {
         name: 'vip_address',
-        label: t('Owned Subnet'),
+        label: t('Subnet'),
         type: 'ip-distributor',
         subnets: subnetDetails,
         formRef: this.formRef,

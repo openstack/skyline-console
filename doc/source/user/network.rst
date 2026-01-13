@@ -122,9 +122,9 @@ Create a port
 
    :guilabel:`Name`: Specify name to identify the port.
 
-   :guilabel:`Owned Network`: Select a network attached to the port.
+   :guilabel:`Network`: Select a network attached to the port.
 
-   :guilabel:`Owned Subnet`: Select a subnet attached to the port.
+   :guilabel:`Subnet`: Select a subnet attached to the port.
 
    If you specify both a subnet ID and an IP address, OpenStack tries to
    allocate the IP address on that subnet to the port.

@@ -868,7 +868,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
       ```javascript
       {
         name: 'fixed_ips',
-        label: t('Owned Subnet'),
+        label: t('Subnet'),
         type: 'ip-distributer',
         subnets: subnetDetails,
         hidden: !network_id,
@@ -903,7 +903,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
       ```javascript
       {
         name: 'network_id',
-        label: t('Owned Network'),
+        label: t('Network'),
         type: 'network-select-table',
         onChange: this.handleOwnedNetworkChange,
         required: true,

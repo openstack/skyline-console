@@ -244,14 +244,14 @@ export class CreateAction extends ModalAction {
       // },
       {
         name: 'network_id',
-        label: t('Owned Network'),
+        label: t('Network'),
         type: 'network-select-table',
         onChange: this.handleOwnedNetworkChange,
         required: true,
       },
       {
         name: 'fixed_ips',
-        label: t('Owned Subnet'),
+        label: t('Subnet'),
         type: 'ip-distributor',
         subnets: subnetDetails,
         hidden: !network_id,

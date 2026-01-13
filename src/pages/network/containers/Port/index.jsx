@@ -219,7 +219,7 @@ export class Port extends Base {
         sorter: false,
       },
       {
-        title: t('Owned Network ID/Name'),
+        title: t('Network ID/Name'),
         dataIndex: 'network_name',
         isLink: true,
         routeName: this.getRouteName('networkDetail'),
@@ -282,7 +282,7 @@ export class Port extends Base {
     ];
     if (!this.isNetworkDetail) {
       ret.splice(1, 0, {
-        label: t('Owned Network'),
+        label: t('Network'),
         name: 'network_name',
       });
     }

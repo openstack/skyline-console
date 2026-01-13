@@ -90,17 +90,17 @@ export class AllocateIP extends ModalAction {
     return [
       {
         name: 'network_id',
-        label: t('Owned Network ID'),
+        label: t('Network ID'),
         type: 'label',
       },
       {
         name: 'network_name',
-        label: t('Owned Network'),
+        label: t('Network'),
         type: 'label',
       },
       {
         name: 'fixed_ips',
-        label: t('Owned Subnet'),
+        label: t('Subnet'),
         // component: <IPDistributor subnets={subnetDetails} />,
         type: 'ip-distributor',
         subnets: subnetDetails,

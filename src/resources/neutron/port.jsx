@@ -233,7 +233,7 @@ export function getPortFormItem(withResourceNameAndStatusFilter = true) {
 export const portColumns = [
   idNameColumn,
   {
-    title: t('Owned Network'),
+    title: t(' Network'),
     dataIndex: 'network_name',
     isLink: true,
     idKey: 'network_id',
@@ -312,7 +312,7 @@ export const getPortColumns = (self) => {
       sorter: false,
     },
     {
-      title: t('Owned Network'),
+      title: t('Network'),
       dataIndex: 'network_id',
       routeName: self.getRouteName('networkDetail'),
       sorter: false,

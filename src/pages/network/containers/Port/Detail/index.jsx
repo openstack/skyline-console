@@ -98,7 +98,7 @@ export class PortDetail extends Base {
         valueMap: networkStatus,
       },
       {
-        title: t('Owned Network'),
+        title: t('Network'),
         dataIndex: 'itemInList.network_name',
       },
       {

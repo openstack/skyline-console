@@ -139,7 +139,7 @@ export class ManageSecurityGroup extends ModalAction {
         disabledFunc: (record) => !record.port_security_enabled,
         filterParams: [
           {
-            label: t('Owned Network'),
+            label: t('Network'),
             name: 'network_name',
           },
         ],
@@ -149,7 +149,7 @@ export class ManageSecurityGroup extends ModalAction {
             dataIndex: 'id',
           },
           {
-            title: t('Owned Network'),
+            title: t('Network'),
             dataIndex: 'network_name',
           },
           {
@@ -163,7 +163,7 @@ export class ManageSecurityGroup extends ModalAction {
             render: (value) => value.map((it) => <div key={it}>{it}</div>),
           },
           {
-            title: t('Mac Address'),
+            title: t('MAC Address'),
             dataIndex: 'mac_address',
             isHideable: true,
           },
