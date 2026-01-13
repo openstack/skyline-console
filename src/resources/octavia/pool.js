@@ -24,13 +24,13 @@ export const BackendProtocol = [
 ];
 
 export const algorithmDict = {
-  LEAST_CONNECTIONS: t('LEAST_CONNECTIONS'),
-  ROUND_ROBIN: t('ROUND_ROBIN'),
-  SOURCE_IP: t('SOURCE_IP'),
+  LEAST_CONNECTIONS: t('Least Connections'),
+  ROUND_ROBIN: t('Round Robin'),
+  SOURCE_IP: t('Source IP'),
 };
 
 export const OvnAlgorithmDict = {
-  SOURCE_IP_PORT: t('SOURCE_IP_PORT'),
+  SOURCE_IP_PORT: t('Source IP Port'),
 };
 
 export const algorithmTip = {
