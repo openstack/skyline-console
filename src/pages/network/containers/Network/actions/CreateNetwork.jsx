@@ -426,7 +426,7 @@ export class CreateNetwork extends ModalAction {
       },
       {
         name: 'port_security_enabled',
-        label: t('Port Security Enabled'),
+        label: t('Port Security'),
         type: 'switch',
         required: true,
       },

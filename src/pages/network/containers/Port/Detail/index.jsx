@@ -106,7 +106,7 @@ export class PortDetail extends Base {
         dataIndex: 'network_id',
       },
       {
-        title: t('Port Security Enabled'),
+        title: t('Port Security'),
         dataIndex: 'port_security_enabled',
         valueRender: 'yesNo',
       },

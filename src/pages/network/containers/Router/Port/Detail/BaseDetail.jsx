@@ -53,7 +53,7 @@ export class BaseDetail extends Base {
         dataIndex: 'mac_address',
       },
       {
-        label: t('Port Security Enabled'),
+        label: t('Port Security'),
         dataIndex: 'port_security_enabled',
         valueRender: 'yesNo',
       },

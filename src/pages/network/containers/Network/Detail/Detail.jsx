@@ -59,7 +59,7 @@ export class BaseDetail extends Base {
         dataIndex: 'provider:segmentation_id',
       },
       {
-        label: t('Port Security Enabled'),
+        label: t('Port Security'),
         dataIndex: 'port_security_enabled',
         valueRender: 'yesNo',
       },
