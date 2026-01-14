@@ -76,7 +76,7 @@ export class QoSPolicyDetail extends Base {
     ];
     if (this.isAdminPage) {
       ret.splice(3, 0, {
-        title: t('Owned Project'),
+        title: t('Project'),
         dataIndex: 'project_name',
       });
     }
