@@ -51,7 +51,7 @@ export const getRouterColumns = (self) => [
     valueMap: routerStatus,
   },
   {
-    title: t('Open External Gateway'),
+    title: t('External Gateway'),
     dataIndex: 'hasExternalGateway',
     valueRender: 'yesNo',
     isHideable: true,

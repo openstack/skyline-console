@@ -85,7 +85,7 @@ Create a router
 
    :guilabel:`Name`: Specify a name to identify the router.
 
-   :guilabel:`Open External Gateway`: Select this check box to specify external gateway.
+   :guilabel:`External Gateway`: Select this check box to specify external gateway.
 
    :guilabel:`External Gateway`: Specify external gateway for the router.
 
