@@ -26,7 +26,7 @@ export class Reverse extends Base {
   }
 
   get name() {
-    return t('Reverse Dns');
+    return t('Reverse DNS');
   }
 
   get actionConfigs() {

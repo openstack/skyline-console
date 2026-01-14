@@ -76,7 +76,7 @@ export class BaseDetail extends Base {
               value: shareSubnet.network_type || '-',
             },
             {
-              label: t('Segmentation Id'),
+              label: t('Segmentation ID'),
               value: shareSubnet.segmentation_id || '-',
             },
             {
@@ -84,7 +84,7 @@ export class BaseDetail extends Base {
               value: shareSubnet.availability_zone || '-',
             },
             {
-              label: t('Cidr'),
+              label: t('CIDR'),
               value: shareSubnet.cidr || '-',
             },
             {

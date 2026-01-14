@@ -886,7 +886,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
       ```javascript
       {
         name: 'mac_address',
-        label: t('Mac Address'),
+        label: t('MAC Address'),
         wrapperCol: { span: 16 },
         type: 'mac-address',
         required: true,

@@ -223,7 +223,7 @@ describe('The Instance Page', () => {
 
   it('successfully disassociate floating ip', () => {
     cy.tableSearchText(name)
-      .clickActionInMoreSub('Disassociate Floating Ip', 'Related Resources')
+      .clickActionInMoreSub('Disassociate Floating IP', 'Related Resources')
       .wait(5000)
       .formSelect('address')
       .clickModalActionSubmitButton();

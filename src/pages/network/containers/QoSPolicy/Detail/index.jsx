@@ -21,7 +21,7 @@ import actionConfigs from '../actions';
 
 export class QoSPolicyDetail extends Base {
   get name() {
-    return t('qoS policy');
+    return t('QoS policy');
   }
 
   get policy() {

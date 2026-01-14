@@ -76,7 +76,7 @@ export class Edit extends ModalAction {
       },
       {
         name: 'mac_address',
-        label: t('Mac Address'),
+        label: t('MAC Address'),
         wrapperCol: { span: 16 },
         type: 'mac-address',
         required: true,

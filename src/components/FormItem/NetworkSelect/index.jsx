@@ -180,7 +180,7 @@ export default class NetworkSelect extends React.Component {
     if (ipType === 1 && !isIPv4(ip) && !isIpv6(ip)) {
       this.setState(
         {
-          errorMsg: t('Please input a valid ip!'),
+          errorMsg: t('Please input a valid IP!'),
           validateStatus: 'error',
         },
         callback
@@ -194,7 +194,7 @@ export default class NetworkSelect extends React.Component {
       if (!okPool) {
         this.setState(
           {
-            errorMsg: t('The ip is not within the allocated pool!'),
+            errorMsg: t('The IP is not within the allocated pool!'),
             validateStatus: 'error',
           },
           callback
@@ -339,7 +339,7 @@ export default class NetworkSelect extends React.Component {
         <span className={styles.content}>{detailsDiv}</span>
         <span className={styles.content}>
           {t(
-            'Please make sure this IP address be available to avoid creating VM failure.'
+            'Please make sure this IP address be available to avoid creating instance failure.'
           )}
         </span>
       </span>

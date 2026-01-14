@@ -301,7 +301,7 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
         <Form.Item
           label={t('Add External Members')}
           extra={t(
-            'The ip of external members can be any, including the public network ip.'
+            'The IP of external members can be any, including the public network IP.'
           )}
         >
           <Button

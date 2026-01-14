@@ -76,7 +76,7 @@ export class Ports extends Base {
       },
     },
     {
-      title: t('Mac Address'),
+      title: t('MAC Address'),
       dataIndex: 'mac_address',
       isHideable: true,
     },

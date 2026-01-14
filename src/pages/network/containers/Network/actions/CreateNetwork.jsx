@@ -606,7 +606,7 @@ export class CreateNetwork extends ModalAction {
       },
       // {
       //   name: 'connect_router',
-      //   label: t('Connect router'),
+      //   label: t('Connect Router'),
       //   type: 'check',
       //   onChange: (e) => {
       //     this.setState({

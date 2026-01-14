@@ -243,7 +243,7 @@ export class Port extends Base {
         sorter: false,
       },
       {
-        title: t('Mac Address'),
+        title: t('MAC Address'),
         dataIndex: 'mac_address',
         isHideable: true,
       },

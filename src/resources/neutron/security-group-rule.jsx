@@ -90,7 +90,7 @@ export const getSelfColumns = (self) => [
     isHideable: true,
   },
   {
-    title: t('Remote Group Id'),
+    title: t('Remote Group ID'),
     dataIndex: 'remote_group_id',
     isHideable: true,
     render: (value) => {
@@ -126,11 +126,11 @@ export const filterParams = [
     name: 'ethertype',
     options: [
       {
-        label: 'IPv4',
+        label: t('IPv4'),
         key: 'IPv4',
       },
       {
-        label: 'IPv6',
+        label: t('IPv6'),
         key: 'IPv6',
       },
     ],

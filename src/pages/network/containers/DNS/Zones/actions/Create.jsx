@@ -69,7 +69,7 @@ export class Create extends ModalAction {
       return false;
     });
     if (errorItem) {
-      return Promise.reject(t('Please input a valid ip!'));
+      return Promise.reject(t('Please input a valid IP!'));
     }
     const sameItem = value.find((v) => {
       const theSame = value.find((vv) => {
@@ -79,7 +79,7 @@ export class Create extends ModalAction {
     });
     if (sameItem) {
       return Promise.reject(
-        t('The ip address {ip} is duplicated, please modify it.', {
+        t('The IP address {ip} is duplicated, please modify it.', {
           ip: sameItem.value,
         })
       );
@@ -136,7 +136,7 @@ export class Create extends ModalAction {
         label: t('Masters'),
         type: 'add-select',
         isInput: true,
-        placeholder: t('Please input ip address'),
+        placeholder: t('Please input IP address'),
         tip: t(
           'Mandatory for secondary zones. The servers to slave from to get DNS information.'
         ),

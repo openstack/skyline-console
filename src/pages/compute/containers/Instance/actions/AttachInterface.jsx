@@ -117,7 +117,7 @@ export class AttachInterface extends ModalAction {
 
   checkIP = (rule, value) => {
     if (!value || (!isIPv4(value) && !isIpv6(value))) {
-      return Promise.reject(t('Please input a valid ip!'));
+      return Promise.reject(t('Please input a valid IP!'));
     }
     const { allocation_pools: pools } = this.state.subnet || {};
     if (pools) {
@@ -125,7 +125,7 @@ export class AttachInterface extends ModalAction {
         isIpInRangeAll(value, pool.start, pool.end)
       );
       if (!okPool) {
-        return Promise.reject(t('The ip is not within the allocated pool!'));
+        return Promise.reject(t('The IP is not within the allocated pool!'));
       }
     }
     return Promise.resolve();
@@ -189,7 +189,7 @@ export class AttachInterface extends ModalAction {
             dataIndex: 'name',
           },
           {
-            title: t('Cidr'),
+            title: t('CIDR'),
             dataIndex: 'cidr',
           },
           {

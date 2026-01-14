@@ -132,7 +132,7 @@ export default class Release extends ConfirmAction {
     const { forceRelease, ...other } = item;
     if (this.hasCheckBox && !forceRelease) {
       const msg = t(
-        'Floating ip has already been associate, Please check Force release'
+        'Floating IP has already been associate, Please check Force release.'
       );
       return Promise.reject(msg);
     }

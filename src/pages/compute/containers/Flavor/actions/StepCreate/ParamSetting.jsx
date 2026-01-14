@@ -213,14 +213,14 @@ export class ParamSetting extends Base {
       let error = t('Invalid: ');
       if (totalCpu !== vcpus) {
         error += t(
-          'CPU value is { cpu }, NUMA CPU value is { totalCpu }, need to be equal. ',
+          'CPU value is { cpu }, NUMA CPU value is { totalCpu }, need to be equal.',
           { cpu: vcpus, totalCpu }
         );
         hasError = true;
       }
       if (totalRam !== memoryGb * 1024) {
         error += t(
-          'Ram value is { ram }, NUMA RAM value is { totalRam }, need to be equal. ',
+          'RAM value is { ram }, NUMA RAM value is { totalRam }, need to be equal.',
           { ram, totalRam }
         );
         hasError = true;
@@ -310,7 +310,7 @@ export class ParamSetting extends Base {
       'The unit suffix must be one of the following: Kb(it), Kib(it), Mb(it), Mib(it), Gb(it), Gib(it), Tb(it), Tib(it), KB, KiB, MB, MiB, GB, GiB, TB, TiB. If the unit suffix is not provided, it is assumed to be KB.'
     );
     const pageSizePlaceholder = t(
-      'Please enter a memory page size, such as: 1024, 1024MiB'
+      'Please enter a memory page size, such as: 1024, 1024 MiB'
     );
 
     return [

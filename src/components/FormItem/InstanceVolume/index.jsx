@@ -89,8 +89,8 @@ export default class InstanceVolume extends React.Component {
         const { type, deleteType } = this.state;
         const deleteTypeLabel =
           deleteType === 1
-            ? t('Deleted with the instance')
-            : t('Not deleted with the instance');
+            ? t('Delete with the instance')
+            : t('Do not delete with the instance');
         const typeOption = options.find((it) => it.value === type);
         const value = {
           ...this.state,
@@ -164,7 +164,7 @@ export default class InstanceVolume extends React.Component {
     const deleteValue = deleteType === 1;
     const checkbox = showDelete ? (
       <Checkbox onChange={this.onDeleteChange} checked={deleteValue}>
-        {t('Deleted with the instance')}
+        {t('Delete with the instance')}
       </Checkbox>
     ) : null;
 

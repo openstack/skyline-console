@@ -44,14 +44,14 @@ export class AcceptVolumeTransfer extends ModalAction {
         name: 'transfer_id',
         label: t('Transfer ID'),
         type: 'input',
-        placeholder: t('Please input transfer id'),
+        placeholder: t('Please input Transfer ID'),
         required: true,
       },
       {
         name: 'auth_key',
         label: t('Auth Key'),
         type: 'input',
-        placeholder: t('Please input auth key'),
+        placeholder: t('Please input Auth Key'),
         required: true,
       },
     ];

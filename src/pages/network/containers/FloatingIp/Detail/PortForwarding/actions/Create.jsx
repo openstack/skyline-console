@@ -561,7 +561,7 @@ export class CreatePortForwarding extends ModalAction {
     const ret = [
       {
         name: 'floatingIp',
-        label: t('Floating Ip'),
+        label: t('Floating IP'),
         type: 'label',
         iconType: 'floatingIp',
       },

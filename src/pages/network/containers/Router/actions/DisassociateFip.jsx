@@ -21,11 +21,11 @@ export default class DisassociateFip extends ConfirmAction {
   }
 
   get title() {
-    return t('Disassociate Floating Ip');
+    return t('Disassociate Floating IP');
   }
 
   get actionName() {
-    return t('disassociate floating ip');
+    return t('disassociate floating IP');
   }
 
   policy = 'update_router';

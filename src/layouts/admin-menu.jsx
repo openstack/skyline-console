@@ -385,7 +385,7 @@ const renderMenu = (t) => {
           children: [
             {
               path: /^\/network\/floatingip-admin\/detail\/.[^/]+$/,
-              name: t('Floating Ip Detail'),
+              name: t('Floating IP Detail'),
               key: 'fipDetailAdmin',
               level: 2,
               routePath: '/network/floatingip-admin/detail/:id',

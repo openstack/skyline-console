@@ -76,7 +76,7 @@ export class AllowedAddressPair extends Base {
       dataIndex: 'ip_address',
     },
     {
-      title: t('Mac Address'),
+      title: t('MAC Address'),
       dataIndex: 'mac_address',
     },
   ];
@@ -88,7 +88,7 @@ export class AllowedAddressPair extends Base {
         name: 'ip_address',
       },
       {
-        label: t('Mac Address'),
+        label: t('MAC Address'),
         name: 'mac_address',
       },
     ];

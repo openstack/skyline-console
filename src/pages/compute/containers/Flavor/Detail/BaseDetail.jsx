@@ -184,11 +184,11 @@ export class BaseDetail extends Base {
   get usbCard() {
     const options = [
       {
-        label: t('Usb Controller'),
+        label: t('USB Controller'),
         dataIndex: 'usbType',
       },
       {
-        label: t('Number of Usb Controller'),
+        label: t('Number of USB Controller'),
         dataIndex: 'usbCount',
       },
     ];
@@ -217,7 +217,7 @@ export class BaseDetail extends Base {
             <span style={{ marginRight: 16 }}>
               {t('CPU')} : {cpu}
             </span>
-            {t('Mem')} : {mem}MiB
+            {t('Memory')} : {mem}MiB
           </div>
         ),
       };
