@@ -27,8 +27,6 @@ export class RemoveDefaultProject extends ModalAction {
     return t('Remove default project for user');
   }
 
-  static policy = 'identity:update_user';
-
   static allowed = (item, containerProps) => {
     const { detail } = containerProps || {};
     const { default_project_id } = detail;
