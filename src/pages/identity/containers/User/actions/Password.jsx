@@ -50,14 +50,14 @@ export class Password extends ModalAction {
       },
       {
         name: 'password',
-        label: t('Password'),
+        label: t('New password'),
         type: 'input-password',
         required: true,
         otherRule: getPasswordOtherRule('password'),
       },
       {
         name: 'confirmPassword',
-        label: t('Confirm Password'),
+        label: t('Confirm new password'),
         dependencies: ['password'],
         type: 'input-password',
         required: true,
