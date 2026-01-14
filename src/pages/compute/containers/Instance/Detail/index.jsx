@@ -120,12 +120,12 @@ export class InstanceDetail extends Base {
   get tabs() {
     const tabs = [
       {
-        title: t('Detail'),
+        title: t('Details'),
         key: 'detail',
         component: BaseDetail,
       },
       {
-        title: t('Instance Snapshots'),
+        title: t('Snapshots'),
         key: 'snapshots',
         component: Snapshots,
       },
