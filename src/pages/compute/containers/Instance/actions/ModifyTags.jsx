@@ -95,7 +95,7 @@ export class ModifyTags extends ModalAction {
         },
         extra: (
           <div>
-            <div>1. {t('Each server can have up to 50 tags')}</div>
+            <div>1. {t('Each instance can have up to 50 tags')}</div>
             <div>2. {t('Tags are not case sensitive')}</div>
             <div>3. {t('Tag is no longer than 60 characters')}</div>
             <div>
