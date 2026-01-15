@@ -68,7 +68,7 @@ export class Credentials extends Base {
         isHideable: true,
       },
       {
-        title: t('Restricted Situation'),
+        title: t('Restriction'),
         dataIndex: 'unrestricted',
         isHideable: true,
         render: (value) => (!value ? t('Restricted') : t('Unrestricted')),
