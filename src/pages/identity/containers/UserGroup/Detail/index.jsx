@@ -47,7 +47,7 @@ export class Detail extends Base {
         dataIndex: 'name',
       },
       {
-        title: t('Affiliated Domain'),
+        title: t('Domain'),
         dataIndex: 'domain',
         render: (value, record) => (value || {}).name || record.domain_id,
       },

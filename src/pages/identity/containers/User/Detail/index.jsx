@@ -70,7 +70,7 @@ export class UserDetail extends Base {
       //   dataIndex: 'groupCount',
       // },
       {
-        title: t('Affiliated Domain'),
+        title: t('Domain'),
         dataIndex: 'domainName',
       },
       {

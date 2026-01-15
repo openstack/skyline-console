@@ -57,7 +57,7 @@ export const getCheckedOptions = () => {
 export const getDomainFormItem = (self) => {
   return {
     name: 'domain_id',
-    label: t('Affiliated Domain'),
+    label: t('Domain'),
     type: 'select',
     checkOptions: getCheckedOptions(),
     checkBoxInfo: t('Show All Domains'),

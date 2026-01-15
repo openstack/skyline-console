@@ -77,7 +77,7 @@ Add a new project
 
 #. In the :guilabel:`Create Project` dialog box, enter the Project
    :guilabel:`Name`, :guilabel:`Description`, :guilabel:`Status`
-   and :guilabel:`Affiliated Domain`.
+   and :guilabel:`Domain`.
 
 #. Click :guilabel:`OK`.
 

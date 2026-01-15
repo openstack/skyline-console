@@ -59,7 +59,7 @@ export class ProjectInfo extends Component {
   renderDomain() {
     return (
       <Descriptions.Item
-        label={t('Affiliated Domain')}
+        label={t('Domain')}
         labelStyle={{ fontSize: 14 }}
         contentStyle={{ fontSize: 14 }}
       >

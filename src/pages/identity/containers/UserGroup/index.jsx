@@ -173,7 +173,7 @@ export class UserGroups extends Base {
         },
       },
       {
-        title: t('Affiliated Domain'),
+        title: t('Domain'),
         dataIndex: 'domainName',
         isHideable: true,
       },
