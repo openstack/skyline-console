@@ -163,6 +163,7 @@ export const getBaseColumns = (self) => [
     title: t('Internal Network Bandwidth (Gbps)'),
     dataIndex: 'quota:vif_outbound_average',
     isHideable: true,
+    isDefaultHidden: true,
     width: 120,
     render: (value) => {
       if (!value) {
@@ -180,6 +181,7 @@ export const getBaseColumns = (self) => [
     title: t('Storage IOPS'),
     dataIndex: 'quota:disk_total_iops_sec',
     isHideable: true,
+    isDefaultHidden: true,
     render: (value) => {
       if (!value) {
         return '-';
