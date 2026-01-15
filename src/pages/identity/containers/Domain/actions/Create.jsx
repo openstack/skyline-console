@@ -81,7 +81,7 @@ export class Create extends ModalAction {
         required: true,
         isWrappedValue: true,
         help: t(
-          'Forbidden the domain will have a negative impact, all project and user in domain will be forbidden'
+          'Disabling the domain will have a negative impact, all projects and users in domain will be disabled'
         ),
       },
     ];

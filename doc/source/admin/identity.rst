@@ -117,7 +117,7 @@ Update a project
    .. note::
 
       You can enable or disable the project by using the :guilabel:`Enable` or
-      :guilabel:`Forbidden` options available in the :guilabel:`More` dropdown
+      :guilabel:`Disable` options available in the :guilabel:`More` dropdown
       list.
 
 Add a new user
@@ -175,5 +175,5 @@ Update a user
    .. note::
 
       You can enable or disable the user by using the :guilabel:`Enable` or
-      :guilabel:`Forbidden` options available in the :guilabel:`More` dropdown
+      :guilabel:`Disable` options available in the :guilabel:`More` dropdown
       list.

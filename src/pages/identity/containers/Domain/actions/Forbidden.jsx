@@ -18,19 +18,19 @@ import globalDomainStore from 'stores/keystone/domain';
 
 export default class ForbiddenAction extends ConfirmAction {
   get id() {
-    return 'Forbidden';
+    return 'Disable';
   }
 
   get title() {
-    return t('Forbidden Domain');
+    return t('Disable Domain');
   }
 
   get buttonText() {
-    return t('Forbidden');
+    return t('Disable');
   }
 
   get actionName() {
-    return t('Forbidden Domain');
+    return t('Disable Domain');
   }
 
   get isDanger() {
@@ -58,7 +58,7 @@ export default class ForbiddenAction extends ConfirmAction {
       ? data.map((it) => it.name).join(',')
       : data.name;
     return t(
-      'Are you sure to forbidden domain { name }? Forbidden the domain will have negative effect, and users associated with the domain will not be able to log in if they are only assigned to the domain',
+      'Are you sure to disable domain { name }? Disabling the domain will have negative effect, and users associated with the domain will not be able to login if they are only assigned to the domain',
       { name }
     );
   };

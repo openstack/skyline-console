@@ -24,7 +24,7 @@ export const statusTypes = [
     value: true,
   },
   {
-    label: t('Forbidden'),
+    label: t('Disable'),
     value: false,
   },
 ];

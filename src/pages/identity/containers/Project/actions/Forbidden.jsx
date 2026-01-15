@@ -18,19 +18,19 @@ import globalProjectStore from 'stores/keystone/project';
 
 export default class ForbiddenAction extends ConfirmAction {
   get id() {
-    return 'Forbidden';
+    return 'Disable';
   }
 
   get title() {
-    return t('Forbidden Project');
+    return t('Disable Project');
   }
 
   get buttonText() {
-    return t('Forbidden');
+    return t('Disable');
   }
 
   get actionName() {
-    return t('Forbidden Project');
+    return t('Disable Project');
   }
 
   get isDanger() {
@@ -58,7 +58,7 @@ export default class ForbiddenAction extends ConfirmAction {
       ? data.map((it) => it.name).join(',')
       : data.name;
     return t(
-      'Are you sure to forbidden project { name }? Forbidden the project will have negative effect, and users associated with the project will not be able to log in if they are only assigned to the project',
+      'Are you sure to disable project { name }? Disabling the project will have negative effect, and users associated with the project will not be able to login if they are only assigned to the project',
       { name }
     );
   };

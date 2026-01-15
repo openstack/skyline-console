@@ -81,8 +81,8 @@ describe('The User Page', () => {
       .clickModalActionSubmitButton();
   });
 
-  it('successfully forbidden user', () => {
-    cy.tableSearchText(name).clickConfirmActionInMore('Forbidden');
+  it('successfully disable user', () => {
+    cy.tableSearchText(name).clickConfirmActionInMore('Disable');
   });
 
   it('successfully enable user', () => {
