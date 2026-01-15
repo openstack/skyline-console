@@ -97,11 +97,6 @@ export class Volume extends BaseList {
     return 'created_at';
   }
 
-  get pageSizeOptions() {
-    // should be array of numbers
-    return [10];
-  }
-
   getColumns = () => {
     // In Volume Snapshot page or Instance detail page, use the cinder volume columns
     // In Volume list page, use the COS volume columns instead
