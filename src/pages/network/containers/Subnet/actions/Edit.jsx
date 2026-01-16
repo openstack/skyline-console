@@ -186,7 +186,7 @@ export class EditSubnet extends ModalAction {
         label: t('Allocation Pools'),
         type: 'textarea',
         extra: t(
-          'IP address allocation polls, one enter per line (e.g. 192.168.1.2,192.168.1.200)'
+          'IP address allocation pools, one enter per line (e.g. 192.168.1.2,192.168.1.200)'
         ),
         hidden: !more,
         validator:

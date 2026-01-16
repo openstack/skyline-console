@@ -683,7 +683,7 @@ export class CreateNetwork extends ModalAction {
         name: 'allocation_pools',
         label: t('Allocation Pools'),
         type: 'textarea',
-        extra: t('IP address allocation polls, one enter per line (e.g. {ip})', {
+        extra: t('IP address allocation pools, one enter per line (e.g. {ip})', {
           ip: isIpv4 ? '192.168.1.2,192.168.1.200' : '1001:1001::,1001:1002::',
         }),
         hidden: !(create_subnet && more),
