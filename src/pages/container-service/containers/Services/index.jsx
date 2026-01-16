@@ -61,7 +61,7 @@ export class Services extends Base {
         isHideable: true,
       },
       {
-        title: t('Forbidden'),
+        title: t('Disabled'),
         dataIndex: 'disabled',
         valueRender: 'yesNo',
         isHideable: true,

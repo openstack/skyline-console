@@ -18,15 +18,15 @@ import globalUserStore from 'stores/keystone/user';
 
 export default class ForbiddenAction extends ConfirmAction {
   get id() {
-    return 'Forbidden';
+    return 'Disable';
   }
 
   get title() {
-    return t('Forbidden User');
+    return t('Disable User');
   }
 
   get buttonText() {
-    return t('Forbidden');
+    return t('Disable');
   }
 
   get isDanger() {
@@ -34,7 +34,7 @@ export default class ForbiddenAction extends ConfirmAction {
   }
 
   get actionName() {
-    return t('Forbidden User');
+    return t('Disable User');
   }
 
   policy = 'identity:update_user';
@@ -58,7 +58,7 @@ export default class ForbiddenAction extends ConfirmAction {
       ? data.map((it) => it.name).join(',')
       : data.name;
     return t(
-      'Are you sure to forbidden user { name }? Forbidden the user will not allow login in ',
+      'Are you sure to disable user { name }? Disabled users are not allowed to login in ',
       { name }
     );
   };

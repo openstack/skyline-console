@@ -73,8 +73,8 @@ describe('The Project Page', () => {
       .clickModalActionSubmitButton();
   });
 
-  it('successfully forbidden project', () => {
-    cy.tableSearchText(name).clickConfirmActionInMore('Forbidden');
+  it('successfully disable project', () => {
+    cy.tableSearchText(name).clickConfirmActionInMore('Disable');
   });
 
   it('successfully enable project', () => {
