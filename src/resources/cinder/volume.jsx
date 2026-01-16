@@ -177,7 +177,7 @@ export const volumeColumns = [
       if (value && value.length > 0) {
         return value.map((it) => (
           <div key={it.server_id}>
-            {it.device} on {it.server_name}
+            {it.device} {t('on')} {it.server_name}
           </div>
         ));
       }

@@ -43,7 +43,7 @@ export class BaseDetail extends Base {
           }
           return value.map((it) => (
             <div key={it.server_id}>
-              {it.device} on{' '}
+              {it.device} {t('on')} {' '}
               {this.getLinkRender(
                 'instanceDetail',
                 it.server_name || it.server_id,
