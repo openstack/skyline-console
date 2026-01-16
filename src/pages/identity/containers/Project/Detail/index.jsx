@@ -54,7 +54,7 @@ export class Detail extends Base {
       },
       enabledColumn,
       {
-        title: t('Affiliated Domain'),
+        title: t('Domain'),
         dataIndex: 'domainName',
       },
       {

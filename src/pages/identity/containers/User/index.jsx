@@ -119,7 +119,7 @@ export class User extends Base {
         },
       },
       {
-        title: t('Affiliated Domain ID/Name'),
+        title: t('Domain ID/Name'),
         dataIndex: 'domainName',
         isHideable: true,
         routeName: 'domainDetailAdmin',

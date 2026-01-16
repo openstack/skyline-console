@@ -114,7 +114,7 @@ export class EditForm extends ModalAction {
       },
       {
         name: 'domainName',
-        label: t('Affiliated Domain'),
+        label: t('Domain'),
         type: 'input',
         disabled: true,
       },
