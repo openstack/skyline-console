@@ -145,7 +145,7 @@ export class BaseDetail extends Base {
     const { extra_specs = {} } = flavor;
     const options = [
       {
-        label: t('Flavor Name'),
+        label: t('Name'),
         content: flavor.original_name,
       },
       {
