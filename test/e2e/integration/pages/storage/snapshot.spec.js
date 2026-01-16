@@ -50,7 +50,7 @@ describe('The Volume Snapshot Page', () => {
     cy.visitPage(volumeListUrl)
       .tableSearchText(volumeName)
       .goToDetail()
-      .clickDetailTab('Volume Snapshots', 'snapshot')
+      .clickDetailTab('Snapshots', 'snapshot')
       .tableSearchText(name)
       .goToDetail();
   });
