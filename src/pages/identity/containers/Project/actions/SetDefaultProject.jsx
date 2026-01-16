@@ -27,8 +27,6 @@ export class SetDefaultProject extends ModalAction {
     return t('Set default project for user');
   }
 
-  static policy = 'identity:update_user';
-
   static allowed = (item, containerProps) => {
     const { detail } = containerProps || {};
     const { default_project_id } = detail;
