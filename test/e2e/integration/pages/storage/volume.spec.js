@@ -82,7 +82,7 @@ describe('The Volume Page', () => {
       .checkTableFirstRow(name)
       .goToDetail()
       .checkDetailName(name);
-    cy.clickDetailTab('Volume Backups', 'backup').clickDetailTab(
+    cy.clickDetailTab('Backups', 'backup').clickDetailTab(
       'Volume Snapshots',
       'snapshot'
     );
