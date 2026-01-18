@@ -158,7 +158,7 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
               name: 'origin_data',
               options: [
                 {
-                  label: t('True'),
+                  label: t('Yes'),
                   key: true,
                 },
               ],
