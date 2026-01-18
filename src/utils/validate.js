@@ -402,7 +402,7 @@ export const portRangeMessage = t(
 );
 
 export const macAddressMessage = t(
-  'Invalid Mac Address. Please Use ":" as separator.'
+  'Invalid MAC Address. Please use ":" as separator.'
 );
 
 const asciiMessage = t('Please enter a valid ASCII code');

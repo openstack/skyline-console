@@ -29,7 +29,7 @@ export default class DisassociateFIP extends ConfirmAction {
   }
 
   get actionName() {
-    return t('disassociate floating ip');
+    return t('Disassociate Floating IP');
   }
 
   policy = 'update_floatingip';

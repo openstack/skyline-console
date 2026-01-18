@@ -25,7 +25,7 @@ import HealthMonitorStep from '../../../StepCreateComponents/HealthMonitorStep';
 export class StepCreate extends StepAction {
   static id = 'lb-create';
 
-  static title = t('Create Loadbalancer');
+  static title = t('Create Load Balancer');
 
   static path = '/network/load-balancers/create';
 
