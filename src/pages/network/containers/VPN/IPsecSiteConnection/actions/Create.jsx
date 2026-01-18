@@ -208,7 +208,7 @@ export class Create extends ModalAction {
       {
         name: 'peer_cidrs',
         type: 'label',
-        label: t('Peer Cidrs'),
+        label: t('Peer CIDRs'),
         component: (
           <Row>
             {!peer_ep_group_id ? (
