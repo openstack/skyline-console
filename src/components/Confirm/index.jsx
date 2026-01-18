@@ -45,7 +45,7 @@ const confirm = (props) => {
     onOk,
     onCancel,
     icon,
-    okText = t('Confirm'),
+    okText = t('OK'),
     cancelText = t('Cancel'),
     className,
     okButtonProps = {},
@@ -74,7 +74,7 @@ confirm.defaultProps = {
   title: t('Confirm'),
   icon: <QuestionCircleFilled />,
   isSubmitting: false,
-  okText: t('Confirm'),
+  okText: t('OK'),
   cancelText: t('Cancel'),
 };
 
@@ -89,7 +89,7 @@ const error = (props) => {
 
 const warn = (props) => {
   const newProps = {
-    title: t('Warn'),
+    title: t('Warning'),
     ...props,
     icon: <QuestionCircleFilled className={styles.warn} />,
   };
