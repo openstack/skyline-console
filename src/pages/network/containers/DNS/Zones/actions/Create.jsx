@@ -115,7 +115,7 @@ export class Create extends ModalAction {
       },
       {
         name: 'email',
-        label: t('Email Address'),
+        label: t('Email'),
         type: 'input',
         required: isPrimaryType,
         hidden: !isPrimaryType,
