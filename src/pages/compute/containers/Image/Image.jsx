@@ -142,12 +142,14 @@ export class Image extends Base {
         isHideable: true,
         valueMap: imageUsage,
         sorter: false,
+        isDefaultHidden: true,
       },
       {
         title: t('Container Format'),
         dataIndex: 'container_format',
         valueMap: imageContainerFormats,
         isHideable: true,
+        isDefaultHidden: true,
       },
       {
         title: t('Type'),
@@ -173,6 +175,7 @@ export class Image extends Base {
         dataIndex: 'disk_format',
         isHideable: true,
         valueMap: imageFormats,
+        isDefaultHidden: true,
       },
       {
         title: t('Size'),
