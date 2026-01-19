@@ -50,7 +50,7 @@ English | [Chinese](../../zh/develop/2-catalog-introduction.md)
     - Blank layout BlankLayout
     - Layout used for login page UserLayout
     - The layout used for the content page BaseLayout(Use of lists, details, forms, etc.)
-  - `menu.jsx`: Menu configuration used by the console
+  - `menu.jsx`: Menu configuration used by the project
   - `admin-menu.jsx`: Menu configuration used by the management platform
 - `src/locales`: i18n
 - `src/resources`:
@@ -86,7 +86,7 @@ English | [Chinese](../../zh/develop/2-catalog-introduction.md)
   - `StepCreate/index.jsx`inherited from[BaseStepAction](3-9-StepAction-introduction.md)
 - `src/pages/compute/routes`：
   - `index.js` Configure routing
-  - It is agreed that whether the route contains "-admin" to determine whether it is the management platform or the console
+  - It is agreed that whether the route contains "-admin" to determine whether it is the management platform or the project
 
 # Directory Introduction for test
 
@@ -148,7 +148,7 @@ English | [Chinese](../../zh/develop/2-catalog-introduction.md)
 │   │   ├── Blank    (Blank layout)
 │   │   ├── User    (Layout used for login)
 │   │   ├── admin-menu.jsx  (Menu configuration used by the management platform)
-│   │   └── menu.jsx    (Menu configuration used by the console)
+│   │   └── menu.jsx    (Menu configuration used by the project)
 │   ├── locales (Translation)
 │   │   ├── en.json
 │   │   ├── index.js
@@ -168,7 +168,7 @@ English | [Chinese](../../zh/develop/2-catalog-introduction.md)
 │   │   │   │   │   │   └── VirtualResource.jsx
 │   │   │   │   │   ├── index.jsx
 │   │   │   │   │   └── style.less
-│   │   │   │   └── Overview   (Console home page)
+│   │   │   │   └── Overview   (Project home page)
 │   │   │   │       ├── components
 │   │   │   │       │   ├── ProjectInfo.jsx
 │   │   │   │       │   ├── QuotaOverview.jsx

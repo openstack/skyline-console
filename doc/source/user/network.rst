@@ -22,7 +22,7 @@ Create a network
 
 #. Select the appropriate project from the Switch Project menu at the top left.
 
-#. On the :guilabel:`Console` page, open the :guilabel:`Network` tab and
+#. On the :guilabel:`Project` page, open the :guilabel:`Network` tab and
    click :guilabel:`Networks` category.
 
 #. Click :guilabel:`Create Network`.
@@ -76,7 +76,7 @@ Create a router
 
 #. Select the appropriate project from the Switch Project menu at the top left.
 
-#. On the :guilabel:`Console` page, open the :guilabel:`Network` tab and
+#. On the :guilabel:`Project` page, open the :guilabel:`Network` tab and
    click :guilabel:`Routers` category.
 
 #. Click :guilabel:`Create Router`.
@@ -113,7 +113,7 @@ Create a port
 
 #. Select the appropriate project from the Switch Project menu at the top left.
 
-#. On the :guilabel:`Console` page, open the :guilabel:`Network` tab and
+#. On the :guilabel:`Project` page, open the :guilabel:`Network` tab and
    click :guilabel:`Ports` category.
 
 #. Click :guilabel:`Create Virtual Adapter`.
@@ -147,7 +147,7 @@ Create a fip
 
 #. Select the appropriate project from the Switch Project menu at the top left.
 
-#. On the :guilabel:`Console` page, open the :guilabel:`Network` tab and
+#. On the :guilabel:`Project` page, open the :guilabel:`Network` tab and
    click :guilabel:`Floating IPs` category.
 
 #. Click :guilabel:`Allocate IP`.
@@ -174,7 +174,7 @@ Create a security group
 
 #. Select the appropriate project from the Switch Project menu at the top left.
 
-#. On the :guilabel:`Console` page, open the :guilabel:`Network` tab and
+#. On the :guilabel:`Project` page, open the :guilabel:`Network` tab and
    click :guilabel:`Security Groups` category.
 
 #. Click :guilabel:`Create Security Group`.

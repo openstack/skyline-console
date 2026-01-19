@@ -18,12 +18,12 @@ English | [简体中文](../../zh/develop/3-12-Menu-introduction.md)
 
 # Code location
 
-- Console platform menu configuration `src/layouts/menu.jsx`
+- Project platform menu configuration `src/layouts/menu.jsx`
 - Management platform menu configuration `src/layouts/admin-menu.jsx`
 
 # How to use
 
-- The menu configuration in console and management platform are the same structure
+- The menu configuration in project and management platform are the same structure
 - Return a `renderMenu` function which return a configuration list
 
 ## first-level menu configuration

@@ -29,7 +29,7 @@ export class GlobalHeaderRight extends Component {
     return isUserCenterPage;
   }
 
-  renderConsole() {
+  renderProject() {
     if (this.isAdminPage || this.isUserCenterPage) {
       return (
         <Button
@@ -37,7 +37,7 @@ export class GlobalHeaderRight extends Component {
           href="/base/overview"
           className={styles['single-link']}
         >
-          {t('Console')}
+          {t('Project')}
         </Button>
       );
     }
@@ -74,7 +74,7 @@ export class GlobalHeaderRight extends Component {
         <Row justify="space-between" align="middle" gutter={10}>
           <Col>
             {this.renderExtraLink()}
-            {this.renderConsole()}
+            {this.renderProject()}
             {this.renderAdministrator()}
           </Col>
           {this.renderExtra()}

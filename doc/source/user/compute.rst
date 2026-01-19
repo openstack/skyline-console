@@ -17,7 +17,7 @@ Create a key pair
 
 #. Select the appropriate project from the Switch Project menu at the top left.
 
-#. On the :guilabel:`Console` page, open the :guilabel:`Compute` tab and
+#. On the :guilabel:`Project` page, open the :guilabel:`Compute` tab and
    click :guilabel:`Key Pairs` category.
 
 #. Click :guilabel:`Create Keypair`.
@@ -43,7 +43,7 @@ Launch an instance
 
 #. Select the appropriate project from the Switch Project menu at the top left.
 
-#. On the :guilabel:`Console` page, open the :guilabel:`Compute` tab and
+#. On the :guilabel:`Project` page, open the :guilabel:`Compute` tab and
    click :guilabel:`Instances` category.
 
 #. Click :guilabel:`Create Instance`.
@@ -121,7 +121,7 @@ Create an instance snapshot
 
 #. Select the appropriate project from the Switch Project menu at the top left.
 
-#. On the :guilabel:`Console` page, open the :guilabel:`Compute` tab and
+#. On the :guilabel:`Project` page, open the :guilabel:`Compute` tab and
    click :guilabel:`Instances` category.
 
 #. Select an instance to create a snapshot from it.
@@ -142,7 +142,7 @@ Control the state of an instance
 
 #. Select the appropriate project from the Switch Project menu at the top left.
 
-#. On the :guilabel:`Console` page, open the :guilabel:`Compute` tab and
+#. On the :guilabel:`Project` page, open the :guilabel:`Compute` tab and
    click :guilabel:`Instances` category.
 
 #. Select the instance for which you want to change the state.
@@ -157,7 +157,7 @@ Allocate a floating IP address to an instance
 
 #. Select the appropriate project from the Switch Project menu at the top left.
 
-#. On the :guilabel:`Console` page, open the :guilabel:`Compute` tab and
+#. On the :guilabel:`Project` page, open the :guilabel:`Compute` tab and
    click :guilabel:`Instances` category.
 
 #. In the :guilabel:`Action` column, select :guilabel:`Related Resources`
@@ -184,7 +184,7 @@ For information about creating image files, see the
 
 #. Select the appropriate project from the Switch Project menu at the top left.
 
-#. On the :guilabel:`Console` page, open the :guilabel:`Compute` tab and
+#. On the :guilabel:`Project` page, open the :guilabel:`Compute` tab and
    click :guilabel:`Images` category.
 
 #. Click :guilabel:`Create Image`.

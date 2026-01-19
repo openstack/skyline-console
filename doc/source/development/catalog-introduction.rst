@@ -115,7 +115,7 @@ Catalog Introduction-Image Version
     │   │   ├── Blank    (Blank layout)
     │   │   ├── User    (Layout used for login)
     │   │   ├── admin-menu.jsx  (Menu configuration used by the management platform)
-    │   │   └── menu.jsx    (Menu configuration used by the console)
+    │   │   └── menu.jsx    (Menu configuration used by the project)
     │   ├── locales (Translation)
     │   │   ├── en.json
     │   │   ├── index.js
@@ -135,7 +135,7 @@ Catalog Introduction-Image Version
     │   │   │   │   │   │   └── VirtualResource.jsx
     │   │   │   │   │   ├── index.jsx
     │   │   │   │   │   └── style.less
-    │   │   │   │   └── Overview   (Console home page)
+    │   │   │   │   └── Overview   (Project home page)
     │   │   │   │       ├── components
     │   │   │   │       │   ├── ProjectInfo.jsx
     │   │   │   │       │   ├── QuotaOverview.jsx
