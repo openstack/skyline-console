@@ -24,7 +24,7 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   get title() {
-    return t('Delete VPN EndPoint Groups');
+    return t('Delete VPN Endpoint Groups');
   }
 
   get isDanger() {
@@ -36,7 +36,7 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   get actionName() {
-    return t('delete vpn endpoint groups');
+    return t('Delete VPN Endpoint groups');
   }
 
   policy = 'delete_endpoint_group';
@@ -82,7 +82,7 @@ export default class DeleteAction extends ConfirmAction {
         {
           action: this.actionName || this.title,
           name: data.name,
-          reason: t('the policy is in use'),
+          reason: t('the VPN Endpoint policy is in use'),
         }
       )}\n
         ${t('Used by tunnel(s): {names}. ID(s): {ids}', {
