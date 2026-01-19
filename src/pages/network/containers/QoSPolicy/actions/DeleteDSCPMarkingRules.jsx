@@ -33,7 +33,7 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   get actionName() {
-    return t('delete dscp marking rules');
+    return t('delete DSCP marking rules');
   }
 
   policy = 'delete_policy_dscp_marking_rule';
