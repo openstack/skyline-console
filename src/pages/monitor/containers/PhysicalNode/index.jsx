@@ -38,7 +38,7 @@ export const topCardList = [
     ),
   },
   {
-    title: t('Total Ram'),
+    title: t('Total RAM'),
     span: 5,
     createFetchParams: {
       metricKey: 'physicalNode.totalMem',

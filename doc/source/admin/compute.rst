@@ -44,9 +44,9 @@ Create a flavor
 
    :guilabel:`Name`: Enter the flavor name.
 
-   :guilabel:`CPU(Core)`: Enter the number of virtual CPUs to use.
+   :guilabel:`CPU (Core)`: Enter the number of virtual CPUs to use.
 
-   :guilabel:`Ram Size (GiB)`: Enter the amount of RAM to use, in gigabytes.
+   :guilabel:`RAM Size (GiB)`: Enter the amount of RAM to use, in gigabytes.
 
    :guilabel:`NUMA Nodes`: Enter the number of Non-Uniform Memory Access nodes.
 
