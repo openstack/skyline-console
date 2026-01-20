@@ -16,7 +16,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Button, Card, Tooltip, Switch } from 'antd';
 import { ExpandOutlined, CompressOutlined } from '@ant-design/icons';
 
-const seconds = 5;
+const seconds = 2;
 
 export default function InfoButton(props) {
   const {
