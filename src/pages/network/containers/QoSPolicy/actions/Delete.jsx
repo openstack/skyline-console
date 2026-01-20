@@ -33,7 +33,7 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   get actionName() {
-    return t('delete qos policy');
+    return t('delete QoS policy');
   }
 
   policy = 'delete_policy';
