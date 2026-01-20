@@ -75,7 +75,7 @@ export class EditForm extends ModalAction {
         type: 'input',
         value: this.item.name,
         validator: this.checkName,
-        extra: t('Project') + t('Name can not be duplicated'),
+        extra: t('Project name can not be duplicated'),
       },
       {
         name: 'description',
