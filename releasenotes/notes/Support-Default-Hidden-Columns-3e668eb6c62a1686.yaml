@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Set `isDefaultHidden` and `isHideable` on table columns to hide them by default on initial table load.

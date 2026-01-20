@@ -17,7 +17,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import isEqual from 'react-fast-compare';
 import { toJS } from 'mobx';
-import { includes, get, isArray, isString } from 'lodash';
+import { includes, get, isArray, isString, isEmpty } from 'lodash';
 import { Button, Table, Dropdown, Input, Typography, Tooltip } from 'antd';
 import MagicInput from 'components/MagicInput';
 import Pagination from 'components/Pagination';
@@ -130,8 +130,7 @@ export class BaseTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hideRow:
-        getLocalStorageItem(`${this.useId}-${this.props.resourceName}`) || [],
+      hideRow: this.defaultHideRows,
       // eslint-disable-next-line react/no-unused-state
       filters: [],
       timeFilter: {},
@@ -161,7 +160,20 @@ export class BaseTable extends React.Component {
       .map((column) => ({
         label: column.title,
         value: this.getDataIndex(column.dataIndex) || column.key,
+        isDefaultHidden: column.isDefaultHidden || false,
       }));
+  }
+
+  get defaultHideRows() {
+    const rowsInLocalStorage = getLocalStorageItem(
+      `${this.useId}-${this.props.resourceName}`
+    );
+    if (!isEmpty(rowsInLocalStorage)) {
+      return rowsInLocalStorage;
+    }
+    return this.hideableRows
+      .filter((item) => item.isDefaultHidden)
+      .map((item) => item.value);
   }
 
   get useId() {
