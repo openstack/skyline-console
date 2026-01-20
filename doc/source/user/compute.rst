@@ -80,9 +80,9 @@ Launch an instance
    the instance network config.
 
    :guilabel:`Networks`: Add a network to the instance. If you specify the networks,
-   :guilabel:`Virtual LAN` and :guilabel:`Security Group` are required fields.
+   :guilabel:`Virtual Interface` and :guilabel:`Security Group` are required fields.
 
-   :guilabel:`Virtual LAN`: Specify a subnet of the network and assign fixed IP
+   :guilabel:`Virtual Interface`: Specify a subnet of the network and assign fixed IP
    address automatically or manually for the instance.
 
    :guilabel:`Security Group`: Security groups are a kind of cloud firewall that
