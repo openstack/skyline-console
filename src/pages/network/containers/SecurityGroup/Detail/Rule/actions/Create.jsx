@@ -313,7 +313,7 @@ export class Create extends ModalAction {
         type: 'select',
         required: showRemoteType,
         options: [
-          { value: 'cidr', label: t('cidr') },
+          { value: 'cidr', label: t('CIDR') },
           { value: 'sg', label: t('Security Group') },
         ],
         hidden: !showRemoteType,
