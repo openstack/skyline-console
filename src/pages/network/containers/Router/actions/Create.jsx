@@ -194,6 +194,9 @@ export class Create extends ModalAction {
         name: 'openExternalNetwork',
         label: t('Options'),
         type: 'check',
+        tip: t(
+          'When enabled, router will use the external network as its default gateway.'
+        ),
         content: t('External Gateway'),
       },
       {
