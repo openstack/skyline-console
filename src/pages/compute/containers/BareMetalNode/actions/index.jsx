@@ -23,7 +23,6 @@ import SetBootDevice from './SetBootDevice';
 import Delete from './Delete';
 import Create from './Create';
 import Edit from './Edit';
-import Inspect from './Inspect';
 
 const actionConfigs = {
   rowActions: {
@@ -37,9 +36,6 @@ const actionConfigs = {
       },
       {
         action: PowerOff,
-      },
-      {
-        action: Inspect,
       },
       {
         action: SetMaintenance,

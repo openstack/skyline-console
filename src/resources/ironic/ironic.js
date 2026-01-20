@@ -33,8 +33,6 @@ export const provisioningState = {
   cleaning: t('Cleaning'),
   'adopt failed': t('Adopt Failed'),
   'clean failed': t('Clean Failed'),
-  inspecting: t('Inspecting'),
-  'inspect failed': t('Inspect Failed'),
   'clean wait': t('Clean Wait'),
   'deploy failed': t('Deploy Failed'),
   deploying: t('Deploying'),
