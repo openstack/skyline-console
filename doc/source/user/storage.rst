@@ -21,7 +21,7 @@ Create a volume
 
 #. Select the appropriate project from the Switch Project menu at the top left.
 
-#. On the :guilabel:`Console` page, open the :guilabel:`Storage` tab and
+#. On the :guilabel:`Project` page, open the :guilabel:`Storage` tab and
    click :guilabel:`Volumes` category.
 
 #. Click :guilabel:`Create Volume`.
@@ -67,7 +67,7 @@ You can attach a volume to one instance at a time.
 
 #. Select the appropriate project from the Switch Project menu at the top left.
 
-#. On the :guilabel:`Console` page, open the :guilabel:`Storage` tab and
+#. On the :guilabel:`Project` page, open the :guilabel:`Storage` tab and
    click :guilabel:`Volumes` category.
 
 #. Select the volume to add to an instance.
@@ -94,7 +94,7 @@ Detach a volume from an instance
 
 #. Select the appropriate project from the Switch Project menu at the top left.
 
-#. On the :guilabel:`Console` page, open the :guilabel:`Storage` tab and
+#. On the :guilabel:`Project` page, open the :guilabel:`Storage` tab and
    click :guilabel:`Volumes` category.
 
 #. In the :guilabel:`Action` column of the volume, select
@@ -113,7 +113,7 @@ Create a snapshot from a volume
 
 #. Select the appropriate project from the Switch Project menu at the top left.
 
-#. On the :guilabel:`Console` page, open the :guilabel:`Storage` tab and
+#. On the :guilabel:`Project` page, open the :guilabel:`Storage` tab and
    click :guilabel:`Volumes` category.
 
 #. Select a volume from which to create a snapshot.
@@ -134,7 +134,7 @@ Edit a volume
 
 #. Select the appropriate project from the Switch Project menu at the top left.
 
-#. On the :guilabel:`Console` page, open the :guilabel:`Storage` tab and
+#. On the :guilabel:`Project` page, open the :guilabel:`Storage` tab and
    click :guilabel:`Volumes` category.
 
 #. In the :guilabel:`Action` column of the volume, click :guilabel:`Edit`.
@@ -160,7 +160,7 @@ deleted.
 
 #. Select the appropriate project from the Switch Project menu at the top left.
 
-#. On the :guilabel:`Console` page, open the :guilabel:`Storage` tab and
+#. On the :guilabel:`Project` page, open the :guilabel:`Storage` tab and
    click :guilabel:`Volumes` category.
 
 #. Select the check boxes for the volumes that you want to delete.

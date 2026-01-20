@@ -4,7 +4,7 @@
 Openstack Dashboard
 ===================
 
-Console page
+Project page
 ~~~~~~~~~~~~
 
 Home tab
