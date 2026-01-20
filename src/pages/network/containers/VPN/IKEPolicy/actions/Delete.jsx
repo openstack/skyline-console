@@ -36,7 +36,7 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   get actionName() {
-    return t('delete vpn IKE policy');
+    return t('Delete VPN IKE policy');
   }
 
   policy = 'delete_ikepolicy';
@@ -67,7 +67,7 @@ export default class DeleteAction extends ConfirmAction {
         {
           action: this.actionName || this.title,
           name: data.name,
-          reason: t('the policy is in use'),
+          reason: t('the VPN IKE policy is in use'),
         }
       )}\n
         ${t('Used by tunnel(s): {names}. ID(s): {ids}', {
