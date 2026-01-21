@@ -242,6 +242,7 @@ export class Instance extends Base {
         render: (tags) => tags.map((tag, index) => SimpleTag({ tag, index })),
         isHideable: true,
         sorter: false,
+        isDefaultHidden: true,
       },
       {
         title: t('Locked'),
