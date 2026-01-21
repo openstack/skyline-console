@@ -36,7 +36,7 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   get actionName() {
-    return t('Delete VPN IPsec policy');
+    return t('Delete VPN IPsec Policy');
   }
 
   policy = 'delete_ipsecpolicy';

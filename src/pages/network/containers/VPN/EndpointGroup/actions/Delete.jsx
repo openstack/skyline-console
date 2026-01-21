@@ -36,7 +36,7 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   get actionName() {
-    return t('Delete VPN Endpoint groups');
+    return t('Delete VPN Endpoint Groups');
   }
 
   policy = 'delete_endpoint_group';
