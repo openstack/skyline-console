@@ -15,6 +15,7 @@
 import BlankLayout from 'layouts/Blank';
 import E404 from 'pages/base/containers/404';
 import { lazy } from 'react';
+import LogDetail from 'src/pages/compute/containers/Instance/Detail/Log/LogDetail';
 
 const Auth = lazy(() =>
   import(/* webpackChunkName: "auth" */ 'pages/auth/App')
@@ -31,6 +32,10 @@ export default [
       {
         path: '/',
         redirect: { from: '/', to: '/base/overview', exact: true },
+      },
+      {
+        path: '/instances/:id/logs',
+        component: LogDetail,
       },
       {
         path: '/login',
