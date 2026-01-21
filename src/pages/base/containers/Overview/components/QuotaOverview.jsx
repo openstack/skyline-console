@@ -311,7 +311,7 @@ export class QuotaOverview extends Component {
     if (i.key === 'server_groups' && server_group_members) {
       title = (
         <span>
-          {title} ({t('Members of Each Group')} :
+          {title} ({t('Members of Each Group')}:{' '}
           {server_group_members.limit === -1
             ? t('Unlimit')
             : server_group_members.limit}
