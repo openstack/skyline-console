@@ -89,7 +89,7 @@ export class EditForm extends ModalAction {
         type: 'input',
         placeholder: t('Please input user name'),
         validator: this.checkName,
-        extra: t('User') + t('Name can not be duplicated'),
+        extra: t('User name can not be duplicated'),
         required: true,
       },
       {

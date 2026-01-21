@@ -108,7 +108,7 @@ export class Create extends ModalAction {
         required: true,
         placeholder: t('Please input name'),
         validator: this.checkName,
-        extra: t('Project') + t('Name can not be duplicated'),
+        extra: t('Project name can not be duplicated'),
         maxLength: 30,
         dependencies: ['domain_id'],
       },
