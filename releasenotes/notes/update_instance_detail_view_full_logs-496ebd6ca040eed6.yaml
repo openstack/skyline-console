@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Update: Instance detail logs tab View Full Log action now supports opening on URL 
+    and re-fetches log data on page reload.
