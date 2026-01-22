@@ -1,0 +1,67 @@
+.log-detail-container {
+  position: relative;
+  box-sizing: border-box;
+  height: 100vh;
+  overflow: hidden;
+  color: #e6e6e6;
+  background-color: #000;
+
+  .log-content {
+    box-sizing: border-box;
+    height: 100%;
+    padding: 16px;
+    overflow-y: auto;
+    font-size: 12px;
+    font-family: monospace;
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+
+  .error-message {
+    box-sizing: border-box;
+    height: 100%;
+    padding: 16px;
+    color: #ff4d4f;
+    font-family: monospace;
+  }
+
+  .log-output {
+    margin: 0;
+    font-family: Consolas, Monaco, monospace;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .spinner-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translate(-50%, -50%);
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #333;
+      border-top: 4px solid #e6e6e6;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    span {
+      margin-top: 12px;
+    }
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
