@@ -162,12 +162,8 @@ export const getImageSystemTabs = () => {
     'others',
   ];
   return valueList.map((value) => {
-    const label =
-      value !== 'others'
-        ? value.slice(0, 1).toUpperCase() + value.slice(1)
-        : t('Others');
     return {
-      label,
+      label: imageOS[value] || t('Others'),
       value,
       component: <ImageType type={value} />,
     };
