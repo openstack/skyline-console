@@ -36,7 +36,7 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   get actionName() {
-    return t('Delete VPN IKE policy');
+    return t('Delete VPN IKE Policy');
   }
 
   policy = 'delete_ikepolicy';
