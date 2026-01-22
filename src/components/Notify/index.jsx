@@ -132,9 +132,9 @@ const errorWithDetail = (err, title) => {
   if (status && parseInt(status, 10) >= 500) {
     if (!isEmpty(message) && !statusMap[status]) {
       if (isString(message)) {
-        nTitle += `${t('message')}${t('.')}`;
+        nTitle += `${t('Message')}${t('.')}`;
       } else if (message.reason) {
-        nTitle += `${t('message.reason')}${t('.')}`;
+        nTitle += `${t('Message reason')}${t('.')}`;
       }
       nTitle += `${t('Status Code')}: ${status}`;
     } else {
