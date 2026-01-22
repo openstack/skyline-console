@@ -38,7 +38,7 @@ export class IPsecSiteConnection extends Base {
   }
 
   get name() {
-    return t('ipsec site connection');
+    return t('IPsec site connection');
   }
 
   get adminPageHasProjectFilter() {

@@ -394,7 +394,7 @@ export class BaseDetail extends Base {
           value: item.volume_type || '-',
         },
         {
-          label: t('Create Time'),
+          label: t('Created At'),
           value: getSinceTime(item.created_at) || '-',
         },
       ];
