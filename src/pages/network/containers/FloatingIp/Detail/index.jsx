@@ -24,7 +24,7 @@ import PortForwarding from './PortForwarding';
 
 export class FloatingIpDetail extends Base {
   get name() {
-    return t('floating ip');
+    return t('floating IP');
   }
 
   get policy() {
