@@ -58,7 +58,7 @@ export class BaseDetail extends Base {
         },
       },
       {
-        label: t('VNIC Type'),
+        label: t('vNIC Type'),
         dataIndex: 'binding:vnic_type',
       },
     ];
