@@ -252,7 +252,7 @@ export class CreateSnapshot extends ModalAction {
       },
       {
         name: 'snapshot',
-        label: t('Instance Snapshot Name'),
+        label: t('Snapshot Name'),
         type: 'input-name',
         isImage: true,
         required: true,
