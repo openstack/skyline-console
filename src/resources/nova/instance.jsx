@@ -325,7 +325,7 @@ export const instanceColumnsBackend = [
     ),
   },
   {
-    title: t('Fixed IP'),
+    title: t('Instance IP'),
     dataIndex: 'fixed_addresses',
     width: 120,
     sorter: false,

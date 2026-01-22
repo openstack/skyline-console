@@ -340,7 +340,7 @@ export class Associate extends ModalAction {
                   render: (value) => <ImageType type={value} title={value} />,
                 },
                 {
-                  title: t('Fixed IP'),
+                  title: t('Instance IP'),
                   dataIndex: 'fixed_addresses',
                   render: (fixed_addresses) =>
                     fixed_addresses.map((it) => (

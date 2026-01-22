@@ -62,7 +62,7 @@ export default class InstanceCard extends NodeCard {
         stringify: (_, record) => record.image_name,
       },
       {
-        title: t('Fixed IP'),
+        title: t('Instance IP'),
         dataIndex: 'fixed_addresses',
         isHideable: true,
         width: 120,

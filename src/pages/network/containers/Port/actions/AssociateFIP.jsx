@@ -117,7 +117,7 @@ export class AssociateFip extends ModalAction {
   }
 
   get formItems() {
-    const fixedIpFormItem = getFixedIPFormItemForAssociate(t('Fixed IP'), this);
+    const fixedIpFormItem = getFixedIPFormItemForAssociate(t('Instance IP'), this);
     const fipFormItem = getFIPFormItemForAssociate(this);
     return [
       {
