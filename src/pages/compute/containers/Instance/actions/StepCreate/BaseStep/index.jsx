@@ -110,7 +110,7 @@ export class BaseStep extends Base {
       if (imageTab) {
         return getImageOS(it) === imageTab;
       }
-      return it;
+      return true;
     });
     return images.map((it) => ({
       ...it,
@@ -263,7 +263,12 @@ export class BaseStep extends Base {
   };
 
   get systemTabs() {
-    return getImageSystemTabs();
+    const data = this.imageStore.list.data || [];
+    const availableImages = data.filter((it) => canImageCreateInstance(it));
+    const tabs = getImageSystemTabs() || [];
+    return tabs.filter((tab) =>
+      availableImages.some((img) => getImageOS(img) === tab.value)
+    );
   }
 
   checkSystemDisk = (rule, value) => {
