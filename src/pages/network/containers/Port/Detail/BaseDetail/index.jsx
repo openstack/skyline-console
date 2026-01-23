@@ -34,11 +34,11 @@ export class BaseDetail extends Base {
   get baseInfoCard() {
     const options = [
       {
-        label: t('Bind Device Type'),
+        label: t('Device Owner'),
         dataIndex: 'device_owner',
       },
       {
-        label: t('Bind Device'),
+        label: t('Device ID'),
         dataIndex: 'device_id',
         render: (data, record) => {
           const { itemInList: { device_id, device_owner, server_name } = {} } =
