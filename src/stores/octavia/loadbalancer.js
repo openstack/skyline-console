@@ -142,8 +142,7 @@ export class LbaasStore extends Base {
 
   @action
   delete = ({ id }) =>
-    // TODO: check params;
-    this.submitting(this.client.delete(id, { cascade: true }));
+    this.submitting(this.client.delete(id, null, { cascade: true }));
 }
 
 const globalLbaasStore = new LbaasStore();
