@@ -52,7 +52,7 @@ export class BaseDetail extends Base {
   get baseInfoCard() {
     const options = [
       {
-        label: t('Fixed IP'),
+        label: t('Instance IP'),
         dataIndex: 'fixed_ip_address',
       },
       {

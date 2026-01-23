@@ -190,7 +190,7 @@ export class Instance extends Base {
         width: 80,
       },
       {
-        title: t('Fixed IP'),
+        title: t('Instance IP'),
         dataIndex: 'fixed_addresses',
         sorter: false,
         isHideable: true,
@@ -292,11 +292,11 @@ export class Instance extends Base {
   get searchFilters() {
     const ipFilter = this.isFilterByBackend
       ? {
-          label: t('Fixed IP'),
+          label: t('Instance IP'),
           name: 'ip',
         }
       : {
-          label: t('Fixed IP'),
+          label: t('Instance IP'),
           name: 'fixed_addresses',
           filterFunc: (val, filterVal) => {
             return (val || []).some((v) =>
