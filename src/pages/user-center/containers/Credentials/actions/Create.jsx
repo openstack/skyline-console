@@ -101,7 +101,7 @@ export class Create extends ModalAction {
       },
       {
         name: 'unrestricted',
-        label: t('Unrestricted'),
+        label: t('Restriction'),
         type: 'check',
         content: t('Unrestricted'),
         extra: t(
