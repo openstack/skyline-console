@@ -116,7 +116,7 @@ export class Create extends ModalAction {
       // TODO: get cinder service list
       // {
       //   name: 'backend',
-      //   label: t('Backend'),
+      //   label: t('Back-End'),
       //   type: 'select',
       //   options: this.services,
       //   required: true,
