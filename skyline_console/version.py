@@ -14,7 +14,7 @@
 
 from pbr import version as pbr_version
 
-SKYLINE_CONSOLE_VENDOR = "OpenStack Foundation"
+SKYLINE_CONSOLE_VENDOR = "OpenInfra Foundation"
 SKYLINE_CONSOLE_PRODUCT = "OpenStack Skyline Console"
 SKYLINE_CONSOLE_PACKAGE = None  # OS distro package version suffix
 
