@@ -42,7 +42,7 @@ export class BaseDetail extends Base {
         valueRender: 'yesNo',
       },
       {
-        label: t('External Fixed IPs'),
+        label: t('External IPs'),
         dataIndex: 'external_gateway_info.external_fixed_ips',
         render: (value) => {
           if (!value || value.length === 0) {
@@ -63,7 +63,7 @@ export class BaseDetail extends Base {
       },
     ];
     return {
-      title: t('External Network Info'),
+      title: t('Network Info'),
       options,
       labelCol: 4,
     };

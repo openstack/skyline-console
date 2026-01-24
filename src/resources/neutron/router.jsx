@@ -67,7 +67,7 @@ export const getRouterColumns = (self) => [
     routeName: self.getRouteName('networkDetail'),
   },
   {
-    title: t('External Fixed IP'),
+    title: t('External IP'),
     dataIndex: 'externalFixedIps',
     isHideable: true,
     sorter: false,
