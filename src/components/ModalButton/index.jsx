@@ -45,7 +45,7 @@ export default class ModalButton extends Component {
     render: null,
     component: null,
     item: null,
-    okText: t('Confirm'),
+    okText: t('OK'),
     cancelText: t('Cancel'),
     handleOk: null,
     className: '',

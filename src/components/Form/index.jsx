@@ -203,7 +203,7 @@ export default class BaseForm extends React.Component {
   }
 
   get okBtnText() {
-    return t('Confirm');
+    return t('OK');
   }
 
   get instanceName() {
