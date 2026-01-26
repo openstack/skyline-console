@@ -17,8 +17,8 @@ import { get } from 'lodash';
 import client from 'client';
 import Base from 'stores/base';
 import { mapperRule } from 'resources/neutron/security-group-rule';
-import { RecycleBinStore } from '../skyline/recycle-server';
 import { hashPasswordForCloudInit } from 'src/resources/nova/instance';
+import { RecycleBinStore } from '../skyline/recycle-server';
 
 export class ServerStore extends Base {
   @observable
@@ -342,6 +342,16 @@ export class ServerStore extends Base {
   @action
   async restore({ id }) {
     return this.operation({ key: 'restore', id });
+  }
+
+  @action
+  async reset({ id, state = 'active' }) {
+    const body = {
+      'os-resetState': {
+        state,
+      },
+    };
+    return this.operation({ body, id });
   }
 
   @action
