@@ -373,9 +373,9 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
         header: (
           <div style={{ marginBottom: 8 }}>
             {t(
-              'The security group is similar to the firewall function and is used to set up network access control. '
-            )}
-            {t(' You can go to the console to ')}
+              'The security group is similar to the firewall function and is used to set up network access control.'
+            )}{' '}
+            {t('You can go to the console to')}{' '}
             <Link to="/network/security-group">
               {t('create a new security group')}&gt;{' '}
             </Link>
