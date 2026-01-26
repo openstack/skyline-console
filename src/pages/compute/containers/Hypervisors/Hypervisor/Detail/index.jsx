@@ -85,7 +85,7 @@ export class HypervisorDetail extends Base {
   get tabs() {
     const tabs = [
       {
-        title: t('Members'),
+        title: t('Instances'),
         key: 'members',
         component: Members,
       },
