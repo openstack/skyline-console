@@ -37,6 +37,7 @@ export const getBaseSnapshotColumns = (self) => [
     title: t('Disk Format'),
     dataIndex: 'disk_format',
     isHideable: true,
+    isDefaultHidden: true,
     valueMap: imageFormats,
   },
   {
