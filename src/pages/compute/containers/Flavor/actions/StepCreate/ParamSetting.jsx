@@ -350,7 +350,7 @@ export class ParamSetting extends Base {
       },
       {
         name: 'vcpus',
-        label: t('CPU (Core)'),
+        label: t('vCPU (Cores)'),
         type: 'input-int',
         min: 1,
         extra: t(
