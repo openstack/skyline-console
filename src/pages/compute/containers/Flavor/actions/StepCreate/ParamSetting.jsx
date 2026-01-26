@@ -195,7 +195,7 @@ export class ParamSetting extends Base {
         return Promise.resolve();
       }
       if (!value || value.length === 0) {
-        return Promise.reject(t('Please set MUNA'));
+        return Promise.reject(t('Please set NUMA'));
       }
       const vcpus = getFieldValue('vcpus');
       const memoryGb = getFieldValue('memoryGb');
