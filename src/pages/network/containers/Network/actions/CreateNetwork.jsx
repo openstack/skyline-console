@@ -64,11 +64,11 @@ export class CreateNetwork extends ModalAction {
 
   static get modalSize() {
     const { pathname } = window.location;
-    return isAdminPage(pathname) ? 'large' : 'small';
+    return isAdminPage(pathname) ? 'large' : 'middle';
   }
 
   getModalSize() {
-    return this.isAdminPage ? 'large' : 'small';
+    return this.isAdminPage ? 'large' : 'middle';
   }
 
   init() {
