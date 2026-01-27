@@ -63,12 +63,11 @@ export default class Delete extends ConfirmAction {
     const records = await store.fetchList({ container, path: name });
     if (records.length > 0) {
       this.showConfirmErrorBeforeSubmit = true;
+      const folderName = this.item.shortName || this.item.name || name;
       this.confirmErrorMessageBeforeSubmit = t(
-        'Unable to {action}, because : {reason}, instance: {name}.',
+        'Cannot delete folder "{name}". The folder is not empty.',
         {
-          action: this.actionName || this.title,
-          name: this.item.name,
-          reason: t('the folder is not empty'),
+          name: folderName,
         }
       );
       return Promise.reject();

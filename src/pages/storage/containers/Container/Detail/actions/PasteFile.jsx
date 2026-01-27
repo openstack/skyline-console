@@ -60,7 +60,10 @@ export default class PasteFile extends ConfirmAction {
 
   getSourcePath() {
     const { container, folder } = this.copiedFiles[0] || {};
-    return `${container}/${folder}`;
+    if (folder) {
+      return `${container}/${folder}`;
+    }
+    return container || '';
   }
 
   getItemName = (item) => {

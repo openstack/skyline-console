@@ -90,7 +90,22 @@ export class ContainerStore extends Base {
 
   @action
   delete = async ({ id }) => {
-    return this.submitting(this.client.delete(id));
+    try {
+      return await this.submitting(this.client.delete(id));
+    } catch (error) {
+      if (error?.response?.status === 409) {
+        const message = t(
+          'Cannot delete container "{name}". The container is not empty.',
+          {
+            name: id,
+          }
+        );
+        const transformedError = new Error(message);
+        transformedError.response = { data: message, status: 409 };
+        return Promise.reject(transformedError);
+      }
+      return Promise.reject(error);
+    }
   };
 
   @action

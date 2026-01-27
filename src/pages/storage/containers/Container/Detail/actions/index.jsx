@@ -16,6 +16,7 @@ import CreateFolder from './CreateFolder';
 import Delete from './Delete';
 import UploadFile from './UploadFile';
 import Download from './Download';
+import CopyPublicUrl from './CopyPublicUrl';
 import CopyFile from './CopyFile';
 import CutFile from './CutFile';
 import Edit from './Edit';
@@ -31,6 +32,9 @@ const actionConfigs = {
       },
       {
         action: Download,
+      },
+      {
+        action: CopyPublicUrl,
       },
       {
         action: CopyFile,

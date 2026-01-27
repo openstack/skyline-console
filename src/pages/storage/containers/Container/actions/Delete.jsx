@@ -44,4 +44,20 @@ export default class Delete extends ConfirmAction {
   policy = allCanChangePolicy;
 
   onSubmit = ({ id }) => globalContainerStore.delete({ id });
+
+  submitErrorMsg(data, realError) {
+    if (typeof realError === 'string') {
+      return realError;
+    }
+    if (
+      realError?.response?.data &&
+      typeof realError.response.data === 'string'
+    ) {
+      return realError.response.data;
+    }
+    if (realError?.message && typeof realError.message === 'string') {
+      return realError.message;
+    }
+    return super.submitErrorMsg(data);
+  }
 }
