@@ -398,7 +398,7 @@ export default class BaseStepForm extends React.Component {
               onClick={this.onClickSubmit}
               disabled={this.disableSubmit}
             >
-              {t('Confirm')}
+              {t('OK')}
             </Button>
           )}
         </div>

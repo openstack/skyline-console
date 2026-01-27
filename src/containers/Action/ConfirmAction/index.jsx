@@ -68,7 +68,7 @@ export default class ConfirmAction {
   }
 
   get okText() {
-    return t('Confirm');
+    return t('OK');
   }
 
   get cancelText() {
