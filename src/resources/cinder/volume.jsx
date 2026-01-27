@@ -282,6 +282,7 @@ export const getVolumeColumnsList = (self) => {
       title: t('Disk Tag'),
       dataIndex: 'disk_tag',
       isHideable: true,
+      isDefaultHidden: true,
       valueMap: diskTag,
       sorter: false,
     },
