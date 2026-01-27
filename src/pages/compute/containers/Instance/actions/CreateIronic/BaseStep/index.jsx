@@ -170,7 +170,7 @@ export class BaseStep extends Base {
       },
       {
         name: 'flavor',
-        label: t('Specification'),
+        label: t('Flavor'),
         type: 'select-table',
         component: (
           <FlavorSelectTable isIronic="true" onChange={this.onFlavorChange} />
