@@ -527,12 +527,12 @@ export class BaseStep extends Base {
         valueMap: imageFormats,
       },
       {
-        title: t('Min System Disk'),
+        title: t('Min. System Disk'),
         dataIndex: 'min_disk',
         unit: 'GiB',
       },
       {
-        title: t('Min Memory'),
+        title: t('Min. Memory'),
         dataIndex: 'min_ram',
         render: (text) => `${text / 1024}GiB`,
       },
@@ -798,7 +798,7 @@ export class BaseStep extends Base {
         hidden: !this.showSystemDiskByBootFromVolume,
         validator: this.checkSystemDisk,
         minSize: this.getSystemDiskMinSize(),
-        extra: t('Disk size is limited by the min disk of flavor, image, etc.'),
+        extra: t('Disk size is limited by the min. disk of flavor, image, etc.'),
         onChange: this.onSystemDiskChange,
         dependencies: ['flavor', 'image', 'instanceSnapshot', 'bootFromVolume'],
       },

@@ -453,7 +453,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
       ```javascript
       {
         name: 'min_disk',
-        label: t('Min System Disk(GB)'),
+        label: t('Min. System Disk(GB)'),
         type: 'input-int',
         min: 0,
         max: 500,
