@@ -114,9 +114,9 @@ export class ConfirmStep extends Base {
       const { networkOption, subnetOption, ipTypeOption, ip } = it.value;
       const subnet =
         ipTypeOption.value === 1 ? subnetOption.name || subnetOption.label : '';
-      return `${networkOption.name || networkOption.label} ${
+      return `${networkOption.name || networkOption.label} (${
         ipTypeOption.label
-      } ${subnet} ${ipTypeOption.value === 1 ? ip : ''}`;
+      }) ${subnet} ${ipTypeOption.value === 1 ? ip : ''}`.trim();
     });
     return (
       <Row>
@@ -288,12 +288,12 @@ export class ConfirmStep extends Base {
         },
         items: [
           {
-            label: `${t('Virtual LAN')}(${t('New')})`,
+            label: `${t('Virtual Interface')}(${t('New')})`,
             value: this.getVirtualLANs(),
             span: 1,
           },
           {
-            label: `${t('Virtual LAN')}(${t('Created')})`,
+            label: `${t('Ports')}(${t('Created')})`,
             value: this.getPorts(),
             span: 1,
           },
