@@ -143,7 +143,7 @@ export class BaseDetail extends Base {
   get binding() {
     let options = [
       {
-        label: t('VNIC Type'),
+        label: t('vNIC Type'),
         dataIndex: 'binding__vnic_type',
       },
     ];
