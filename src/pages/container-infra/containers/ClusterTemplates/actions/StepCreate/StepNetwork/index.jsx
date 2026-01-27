@@ -156,19 +156,19 @@ export class StepNetwork extends Base {
       {
         name: 'http_proxy',
         label: t('HTTP Proxy'),
-        placeholder: t('The http_proxy address to use for nodes in cluster'),
+        placeholder: t('The HTTP Proxy address to use for nodes in cluster'),
         type: 'input',
       },
       {
         name: 'https_proxy',
         label: t('HTTPS Proxy'),
-        placeholder: t('The https_proxy address to use for nodes in cluster'),
+        placeholder: t('The HTTPS Proxy address to use for nodes in cluster'),
         type: 'input',
       },
       {
         name: 'no_proxy',
         label: t('No Proxy'),
-        placeholder: t('The no_proxy address to use for nodes in cluster'),
+        placeholder: t('The No Proxy address to use for nodes in cluster'),
         type: 'input',
       },
       {
@@ -201,7 +201,7 @@ export class StepNetwork extends Base {
         loading: this.privateNetworkStore.list.isLoading,
         header: (
           <div>
-            {t(' You can go to the console to ')}
+            {t('You can go to the console to')}{' '}
             {getLinkRender({
               key: 'network',
               value: `${t('create a new network/subnet')} > `,

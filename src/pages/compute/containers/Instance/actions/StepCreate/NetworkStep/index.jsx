@@ -229,8 +229,8 @@ export class NetworkStep extends Base {
           <div>
             {t(
               'Please reasonably plan the network and subnet to which the virtual network card belongs.'
-            )}
-            {t(' You can go to the console to ')}
+            )}{' '}
+            {t('You can go to the console to')}{' '}
             {getLinkRender({
               key: 'network',
               value: `${t('create a new network/subnet')} > `,
@@ -304,9 +304,9 @@ export class NetworkStep extends Base {
         header: (
           <div style={{ marginBottom: 8 }}>
             {t(
-              'The security group is similar to the firewall function and is used to set up network access control. '
-            )}
-            {t(' You can go to the console to ')}
+              'The security group is similar to the firewall function and is used to set up network access control.'
+            )}{' '}
+            {t('You can go to the console to')}{' '}
             {getLinkRender({
               key: 'securityGroup',
               value: `${t('create a new security group')}> `,

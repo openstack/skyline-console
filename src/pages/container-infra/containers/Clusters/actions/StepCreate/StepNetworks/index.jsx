@@ -151,7 +151,7 @@ export class StepNetworks extends Base {
         loading: this.networkStore.list.isLoading,
         header: (
           <div>
-            {t(' You can go to the console to ')}
+            {t('You can go to the console to')}{' '}
             {getLinkRender({
               key: 'network',
               value: `${t('create a new network/subnet')} > `,
