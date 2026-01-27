@@ -305,10 +305,6 @@ export const physicalNodeTypes = [
   },
 ];
 
-export const CurrentUser = {
-  text: t('Current User'),
-};
-
 export const isIronicInstance = (item) => {
   const { flavor_info: { extra_specs: extra = {} } = {} } = item;
   return extra[':architecture'] === 'bare_metal';
@@ -563,7 +559,7 @@ export const actionColumn = (self) => {
       hidden: self.isAdminPage,
       render: (value) => {
         const isSelf = value === self?.currentUser?.user?.id;
-        return isSelf ? `${value}( ${CurrentUser})` : value;
+        return isSelf ? `${value} (${t('Current User')})` : value;
       },
     },
   ];
