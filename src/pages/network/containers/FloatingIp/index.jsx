@@ -114,7 +114,7 @@ export class FloatingIps extends Base {
   }
 
   get name() {
-    return t('floating ips');
+    return t('floating IPs');
   }
 
   get actionConfigs() {
