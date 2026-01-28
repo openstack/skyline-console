@@ -59,7 +59,7 @@ export class Set extends ModalAction {
         type: 'input-number',
         min: 0,
         tip: t('Time To Live in seconds.'),
-        placeholder: t('3600'),
+        placeholder: 3600,
       },
     ];
   }
