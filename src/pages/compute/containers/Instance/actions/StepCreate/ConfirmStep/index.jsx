@@ -41,7 +41,7 @@ export class ConfirmStep extends Base {
       return null;
     }
     const { size, typeOption, deleteTypeLabel } = diskInfo || {};
-    return `${typeOption.label} ${size}GiB ${deleteTypeLabel}`;
+    return `${typeOption.label} ${size}GiB\n(${deleteTypeLabel})`;
   }
 
   getBootableVolumeDisk() {
@@ -96,8 +96,8 @@ export class ConfirmStep extends Base {
     const { flavor } = context;
     const { disk, ram, vcpus } = flavor.selectedRows[0];
     return disk
-      ? `${vcpus}VCPU/${disk}GiB/${Number.parseInt(ram / 1024, 10)}GiB`
-      : `${vcpus}VCPU/${Number.parseInt(ram / 1024, 10)}GiB`;
+      ? `${vcpus} vCPU/${disk} GiB/${Number.parseInt(ram / 1024, 10)} GiB`
+      : `${vcpus} vCPU/${Number.parseInt(ram / 1024, 10)} GiB`;
   }
 
   getSourceValue() {
@@ -288,12 +288,12 @@ export class ConfirmStep extends Base {
         },
         items: [
           {
-            label: `${t('Virtual Interface')}(${t('New')})`,
+            label: `${t('Virtual Interfaces')}`,
             value: this.getVirtualLANs(),
             span: 1,
           },
           {
-            label: `${t('Ports')}(${t('Created')})`,
+            label: `${t('Ports')}`,
             value: this.getPorts(),
             span: 1,
           },
