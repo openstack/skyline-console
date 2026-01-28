@@ -117,7 +117,7 @@ export default class Release extends ConfirmAction {
         <p>
           {' '}
           {this.unescape(
-            t('Are you sure to {action} Floating IP: {name})?', {
+            t('Are you sure to {action} Floating IP: {name}?', {
               action: this.actionNameDisplay || this.title,
               name,
             })
