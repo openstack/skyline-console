@@ -15,6 +15,8 @@
 import { action, observable } from 'mobx';
 import client from 'client';
 import { getArrayBuffer } from 'utils/file';
+import { swiftEndpoint } from 'client/client/constants';
+import globalRootStore from 'stores/root';
 import Base from '../base';
 
 export class ObjectStore extends Base {
@@ -107,7 +109,21 @@ export class ObjectStore extends Base {
     if (items.length === 0) {
       return items;
     }
-    return this.updateData(items);
+    const { name: containerName } = this.container || {};
+    let isPublic = false;
+
+    if (containerName) {
+      try {
+        const { headers = {} } = await this.containerClient.showMetadata(
+          containerName
+        );
+        isPublic = !!headers['x-container-read'];
+      } catch (e) {
+        isPublic = false;
+      }
+    }
+
+    return this.updateData(items, isPublic);
   }
 
   async detailFetchByClient(resourceParams) {
@@ -127,8 +143,39 @@ export class ObjectStore extends Base {
     return data;
   }
 
+  getPublicUrl = (container, objectPath) => {
+    let swiftPublicEndpoint = swiftEndpoint();
+    if (!swiftPublicEndpoint) {
+      return null;
+    }
+
+    if (swiftPublicEndpoint.startsWith('/')) {
+      swiftPublicEndpoint = `${window.location.origin}${swiftPublicEndpoint}`;
+    }
+
+    const projectId =
+      this.containerClient?.project ||
+      globalRootStore?.user?.project?.id ||
+      globalRootStore?.projectId;
+    if (!projectId) {
+      return null;
+    }
+
+    const cleanEndpoint = swiftPublicEndpoint.replace(/\/$/, '');
+    const baseUrl = cleanEndpoint.includes('/v1')
+      ? cleanEndpoint
+      : `${cleanEndpoint}/v1`;
+
+    const encodedPath = objectPath
+      .split('/')
+      .map((segment) => encodeURIComponent(segment))
+      .join('/');
+
+    return `${baseUrl}/AUTH_${projectId}/${container}/${encodedPath}`;
+  };
+
   @action
-  updateData = (items) => {
+  updateData = (items, isPublic = false) => {
     const { name, path, folder, prefix, hasCopy } = this.container || {};
     return items
       .filter((it) => {
@@ -137,16 +184,27 @@ export class ObjectStore extends Base {
         const fullItemName = subdir || itemName;
         return fullItemName !== prefix && itemName !== prefix;
       })
-      .map((it) => ({
-        ...it,
-        container: name,
-        path,
-        folder,
-        type: this.getItemType(it),
-        hasCopy,
-        shortName: this.getShortName(it, prefix),
-        name: it.subdir || it.name,
-      }));
+      .map((it) => {
+        const itemType = this.getItemType(it);
+        const itemName = it.subdir || it.name;
+        const publicUrl =
+          isPublic && itemType === 'file' && name
+            ? this.getPublicUrl(name, itemName)
+            : null;
+
+        return {
+          ...it,
+          container: name,
+          path,
+          folder,
+          type: itemType,
+          hasCopy,
+          shortName: this.getShortName(it, prefix),
+          name: itemName,
+          isPublic,
+          publicUrl,
+        };
+      });
   };
 
   @action

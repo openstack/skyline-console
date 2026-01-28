@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import React from 'react';
 import { ConfirmAction } from 'containers/Action';
 import globalObjectStore from 'stores/swift/object';
 import { allCanChangePolicy } from 'resources/skyline/policy';
@@ -47,6 +48,25 @@ export default class CutFile extends ConfirmAction {
   policy = allCanChangePolicy;
 
   allowedCheckFunc = (item) => isFile(item);
+
+  confirmContext = (data) => {
+    const name = this.getName(data);
+    return (
+      <div>
+        <p>
+          {t('Are you sure to {action} (instance: {name})?', {
+            action: this.actionNameDisplay || this.title,
+            name,
+          })}
+        </p>
+        <p style={{ marginTop: 8, color: '#666', fontSize: '12px' }}>
+          {t(
+            'This will move the selected file(s) to a new location. Use the Paste action to paste them into another folder or container. The original file(s) will be removed from their current location after pasting.'
+          )}
+        </p>
+      </div>
+    );
+  };
 
   onSubmit = (value, containerProps, isBatch, index, values) => {
     if (!isBatch) {
