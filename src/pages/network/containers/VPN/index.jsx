@@ -42,7 +42,7 @@ export class VPN extends Base {
         component: VPNGateway,
       },
       {
-        title: t('VPN EndPoint Groups'),
+        title: t('VPN Endpoint Groups'),
         key: 'vpn_endpoint_groups',
         component: EndPointGroup,
       },
