@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    feat: The Rebuild action now includes the ability to select 
+    items from "instance snapshot" and "bootable volume".
