@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Update: router detail page.
+    Add L3 agent to the admin page when available in the environment.

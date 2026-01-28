@@ -89,9 +89,15 @@ export class RouterStore extends Base {
     };
   }
 
-  async detailDidFetch(item) {
-    const { network_id, network_name } =
-      (item || {}).external_gateway_info || {};
+  async detailDidFetch(item, isAdmin) {
+    await this.fetchExternalGatewayNetworkName(item);
+    item.l3Agents = await this.fetchL3Agents(item.id, isAdmin);
+    return item;
+  }
+
+  async fetchExternalGatewayNetworkName(item) {
+    const { network_id, network_name } = item?.external_gateway_info || {};
+
     if (network_id && !network_name) {
       try {
         const network = await globalNetworkStore.fetchDetail({
@@ -100,7 +106,19 @@ export class RouterStore extends Base {
         item.external_gateway_info.network_name = network.name;
       } catch (e) {}
     }
-    return item;
+  }
+
+  async fetchL3Agents(routerId, isAdmin) {
+    try {
+      if (!isAdmin) return null;
+      const result = await this.client.l3Agents.list(routerId);
+      return result?.agents ?? [];
+    } catch (error) {
+      if (error?.response?.status === 404) {
+        return null;
+      }
+      throw error;
+    }
   }
 
   async fetchConnectedSubnets(routerItem) {
@@ -162,7 +180,6 @@ export class RouterStore extends Base {
   }
 
   async listDidFetchFirewall(items) {
-    // eslint-disable-next-line no-return-await
     return Promise.all(
       items.map(async (routerItem) => {
         const portStore = new PortStore();

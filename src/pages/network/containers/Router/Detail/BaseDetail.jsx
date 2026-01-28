@@ -15,15 +15,67 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Base from 'containers/BaseDetail';
+import { Table } from 'antd';
 
 export class BaseDetail extends Base {
+  get isLoading() {
+    return false;
+  }
+
   get leftCards() {
-    const cards = [this.aZoneCard];
-    return cards;
+    return [this.aZoneCard, this.externalNetInfo];
   }
 
   get rightCards() {
-    return [this.externalNetInfo];
+    if (!this.isAdminPage) return [];
+    if (this.detailData?.l3Agents === null) return [];
+    return [this.agentCard];
+  }
+
+  get agentCard() {
+    const agents = this.detailData?.l3Agents;
+    if (agents === null) return null;
+
+    const title = t('L3 Agent');
+    const options = [
+      {
+        content: this.agentContent(agents || []),
+      },
+    ];
+
+    return {
+      title,
+      options,
+      labelCol: 0,
+    };
+  }
+
+  agentContent(items) {
+    const columns = [
+      {
+        title: t('Host'),
+        dataIndex: 'host',
+      },
+      {
+        title: t('ID'),
+        dataIndex: 'id',
+      },
+      {
+        title: t('High Availability Status'),
+        dataIndex: 'ha_state',
+        render: (value) => value || '-',
+      },
+    ];
+
+    return (
+      <Table
+        columns={columns}
+        size="middle"
+        dataSource={items}
+        pagination={false}
+        rowKey="id"
+      />
+    );
   }
 
   get externalNetInfo() {
@@ -50,22 +102,23 @@ export class BaseDetail extends Base {
           }
           return value.map((item, index) => (
             <div key={`ip-${index}`}>
-              <div key={item.subnet_id}>
-                <b>{t('Subnet ID')}</b>: {item.subnet_id}
-              </div>
-              <div key={item.ip_address}>
-                <b>{t('IP Address')}</b>: {item.ip_address}
-              </div>
-              <div style={{ marginBottom: '8px' }} />
+              <ul style={{ paddingLeft: '12px' }}>
+                <li>
+                  <b>{t('Subnet ID')}</b>: {item.subnet_id}
+                </li>
+                <li>
+                  <b>{t('IP Address')}</b>: {item.ip_address}
+                </li>
+              </ul>
             </div>
           ));
         },
       },
     ];
+
     return {
       title: t('Network Info'),
       options,
-      labelCol: 4,
     };
   }
 
@@ -82,9 +135,12 @@ export class BaseDetail extends Base {
         render: (value) => (value || []).join(',') || '-',
       },
     ];
+
     return {
       title: t('Availability Zone Info'),
       options,
+      labelCol: 12,
+      contentCol: 12,
     };
   }
 }
