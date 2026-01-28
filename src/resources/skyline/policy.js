@@ -75,7 +75,6 @@ export const policyMap = {
     'orders:post',
   ],
   zun: ['capsule:', 'container:', 'host:get'],
-  panko: ['segregation', 'telemetry:events:index'],
   manila: ['share:', 'share_', 'scheduler_stats:pools'],
   trove: [
     'instance:create',
