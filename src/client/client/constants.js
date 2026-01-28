@@ -26,7 +26,6 @@ export const endpointVersionMap = {
   glance: 'v2',
   neutron: 'v2.0',
   ironic: 'v1',
-  ironicInspector: 'v1',
   heat: 'v1',
   octavia: 'v2',
   swift: 'v1',
@@ -41,7 +40,6 @@ export const endpointVersionMap = {
 
 export const endpointsDefault = {
   ironic: '/api/openstack/ironic',
-  ironicInspector: '/api/openstack/ironic-inspector',
   octavia: '/api/openstack/octavia',
 };
 
@@ -66,8 +64,6 @@ export const cinderBase = () => getOpenstackEndpoint('cinder');
 export const glanceBase = () => getOpenstackEndpoint('glance');
 export const neutronBase = () => getOpenstackEndpoint('neutron');
 export const ironicBase = () => getOpenstackEndpoint('ironic');
-export const ironicInspectorBase = () =>
-  getOpenstackEndpoint('ironicInspector');
 export const placementBase = () => getOpenstackEndpoint('placement');
 export const heatBase = () => getOpenstackEndpoint('heat');
 export const octaviaBase = () => getOpenstackEndpoint('octavia');
@@ -107,10 +103,6 @@ export const apiVersionMaps = {
   ironic: {
     key: 'X-Openstack-Ironic-Api-Version',
     value: '1.58',
-  },
-  'ironic-inspect': {
-    key: 'X-OpenStack-Ironic-Inspector-API-Version',
-    value: '1.15',
   },
   manila: {
     key: 'X-OpenStack-Manila-API-Version',

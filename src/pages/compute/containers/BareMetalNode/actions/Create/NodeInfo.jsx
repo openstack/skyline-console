@@ -170,9 +170,6 @@ export class NodeInfo extends Base {
         addText: t('Add Property'),
         minCount: this.needKeys.length,
         readonlyKeys: this.needKeys,
-        tips: t(
-          'If you do not fill in parameters such as cpus, memory_mb, local_gb, cpu_arch, etc., you can automatically inject the configuration and Mac address of the physical machine by performing the "Auto Inspect" operation.'
-        ),
         validator: (rule, value) => {
           if (!this.checkKeyValues(value)) {
             // eslint-disable-next-line prefer-promise-reject-errors

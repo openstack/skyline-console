@@ -105,12 +105,6 @@ describe('The Bare Metal Page', () => {
         .wait(10000);
     });
 
-    it('successfully auto inspect', () => {
-      cy.tableSimpleSearchText(nodeName).clickConfirmActionInMore(
-        'Auto Inspect'
-      );
-    });
-
     it('successfully enter maintenace mode', () => {
       cy.tableSimpleSearchText(nodeName)
         .clickActionInMore('Enter Maintenance Mode')
