@@ -21,7 +21,7 @@ import actionConfigs from '../actions';
 
 export class Detail extends Base {
   get name() {
-    return t('volume type qos');
+    return t('Volume Type QoS');
   }
 
   get policy() {
