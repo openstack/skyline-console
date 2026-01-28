@@ -209,10 +209,10 @@ For information about creating image files, see the
    :guilabel:`OS Admin`: The administrator name of image operating system.
    in general, administrator for Windows, root for Linux.
 
-   :guilabel:`Min System Disk (GiB)`: Amount of disk space in GB that is
+   :guilabel:`Min. System Disk (GiB)`: Amount of disk space in GB that is
    required to boot the image.
 
-   :guilabel:`Min Memory (GiB)`: Amount of Memory in GB that is required
+   :guilabel:`Min. Memory (GiB)`: Amount of Memory in GB that is required
    to boot the image.
 
    :guilabel:`Protected`: Image protection for deletion.

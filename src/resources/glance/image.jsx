@@ -199,14 +199,14 @@ export const getImageColumns = (self) => [
     dataIndex: 'os_version',
   },
   {
-    title: t('Min System Disk'),
+    title: t('Min. System Disk'),
     dataIndex: 'min_disk',
     isHideable: true,
     isDefaultHidden: true,
     render: (text) => formatSize(text * 1024, 2),
   },
   {
-    title: t('Min Memory'),
+    title: t('Min. Memory'),
     dataIndex: 'min_ram',
     isHideable: true,
     isDefaultHidden: true,

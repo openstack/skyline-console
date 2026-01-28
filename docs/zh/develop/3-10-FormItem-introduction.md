@@ -451,7 +451,7 @@
       ```javascript
       {
         name: 'min_disk',
-        label: t('Min System Disk(GB)'),
+        label: t('Min. System Disk(GB)'),
         type: 'input-int',
         min: 0,
         max: 500,

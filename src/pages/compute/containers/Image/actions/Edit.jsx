@@ -126,7 +126,7 @@ export class Edit extends ModalAction {
       },
       {
         name: 'min_disk',
-        label: t('Min System Disk (GiB)'),
+        label: t('Min. System Disk (GiB)'),
         type: 'input-int',
         min: 0,
         max: 500,
@@ -136,7 +136,7 @@ export class Edit extends ModalAction {
       },
       {
         name: 'min_ram',
-        label: t('Min Memory (GiB)'),
+        label: t('Min. Memory (GiB)'),
         type: 'input-int',
         min: 0,
         max: 500,
