@@ -202,7 +202,7 @@ export class AttachInterface extends ModalAction {
       },
       {
         name: 'ip',
-        label: t('Given IP'),
+        label: t('IP Address'),
         type: 'ip-input',
         required: ipType === 1,
         hidden: ipType !== 1,
