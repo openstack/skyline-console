@@ -274,7 +274,7 @@ Catalog Introduction-Image Version
     │   │   │   │   ├── SecurityGroup   (Security group)
     │   │   │   │   ├── Topology    (Network topology)
     │   │   │   │   ├── VPN (VPN)
-    │   │   │   │   └── VirtualAdapter  (Virtual Adapter)
+    │   │   │   │   └── VirtualAdapter  (Port)
     │   │   │   └── routes  (Routing configuration)
     │   │   │       └── index.js
     │   │   ├── storage (Storage)

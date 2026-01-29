@@ -184,7 +184,7 @@ export function getPortFormItem(withResourceNameAndStatusFilter = true) {
   return [
     {
       name: 'virtual_adapter',
-      label: t('Virtual Adapter'),
+      label: t('Port'),
       type: 'select-table',
       required: true,
       rowKey: 'id',

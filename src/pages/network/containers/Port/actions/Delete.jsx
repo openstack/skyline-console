@@ -21,7 +21,7 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   get title() {
-    return t('Delete Virtual Adapter');
+    return t('Delete Port');
   }
 
   get isDanger() {
@@ -33,7 +33,7 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   get actionName() {
-    return t('delete virtual adapter');
+    return t('delete port');
   }
 
   policy = 'delete_port';

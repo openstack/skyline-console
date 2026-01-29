@@ -48,7 +48,7 @@ Catalog Introduction
    │   │       │   ├── router.spec.js  (Router)
    │   │       │   ├── security-group.spec.js  (Security group)
    │   │       │   ├── topology.spec.js    (Network topology)
-   │   │       │   ├── port.spec.js (Virtual Adapter)
+   │   │       │   ├── port.spec.js (Port)
    │   │       │   └── vpn.spec.js (VPN)
    │   │       └── storage (Storage)
    │   │           ├── backup.spec.js  (Backup)
