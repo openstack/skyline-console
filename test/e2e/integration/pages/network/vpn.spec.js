@@ -59,7 +59,7 @@ onlyOn(vpnServiceEnabled, () => {
     });
 
     it('successfully create local endpoint', () => {
-      cy.clickTab('VPN EndPoint Groups', 'vpn_endpoint_groups')
+      cy.clickTab('VPN Endpoint Groups', 'vpn_endpoint_groups')
         .clickHeaderActionButton(0)
         .wait(5000)
         .formInput('name', endpointLocal)
@@ -72,7 +72,7 @@ onlyOn(vpnServiceEnabled, () => {
     });
 
     it('successfully create peer endpoint', () => {
-      cy.clickTab('VPN EndPoint Groups', 'vpn_endpoint_groups')
+      cy.clickTab('VPN Endpoint Groups', 'vpn_endpoint_groups')
         .clickHeaderActionButton(0)
         .formInput('name', endpointPeer)
         .formText('description', endpointPeer)
@@ -169,7 +169,7 @@ onlyOn(vpnServiceEnabled, () => {
     });
 
     it('successfully edit endpoint', () => {
-      cy.clickTab('VPN EndPoint Groups')
+      cy.clickTab('VPN Endpoint Groups')
         .tableSearchText(endpointLocal)
         .clickFirstActionButton()
         .formText('description', 'description')
@@ -177,7 +177,7 @@ onlyOn(vpnServiceEnabled, () => {
     });
 
     it('successfully delete endpoint', () => {
-      cy.clickTab('VPN EndPoint Groups')
+      cy.clickTab('VPN Endpoint Groups')
         .tableSearchText(endpointLocal)
         .clickConfirmActionButton('Delete')
         .wait(5000)

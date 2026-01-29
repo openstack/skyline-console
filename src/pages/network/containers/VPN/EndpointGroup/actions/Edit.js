@@ -19,7 +19,7 @@ import globalVPNEndPointGroupStore from 'stores/neutron/vpn-endpoint-group';
 export class Edit extends ModalAction {
   static id = 'edit-vpn-endpoint-groups';
 
-  static title = t('Edit VPN EndPoint Groups');
+  static title = t('Edit VPN Endpoint Groups');
 
   static buttonText = t('Edit');
 
