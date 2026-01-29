@@ -345,6 +345,16 @@ export class ServerStore extends Base {
   }
 
   @action
+  async reset({ id, state = 'active' }) {
+    const body = {
+      'os-resetState': {
+        state,
+      },
+    };
+    return this.operation({ body, id });
+  }
+
+  @action
   async forceDelete({ id }) {
     const body = {
       forceDelete: null,
