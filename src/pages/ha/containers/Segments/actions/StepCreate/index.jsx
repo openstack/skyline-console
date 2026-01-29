@@ -134,15 +134,20 @@ export class StepCreate extends StepAction {
     globalSegmentStore.delete({ id: this.state.extra.createdSegmentId });
   }
 
-  onClickCancel = () => {
+  onClickCancel = (props) => {
     if (this.state.current !== 0) {
+      const {
+      title = t('Confirm'),
+      content = t('Segment will be deleted. Are you sure want to cancel this created segment?'),
+      okText = t('OK'),
+      cancelText = t('Cancel'),
+      } = props;
       Modal.confirm({
-        title: 'Confirm',
+        title,
         icon: <QuestionCircleFilled className={stylesConfirm.warn} />,
-        content:
-          'Segment will be deleted. Are you sure want to cancel this created segment?',
-        okText: 'Confirm',
-        cancelText: 'Cancel',
+        content,
+        okText,
+        cancelText,
         loading: true,
         onOk: () => {
           return globalSegmentStore
