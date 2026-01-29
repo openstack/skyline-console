@@ -43,7 +43,7 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
   return (
     <div style={{ padding: 20 }}>
       <Form.Item
-        label={t('select an existing port')}
+        label={t('Select An Existing Port')}
         wrapperCol={{
           xs: 18,
           xm: 12,
