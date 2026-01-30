@@ -67,12 +67,13 @@ export class HttpRequest {
   }
 
   addVersion(config, url) {
-    const { getOpenstackApiVersion } = require('./constants');
-    const apiVersionMap = getOpenstackApiVersion(url);
-
-    if (apiVersionMap) {
-      config.headers[apiVersionMap.key] = apiVersionMap.value;
-    }
+    const { getOpenstackApiVersionForRequest } = require('./constants');
+    const versions = getOpenstackApiVersionForRequest(config, url);
+    versions.forEach(({ serviceKey, serviceVersion }) => {
+      if (serviceKey && serviceVersion) {
+        config.headers[serviceKey] = serviceVersion;
+      }
+    });
   }
 
   updateHeaderByConfig(config) {
