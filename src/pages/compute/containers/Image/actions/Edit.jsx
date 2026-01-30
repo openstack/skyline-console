@@ -174,7 +174,7 @@ export class Edit extends ModalAction {
         onlyRadio: true,
         options: this.yesNoList,
         tip: t(
-          'It is recommended to install and use this agent. The instance created with this image can be used to modify the password (qemu_guest_agent needs to be installed when creating the image).'
+          'It is recommended to install and use this agent. The instance created with this image can be used to modify the password (QEMU Guest Agent needs to be installed when creating the image).'
         ),
         hidden: !more,
       },
