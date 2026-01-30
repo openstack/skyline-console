@@ -60,7 +60,7 @@ export class DisAssociateFip extends ModalAction {
     return [
       {
         name: 'virtualAdapter',
-        label: t('Virtual Adapter'),
+        label: t('Port'),
         type: 'label',
         iconType: 'instance',
       },

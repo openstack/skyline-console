@@ -313,7 +313,7 @@ export class NetworkStep extends Base {
               extra: { target: '_blank' },
             })}
             {t(
-              'Note: The security group you use will act on all virtual adapters of the instance.'
+              'Note: The security group you use will act on all ports of the instance.'
             )}
           </div>
         ),

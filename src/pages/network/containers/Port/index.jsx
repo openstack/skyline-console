@@ -293,7 +293,7 @@ export class Port extends Base {
         {
           label: t('Instance'),
           key: 'compute:nova',
-          checkLabel: t('View virtual adapters'),
+          checkLabel: t('View Ports'),
           isQuick: true,
         },
         {

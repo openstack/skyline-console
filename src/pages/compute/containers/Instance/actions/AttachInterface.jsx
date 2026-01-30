@@ -70,7 +70,7 @@ export class AttachInterface extends ModalAction {
         )}
         <br />
         {t(
-          'The port created here will be automatically deleted when detach. If you need a reusable port, please go to the Virtual Adapter page to create and attach the port to instance.'
+          'The port created here will be automatically deleted when detach. If you need a reusable port, please go to the Ports page to create and attach the port to instance.'
         )}{' '}
       </>
     );

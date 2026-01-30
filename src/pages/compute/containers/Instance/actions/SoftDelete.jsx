@@ -137,7 +137,7 @@ export default class SoftDelete extends ConfirmAction {
         </h4>
         <p className={classnames(styles['tip-content'], styles.mb16)}>
           {t(
-            'The associated floating IP, virtual adapter, volume and other resources will be automatically disassociated.'
+            'The associated floating IP, port, volume and other resources will be automatically disassociated.'
           )}
         </p>
         <p className={styles['tip-content']}>{this.backupTip}</p>

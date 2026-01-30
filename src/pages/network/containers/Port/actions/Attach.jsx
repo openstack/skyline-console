@@ -71,12 +71,12 @@ export class Attach extends ModalAction {
     return [
       {
         name: 'virtual_adapter',
-        label: t('Virtual Adapter'),
+        label: t('Port'),
         type: 'label',
       },
       {
         name: 'virtual_adapter_id',
-        label: t('Virtual Adapter ID'),
+        label: t('Port ID'),
         type: 'label',
         hidden: true,
       },

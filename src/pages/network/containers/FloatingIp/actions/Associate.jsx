@@ -98,7 +98,7 @@ export class Associate extends ModalAction {
       { value: 'instance', label: t('Instance') },
       // { value: 'lb', label: t('Load Balancer') },
       // { value: 'router', label: t('Router') },
-      { value: 'port', label: t('Virtual Adapter') },
+      { value: 'port', label: t('Port') },
     ];
   }
 

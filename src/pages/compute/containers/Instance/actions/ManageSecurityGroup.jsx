@@ -129,7 +129,7 @@ export class ManageSecurityGroup extends ModalAction {
       },
       {
         name: 'port',
-        label: t('Virtual Adapter'),
+        label: t('Port'),
         type: 'select-table',
         required: true,
         data: this.ports,

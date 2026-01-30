@@ -116,9 +116,9 @@ Create a port
 #. On the :guilabel:`Project` page, open the :guilabel:`Network` tab and
    click :guilabel:`Ports` category.
 
-#. Click :guilabel:`Create Virtual Adapter`.
+#. Click :guilabel:`Create Port`.
 
-#. In the :guilabel:`Create Virtual Adapter` dialog box, specify the following values.
+#. In the :guilabel:`Create Port` dialog box, specify the following values.
 
    :guilabel:`Name`: Specify name to identify the port.
 

@@ -380,7 +380,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
               {t('create a new security group')}&gt;{' '}
             </Link>
             {t(
-              'Note: The security group you use will act on all virtual adapters of the instance.'
+              'Note: The security group you use will act on all ports of the instance.'
             )}
           </div>
         ),

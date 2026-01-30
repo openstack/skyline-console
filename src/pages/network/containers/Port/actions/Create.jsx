@@ -32,7 +32,7 @@ const portTypes =
 export class CreateAction extends ModalAction {
   static id = 'create-virtual-adapter';
 
-  static title = t('Create Virtual Adapter');
+  static title = t('Create Port');
 
   get qosEndpoint() {
     return qosEndpoint();
@@ -64,7 +64,7 @@ export class CreateAction extends ModalAction {
   };
 
   get name() {
-    return t('Create Virtual Adapter');
+    return t('Create Port');
   }
 
   static get modalSize() {
@@ -77,7 +77,7 @@ export class CreateAction extends ModalAction {
 
   get tips() {
     return t(
-      'Virtual adapter mainly used for binding instance and other operations, occupying the quota of the port.'
+      'Port mainly used for binding instance and other operations, occupying the quota of the port.'
     );
   }
 
