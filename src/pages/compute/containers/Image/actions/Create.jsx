@@ -352,6 +352,9 @@ export class CreateForm extends FormAction {
         label: t('CPU Policy'),
         type: 'select',
         options: getOptionsWithNoSet(cpuPolicyList),
+        tip: t(
+          'CPU policy defines how instance vCPUs are mapped to host physical CPUs. Shared policy allows vCPUs to float and share host CPUs (overcommit enabled, default behavior). Dedicated policy pins vCPUs to specific physical CPUs, providing exclusive cores and predictable performance.'
+        ),
         hidden: !more,
         required: more,
       },
@@ -360,6 +363,9 @@ export class CreateForm extends FormAction {
         label: t('CPU Thread Policy'),
         type: 'select',
         options: getOptionsWithNoSet(cpuThreadPolicyList),
+        tip: t(
+          'CPU thread policy defines how instance vCPUs are placed on CPU threads when hyperthreading is enabled. Prefer policy allows vCPUs to share sibling threads if needed (default behavior). Isolate policy ensures vCPUs are placed on separate physical cores, avoiding sibling threads for better isolation. Require policy forces vCPUs to be scheduled on sibling threads of the same core.'
+        ),
         hidden: !more,
         required: more,
       },
