@@ -338,7 +338,7 @@ export class CreateForm extends FormAction {
       },
       {
         name: 'hw_qemu_guest_agent',
-        label: t('qemu_guest_agent enabled'),
+        label: t('QEMU Guest Agent Enabled'),
         type: 'radio',
         onlyRadio: true,
         options: this.yesNoList,
