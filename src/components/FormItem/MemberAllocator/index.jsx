@@ -217,7 +217,7 @@ const MemberAllocator = ({ componentProps, formItemProps }) => {
                               paddingRight: 8,
                             }}
                           >
-                            {t('Weights')}
+                            {t('Weight')}
                           </div>
                         </Col>
                       </Row>
