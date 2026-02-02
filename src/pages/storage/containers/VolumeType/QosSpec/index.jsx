@@ -29,7 +29,7 @@ export class QosSpecs extends Base {
   }
 
   get name() {
-    return t('qos specs');
+    return t('QoS Specs');
   }
 
   get hasTab() {
