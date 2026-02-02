@@ -58,7 +58,7 @@ const passwordRegex =
 const instancePasswordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\\[\]`~!@#$%^&*()_\-+=?:"{}|,.\\/;']{8,16}$/;
 const emailRegex =
-  /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
+  /^[A-Za-z\d]+([._+-][A-Za-z\d]+)*@([A-Za-z\d]+[.-])+[A-Za-z\d]{2,63}$/;
 const nameRegexWithoutChinese = /^[a-zA-Z][\w"'\[\]^.:()_-]{0,127}$/; // eslint-disable-line
 const fileNameRegex = /^[A-Za-z]+[A-Za-z\d-]{2,62}$/;
 const stackNameRegex = /^[A-Za-z]+[A-Za-z\d._-]{1,254}$/;
