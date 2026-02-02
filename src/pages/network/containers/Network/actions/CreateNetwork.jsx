@@ -159,7 +159,7 @@ export class CreateNetwork extends ModalAction {
   get defaultValue() {
     const values = {
       enable_dhcp: true,
-      provider_network_type: 'vxlan',
+      provider_network_type: 'geneve',
       ip_version: 'ipv4',
       disable_gateway: false,
       more: false,
@@ -286,8 +286,12 @@ export class CreateNetwork extends ModalAction {
   static allowed = () => Promise.resolve(true);
 
   get SegIDTips() {
-    const { provider_network_type = 'vxlan' } = this.state;
+    const { provider_network_type = 'geneve' } = this.state;
     switch (provider_network_type) {
+      case 'geneve':
+        return t(
+          'For GENEVE networks, valid segmentation IDs are 1 to 16777215'
+        );
       case 'vxlan':
         return t(
           'For VXLAN networks, valid segmentation IDs are 1 to 16777215'
@@ -300,14 +304,16 @@ export class CreateNetwork extends ModalAction {
         );
       default:
         return t(
-          'For VXLAN networks, valid segmentation IDs are 1 to 16777215'
+          'For GENEVE networks, valid segmentation IDs (VNIs) are 1 to 16777215'
         );
     }
   }
 
   get SegMax() {
-    const { provider_network_type = 'vxlan' } = this.state;
+    const { provider_network_type = 'geneve' } = this.state;
     switch (provider_network_type) {
+      case 'geneve':
+        return 16777215;
       case 'vxlan':
         return 16777215;
       case 'vlan':
@@ -466,10 +472,11 @@ export class CreateNetwork extends ModalAction {
         hidden: !this.isAdminPage,
         required: this.isAdminPage,
         options: [
-          { label: 'vxlan', value: 'vxlan' },
-          { label: 'flat', value: 'flat' },
-          { label: 'vlan', value: 'vlan' },
-          { label: 'gre', value: 'gre' },
+          { label: 'GENEVE', value: 'geneve' },
+          { label: 'VXLAN', value: 'vxlan' },
+          { label: 'Flat', value: 'flat' },
+          { label: 'VLAN', value: 'vlan' },
+          { label: 'GRE', value: 'gre' },
         ],
         onChange: (e) => {
           this.setState({
