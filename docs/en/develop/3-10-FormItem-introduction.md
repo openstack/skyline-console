@@ -100,7 +100,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
       ```javascript
       {
         name: 'instances',
-        label: t('instance'),
+        label: t('Instance'),
         type: 'input-number',
         labelCol: { span: 12 },
         colNum: 2,
@@ -141,7 +141,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
       ```javascript
       {
         name: 'ipv6',
-        label: 'IPv6',
+        label: t('IPv6'),
         type: 'label',
         style: { marginBottom: 24 },
         content: (
@@ -453,7 +453,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
       ```javascript
       {
         name: 'min_disk',
-        label: t('Min. System Disk(GB)'),
+        label: t('Min. System Disk (GB)'),
         type: 'input-int',
         min: 0,
         max: 500,
@@ -632,7 +632,7 @@ English | [简体中文](../../zh/develop/3-10-FormItem-introduction.md)
       ```javascript
       {
         name: 'ip',
-        label: t('Given IP'),
+        label: t('IP'),
         type: 'ip-input',
         required: ipType === 1,
         hidden: ipType !== 1,

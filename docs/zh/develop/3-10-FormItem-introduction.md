@@ -100,7 +100,7 @@
       ```javascript
       {
         name: 'instances',
-        label: t('instance'),
+        label: t('Instance'),
         type: 'input-number',
         labelCol: { span: 12 },
         colNum: 2,
@@ -141,7 +141,7 @@
       ```javascript
       {
         name: 'ipv6',
-        label: 'IPv6',
+        label: ('IPv6'),
         type: 'label',
         style: { marginBottom: 24 },
         content: (
@@ -451,7 +451,7 @@
       ```javascript
       {
         name: 'min_disk',
-        label: t('Min. System Disk(GB)'),
+        label: t('Min. System Disk (GB)'),
         type: 'input-int',
         min: 0,
         max: 500,
@@ -630,7 +630,7 @@
       ```javascript
       {
         name: 'ip',
-        label: t('Given IP'),
+        label: t('IP'),
         type: 'ip-input',
         required: ipType === 1,
         hidden: ipType !== 1,

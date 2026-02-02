@@ -211,7 +211,7 @@ export class NetworkStep extends Base {
       },
       {
         name: 'ipv6',
-        label: 'IPv6',
+        label: t('IPv6'),
         type: 'label',
         hidden: true,
         content: (

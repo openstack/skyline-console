@@ -18,7 +18,7 @@ English | [简体中文](../../zh/develop/3-14-I18n-introduction.md)
 
 - The strings that need to be displayed internationally in the code are all in English, after using cli to complete string collection, generally, there is no need to update `en.json`, only need to modify the corresponding Chinese in `zh.json` to complete the internationalization operation
 - Use function `t` to translate the string
-  - Take `instance` as an example, Corresponding international writing is `t('instance')`
+  - Take `Instance` as an example, Corresponding international writing is `t('Instance')`
   - Note that English is case relevant
   - Function `T` supports strings with parameters
     - Params use `{}` to mark, for example :
