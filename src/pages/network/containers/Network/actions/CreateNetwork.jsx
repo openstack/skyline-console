@@ -543,7 +543,7 @@ export class CreateNetwork extends ModalAction {
           },
         ],
         tip: subnetIpv6Tip,
-        hidden: ip_version !== 'ipv6',
+        hidden: ip_version !== 'ipv6' || !create_subnet,
         dependencies: ['ipv6_address_mode'],
         validator: (rule, value) => {
           const ipv6_address_mode =
@@ -579,7 +579,7 @@ export class CreateNetwork extends ModalAction {
           },
         ],
         tip: subnetIpv6Tip,
-        hidden: ip_version !== 'ipv6',
+        hidden: ip_version !== 'ipv6'|| !create_subnet,
       },
       {
         name: 'cidr',
