@@ -317,7 +317,7 @@ export class ConfirmStep extends Base {
         },
         items: [
           {
-            label: t('Name'),
+            label: t('Instance Name'),
             value: context.name,
           },
           {
