@@ -26,7 +26,7 @@ Create a key pair
    :guilabel:`Create Type` options:
 
    * :guilabel:`Create Keypair`: If you choose this option, enter a
-     :guilabel:`Name`.
+     :guilabel:`Keypair Name`.
 
    * :guilabel:`Import Keypair`: If you choose this option, a new field for
      :guilabel:`Public Key` displays. Enter the :guilabel:`Name` of your key

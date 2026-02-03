@@ -50,7 +50,7 @@ export class CreateKeypair extends ModalAction {
 
   get tips() {
     return t(
-      'Quota of key pair means: the number of allowed key pairs for each user.'
+      'Quota of key pairs means: the number of allowed key pairs for each user.'
     );
   }
 
@@ -149,7 +149,7 @@ export class CreateKeypair extends ModalAction {
       },
       {
         name: 'name',
-        label: t('Name'),
+        label: t('Keypair Name'),
         type: 'input-name',
         required: true,
         isKeypair: true,

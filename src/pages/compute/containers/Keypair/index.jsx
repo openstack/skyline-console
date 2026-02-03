@@ -44,7 +44,7 @@ export class Keypair extends Base {
 
   getColumns = () => [
     {
-      title: t('Name'),
+      title: t('Keypair Name'),
       dataIndex: 'name',
       idKey: 'name',
       routeName: this.getRouteName('keypairDetail'),
