@@ -177,8 +177,8 @@ export class NetworkStep extends Base {
           <div>
             {t(
               'Please reasonably plan the network and subnet to which the virtual network card belongs.'
-            )}
-            {t(' You can go to the console to ')}
+            )}{' '}
+            {t('You can go to the console to')}{' '}
             {getLinkRender({
               key: 'network',
               value: `${t('create a new network/subnet')} > `,
