@@ -21,7 +21,7 @@ const { ipFull, isIpCidr, isIPv6Cidr, isIPv4, isIpv6, compareIpv6 } =
 
 const physicalNetworkArray = ['vlan', 'flat'];
 
-const segmentationNetworkArray = ['vxlan', 'vlan', 'gre'];
+const segmentationNetworkArray = ['geneve','vxlan', 'vlan', 'gre'];
 
 const segmentationNetworkRequireArray = ['vlan', 'gre'];
 
