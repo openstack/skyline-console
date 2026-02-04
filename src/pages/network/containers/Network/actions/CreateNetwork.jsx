@@ -472,11 +472,11 @@ export class CreateNetwork extends ModalAction {
         hidden: !this.isAdminPage,
         required: this.isAdminPage,
         options: [
-          { label: 'GENEVE', value: 'geneve' },
-          { label: 'VXLAN', value: 'vxlan' },
-          { label: 'Flat', value: 'flat' },
-          { label: 'VLAN', value: 'vlan' },
-          { label: 'GRE', value: 'gre' },
+          { label: t('GENEVE'), value: 'geneve' },
+          { label: t('VXLAN'), value: 'vxlan' },
+          { label: t('Flat'), value: 'flat' },
+          { label: t('VLAN'), value: 'vlan' },
+          { label: t('GRE'), value: 'gre' },
         ],
         onChange: (e) => {
           this.setState({
