@@ -44,7 +44,7 @@ export const algorithmTip = {
     'Perform a consistent hash operation on the source IP address of the request to obtain a specific value. At the same time, the back-end server is numbered, and the request is distributed to the server with the corresponding number according to the calculation result. This can enable load distribution of visits from different source IPs, and at the same time enable requests from the same client IP to always be dispatched to a specific server. This method is suitable for load balancing TCP protocol without cookie function.'
   ),
   SOURCE_IP_PORT: t(
-    'Similar to SOURCE_IP but includes the source port in the hash, improving stickiness granularity for clients sharing the same IP.'
+    'Similar to source IP but includes the source port in the hash, improving stickiness granularity for clients sharing the same IP.'
   ),
 };
 
