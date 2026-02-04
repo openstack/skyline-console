@@ -150,8 +150,8 @@ Control the state of an instance
 #. In the :guilabel:`Action` column of the instance, click
    :guilabel:`Instance Status` and select the status.
 
-Allocate a floating IP address to an instance
----------------------------------------------
+Allocate a floating IP to an instance
+-------------------------------------
 
 #. Log in to the dashboard.
 
@@ -164,13 +164,13 @@ Allocate a floating IP address to an instance
    and click :guilabel:`Associate Floating IP`.
 
 #. In the :guilabel:`Associate Floating IP` dialog box, select
-   :guilabel:`Instance IP` and :guilabel:`Floating IP Address`.
+   :guilabel:`Instance IP` and :guilabel:`Floating IP`.
 
 #. Click :guilabel:`OK`.
 
 .. note::
 
-   To disassociate an IP address from an instance, click the
+   To disassociate an IP from an instance, click the
    :guilabel:`Disassociate Floating IP` button.
 
 Upload an image

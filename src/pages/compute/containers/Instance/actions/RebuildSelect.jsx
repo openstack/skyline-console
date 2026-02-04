@@ -152,12 +152,12 @@ export class Rebuild extends ModalAction {
         valueMap: imageFormats,
       },
       {
-        title: t('Min System Disk'),
+        title: t('Min. System Disk'),
         dataIndex: 'min_disk',
         unit: 'GiB',
       },
       {
-        title: t('Min Memory'),
+        title: t('Min. Memory'),
         dataIndex: 'min_ram',
         render: (text) => `${text / 1024}GiB`,
       },

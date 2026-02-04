@@ -314,7 +314,7 @@ export const getFIPFormItemForAssociate = (self) => {
   const { canAssociateFloatingIPs, fipLoading } = self.state;
   return {
     name: 'fip',
-    label: t('Floating IP Address'),
+    label: t('Floating IP'),
     type: 'select-table',
     required: true,
     data: canAssociateFloatingIPs,
@@ -324,13 +324,13 @@ export const getFIPFormItemForAssociate = (self) => {
     disabledFunc: self.disableFIPAssociate,
     filterParams: [
       {
-        label: t('Floating IP Address'),
+        label: t('Floating IP'),
         name: 'name',
       },
     ],
     columns: [
       {
-        title: t('Floating IP Address'),
+        title: t('Floating IP'),
         dataIndex: 'name',
       },
       {

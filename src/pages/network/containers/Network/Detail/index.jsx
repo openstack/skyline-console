@@ -90,7 +90,7 @@ export class NetworkDetail extends Base {
         valueRender: 'toLocalTime',
       },
       {
-        title: t('Update At'),
+        title: t('Updated At'),
         dataIndex: 'updated_at',
         valueRender: 'toLocalTime',
       },

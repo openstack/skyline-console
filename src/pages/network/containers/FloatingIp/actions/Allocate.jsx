@@ -344,7 +344,7 @@ export class Allocate extends ModalAction {
       },
       {
         name: 'floating_ip_address',
-        label: t('Floating IP Address'),
+        label: t('Floating IP'),
         hidden: !selectedSubnet || batchAllocate,
         display: this.canSpecifyFloatingIp(),
         type: 'ip-input',
