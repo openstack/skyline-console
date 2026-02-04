@@ -34,7 +34,7 @@ import Log from './Log';
 
 export class InstanceDetail extends Base {
   get name() {
-    return t('instance');
+    return t('Instance');
   }
 
   get enableCinder() {
