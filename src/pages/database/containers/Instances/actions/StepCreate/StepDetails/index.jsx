@@ -179,7 +179,7 @@ export class StepDetails extends Base {
       },
       {
         name: 'locality',
-        label: t('Locality'),
+        label: t('Location Policy'),
         type: 'select',
         options: [
           {
