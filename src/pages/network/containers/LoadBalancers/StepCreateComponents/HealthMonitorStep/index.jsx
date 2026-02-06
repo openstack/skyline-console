@@ -18,11 +18,11 @@ import { healthProtocols } from 'resources/octavia/lb';
 
 export class HealthMonitorStep extends Base {
   get title() {
-    return 'Health Monitor Detail';
+    return 'Health Monitor Details';
   }
 
   get name() {
-    return 'Health Monitor Detail';
+    return 'Health Monitor Details';
   }
 
   get isStep() {

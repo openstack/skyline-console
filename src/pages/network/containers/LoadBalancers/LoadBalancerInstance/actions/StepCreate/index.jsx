@@ -71,7 +71,7 @@ export class StepCreate extends StepAction {
         component: MemberStep,
       },
       {
-        title: t('Health Monitor Detail'),
+        title: t('Health Monitor Details'),
         component: HealthMonitorStep,
       },
     ];
