@@ -60,11 +60,11 @@ export class BaseDetail extends Base {
             content: protocol || '-',
           },
           {
-            label: t('LB Algorithm'),
+            label: t('Algorithm'),
             content: algorithmDict[lb_algorithm] || lb_algorithm || '-',
           },
           {
-            label: t('Admin State Up'),
+            label: t('Admin State'),
             content: admin_state_up ? t('On') : t('Off'),
           },
           {
@@ -113,7 +113,7 @@ export class BaseDetail extends Base {
             content: max_retries,
           },
           {
-            label: t('Admin State Up'),
+            label: t('Admin State'),
             content: admin_state_up ? t('On') : t('Off'),
           },
           {

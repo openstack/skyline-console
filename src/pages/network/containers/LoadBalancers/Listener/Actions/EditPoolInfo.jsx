@@ -112,7 +112,7 @@ export class EditPoolInfo extends ModalAction {
       },
       {
         name: 'lb_algorithm',
-        label: t('LB Algorithm'),
+        label: t('Algorithm'),
         type: 'select',
         options: this.isOVN ? OvnPoolAlgorithm : Algorithm,
         required: true,
