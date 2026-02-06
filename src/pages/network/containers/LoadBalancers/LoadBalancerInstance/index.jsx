@@ -96,28 +96,36 @@ export class LoadBalancerInstance extends Base {
         title: t('Project ID/Name'),
         dataIndex: 'project_name',
         hidden: !this.isAdminPage,
+        isHideable: true,
         sortKey: 'project_id',
       },
       {
         title: t('Network ID'),
         dataIndex: 'vip_network_id',
+        isHideable: true,
+        isDefaultHidden: true,
       },
       {
         title: t('IP'),
         dataIndex: 'vip_address',
+        isHideable: true,
       },
       {
         title: t('Floating IP'),
         dataIndex: 'fip',
+        isHideable: true,
         render: (t) => t || '-',
       },
       {
         title: t('Port ID'),
+        isHideable: true,
+        isDefaultHidden: true,
         dataIndex: 'vip_port_id',
       },
       {
         title: t('Operating Status'),
         dataIndex: 'operating_status',
+        isHideable: true,
         valueMap: operatingStatusCodes,
         titleTip: (
           <Row>
@@ -135,11 +143,13 @@ export class LoadBalancerInstance extends Base {
       {
         title: t('Provisioning Status'),
         dataIndex: 'provisioning_status',
+        isHideable: true,
         valueMap: provisioningStatusCodes,
       },
       {
         title: t('Listener Number'),
         dataIndex: 'listeners',
+        isHideable: true,
         render: (t) => t.length,
       },
       {
