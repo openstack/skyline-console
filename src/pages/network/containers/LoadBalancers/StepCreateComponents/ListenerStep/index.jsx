@@ -32,11 +32,11 @@ export class ListenerStep extends Base {
   }
 
   get title() {
-    return 'Listener Detail';
+    return 'Listener Details';
   }
 
   get name() {
-    return 'Listener Detail';
+    return 'Listener Details';
   }
 
   get isStep() {
