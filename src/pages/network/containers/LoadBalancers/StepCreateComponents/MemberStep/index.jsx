@@ -35,11 +35,11 @@ export class MemberStep extends Base {
   }
 
   get title() {
-    return 'Member Detail';
+    return 'Member Details';
   }
 
   get name() {
-    return 'Member Detail';
+    return 'Member Details';
   }
 
   get isStep() {

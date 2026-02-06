@@ -67,7 +67,7 @@ export class StepCreate extends StepAction {
         component: PoolStep,
       },
       {
-        title: t('Member Detail'),
+        title: t('Member Details'),
         component: MemberStep,
       },
       {
