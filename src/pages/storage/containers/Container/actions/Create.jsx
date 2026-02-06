@@ -43,7 +43,7 @@ export class Create extends ModalAction {
     return [
       {
         name: 'name',
-        label: t('Name'),
+        label: t('Container Name'),
         type: 'input-name',
         required: true,
         isSwiftFile: true,
