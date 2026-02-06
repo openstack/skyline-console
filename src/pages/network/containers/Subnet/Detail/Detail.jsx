@@ -74,7 +74,7 @@ export class BaseDetail extends Base {
         },
       },
       {
-        label: t('Enable DHCP'),
+        label: t('DHCP Enabled'),
         dataIndex: 'enable_dhcp',
         valueRender: 'yesNo',
       },
