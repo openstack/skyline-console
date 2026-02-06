@@ -57,6 +57,21 @@ export default class CopyPublicUrl extends ConfirmAction {
     return t('Public URL for "{name}" copied to clipboard.', { name });
   };
 
+  submitErrorMsg = (data, realError) => {
+    const errorMsg =
+      typeof realError === 'string' ? realError : realError?.message || null;
+
+    if (errorMsg) {
+      return errorMsg;
+    }
+
+    const name = this.getName(data) || t('Unknown');
+    return t('Unable to {action}, instance: {name}.', {
+      action: this.actionNameDisplay || this.title,
+      name,
+    });
+  };
+
   confirmContext = (data) => {
     const name = this.getName(data);
     return t('Copy the public URL for "{name}" to clipboard?', { name });
@@ -95,26 +110,38 @@ export default class CopyPublicUrl extends ConfirmAction {
     return `${baseUrl}/AUTH_${projectId}/${container}/${encodedPath}`;
   };
 
-  copyToClipboard = async (text) => {
-    if (!navigator.clipboard?.writeText) {
-      const message = `${t(
-        'Clipboard API is not available. Please copy manually:'
-      )}\n${text}`;
-      const error = new Error(message);
-      error.response = { data: message };
-      throw error;
-    }
-
+  copyToClipboardFallback = (text) => {
+    const textArea = document.createElement('textarea');
+    textArea.value = String(text);
+    Object.assign(textArea.style, {
+      position: 'fixed',
+      top: '-9999px',
+      left: '-9999px',
+      opacity: '0',
+      pointerEvents: 'none',
+    });
+    document.body.appendChild(textArea);
     try {
-      return await navigator.clipboard.writeText(text);
-    } catch (err) {
-      const message = `${t(
-        'Unable to copy URL to clipboard. Please copy manually:'
-      )}\n${text}`;
-      const error = new Error(message);
-      error.response = { data: message };
-      throw error;
+      textArea.select();
+      return document.execCommand('copy');
+    } catch {
+      return false;
+    } finally {
+      document.body.removeChild(textArea);
     }
+  };
+
+  copyToClipboard = async (text) => {
+    if (text == null) return false;
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(String(text));
+        return true;
+      } catch {
+        // Fallback to execCommand
+      }
+    }
+    return this.copyToClipboardFallback(text);
   };
 
   onSubmit = async (item) => {
