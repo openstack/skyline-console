@@ -41,7 +41,7 @@ export class StepCreate extends StepAction {
   }
 
   get name() {
-    return t('Create Loadbalancer');
+    return t('Create Load Balancer');
   }
 
   get listUrl() {
@@ -63,7 +63,7 @@ export class StepCreate extends StepAction {
         component: ListenerStep,
       },
       {
-        title: t('Pool Detail'),
+        title: t('Pool Details'),
         component: PoolStep,
       },
       {
