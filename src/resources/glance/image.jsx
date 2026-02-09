@@ -60,14 +60,14 @@ export const imageUsage = {
 };
 
 export const imageFormatsConsole = {
-  raw: t('RAW - Raw disk image format'),
-  qcow2: t('QCOW2 - QEMU image format'),
-  iso: t('ISO - Optical disc image format'),
+  raw: t('RAW'),
+  qcow2: t('QCOW2'),
+  iso: t('ISO'),
 };
 
 export const volumeCreateImageTypes = {
-  raw: t('RAW - Raw disk image format'),
-  qcow2: t('QCOW2 - QEMU image format'),
+  raw: t('RAW'),
+  qcow2: t('QCOW2'),
 };
 
 export const imageContainerFormats = {
@@ -76,12 +76,12 @@ export const imageContainerFormats = {
 };
 
 export const imageFormatsAdmin = {
-  aki: t('AKI - Amazon kernel image format'),
-  ari: t('ARI - Amazon ramdisk image format'),
-  ami: t('AMI - Amazon server image format'),
-  vdi: t('VDI - VirtualBox compatible image format'),
-  vhd: t('VHD - VirtualPC compatible image format'),
-  vmdk: t('VMDK - Hyper-V compatible image format'),
+  aki: t('AKI'),
+  ari: t('ARI'),
+  ami: t('AMI'),
+  vdi: t('VDI'),
+  vhd: t('VHD'),
+  vmdk: t('VMDK'),
 };
 export const imageFormats = {
   ...imageFormatsConsole,
