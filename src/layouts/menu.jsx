@@ -704,7 +704,7 @@ const renderMenu = (t) => {
     },
     {
       path: '/database',
-      name: t('Database'),
+      name: t('Databases'),
       key: 'database',
       endpoints: 'trove',
       icon: <DatabaseFilled />,

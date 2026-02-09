@@ -149,11 +149,11 @@ export const magnumQuotaCard = {
 };
 
 export const troveQuotaCard = {
-  text: t('Database'),
+  text: t('Databases'),
   type: 'trove',
   value: [
     {
-      text: t('Database Instance'),
+      text: t('Database Instances'),
       key: 'trove_instances',
     },
     {
