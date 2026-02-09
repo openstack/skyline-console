@@ -61,7 +61,7 @@ export default class CutFile extends ConfirmAction {
         </p>
         <p style={{ marginTop: 8, color: '#666', fontSize: '12px' }}>
           {t(
-            'This will move the selected file(s) to a new location. Use the Paste action to paste them into another folder or container. The original file(s) will be removed from their current location after pasting.'
+            'This will move the selected file(s) to a new location. Use the Cut action to paste them into another folder or container. The original file(s) will be removed from their current location after pasting.'
           )}
         </p>
       </div>
