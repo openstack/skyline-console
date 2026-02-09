@@ -335,6 +335,9 @@ export class SystemStep extends Base {
         name: 'physicalNodeType',
         label: t('Physical Node'),
         type: 'radio',
+        tip: t(
+          'Smart Scheduling automatically selects the most suitable physical node based on available resources. Manual mode lets you explicitly choose the physical node for placement.'
+        ),
         hidden: !more || !this.hasAdminRole,
         options: physicalNodeTypes,
         isWrappedValue: true,
