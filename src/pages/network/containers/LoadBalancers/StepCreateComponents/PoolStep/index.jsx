@@ -23,11 +23,11 @@ import { poolProtocols } from 'resources/octavia/lb';
 
 export class PoolStep extends Base {
   get title() {
-    return 'Pool Detail';
+    return 'Pool Details';
   }
 
   get name() {
-    return 'Pool Detail';
+    return 'Pool Details';
   }
 
   get isStep() {
