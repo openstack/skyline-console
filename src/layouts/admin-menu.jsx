@@ -408,7 +408,7 @@ const renderMenu = (t) => {
             },
             {
               path: /^\/network\/load-balancers-admin\/.[^/]+\/listener\/.[^/]+$/,
-              name: t('Listener Detail'),
+              name: t('Listener Details'),
               key: 'lbListenerDetailAdmin',
               level: 2,
               routePath:

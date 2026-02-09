@@ -59,7 +59,7 @@ export class StepCreate extends StepAction {
         component: BaseStep,
       },
       {
-        title: t('Listener Detail'),
+        title: t('Listener Details'),
         component: ListenerStep,
       },
       {
