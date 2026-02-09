@@ -203,7 +203,7 @@ export class CreateForm extends FormAction {
     return [
       {
         name: 'name',
-        label: t('Name'),
+        label: t('Image Name'),
         type: 'input-name',
         isImage: true,
         required: true,
