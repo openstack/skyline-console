@@ -24,7 +24,7 @@ export class BaseDetail extends Base {
     const { max_kbps = '-', max_burst_kbps = '-' } = rule || {};
     const options = [
       {
-        label: t('Max BandWidth'),
+        label: t('Max Bandwidth'),
         content: `${max_kbps === '-' ? max_kbps : max_kbps / 1024} Mbps`,
       },
       {
@@ -47,11 +47,11 @@ export class BaseDetail extends Base {
     );
     return [
       {
-        title: t('BandWidth Limit Egress'),
+        title: t('Bandwidth Limit Egress'),
         options: this.getOptions(egressRule),
       },
       {
-        title: t('BandWidth Limit Ingress'),
+        title: t('Bandwidth Limit Ingress'),
         options: this.getOptions(ingressRule),
       },
     ];

@@ -95,11 +95,11 @@ export class Listeners extends Base {
       isHideable: true,
     },
     {
-      title: t('Max connect'),
+      title: t('Connection Limit'),
       dataIndex: 'connection_limit',
     },
     {
-      title: t('Admin State Up'),
+      title: t('Admin Status'),
       dataIndex: 'admin_state_up',
       render: (value) => (value ? t('On') : t('Off')),
     },

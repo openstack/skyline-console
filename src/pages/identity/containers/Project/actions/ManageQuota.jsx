@@ -82,7 +82,7 @@ export class ManageQuota extends ModalAction {
 
   get tips() {
     return t(
-      'quota set to -1 means there is no quota limit on the current resource'
+      'Quota set to -1 means there is no quota limit on the current resource.'
     );
   }
 

@@ -19,12 +19,12 @@ import { yesNoOptions } from 'utils/constants';
 
 const getRuleValue = (rule) => {
   if (rule.direction === 'egress') {
-    return `${t('Egress')}: ${t('Max BandWidth')}: ${
+    return `${t('Egress')}: ${t('Max Bandwidth')}: ${
       rule.max_kbps / 1024
     } Mbps; ${t('Max Burst')}: ${rule.max_burst_kbps / 1024} Mbps`;
   }
   return rule.direction === 'ingress'
-    ? `${t('Ingress')}: ${t('Max BandWidth')}: ${
+    ? `${t('Ingress')}: ${t('Max Bandwidth')}: ${
         rule.max_kbps / 1024
       } Mbps; ${t('Max Burst')}: ${rule.max_burst_kbps / 1024} Mbps`
     : `${t('DSCP Marking')}: ${rule.dscp_mark}`;
