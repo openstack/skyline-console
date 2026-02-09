@@ -27,7 +27,7 @@ export class Create extends ModalAction {
   }
 
   get name() {
-    return t('Import metadata');
+    return t('Import Metadata');
   }
 
   static policy = 'add_metadef_namespace';

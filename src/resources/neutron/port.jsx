@@ -240,13 +240,13 @@ export const portColumns = [
     sorter: false,
   },
   {
-    title: t('IPv4 Address'),
+    title: t('IPv4'),
     dataIndex: 'ipv4',
     render: (value) => value.map((it) => <div key={it}>{it}</div>),
     sorter: false,
   },
   {
-    title: t('IPv6 Address'),
+    title: t('IPv6'),
     dataIndex: 'ipv6',
     render: (value) => value.map((it) => <div key={it}>{it}</div>),
     sorter: false,

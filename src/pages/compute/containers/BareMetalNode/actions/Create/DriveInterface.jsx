@@ -30,8 +30,8 @@ export class NodeInterface extends Base {
 
   get networkInterfaces() {
     return [
-      { value: 'flat', label: t('FLAT') },
-      { value: 'noop', label: t('NOOP') },
+      { value: 'flat', label: t('Flat') },
+      { value: 'noop', label: t('Noop') },
     ];
   }
 
@@ -43,7 +43,7 @@ export class NodeInterface extends Base {
   }
 
   get storageInterfaces() {
-    return [{ value: 'noop', label: t('NOOP') }];
+    return [{ value: 'noop', label: t('Noop') }];
   }
 
   get venderInterfaces() {

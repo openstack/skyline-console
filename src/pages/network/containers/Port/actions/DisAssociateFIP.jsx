@@ -74,17 +74,17 @@ export class DisAssociateFip extends ModalAction {
         tagKey: 'floating_ip_address',
         filterParams: [
           {
-            label: t('Fixed IP Address'),
+            label: t('Fixed IP'),
             name: 'fixed_ip_address',
           },
         ],
         columns: [
           {
-            title: t('Fixed IP Address'),
+            title: t('Fixed IP'),
             dataIndex: 'fixed_ip_address',
           },
           {
-            title: t('Floating IP Address'),
+            title: t('Floating IP'),
             dataIndex: 'floating_ip_address',
           },
         ],
