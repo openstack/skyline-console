@@ -46,7 +46,7 @@ export class BaseDetail extends Base {
         valueMap: InstanceStatus,
       },
       {
-        label: t('Locality'),
+        label: t('Location Policy'),
         dataIndex: 'locality',
         valueMap: policyType,
       },
