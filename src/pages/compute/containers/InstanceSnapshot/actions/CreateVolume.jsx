@@ -149,7 +149,7 @@ export class CreateVolume extends ModalAction {
       },
       {
         name: 'name',
-        label: t('Name'),
+        label: t('Volume Name'),
         type: 'input-name',
         placeholder: t('Please input name'),
         required: true,
