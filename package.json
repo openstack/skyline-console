@@ -7,9 +7,9 @@
   "scripts": {
     "mock": "webpack-dev-server --open --config config/webpack.dev.js",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --config config/webpack.dev.js --env.API=dev",
-    "build": "cross-env NODE_ENV=production NODE_OPTIONS=--max-old-space-size=2048 webpack --progress --config config/webpack.prod.js",
-    "build:win": "set NODE_OPTIONS=--max-old-space-size=2048 && webpack --progress --config config/webpack.prod.js",
-    "build:test": "cross-env NODE_ENV=test NODE_OPTIONS=--max-old-space-size=2048 webpack --progress --config config/webpack.e2e.js",
+    "build": "cross-env NODE_ENV=production NODE_OPTIONS=--max-old-space-size=2048 webpack --config config/webpack.prod.js",
+    "build:win": "set NODE_OPTIONS=--max-old-space-size=2048 && webpack --config config/webpack.prod.js",
+    "build:test": "cross-env NODE_ENV=test NODE_OPTIONS=--max-old-space-size=2048 webpack --config config/webpack.e2e.js",
     "i18n": "grunt",
     "lint": "eslint src --fix --quiet --ext .js,.jsx",
     "lint:test": "eslint test --fix --quiet --ext .js",
