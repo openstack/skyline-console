@@ -33,8 +33,8 @@ Create a network
 
    :guilabel:`Description`: A human-readable description for the resource.
 
-   :guilabel:`Shared`: Share the network with other projects. Non admin users
-   are not allowed to set shared option.
+   :guilabel:`Shared Network`: Share the network with other projects.
+   Non admin users are not allowed to set shared option.
 
    :guilabel:`Availability Zone`: Select a availability zone for the network.
 

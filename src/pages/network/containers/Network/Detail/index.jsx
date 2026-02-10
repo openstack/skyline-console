@@ -62,7 +62,7 @@ export class NetworkDetail extends Base {
   get detailInfos() {
     const ret = [
       {
-        title: t('Name'),
+        title: t('Network Name'),
         dataIndex: 'name',
       },
       {
@@ -80,7 +80,7 @@ export class NetworkDetail extends Base {
         valueRender: 'yesNo',
       },
       {
-        title: t('Shared'),
+        title: t('Shared Network'),
         dataIndex: 'shared',
         valueRender: 'yesNo',
       },

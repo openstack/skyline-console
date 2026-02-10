@@ -134,11 +134,11 @@ export class Networks extends Base {
 
   get searchFilters() {
     const nameFilter = {
-      label: t('Name'),
+      label: t('Network Name'),
       name: 'name',
     };
     const sharedFilter = {
-      label: t('Shared'),
+      label: t('Shared Network'),
       name: 'shared',
       options: yesNoOptions,
     };

@@ -64,7 +64,7 @@ export class Edit extends ModalAction {
     return [
       {
         name: 'name',
-        label: t('Name'),
+        label: t('Network Name'),
         type: 'input-name',
         required: true,
         withoutChinese: true,
@@ -77,7 +77,7 @@ export class Edit extends ModalAction {
       },
       {
         name: 'shared',
-        label: t('Shared'),
+        label: t('Shared Network'),
         type: 'radio',
         hidden: !this.isSystemAdmin,
         options: getYesNoList(),
