@@ -25,13 +25,13 @@ export class BaseDetail extends Base {
     const options = [
       {
         label: t('Max Bandwidth'),
-        content: `${max_kbps === '-' ? max_kbps : max_kbps / 1024} Mbps`,
+        content: `${max_kbps === '-' ? max_kbps : max_kbps / 1024} ${t('Mbps')}`,
       },
       {
         label: t('Max Burst'),
         content: `${
           max_burst_kbps === '-' ? max_burst_kbps : max_burst_kbps / 1024
-        } Mbps`,
+        } ${t('Mbps')}`,
       },
     ];
     return options;
