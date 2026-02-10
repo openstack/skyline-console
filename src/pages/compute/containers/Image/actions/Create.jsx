@@ -244,6 +244,17 @@ export class CreateForm extends FormAction {
         name: 'disk_format',
         label: t('Disk Format'),
         type: 'select',
+        tip: t(
+          'RAW - Raw disk image format\n' +
+          'QCOW2 - QEMU image format\n' +
+          'ISO - Optical disc image format\n' +
+          'AKI - Amazon kernel image format\n' +
+          'ARI - Amazon ramdisk image format\n' +
+          'AMI - Amazon server image format\n' +
+          'VDI - VirtualBox compatible image format\n' +
+          'VHD - VirtualPC compatible image format\n' +
+          'VMDK - Hyper-V compatible image format'
+          ),
         options: this.formatList,
         required: true,
       },

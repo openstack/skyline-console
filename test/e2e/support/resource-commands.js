@@ -266,7 +266,7 @@ Cypress.Commands.add('createIronicImage', ({ name }) => {
     .clickHeaderActionButton(0)
     .formInput('name', name)
     .formAttachFile('file', filename)
-    .formSelect('disk_format', 'QCOW2 - QEMU Emulator')
+    .formSelect('disk_format', 'QCOW2')
     .formSelect('os_distro', 'CentOS')
     .formInput('os_version', 'cirros-0.4.0-x86_64')
     .formInput('os_admin_user', 'root')
