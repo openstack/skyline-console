@@ -50,7 +50,7 @@ export class QoSPolicyDetail extends Base {
         dataIndex: 'name',
       },
       {
-        title: t('Rule Numbers'),
+        title: t('Rules Number'),
         dataIndex: 'rules',
         render: (rules) => rules.length,
       },

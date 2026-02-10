@@ -28,7 +28,7 @@ export class Zones extends Base {
   }
 
   get name() {
-    return t('DNS zones');
+    return t('DNS Zones');
   }
 
   get actionConfigs() {

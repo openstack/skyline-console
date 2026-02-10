@@ -161,7 +161,7 @@ export class EditHealthMonitor extends ModalAction {
       },
       {
         name: 'type',
-        label: t('HealthMonitor Type'),
+        label: t('Health Monitor Type'),
         type: 'select',
         options: this.filteredProtocolOptions,
         hidden: !enableHealthMonitor,
