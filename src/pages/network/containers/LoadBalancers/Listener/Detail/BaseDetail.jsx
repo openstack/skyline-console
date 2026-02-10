@@ -89,7 +89,7 @@ export class BaseDetail extends Base {
       healthMonitor;
     const options = [
       {
-        label: t('Enable Health Monitor'),
+        label: t('Health Monitor Enabled'),
         content: !isEmpty(healthMonitor) ? t('Yes') : t('No'),
       },
     ];
