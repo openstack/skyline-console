@@ -69,7 +69,7 @@ export const getQosPolicyColumns = ({ self, all = false }) => {
         rules.length ? rules.map((rule) => getRuleValue(rule)).join('\n') : '-',
     },
     {
-      title: t('Shared'),
+      title: t('Shared Policy'),
       dataIndex: 'shared',
       valueRender: 'yesNo',
       width: 80,
@@ -114,7 +114,7 @@ export const getQosPolicyFilters = ({ self, shared = false }) => {
   ];
   if (!shared) {
     ret.push({
-      label: t('Shared'),
+      label: t('Shared Policy'),
       name: 'shared',
       options: yesNoOptions,
     });

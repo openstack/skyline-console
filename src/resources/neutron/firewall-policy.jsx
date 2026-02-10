@@ -36,7 +36,7 @@ export const tableColumns = [
     },
   },
   {
-    title: t('Shared'),
+    title: t('Shared Rule'),
     dataIndex: 'shared',
     valueRender: 'yesNo',
   },
