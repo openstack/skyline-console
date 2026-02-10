@@ -225,6 +225,7 @@ export class Instance extends Base {
         dataIndex: 'flavor',
         sorter: false,
         isHideable: true,
+        isDefaultHidden: this.isAdminPage,
         render: (value, record) =>
           isIronicInstance(record)
             ? `${value}(${t('Ironic Instance')})`
