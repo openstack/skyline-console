@@ -32,7 +32,7 @@ export const protocolInfos = {
 
 export const tableColumns = [
   {
-    title: t('Name'),
+    title: t('Rule Name'),
     dataIndex: 'name',
   },
   {
@@ -72,7 +72,7 @@ export const tableColumns = [
     valueRender: 'yesNo',
   },
   {
-    title: t('Shared'),
+    title: t('Shared Rule'),
     dataIndex: 'shared',
     valueRender: 'yesNo',
   },
@@ -80,7 +80,7 @@ export const tableColumns = [
 
 export const tableFilter = [
   {
-    label: t('Name'),
+    label: t('Rule Name'),
     name: 'name',
   },
   {
@@ -99,7 +99,7 @@ export const tableFilter = [
     options: yesNoOptions,
   },
   {
-    label: t('Shared'),
+    label: t('Shared Rule'),
     name: 'shared',
     options: yesNoOptions,
   },

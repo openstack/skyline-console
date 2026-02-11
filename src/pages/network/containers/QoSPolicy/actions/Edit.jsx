@@ -62,7 +62,7 @@ export class Edit extends ModalAction {
       },
       {
         name: 'shared',
-        label: t('Shared'),
+        label: t('Shared Policy'),
         type: 'switch',
         hidden: !this.isAdminPage,
       },

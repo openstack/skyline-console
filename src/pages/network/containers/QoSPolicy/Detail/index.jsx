@@ -60,7 +60,7 @@ export class QoSPolicyDetail extends Base {
         valueRender: 'toLocalTime',
       },
       {
-        title: t('Shared'),
+        title: t('Shared Policy'),
         dataIndex: 'shared',
         valueRender: 'yesNo',
       },
