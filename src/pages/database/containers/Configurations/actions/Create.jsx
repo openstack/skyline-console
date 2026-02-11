@@ -27,7 +27,7 @@ export class Create extends ModalAction {
 
   static id = 'create-configurations';
 
-  static title = t('Create Configurations');
+  static title = t('Create Group');
 
   static get modalSize() {
     return 'middle';
@@ -38,7 +38,7 @@ export class Create extends ModalAction {
   }
 
   get name() {
-    return t('Create Configurations');
+    return t('Create Group');
   }
 
   static policy = 'configuration:create';
@@ -82,7 +82,7 @@ export class Create extends ModalAction {
     return [
       {
         name: 'name',
-        label: t('Name'),
+        label: t('Group Name'),
         type: 'input',
         required: true,
       },
