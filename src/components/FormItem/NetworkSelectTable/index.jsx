@@ -130,13 +130,13 @@ export class NetworkSelectTable extends Component {
     const { key } = tab;
     const filters = [
       {
-        label: t('Name'),
+        label: t('Network Name'),
         name: 'name',
       },
     ];
     if (key !== 'shared') {
       filters.push({
-        label: t('Shared'),
+        label: t('Shared Network'),
         name: 'shared',
         options: yesNoOptions,
       });

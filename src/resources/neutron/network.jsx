@@ -49,7 +49,7 @@ export const networkColumns = (self) => [
     sorter: false,
   },
   {
-    title: t('Shared'),
+    title: t('Shared Network'),
     dataIndex: 'shared',
     valueRender: 'yesNo',
     sorter: false,

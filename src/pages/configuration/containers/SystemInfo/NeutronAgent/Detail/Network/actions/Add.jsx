@@ -100,11 +100,11 @@ export class AddNetwork extends ModalAction {
   getSearchFilters() {
     return [
       {
-        label: t('Name'),
+        label: t('Network Name'),
         name: 'name',
       },
       {
-        label: t('Shared'),
+        label: t('Shared Network'),
         name: 'shared',
         options: yesNoOptions,
       },

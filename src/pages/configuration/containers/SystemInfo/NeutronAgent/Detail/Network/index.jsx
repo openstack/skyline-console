@@ -53,11 +53,11 @@ export class Networks extends Base {
   get searchFilters() {
     return [
       {
-        label: t('Name'),
+        label: t('Network Name'),
         name: 'name',
       },
       {
-        label: t('Shared'),
+        label: t('Shared Network'),
         name: 'shared',
         options: yesNoOptions,
       },

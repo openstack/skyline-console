@@ -28,7 +28,7 @@ export default function PopoverNetworks(props) {
   const columns = [
     {
       dataIndex: 'name',
-      title: t('Name'),
+      title: t('Network Name'),
     },
     {
       title: t('External'),
@@ -36,7 +36,7 @@ export default function PopoverNetworks(props) {
       valueRender: 'yesNo',
     },
     {
-      title: t('Shared'),
+      title: t('Shared Network'),
       dataIndex: 'shared',
       valueRender: 'yesNo',
     },

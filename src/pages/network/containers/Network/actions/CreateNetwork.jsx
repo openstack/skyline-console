@@ -426,7 +426,7 @@ export class CreateNetwork extends ModalAction {
       },
       {
         name: 'shared',
-        label: t('Shared'),
+        label: t('Shared Network'),
         type: 'check',
         hidden: !this.isSystemAdmin,
       },
