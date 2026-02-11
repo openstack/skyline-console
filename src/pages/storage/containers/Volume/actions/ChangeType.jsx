@@ -16,6 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalVolumeStore from 'stores/cinder/volume';
 import globalVolumeTypeStore from 'stores/cinder/volume-type';
+import globalSnapshotStore from 'stores/cinder/snapshot';
 import { isAvailableOrInUse, isOsDisk } from 'resources/cinder/volume';
 
 export class ChangeType extends ModalAction {
@@ -91,14 +92,38 @@ export class ChangeType extends ModalAction {
     ];
   }
 
-  onSubmit = (values) => {
-    const { id } = this.item;
+  onSubmit = async (values) => {
+    const { id, name } = this.item;
     const { new_type } = values;
-    const body = {
+
+    try {
+      const snapshots = (await globalSnapshotStore.fetchList({ id })) || [];
+      const invalidStatuses = ['error', 'error_deleting', 'deleting'];
+      const activeSnapshots = snapshots.filter(
+        (snapshot) => !invalidStatuses.includes(snapshot.status)
+      );
+      if (activeSnapshots.length > 0) {
+        const errorMessage = t(
+          'Volume "{name}" cannot be retyped because it has {count} active snapshot(s). To change the volume type, you must first remove all existing snapshots. If you need to preserve the data in the snapshots, you can create new volumes from them first.',
+          { name: name || id, count: activeSnapshots.length }
+        );
+        const error = new Error(errorMessage);
+        error.response = { data: errorMessage };
+        throw error;
+      }
+    } catch (error) {
+      if (
+        error.response?.data ||
+        error.message?.includes('cannot be retyped')
+      ) {
+        throw error;
+      }
+    }
+
+    return this.store.retype(id, {
       new_type,
       migration_policy: 'on-demand',
-    };
-    return this.store.retype(id, body);
+    });
   };
 }
 
