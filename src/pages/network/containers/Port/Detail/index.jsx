@@ -83,7 +83,7 @@ export class PortDetail extends Base {
   get detailInfos() {
     return [
       {
-        title: t('Name'),
+        title: t('Port Name'),
         dataIndex: 'name',
       },
       {

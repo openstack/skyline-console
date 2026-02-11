@@ -222,7 +222,7 @@ export class CreateAction extends ModalAction {
     return [
       {
         name: 'name',
-        label: t('Name'),
+        label: t('Port Name'),
         type: 'input-name',
         required: true,
         withoutChinese: true,

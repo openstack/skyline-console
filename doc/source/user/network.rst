@@ -120,7 +120,7 @@ Create a port
 
 #. In the :guilabel:`Create Port` dialog box, specify the following values.
 
-   :guilabel:`Name`: Specify name to identify the port.
+   :guilabel:`Port Name`: Specify name to identify the port.
 
    :guilabel:`Network`: Select a network attached to the port.
 

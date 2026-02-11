@@ -56,7 +56,7 @@ export class Create extends ModalAction {
       },
       {
         name: 'name',
-        label: t('Name'),
+        label: t('Port Name'),
         type: 'input',
       },
       {
