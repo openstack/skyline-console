@@ -288,7 +288,7 @@ export class Create extends ModalAction {
       {
         name: 'interval',
         type: 'input-number',
-        label: t('DPD Interval (sec)'),
+        label: t('DPD Interval (s)'),
         min: 0,
         tip: t('Sec for DPD delay, > 0'),
         required: true,
@@ -297,7 +297,7 @@ export class Create extends ModalAction {
       {
         name: 'timeout',
         type: 'input-number',
-        label: t('DPD timeout (sec)'),
+        label: t('DPD timeout (s)'),
         min: 0,
         tip: t('Sec for DPD timeout, > 0 & > DPD Interval'),
         required: true,

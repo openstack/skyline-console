@@ -164,18 +164,18 @@ export class BaseDetail extends Base {
         render: (dpd) => dpd && dpd.action,
       },
       {
-        label: t('DPD Interval (sec)'),
+        label: t('DPD Interval (s)'),
         dataIndex: 'dpd',
         render: (dpd) => dpd && dpd.interval,
       },
       {
-        label: t('DPD timeout (sec)'),
+        label: t('DPD timeout (s)'),
         dataIndex: 'dpd',
         render: (dpd) => dpd && dpd.timeout,
       },
     ];
     return {
-      title: t('Advanced Params'),
+      title: t('Advanced Options'),
       options,
     };
   }
