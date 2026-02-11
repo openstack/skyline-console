@@ -298,7 +298,7 @@ export class ContainerObject extends Base {
     });
     return (
       <div className={styles['link-header']}>
-        <span className={styles['link-title']}>{t('Current Path: ')}</span>
+        <span className={styles['link-title']}>{t('Current Path:')}</span>{' '}
         {itemLinks}
       </div>
     );
