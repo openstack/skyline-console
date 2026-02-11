@@ -56,7 +56,7 @@ export class Detail extends Base {
         valueMap: flavorCategoryList,
       },
       {
-        title: t('CPU'),
+        title: t('vCPU'),
         dataIndex: 'vcpus',
         isHideable: true,
       },

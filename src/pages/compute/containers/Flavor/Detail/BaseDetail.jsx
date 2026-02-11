@@ -217,7 +217,7 @@ export class BaseDetail extends Base {
             <span style={{ marginRight: 16 }}>
               {t('CPU')} : {cpu}
             </span>
-            {t('Memory')} : {mem}MiB
+            {t('Memory (MiB)')} : {mem}
           </div>
         ),
       };
@@ -262,7 +262,7 @@ export class BaseDetail extends Base {
     ];
     return {
       labelCol: 0,
-      title: t('Parameter'),
+      title: t('Parameters'),
       options,
     };
   }
