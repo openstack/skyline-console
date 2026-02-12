@@ -152,7 +152,7 @@ export class Edit extends ModalAction {
       },
       {
         name: 'protected',
-        label: t('Protected'),
+        label: t('Protection'),
         type: 'check',
         content: t('Protected'),
       },

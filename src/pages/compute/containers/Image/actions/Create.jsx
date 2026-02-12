@@ -326,7 +326,7 @@ export class CreateForm extends FormAction {
       },
       {
         name: 'protected',
-        label: t('Protected'),
+        label: t('Protection'),
         type: 'check',
         content: t('Protected'),
       },

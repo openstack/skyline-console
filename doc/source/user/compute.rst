@@ -215,7 +215,7 @@ For information about creating image files, see the
    :guilabel:`Min. Memory (GiB)`: Amount of Memory in GB that is required
    to boot the image.
 
-   :guilabel:`Protected`: Image protection for deletion.
+   :guilabel:`Protection`: Image protection for deletion.
 
    :guilabel:`Usage Type`: Select usage type (for example, Common Server)
    for the image.
