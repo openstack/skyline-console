@@ -22,8 +22,10 @@ import windowsIcon from 'asset/image/windows.svg';
 import debianIcon from 'asset/image/debian.svg';
 import almalinuxIcon from 'asset/image/almalinux.svg';
 import rockyIcon from 'asset/image/rocky.svg';
+import redhatIcon from 'asset/image/redhat.svg';
 import archIcon from 'asset/image/arch.svg';
 import freebsdIcon from 'asset/image/freebsd.svg';
+import oraclelinuxIcon from 'asset/image/oraclelinux.svg';
 import othersIcon from 'asset/image/others.svg';
 import { Tooltip } from 'antd';
 import styles from './index.less';
@@ -49,6 +51,8 @@ export default class index extends Component {
       debian: debianIcon,
       almalinux: almalinuxIcon,
       rocky: rockyIcon,
+      rhel: redhatIcon,
+      oraclelinux: oraclelinuxIcon,
       arch: archIcon,
       freebsd: freebsdIcon,
       others: othersIcon,
