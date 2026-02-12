@@ -70,7 +70,7 @@ export class Detail extends Base {
         component: Project,
       },
       {
-        title: t('Sub Users'),
+        title: t('Users'),
         key: 'user',
         component: User,
       },

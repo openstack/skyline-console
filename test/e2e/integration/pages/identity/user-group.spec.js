@@ -39,7 +39,7 @@ describe('The User Group Page', () => {
     cy.tableSearchText(name)
       .goToDetail()
       .checkDetailName(name)
-      .clickDetailTab('Sub Users', 'user')
+      .clickDetailTab('Users', 'user')
       .clickDetailTab('Subordinate Projects', 'project');
     cy.goBackToList(listUrl);
   });
@@ -51,7 +51,7 @@ describe('The User Group Page', () => {
       .formTransferRight('select_user', username)
       .clickModalActionSubmitButton();
 
-    cy.tableSearchText(name).goToDetail().clickDetailTab('Sub Users', 'user');
+    cy.tableSearchText(name).goToDetail().clickDetailTab('Users', 'user');
   });
 
   it('successfully edit', () => {

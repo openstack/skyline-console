@@ -490,7 +490,7 @@ Looking at the structure and style of the elements through the page, I found tha
 
       cy.tableSearchText(name)
         .goToDetail()
-        .clickDetailTab('Sub Users', 'userGroup');
+        .clickDetailTab('Users', 'userGroup');
     });
     ```
 

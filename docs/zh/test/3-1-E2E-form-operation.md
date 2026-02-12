@@ -490,7 +490,7 @@
 
       cy.tableSearchText(name)
         .goToDetail()
-        .clickDetailTab('Sub Users', 'userGroup');
+        .clickDetailTab('Users', 'userGroup');
     });
     ```
 
