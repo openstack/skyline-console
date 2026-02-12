@@ -343,7 +343,7 @@ export class ParamSetting extends Base {
       },
       {
         name: 'name',
-        label: t('Name'),
+        label: t('Flavor Name'),
         type: 'input-name',
         placeholder: t('Please input name'),
         required: true,
