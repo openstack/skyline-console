@@ -737,6 +737,7 @@ export class BaseStep extends Base {
           this.locationParams.os_distro || this.systemTabs[0].value,
         selectedLabel: t('Image'),
         onTabChange: this.onImageTabChange,
+        validateTrigger: [],
       },
       {
         name: 'instanceSnapshot',
@@ -803,7 +804,9 @@ export class BaseStep extends Base {
         hidden: !this.showSystemDiskByBootFromVolume,
         validator: this.checkSystemDisk,
         minSize: this.getSystemDiskMinSize(),
-        extra: t('Disk size is limited by the min. disk of flavor, image, etc.'),
+        extra: t(
+          'Disk size is limited by the min. disk of flavor, image, etc.'
+        ),
         onChange: this.onSystemDiskChange,
         dependencies: ['flavor', 'image', 'instanceSnapshot', 'bootFromVolume'],
       },

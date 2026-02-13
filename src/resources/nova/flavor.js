@@ -149,6 +149,11 @@ export const getBaseColumns = (self) => [
     valueMap: flavorCategoryList,
   },
   {
+    title: t('Disk (GiB)'),
+    dataIndex: 'disk',
+    isHideable: true,
+  },
+  {
     title: t('vCPU'),
     dataIndex: 'vcpus',
     isHideable: true,
@@ -307,6 +312,13 @@ export const getFlavorSearchFilters = (category) => {
       name: 'ram',
       filterFunc: (ram, value) => {
         return (formatSize(ram, 2) || '').includes(value);
+      },
+    },
+    {
+      label: t('Disk'),
+      name: 'disk',
+      filterFunc: (disk, value) => {
+        return (`${disk}` || '').includes(value);
       },
     },
   ];
