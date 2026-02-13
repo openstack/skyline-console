@@ -188,7 +188,7 @@ export class BaseDetail extends Base {
         dataIndex: 'usbType',
       },
       {
-        label: t('Number of USB Controller'),
+        label: t('Number of USB Controllers'),
         dataIndex: 'usbCount',
       },
     ];
