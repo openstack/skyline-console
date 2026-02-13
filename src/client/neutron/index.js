@@ -65,6 +65,12 @@ export class NeutronClient extends Base {
             method: 'put',
           },
         ],
+        subResources: [
+          {
+            name: 'l3Agents',
+            key: 'l3-agents',
+          },
+        ],
       },
       {
         key: 'floatingips',
