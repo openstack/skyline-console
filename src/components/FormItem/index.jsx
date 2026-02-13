@@ -129,6 +129,10 @@ export default class FormItem extends React.Component {
     dependencies: PropTypes.array,
     formref: PropTypes.object,
     hasRequiredCheck: PropTypes.bool,
+    validateTrigger: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.arrayOf(PropTypes.string),
+    ]),
   };
 
   static defaultProps = {
@@ -200,6 +204,7 @@ export default class FormItem extends React.Component {
       wrapperCol,
       tip,
       dependencies,
+      validateTrigger,
     } = this.props;
     const base = {
       name,
@@ -213,6 +218,9 @@ export default class FormItem extends React.Component {
       wrapperCol,
       rules: this.getRules(),
     };
+    if (validateTrigger !== undefined) {
+      base.validateTrigger = validateTrigger;
+    }
     if (dependencies && dependencies.length > 0) {
       base.dependencies = dependencies;
     }
