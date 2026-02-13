@@ -539,7 +539,7 @@ export class CreatePortForwarding extends ModalAction {
         {!this.supportRange && (
           <p>
             {t(
-              '4. When you use a port range to create {resources}, multiple {resources} will be created in batches. ',
+              '4. When you use a port range to create {resources}, multiple {resources} will be created in batches.',
               {
                 resources: this.resources,
               }
