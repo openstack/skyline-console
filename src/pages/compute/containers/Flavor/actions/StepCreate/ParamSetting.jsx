@@ -553,7 +553,7 @@ export class ParamSetting extends Base {
       },
       {
         name: 'usbNumber',
-        label: t('Number of USB Controller'),
+        label: t('Number of USB Controllers'),
         type: 'input-int',
         min: 1,
         hidden: !attachUsb,
