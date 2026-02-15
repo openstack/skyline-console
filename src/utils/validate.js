@@ -224,6 +224,62 @@ const compareIpv6 = (ip1, ip2) => {
   return 0;
 };
 
+const getFirstIpFromCidr = (cidrInput) => {
+  if (!cidrInput) {
+    return null;
+  }
+
+  const [ip, prefix] = cidrInput.split('/');
+  if (!ip || !prefix) {
+    return null;
+  }
+
+  if (ip.includes('.')) {
+    return getFirstIpv4FromCidr(ip, prefix);
+  }
+
+  if (ip.includes(':')) {
+    return getFirstIpv6FromCidr(ip);
+  }
+
+  return null;
+};
+
+const getFirstIpv4FromCidr = (ip, prefix) => {
+  const parts = ip.split('.');
+  if (parts.length !== 4) return null;
+
+  try {
+    /* eslint-disable no-bitwise */
+    const ipNum =
+      (parseInt(parts[0], 10) << 24) +
+      (parseInt(parts[1], 10) << 16) +
+      (parseInt(parts[2], 10) << 8) +
+      parseInt(parts[3], 10);
+
+    const mask = 0xffffffff << (32 - parseInt(prefix, 10));
+    const networkNum = ipNum & mask;
+    const firstIpNum = networkNum + 1;
+
+    return [
+      (firstIpNum >>> 24) & 0xff,
+      (firstIpNum >>> 16) & 0xff,
+      (firstIpNum >>> 8) & 0xff,
+      firstIpNum & 0xff,
+    ].join('.');
+    /* eslint-enable no-bitwise */
+  } catch (error) {
+    return null;
+  }
+};
+
+const getFirstIpv6FromCidr = (ip) => {
+  if (ip.includes('::')) {
+    return ip.replace(/::/, '::1');
+  }
+  return `${ip}:1`;
+};
+
 const ipv4Validator = (item, value) => {
   const { required } = item;
   if (!isNil(value) && value !== '') {
@@ -266,6 +322,7 @@ export const ipValidate = {
   isIpInRangeIPv6,
   isIpInRangeAll,
   compareIpv6,
+  getFirstIpFromCidr,
   ipv4Validator,
   ipv6Validator,
 };

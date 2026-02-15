@@ -284,18 +284,19 @@ export class NetworkStore extends Base {
     const { create_subnet } = rest;
     if (create_subnet) {
       const { project_id, id } = network;
-      const subnet = await this.createSubnet({
-        ...rest,
-        project_id,
-        network_id: id,
-      }).catch((e) => {
+      try {
+        const subnet = await this.createSubnet({
+          ...rest,
+          project_id,
+          network_id: id,
+        });
+        return { network, subnet };
+      } catch (e) {
         return Promise.reject(
           JSON.stringify({ type: 'create_subnet', error: e.response.data })
         );
-      });
-      return subnet;
+      }
     }
-    // return this.submitting(Promise.resolve(res));
     return Promise.resolve(res);
   }
 

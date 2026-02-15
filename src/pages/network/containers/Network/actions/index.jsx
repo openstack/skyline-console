@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import NetworkQuickStart from 'pages/base/containers/Overview/components/NetworkQuickStart';
 import CreateNetwork from './CreateNetwork';
 import CreateSubnet from './CreateSubnet';
 import DeleteAction from './Delete';
@@ -30,7 +31,7 @@ const actionConfigs = {
     ],
   },
   batchActions: [DeleteAction],
-  primaryActions: [CreateNetwork],
+  primaryActions: [CreateNetwork, NetworkQuickStart],
 };
 
 export default actionConfigs;
