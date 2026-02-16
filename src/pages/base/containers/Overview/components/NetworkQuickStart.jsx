@@ -375,7 +375,7 @@ export class NetworkQuickStart extends ModalAction {
       await this.onSubmit(values, containerProps);
       const networkName = values.networkName || 'unknown';
       Notify.success(
-        t('Network created successfully, instance: {name}.', {
+        t('Network {name} was successfully created.', {
           name: networkName,
         })
       );
@@ -384,7 +384,7 @@ export class NetworkQuickStart extends ModalAction {
       const networkName = values.networkName || 'unknown';
       Notify.error(
         err?.message ||
-          t('Unable to create network, instance: {name}.', {
+          t('Unable to create network {name}.', {
             name: networkName,
           })
       );
@@ -515,14 +515,14 @@ export class NetworkQuickStart extends ModalAction {
         const routerName = values.routerName || 'router-1';
         Notify.success(
           t(
-            'Router created and subnet connected successfully, instance: {name}.',
+            'Router {name} was created and subnet successfully connected.',
             { name: routerName }
           )
         );
       } catch (routerError) {
         const routerName = values.routerName || 'router-1';
         Notify.error(
-          t('Router creation failed, instance: {name}. {error}', {
+          t('Router {name} creation failed: {error}', {
             name: routerName,
             error: routerError.message || 'Unknown error',
           })
