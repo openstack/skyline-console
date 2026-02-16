@@ -43,7 +43,7 @@ export class Create extends ModalAction {
   }
 
   get name() {
-    return t('Create host aggregate');
+    return t('Create Host Aggregate');
   }
 
   static policy = 'os_compute_api:os-aggregates:create';
