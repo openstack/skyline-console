@@ -45,7 +45,7 @@ export class Set extends ModalAction {
         type: 'input',
         required: true,
         placeholder: t('smtp.example.com'),
-        tip: t('Domain name ending in.'),
+        tip: t('Domain name ending in "."'),
       },
       {
         name: 'description',
