@@ -47,7 +47,7 @@ export const shareProtocol = {
   GlusterFS: t('GlusterFS'),
   HDFS: t('HDFS'),
   CephFS: t('CephFS'),
-  MAPRFS: t('MAPRFS'),
+  MAPRFS: t('MapR-FS'),
 };
 
 export const shareVisibility = {
@@ -74,7 +74,7 @@ export const shareAccessType = {
   ip: t('IP'),
   cert: t('Cert'),
   user: t('User'),
-  cephx: t('Cephx'),
+  cephx: t('CephX'),
 };
 
 // deal with quota
