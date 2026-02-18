@@ -734,7 +734,7 @@ export class BaseStep extends Base {
         columns: this.imageColumns,
         tabs: this.systemTabs,
         defaultTabValue:
-          this.locationParams.os_distro || this.systemTabs[0].value,
+          this.locationParams.os_distro || this.systemTabs[0]?.value,
         selectedLabel: t('Image'),
         onTabChange: this.onImageTabChange,
         validateTrigger: [],
