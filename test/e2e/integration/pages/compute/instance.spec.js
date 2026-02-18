@@ -242,11 +242,11 @@ describe('The Instance Page', () => {
     if (!ableChangePwd) {
       return;
     }
-    const passowrdNew = `${password}_1`;
+    const passwordNew = `${password}_1`;
     cy.tableSearchText(name)
       .clickActionInMoreSub('Change Password', 'Configuration Update')
-      .formInput('password', passowrdNew)
-      .formInput('confirmPassword', passowrdNew)
+      .formInput('password', passwordNew)
+      .formInput('confirmPassword', passwordNew)
       .clickModalActionSubmitButton();
   });
 
