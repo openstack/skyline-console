@@ -175,6 +175,8 @@ export const isShutOff = (item) => checkStatus(['shutoff'], item);
 
 export const isActive = (item) => checkStatus(['active'], item);
 
+export const isActiveOrRescue = (item) => checkStatus(['active', 'rescue'], item);
+
 export const isStopped = (item) => checkStatus(['stopped'], item);
 
 export const isPaused = (item) => checkStatus(['paused'], item);
