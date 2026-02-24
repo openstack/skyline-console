@@ -89,12 +89,20 @@ export class BaseStep extends Base {
   }
 
   get availableZones() {
-    return (globalAvailabilityZoneStore.list.data || [])
+    const zones = (globalAvailabilityZoneStore.list.data || [])
       .filter((it) => it.zoneState.available)
       .map((it) => ({
         value: it.zoneName,
         label: it.zoneName,
       }));
+
+    return [
+      {
+        value: null,
+        label: t('Any Availability Zone'),
+      },
+      ...zones,
+    ];
   }
 
   get images() {

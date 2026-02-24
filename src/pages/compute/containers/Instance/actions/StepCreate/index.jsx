@@ -719,9 +719,11 @@ export class StepCreate extends StepAction {
       })),
       name,
       flavorRef: flavor.selectedRowKeys[0],
-      availability_zone: availableZone.value,
       networks,
     };
+    if (availableZone.value) {
+      server.availability_zone = availableZone.value;
+    }
     if (this.enableCinder) {
       server.block_device_mapping_v2 = volumes;
     }
