@@ -243,7 +243,9 @@ export class NetworkStep extends Base {
         name: 'networks',
         label: t('Virtual Interface'),
         type: 'add-select',
-        tip: t('Specify a subnet of the network and assign fixed IP address automatically or manually for the instance'),
+        tip: t(
+          'Specify a subnet of the network and assign fixed IP address automatically or manually for the instance'
+        ),
         networks: networkSelectRows,
         hidden: !showNetworks,
         subnets,

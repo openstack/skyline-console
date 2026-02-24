@@ -151,8 +151,9 @@ export class BaseStep extends Base {
         name: 'provider',
         label: t('Provider'),
         type: 'select',
-        tip: t('Octavia Amphora provider uses dedicated instances to run load balancers. Each load balancer is deployed as one or more instance, providing strong isolation and full feature support. This provider requires additional compute resources and management of amphora images. Octavia OVN provider implements load balancing directly in the OVN networking layer without using instances. It supports only Layer 4 protocols (TCP/UDP) and does not provide advanced L7 features. This provider offers lower resource overhead but a more limited feature set compared to the Amphora provider.'
-),
+        tip: t(
+          'Octavia Amphora provider uses dedicated instances to run load balancers. Each load balancer is deployed as one or more instance, providing strong isolation and full feature support. This provider requires additional compute resources and management of amphora images. Octavia OVN provider implements load balancing directly in the OVN networking layer without using instances. It supports only Layer 4 protocols (TCP/UDP) and does not provide advanced L7 features. This provider offers lower resource overhead but a more limited feature set compared to the Amphora provider.'
+        ),
         required: true,
         options:
           providerList.length > 0

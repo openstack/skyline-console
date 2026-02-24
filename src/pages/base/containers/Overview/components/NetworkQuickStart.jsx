@@ -289,7 +289,7 @@ export class NetworkQuickStart extends ModalAction {
       },
       {
         name: 'createRouter',
-        label: t('Create and attach Router'),
+        label: t('Create and Attach Router'),
         type: 'check',
         onChange: this.handleBooleanStateChange('createRouter'),
       },
@@ -514,10 +514,9 @@ export class NetworkQuickStart extends ModalAction {
         await this.createAndConnectRouter(network, subnet, routerConfig);
         const routerName = values.routerName || 'router-1';
         Notify.success(
-          t(
-            'Router {name} was created and subnet successfully connected.',
-            { name: routerName }
-          )
+          t('Router {name} was created and subnet successfully connected.', {
+            name: routerName,
+          })
         );
       } catch (routerError) {
         const routerName = values.routerName || 'router-1';

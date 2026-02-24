@@ -3,7 +3,11 @@ import globalServerStore from 'stores/nova/instance';
 import { ModalAction } from 'containers/Action';
 import { getPasswordOtherRule } from 'utils/validate';
 import globalImageStore from 'src/stores/glance/image';
-import { checkStatus, isIronicInstance, isNotLockedOrAdmin } from 'src/resources/nova/instance';
+import {
+  checkStatus,
+  isIronicInstance,
+  isNotLockedOrAdmin,
+} from 'src/resources/nova/instance';
 
 export class Rescue extends ModalAction {
   static id = 'rescue';
@@ -32,8 +36,8 @@ export class Rescue extends ModalAction {
     const { isAdminPage } = containerProps;
     return Promise.resolve(
       !this.isUnrescue(item) &&
-      isNotLockedOrAdmin(item, isAdminPage) &&
-      !isIronicInstance(item)
+        isNotLockedOrAdmin(item, isAdminPage) &&
+        !isIronicInstance(item)
     );
   };
 
@@ -42,7 +46,12 @@ export class Rescue extends ModalAction {
   }
 
   get getData() {
-    return (this.imageStore.list.data).map((it) => ({ value: it.id, label: it.name })) || [];
+    return (
+      this.imageStore.list.data.map((it) => ({
+        value: it.id,
+        label: it.name,
+      })) || []
+    );
   }
 
   get formItems() {
@@ -67,9 +76,9 @@ export class Rescue extends ModalAction {
     const rescue = {
       rescue: {
         adminPass: values.adminPass,
-        rescue_image_ref: values.rescue_image_ref
-      }
-    }
+        rescue_image_ref: values.rescue_image_ref,
+      },
+    };
     return this.store.rescue(id, rescue);
   };
 }

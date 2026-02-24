@@ -57,10 +57,10 @@ function PopUpContent({ name }) {
         <Col span={8}>{t('Created At')}</Col>
         <Col span={12}>{getStrFromTimestamp(data.timestamp)}</Col>
       </Row>
-{/*   <Row>
+      {/*   <Row>
         <Col span={8}>{t('Storage Policy')}</Col>
         <Col span={12}>{data.storage_policy}</Col>
-      </Row>*/}
+      </Row> */}
       <Row>
         <Col span={8}>{t('Public Access')}</Col>
         <Col span={12}>
