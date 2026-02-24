@@ -33,7 +33,7 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   get actionName() {
-    return t('release fixed ip');
+    return t('release fixed IP');
   }
 
   get passiveAction() {
