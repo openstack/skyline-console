@@ -107,6 +107,14 @@ export class SkylineClient extends Base {
               return this.request.post(url, data, params);
             },
           },
+          {
+            name: 'switchRegion',
+            method: 'post',
+            generate: (region) => {
+              const url = `switch_region/${region}`;
+              return this.request.post(url, {});
+            },
+          },
         ],
       },
       {

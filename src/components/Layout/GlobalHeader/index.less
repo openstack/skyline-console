@@ -112,9 +112,15 @@
 }
 
 .project {
+  display: flex;
+  align-items: center;
   float: left;
+  height: @header-height;
+  padding: 0;
+  color: @layout-text-color;
   font-size: 14px;
   line-height: @header-height;
+  background: transparent;
   cursor: pointer;
 
   :global {
@@ -126,8 +132,63 @@
 
     .ant-btn-link {
       position: absolute;
-      min-width: 280px;
+      top: 0;
+      min-width: 230px;
       min-height: @header-height;
+    }
+  }
+
+  .domain {
+    color: rgba(0, 0, 0, 45%);
+    font-size: 14px;
+  }
+
+  .region-container {
+    display: flex;
+    align-items: center;
+
+    .region-select {
+      :global {
+        .ant-select-selector {
+          height: 32px !important;
+          padding: 0 !important;
+          line-height: 32px !important;
+          background: transparent !important;
+        }
+
+        .ant-select-selection-item {
+          color: @primary-color;
+          font-weight: 500;
+          font-size: 13px;
+        }
+
+        .ant-select-arrow {
+          right: 0;
+          color: @primary-color;
+        }
+      }
+
+      &:hover {
+        :global {
+          .ant-select-selection-item {
+            color: darken(@primary-color, 10%);
+          }
+        }
+      }
+    }
+
+    .region-icon {
+      margin-right: 6px;
+      color: @primary-color;
+      font-size: 14px;
+    }
+  }
+
+  .has-multi-regions {
+    :global {
+      .anticon-global {
+        color: @primary-color;
+      }
     }
   }
 }
@@ -142,6 +203,21 @@
   color: @layout-text-color;
   background-color: @layout-header-color;
   box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 9%);
+
+  .nav-items {
+    display: flex;
+    align-items: center;
+    margin-left: 24px;
+
+    .default-text {
+      margin-right: 16px;
+      padding-right: 16px;
+      color: @title-color;
+      font-weight: 500;
+      font-size: 14px;
+      border-right: 1px solid #d2d2d2;
+    }
+  }
 }
 
 .avatar {
@@ -218,5 +294,39 @@
 
   img {
     height: @layout-header-logo-image-height;
+  }
+}
+
+.region-dropdown {
+  :global {
+    .ant-select-dropdown {
+      min-width: 140px;
+      padding: 4px 0;
+    }
+
+    .ant-select-item {
+      min-height: 36px;
+      padding: 8px 12px;
+      font-size: 13px;
+      line-height: 1.5;
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+    }
+
+    .ant-select-item-option-selected {
+      color: @primary-color;
+      font-weight: 500;
+      background-color: #e6f7ff;
+
+      .ant-select-item-option-state {
+        color: @primary-color;
+      }
+    }
+
+    .ant-select-item-option-active {
+      background-color: #f5f5f5;
+    }
   }
 }

@@ -36,14 +36,8 @@ export class Login extends Component {
   }
 
   componentDidMount() {
-    this.getRegions();
     this.getSSO();
     this.getUserDefaultDomain();
-  }
-
-  async getRegions() {
-    await this.store.fetchRegionList();
-    this.updateDefaultValue();
   }
 
   async getSSO() {
@@ -77,15 +71,12 @@ export class Login extends Component {
     return t('Welcome to {name}', { name });
   }
 
-  get regions() {
-    return (this.store.regions || []).map((it) => ({
-      label: it,
-      value: it,
-    }));
-  }
-
   get domains() {
     return [];
+  }
+
+  get userDefaultDomain() {
+    return this.store.userDefaultDomain || 'Default';
   }
 
   get nextPage() {
@@ -158,9 +149,6 @@ export class Login extends Component {
     const data = {
       loginType: 'password',
     };
-    if (this.regions.length === 1) {
-      data.region = this.regions[0].value;
-    }
     return data;
   }
 
@@ -182,14 +170,6 @@ export class Login extends Component {
         </div>
       ),
     };
-    const regionItem = {
-      name: 'region',
-      required: true,
-      message: t('Please select your Region!'),
-      render: () => (
-        <Select placeholder={t('Select a region')} options={this.regions} />
-      ),
-    };
     const domainItem = {
       name: 'domain',
       required: true,
@@ -197,7 +177,8 @@ export class Login extends Component {
         <Input placeholder={t('<username> or <username>@<domain>')} />
       ),
       extra: t(
-        'Tips: If no domain is provided, the configured domain will be used.'
+        'Tips: If no domain is provided, the configured default domain "{domain}" will be used.',
+        { domain: this.userDefaultDomain }
       ),
       rules: [{ required: true, validator: this.usernameDomainValidator }],
     };
@@ -249,7 +230,6 @@ export class Login extends Component {
     };
     const namePasswordItems = [
       errorItem,
-      regionItem,
       domainItem,
       usernameItem,
       passwordItem,
@@ -324,11 +304,11 @@ export class Login extends Component {
       message: '',
       error: false,
     });
-    const { password, region, domain } = values;
+    const { password, domain } = values;
     const usernameDomain = this.getUsernameAndDomain({
       usernameDomain: domain,
     });
-    const body = { password, region, ...usernameDomain };
+    const body = { password, ...usernameDomain };
     this.rootStore.login(body).then(
       () => {
         this.onLoginSuccess();
@@ -368,7 +348,7 @@ export class Login extends Component {
 
     if (emailRegex.test(trimmedUsernameDomain)) {
       username = trimmedUsernameDomain;
-      domain = this.store.userDefaultDomain || 'Default';
+      domain = this.userDefaultDomain;
     } else {
       const lastAtIndex = trimmedUsernameDomain.lastIndexOf('@');
       username =
@@ -378,7 +358,7 @@ export class Login extends Component {
       domain =
         lastAtIndex > 0
           ? trimmedUsernameDomain.slice(lastAtIndex + 1)
-          : this.store.userDefaultDomain || 'Default';
+          : this.userDefaultDomain;
     }
     return {
       username,
@@ -411,7 +391,6 @@ export class Login extends Component {
   dealWithChangePassword = (detail, values) => {
     const userId = this.getUserId(detail);
     const data = {
-      region: values.region,
       oldPassword: values.password,
       userId,
     };

@@ -74,6 +74,12 @@ export class RootStore {
   @observable
   neutronExtensions = [];
 
+  @observable
+  selectedRegion = null;
+
+  @observable
+  availableRegions = [];
+
   // @observable
   // menu = renderMenu(i18n.t);
 
@@ -142,8 +148,12 @@ export class RootStore {
       endpoints = {},
       version = '',
       project: { id: projectId, name: projectName } = {},
+      region = '',
+      regions = [],
     } = user || {};
     this.projectId = projectId;
+    this.selectedRegion = region;
+    this.availableRegions = regions;
     this.projectName = projectName;
     this.version = version;
     this.endpoints = endpoints;
@@ -176,6 +186,15 @@ export class RootStore {
     } catch (error) {
       this.neutronExtensions = [];
     }
+  }
+
+  @action
+  async switchRegion(region) {
+    this.user = null;
+    const result = await this.client.switchRegion(region);
+    this.clearData();
+    this.setKeystoneToken(result);
+    return this.getUserProfileAndPolicy();
   }
 
   @action
@@ -225,11 +244,10 @@ export class RootStore {
     if (!data || isEmpty(data)) {
       return;
     }
-    const { region } = data;
     const res = await this.client.contrib.keystoneEndpoints();
-    const regionInfo = res.find((it) => it.region_name === region);
+    const regionInfo = res?.length ? res[0] : null;
     const endpoints = {
-      keystone: regionInfo.url,
+      keystone: regionInfo?.url,
     };
     this.endpoints = endpoints;
   }

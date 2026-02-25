@@ -7,7 +7,6 @@
   "env": {
     "username": "administrator",
     "password": "passW0rd",
-    "region": "RegionOne",
     "domain": "Default",
     "sessionKey": "X-Auth-Token",
     "language": "en"

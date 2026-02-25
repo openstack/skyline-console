@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Support multi-region switching.
+
+    * Add region selector in the header for switching regions after login.
+    * Remove region selection from login page; login automatically uses the backend-configured default region.

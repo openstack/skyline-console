@@ -67,7 +67,6 @@ Cypress.Commands.add(
       username: isAdmin
         ? Cypress.env('usernameAdmin')
         : Cypress.env('username'),
-      region: Cypress.env('region'),
       domain: Cypress.env('domain'),
     };
     const uuid = uuidv4();
@@ -128,8 +127,7 @@ Cypress.Commands.add('loginAdmin', (visitUrl = '', switchToAdmin = false) => {
 Cypress.Commands.add('loginByPage', (username, password) => {
   cy.visit('/');
   cy.waitLoginFormLoading().wait(5000);
-  cy.loginFormSelect(0, 'RegionOne')
-    .loginFormInput('domain', username || Cypress.env('username'))
+  cy.loginFormInput('domain', username || Cypress.env('username'))
     .loginFormInput('password', password || Cypress.env('password'))
     .loginFormSubmit();
 });

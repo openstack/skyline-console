@@ -53,7 +53,7 @@ export default function HeaderContent(props) {
     <div className={styles.header}>
       <GlobalNav navItems={navItems} />
       {renderLogo()}
-      {!isAdminPage && <ProjectDropdown />}
+      <ProjectDropdown isAdminPage={isAdminPage} />
       <RightContent {...props} />
     </div>
   );

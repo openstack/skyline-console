@@ -14,11 +14,18 @@
 
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { Spin, Divider } from 'antd';
-import { AppstoreOutlined, SwapOutlined } from '@ant-design/icons';
+import { Spin, Divider, Select, message } from 'antd';
+import classnames from 'classnames';
+import {
+  AppstoreOutlined,
+  SwapOutlined,
+  GlobalOutlined,
+} from '@ant-design/icons';
 import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
 import styles from './index.less';
 import ProjectSelect from './ProjectTable';
+
+const { Option } = Select;
 
 export class ProjectDropdown extends React.Component {
   get user() {
@@ -41,6 +48,89 @@ export class ProjectDropdown extends React.Component {
     };
   }
 
+  get region() {
+    const { region = '', regions = [] } = this.user || {};
+    return {
+      region,
+      regions,
+    };
+  }
+
+  get isAdminPage() {
+    return this.props.isAdminPage || false;
+  }
+
+  handleRegionChange = async (value) => {
+    const { rootStore } = this.props;
+    try {
+      await rootStore.switchRegion(value);
+      message.success(t(`Switched to region {value} successfully.`, { value }));
+    } catch (e) {
+      message.error(t('Failed to switch region {value}.', { value }));
+      console.error('switchRegion error:', e);
+    }
+  };
+
+  renderProjectSwitch() {
+    if (this.isAdminPage) {
+      return null;
+    }
+    const { projectName, userDomainName } = this.project;
+    return (
+      <>
+        <ItemActionButtons
+          actions={{ moreActions: [{ action: ProjectSelect }] }}
+        />
+        <AppstoreOutlined style={{ marginRight: 10 }} />
+        <span>{projectName}</span>
+        <SwapOutlined style={{ color: '#A3A3A3', marginLeft: 24 }} />
+        <Divider type="vertical" />
+        <span className={styles.domain}>{userDomainName}</span>
+        <Divider type="vertical" />
+      </>
+    );
+  }
+
+  renderRegionSwitch() {
+    const { region, regions } = this.region;
+    const hasMultiRegions = regions.length > 1;
+    const regionElement = hasMultiRegions ? (
+      <Select
+        value={region}
+        bordered={false}
+        style={{
+          minWidth: 90,
+          color: globalCSS.primaryColor,
+          fontSize: '12px',
+          fontWeight: 500,
+        }}
+        dropdownMatchSelectWidth={false}
+        onChange={this.handleRegionChange}
+        className={styles['region-select']}
+        dropdownClassName={styles['region-dropdown']}
+      >
+        {regions.map((region_name) => (
+          <Option key={region_name} value={region_name}>
+            {region_name}
+          </Option>
+        ))}
+      </Select>
+    ) : (
+      <div className={styles['region-item']}>{region}</div>
+    );
+    return (
+      <div
+        className={classnames(
+          styles['region-container'],
+          hasMultiRegions ? styles['has-multi-regions'] : ''
+        )}
+      >
+        <GlobalOutlined style={{ marginRight: 4 }} />
+        {regionElement}
+      </div>
+    );
+  }
+
   render() {
     if (!this.user) {
       return (
@@ -54,18 +144,10 @@ export class ProjectDropdown extends React.Component {
         />
       );
     }
-    const { projectName, userDomainName } = this.project;
     return (
       <div className={styles.project} id="project-switch">
-        <ItemActionButtons
-          actions={{ moreActions: [{ action: ProjectSelect }] }}
-        />
-        <AppstoreOutlined style={{ marginRight: 10 }} />
-        {/* style={{ display: 'inline-block', width: '115px' }} */}
-        <span>{projectName}</span>
-        <SwapOutlined style={{ color: '#A3A3A3', marginLeft: 24 }} />
-        <Divider type="vertical" />
-        <span className={styles.domain}>{userDomainName}</span>
+        {this.renderProjectSwitch()}
+        {this.renderRegionSwitch()}
       </div>
     );
   }
