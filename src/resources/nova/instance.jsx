@@ -274,8 +274,6 @@ const onlyUserData =
 export const getUserData = (password, userData, username = 'root') => {
   const hashedPassword = hashPasswordForCloudInit(password);
 
-
-
   if (password && userData) {
     let str = passwordAndUserData.replace(/USER_PASSWORD/g, hashedPassword);
     str = str.replace(/USER_NAME/g, username);
@@ -606,11 +604,12 @@ export const hashPasswordForCloudInit = (password) => {
   return hashedPassword;
 };
 const randomSalt = () => {
-  const alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ./';
+  const alphabet =
+    '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ./';
   const length = 8 + Math.random() * 8;
   let result = '';
   for (let i = length; i > 0; --i) {
     result += alphabet[Math.floor(Math.random() * alphabet.length)];
   }
   return result;
-}
+};

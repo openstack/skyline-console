@@ -137,10 +137,12 @@ export class StepCreate extends StepAction {
   onClickCancel = (props) => {
     if (this.state.current !== 0) {
       const {
-      title = t('Confirm'),
-      content = t('Segment will be deleted. Are you sure want to cancel this created segment?'),
-      okText = t('OK'),
-      cancelText = t('Cancel'),
+        title = t('Confirm'),
+        content = t(
+          'Segment will be deleted. Are you sure want to cancel this created segment?'
+        ),
+        okText = t('OK'),
+        cancelText = t('Cancel'),
       } = props;
       Modal.confirm({
         title,

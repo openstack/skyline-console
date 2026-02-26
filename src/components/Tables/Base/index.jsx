@@ -651,7 +651,9 @@ export class BaseTable extends React.Component {
             initValue={initFilter}
             onInputChange={this.handleFilterInput}
             onInputFocus={this.handleInputFocus}
-            placeholder={t('Multiple filter tags should be separated by "Enter"')}
+            placeholder={t(
+              'Multiple filter tags should be separated by "Enter"'
+            )}
           />
         </div>
       );

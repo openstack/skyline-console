@@ -25,7 +25,9 @@ export class BaseDetail extends Base {
     const options = [
       {
         label: t('Max Bandwidth'),
-        content: `${max_kbps === '-' ? max_kbps : max_kbps / 1024} ${t('Mbps')}`,
+        content: `${max_kbps === '-' ? max_kbps : max_kbps / 1024} ${t(
+          'Mbps'
+        )}`,
       },
       {
         label: t('Max Burst'),

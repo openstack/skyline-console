@@ -125,12 +125,12 @@ export class CreateSnapshot extends ModalAction {
     return t('create instance snapshot');
   }
 
-get tips() {
-  return t(
-    `A snapshot is an image which preserves the disk state of a running instance
+  get tips() {
+    return t(
+      `A snapshot is an image which preserves the disk state of a running instance
      and can be used to start a new instance.
      An instance that boots from a volume will create snapshots for each mounted volume.`
-  );
+    );
   }
 
   static get modalSize() {
