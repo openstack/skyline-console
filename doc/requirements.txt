@@ -2,6 +2,8 @@
 # of appearance. Changing the order has an impact on the overall integration
 # process, which may cause wedges in the gate later.
 
+# NOTE: setuptools is required by openstackdocstheme for pkg_resources
+setuptools>=64.0.0,<82.0.0
 openstackdocstheme>=2.2.1 # Apache-2.0
 reno>=3.1.0 # Apache-2.0
 doc8>=0.6.0 # Apache-2.0
