@@ -14,15 +14,12 @@
       - openstack/cinder
       - openstack/devstack
       - openstack/glance
-      - openstack/ironic
-      - openstack/ironic-python-agent
-      - openstack/ironic-python-agent-builder
+
       - openstack/keystone
       - openstack/neutron
       - openstack/nova
       - openstack/placement
       - openstack/requirements
-      - openstack/virtualbmc
       - openstack/skyline-apiserver
       - openstack/skyline-console
     timeout: 10800
@@ -75,9 +72,9 @@
         # Tempest service
         tempest: false
         # Ironic services
-        ironic: true
-        ir-api: true
-        ir-cond: true
+        ironic: false
+        ir-api: false
+        ir-cond: false
       devstack_localrc:
         # Credentials
         DATABASE_PASSWORD: secretdatabase
@@ -90,27 +87,10 @@
         LOG_COLOR: false
         LOGFILE: /opt/stack/logs/devstacklog.txt
         LOGDIR: /opt/stack/logs
-        IRONIC_VM_LOG_DIR: /opt/stack/ironic-bm-logs
-        # Set glance's default limit to be baremetal image friendly
-        GLANCE_LIMIT_IMAGE_SIZE_TOTAL: 5000
-        # Create 1 virtual machines to pose as Ironic's baremetal nodes.
-        IRONIC_VM_COUNT: 1
-        IRONIC_BAREMETAL_BASIC_OPS: True
-        DEFAULT_INSTANCE_TYPE: baremetal
-        IRONIC_RPC_TRANSPORT: json-rpc
-        IRONIC_RAMDISK_TYPE: tinyipa
-        IPA_DOWNLOAD_BRANCH: stable/2025.1
-        IRONIC_DEPLOY_DRIVER: ipmi
-        # The parameters below represent the minimum possible values to create
-        # functional nodes.
-        IRONIC_VM_SPECS_RAM: 1024
-        IRONIC_VM_SPECS_DISK: 3
-        # Size of the ephemeral partition in GB. Use 0 for no ephemeral partition.
-        IRONIC_VM_EPHEMERAL_DISK: 0
-        # To build your own IPA ramdisk from source, set this to True
-        IRONIC_BUILD_DEPLOY_RAMDISK: False
+        # Ironic related config removed - not using baremetal
+        DEFAULT_INSTANCE_TYPE: m1.small
         INSTALL_TEMPEST: False
-        VIRT_DRIVER: ironic
+        VIRT_DRIVER: libvirt
         # By default, DevStack creates a 10.0.0.0/24 network for instances.
         # If this overlaps with the hosts network, you may adjust with the
         # following.
