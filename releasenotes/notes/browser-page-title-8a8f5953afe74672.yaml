@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The browser tab title now includes the current Skyline Console page,
+    making it easier to identify open console tabs.
