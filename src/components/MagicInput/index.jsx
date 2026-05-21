@@ -155,6 +155,12 @@ class MagicInput extends PureComponent {
     if (!value) {
       return;
     }
+    const { currentFilter } = this.state;
+    const filter = currentFilter || this.getDefaultFilter();
+    if (!filter) {
+      this.clearInputValue();
+      this.handleBlur();
+    }
     this.updateInput(value);
   };
 
@@ -417,9 +423,13 @@ class MagicInput extends PureComponent {
 
   updateInput = (value) => {
     const { currentFilter, tags } = this.state;
+     const filter = currentFilter || this.getDefaultFilter();
+    if (!filter) {
+      return null;
+    }
     const newTag = {
       value,
-      filter: currentFilter || this.getDefaultFilter(),
+      filter,
     };
     this.clearInputValue();
     const newTags = tags.filter((it) => it.filter.name !== newTag.filter.name);
