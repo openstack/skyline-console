@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Add TOTP (Time-based One-Time Password) two-factor authentication support.
+    Users can now enable TOTP in their user center, scan a QR code to set up
+    their authenticator app, and enter TOTP codes during login. Administrators
+    can view and manage TOTP status for users in the admin panel.

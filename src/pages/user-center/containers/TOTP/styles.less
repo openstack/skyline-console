@@ -1,0 +1,76 @@
+@import '~styles/variables';
+
+.content {
+  height: 100%;
+  padding: 24px;
+  overflow: auto;
+}
+
+.card {
+  padding: 24px;
+  margin-bottom: 16px;
+  background-color: white;
+  border-radius: @border-radius;
+  box-shadow: @base-shadow;
+}
+
+.alert {
+  margin-bottom: 24px;
+}
+
+.mfa-status {
+  padding: 16px;
+  margin-bottom: 24px;
+  background: @gray-3;
+  border-radius: @border-radius;
+  border: 1px solid @gray-1;
+}
+
+.credential-list {
+  margin-bottom: 24px;
+}
+
+.credential-item {
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  background: @gray-2;
+  border: 1px solid @gray-1;
+  border-radius: @border-radius;
+}
+
+.credential-id {
+  font-size: 12px;
+}
+
+.add-section {
+  margin-top: 24px;
+}
+
+.totp-setup {
+  padding: 16px;
+  border: 1px dashed @gray-1;
+  border-radius: @border-radius;
+}
+
+.qr-wrapper {
+  display: inline-block;
+  padding: 16px;
+  margin: 16px 0;
+  background: white;
+  border: 1px solid @gray-1;
+  border-radius: @border-radius;
+}
+
+.verify-section {
+  margin-top: 20px;
+}
+
+.verify-error {
+  margin-top: 8px;
+  color: @error-color;
+  font-size: 13px;
+}
+
+.verify-alert {
+  margin-top: 12px;
+}

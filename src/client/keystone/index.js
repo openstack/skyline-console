@@ -134,6 +134,11 @@ export class KeystoneClient extends Base {
         ],
       },
       {
+        name: 'totpCredentials',
+        key: 'credentials',
+        responseKey: 'credential',
+      },
+      {
         name: 'systemGroups',
         key: 'system/groups',
         subResources: [

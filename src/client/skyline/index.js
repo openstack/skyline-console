@@ -86,6 +86,11 @@ export class SkylineClient extends Base {
             method: 'post',
           },
           {
+            name: 'loginTotp',
+            key: 'login/totp',
+            method: 'post',
+          },
+          {
             key: 'logout',
             method: 'post',
           },

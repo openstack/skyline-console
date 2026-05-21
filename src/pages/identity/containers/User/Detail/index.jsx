@@ -17,6 +17,7 @@ import { inject, observer } from 'mobx-react';
 import { UserStore } from 'stores/keystone/user';
 import Base from 'containers/TabDetail';
 import Credentials from 'src/pages/user-center/containers/Credentials';
+import AdminTOTP from './AdminTOTP';
 import { emptyActionConfig } from 'utils/constants';
 import { enabledColumn } from 'resources/keystone/domain';
 import UserGroup from '../../UserGroup';
@@ -110,6 +111,11 @@ export class UserDetail extends Base {
         title: t('Application Credentials'),
         key: 'applicationCredentials',
         component: Credentials,
+      },
+      {
+        title: t('Two-Factor Authentication'),
+        key: 'totp',
+        component: AdminTOTP,
       },
     ];
     return tabs;

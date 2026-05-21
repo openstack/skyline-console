@@ -27,17 +27,26 @@ export class Login extends Component {
   constructor(props) {
     super(props);
     this.init();
+    this.passcodeInputRef = React.createRef();
     this.state = {
       error: false,
       message: '',
       loading: false,
       loginTypeOption: this.passwordOption,
+      totpRequired: false,
     };
   }
 
   componentDidMount() {
     this.getSSO();
     this.getUserDefaultDomain();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevState.totpRequired && this.state.totpRequired) {
+      const input = this.passcodeInputRef.current;
+      if (input) input.focus();
+    }
   }
 
   async getSSO() {
@@ -189,11 +198,28 @@ export class Login extends Component {
       render: () => <Input placeholder={t('Username')} />,
       hidden: true,
     };
+    const { totpRequired } = this.state;
     const passwordItem = {
       name: 'password',
-      required: true,
+      required: !totpRequired,
       message: t('Please input your Password!'),
       render: () => <Input.Password placeholder={t('Password')} />,
+      hidden: totpRequired,
+    };
+    const totpItem = {
+      name: 'passcode',
+      required: totpRequired,
+      hidden: !totpRequired,
+      message: t('Please input your TOTP code!'),
+      extra: t('Enter the 6-digit code from your authenticator app.'),
+      render: () => (
+        <Input
+          ref={this.passcodeInputRef}
+          placeholder={t('TOTP Code')}
+          maxLength={6}
+          autoComplete="one-time-code"
+        />
+      ),
     };
     const extraItem = {
       name: 'extra',
@@ -233,6 +259,7 @@ export class Login extends Component {
       domainItem,
       usernameItem,
       passwordItem,
+      totpItem,
       extraItem,
     ];
     const typeItem = {
@@ -266,10 +293,17 @@ export class Login extends Component {
     this.setState({
       loading: false,
     });
-    const {
-      data: { detail = '' },
-    } = error.response;
-    const message = detail || '';
+    const { data: { detail = '' } = {} } = error.response || {};
+    if (detail && typeof detail === 'object' && detail.totp_required) {
+      const { domain } = values;
+      const usernameDomain = this.getUsernameAndDomain({
+        usernameDomain: domain,
+      });
+      this.rootStore.setTotpRequired(detail.receipt, usernameDomain);
+      this.setState({ totpRequired: true, error: false, message: '' });
+      return;
+    }
+    const message = typeof detail === 'string' ? detail : '';
     if (
       message.includes(
         'The password is expired and needs to be changed for user'
@@ -299,11 +333,38 @@ export class Login extends Component {
       document.location.href = this.currentSSOLink;
       return;
     }
+    const { totpRequired } = this.state;
     this.setState({
       loading: true,
       message: '',
       error: false,
     });
+    if (totpRequired) {
+      const { passcode } = values;
+      this.rootStore.loginTotp(passcode).then(
+        () => {
+          this.onLoginSuccess();
+        },
+        (error) => {
+          const detail = error?.response?.data?.detail || '';
+          if (detail === 'receipt_expired') {
+            this.setState({
+              loading: false,
+              totpRequired: false,
+              error: true,
+              message: 'receipt_expired',
+            });
+          } else {
+            this.setState({
+              loading: false,
+              error: true,
+              message: 'invalid_totp',
+            });
+          }
+        }
+      );
+      return;
+    }
     const { password, domain } = values;
     const usernameDomain = this.getUsernameAndDomain({
       usernameDomain: domain,
@@ -314,7 +375,7 @@ export class Login extends Component {
         this.onLoginSuccess();
       },
       (error) => {
-        this.onLoginFailed(error, values);
+        this.onLoginFailed(error, { ...values, ...usernameDomain });
       }
     );
   };
@@ -335,6 +396,12 @@ export class Login extends Component {
       return t(
         'If you are not authorized to access any project, or if the project you are involved in has been deleted or disabled, contact the platform administrator to reassign the project'
       );
+    }
+    if (message === 'invalid_totp') {
+      return t('Invalid TOTP code. Please try again.');
+    }
+    if (message === 'receipt_expired') {
+      return t('Session expired. Please log in again.');
     }
     return t('Username or password is incorrect');
   }
@@ -399,7 +466,6 @@ export class Login extends Component {
   };
 
   updateDefaultValue = () => {
-    this.formRef.current.resetFields();
     if (this.formRef.current && this.formRef.current.resetFields) {
       this.formRef.current.resetFields();
     }

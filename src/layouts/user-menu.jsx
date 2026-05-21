@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import React from 'react';
-import { HomeOutlined, UserOutlined } from '@ant-design/icons';
+import { HomeOutlined, UserOutlined, SafetyOutlined } from '@ant-design/icons';
 
 const renderMenu = (t) => {
   if (!t) {
@@ -35,6 +35,15 @@ const renderMenu = (t) => {
       key: 'applicationCredential',
       level: 0,
       icon: <UserOutlined />,
+      children: [],
+      hasChildren: false,
+    },
+    {
+      path: '/user/totp',
+      name: t('Two-Factor Authentication'),
+      key: 'totp',
+      level: 0,
+      icon: <SafetyOutlined />,
       children: [],
       hasChildren: false,
     },

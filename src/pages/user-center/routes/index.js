@@ -17,6 +17,7 @@ import BaseLayout from 'layouts/Basic';
 import E404 from 'pages/base/containers/404';
 import Credentials from '../containers/Credentials';
 import UserCenter from '../containers/UserCenter';
+import TOTPConfig from '../containers/TOTP';
 
 const PATH = '/user';
 export default [
@@ -32,6 +33,11 @@ export default [
       {
         path: `${PATH}/application-credentials`,
         component: Credentials,
+        exact: true,
+      },
+      {
+        path: `${PATH}/totp`,
+        component: TOTPConfig,
         exact: true,
       },
       { path: '*', component: E404 },

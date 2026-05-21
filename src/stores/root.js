@@ -80,6 +80,15 @@ export class RootStore {
   @observable
   availableRegions = [];
 
+  @observable
+  totpRequired = false;
+
+  @observable
+  totpReceipt = null;
+
+  @observable
+  totpLoginData = null;
+
   // @observable
   // menu = renderMenu(i18n.t);
 
@@ -112,7 +121,33 @@ export class RootStore {
 
   @action
   async login(params) {
+    this.totpRequired = false;
+    this.totpReceipt = null;
+    this.totpLoginData = null;
     const result = await this.client.login(params);
+    this.setKeystoneToken(result);
+    return this.getUserProfileAndPolicy();
+  }
+
+  @action
+  setTotpRequired(receipt, loginData) {
+    this.totpRequired = true;
+    this.totpReceipt = receipt;
+    this.totpLoginData = loginData;
+  }
+
+  @action
+  async loginTotp(passcode) {
+    const { domain, username } = this.totpLoginData || {};
+    const result = await this.client.loginTotp({
+      domain,
+      username,
+      passcode,
+      receipt: this.totpReceipt,
+    });
+    this.totpRequired = false;
+    this.totpReceipt = null;
+    this.totpLoginData = null;
     this.setKeystoneToken(result);
     return this.getUserProfileAndPolicy();
   }
@@ -209,6 +244,9 @@ export class RootStore {
     this.version = '';
     this.noticeCount = 0;
     this.noticeCountWaitRemove = 0;
+    this.totpRequired = false;
+    this.totpReceipt = null;
+    this.totpLoginData = null;
     this.goToLoginPage();
   }
 
