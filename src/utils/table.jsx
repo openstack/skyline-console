@@ -67,7 +67,13 @@ export const getColumnSorter = (column, props) => {
   const { isSortByBack } = props;
   const { sorter, dataIndex } = column;
   if (!isSortByBack) {
-    return sorter === false ? null : sorter || getDefaultSorter(dataIndex);
+    if (sorter === false) {
+      return null;
+    }
+    if (typeof sorter === 'function') {
+      return sorter;
+    }
+    return getDefaultSorter(dataIndex);
   }
   return sorter === false ? null : true;
 };
