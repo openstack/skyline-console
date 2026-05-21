@@ -37,6 +37,11 @@ export class NeutronClient extends Base {
         responseKey: 'subnet',
       },
       {
+        name: 'subnetpools',
+        key: 'subnetpools',
+        responseKey: 'subnetpool',
+      },
+      {
         key: 'ports',
         responseKey: 'port',
       },
@@ -167,10 +172,6 @@ export class NeutronClient extends Base {
         name: 'securityGroupRules',
         key: 'security-group-rules',
         responseKey: 'security_group_rule',
-      },
-      {
-        key: 'subnets',
-        responseKey: 'subnet',
       },
       {
         name: 'endpointGroups',
