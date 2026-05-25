@@ -39,6 +39,7 @@ export default function Line(props) {
   }
   const tipTitle = tips.join(' / ');
   const allCount = used + reserved + add;
+  const isOverLimit = isLimit && allCount > limit;
   const allPercent = parseInt((allCount / limit) * 100, 10);
   const usedPercent = parseInt(((used + reserved) / limit) * 100, 10);
   const usedColor = getUsedValueColor(allPercent);
@@ -52,8 +53,11 @@ export default function Line(props) {
   const progress = isLimit ? (
     <Progress
       percent={allPercent}
-      success={{ percent: usedPercent, strokeColor: typeColors.used }}
-      strokeColor={typeColors.add}
+      success={{
+        percent: usedPercent,
+        strokeColor: typeColors.used,
+      }}
+      strokeColor={isOverLimit ? typeColors.error : typeColors.add}
       showInfo={false}
     />
   ) : (

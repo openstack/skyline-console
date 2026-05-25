@@ -424,10 +424,10 @@ export const getAdd = (cinderQuota, withCountCheck = true) => {
     volumeCountForCreate: count = 1,
     volumeTypeForCreate: type = '',
   } = globalVolumeStore;
-  const zero = {
-    add: 0,
-    addSize: 0,
-  };
+  // const zero = {
+  //   add: 0,
+  //   addSize: 0,
+  // };
   const totalSize = size * count;
   const create = {
     add: count,
@@ -439,7 +439,7 @@ export const getAdd = (cinderQuota, withCountCheck = true) => {
       left,
       input: count,
     });
-    return { ...zero, error };
+    return { ...create, error };
   }
   if ((sizeLimit !== -1 && sizeLeft < totalSize) || sizeLeft === 0) {
     const error = getErrorMessage({
@@ -447,7 +447,7 @@ export const getAdd = (cinderQuota, withCountCheck = true) => {
       left: sizeLeft,
       input: totalSize,
     });
-    return { ...zero, error };
+    return { ...create, error };
   }
   if (isEmpty(typeQuota)) {
     return create;
@@ -458,7 +458,7 @@ export const getAdd = (cinderQuota, withCountCheck = true) => {
       left: typeLeft,
       input: count,
     });
-    return { ...zero, error };
+    return { ...create, error };
   }
   if (
     (typeSizeLimit !== -1 && typeSizeLeft < totalSize) ||
@@ -469,7 +469,7 @@ export const getAdd = (cinderQuota, withCountCheck = true) => {
       left: typeSizeLeft,
       input: totalSize,
     });
-    return { ...zero, error };
+    return { ...create, error };
   }
   return create;
 };
