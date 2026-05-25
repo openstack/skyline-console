@@ -179,10 +179,10 @@ export class StepCreate extends StepAction {
     } = toJS(this.projectStore.novaQuota) || {};
     const { data = {} } = this.state;
     const { count = 1 } = data;
-    const quotaError = this.checkQuotaInput();
+    this.checkQuotaInput();
     const instanceQuotaInfo = {
       ...instances,
-      add: quotaError ? 0 : count,
+      add: count,
       name: 'instance',
       title: t('Instance'),
       // type: 'line',
@@ -191,7 +191,7 @@ export class StepCreate extends StepAction {
     const { newCPU, newRam } = this.getFlavorInput();
     const cpuQuotaInfo = {
       ...cores,
-      add: quotaError ? 0 : newCPU,
+      add: newCPU,
       name: 'cpu',
       title: t('CPU'),
       type: 'line',
@@ -199,7 +199,7 @@ export class StepCreate extends StepAction {
 
     const ramQuotaInfo = {
       ...ram,
-      add: quotaError ? 0 : newRam,
+      add: newRam,
       name: 'ram',
       title: t('Memory (GiB)'),
       type: 'line',
@@ -209,14 +209,14 @@ export class StepCreate extends StepAction {
     const { totalNewCount, totalNewSize } = this.getVolumeInputMap();
     const volumeQuotaInfo = {
       ...volumeQuota.volumes,
-      add: quotaError ? 0 : totalNewCount,
+      add: totalNewCount,
       name: 'volume',
       title: t('Volume'),
       type: 'line',
     };
     const volumeSizeQuotaInfo = {
       ...volumeQuota.gigabytes,
-      add: quotaError ? 0 : totalNewSize,
+      add: totalNewSize,
       name: 'volumeSize',
       title: t('Volume Capacity (GiB)'),
       type: 'line',
@@ -233,7 +233,7 @@ export class StepCreate extends StepAction {
       const { add, ...rest } = serverGroupQuota;
       const quota = {
         ...rest,
-        add: quotaError ? 0 : add,
+        add,
       };
       quotaInfo.push(quota);
     }
