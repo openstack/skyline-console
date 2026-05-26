@@ -23,6 +23,7 @@ import { Layout } from 'antd';
 import GlobalHeader from 'components/Layout/GlobalHeader';
 import { setRouteMap, getPath } from 'utils/route-map';
 import { getLocalStorageItem } from 'utils/local-storage';
+import { getDocumentTitle, getSiteTitle } from 'utils/document-title';
 import renderAdminMenu from '../admin-menu';
 import renderMenu from '../menu';
 import renderUserMenu from '../user-menu';
@@ -46,6 +47,14 @@ export class BaseLayout extends Component {
       collapsed: getLocalStorageItem('menuCollapsed') || false,
     };
     this.init();
+  }
+
+  componentDidMount() {
+    this.updateDocumentTitle();
+  }
+
+  componentDidUpdate() {
+    this.updateDocumentTitle();
   }
 
   componentWillUnmount() {
@@ -206,6 +215,18 @@ export class BaseLayout extends Component {
     }
     this.rootStore.clearNoticeCount();
   };
+
+  updateDocumentTitle() {
+    const { pathname } = this.props.location;
+    const currentRoutes = this.getCurrentMenu(pathname);
+    const documentTitle = getDocumentTitle(
+      currentRoutes,
+      getSiteTitle(this.rootStore.info)
+    );
+    if (document.title !== documentTitle) {
+      document.title = documentTitle;
+    }
+  }
 
   updateMenuItemByAllowed(menuItem) {
     const { policy, endpoints, children = [], ...rest } = menuItem;
