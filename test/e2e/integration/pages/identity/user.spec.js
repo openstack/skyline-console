@@ -24,18 +24,9 @@ describe('The User Page', () => {
   const phone = '18500000000';
   const password = 'passW0rd_';
   const tmpPassword = `${password}1`;
-  const projectName = `e2e-project-for-user-${uuid}`;
-  const projectName2 = `e2e-project2-for-user-${uuid}`;
-  const userGroupName = `e2e-ug-for-user-${Cypress._.random(0, 1e3)}`;
 
   beforeEach(() => {
     cy.loginAdmin(listUrl);
-  });
-
-  it('successfully prepare resource', () => {
-    cy.createProject({ name: projectName });
-    cy.createProject({ name: projectName2 });
-    cy.createUserGroup({ name: userGroupName });
   });
 
   it('successfully create', () => {
@@ -53,9 +44,6 @@ describe('The User Page', () => {
       .formInput('real_name', name)
       .formButtonClick('more')
       .wait(2000)
-      .formTransfer('select_project', projectName)
-      .wait(2000)
-      .formTransfer('select_user_group', userGroupName)
       .clickFormActionSubmitButton()
       .url()
       .should('include', listUrl)
@@ -120,11 +108,5 @@ describe('The User Page', () => {
 
   it('successfully delete', () => {
     cy.tableSearchText(name).clickConfirmActionInMore('Delete');
-  });
-
-  it('successfully delete related resources', () => {
-    cy.deleteAll('project', projectName);
-    cy.deleteAll('project', projectName2);
-    cy.deleteAll('userGroup', userGroupName);
   });
 });

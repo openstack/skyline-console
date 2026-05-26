@@ -49,8 +49,7 @@ describe('The Metadata Page', () => {
   });
 
   it('successfully delete', () => {
-    cy.tableSimpleSearchText(name)
-      .clickConfirmActionInMore('Delete')
-      .checkEmptyTable();
+    cy.tableSimpleSearchText(name).clickConfirmActionInMore('Delete');
+    cy.tableSimpleSearchText(name).checkEmptyTable();
   });
 });
