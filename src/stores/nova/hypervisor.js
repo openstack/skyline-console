@@ -67,12 +67,30 @@ export class HypervisorStore extends Base {
       if (item.hypervisor_type !== 'ironic') {
         const {
           inventories: {
-            VCPU: { allocation_ratio },
-            MEMORY_MB: { allocation_ratio: memory_ratio },
-          },
-        } = inventories[index];
-        item.vcpus *= allocation_ratio;
-        item.memory_mb *= memory_ratio;
+            VCPU: { allocation_ratio, total: vcpu_total } = {},
+            PCPU: { allocation_ratio: pcpu_ratio, total: pcpu_total } = {},
+            MEMORY_MB: { allocation_ratio: memory_ratio } = {},
+          } = {},
+        } = inventories[index] || {};
+        // Handle mixed VCPU/PCPU configurations
+        let total_vcpus = 0;
+        let cpu_types = [];
+
+        if (pcpu_total !== undefined) {
+          total_vcpus += pcpu_total * (pcpu_ratio || 1.0);
+          cpu_types.push('pCPU');
+        }
+        if (allocation_ratio && vcpu_total !== undefined) {
+          total_vcpus += vcpu_total * allocation_ratio;
+          cpu_types.push('vCPU');
+        }
+        if (total_vcpus > 0) {
+          item.vcpus = total_vcpus;
+          item.cpu_type = cpu_types.join('+');
+        }
+        if (memory_ratio) {
+          item.memory_mb *= memory_ratio;
+        }
       }
       item.vcpus_used_percent =
         (item.vcpus && ((item.vcpus_used / item.vcpus) * 100).toFixed(2)) || 0;
@@ -115,12 +133,30 @@ export class HypervisorStore extends Base {
     if (item.hypervisor_type !== 'ironic') {
       const {
         inventories: {
-          VCPU: { allocation_ratio },
-          MEMORY_MB: { allocation_ratio: memory_ratio },
-        },
-      } = inventoriesBase;
-      item.vcpus *= allocation_ratio;
-      item.memory_mb *= memory_ratio;
+          VCPU: { allocation_ratio, total: vcpu_total } = {},
+          PCPU: { allocation_ratio: pcpu_ratio, total: pcpu_total } = {},
+          MEMORY_MB: { allocation_ratio: memory_ratio } = {},
+        } = {},
+      } = inventoriesBase || {};
+      // Handle mixed VCPU/PCPU configurations
+      let total_vcpus = 0;
+      let cpu_types = [];
+
+      if (pcpu_total !== undefined) {
+        total_vcpus += pcpu_total * (pcpu_ratio || 1.0);
+        cpu_types.push('pCPU');
+      }
+      if (allocation_ratio && vcpu_total !== undefined) {
+        total_vcpus += vcpu_total * allocation_ratio;
+        cpu_types.push('vCPU');
+      }
+      if (total_vcpus > 0) {
+        item.vcpus = total_vcpus;
+        item.cpu_type = cpu_types.join('+');
+      }
+      if (memory_ratio) {
+        item.memory_mb *= memory_ratio;
+      }
     }
     if (inventoriesVGPU && usagesVGPU) {
       const { inventories: { VGPU: { allocation_ratio, total } } = {} } =
@@ -159,12 +195,30 @@ export class HypervisorStore extends Base {
       if (item.hypervisor_type !== 'ironic') {
         const {
           inventories: {
-            VCPU: { allocation_ratio },
-            MEMORY_MB: { allocation_ratio: memory_ratio },
-          },
-        } = inventories[index];
-        item.vcpus *= allocation_ratio;
-        item.memory_mb *= memory_ratio;
+            VCPU: { allocation_ratio, total: vcpu_total } = {},
+            PCPU: { allocation_ratio: pcpu_ratio, total: pcpu_total } = {},
+            MEMORY_MB: { allocation_ratio: memory_ratio } = {},
+          } = {},
+        } = inventories[index] || {};
+        // Handle mixed VCPU/PCPU configurations
+        let total_vcpus = 0;
+        let cpu_types = [];
+
+        if (pcpu_total !== undefined) {
+          total_vcpus += pcpu_total * (pcpu_ratio || 1.0);
+          cpu_types.push('pCPU');
+        }
+        if (allocation_ratio && vcpu_total !== undefined) {
+          total_vcpus += vcpu_total * allocation_ratio;
+          cpu_types.push('vCPU');
+        }
+        if (total_vcpus > 0) {
+          item.vcpus = total_vcpus;
+          item.cpu_type = cpu_types.join('+');
+        }
+        if (memory_ratio) {
+          item.memory_mb *= memory_ratio;
+        }
       }
       data.vcpus += item.vcpus;
       data.vcpus_used += item.vcpus_used;

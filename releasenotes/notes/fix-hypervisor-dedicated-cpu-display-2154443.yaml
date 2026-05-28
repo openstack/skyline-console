@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    Fixed hypervisor display crash for hosts with dedicated (pinned) CPUs
+    (LP#2154443). The Skyline Console now correctly handles compute hosts
+    that use PCPU (physical CPU) inventory instead of VCPU, which occurs
+    when ``cpu_dedicated_set`` is configured in nova.conf. The UI now
+    displays the correct CPU type (vCPU, pCPU, or pCPU+vCPU for mixed
+    configurations) in both the hypervisor list and detail views.
