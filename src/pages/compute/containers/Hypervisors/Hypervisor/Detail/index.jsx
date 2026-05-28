@@ -43,7 +43,7 @@ export class HypervisorDetail extends Base {
         dataIndex: 'hypervisor_type',
       },
       {
-        title: t('VCPU (Core)'),
+        title: t('CPU (Core)'),
         dataIndex: 'vcpus_used_percent',
         render: (value, record) =>
           record.hypervisor_type === 'ironic' ? (
@@ -53,7 +53,7 @@ export class HypervisorDetail extends Base {
               <span>-</span>
             </Tooltip>
           ) : (
-            `${record.vcpus_used} / ${record.vcpus}`
+            `${record.vcpus_used} / ${record.vcpus} (${t(record.cpu_type || 'vCPU')})`
           ),
       },
       {
