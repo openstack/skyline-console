@@ -26,7 +26,7 @@ export const hypervisorColumns = [
     dataIndex: 'hypervisor_type',
   },
   {
-    title: t('vCPU (Core)'),
+    title: t('CPU (Core)'),
     dataIndex: 'vcpus_used_percent',
     render: (value, record) =>
       record.hypervisor_type === 'ironic' ? (
@@ -36,18 +36,18 @@ export const hypervisorColumns = [
           <span>-</span>
         </Tooltip>
       ) : (
-        <Progress
-          value={value}
-          label={`${record.vcpus_used} / ${record.vcpus}`}
-        />
+        <Tooltip title={`${t(record.cpu_type || 'vCPU')}: ${record.vcpus_used} / ${record.vcpus}`}>
+          <Progress
+            value={value}
+            label={`${record.vcpus_used} / ${record.vcpus}`}
+          />
+        </Tooltip>
       ),
     width: 180,
     stringify: (value, record) =>
       record.hypervisor_type === 'ironic'
         ? '-'
-        : `${value}% (${t('Used')}: ${record.vcpus_used} / ${t('Total')}: ${
-            record.vcpus
-          })`,
+        : `${value}% (${t(record.cpu_type || 'vCPU')}: ${record.vcpus_used} / ${record.vcpus})`,
   },
   {
     title: t('Configured Memory (GiB)'),

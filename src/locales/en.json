@@ -3272,6 +3272,8 @@
   "user group": "user group",
   "user groups": "user groups",
   "users": "users",
+  "pCPU": "pCPU",
+  "pCPU+vCPU": "pCPU+vCPU",
   "vCPU": "vCPU",
   "vCPU (Core)": "vCPU (Core)",
   "vCPU (Cores)": "vCPU (Cores)",

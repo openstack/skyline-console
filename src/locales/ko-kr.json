@@ -3271,6 +3271,8 @@
   "user group": "사용자 그룹",
   "user groups": "사용자 그룹",
   "users": "사용자",
+  "pCPU": "pCPU",
+  "pCPU+vCPU": "pCPU+vCPU",
   "vCPU": "vCPU",
   "vCPU (Core)": "VCPU (Core)",
   "vCPU (Cores)": "vCPU (코어)",

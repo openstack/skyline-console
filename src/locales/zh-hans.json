@@ -3271,6 +3271,8 @@
   "user group": "用户组",
   "user groups": "用户组",
   "users": "用户",
+  "pCPU": "物理CPU",
+  "pCPU+vCPU": "物理CPU+虚拟CPU",
   "vCPU": "虚拟CPU",
   "vCPU (Core)": "VCPU (核)",
   "vCPU (Cores)": "虚拟CPU (核)",
