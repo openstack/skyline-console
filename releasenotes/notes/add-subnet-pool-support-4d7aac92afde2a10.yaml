@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Add support for creating subnets from a subnet pool. When creating a
+    subnet, users can now select a subnet pool instead of manually entering
+    a CIDR. If a subnet pool is selected, the CIDR field is hidden and a
+    prefix length input is shown instead. This is particularly useful for
+    public IPv6 deployments where subnet pools are commonly used to allocate
+    prefixes from a shared address space.

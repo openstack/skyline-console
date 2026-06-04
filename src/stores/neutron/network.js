@@ -316,6 +316,8 @@ export class NetworkStore extends Base {
       gateway_ip,
       cidr,
       disable_gateway,
+      subnetpool_id,
+      prefixlen,
     } = values;
     const dns_nameservers = splitToArray(dns);
     const data = {
@@ -324,12 +326,29 @@ export class NetworkStore extends Base {
       enable_dhcp,
       network_id,
       dns_nameservers,
-      allocation_pools,
-      host_routes,
       ip_version: ip_version === 'ipv4' ? 4 : 6,
       gateway_ip: disable_gateway || gateway_ip === '' ? null : gateway_ip,
-      cidr,
     };
+    // Only add allocation_pools and host_routes if they are not empty
+    // Neutron doesn't accept empty allocation_pools when using subnet pool
+    if (allocation_pools && allocation_pools.length > 0) {
+      data.allocation_pools = allocation_pools;
+    }
+    if (host_routes && host_routes.length > 0) {
+      data.host_routes = host_routes;
+    }
+    if (subnetpool_id) {
+      data.subnetpool_id = subnetpool_id;
+      if (prefixlen) {
+        const parsed = parseInt(prefixlen, 10);
+        if (Number.isNaN(parsed)) {
+          throw new Error('Invalid prefixlen');
+        }
+        data.prefixlen = parsed;
+      }
+    } else {
+      data.cidr = cidr;
+    }
     if (data.ip_version === 6) {
       data.ipv6_address_mode = ipv6_address_mode;
       data.ipv6_ra_mode = ipv6_ra_mode;

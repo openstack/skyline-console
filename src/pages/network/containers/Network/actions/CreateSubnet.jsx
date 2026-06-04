@@ -16,6 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import { ipValidate } from 'utils/validate';
 import globalNetworkStore from 'stores/neutron/network';
+import globalSubnetPoolStore from 'stores/neutron/subnetpool';
 import { isEmpty } from 'lodash';
 import globalProjectStore from 'stores/keystone/project';
 import globalRootStore from 'stores/root';
@@ -82,9 +83,28 @@ export class CreateSubnet extends ModalAction {
     this.state.projectId = this.currentProjectId;
     this.state.quota = {};
     this.state.quotaLoading = true;
+    this.state.subnetpools = [];
+    this.state.subnetpoolLoading = false;
     this.projectStore = globalProjectStore;
+    this.subnetPoolStore = globalSubnetPoolStore;
     this.isSystemAdmin && this.getProjects();
     this.getQuota();
+    this.fetchSubnetPools();
+  }
+
+  async fetchSubnetPools() {
+    this.setState({ subnetpoolLoading: true });
+    try {
+      const result = await this.subnetPoolStore.fetchList();
+      const subnetpools = result || [];
+      this.setState({
+        subnetpools: Array.isArray(subnetpools) ? subnetpools : [],
+        subnetpoolLoading: false,
+      });
+    } catch (e) {
+      console.error('Failed to fetch subnet pools:', e);
+      this.setState({ subnetpoolLoading: false });
+    }
   }
 
   async getProjects() {
@@ -223,14 +243,30 @@ export class CreateSubnet extends ModalAction {
     return detail.project_id;
   }
 
+  onSubnetPoolChange = (value) => {
+    this.setState({
+      subnetpool_id: value,
+      prefixlen: value ? this.state.prefixlen : undefined,
+    });
+  };
+
   get formItems() {
     const {
       more,
       ip_version = 'ipv4',
       disable_gateway = false,
       projectId,
+      subnetpools = [],
+      subnetpoolLoading = false,
+      subnetpool_id,
     } = this.state;
     const isIpv4 = ip_version === 'ipv4';
+    const hasSubnetPools = subnetpools.length > 0;
+    const targetVersion = ip_version === 'ipv4' ? 4 : 6;
+    const filteredSubnetPools = subnetpools.filter(
+      (pool) => pool.ip_version === targetVersion
+    );
+    const selectedPool = filteredSubnetPools.find((p) => p.id === subnetpool_id);
 
     return [
       {
@@ -273,9 +309,36 @@ export class CreateSubnet extends ModalAction {
         onChange: (e) => {
           this.setState({
             ip_version: e,
+            subnetpool_id: undefined,
           });
         },
         required: true,
+      },
+      {
+        name: 'subnetpool_id',
+        label: t('Subnet Pool'),
+        type: 'select',
+        hidden: !hasSubnetPools,
+        isLoading: subnetpoolLoading,
+        options: filteredSubnetPools.map((pool) => ({
+          label: `${pool.name} (${(pool.prefixes || []).join(', ')})${pool.default_prefixlen ? ` - Default: /${pool.default_prefixlen}` : ''}`,
+          value: pool.id,
+        })),
+        onChange: this.onSubnetPoolChange,
+        tip: t(
+          'Select a subnet pool to allocate CIDR from the pool instead of specifying it manually'
+        ),
+      },
+      {
+        name: 'prefixlen',
+        label: t('Prefix Length'),
+        type: 'input-number',
+        hidden: !subnetpool_id,
+        min: selectedPool ? selectedPool.min_prefixlen : 0,
+        max: selectedPool ? selectedPool.max_prefixlen : 128,
+        tip: t(
+          'Prefix length for the subnet (e.g., 64 for IPv6 /64, 24 for IPv4 /24)'
+        ),
       },
       {
         name: 'ipv6_ra_mode',
@@ -339,7 +402,8 @@ export class CreateSubnet extends ModalAction {
         label: t('CIDR'),
         type: 'input',
         placeholder: isIpv4 ? '192.168.0.0/24' : '1001:1001::/64',
-        required: true,
+        required: !subnetpool_id,
+        hidden: !!subnetpool_id,
         // validator: (rule, value) => (isIpWithMask(value) ? Promise.resolve(true) : Promise.reject(new Error(t('Invalid CIDR.')))),
         validator: (rule, value) => {
           if (!isEmpty(value) && !this.checkCidr(value)) {
