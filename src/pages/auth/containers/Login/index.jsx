@@ -295,11 +295,8 @@ export class Login extends Component {
     });
     const { data: { detail = '' } = {} } = error.response || {};
     if (detail && typeof detail === 'object' && detail.totp_required) {
-      const { domain } = values;
-      const usernameDomain = this.getUsernameAndDomain({
-        usernameDomain: domain,
-      });
-      this.rootStore.setTotpRequired(detail.receipt, usernameDomain);
+      const { username, domain } = values;
+      this.rootStore.setTotpRequired(detail.receipt, { username, domain });
       this.setState({ totpRequired: true, error: false, message: '' });
       return;
     }
