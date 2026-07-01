@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    Fixed port forwarding creation failing because ``external_port`` and
+    ``internal_port`` were sent as strings instead of integers to the
+    Neutron API (LP#2112167). Single port values from the create and edit
+    forms are now converted to integers before submission. Port ranges
+    are unaffected as they use the ``external_port_range`` and
+    ``internal_port_range`` string fields.
