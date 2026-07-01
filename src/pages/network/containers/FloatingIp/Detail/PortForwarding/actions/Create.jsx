@@ -137,12 +137,12 @@ export class CreatePortForwarding extends ModalAction {
     if (external_port.includes(':')) {
       data.external_port_range = external_port;
     } else {
-      data.external_port = external_port;
+      data.external_port = Number(external_port);
     }
     if (internal_port.includes(':')) {
       data.internal_port_range = internal_port;
     } else {
-      data.internal_port = internal_port;
+      data.internal_port = Number(internal_port);
     }
     data.internal_ip_address = fixedIPAddressSelectedRows[0].fixed_ip_address;
     data.internal_port_id = selectedRows[0].id;
