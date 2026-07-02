@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Add support for downloading ``clouds.yaml`` files from the user
+    dropdown menu. Users can now choose between password and application
+    credential authentication types, matching the existing OpenRC file
+    download functionality. The ``clouds.yaml`` format is the standard
+    configuration file supported by ``openstacksdk`` and most OpenStack
+    client libraries.

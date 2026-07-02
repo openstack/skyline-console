@@ -1144,6 +1144,7 @@
   "Georgia": "格鲁吉亚",
   "Germany": "德国",
   "Get OpenRC file": "获取Openstack RC 文件",
+  "Get clouds.yaml file": "获取 clouds.yaml 文件",
   "Get Token": "获取Token",
   "Get {name} detail error.": "获取{name}详情失败。",
   "Get {name} error.": "获取{name}失败。",
