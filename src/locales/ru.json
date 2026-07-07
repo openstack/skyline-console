@@ -1145,6 +1145,7 @@
   "Germany": "Германия",
   "Get OpenRC file": "Получить файл OpenRC",
   "Get Token": "Получить токен",
+  "Get clouds.yaml file": "Получить файл clouds.yaml",
   "Get {name} detail error.": "Ошибка получения подробностей о {name}.",
   "Get {name} error.": "Не удалось получить {name}.",
   "Ghana": "Гана",
