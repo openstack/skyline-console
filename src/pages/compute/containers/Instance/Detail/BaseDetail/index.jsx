@@ -435,7 +435,7 @@ export class BaseDetail extends Base {
             <ItemActionButtons
               actions={this.volumeActions}
               onFinishAction={this.handleRefreshVolume}
-              item={this.detailData}
+              item={this.detailData?.itemInList || this.detailData}
               containerProps={this.props}
               firstActionClassName={styles['attach-btn']}
             />
