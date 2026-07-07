@@ -21,6 +21,7 @@ import ItemActionButtons from 'components/Tables/Base/ItemActionButtons';
 import Password from './Password';
 import Token from './Token';
 import OpenRc from './OpenRc';
+import CloudsYaml from './CloudsYaml';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
 
@@ -176,6 +177,12 @@ export class AvatarDropdown extends React.Component {
         <Menu.Item key="openrc" className={styles['menu-item']}>
           <ItemActionButtons
             actions={{ moreActions: [{ action: OpenRc }] }}
+            isWide
+          />
+        </Menu.Item>
+        <Menu.Item key="clouds-yaml" className={styles['menu-item']}>
+          <ItemActionButtons
+            actions={{ moreActions: [{ action: CloudsYaml }] }}
             isWide
           />
         </Menu.Item>
