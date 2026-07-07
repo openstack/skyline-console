@@ -30,9 +30,13 @@ export const typeColors = {
   add: globalCSS.successColor,
   left: '#eee',
   danger: globalCSS.warnDarkColor,
+  error: globalCSS.errorColor,
 };
 
 export const getAddValueColor = (percent) => {
+  if (percent > 100) {
+    return typeColors.error;
+  }
   if (percent > 80) {
     return typeColors.danger;
   }
@@ -40,6 +44,10 @@ export const getAddValueColor = (percent) => {
 };
 
 export const getUsedValueColor = (percent) => {
+  console.log('percent', percent);
+  if (percent > 100) {
+    return typeColors.error;
+  }
   if (percent > 80) {
     return typeColors.danger;
   }
@@ -66,8 +74,10 @@ export default function Ring(props) {
   const limitNumber = !isLimit ? Infinity : limit;
   const limitStr = !isLimit ? t('Infinity') : limit;
   let left = !isLimit ? 1 : limit - used - reserved - add;
+  let isOverLimit = false;
   if (left < 0) {
     left = 0;
+    isOverLimit = true;
   }
   const data = [
     {
@@ -86,7 +96,7 @@ export default function Ring(props) {
   data.push({
     type: t('New'),
     value: isLimit ? add : 0,
-    color: typeColors.add,
+    color: isOverLimit ? typeColors.error : typeColors.add,
   });
   data.push({
     type: t('Available'),
