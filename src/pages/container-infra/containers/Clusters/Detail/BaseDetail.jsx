@@ -155,7 +155,21 @@ export class BaseDetail extends Base {
       flavor_id,
       original_flavor_id,
       flavor: { name: flavorName } = {},
+      nodeServers = {},
     } = this.detailData;
+
+    const renderNodeAddresses = (addresses) =>
+      addresses && addresses.length
+        ? addresses.map((name) => (
+            <div key={name}>
+              {nodeServers[name]
+                ? this.getLinkRender('instanceDetail', name, {
+                    id: nodeServers[name],
+                  })
+                : name}
+            </div>
+          ))
+        : '-';
 
     const masterFlavorUrl = original_master_flavor_id
       ? `${original_master_flavor_id} (${t('The resource has been deleted')})`
@@ -201,14 +215,12 @@ export class BaseDetail extends Base {
       {
         label: t('Master Node Addresses'),
         dataIndex: 'master_addresses',
-        render: (value) =>
-          value && value.length ? value.map((it) => <div>{it}</div>) : '-',
+        render: renderNodeAddresses,
       },
       {
         label: t('Node Addresses'),
         dataIndex: 'node_addresses',
-        render: (value) =>
-          value && value.length ? value.map((it) => <div>{it}</div>) : '-',
+        render: renderNodeAddresses,
       },
     ];
 
