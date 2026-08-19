@@ -17,6 +17,7 @@ import enData from './en.json';
 import krData from './ko-kr.json';
 import trData from './tr-tr.json';
 import ruData from './ru.json';
+import deData from './de.json';
 
 export default {
   'zh-hans': zhHansData,
@@ -24,4 +25,5 @@ export default {
   'ko-kr': krData,
   'tr-tr': trData,
   ru: ruData,
+  de: deData,
 };

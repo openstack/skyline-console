@@ -59,6 +59,13 @@ const SUPPORT_LOCALES_ALL = [
     icon: 'ru',
     momentName: 'ru',
   },
+  {
+    name: 'Deutsch',
+    value: 'de',
+    shortName: 'de',
+    icon: 'de',
+    momentName: 'de',
+  },
 ];
 
 const getDefaultLanguageInConfig = () => {
@@ -171,6 +178,53 @@ const init = () => {
         past: '%s前',
         future: '在%s后',
       },
+    });
+  } else if (lang === 'de') {
+    // webpack.common.js has IgnorePlugin(/^\.\/locale$/, /moment$/), so moment's own
+    // de locale data is stripped from the bundle -- importing 'moment/locale/de' would
+    // compile and silently do nothing. Define it inline, as zh-hans/tr-tr/ru do.
+    moment.locale('de', {
+      months:
+        'Januar_Februar_März_April_Mai_Juni_Juli_August_September_Oktober_November_Dezember'.split(
+          '_'
+        ),
+      monthsShort:
+        'Jan._Feb._März_Apr._Mai_Juni_Juli_Aug._Sep._Okt._Nov._Dez.'.split('_'),
+      weekdays:
+        'Sonntag_Montag_Dienstag_Mittwoch_Donnerstag_Freitag_Samstag'.split(
+          '_'
+        ),
+      weekdaysShort: 'So._Mo._Di._Mi._Do._Fr._Sa.'.split('_'),
+      weekdaysMin: 'So_Mo_Di_Mi_Do_Fr_Sa'.split('_'),
+      longDateFormat: {
+        LT: 'HH:mm',
+        LTS: 'HH:mm:ss',
+        L: 'DD.MM.YYYY',
+        LL: 'D. MMMM YYYY',
+        LLL: 'D. MMMM YYYY HH:mm',
+        LLLL: 'dddd, D. MMMM YYYY HH:mm',
+      },
+      // Dative forms: these render after 'vor' / 'in', e.g. "vor einer Minute".
+      relativeTime: {
+        future: 'in %s',
+        past: 'vor %s',
+        s: 'ein paar Sekunden',
+        ss: '%d Sekunden',
+        m: 'einer Minute',
+        mm: '%d Minuten',
+        h: 'einer Stunde',
+        hh: '%d Stunden',
+        d: 'einem Tag',
+        dd: '%d Tagen',
+        w: 'einer Woche',
+        ww: '%d Wochen',
+        M: 'einem Monat',
+        MM: '%d Monaten',
+        y: 'einem Jahr',
+        yy: '%d Jahren',
+      },
+      ordinal: '%d.',
+      week: { dow: 1, doy: 4 },
     });
   } else if (lang === 'tr-tr') {
     moment.locale('tr', {
