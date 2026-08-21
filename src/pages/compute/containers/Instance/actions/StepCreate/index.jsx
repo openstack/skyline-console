@@ -21,7 +21,7 @@ import globalServerStore from 'stores/nova/instance';
 import globalProjectStore from 'stores/keystone/project';
 import classnames from 'classnames';
 import { isEmpty, isFinite, isString } from 'lodash';
-import { getUserData, hashPasswordForCloudInit } from 'resources/nova/instance';
+import { getUserData, isWindowsImage, setServerPassword } from 'resources/nova/instance';
 import { getAllDataDisks } from 'resources/cinder/snapshot';
 import { getGiBValue } from 'utils/index';
 import Notify from 'components/Notify';
@@ -733,7 +733,7 @@ export class StepCreate extends StepAction {
     if (loginType.value === 'keypair') {
       server.key_name = keypair.selectedRowKeys[0];
     } else {
-      server.adminPass = password;
+      setServerPassword(server, password);
     }
     if (count > 1) {
       server.min_count = count;
@@ -744,14 +744,13 @@ export class StepCreate extends StepAction {
       server.hypervisor_hostname =
         physicalNode.selectedRows[0].hypervisor_hostname;
     }
-    if (server.adminPass || userData) {
-      const { username } = values;
+    const { username } = values;
+    if (!isWindowsImage(values) && (server.adminPass || userData)) {
       server.user_data = btoa(
         getUserData(server.adminPass, userData, username || 'root')
       );
-    }
-    if (server.adminPass) {
-      server.adminPass = hashPasswordForCloudInit(server.adminPass);
+    } else if (isWindowsImage(values) && userData) {
+      server.user_data = btoa(userData);
     }
     const body = {
       server,
