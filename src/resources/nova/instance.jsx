@@ -613,3 +613,27 @@ const randomSalt = () => {
   }
   return result;
 };
+
+export const isWindowsImage = (values) => {
+  const { source = {}, image = {}, bootableVolume = {}, instanceSnapshot = {} } = values;
+  const { value: sourceValue } = source;
+  if (sourceValue === 'image') {
+    return image.selectedRows?.[0]?.os_distro === 'windows';
+  }
+  if (sourceValue === 'bootableVolume') {
+    const volMeta =
+      bootableVolume.selectedRows?.[0]?.origin_data?.volume_image_metadata ||
+      bootableVolume.selectedRows?.[0]?.volume_image_metadata;
+    return volMeta?.os_distro === 'windows';
+  }
+  if (sourceValue === 'instanceSnapshot') {
+    return instanceSnapshot.selectedRows?.[0]?.os_distro === 'windows';
+  }
+  return false;
+};
+
+export const setServerPassword = (server, password) => {
+  server.adminPass = password;
+  server.metadata = server.metadata || {};
+  server.metadata.admin_pass = password;
+};

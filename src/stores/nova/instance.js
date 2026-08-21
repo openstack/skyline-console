@@ -17,7 +17,6 @@ import { get } from 'lodash';
 import client from 'client';
 import Base from 'stores/base';
 import { mapperRule } from 'resources/neutron/security-group-rule';
-import { hashPasswordForCloudInit } from 'src/resources/nova/instance';
 import { RecycleBinStore } from '../skyline/recycle-server';
 
 export class ServerStore extends Base {
@@ -399,7 +398,7 @@ export class ServerStore extends Base {
   async changePassword({ id, password }) {
     const body = {
       changePassword: {
-        adminPass: hashPasswordForCloudInit(password),
+        adminPass: password,
       },
     };
     return this.operation({ body, id });
