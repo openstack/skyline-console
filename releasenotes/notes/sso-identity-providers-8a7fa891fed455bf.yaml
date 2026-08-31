@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Adds IdP choosing panel to Skyline.
+    Previously, to use SSO in Skyline, users would have to choose the
+    protocol, then be redirected to the identity federation provider for
+    Keystone, and then enter their credentials in the IdP.
+    This change makes Skyline work just as Horizon does, rendering the
+    different options of IdP in the front end for the users to select.
