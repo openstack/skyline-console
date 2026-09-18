@@ -116,9 +116,9 @@ export class Login extends Component {
     return protocols.map((it) => {
       const { protocol, url } = it;
       return {
-        label: this.ssoProtocols[protocol] || protocol,
-        value: url,
         ...it,
+        label: it.label || this.ssoProtocols[protocol] || protocol,
+        value: url,
       };
     });
   }
