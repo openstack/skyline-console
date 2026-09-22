@@ -89,6 +89,7 @@ export const policyMap = {
     'backup:index',
     'backup:show',
   ],
+  zaqar: ['queues:', 'messages:', 'claims:', 'subscription:'],
 };
 
 export const convertPolicyMap = (map) => {

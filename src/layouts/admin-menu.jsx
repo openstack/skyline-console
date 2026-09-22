@@ -25,6 +25,7 @@ import {
   ContainerOutlined,
   DatabaseFilled,
   DeploymentUnitOutlined,
+  MessageOutlined,
 } from '@ant-design/icons';
 
 const renderMenu = (t) => {
@@ -945,6 +946,23 @@ const renderMenu = (t) => {
               routePath: '/configuration-admin/metadata/detail/:id',
             },
           ],
+        },
+      ],
+    },
+    {
+      path: '/messaging',
+      name: t('Messaging'),
+      key: 'zaqarAdmin',
+      icon: <MessageOutlined />,
+      endpoints: 'zaqar',
+      children: [
+        {
+          path: '/messaging/queues-admin',
+          name: t('Queues'),
+          key: 'zaqarQueuesAdmin',
+          endpoints: 'zaqar',
+          level: 1,
+          children: [],
         },
       ],
     },

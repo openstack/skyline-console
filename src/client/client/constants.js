@@ -36,6 +36,7 @@ export const endpointVersionMap = {
   magnum: 'v1',
   designate: 'v2',
   masakari: 'v1',
+  zaqar: 'v2',
 };
 
 export const endpointsDefault = {
@@ -75,6 +76,7 @@ export const zunBase = () => getOpenstackEndpoint('zun');
 export const magnumBase = () => getOpenstackEndpoint('magnum');
 export const designateBase = () => getOpenstackEndpoint('designate');
 export const masakariBase = () => getOpenstackEndpoint('masakari');
+export const zaqarBase = () => getOpenstackEndpoint('zaqar');
 
 export const ironicOriginEndpoint = () => getOriginEndpoint('ironic');
 export const vpnEndpoint = () => getOriginEndpoint('neutron_vpn');
@@ -85,6 +87,7 @@ export const cinderEndpoint = () => getOriginEndpoint('cinder');
 export const manilaEndpoint = () => getOriginEndpoint('manilav2');
 export const zunEndpoint = () => getOriginEndpoint('zun');
 export const masakariEndpoint = () => getOriginEndpoint('masakari');
+export const zaqarEndpoint = () => getOriginEndpoint('zaqar');
 export const firewallEndpoint = () => getOriginEndpoint('neutron_firewall');
 
 export const apiVersionMaps = {

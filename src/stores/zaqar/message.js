@@ -1,0 +1,74 @@
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+import { action } from 'mobx';
+import client from 'client';
+import Base from 'stores/base';
+
+export class MessageStore extends Base {
+  get client() {
+    return client.zaqar.queues.messages;
+  }
+
+  get needGetProject() {
+    return false;
+  }
+
+  get listResponseKey() {
+    return 'messages';
+  }
+
+  // Extract id from href: /v2/queues/{name}/messages/{id}
+  get mapper() {
+    return (item) => ({
+      ...item,
+      id: item.href ? item.href.split('/').pop() : item.id,
+    });
+  }
+
+  get paramsFunc() {
+    return () => ({});
+  }
+
+  // Override listFetchByClient to pass echo=true query param
+  listFetchByClient(params, originParams) {
+    // queueName may come from initFilter or from route params merged in getData
+    const queueName =
+      (originParams && originParams.queueName) ||
+      (originParams && originParams.id);
+    return this.client.list(queueName, { ...params, echo: true });
+  }
+
+  getFatherResourceId = (params) =>
+    (params && params.queueName) || (params && params.id);
+
+  @action
+  create = (queueName, body, ttl) => {
+    // Use extendOperation to post messages as array with Client-ID header
+    const messages = [{ body, ttl: ttl || 3600 }];
+    return this.submitting(
+      client.zaqar.queues.postMessages(queueName, messages)
+    );
+  };
+
+  @action
+  delete = (item, params = {}) => {
+    const queueName = params.queueName || item.queueName;
+    const messageId = item.id;
+    return this.submitting(
+      client.zaqar.queues.messages.delete(queueName, messageId)
+    );
+  };
+}
+
+const globalMessageStore = new MessageStore();
+export default globalMessageStore;

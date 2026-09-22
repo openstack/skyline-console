@@ -65,6 +65,9 @@ const E404 = lazy(() =>
 const InstanceHA = lazy(() =>
   import(/* webpackChunkName: "Inctance-HA" */ 'pages/ha/App')
 );
+const ZaqarApp = lazy(() =>
+  import(/* webpackChunkName: "zaqar" */ 'pages/zaqar/App')
+);
 const PATH = '/';
 
 export default [
@@ -129,6 +132,10 @@ export default [
       {
         path: `/ha`,
         component: InstanceHA,
+      },
+      {
+        path: `/messaging`,
+        component: ZaqarApp,
       },
       { path: '*', component: E404 },
     ],

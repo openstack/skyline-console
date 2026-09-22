@@ -23,6 +23,7 @@ import {
   AppstoreOutlined,
   SwitcherOutlined,
   ContainerOutlined,
+  MessageOutlined,
 } from '@ant-design/icons';
 
 const renderMenu = (t) => {
@@ -759,6 +760,23 @@ const renderMenu = (t) => {
               routePath: '/database/configurations/detail/:id',
             },
           ],
+        },
+      ],
+    },
+    {
+      path: '/messaging',
+      name: t('Messaging'),
+      key: 'zaqar',
+      icon: <MessageOutlined />,
+      endpoints: 'zaqar',
+      children: [
+        {
+          path: '/messaging/queues',
+          name: t('Queues'),
+          key: 'zaqarQueues',
+          endpoints: 'zaqar',
+          level: 1,
+          children: [],
         },
       ],
     },

@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Add Zaqar (Messaging) support to the console. Users can manage message
+    queues and their messages, claims, and subscriptions. The panel is
+    available under Messaging for both project and admin scopes.
