@@ -59,7 +59,7 @@ export class UserGroups extends Base {
       {
         title: t('User Group ID/Name'),
         dataIndex: 'name',
-        routeName: 'userGroupDetailAdmin',
+        routeName: this.getRouteName('userGroupDetail'),
       },
       {
         title: t('Project Scope (Project Name: Role Names)'),

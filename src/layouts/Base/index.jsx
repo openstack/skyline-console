@@ -229,7 +229,16 @@ export class BaseLayout extends Component {
   }
 
   updateMenuItemByAllowed(menuItem) {
-    const { policy, endpoints, children = [], ...rest } = menuItem;
+    const {
+      policy,
+      endpoints,
+      children = [],
+      domainManager = false,
+      ...rest
+    } = menuItem;
+    if (domainManager && !this.rootStore.hasDomainManagerRole) {
+      return null;
+    }
     if (policy && !checkItemPolicy({ policy })) {
       return null;
     }

@@ -21,6 +21,7 @@ import { Select } from 'antd';
 import { ProjectStore } from 'stores/keystone/project';
 import globalRoleStore from 'stores/keystone/role';
 import globalDomainStore from 'stores/keystone/domain';
+import { isAdminPage } from 'utils/index';
 import {
   getPasswordOtherRule,
   phoneNumberValidate,
@@ -77,7 +78,10 @@ export class Create extends FormAction {
 
   static title = t('Create User');
 
-  static path = '/identity/user-admin/create';
+  static path = (item, containerProps) =>
+    containerProps && containerProps.isAdminPage === false
+      ? '/identity/user/create'
+      : '/identity/user-admin/create';
 
   static policy = [
     'identity:create_user',
@@ -107,9 +111,16 @@ export class Create extends FormAction {
     const data = {
       more: false,
       enabled: statusTypes[0].value,
-      domain_id: 'default',
+      domain_id: this.defaultDomainId,
     };
     return data;
+  }
+
+  get defaultDomainId() {
+    // a domain manager creates users in their own domain
+    const { user = {} } = this.props.rootStore || {};
+    const domain = user.domain || (user.user || {}).domain || {};
+    return (!isAdminPage(window.location.pathname) && domain.id) || 'default';
   }
 
   get projectList() {

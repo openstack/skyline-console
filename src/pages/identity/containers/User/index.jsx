@@ -49,12 +49,23 @@ export class User extends Base {
     return this.inDetailPage && this.path.includes('identity/role-admin');
   }
 
+  // domain area of a domain manager: only the user's own domain is listed
+  get inDomainArea() {
+    return !this.isAdminPage && !this.inDetailPage;
+  }
+
+  get userDomainId() {
+    const { user = {} } = this.props.rootStore;
+    const domain = user.domain || (user.user || {}).domain || {};
+    return domain.id;
+  }
+
   getBaseColumns() {
     return [
       {
         title: t('User ID/Name'),
         dataIndex: 'name',
-        routeName: 'userDetailAdmin',
+        routeName: this.getRouteName('userDetail'),
       },
       {
         title: t('Real Name'),
@@ -66,7 +77,7 @@ export class User extends Base {
         dataIndex: 'defaultProject',
         isHideable: true,
         routeName: 'projectDetailAdmin',
-        isLink: true,
+        isLink: this.isAdminPage,
         idKey: 'default_project_id',
       },
       {
@@ -149,6 +160,11 @@ export class User extends Base {
   }
 
   getColumns() {
+    if (this.inDomainArea) {
+      return this.getBaseColumns().filter(
+        (it) => !['domainName', 'systemRoles'].includes(it.dataIndex)
+      );
+    }
     const columns = this.getBaseColumns();
     if (!this.inDetailPage || this.inUserGroupDetail) {
       return columns.filter(
@@ -226,6 +242,11 @@ export class User extends Base {
       newParams.roleId = id;
       newParams.withProjectRole = true;
       newParams.withSystemRole = true;
+    } else if (this.inDomainArea) {
+      newParams.domain_id = this.userDomainId;
+      newParams.withProjectRole = false;
+      newParams.withSystemRole = false;
+      newParams.withDefaultProject = true;
     } else if (!this.inDetailPage) {
       newParams.withProjectRole = false;
       newParams.withSystemRole = true;

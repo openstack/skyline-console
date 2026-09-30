@@ -91,7 +91,8 @@ export class ManageQuota extends ModalAction {
     'os_compute_api:os-quota-sets:defaults',
   ];
 
-  static allowed = () => Promise.resolve(true);
+  static allowed = (item, containerProps) =>
+    Promise.resolve(!(containerProps && containerProps.isAdminPage === false));
 
   get defaultValue() {
     const { quota = {} } = this.projectStore;

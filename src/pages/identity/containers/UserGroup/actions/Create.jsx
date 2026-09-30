@@ -15,6 +15,7 @@
 import { inject, observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import globalDomainStore from 'stores/keystone/domain';
+import { isAdminPage } from 'utils/index';
 import globalGroupStore from 'stores/keystone/user-group';
 import { getDomainFormItem } from 'resources/keystone/domain';
 
@@ -31,6 +32,13 @@ export class Create extends ModalAction {
 
   static policy = 'identity:create_group';
 
+  get defaultDomainId() {
+    // a domain manager creates groups in their own domain
+    const { user = {} } = this.props.rootStore || {};
+    const domain = user.domain || (user.user || {}).domain || {};
+    return (!isAdminPage(window.location.pathname) && domain.id) || 'default';
+  }
+
   static allowed() {
     return Promise.resolve(true);
   }
@@ -41,7 +49,7 @@ export class Create extends ModalAction {
 
   get defaultValue() {
     const data = {
-      domain_id: 'default',
+      domain_id: this.defaultDomainId,
     };
     return data;
   }

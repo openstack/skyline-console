@@ -48,6 +48,22 @@ export class RootStore {
   @observable
   hasAdminOnlyRole = false;
 
+  // Keystone domain manager persona: domain-scoped token and its roles
+  @observable
+  domainScopeToken = '';
+
+  @observable
+  domainRoles = [];
+
+  @observable
+  userDomain = null;
+
+  @observable
+  domainManagerRoles = ['manager'];
+
+  @observable
+  hasDomainManagerRole = false;
+
   @observable
   openKeys = [];
 
@@ -115,8 +131,21 @@ export class RootStore {
   };
 
   setKeystoneToken(result) {
-    const { keystone_token } = result || {};
+    const { keystone_token, domain_scope_token = '' } = result || {};
     setLocalStorageItem('keystone_token', keystone_token);
+    setLocalStorageItem('domain_scope_token', domain_scope_token || '');
+  }
+
+  async fetchDomainManagerRoles() {
+    try {
+      const result = await client.skyline.config.getUserDefaultDomain();
+      const { domain_manager_roles: roles } = result || {};
+      if (Array.isArray(roles) && roles.length) {
+        this.domainManagerRoles = roles;
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   @action
@@ -173,6 +202,41 @@ export class RootStore {
     this.hasAdminPageRole = await this.getUserSystemRoles(userInfo);
     this.hasAdminRole = this.hasAdminPageRole;
     this.hasAdminOnlyRole = roles.some((it) => it.name === 'admin');
+    await this.updateDomainManagerRole(user);
+  }
+
+  @action
+  setDomainManagerRole(user) {
+    // Decided from the profile alone, synchronously: requests issued while the
+    // async probes run must already carry the right token.
+    const {
+      domain_scope_token: domainScopeToken = '',
+      domain_roles: domainRoles = [],
+      domain = null,
+      roles = [],
+    } = user || {};
+    this.domainScopeToken = domainScopeToken || '';
+    this.domainRoles = domainRoles || [];
+    this.userDomain = domain;
+    // administrators keep the Administrator platform; the domain area is for
+    // users whose only management rights come from a domain role assignment
+    const isAdmin = (roles || []).some((it) => it.name === 'admin');
+    this.hasDomainManagerRole =
+      !!this.domainScopeToken &&
+      !isAdmin &&
+      !this.hasAdminPageRole &&
+      this.domainRoles.some((it) => this.domainManagerRoles.includes(it.name));
+    setLocalStorageItem('domain_manager', this.hasDomainManagerRole ? '1' : '');
+  }
+
+  @action
+  async updateDomainManagerRole(user) {
+    this.setDomainManagerRole(user);
+    if (!this.domainScopeToken) {
+      return;
+    }
+    await this.fetchDomainManagerRoles();
+    this.setDomainManagerRole(user);
   }
 
   @action
@@ -192,8 +256,9 @@ export class RootStore {
     this.projectName = projectName;
     this.version = version;
     this.endpoints = endpoints;
-    this.updateUserRoles(user);
     this.setKeystoneToken(user);
+    this.setDomainManagerRole(user);
+    this.updateUserRoles(user);
   }
 
   checkEndpoint(key) {
@@ -241,6 +306,11 @@ export class RootStore {
     this.roles = [];
     this.hasAdminRole = false;
     this.hasAdminPageRole = false;
+    this.hasDomainManagerRole = false;
+    this.domainScopeToken = '';
+    this.domainRoles = [];
+    this.userDomain = null;
+    setLocalStorageItem('domain_manager', '');
     this.version = '';
     this.noticeCount = 0;
     this.noticeCountWaitRemove = 0;

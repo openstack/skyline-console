@@ -18,6 +18,7 @@ import { ModalAction } from 'containers/Action';
 import Tags from 'components/Tags';
 import Notify from 'components/Notify';
 import globalDomainStore from 'stores/keystone/domain';
+import { isAdminPage } from 'utils/index';
 import globalProjectStore from 'stores/keystone/project';
 import globalTagStore from 'stores/keystone/tag';
 import { regex } from 'utils/validate';
@@ -66,10 +67,17 @@ export class Create extends ModalAction {
 
   get defaultValue() {
     const data = {
-      domain_id: 'default',
+      domain_id: this.defaultDomainId,
       enabled: statusTypes[0],
     };
     return data;
+  }
+
+  get defaultDomainId() {
+    // a domain manager creates projects in their own domain
+    const { user = {} } = this.props.rootStore || {};
+    const domain = user.domain || (user.user || {}).domain || {};
+    return (!isAdminPage(window.location.pathname) && domain.id) || 'default';
   }
 
   checkName = (rule, value) => {
