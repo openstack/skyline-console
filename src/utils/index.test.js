@@ -284,7 +284,21 @@ describe('test utils index.js', () => {
   it('isAdminPage', () => {
     expect(isAdminPage('admin')).toBe(true);
     expect(isAdminPage('/admin/')).toBe(true);
-    expect(isAdminPage('/a/b/c/admin/d/e/f')).toBe(true);
+    expect(isAdminPage('/configuration-admin/info')).toBe(true);
+    expect(isAdminPage('/compute/instance-admin/detail/id')).toBe(true);
+    expect(isAdminPage('/network/dns-admin/zones')).toBe(true);
+    expect(isAdminPage('/storage/container/detail/admin-container')).toBe(
+      false
+    );
+    expect(isAdminPage('/storage/container/detail/container-admin')).toBe(
+      false
+    );
+    expect(isAdminPage('/compute/keypair/detail/test-admin-keypair')).toBe(
+      false
+    );
+    expect(isAdminPage('/heat/stack/detail/id/test-admin-stack')).toBe(false);
+    expect(isAdminPage('/messaging/queues/test-admin-queue')).toBe(false);
+    expect(isAdminPage('/a/b/c/admin/d/e/f')).toBe(false);
     expect(isAdminPage('/a/d/m/i/n')).toBe(false);
   });
 });

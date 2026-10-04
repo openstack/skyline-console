@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    `Bug #2169466 <https://bugs.launchpad.net/skyline-console/+bug/2169466>`_:
+
+    Fixed project-scoped pages being incorrectly identified as administrator
+    pages when user-defined resource names contain ``admin``.
