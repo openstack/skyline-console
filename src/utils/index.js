@@ -281,7 +281,18 @@ export const unescapeHtml = (message) => {
   return message;
 };
 
-export const isAdminPage = (url) => url && url.indexOf('admin') >= 0;
+export const isAdminPage = (url) => {
+  if (!url) {
+    return false;
+  }
+
+  // Admin markers belong to the service or resource route segment. Later
+  // segments may contain user-defined resource names.
+  const routeSegments = url.split('/').filter(Boolean).slice(0, 2);
+  return routeSegments.some(
+    (segment) => segment === 'admin' || segment.endsWith('-admin')
+  );
+};
 
 export const isUserCenterPage = (url) =>
   url && (url === '/user' || url.startsWith('/user/'));
