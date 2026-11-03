@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="126px" height="42px" viewBox="0 0 126 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 4</title>
+    <g id="告警规则" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="编组-4" transform="translate(10.002982, 7.000000)">
+            <text id="Cloud" font-family="PingFangSC-Regular, PingFang SC" font-size="24" font-weight="normal" fill="#494949">
+                <tspan x="42.9970183" y="25">Cloud</tspan>
+            </text>
+            <polygon id="路径" stroke="#585858" stroke-width="2" points="14.0154766 1.11256653 8.19282386 12 4.1084658 12 -1.14038261e-13 19.1172391 4.1084658 25.8509105 20.9312248 25.8509105 29.9938305 11.1692991 24.0703059 1.11256653"></polygon>
+            <path d="M32.4091531,12.7434777 L33.0925968,13.5333933 L25.2417074,26.4522009 L24.100354,26.4522009 L32.4091531,12.7434777 Z" id="矩形" stroke="#04B0FE"></path>
+            <path d="M35.0124938,15.3307533 L35.6973288,16.1215034 L29.265661,26.4522009 L28.1113416,26.4522009 L35.0124938,15.3307533 Z" id="矩形备份-3" stroke="#04B0FE"></path>
+            <path d="M36.9703461,18.6980407 L37.5559217,19.1760971 L33.0324712,26.4522009 L32.1155903,26.4522009 L36.9703461,18.6980407 Z" id="矩形备份-4" stroke="#04B0FE"></path>
+        </g>
+    </g>
+</svg>
