@@ -24,8 +24,12 @@ export class SetDefaultProject extends FormAction {
     return Promise.resolve(true);
   }
 
-  static path = (item) => {
-    return `/identity/user-admin/detail/${item.id}?tab=project`;
+  static path = (item, containerProps) => {
+    const base =
+      containerProps && containerProps.isAdminPage === false
+        ? '/identity/user/detail'
+        : '/identity/user-admin/detail';
+    return `${base}/${item.id}?tab=project`;
   };
 
   get name() {

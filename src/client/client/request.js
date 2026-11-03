@@ -53,8 +53,22 @@ export class HttpRequest {
     config.headers['X-Openstack-Request-Id'] = `req-${uuid}`;
   }
 
-  addToken(config) {
+  useDomainScopeToken(config, url) {
+    // A domain manager (domain role, not a cloud administrator) talks to
+    // Keystone with the domain-scoped token; every other service keeps the
+    // project-scoped one.
+    const target = `${url || ''} ${(config && config.url) || ''}`;
+    if (!/\/keystone(\/|\s|$)/.test(target)) {
+      return false;
+    }
+    // flag written by the root store at login/profile time (synchronous), so
+    // requests fired before the store finishes its async probes are right too
+    return !!getLocalStorageItem('domain_manager');
+  }
+
+  addToken(config, url) {
     const keystoneToken = getLocalStorageItem('keystone_token') || '';
+    const domainScopeToken = getLocalStorageItem('domain_scope_token') || '';
     const timeExpiredStr = cookie('time_expired');
     let tokenIsValid = false;
     if (timeExpiredStr) {
@@ -63,6 +77,13 @@ export class HttpRequest {
     }
     if (keystoneToken && tokenIsValid) {
       config.headers['X-Auth-Token'] = keystoneToken;
+    }
+    if (
+      domainScopeToken &&
+      tokenIsValid &&
+      this.useDomainScopeToken(config, url)
+    ) {
+      config.headers['X-Auth-Token'] = domainScopeToken;
     }
   }
 
@@ -95,7 +116,7 @@ export class HttpRequest {
 
   updateRequestConfig(config, url) {
     this.addRequestId(config);
-    this.addToken(config);
+    this.addToken(config, url);
     this.addVersion(config, url);
     this.updateHeaderByConfig(config);
     return config;

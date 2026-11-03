@@ -187,7 +187,7 @@ export class Projects extends Base {
       {
         title: t('Project ID/Name'),
         dataIndex: 'name',
-        routeName: 'projectDetailAdmin',
+        routeName: this.getRouteName('projectDetail'),
       },
       userProjectRole,
       groupProjectRole,

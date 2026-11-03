@@ -24,6 +24,7 @@ import {
   SwitcherOutlined,
   ContainerOutlined,
   MessageOutlined,
+  TeamOutlined,
 } from '@ant-design/icons';
 
 const renderMenu = (t) => {
@@ -872,6 +873,99 @@ const renderMenu = (t) => {
               key: 'containerInfraUpdateClusterTemplate',
               level: 2,
               routePath: '/container-infra/cluster-template/update/:id',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      path: '/identity',
+      name: t('Domain'),
+      key: '/identity',
+      icon: <TeamOutlined />,
+      domainManager: true,
+      children: [
+        {
+          path: '/identity/user',
+          name: t('Users'),
+          key: 'user',
+          level: 1,
+          children: [
+            {
+              path: /^\/identity\/user\/detail\/.[^/]+$/,
+              name: t('User Detail'),
+              key: 'userDetail',
+              level: 2,
+              routePath: '/identity/user/detail/:id',
+            },
+            {
+              path: '/identity/user/create',
+              name: t('Create User'),
+              key: 'userCreate',
+              level: 2,
+            },
+            {
+              path: /^\/identity\/user\/edit\/.[^/]+$/,
+              name: t('Edit User'),
+              key: 'userEdit',
+              level: 2,
+              routePath: '/identity/user/edit/:id',
+            },
+          ],
+        },
+        {
+          path: '/identity/project',
+          name: t('Projects'),
+          key: 'project',
+          level: 1,
+          children: [
+            {
+              path: /^\/identity\/project\/detail\/.[^/]+$/,
+              name: t('Project Detail'),
+              key: 'projectDetail',
+              level: 2,
+              routePath: '/identity/project/detail/:id',
+            },
+            {
+              path: '/identity/project/create',
+              name: t('Create Project'),
+              key: 'projectCreate',
+              level: 2,
+            },
+            {
+              path: /^\/identity\/project\/edit\/.[^/]+$/,
+              name: t('Edit Project'),
+              key: 'projectEdit',
+              level: 2,
+              routePath: '/identity/project/edit/:id',
+            },
+          ],
+        },
+        {
+          path: '/identity/user-group',
+          name: t('User Groups'),
+          key: 'userGroup',
+          level: 1,
+          children: [
+            {
+              path: /^\/identity\/user-group\/detail\/.[^/]+$/,
+              name: t('User Group Detail'),
+              key: 'userGroupDetail',
+              level: 2,
+              routePath: '/identity/user-group/detail/:id',
+            },
+            {
+              path: '/identity/user-group/create',
+              name: t('Create User Group'),
+              key: 'userGroupCreate',
+              level: 2,
+            },
+            {
+              path: /^\/identity\/user-group\/edit\/.[^/]+$/,
+              name: t('Edit User Group'),
+              key: 'userGroupEdit',
+              level: 2,
+              routePath: '/identity/user-group/edit/:id',
             },
           ],
         },

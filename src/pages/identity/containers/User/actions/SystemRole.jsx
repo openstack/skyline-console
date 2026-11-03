@@ -55,8 +55,11 @@ export class SystemRole extends ModalAction {
   static policy = 'identity:list_roles';
 
   static allowed(item, containerProps) {
-    const { match: { path = '' } = {} } = containerProps || {};
+    const { match: { path = '' } = {}, isAdminPage } = containerProps || {};
     if (path.indexOf('domain-admin/detail') >= 0) {
+      return Promise.resolve(false);
+    }
+    if (isAdminPage === false) {
       return Promise.resolve(false);
     }
     return Promise.resolve(true);
