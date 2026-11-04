@@ -90,6 +90,7 @@ export const policyMap = {
     'backup:show',
   ],
   zaqar: ['queues:', 'messages:', 'claims:', 'subscription:'],
+  cloudkitty: ['rating:', 'summary:'],
 };
 
 export const convertPolicyMap = (map) => {

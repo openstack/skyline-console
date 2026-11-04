@@ -25,6 +25,7 @@ import {
   ContainerOutlined,
   MessageOutlined,
   TeamOutlined,
+  AccountBookOutlined,
 } from '@ant-design/icons';
 
 const renderMenu = (t) => {
@@ -776,6 +777,29 @@ const renderMenu = (t) => {
           name: t('Queues'),
           key: 'zaqarQueues',
           endpoints: 'zaqar',
+          level: 1,
+          children: [],
+        },
+      ],
+    },
+    {
+      path: '/cloudkitty',
+      name: t('Rating'),
+      key: 'cloudkitty',
+      endpoints: 'cloudkitty',
+      icon: <AccountBookOutlined />,
+      children: [
+        {
+          path: '/cloudkitty/summary',
+          name: t('Summary'),
+          key: 'cloudkittySummary',
+          level: 1,
+          children: [],
+        },
+        {
+          path: '/cloudkitty/reporting',
+          name: t('Reporting'),
+          key: 'cloudkittyReporting',
           level: 1,
           children: [],
         },

@@ -31,6 +31,7 @@ import magnum from './magnum';
 import masakari from './masakari';
 import designate from './designate';
 import zaqar from './zaqar';
+import cloudkitty from './cloudkitty';
 
 const client = {
   skyline,
@@ -52,6 +53,7 @@ const client = {
   masakari,
   designate,
   zaqar,
+  cloudkitty,
 };
 
 window.client = client;

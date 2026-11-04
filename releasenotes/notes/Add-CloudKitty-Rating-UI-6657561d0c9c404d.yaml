@@ -1,0 +1,25 @@
+---
+features:
+  - |
+    Add a Rating panel for CloudKitty. It is available for both the project
+    and admin scopes, and is shown only when the ``rating`` service is
+    available in skyline-apiserver.
+  - |
+    Project users and administrators can view a rating summary, with the
+    current and previous month totals, a month-end forecast, the cost
+    breakdown by service type and the top cost generators. A rating report
+    can also be created for a chosen date range, with the cost by service
+    type, a daily cost chart and CSV export. In the admin scope, the costs
+    cover all projects.
+  - |
+    Administrators can manage the rating modules (enable, disable and change
+    the priority), the HashMap rating rules (services, fields, mappings and
+    thresholds) and the PyScripts. These entries are shown only to users who
+    are allowed by the CloudKitty policies ``rating:list_modules`` and
+    ``rating:module_config``.
+upgrade:
+  - |
+    The Rating panel needs a skyline-apiserver that maps the ``rating``
+    service type to ``cloudkitty``. This is part of the default
+    ``service_mapping``. If ``service_mapping`` is overridden in
+    ``skyline.yaml``, add ``rating: cloudkitty`` to it.
