@@ -68,6 +68,9 @@ const InstanceHA = lazy(() =>
 const ZaqarApp = lazy(() =>
   import(/* webpackChunkName: "zaqar" */ 'pages/zaqar/App')
 );
+const CloudKittyApp = lazy(() =>
+  import(/* webpackChunkName: "cloudkitty" */ 'pages/cloudkitty/App')
+);
 const PATH = '/';
 
 export default [
@@ -136,6 +139,14 @@ export default [
       {
         path: `/messaging`,
         component: ZaqarApp,
+      },
+      {
+        path: `/cloudkitty-admin`,
+        component: CloudKittyApp,
+      },
+      {
+        path: `/cloudkitty`,
+        component: CloudKittyApp,
       },
       { path: '*', component: E404 },
     ],

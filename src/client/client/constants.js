@@ -77,6 +77,9 @@ export const magnumBase = () => getOpenstackEndpoint('magnum');
 export const designateBase = () => getOpenstackEndpoint('designate');
 export const masakariBase = () => getOpenstackEndpoint('masakari');
 export const zaqarBase = () => getOpenstackEndpoint('zaqar');
+// CloudKitty serves both the v1 and v2 APIs from the same endpoint, so the
+// un-versioned endpoint is used and each resource path carries its version.
+export const cloudkittyBase = () => getOriginEndpoint('cloudkitty');
 
 export const ironicOriginEndpoint = () => getOriginEndpoint('ironic');
 export const vpnEndpoint = () => getOriginEndpoint('neutron_vpn');
@@ -88,6 +91,7 @@ export const manilaEndpoint = () => getOriginEndpoint('manilav2');
 export const zunEndpoint = () => getOriginEndpoint('zun');
 export const masakariEndpoint = () => getOriginEndpoint('masakari');
 export const zaqarEndpoint = () => getOriginEndpoint('zaqar');
+export const cloudkittyEndpoint = () => getOriginEndpoint('cloudkitty');
 export const firewallEndpoint = () => getOriginEndpoint('neutron_firewall');
 
 export const apiVersionMaps = {
